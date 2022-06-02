@@ -1,0 +1,26 @@
+{
+  "search": {
+    "label": "FrSearch",
+    "placeholder": "FrSearch by Transaction Hash, Block # and Address"
+  },
+  "terms": {
+    "address": "Fraddress",
+    "addresses": "Fraddresses",
+    "app": "Frapp",
+    "apps": "Frapps",
+    "block": "Frblock",
+    "blocks": "Frblocks",
+    "node": "Frnode",
+    "nodes": "Frnodes",
+    "network": "Frnetwork",
+    "networks": "Frnetworks",
+    "support": "Frsupport",
+    "transaction": "Frtransaction",
+    "transactions": "Frtransactions"
+  },
+  "error": {
+    "default": "FrDefault Error Message",
+    "browser": "FrBrowser Error Message",
+    "server": "FrServer Error Message"
+  }
+}

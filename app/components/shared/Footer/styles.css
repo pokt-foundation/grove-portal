@@ -1,0 +1,9 @@
+.pokt-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--mantine-spacing-xl) var(--mantine-spacing-sm);
+  /* move color to mantine: var(--mantine-color-blue-9) */
+  background-color: rgb(25, 36, 48);
+  color: white;
+}

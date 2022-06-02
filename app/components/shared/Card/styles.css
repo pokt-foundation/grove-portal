@@ -1,0 +1,6 @@
+.pokt-card {
+  background: var(--color-black-main);
+  border-radius: 8px;
+  padding: 32px;
+  margin-bottom: 32px;
+}

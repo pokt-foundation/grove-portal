@@ -1,0 +1,63 @@
+name: 🔬 Validate
+on:
+  workflow_call:
+  pull_request: {}
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  validate:
+    name: ⬣ Validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🛑 Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v3
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.15.0
+
+      - uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 7.0.0
+
+      - name: 👀 Env
+        run: |
+          echo "Event name: ${{ github.event_name }}"
+          echo "Git ref:    ${{ github.ref }}"
+          echo "GH actor:   ${{ github.actor }}"
+          echo "SHA:        ${{ github.sha }}"
+          VER=`node --version`; echo "Node ver: $VER"
+          VER=`pnpm --version`; echo "pnpm ver: $VER"
+
+      - name: create env file
+        run: |
+          touch .env
+          echo NODE_ENV="development" >> .env
+          echo MAINNET_RPC_URL=https://mainnet.gateway.pokt.network/v1/lb/60a2ac11b1747c6552385c61/ >> .env
+          echo AMPLITUDE_API_KEY=4b54fb07298c6322918050a273203084 >> .env
+          echo SENTRY_DSN=https://0f9f40d0428b4c31aa94cb516159ec42@o515876.ingest.sentry.io/5631627 >> .env
+
+      - name: 📥 Download deps
+        run: pnpm install
+
+      - name: 🔬 Lint
+        run: pnpm run lint
+
+      - name: 🔎 Type check
+        run: pnpm run typecheck
+
+      - name: ⚡ Run vitest
+        run: pnpm run test:unit:run
+
+      - name: 🌳 Cypress run
+        run: pnpm run test:e2e:run
+
+      - name: 🏗 Build
+        run: pnpm run build

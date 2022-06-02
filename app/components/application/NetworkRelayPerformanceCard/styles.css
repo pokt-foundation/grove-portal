@@ -1,0 +1,20 @@
+.pokt-network-relay-performance h3 {
+  margin-top: 0;
+}
+
+.pokt-network-relay-performance-grid {
+  margin-bottom: 32px;
+}
+
+.pokt-network-relay-performance-grid h5 {
+  color: rgb(170, 170, 170);
+  margin: 0;
+  margin-bottom: 8px;
+}
+
+.pokt-network-relay-performance-grid p {
+  color: rgb(250, 250, 250);
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
+}

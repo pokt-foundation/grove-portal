@@ -1,0 +1,26 @@
+{
+  "search": {
+    "label": "Search",
+    "placeholder": "Search by Transaction Hash, Block # and Address"
+  },
+  "terms": {
+    "address": "address",
+    "addresses": "addresses",
+    "app": "app",
+    "apps": "apps",
+    "block": "block",
+    "blocks": "blocks",
+    "node": "node",
+    "nodes": "nodes",
+    "network": "network",
+    "networks": "networks",
+    "support": "support",
+    "transaction": "transaction",
+    "transactions": "transactions"
+  },
+  "error": {
+    "default": "Default Error Message",
+    "browser": "Browser Error Message",
+    "server": "Server Error Message"
+  }
+}

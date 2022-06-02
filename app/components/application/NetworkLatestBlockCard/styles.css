@@ -1,0 +1,25 @@
+.pokt-network-latest-block h3 {
+  margin-top: 0;
+}
+
+.pokt-network-latest-block ul {
+  list-style-type: none;
+  margin-bottom: 32px;
+}
+
+.pokt-network-latest-block ul p {
+  margin: 0;
+  color: var(--color-white-main);
+}
+
+.pokt-network-latest-block .pokt-network-latest-block-row-description {
+  color: rgb(170, 170, 170);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.pokt-network-latest-block .pokt-network-latest-block-row-data {
+  text-align: right;
+  font-size: 14px;
+  font-weight: 600;
+}

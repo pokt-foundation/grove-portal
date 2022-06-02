@@ -1,0 +1,36 @@
+nav {
+  margin-left: 16px;
+}
+
+nav ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-link {
+  padding: 8px 16px;
+  text-transform: capitalize;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: color ease-in-out 0.3s;
+}
+
+.nav-link:hover {
+  color: var(--color-white-dark);
+}
+
+.nav-link-active {
+  color: var(--color-primary-main);
+}
+
+.nav-link-active:hover {
+  color: var(--color-primary-dark);
+}
+
+.nav-link .pokt-icon {
+  width: 18px;
+  height: 21px;
+}

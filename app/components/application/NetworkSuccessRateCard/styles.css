@@ -1,0 +1,29 @@
+.pokt-network-success-rate .pokt-card {
+  display: flex;
+  flex-direction: row;
+  gap: 32px;
+}
+
+.pokt-network-success-rate-content {
+  text-align: right;
+  flex-grow: 1;
+}
+
+.pokt-network-success-rate-content h5 {
+  font-size: 24px;
+  line-height: 1.5;
+  font-weight: bold;
+  margin: 0;
+}
+
+.pokt-network-success-rate-content p {
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.5;
+  color: rgb(170, 170, 170);
+  margin: 0;
+}
+
+.pokt-network-success-rate-content svg {
+  margin-right: 8px;
+}

@@ -1,0 +1,12 @@
+.pokt-powered-by {
+  width: 100%;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: end;
+}
+
+.pokt-powered-by p {
+  font-size: 8px;
+  color: rgb(137, 141, 146);
+}

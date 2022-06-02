@@ -1,0 +1,17 @@
+.form {
+  width: auto;
+}
+
+.form-per-page {
+  margin-top: 30px;
+}
+
+.form-group {
+  gap: 8px;
+}
+
+.form-per-page button {
+  height: 32px;
+  padding-left: 8px;
+  padding-right: 8px;
+}

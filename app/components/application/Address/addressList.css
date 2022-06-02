@@ -1,0 +1,19 @@
+.list-link {
+  padding: var(--mantine-spacing-sm) var(--mantine-spacing-md);
+  margin: var(--mantine-spacing-xs) 0;
+  display: block;
+  border-radius: var(--mantine-radius-sm);
+}
+
+.list-link:hover {
+  background-color: var(--mantine-color-gray-7);
+}
+
+.list-link-active {
+  background-color: var(--mantine-color-gray-8);
+  border-left: 2px solid var(--mantine-color-yellow-5);
+}
+
+.list-address {
+  font-weight: bold;
+}

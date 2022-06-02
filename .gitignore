@@ -5,6 +5,7 @@ node_modules
 .vercel
 .output
 .DS_Store
+.pnpm-debug.log
 
 /build/
 /public/build

@@ -21,7 +21,7 @@ export const getLBDailyRelays = async (
 ): Promise<UserLBDailyRelaysResponse[]> => {
   const user = await requireUser(request)
   const res = await fetch(
-    `${getRequiredClientEnvVar("BACKEND_URL")}/api/v2/lb/daily-relays/${id}`,
+    `${getRequiredClientEnvVar("BACKEND_URL")}/api/lb/daily-relays/${id}`,
     {
       headers: {
         Authorization: `${user.extraParams.token_type} ${user.accessToken}`,
@@ -43,7 +43,7 @@ export const getLBHourlyLatency = async (
 ): Promise<UserLBHistoricalLatencyResponse[]> => {
   const user = await requireUser(request)
   const res = await fetch(
-    `${getRequiredClientEnvVar("BACKEND_URL")}/api/v2/lb/hourly-latency/${id}`,
+    `${getRequiredClientEnvVar("BACKEND_URL")}/api/lb/hourly-latency/${id}`,
     {
       headers: {
         Authorization: `${user.extraParams.token_type} ${user.accessToken}`,
@@ -65,7 +65,7 @@ export const getLBOriginClassification = async (
 ): Promise<UserLBOriginBucket[]> => {
   const user = await requireUser(request)
   const res = await fetch(
-    `${getRequiredClientEnvVar("BACKEND_URL")}/api/v2/lb/origin-classification/${id}`,
+    `${getRequiredClientEnvVar("BACKEND_URL")}/api/lb/origin-classification/${id}`,
     {
       headers: {
         Authorization: `${user.extraParams.token_type} ${user.accessToken}`,
@@ -87,9 +87,7 @@ export const getLBPreviousSuccessfulRelays = async (
 ): Promise<UserLBPreviousTotalSuccessfulRelaysResponse[]> => {
   const user = await requireUser(request)
   const res = await fetch(
-    `${getRequiredClientEnvVar(
-      "BACKEND_URL",
-    )}/api/v2/lb/previous-successful-relays/${id}`,
+    `${getRequiredClientEnvVar("BACKEND_URL")}/api/lb/previous-successful-relays/${id}`,
     {
       headers: {
         Authorization: `${user.extraParams.token_type} ${user.accessToken}`,
@@ -111,7 +109,7 @@ export const getLBPreviousTotalRelays = async (
 ): Promise<UserLBPreviousTotalRelaysResponse[]> => {
   const user = await requireUser(request)
   const res = await fetch(
-    `${getRequiredClientEnvVar("BACKEND_URL")}/api/v2/lb/previous-total-relays/${id}`,
+    `${getRequiredClientEnvVar("BACKEND_URL")}/api/lb/previous-total-relays/${id}`,
     {
       headers: {
         Authorization: `${user.extraParams.token_type} ${user.accessToken}`,
@@ -133,7 +131,7 @@ export const getLBPSessionRelays = async (
 ): Promise<UserLBSessionRelaysResponse[]> => {
   const user = await requireUser(request)
   const res = await fetch(
-    `${getRequiredClientEnvVar("BACKEND_URL")}/api/v2/lb/session-relays/${id}`,
+    `${getRequiredClientEnvVar("BACKEND_URL")}/api/lb/session-relays/${id}`,
     {
       headers: {
         Authorization: `${user.extraParams.token_type} ${user.accessToken}`,
@@ -155,7 +153,7 @@ export const getLBPSuccessfulRelays = async (
 ): Promise<UserLBTotalSuccessfulRelaysResponse[]> => {
   const user = await requireUser(request)
   const res = await fetch(
-    `${getRequiredClientEnvVar("BACKEND_URL")}/api/v2/lb/successful-relays/${id}`,
+    `${getRequiredClientEnvVar("BACKEND_URL")}/api/lb/successful-relays/${id}`,
     {
       headers: {
         Authorization: `${user.extraParams.token_type} ${user.accessToken}`,
@@ -177,7 +175,7 @@ export const getLBStatus = async (
 ): Promise<UserLBOnChainDataResponse[]> => {
   const user = await requireUser(request)
   const res = await fetch(
-    `${getRequiredClientEnvVar("BACKEND_URL")}/api/v2/lb/status/${id}`,
+    `${getRequiredClientEnvVar("BACKEND_URL")}/api/lb/status/${id}`,
     {
       headers: {
         Authorization: `${user.extraParams.token_type} ${user.accessToken}`,
@@ -199,7 +197,7 @@ export const getLBTotalRelays = async (
 ): Promise<UserLBTotalRelaysResponse[]> => {
   const user = await requireUser(request)
   const res = await fetch(
-    `${getRequiredClientEnvVar("BACKEND_URL")}/api/v2/lb/total-relays/${id}`,
+    `${getRequiredClientEnvVar("BACKEND_URL")}/api/lb/total-relays/${id}`,
     {
       headers: {
         Authorization: `${user.extraParams.token_type} ${user.accessToken}`,
@@ -219,7 +217,7 @@ export type UserLB = PortalUserLB
 
 export const getLBUserApplications = async (request: Request): Promise<UserLB[]> => {
   const user = await requireUser(request)
-  const res = await fetch(`${getRequiredClientEnvVar("BACKEND_URL")}/api/v2/lb`, {
+  const res = await fetch(`${getRequiredClientEnvVar("BACKEND_URL")}/api/lb`, {
     headers: {
       Authorization: `${user.extraParams.token_type} ${user.accessToken}`,
     },
@@ -245,9 +243,7 @@ export type Chain = {
 export const getNetworkChains = async (request: Request): Promise<Chain[]> => {
   const user = await requireUser(request)
   const res = await fetch(
-    `${getRequiredClientEnvVar("BACKEND_URL")}/api/network/${
-      getRequiredClientEnvVar("NODE_ENV") === "production" ? "usable-" : ""
-    }chains`,
+    `${getRequiredClientEnvVar("BACKEND_URL")}/api/network/usable-chains`,
     {
       headers: {
         Authorization: `${user.extraParams.token_type} ${user.accessToken}`,

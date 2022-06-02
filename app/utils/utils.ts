@@ -1,5 +1,5 @@
 export function log(...messages: unknown[]): void {
-  if (process.env.NODE_ENV !== 'production') {
+  if (process.env.NODE_ENV !== "production") {
     console.log(messages)
   }
 }
@@ -19,10 +19,10 @@ export function log(...messages: unknown[]): void {
  */
 export function shorten(string: string, characters = 4): string {
   if (!string) {
-    return ''
+    return ""
   }
   if (string.length < characters) {
     return string
   }
-  return string.slice(0, characters) + '…'
+  return string.slice(0, characters) + "…"
 }

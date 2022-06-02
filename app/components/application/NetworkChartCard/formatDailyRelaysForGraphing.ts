@@ -39,10 +39,10 @@ export function formatDailyRelaysForGraphing(dailyRelays: DailyRelayBucket[] = [
   //   ]
   const scales = [
     { label: 0 },
-    { label: highestDailyAmount.toFixed(0) },
-    { label: highestDailyAmount.toFixed(0) },
-    { label: highestDailyAmount.toFixed(0) },
-    { label: highestDailyAmount.toFixed(0) },
+    { label: Number(highestDailyAmount.toFixed(0)) },
+    { label: Number(highestDailyAmount.toFixed(0)) },
+    { label: Number(highestDailyAmount.toFixed(0)) },
+    { label: Number(highestDailyAmount.toFixed(0)) },
   ]
 
   return {

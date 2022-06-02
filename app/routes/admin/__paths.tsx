@@ -1,11 +1,12 @@
 import { Grid, Space, Title } from "@mantine/core"
 import { json, LoaderFunction } from "@remix-run/node"
 import { Link, Outlet } from "@remix-run/react"
+import { Auth0Profile } from "remix-auth-auth0"
 import Container from "~/components/shared/Container"
-import { getAdmin, requireAdmin } from "~/utils/session.server"
+import { requireAdmin } from "~/utils/session.server"
 
 type LoaderData = {
-  admin: Awaited<ReturnType<typeof getAdmin>>
+  admin: Awaited<Auth0Profile>
 }
 
 export const loader: LoaderFunction = async ({ request }) => {

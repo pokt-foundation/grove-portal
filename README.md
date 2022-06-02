@@ -1,34 +1,43 @@
-# Welcome to Remix!
+# Welcome to Pocket Portal!
+
+### Run with Remix
 
 - [Remix Docs](https://remix.run/docs)
 
 ## Deployment
 
-After having run the `create-remix` command and selected "Vercel" as a deployment target, you only need to [import your Git repository](https://vercel.com/new) into Vercel, and it will be deployed.
+### PR / DEV
 
-If you'd like to avoid using a Git repository, you can also deploy the directory by running [Vercel CLI](https://vercel.com/cli):
+Create PR and vercel will create a preview build based on the PR
 
-```sh
-npm i -g vercel
-vercel
-```
+### STAGE
 
-It is generally recommended to use a Git repository, because future commits will then automatically be deployed by Vercel, through its [Git Integration](https://vercel.com/docs/concepts/git).
+Merge PR into "stage" branch and vercel will build to staging environment
+
+### PROD
+
+Merge PR from "stage" to "main" and vercel will build to prod environment
 
 ## Development
+
+### Frontend
 
 To run your Remix app locally, make sure your project's local dependencies are installed:
 
 ```sh
-npm install
+pnpm install
 ```
 
 Afterwards, start the Remix development server like so:
 
 ```sh
-npm run dev
+pnpm run dev
 ```
 
-Open up [http://localhost:3000](http://localhost:3000) and you should be ready to go!
+Open up [http://localhost:3001](http://localhost:3001) and you should be ready to go!
 
 If you're used to using the `vercel dev` command provided by [Vercel CLI](https://vercel.com/cli) instead, you can also use that, but it's not needed.
+
+### Backend
+
+This currently requires you to also run the current portal backend on localhost:4200 in order to run. I am working with the backend team to whitelist localhost and enable us to hit the backend.staging.portal.pokt.network endpoints.

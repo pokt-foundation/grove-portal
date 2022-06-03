@@ -35,6 +35,11 @@ import {
   Advertisement,
   links as AdvertisementLinks,
 } from "~/components/shared/Advertisement"
+import Table, { links as TableLinks } from "~/components/shared/Table"
+import { getServiceLevelByChain } from "~/utils/chainUtils"
+import React from "react"
+import { getImageForChain } from "~/utils/known-chains/known-chains"
+import styles from "~/styles/dashboard.index.css"
 
 export const links = () => {
   return [
@@ -44,6 +49,8 @@ export const links = () => {
     ...NetworkChartCardLinks(),
     ...NetworkRelayPerformanceCardLinks(),
     ...AdvertisementLinks(),
+    ...TableLinks(),
+    { rel: "stylesheet", href: styles },
   ]
 }
 
@@ -81,7 +88,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 }
 
 export default function Index() {
-  const data = useLoaderData()
+  const data = useLoaderData() as LoaderData
   const theme = useTheme()
   return (
     <Grid gutter={32}>
@@ -99,14 +106,14 @@ export default function Index() {
             <Grid.Col sm={4}>
               <NetworkSummaryCard
                 title="Apps Staked"
-                subtitle={data.summary.appsStaked}
+                subtitle={String(data.summary.appsStaked)}
                 imgSrc="/networkSummaryApps.png"
               />
             </Grid.Col>
             <Grid.Col sm={4}>
               <NetworkSummaryCard
                 title="Networks"
-                subtitle={data.chains.length}
+                subtitle={String(data.chains.length)}
                 imgSrc="/networkSummaryNetworks.png"
               />
             </Grid.Col>
@@ -116,6 +123,36 @@ export default function Index() {
           <NetworkChartCard
             dailyRelays={data.dailyRelays}
             weeklyStats={data.weeklyStats}
+          />
+        </section>
+        <section>
+          <Table<{
+            id: string
+            network: JSX.Element
+            apps: string
+            chainId: string
+            status: ReturnType<typeof getServiceLevelByChain>
+          }>
+            label="Available Networks"
+            data={data.chains.map((chain) => ({
+              id: chain.id,
+              network: (
+                <span className="pokt-chain-with-image">
+                  {getImageForChain(chain.description) && (
+                    <img
+                      src={getImageForChain(chain.description)}
+                      alt={chain.description}
+                    />
+                  )}
+                  <p>{chain.description}</p>
+                </span>
+              ),
+              apps: chain.appCount ? String(chain.appCount) : "0",
+              chainId: chain.id,
+              status: getServiceLevelByChain(chain.id),
+            }))}
+            columns={["Network", "Nodes", "ID", "Status"]}
+            paginate
           />
         </section>
       </Grid.Col>

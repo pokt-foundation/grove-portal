@@ -1,0 +1,13 @@
+.pokt-chain-with-image {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+}
+
+.pokt-chain-with-image img {
+  max-height: 16px;
+}
+.pokt-chain-with-image p {
+  margin: 0;
+}

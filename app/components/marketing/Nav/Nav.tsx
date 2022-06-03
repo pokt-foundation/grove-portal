@@ -1,5 +1,4 @@
 import { NavLink } from "@remix-run/react"
-import { useTranslate } from "~/context/TranslateContext"
 import styles from "./styles.css"
 
 export const links = () => {
@@ -7,8 +6,6 @@ export const links = () => {
 }
 
 export const Nav = () => {
-  const { t } = useTranslate()
-
   const routes = [
     {
       to: "/faq",

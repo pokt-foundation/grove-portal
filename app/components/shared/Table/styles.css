@@ -1,0 +1,36 @@
+.pokt-table form {
+  width: 100%;
+}
+
+.pokt-table thead tr {
+  border-bottom: 1px solid rgb(9, 24, 40);
+}
+
+.pokt-table thead tr th {
+  padding: 8px;
+  text-align: left;
+  font-size: 16px;
+  line-height: 1.5;
+  font-weight: 600;
+  border: none;
+  color: rgb(29, 138, 237);
+}
+
+.pokt-table tbody tr {
+  border-bottom: 1px solid rgb(9, 24, 40);
+}
+
+.pokt-table tbody tr td {
+  padding: 16px 8px;
+  border: none;
+  color: var(--color-white-main);
+}
+
+.pokt-table tbody tr.empty {
+  height: 55px;
+}
+
+.pokt-table .pokt-table-paginate {
+  display: flex;
+  justify-content: center;
+}

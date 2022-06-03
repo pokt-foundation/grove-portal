@@ -2,6 +2,25 @@
   width: 100%;
 }
 
+.pokt-table .pokt-table-header {
+  margin-bottom: 16px;
+}
+
+.pokt-table .pokt-table-header h3 {
+  margin: 0;
+}
+
+.pokt-table .pokt-table-header .pokt-table-search {
+  max-width: 50%;
+  width: 500px;
+}
+
+.pokt-table .pokt-table-header .pokt-table-search input {
+  background-color: transparent;
+  border: 1px solid var(--color-white-main);
+  color: var(--color-white-main);
+}
+
 .pokt-table thead tr {
   border-bottom: 1px solid rgb(9, 24, 40);
 }

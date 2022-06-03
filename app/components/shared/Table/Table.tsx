@@ -1,4 +1,4 @@
-import { Group, Pagination, Table as MantineTable } from "@mantine/core"
+import { Group, Pagination, Table as MantineTable, TextInput } from "@mantine/core"
 import { useMemo, useState } from "react"
 import Card from "~/components/shared/Card"
 import styles from "./styles.css"
@@ -12,6 +12,7 @@ interface TableProps<T> {
   columns?: Partial<keyof T>[] | string[]
   label?: string
   paginate?: boolean | PaginateProps
+  search?: boolean | any[]
 }
 
 interface PaginateProps {
@@ -22,6 +23,13 @@ interface PaginateProps {
 
 interface IdObj {
   id: string | number
+  [key: string]:
+    | string
+    | number
+    | {
+        value: string
+        element: JSX.Element
+      }
 }
 
 export const Table = <T extends IdObj>({
@@ -29,22 +37,44 @@ export const Table = <T extends IdObj>({
   columns = Object.keys(data[0]) as (keyof T)[],
   label,
   paginate,
+  search = false,
 }: TableProps<T>) => {
+  const [searchTerm, setSearchTerm] = useState("")
+  const totalData = useMemo(() => {
+    let rows = data
+    if (search && searchTerm) {
+      rows = rows.filter((row) => {
+        const columns = Object.values(row).map((column) => {
+          if (typeof column === "object") {
+            return column.value
+          }
+          return column
+        })
+        const filter = columns.join().toLowerCase().trim()
+        const exists = filter.includes(searchTerm.toLowerCase().trim())
+        return exists
+      })
+    }
+    return rows
+  }, [data, search, searchTerm])
   const [page, setPage] = useState<number>((paginate as PaginateProps)?.page ?? 1)
   const perPage = useMemo<number>(
     () => (paginate as PaginateProps)?.perPage ?? 5,
     [paginate],
   )
   const totalPages = useMemo<number>(
-    () => (paginate as PaginateProps)?.totalPages ?? Math.ceil(data.length / perPage),
-    [data, perPage, paginate],
+    () =>
+      (paginate as PaginateProps)?.totalPages ?? Math.ceil(totalData.length / perPage),
+    [totalData, perPage, paginate],
   )
   const paginatedData = useMemo(() => {
+    let rows = totalData
     if (paginate) {
-      return data.slice((page - 1) * perPage, page * perPage)
+      rows = rows.slice((page - 1) * perPage, page * perPage)
     }
-    return data
-  }, [data, paginate, page, perPage])
+    return rows
+  }, [totalData, paginate, page, perPage])
+
   const emptyRows = useMemo(() => {
     const rows = perPage - paginatedData.length
     if (rows <= 0) {
@@ -65,7 +95,23 @@ export const Table = <T extends IdObj>({
   return (
     <div className="pokt-table">
       <Card>
-        {label && <h3>{label}</h3>}
+        {(label || search) && (
+          <Group position="apart" align="center" className="pokt-table-header">
+            {label && <h3>{label}</h3>}
+            {search && (
+              <TextInput
+                className="pokt-table-search"
+                name="search"
+                aria-label={`Search ${label}`}
+                placeholder={`Search ${label}`}
+                size="xs"
+                onChange={(e) => setSearchTerm(e.target.value)}
+                rightSectionWidth={85}
+                variant="default"
+              />
+            )}
+          </Group>
+        )}
         <MantineTable>
           <thead>
             <tr>
@@ -78,7 +124,16 @@ export const Table = <T extends IdObj>({
             {paginatedData.map((item) => (
               <tr key={item.id}>
                 {Object.entries(removeIdFromObject(item)).map(([key, value]) => (
-                  <td key={key}>{value as any}</td>
+                  <td key={key}>
+                    {typeof value === "object"
+                      ? (
+                          value as {
+                            value: string
+                            element: JSX.Element
+                          }
+                        ).element
+                      : value}
+                  </td>
                 ))}
               </tr>
             ))}

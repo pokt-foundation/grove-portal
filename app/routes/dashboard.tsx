@@ -1,27 +1,28 @@
 import { json, LinksFunction, LoaderFunction } from "@remix-run/node"
-import { Outlet, useLoaderData } from "@remix-run/react"
+import { Outlet, useCatch, useLoaderData } from "@remix-run/react"
 import Footer, { links as FooterLinks } from "~/components/shared/Footer"
 import Header, { links as HeaderLinks } from "~/components/shared/Header"
 import Container, { links as ContainerLinks } from "~/components/shared/Container"
 import Nav, { links as NavLinks } from "~/components/application/Nav"
-import { requireUser } from "~/utils/session.server"
+import { requireUserProfile } from "~/utils/session.server"
+import { Auth0Profile } from "remix-auth-auth0"
 
 export const links: LinksFunction = () => {
   return [...HeaderLinks(), ...FooterLinks(), ...NavLinks(), ...ContainerLinks()]
 }
 
 type LoaderData = {
-  user: unknown
+  user: Awaited<Auth0Profile>
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
   return json<LoaderData>({
-    user: await requireUser(request),
+    user: await requireUserProfile(request),
   })
 }
 
 export default function Dashboard() {
-  const { user } = useLoaderData()
+  const { user } = useLoaderData() as LoaderData
   return (
     <>
       <Header user={user}>
@@ -37,13 +38,25 @@ export default function Dashboard() {
   )
 }
 
+export const CatchBoundary = () => {
+  const caught = useCatch()
+  if (caught.status === 404) {
+    return (
+      <div className="error-container">
+        <h1>Dashboard Error</h1>
+        <p>{caught.statusText}</p>
+      </div>
+    )
+  }
+  throw new Error(`Unexpected caught response with status: ${caught.status}`)
+}
+
 export const ErrorBoundary = ({ error }: { error: Error }) => {
   console.log(error)
   return (
     <div className="error-container">
-      <dialog title="Index Error" color="red">
-        {error.message}
-      </dialog>
+      <h1>Dashboard Error</h1>
+      <p>{error.message}</p>
     </div>
   )
 }

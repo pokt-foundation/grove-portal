@@ -126,33 +126,31 @@ export default function Index() {
           />
         </section>
         <section>
-          <Table<{
-            id: string
-            network: JSX.Element
-            apps: string
-            chainId: string
-            status: ReturnType<typeof getServiceLevelByChain>
-          }>
+          <Table
             label="Available Networks"
             data={data.chains.map((chain) => ({
               id: chain.id,
-              network: (
-                <span className="pokt-chain-with-image">
-                  {getImageForChain(chain.description) && (
-                    <img
-                      src={getImageForChain(chain.description)}
-                      alt={chain.description}
-                    />
-                  )}
-                  <p>{chain.description}</p>
-                </span>
-              ),
+              network: {
+                value: chain.description,
+                element: (
+                  <span className="pokt-chain-with-image">
+                    {getImageForChain(chain.description) && (
+                      <img
+                        src={getImageForChain(chain.description)}
+                        alt={chain.description}
+                      />
+                    )}
+                    <p>{chain.description}</p>
+                  </span>
+                ),
+              },
               apps: chain.appCount ? String(chain.appCount) : "0",
               chainId: chain.id,
               status: getServiceLevelByChain(chain.id),
             }))}
             columns={["Network", "Nodes", "ID", "Status"]}
             paginate
+            search
           />
         </section>
       </Grid.Col>

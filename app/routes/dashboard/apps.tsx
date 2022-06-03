@@ -45,7 +45,10 @@ export const Apps = () => {
             label="Applications"
             data={data.userApps.map((app) => ({
               id: app.id,
-              app: <Link to={app.id}>{app.name}</Link>,
+              app: {
+                value: app.name,
+                element: <Link to={app.id}>{app.name}</Link>,
+              },
               chain: app.chain,
               status: app.status,
             }))}
@@ -53,6 +56,7 @@ export const Apps = () => {
             paginate={{
               perPage: 10,
             }}
+            search
           />
         </section>
       </Grid.Col>
@@ -83,3 +87,12 @@ export const Apps = () => {
 }
 
 export default Apps
+
+export const ErrorBoundary = ({ error }: { error: Error }) => {
+  return (
+    <div className="error-container">
+      <h3>{error.message}</h3>
+      <p>{error.stack}</p>
+    </div>
+  )
+}

@@ -34,3 +34,7 @@
   display: flex;
   justify-content: center;
 }
+
+.pokt-table .pokt-table-paginate svg {
+  color: var(--color-white-main);
+}

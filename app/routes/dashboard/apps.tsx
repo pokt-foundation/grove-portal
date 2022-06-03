@@ -5,12 +5,12 @@ import { useTheme } from "@pokt-foundation/ui"
 import Advertisement, {
   links as AdvertisementLinks,
 } from "~/components/shared/Advertisement"
-import Card, { links as CardLinks } from "~/components/shared/Card"
 import type { UserLB } from "~/models/portal.server"
 import { getLBUserApplications } from "~/models/portal.server"
+import Table, { links as TableLinks } from "~/components/shared/Table"
 
 export const links = () => {
-  return [...CardLinks(), ...AdvertisementLinks()]
+  return [...AdvertisementLinks(), ...TableLinks()]
 }
 
 type LoaderData = {
@@ -37,32 +37,23 @@ export const loader: LoaderFunction = async ({ request }) => {
 export const Apps = () => {
   const data = useLoaderData() as LoaderData
   const theme = useTheme()
-  let rows = ["name", "chain", "status"]
   return (
     <Grid gutter={32}>
       <Grid.Col md={8}>
         <section>
-          <Card>
-            <h3>Applications</h3>
-            <Grid>
-              {rows.map((row) => (
-                <Grid.Col xs={4} key={row}>
-                  <span>{row}</span>
-                </Grid.Col>
-              ))}
-            </Grid>
-            {data.userApps.map((app) => (
-              <Link key={app.id} to={app.id}>
-                <Grid>
-                  {rows.map((row) => (
-                    <Grid.Col xs={4} key={row}>
-                      <span>{app[row as keyof UserLB]}</span>
-                    </Grid.Col>
-                  ))}
-                </Grid>
-              </Link>
-            ))}
-          </Card>
+          <Table
+            label="Applications"
+            data={data.userApps.map((app) => ({
+              id: app.id,
+              app: <Link to={app.id}>{app.name}</Link>,
+              chain: app.chain,
+              status: app.status,
+            }))}
+            columns={["App", "Chain", "Status"]}
+            paginate={{
+              perPage: 10,
+            }}
+          />
         </section>
       </Grid.Col>
       <Grid.Col md={4}>

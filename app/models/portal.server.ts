@@ -323,6 +323,8 @@ export const getNetworkLatestBlock = async (
     },
   )
 
+  console.log(res)
+
   if (!res || res.status !== 200) {
     throw new Error(res.statusText)
   }

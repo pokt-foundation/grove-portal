@@ -14,7 +14,6 @@ export let action: ActionFunction = async ({ request }) => {
     })
   }
 
-  console.log(request)
   return authenticator.authenticate("auth0", request, {
     successRedirect: "/dashboard",
     failureRedirect: "/",

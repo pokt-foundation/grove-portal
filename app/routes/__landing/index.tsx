@@ -14,7 +14,6 @@ export default function Index() {
 }
 
 export const ErrorBoundary = ({ error }: { error: Error }) => {
-  console.log(error)
   return (
     <div className="error-container">
       <dialog title="Index Error" color="red">

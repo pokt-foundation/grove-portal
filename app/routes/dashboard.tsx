@@ -52,7 +52,6 @@ export const CatchBoundary = () => {
 }
 
 export const ErrorBoundary = ({ error }: { error: Error }) => {
-  console.log(error)
   return (
     <div className="error-container">
       <h1>Dashboard Error</h1>

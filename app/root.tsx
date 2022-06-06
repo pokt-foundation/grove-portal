@@ -127,7 +127,6 @@ export const CatchBoundary = () => {
 }
 
 export const ErrorBoundary = ({ error }: { error: Error }) => {
-  console.log(error)
   return (
     <WithProviders>
       <Document title="Uh-oh!">

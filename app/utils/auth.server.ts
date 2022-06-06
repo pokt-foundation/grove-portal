@@ -14,7 +14,7 @@ export const authenticator = new Authenticator<{
 
 let auth0Strategy = new Auth0Strategy(
   {
-    callbackURL: `${getRequiredServerEnvVar("VERCEL_URL")}/api/auth/auth0/callback`,
+    callbackURL: "/api/auth/auth0/callback",
     clientID: getRequiredServerEnvVar("AUTH0_CLIENT_ID"),
     clientSecret: getRequiredServerEnvVar("AUTH0_CLIENT_SECRET"),
     domain: getRequiredServerEnvVar("AUTH0_DOMAIN"),

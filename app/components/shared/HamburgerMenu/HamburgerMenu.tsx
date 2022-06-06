@@ -6,14 +6,16 @@ export const links = () => {
 }
 
 type HamburgerMenuProps = {
+  isVisible: boolean
   isActive: boolean
   onClick: Function
 }
 
-export const HamburgerMenu = ({ isActive, onClick }: HamburgerMenuProps) => {
+export const HamburgerMenu = ({ isVisible, isActive, onClick }: HamburgerMenuProps) => {
   return (
     <svg
       className={clsx({
+        visible: isVisible,
         active: isActive,
         ham: true,
         "ham-rotate": true,

@@ -43,9 +43,11 @@ export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) 
             ></img>
           </Link>
         </div>
-        {width < 640 && (
-          <HamburgerMenu isActive={isActive} onClick={() => setIsActive(!isActive)} />
-        )}
+        <HamburgerMenu
+          isVisible={isMobile}
+          isActive={isActive}
+          onClick={() => setIsActive(!isActive)}
+        />
         <div
           className={clsx({
             "pokt-header-actions": true,

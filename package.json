@@ -30,6 +30,7 @@
     "@sentry/react": "^6.19.7",
     "@sentry/tracing": "^6.19.7",
     "@stitches/react": "^1.2.8",
+    "@types/styled-components": "^5.1.25",
     "@vercel/node": "^1.14.0",
     "clsx": "^1.1.1",
     "d3-format": "^3.1.0",

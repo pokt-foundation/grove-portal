@@ -1,6 +1,5 @@
 import { LoaderFunction, json } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
-import { useTheme } from "@pokt-foundation/ui"
 import type {
   Chain,
   DailyRelayBucket,
@@ -31,15 +30,15 @@ import NetworkChartCard, {
 import NetworkRelayPerformanceCard, {
   links as NetworkRelayPerformanceCardLinks,
 } from "~/components/application/NetworkRelayPerformanceCard"
-import {
-  Advertisement,
-  links as AdvertisementLinks,
-} from "~/components/shared/Advertisement"
+import ChainWithImage, {
+  links as ChainWithImageLinks,
+} from "~/components/application/ChainWithImage"
 import Table, { links as TableLinks } from "~/components/shared/Table"
 import { getServiceLevelByChain } from "~/utils/chainUtils"
-import React from "react"
-import { getImageForChain } from "~/utils/known-chains/known-chains"
 import styles from "~/styles/dashboard.index.css"
+import AdEconomicsForDevs, {
+  links as AdEconomicsForDevsLinks,
+} from "~/components/application/AdEconomicsForDevs"
 
 export const links = () => {
   return [
@@ -48,8 +47,9 @@ export const links = () => {
     ...NetworkSuccessRateCardLinks(),
     ...NetworkChartCardLinks(),
     ...NetworkRelayPerformanceCardLinks(),
-    ...AdvertisementLinks(),
+    ...AdEconomicsForDevsLinks(),
     ...TableLinks(),
+    ...ChainWithImageLinks(),
     { rel: "stylesheet", href: styles },
   ]
 }
@@ -89,7 +89,6 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export default function Index() {
   const data = useLoaderData() as LoaderData
-  const theme = useTheme()
   return (
     <Grid gutter={32}>
       <Grid.Col md={8}>
@@ -132,17 +131,7 @@ export default function Index() {
               id: chain.id,
               network: {
                 value: chain.description,
-                element: (
-                  <span className="pokt-chain-with-image">
-                    {getImageForChain(chain.description) && (
-                      <img
-                        src={getImageForChain(chain.description)}
-                        alt={chain.description}
-                      />
-                    )}
-                    <p>{chain.description}</p>
-                  </span>
-                ),
+                element: <ChainWithImage chain={chain.description} />,
               },
               apps: chain.appCount ? String(chain.appCount) : "0",
               chainId: chain.id,
@@ -166,24 +155,7 @@ export default function Index() {
           <NetworkRelayPerformanceCard latestBlock={data.latestBlock} />
         </section>
         <section>
-          <Advertisement
-            styles={{
-              backgroundImage: `url('/economicsDevs.png'), linear-gradient(180deg, ${theme.surfaceGradient1} 0%, ${theme.surfaceGradient2} 100%)`,
-            }}
-            content={
-              <h3>
-                Pocket Economics for <span>App Developers</span>
-              </h3>
-            }
-            action={
-              <a
-                href="https://medium.com/pocket-network/pocket-economics-for-app-developers-487a6ce290c2"
-                className="pokt-ad-action"
-              >
-                Read More
-              </a>
-            }
-          />
+          <AdEconomicsForDevs />
         </section>
         {/* <section>
             <FeedbackBox />

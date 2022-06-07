@@ -1,14 +1,23 @@
 import { json, LinksFunction, LoaderFunction } from "@remix-run/node"
-import { Outlet, useCatch, useLoaderData } from "@remix-run/react"
+import { Outlet, useCatch, useLoaderData, useTransition } from "@remix-run/react"
+import { Auth0Profile } from "remix-auth-auth0"
+import { requireUserProfile } from "~/utils/session.server"
 import Footer, { links as FooterLinks } from "~/components/shared/Footer"
 import Header, { links as HeaderLinks } from "~/components/shared/Header"
 import Container, { links as ContainerLinks } from "~/components/shared/Container"
-import Nav, { links as NavLinks } from "~/components/application/Nav"
-import { requireUserProfile } from "~/utils/session.server"
-import { Auth0Profile } from "remix-auth-auth0"
+import Nav, { links as NavLinks } from "~/components/shared/Nav"
+import Loader, { links as LoaderLinks } from "~/components/shared/Loader"
+import { IconApp, IconNetwork } from "~/components/shared/Icons"
+import { useTranslate } from "~/context/TranslateContext"
 
 export const links: LinksFunction = () => {
-  return [...HeaderLinks(), ...FooterLinks(), ...NavLinks(), ...ContainerLinks()]
+  return [
+    ...HeaderLinks(),
+    ...FooterLinks(),
+    ...NavLinks(),
+    ...ContainerLinks(),
+    ...LoaderLinks(),
+  ]
 }
 
 type LoaderData = {
@@ -23,13 +32,33 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export default function Dashboard() {
   const { user } = useLoaderData() as LoaderData
+  const { t } = useTranslate()
+  const { state } = useTransition()
+  const routes = [
+    {
+      to: "/dashboard",
+      label: t.terms.network,
+      icon: IconNetwork,
+      end: true,
+    },
+    {
+      to: "/dashboard/apps",
+      label: t.terms.apps,
+      icon: IconApp,
+    },
+    {
+      to: "/dashboard/support",
+      label: t.terms.support,
+    },
+  ]
   return (
     <>
       <Header user={user}>
-        <Nav />
+        <Nav routes={routes} />
       </Header>
       <main>
         <Container>
+          {state === "loading" && <Loader />}
           <Outlet />
         </Container>
       </main>

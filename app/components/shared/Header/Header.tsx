@@ -4,8 +4,10 @@ import Button from "~/components/shared/Button"
 import { Auth0Profile } from "remix-auth-auth0"
 import { useViewportSize } from "@mantine/hooks"
 import HamburgerMenu, { links as HamburgerMenuLinks } from "../HamburgerMenu"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import clsx from "clsx"
+import { Divider, Menu } from "@mantine/core"
+import { IconPerson } from "@pokt-foundation/ui"
 
 export const links = () => {
   return [{ rel: "stylesheet", href: styles }, ...HamburgerMenuLinks()]
@@ -29,6 +31,55 @@ export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) 
       setIsMobile(true)
     }
   }, [width])
+
+  const routes = useMemo(() => {
+    const userRoutes = [
+      {
+        id: "account",
+        el: () => <h5>Account</h5>,
+      },
+      {
+        id: "divider1",
+        el: () => <Divider />,
+      },
+      {
+        id: "user",
+        el: () => <p>{user?.displayName}</p>,
+      },
+      {
+        id: "divider2",
+        el: () => <Divider />,
+      },
+      {
+        id: "logout",
+        el: () => (
+          <Form action="/api/auth/auth0" method="post">
+            <Button type="submit" variant="outline" name="logout" value="true">
+              Logout
+            </Button>
+          </Form>
+        ),
+      },
+    ]
+
+    const noUserRoutes = [
+      {
+        id: "login",
+        el: () => (
+          <Form action="/api/auth/auth0" method="post">
+            <Button type="submit" variant="outline">
+              Login
+            </Button>
+          </Form>
+        ),
+      },
+    ]
+
+    if (user) {
+      return userRoutes
+    }
+    return noUserRoutes
+  }, [user])
 
   return (
     <>
@@ -56,7 +107,29 @@ export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) 
             open: isActive,
           })}
         >
-          <HeaderChildren user={user} nav={nav} slot={children} />
+          <div className={`pokt-header-nav nav-${nav} pokt-header-flex`}>{children}</div>
+          {user && (
+            <Menu
+              control={
+                <div>
+                  <IconPerson />
+                </div>
+              }
+            >
+              {routes.map((route) => {
+                const El = route.el
+                return <El key={route.id} />
+              })}
+            </Menu>
+          )}
+          {!user && (
+            <Form action="/api/auth/auth0" method="post">
+              <Button type="submit" variant="outline">
+                Login
+              </Button>
+            </Form>
+          )}
+          {/* <HeaderChildren user={user} nav={nav} slot={children} /> */}
         </div>
       </header>
       <aside

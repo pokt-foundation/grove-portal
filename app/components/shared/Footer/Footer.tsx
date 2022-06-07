@@ -1,5 +1,5 @@
 import styles from "./styles.css"
-import { Button } from "~/components/shared/Button"
+import Button from "~/components/shared/Button"
 import { Grid } from "~/components/shared/Grid"
 import { Group } from "~/components/shared/Group"
 import { useTranslate, Language } from "~/context/TranslateContext"

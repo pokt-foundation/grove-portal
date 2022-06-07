@@ -1,15 +1,15 @@
-nav {
+.pokt-nav {
   margin-left: 16px;
 }
 
-nav ul {
+.pokt-nav ul {
   display: flex;
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.nav-link {
+.pokt-nav .nav-link {
   padding: 8px 16px;
   text-transform: capitalize;
   display: flex;
@@ -18,19 +18,19 @@ nav ul {
   transition: color ease-in-out 0.3s;
 }
 
-.nav-link:hover {
+.pokt-nav .nav-link:hover {
   color: var(--color-white-dark);
 }
 
-.nav-link-active {
+.pokt-nav .nav-link-active {
   color: var(--color-primary-main);
 }
 
-.nav-link-active:hover {
+.pokt-nav .nav-link-active:hover {
   color: var(--color-primary-dark);
 }
 
-.nav-link .pokt-icon {
+.pokt-nav .nav-link .pokt-icon {
   width: 18px;
   height: 21px;
 }

@@ -40,7 +40,7 @@ export const getLBDailyRelays = async (
 export const getLBHourlyLatency = async (
   id: string,
   request: Request,
-): Promise<UserLBHistoricalLatencyResponse[]> => {
+): Promise<UserLBHistoricalLatencyResponse> => {
   const user = await requireUser(request)
   const res = await fetch(
     `${getRequiredClientEnvVar("BACKEND_URL")}/api/lb/hourly-latency/${id}`,
@@ -213,7 +213,9 @@ export const getLBTotalRelays = async (
 }
 
 // LB: USER APPLICATIONS
-export type UserLB = PortalUserLB
+export type UserLB = PortalUserLB & {
+  gigastake: boolean
+}
 
 export const getLBUserApplications = async (request: Request): Promise<UserLB[]> => {
   const user = await requireUser(request)

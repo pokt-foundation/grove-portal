@@ -22,5 +22,50 @@
     "default": "Default Error Message",
     "browser": "Browser Error Message",
     "server": "Server Error Message"
+  },
+  "landing": {
+    "chains": [
+      "avalanche",
+      "solana",
+      "algorand",
+      "okx",
+      "fuse",
+      "pokt",
+      "ethereum",
+      "polygon",
+      "gnosis",
+      "harmony",
+      "binance_smart_chain",
+      "iotex",
+      "boba",
+      "evmos",
+      "fantom"
+    ],
+    "callOutBoxText": [
+      {
+        "title": "One click Endpoints",
+        "smallText": "For any network with 1M daily relays free",
+        "blueText": "10+",
+        "description": "Networks"
+      },
+      {
+        "title": "Thousands of nodes",
+        "smallText": "Serving any network at any given moment",
+        "blueText": "47K+",
+        "description": "Nodes"
+      },
+      {
+        "title": "Monitor your Infra",
+        "smallText": "Tracking and managing your app across any chain",
+        "blueText": "6B+",
+        "description": "Weekly relays"
+      }
+    ],
+    "title": "Your gateway to Web3 done right.",
+    "subtitle": "Deploy within minutes to decentralized infrastructure that can service dozens of chains. The Portal acts as your one-stop-shop to manage, make changes, and monitor your application's connection to blockchain data.",
+    "welcomeText": "Welcome to Web3 done the right way.",
+    "getStarted": "Get Started",
+    "connect": "Connect to these networks.",
+    "whosNext": "See who's next."
   }
 }

@@ -3,14 +3,6 @@ h2 {
   margin-bottom: 2rem;
 }
 
-h3 {
-  color: var(--color-secondary-main);
-  line-height: 3.25rem;
-  font-size: 1.8rem;
-  margin-bottom: 0;
-  text-align: right;
-}
-
 .container {
   margin: 96px auto 0 auto;
   max-width: 1280px;
@@ -30,13 +22,6 @@ p.text {
   font-size: 1.125rem;
   line-height: 1.75rem;
   margin-bottom: 2.5rem;
-}
-
-p.smallText {
-  margin-top: 0;
-  font-size: 0.875rem;
-  line-height: 1.625rem;
-  text-align: right;
 }
 
 .button {

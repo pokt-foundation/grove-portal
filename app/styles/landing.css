@@ -82,42 +82,6 @@ p.smallText {
   text-decoration: underline;
 }
 
-.callOutBox {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: flex-end;
-  margin-bottom: 1.5rem;
-  align-items: center;
-}
-
-.callOutGraphic {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  align-items: center;
-  justify-content: center;
-  background-image: linear-gradient(rgba(17, 27, 36, 0.44), rgba(44, 49, 60, 0.44));
-  min-width: 180px;
-  border-radius: 1rem;
-  padding: 1.75rem 0;
-  margin-left: 2rem;
-}
-
-.bigBlueText {
-  font-size: 2.25rem;
-  line-height: 3.25rem;
-  margin: 0;
-  font-weight: bold;
-  text-align: center;
-  color: var(--color-secondary-main);
-}
-
-.callOutGraphicDescription {
-  margin: 0;
-  text-align: center;
-}
-
 .logo-box {
   display: flex;
   flex-wrap: wrap;

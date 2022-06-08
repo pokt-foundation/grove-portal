@@ -2,10 +2,11 @@ import { Container } from "~/components/shared/Container"
 import { Form } from "@remix-run/react"
 import { Grid } from "~/components/shared/Grid"
 import { LinksFunction } from "@remix-run/node"
+import { CallOutBox, links as CallOutBoxLinks } from "../../components/shared/CallOutBox"
 import styles from "~/styles/landing.css"
 
 export const links: LinksFunction = () => {
-  return [{ rel: "stylesheet", href: styles }]
+  return [...CallOutBoxLinks(), { rel: "stylesheet", href: styles }]
 }
 
 export default function Index() {
@@ -27,6 +28,27 @@ export default function Index() {
     "fantom",
   ]
 
+  const callOutBoxText = [
+    {
+      title: "One click Endpoints",
+      smallText: "For any network with 1M daily relays free",
+      blueText: "10+",
+      description: "Networks",
+    },
+    {
+      title: "Thousands of nodes",
+      smallText: "Serving any network at any given moment",
+      blueText: "47K+",
+      description: "Nodes",
+    },
+    {
+      title: "Monitor your Infra",
+      smallText: "Tracking and managing your app across any chain",
+      blueText: "6B+",
+      description: "Weekly relays",
+    },
+  ]
+
   return (
     <>
       <Container>
@@ -40,51 +62,30 @@ export default function Index() {
             </p>
             <p className="text">Welcome to Web3 done the right way.</p>
             <Form action="/api/auth/auth0" method="post">
-              <button type="submit" name="login" className="button">
+              <button type="submit" name="login" className="button" value="true">
                 Get Started
               </button>
             </Form>
           </Grid.Col>
 
           <Grid.Col sm={5} offset={2}>
-            <div className="callOutBox">
-              <div>
-                <h3>One click Endpoints</h3>
-                <p className="smallText">For any network with 1M daily relays free</p>
-              </div>
-              <div className="callOutGraphic">
-                <p className="bigBlueText">10+</p>{" "}
-                <p className="callOutGraphicDescription">Networks</p>
-              </div>
-            </div>
-            <div className="callOutBox">
-              <div>
-                <h3>Thousands of nodes</h3>
-                <p className="smallText">Serving any network at any given moment</p>
-              </div>
-              <div className="callOutGraphic">
-                <p className="bigBlueText">47K+</p>{" "}
-                <p className="callOutGraphicDescription">Nodes</p>
-              </div>
-            </div>
-            <div className="callOutBox">
-              <div>
-                <h3>Monitor your Infra</h3>
-                <p className="smallText">
-                  Tracking and managing your app across any chain
-                </p>
-              </div>
-              <div className="callOutGraphic">
-                <p className="bigBlueText">6B+</p>{" "}
-                <p className="callOutGraphicDescription">Weekly relays</p>
-              </div>
-            </div>
+            {callOutBoxText.map((item) => {
+              return (
+                <CallOutBox
+                  key={item.title}
+                  title={item.title}
+                  smallText={item.smallText}
+                  blueText={item.blueText}
+                  description={item.description}
+                />
+              )
+            })}
           </Grid.Col>
           <Grid.Col>
             <p className="text">
               Connect to these networks.{" "}
               <Form className="inline-form" action="/api/auth/auth0" method="post">
-                <button type="submit" name="signup" className="link">
+                <button type="submit" name="signup" className="link" value="true">
                   See who's next.
                 </button>
               </Form>

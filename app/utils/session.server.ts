@@ -56,3 +56,8 @@ export const getUserId = async (request: Request) => {
   const user = await requireUser(request)
   return user.profile.id.replace(/auth0\|/g, "")
 }
+
+export const getUserProfile = async (request: Request) => {
+  const user = await authenticator.isAuthenticated(request)
+  return user?.profile
+}

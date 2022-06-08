@@ -17,6 +17,7 @@ type Route = {
   label?: string
   icon?: React.ReactNode
   end?: boolean
+  external?: boolean
 }
 
 export const Nav = ({ routes }: NavProps) => {
@@ -27,17 +28,23 @@ export const Nav = ({ routes }: NavProps) => {
           const Icon = route.icon
           return (
             <li key={route.to}>
-              <NavLink
-                to={route.to}
-                end={route.end}
-                className={({ isActive }) =>
-                  `nav-link ${isActive ? "nav-link-active" : ""}`
-                }
-              >
-                {/* @ts-ignore eslint-disable-next-line */}
-                {route.icon && <Icon />}
-                {route.label && <span>{route.label}</span>}
-              </NavLink>
+              {route.external ? (
+                <a className="nav-link" href={route.to}>
+                  {route.label}
+                </a>
+              ) : (
+                <NavLink
+                  to={route.to}
+                  end={route.end}
+                  className={({ isActive }) =>
+                    `nav-link ${isActive ? "nav-link-active" : ""}`
+                  }
+                >
+                  {/* @ts-ignore eslint-disable-next-line */}
+                  {route.icon && <Icon />}
+                  {route.label && <span>{route.label}</span>}
+                </NavLink>
+              )}
             </li>
           )
         })}

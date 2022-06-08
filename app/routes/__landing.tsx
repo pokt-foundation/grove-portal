@@ -54,7 +54,7 @@ export default function LandingLayout() {
   }, [user])
   return (
     <>
-      <Header nav="right">
+      <Header user={user} nav="right">
         <Nav routes={routes} />
       </Header>
       <main>

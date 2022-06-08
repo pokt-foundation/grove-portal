@@ -45,14 +45,20 @@ export const Nav = ({ user }: NavProps) => {
       <ul>
         {routes.map((route) => (
           <li key={route.to}>
-            <NavLink
-              to={route.to}
-              className={({ isActive }) =>
-                `nav-link ${isActive ? "nav-link-active" : ""}`
-              }
-            >
-              {route.label}
-            </NavLink>
+            {/https?:\/\//.test(route.to) ? (
+              <a className="nav-link" href={route.to}>
+                {route.label}
+              </a>
+            ) : (
+              <NavLink
+                to={route.to}
+                className={({ isActive }) =>
+                  `nav-link ${isActive ? "nav-link-active" : ""}`
+                }
+              >
+                {route.label}
+              </NavLink>
+            )}
           </li>
         ))}
       </ul>

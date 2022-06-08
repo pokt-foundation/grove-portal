@@ -22,5 +22,39 @@
     "default": "Default Error Message",
     "browser": "Browser Error Message",
     "server": "Server Error Message"
+  },
+  "faq": {
+    "title": "Pocket Portal",
+    "subtitle": "FAQ",
+    "faqs": [
+      {
+        "question": "What is the Pocket Portal?",
+        "answer": "The Pocket Portal is a dashboard for creating and monitoring blockchain infrastructure endpoint(s) powered by Pocket Network's decentralized full-node network."
+      },
+      {
+        "question": "How can this be free?",
+        "answer": "The Pocket Network provides bandwidth to decentralized applications that stake POKT. For the Pocket Portal's free tier, the Pocket Network Foundation has pre-staked POKT on behalf of anyone who signs up for up to 1M relays per day."
+      },
+      {
+        "question": "How long can I use the free option?",
+        "answer": "Currently, the Foundation is operating with \"good faith\" guidelines, meaning that as long as you are actually using the service as intended, you can use the free tier for as long as you'd like. If we notice there is little to no traffic coming through those endpoints, we will reach out directly to see if we can support you. It's important to note there is a finite supply of POKT available for the free tier subsidies, so our goal is to allocate this to developers who truly want to use and improve the service and grow their user base. If you are not using the service, and remain unresponsive to our support outreach, we reserve the right to withdraw the endpoint in order to reallocate it to another development team."
+      },
+      {
+        "question": "What happens if I go over my daily relay limit?",
+        "answer": "The Pocket Portal has overflow protection in case an app accidentally goes over its daily relay limit. All surplus relays are served by our backup infrastructure, ensuring no service interruptions. This is only a temporary measure so you should reach out to our team if you need more relays."
+      },
+      {
+        "question": "Which blockchains can I connect to?",
+        "answer": "The Pocket Portal currently supports creating an endpoint for 10+ chains, including Ethereum, xDAI, Binance Smart Chain, Avalanche, Fuse, and more. You can find the full list here. If you would like to discuss or help decide which networks to include next, join us in Discord."
+      },
+      {
+        "question": "What blockchains are available to connect to? Which are planned to come next?",
+        "answer": "The Pocket Portal currently supports creating an endpoint for 10+ chains, including Ethereum, Binance Smart Chain, Avalanche, Polygon, Fuse, and more. You can find the full list here. In that list, you will see a section titled \"Integrating New Relay Chains,\" which is where you can find the networks that are confirmed to be whitelisted next. If you would like to discuss or help decide which networks are not already on that list to include next, we recommend you chat with us in discord and cement your perspective by creating a Pocket forum proposal."
+      },
+      {
+        "question": "How many endpoints can I create?",
+        "answer": "The Pocket Portal currently allows any user to create up to 4 endpoints. Each endpoint can be used to serve 1 blockchain. Each endpoint grants up to 1 million free relays per day. If you need more relays or want to stake your own POKT, join us in Discord and let us know."
+      }
+    ]
   }
 }

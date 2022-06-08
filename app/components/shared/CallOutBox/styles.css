@@ -1,7 +1,8 @@
 h3 {
   color: var(--color-secondary-main);
   line-height: 3.25rem;
-  font-size: 1.8rem;
+  font-size: 1.625rem;
+  font-weight: normal;
   margin-bottom: 0;
   text-align: right;
 }

@@ -33,7 +33,7 @@ export default function AppEndpointCard({ app }: AppEndpointProps) {
   return (
     <div className="pokt-app-endpoint">
       <Card>
-        <div className="pokt-app-endpoint-header">
+        <div className="pokt-card-header">
           <h3>Endpoint</h3>
           <div>
             {app.gigastake ? (

@@ -39,7 +39,7 @@ jobs:
       - name: create env file
         run: |
           touch .env
-          echo NODE_ENV="production" >> .env
+          echo NODE_ENV="development" >> .env
           echo BACKEND_URL=https://backend.staging.portal.pokt.network >> .env
           echo AMPLITUDE_API_KEY=4b54fb07298c6322918050a273203084 >> .env
           echo SENTRY_DSN=https://0f9f40d0428b4c31aa94cb516159ec42@o515876.ingest.sentry.io/5631627 >> .env

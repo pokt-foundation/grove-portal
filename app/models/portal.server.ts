@@ -18,7 +18,7 @@ import {
 export const getLBDailyRelays = async (
   id: string,
   request: Request,
-): Promise<UserLBDailyRelaysResponse[]> => {
+): Promise<UserLBDailyRelaysResponse> => {
   const user = await requireUser(request)
   const res = await fetch(
     `${getRequiredClientEnvVar("BACKEND_URL")}/api/lb/daily-relays/${id}`,
@@ -84,7 +84,7 @@ export const getLBOriginClassification = async (
 export const getLBPreviousSuccessfulRelays = async (
   id: string,
   request: Request,
-): Promise<UserLBPreviousTotalSuccessfulRelaysResponse[]> => {
+): Promise<UserLBPreviousTotalSuccessfulRelaysResponse> => {
   const user = await requireUser(request)
   const res = await fetch(
     `${getRequiredClientEnvVar("BACKEND_URL")}/api/lb/previous-successful-relays/${id}`,
@@ -106,7 +106,7 @@ export const getLBPreviousSuccessfulRelays = async (
 export const getLBPreviousTotalRelays = async (
   id: string,
   request: Request,
-): Promise<UserLBPreviousTotalRelaysResponse[]> => {
+): Promise<UserLBPreviousTotalRelaysResponse> => {
   const user = await requireUser(request)
   const res = await fetch(
     `${getRequiredClientEnvVar("BACKEND_URL")}/api/lb/previous-total-relays/${id}`,
@@ -128,7 +128,7 @@ export const getLBPreviousTotalRelays = async (
 export const getLBPSessionRelays = async (
   id: string,
   request: Request,
-): Promise<UserLBSessionRelaysResponse[]> => {
+): Promise<UserLBSessionRelaysResponse> => {
   const user = await requireUser(request)
   const res = await fetch(
     `${getRequiredClientEnvVar("BACKEND_URL")}/api/lb/session-relays/${id}`,
@@ -150,7 +150,7 @@ export const getLBPSessionRelays = async (
 export const getLBPSuccessfulRelays = async (
   id: string,
   request: Request,
-): Promise<UserLBTotalSuccessfulRelaysResponse[]> => {
+): Promise<UserLBTotalSuccessfulRelaysResponse> => {
   const user = await requireUser(request)
   const res = await fetch(
     `${getRequiredClientEnvVar("BACKEND_URL")}/api/lb/successful-relays/${id}`,
@@ -172,7 +172,7 @@ export const getLBPSuccessfulRelays = async (
 export const getLBStatus = async (
   id: string,
   request: Request,
-): Promise<UserLBOnChainDataResponse[]> => {
+): Promise<UserLBOnChainDataResponse> => {
   const user = await requireUser(request)
   const res = await fetch(
     `${getRequiredClientEnvVar("BACKEND_URL")}/api/lb/status/${id}`,
@@ -194,7 +194,7 @@ export const getLBStatus = async (
 export const getLBTotalRelays = async (
   id: string,
   request: Request,
-): Promise<UserLBTotalRelaysResponse[]> => {
+): Promise<UserLBTotalRelaysResponse> => {
   const user = await requireUser(request)
   const res = await fetch(
     `${getRequiredClientEnvVar("BACKEND_URL")}/api/lb/total-relays/${id}`,

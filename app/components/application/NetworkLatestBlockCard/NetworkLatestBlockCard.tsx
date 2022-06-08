@@ -4,9 +4,18 @@ import { LatestBlockAndPerformanceData } from "~/models/portal.server"
 import styles from "./styles.css"
 import { Grid, List } from "@mantine/core"
 import PoweredBy, { links as PoweredByLinks } from "~/components/shared/PoweredBy"
+import CardList, {
+  CardListItem,
+  links as CardListLinks,
+} from "~/components/shared/CardList"
 
 export const links = () => {
-  return [...CardLinks(), ...PoweredByLinks(), { rel: "stylesheet", href: styles }]
+  return [
+    ...CardLinks(),
+    ...PoweredByLinks(),
+    ...CardListLinks(),
+    { rel: "stylesheet", href: styles },
+  ]
 }
 
 interface LatestBlockProps {
@@ -32,53 +41,40 @@ export default function LatestBlock({ latestBlock }: LatestBlockProps) {
     return null
   }
 
-  const rows = [
+  const rows: CardListItem[] = [
     {
-      description: "Block",
-      data: latestBlock.highestBlock.item.height,
+      label: "Block",
+      value: latestBlock.highestBlock.item.height,
     },
     {
-      description: "Time",
-      data: blockProducedDateInLocalTime,
+      label: "Time",
+      value: blockProducedDateInLocalTime,
     },
     {
-      description: "Relays",
-      data: latestBlock.highestBlock.item.total_relays_completed.toLocaleString(),
+      label: "Relays",
+      value: latestBlock.highestBlock.item.total_relays_completed.toLocaleString(),
     },
     {
-      description: "Txs",
-      data: latestBlock.highestBlock.item.total_txs.toLocaleString(),
+      label: "Txs",
+      value: latestBlock.highestBlock.item.total_txs.toLocaleString(),
     },
     {
-      description: "Produced in",
-      data: `${latestBlock.highestBlock.item.took.toFixed(2)} min`,
+      label: "Produced in",
+      value: `${latestBlock.highestBlock.item.took.toFixed(2)} min`,
     },
     {
-      description: "Validator Threshold",
-      data: latestBlock.highestBlock.validatorThreshold.toLocaleString(),
+      label: "Validator Threshold",
+      value: latestBlock.highestBlock.validatorThreshold.toLocaleString(),
     },
   ]
 
   return (
     <div className="pokt-network-latest-block">
       <Card>
-        <h3>Latest Block</h3>
-        <List>
-          {rows.map((row) => (
-            <List.Item key={row.description}>
-              <Grid>
-                <Grid.Col xs={6}>
-                  <p className="pokt-network-latest-block-row-description">
-                    {row.description}
-                  </p>
-                </Grid.Col>
-                <Grid.Col xs={6}>
-                  <p className="pokt-network-latest-block-row-data">{row.data}</p>
-                </Grid.Col>
-              </Grid>
-            </List.Item>
-          ))}
-        </List>
+        <div className="pokt-card-header">
+          <h3>Latest Block</h3>
+        </div>
+        <CardList items={rows} />
         <PoweredBy to="https://poktscan.com/" image="/poktscanLogo.png" alt="Poktscan" />
       </Card>
     </div>

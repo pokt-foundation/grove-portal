@@ -40,7 +40,9 @@ export default function NetworkSuccessRateCard({
   return (
     <div className="pokt-network-relay-performance">
       <Card>
-        <h3>Relay Performance</h3>
+        <div className="pokt-card-header">
+          <h3>Relay Performance</h3>
+        </div>
         <Grid className="pokt-network-relay-performance-grid">
           {rows.map((row) => (
             <Grid.Col key={row.description} xs={4}>

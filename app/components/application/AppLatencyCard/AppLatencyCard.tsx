@@ -39,20 +39,22 @@ export default function AppEndpointCard({ hourlyLatency }: LatencyCardProps) {
   return (
     <div className="pokt-app-latency">
       <Card>
-        <div className="pokt-app-endpoint-header">
+        <div className="pokt-card-header">
           <h3>Average Latency</h3>
           <div>
-            <p>{(avgLatency * 1000).toFixed(0)}ms</p>
+            <h3>{(avgLatency * 1000).toFixed(0)}ms</h3>
           </div>
         </div>
         <div>
-          <BarChart
-            lines={barValues}
-            label={labels}
-            height={200}
-            color={() => "var(--color-secondary-main)"}
-            scales={scales}
-          />
+          {labels && barValues && scales && (
+            <BarChart
+              lines={barValues}
+              label={labels}
+              height={200}
+              color={() => "var(--color-secondary-main)"}
+              scales={scales}
+            />
+          )}
         </div>
       </Card>
     </div>

@@ -1,0 +1,6 @@
+.pokt-app-usage-over-time-chart circle {
+  filter: drop-shadow(0px 0px 4px rgba(197, 236, 75, 0.3));
+}
+.pokt-app-usage-over-time-chart path {
+  stroke-width: 5;
+}

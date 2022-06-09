@@ -70,6 +70,34 @@ p.smallText {
   padding: 0;
 }
 
+.blue {
+  color: var(--color-secondary-main);
+}
+
+.faqTitle {
+  margin-top: 1rem;
+  font-size: 2.5rem;
+  margin-bottom: 5rem;
+}
+
+.faqQuestion {
+  font-size: 2rem;
+  margin-bottom: 0;
+}
+
+.faqAnswer {
+  font-size: 1.125rem;
+  margin-bottom: 2.5rem;
+}
+
+.center {
+  text-align: center;
+}
+
+.block {
+  display: block;
+}
+
 .link {
   color: var(--color-primary-main);
   outline: none;

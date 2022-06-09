@@ -2282,7 +2282,10 @@ packages:
     dev: true
 
   /@types/json5/0.0.29:
-    resolution: { integrity: sha1-7ihweulOEdK4J7y+UnC86n8+ce4= }
+    resolution:
+      {
+        integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==,
+      }
     dev: true
 
   /@types/keyv/3.1.4:
@@ -6494,7 +6497,10 @@ packages:
     dev: true
 
   /fs.realpath/1.0.0:
-    resolution: { integrity: sha1-FQStJSMVjKpA20onh8sBQRmU6k8= }
+    resolution:
+      {
+        integrity: sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==,
+      }
 
   /fsevents/2.3.2:
     resolution:
@@ -7184,7 +7190,10 @@ packages:
     dev: true
 
   /inflight/1.0.6:
-    resolution: { integrity: sha1-Sb1jMdfQLQwJvJEKEHW6gWW1bfk= }
+    resolution:
+      {
+        integrity: sha512-k92I/b08q4wvFscXCLvqfsHCrjrF7yiXsQuIVvVE7N82W3+aqpzuUdBbfhWcy/FZR3/4IgflMgKLOsvPDrGCJA==,
+      }
     dependencies:
       once: 1.4.0
       wrappy: 1.0.2
@@ -7446,7 +7455,10 @@ packages:
     dev: true
 
   /is-extglob/2.1.1:
-    resolution: { integrity: sha1-qIwCU1eR8C7TfHahueqXc8gz+MI= }
+    resolution:
+      {
+        integrity: sha512-SbKbANkN603Vi4jEZv49LeVJMn4yGwsbzZworEoyEiutsN3nJYdbO36zfhGJ6QEDpOZIFkDtnq5JRxmvl3jsoQ==,
+      }
     engines: { node: ">=0.10.0" }
     dev: true
 
@@ -9248,10 +9260,7 @@ packages:
     dev: true
 
   /ms/2.0.0:
-    resolution:
-      {
-        integrity: sha512-Tpp60P6IUJDTuOq/5Z8cdskzJujfwqfOTkrwIwj7IRISpnkJnT6SyJ4PCPnGMoFjC9ddhal5KVIYtAt97ix05A==,
-      }
+    resolution: { integrity: sha1-VgiurfwAvmwpAd9fmGF4jeDVl8g= }
     dev: true
 
   /ms/2.1.2:
@@ -9543,7 +9552,10 @@ packages:
     dev: true
 
   /once/1.4.0:
-    resolution: { integrity: sha1-WDsap3WWHUsROsF9nFC6753Xa9E= }
+    resolution:
+      {
+        integrity: sha512-lNaJgI+2Q5URQBkccEKHTQOPaXdUxnZZElQTZY0MFUAuaEqe1E+Nyvgdz/aIyNi6Z9MzO5dv1H8n58/GELp3+w==,
+      }
     dependencies:
       wrappy: 1.0.2
 
@@ -9797,7 +9809,10 @@ packages:
     dev: true
 
   /path-is-absolute/1.0.1:
-    resolution: { integrity: sha1-F0uSaHNVNP+8es5r9TpanhtcX18= }
+    resolution:
+      {
+        integrity: sha512-AVbw3UJ2e9bq64vSaS9Am0fje1Pa8pbGqTTsmXfaIiMpnr5DlDhfJOuLj9Sf95ZPVDAUerDfEk88MPmPe7UCQg==,
+      }
     engines: { node: ">=0.10.0" }
 
   /path-key/3.1.1:
@@ -10280,8 +10295,16 @@ packages:
       }
     dev: true
 
+<<<<<<< HEAD
   /react-onclickout/2.0.8_sfoxds7t5ydpegc3knd667wn6m:
     resolution: { integrity: sha1-0XixP7h6SBNWdhtFSqYN9wabLaQ= }
+=======
+  /react-onclickout/2.0.8_react-dom@17.0.2+react@17.0.2:
+    resolution:
+      {
+        integrity: sha512-JpcIHZwCq6Ba/lVsvrvQWzAKHg4SPavqDr++nOpzgUNELXK1gIS4+fV40C1I1W/j7IrORR9WDuK6IBjcWw4R1Q==,
+      }
+>>>>>>> main
     peerDependencies:
       react: ^15.x || ^16.x
       react-dom: ^15.x || ^16.x
@@ -11547,7 +11570,10 @@ packages:
     dev: true
 
   /strip-bom/3.0.0:
-    resolution: { integrity: sha1-IzTBjpx1n3vdVv3vfprj1YjmjtM= }
+    resolution:
+      {
+        integrity: sha512-vavAMRXOgBVNF6nyEEmL3DBK19iRpDcoIwW+swQ+CbGiu7lju6t+JklA1MHweoWtadgt4ISVUsXLyDq34ddcwA==,
+      }
     engines: { node: ">=4" }
     dev: true
 

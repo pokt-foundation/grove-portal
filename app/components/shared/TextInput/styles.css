@@ -1,0 +1,35 @@
+.pokt-text-input {
+  width: 100%;
+}
+
+.pokt-text-input:not(:last-child) {
+  margin-bottom: 16px;
+}
+
+.pokt-text-input input {
+  padding: 8px;
+  color: var(--color-white-main);
+  background-color: var(--color-black-dark);
+  border: 1px solid var(--color-black-light);
+  border-radius: 4px;
+  font-size: 0.75rem;
+}
+.pokt-text-input.right-section input {
+  padding-right: 32px;
+}
+
+.pokt-text-input label {
+  color: var(--color-white-main);
+}
+
+.pokt-text-input .pokt-text-input-copy {
+  width: 20px;
+  height: 20px;
+  color: var(--color-secondary-main);
+  cursor: pointer;
+}
+
+.pokt-text-input .pokt-text-input-copy svg {
+  width: 20px;
+  height: 20px;
+}

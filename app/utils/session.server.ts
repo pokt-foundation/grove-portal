@@ -59,8 +59,5 @@ export const getUserId = async (request: Request) => {
 
 export const getUserProfile = async (request: Request) => {
   const user = await authenticator.isAuthenticated(request)
-  if (!user) {
-    return undefined
-  }
-  return user.profile
+  return user?.profile
 }

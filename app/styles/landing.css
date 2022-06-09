@@ -1,0 +1,82 @@
+h2 {
+  font-size: 1.8rem;
+  margin-bottom: 2rem;
+}
+
+.container {
+  margin: 96px auto 0 auto;
+  max-width: 1280px;
+}
+
+.pokt-image {
+  z-index: -1;
+  position: fixed;
+  right: -15rem;
+  bottom: -15rem;
+  width: 100%;
+  max-width: 48rem;
+  opacity: 0.25;
+}
+
+p.text {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  margin-bottom: 2.5rem;
+}
+
+.button {
+  margin-top: 2rem;
+  max-width: 270px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 15rem;
+  height: 3rem;
+  border: 0px;
+  border-radius: 0.75rem;
+  box-sizing: border-box;
+  cursor: pointer;
+  background-color: var(--color-primary-main);
+  color: var(--color-black-light);
+  font-size: 1rem;
+  font-weight: 700;
+  transition: all 300ms ease-in 0s;
+  text-decoration: none;
+}
+
+.button:hover {
+  background-color: rgb(182, 216, 74);
+  box-shadow: rgb(182 216 74 / 50%) 0px 0px 20px;
+}
+
+.inline-form {
+  display: inline;
+  margin: 0;
+  padding: 0;
+}
+
+.link {
+  color: var(--color-primary-main);
+  outline: none;
+  background-color: transparent;
+  border: none;
+  display: inline-block;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.logo-box {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.logo-box img {
+  margin-right: 1.75rem;
+  max-width: 126px;
+  width: 100%;
+  margin-bottom: 1.5rem;
+}

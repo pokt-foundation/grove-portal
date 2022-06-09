@@ -69,12 +69,12 @@ export default function AppIdLayout() {
       end: true,
     },
     {
-      to: "security",
-      label: "Security",
-    },
-    {
       to: "requests",
       label: "Requests",
+    },
+    {
+      to: "security",
+      label: "Security",
     },
     {
       to: "notifications",

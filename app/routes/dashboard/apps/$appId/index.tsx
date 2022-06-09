@@ -54,7 +54,7 @@ export const links = () => {
   ]
 }
 
-type LoaderData = {
+export type AppIdIndexLoaderData = {
   // dailyRelays: UserLBDailyRelaysResponse
   hourlyLatency: UserLBHistoricalLatencyResponse
   // status: UserLBOnChainDataResponse
@@ -80,7 +80,7 @@ export const loader: LoaderFunction = async ({ request, params, context }) => {
   const successfulRelays = await getLBPSuccessfulRelays(id, request)
   const totalRelays = await getLBTotalRelays(id, request)
 
-  return json<LoaderData>(
+  return json<AppIdIndexLoaderData>(
     {
       // dailyRelays,
       hourlyLatency,
@@ -103,7 +103,7 @@ export const loader: LoaderFunction = async ({ request, params, context }) => {
 }
 
 export const Application = () => {
-  const data = useLoaderData() as LoaderData
+  const data = useLoaderData() as AppIdIndexLoaderData
   const appIdRoute = useMatchesRoute("routes/dashboard/apps/$appId")
   const appIdData = appIdRoute?.data as AppIdLoaderData
   return (

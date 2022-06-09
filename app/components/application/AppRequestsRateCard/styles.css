@@ -1,3 +1,4 @@
-.pokt-app-requests-rate .pokt-app-request-rate-percent {
+.pokt-app-requests-rate a {
+  font-size: 0.75rem;
   color: var(--color-secondary-main);
 }

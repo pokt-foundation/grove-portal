@@ -8,6 +8,7 @@ import CardList, {
 } from "~/components/shared/CardList"
 import { IconUp, IconDown } from "@pokt-foundation/ui"
 import Grid from "~/components/shared/Grid"
+import { Link } from "@remix-run/react"
 
 export const links = () => {
   return [...CardLinks(), ...CardListLinks(), { rel: "stylesheet", href: styles }]
@@ -77,9 +78,9 @@ export default function AppRequestsRateCard({
       <Card>
         <div className="pokt-card-header">
           <h3>Requests Rate</h3>
-          {/* <div>
-            <h3 className="pokt-app-request-rate-percent">{successPercent.toFixed(2)}%</h3>
-          </div> */}
+          <div>
+            <Link to="requests">View Request Details</Link>
+          </div>
         </div>
         <div>
           <Grid align="center">

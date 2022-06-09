@@ -2,7 +2,6 @@ import { useMemo } from "react"
 import { Card, links as CardLinks } from "~/components/shared/Card"
 import { LatestBlockAndPerformanceData } from "~/models/portal.server"
 import styles from "./styles.css"
-import { Grid, List } from "@mantine/core"
 import PoweredBy, { links as PoweredByLinks } from "~/components/shared/PoweredBy"
 import CardList, {
   CardListItem,

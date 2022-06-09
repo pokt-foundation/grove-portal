@@ -1,4 +1,4 @@
-lockfileVersion: 5.4
+lockfileVersion: 5.3
 
 specifiers:
   "@amplitude/analytics-browser": ^0.3.1
@@ -72,8 +72,8 @@ dependencies:
   react: 17.0.2
   react-dom: 17.0.2_react@17.0.2
   remix-auth: 3.2.2_@remix-run+react@1.4.3
-  remix-auth-auth0: 1.3.7_22xosm4xmomkgn3fgsd4kkgmjq
-  styled-components: 5.3.5_sfoxds7t5ydpegc3knd667wn6m
+  remix-auth-auth0: 1.3.7_d6aee933976398a337653487c528cc4c
+  styled-components: 5.3.5_react-dom@17.0.2+react@17.0.2
   tiny-invariant: 1.2.0
 
 devDependencies:
@@ -1303,8 +1303,8 @@ packages:
       "@radix-ui/react-scroll-area": 0.1.4_react@17.0.2
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
-      react-popper: 2.3.0_kz2vxbzpsgxv356x2ucg6oykdm
-      react-textarea-autosize: 8.3.3_zdsfwtvwq54q3oqxwtq4jnbhh4
+      react-popper: 2.3.0_56755b872f91af5df7d7d5046f3b0a1b
+      react-textarea-autosize: 8.3.3_c8e45b4eb687790dba17b4e1c4b4273f
     transitivePeerDependencies:
       - "@babel/core"
       - "@types/react"
@@ -1504,10 +1504,10 @@ packages:
       react-blockies: 1.4.1_react@17.0.2
       react-display-name: 0.2.5
       react-dom: 17.0.2_react@17.0.2
-      react-onclickout: 2.0.8_sfoxds7t5ydpegc3knd667wn6m
-      react-spring: 7.2.11_oxfzelaz5ynxsop2v2nu2h2m64
+      react-onclickout: 2.0.8_react-dom@17.0.2+react@17.0.2
+      react-spring: 7.2.11_75cb922c19ee1b7939faae9b4d1f4cf7
       recursive-copy: 2.0.14
-      styled-components: 5.3.5_sfoxds7t5ydpegc3knd667wn6m
+      styled-components: 5.3.5_react-dom@17.0.2+react@17.0.2
       token-amount: 0.1.0
       use-inside: 0.2.0_react@17.0.2
       use-token: 0.2.0_react@17.0.2
@@ -1740,15 +1740,15 @@ packages:
       "@typescript-eslint/parser": 5.22.0_t725usgvqspm5woeqpaxbfp2qu
       eslint: 8.14.0
       eslint-import-resolver-node: 0.3.6
-      eslint-import-resolver-typescript: 2.7.1_myxbwluo6p3kuxjcyp342zygci
+      eslint-import-resolver-typescript: 2.7.1_662e1b2e8ef3f6aa5d22c3f7cd670612
       eslint-plugin-import: 2.26.0_eslint@8.14.0
-      eslint-plugin-jest: 26.1.5_rlpazuwa65tlndzjygmyw3fv34
+      eslint-plugin-jest: 26.1.5_8ade0cd2c0f766b68f29c1998b6cb5df
       eslint-plugin-jest-dom: 4.0.1_eslint@8.14.0
       eslint-plugin-jsx-a11y: 6.5.1_eslint@8.14.0
       eslint-plugin-node: 11.1.0_eslint@8.14.0
       eslint-plugin-react: 7.29.4_eslint@8.14.0
       eslint-plugin-react-hooks: 4.5.0_eslint@8.14.0
-      eslint-plugin-testing-library: 5.3.1_t725usgvqspm5woeqpaxbfp2qu
+      eslint-plugin-testing-library: 5.3.1_eslint@8.14.0+typescript@4.6.4
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       typescript: 4.6.4
@@ -1807,7 +1807,7 @@ packages:
       history: 5.3.0
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
-      react-router-dom: 6.3.0_sfoxds7t5ydpegc3knd667wn6m
+      react-router-dom: 6.3.0_react-dom@17.0.2+react@17.0.2
     dev: false
 
   /@remix-run/serve/1.4.3_sfoxds7t5ydpegc3knd667wn6m:
@@ -1841,7 +1841,7 @@ packages:
       jsesc: 3.0.2
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
-      react-router-dom: 6.3.0_sfoxds7t5ydpegc3knd667wn6m
+      react-router-dom: 6.3.0_react-dom@17.0.2+react@17.0.2
       set-cookie-parser: 2.4.8
       source-map: 0.7.3
 
@@ -3181,7 +3181,7 @@ packages:
       babel-plugin-syntax-jsx: 6.18.0
       lodash: 4.17.21
       picomatch: 2.3.1
-      styled-components: 5.3.5_sfoxds7t5ydpegc3knd667wn6m
+      styled-components: 5.3.5_react-dom@17.0.2+react@17.0.2
     dev: false
 
   /babel-plugin-syntax-jsx/6.18.0:
@@ -10355,7 +10355,7 @@ packages:
       "@babel/runtime": 7.17.9
       react: 17.0.2
       use-composed-ref: 1.3.0_react@17.0.2
-      use-latest: 1.2.1_zdsfwtvwq54q3oqxwtq4jnbhh4
+      use-latest: 1.2.1_c8e45b4eb687790dba17b4e1c4b4273f
     transitivePeerDependencies:
       - "@types/react"
     dev: false
@@ -10601,7 +10601,7 @@ packages:
       remix-auth: ^3.2.2
     dependencies:
       remix-auth: 3.2.2_@remix-run+react@1.4.3
-      remix-auth-oauth2: 1.2.2_5hykwzfohvtei5j77za43jrcby
+      remix-auth-oauth2: 1.2.2_e9f0ab64ae3d6644753ffe41cda6220e
     transitivePeerDependencies:
       - "@remix-run/react"
       - "@remix-run/server-runtime"
@@ -12344,7 +12344,7 @@ packages:
     dependencies:
       "@types/react": 17.0.44
       react: 17.0.2
-      use-isomorphic-layout-effect: 1.1.2_zdsfwtvwq54q3oqxwtq4jnbhh4
+      use-isomorphic-layout-effect: 1.1.2_c8e45b4eb687790dba17b4e1c4b4273f
     dev: false
 
   /use-token/0.2.0_react@17.0.2:

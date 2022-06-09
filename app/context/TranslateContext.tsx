@@ -42,6 +42,21 @@ interface TranslationData {
       answer: string
     }[]
   }
+  landing: {
+    chains: string[]
+    callOutBoxText: {
+      title: string
+      smallText: string
+      blueText: string
+      description: string
+    }[]
+    title: string
+    subtitle: string
+    welcomeText: string
+    getStarted: string
+    connect: string
+    whosNext: string
+  }
 }
 
 export type Language = typeof languages[number]

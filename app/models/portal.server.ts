@@ -396,7 +396,6 @@ export type FeedbackFormProps = {
 export type FeedbackFormResponse =
   | {
       error: boolean
-      ok: boolean
     }
   | {
       error: boolean
@@ -434,10 +433,7 @@ export const postFeedback = async (
     }
   }
 
-  const data = await res.json()
-
   return {
     error: false,
-    ok: true,
   }
 }

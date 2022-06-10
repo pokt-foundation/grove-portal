@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react"
-import { Form, useFetcher } from "@remix-run/react"
+import { useFetcher } from "@remix-run/react"
 import { IconUp, IconDown } from "@pokt-foundation/ui"
-//import { useSpring, animated } from "react-spring"
 
 import styles from "./styles.css"
 import { FeedbackActionResponse } from "~/routes/api/feedbackform"
@@ -44,7 +43,7 @@ export default function FeedbackBox({ className }: { className?: string }) {
           <button
             className="openclosebutton"
             onClick={() => {
-              setOpen(!open)
+              setOpen(false)
             }}
           >
             x

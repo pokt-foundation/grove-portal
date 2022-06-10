@@ -1,4 +1,5 @@
 import { ActionFunction, json } from "@remix-run/node"
+import { emitWarning } from "process"
 import { postFeedback } from "~/models/portal.server"
 
 export interface FeedbackActionResponse {
@@ -18,8 +19,10 @@ export const action: ActionFunction = async ({ request }) => {
     pageTitle: "",
   }
 
-  if (formData.has("feedback_message")) {
+  if (formData.has("feedback_message") && formData.get("feedback_message") !== "") {
     data.feedback = formData.get("feedback_message") as string
+  } else {
+    return { error: true, status: 422, message: "Feedback is required." }
   }
   if (formData.has("feedback_location")) {
     data.location = formData.get("feedback_location") as string

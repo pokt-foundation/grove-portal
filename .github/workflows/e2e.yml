@@ -1,0 +1,37 @@
+name: ci
+on: [deployment_status]
+
+jobs:
+  e2e:
+    # only runs this job on successful deploy
+    if: github.event.deployment_status.state == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: |
+          echo "$GITHUB_CONTEXT"
+
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v3
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v3
+
+        with:
+          node-version: 16.15.0
+
+      - uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 7.0.0
+
+      - name: 📥 Download deps
+        run: pnpm install
+
+      - name: Run Cypress 🌲
+        uses: cypress-io/github-action@v2
+        with:
+          install: false
+        env:
+          CYPRESS_BASE_URL: ${{ github.event.deployment_status.target_url }}

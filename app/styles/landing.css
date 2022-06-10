@@ -3,14 +3,6 @@ h2 {
   margin-bottom: 2rem;
 }
 
-h3 {
-  color: var(--color-secondary-main);
-  line-height: 3.25rem;
-  font-size: 1.8rem;
-  margin-bottom: 0;
-  text-align: right;
-}
-
 .container {
   margin: 96px auto 0 auto;
   max-width: 1280px;
@@ -30,13 +22,6 @@ p.text {
   font-size: 1.125rem;
   line-height: 1.75rem;
   margin-bottom: 2.5rem;
-}
-
-p.smallText {
-  margin-top: 0;
-  font-size: 0.875rem;
-  line-height: 1.625rem;
-  text-align: right;
 }
 
 .button {
@@ -106,44 +91,40 @@ p.smallText {
   display: inline-block;
 }
 
+.faqTitle {
+  margin-top: 1rem;
+  font-size: 2.5rem;
+  margin-bottom: 5rem;
+}
+
+.faqQuestion {
+  font-size: 2rem;
+  margin-bottom: 0;
+}
+
+.faqAnswer {
+  font-size: 1.125rem;
+  margin-bottom: 2.5rem;
+}
+
+.center {
+  text-align: center;
+}
+
+.block {
+  display: block;
+}
+
+.link {
+  color: var(--color-primary-main);
+  outline: none;
+  background-color: transparent;
+  border: none;
+  display: inline-block;
+}
+
 .link:hover {
   text-decoration: underline;
-}
-
-.callOutBox {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: flex-end;
-  margin-bottom: 1.5rem;
-  align-items: center;
-}
-
-.callOutGraphic {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  align-items: center;
-  justify-content: center;
-  background-image: linear-gradient(rgba(17, 27, 36, 0.44), rgba(44, 49, 60, 0.44));
-  min-width: 180px;
-  border-radius: 1rem;
-  padding: 1.75rem 0;
-  margin-left: 2rem;
-}
-
-.bigBlueText {
-  font-size: 2.25rem;
-  line-height: 3.25rem;
-  margin: 0;
-  font-weight: bold;
-  text-align: center;
-  color: var(--color-secondary-main);
-}
-
-.callOutGraphicDescription {
-  margin: 0;
-  text-align: center;
 }
 
 .logo-box {

@@ -1,4 +1,4 @@
-import { LoaderFunction, json } from "@remix-run/node"
+import { LoaderFunction, json, MetaFunction } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
 import { useTheme } from "@pokt-foundation/ui"
 import type {
@@ -40,6 +40,7 @@ import { getServiceLevelByChain } from "~/utils/chainUtils"
 import React from "react"
 import { getImageForChain } from "~/utils/known-chains/known-chains"
 import styles from "~/styles/dashboard.index.css"
+import FeedbackCard from "~/components/application/FeedbackCard"
 
 export const links = () => {
   return [
@@ -52,6 +53,12 @@ export const links = () => {
     ...TableLinks(),
     { rel: "stylesheet", href: styles },
   ]
+}
+
+export const meta: MetaFunction = () => {
+  return {
+    title: "Dashboard Home",
+  }
 }
 
 type LoaderData = {
@@ -185,9 +192,9 @@ export default function Index() {
             }
           />
         </section>
-        {/* <section>
-            <FeedbackBox />
-          </section> */}
+        <section>
+          <FeedbackCard />
+        </section>
       </Grid.Col>
     </Grid>
   )

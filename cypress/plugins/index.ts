@@ -2,8 +2,6 @@ module.exports = (on: Cypress.PluginEvents, config: Cypress.PluginConfigOptions)
   // const isDev = config.watchForFileChanges;
   // const port = process.env.PORT ?? (isDev ? "3000" : "8811");
   const configOverrides: Partial<Cypress.PluginConfigOptions> = {
-    baseUrl: "http://localhost:3000",
-    integrationFolder: "cypress/e2e",
     video: !process.env.CI,
     screenshotOnRunFailure: !process.env.CI,
   }

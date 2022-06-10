@@ -1,0 +1,46 @@
+.pokt-card-list {
+  list-style-type: none;
+}
+
+.pokt-card-list p {
+  margin: 0;
+  color: var(--color-white-main);
+}
+
+.pokt-card-list .pokt-list-label {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  color: rgb(170, 170, 170);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.pokt-card-list .pokt-list-value {
+  text-align: right;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  justify-content: end;
+}
+
+.pokt-card-list .pokt-list-value.primary {
+  color: var(--color-primary-main);
+}
+.pokt-card-list .pokt-list-value.secondary {
+  color: var(--color-secondary-main);
+}
+.pokt-card-list .pokt-list-value.success {
+  color: var(--color-success);
+}
+.pokt-card-list .pokt-list-value.error {
+  color: var(--color-error);
+}
+
+.pokt-card-list .pokt-list-icon {
+  display: inline-block;
+  margin-right: 8px;
+  font-size: inherit;
+  width: 18px;
+  height: 18px;
+}

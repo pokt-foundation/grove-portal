@@ -1,0 +1,16 @@
+.pokt-app-endpoint-url {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.pokt-app-endpoint-url input {
+  flex-grow: 1;
+}
+
+.pokt-app-endpoint-url-abbrv {
+  padding: 8px;
+  border: 1px solid var(--color-white-main);
+  border-radius: 4px;
+}

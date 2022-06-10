@@ -11,6 +11,8 @@
   --color-white-main: #edeff0;
   --color-white-light: #ffffff;
   --color-white-dark: #d9d9d9;
+  --color-success: #03e200;
+  --color-error: #e61c0e;
 }
 
 a {

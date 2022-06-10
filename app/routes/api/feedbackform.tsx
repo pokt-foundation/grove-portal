@@ -1,8 +1,4 @@
-import { ActionFunction, json, LoaderFunction } from "@remix-run/node"
-import { featureFlagsCookie } from "~/utils/cookies.server"
-import { defaultFeatureFlags, FeatureFlags } from "~/context/FeatureFlagContext"
-import { requireAdmin, requireUser } from "~/utils/session.server"
-import { getRequiredClientEnvVar } from "~/utils/environment"
+import { ActionFunction, json } from "@remix-run/node"
 import { postFeedback } from "~/models/portal.server"
 
 export interface FeedbackActionResponse {

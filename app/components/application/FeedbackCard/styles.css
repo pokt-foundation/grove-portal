@@ -32,15 +32,22 @@
 }
 
 .feedback .title {
-  font-size: 1.125rem;
+  font-size: 1.25rem;
   line-height: 1.5rem;
   font-weight: bold;
+  margin-bottom: 0;
 }
 
 .feedback .bodytext {
-  font-size: 0.75rem;
+  font-size: 0.825rem;
   font-weight: 300;
   line-height: 1.5rem;
+  margin: 0;
+}
+
+.feedback .bodytext.error {
+  color: var(--color-error);
+  padding-top: "8px";
 }
 
 .feedback .textarea {
@@ -60,7 +67,7 @@
 }
 
 .feedback .textarea::-webkit-resizer {
-  background: url("/assets/resizer.svg");
+  background: url("/resizer.svg");
 }
 
 .feedback .submit {
@@ -80,14 +87,20 @@
   flex-direction: row;
 }
 
-.animatedBox {
-  transition: max-height 1s ease;
+.feedback .form {
+  padding-top: 16px;
+  width: 100%;
   display: flex;
-  flex-direction: "column";
-  padding-top: "16px";
+  flex-direction: column;
+  flex-wrap: nowrap;
+}
+
+.animatedBox {
+  transition: max-height 0.75s ease;
   overflow: hidden;
+  max-height: 0px;
 }
 
 .animatedBox.true {
-  max-height: auto;
+  max-height: 5000px;
 }

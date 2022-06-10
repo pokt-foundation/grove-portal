@@ -1,13 +1,10 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Form, useFetcher } from "@remix-run/react"
 import { IconUp, IconDown } from "@pokt-foundation/ui"
 //import { useSpring, animated } from "react-spring"
 
 import styles from "./styles.css"
 import { FeedbackActionResponse } from "~/routes/api/feedbackform"
-
-const ShareFeedback = "/assets/share-feedback.svg"
-const heart = "/assets/heart.svg"
 
 export const links = () => {
   return [{ rel: "stylesheet", href: styles }]
@@ -17,18 +14,27 @@ interface FeedbackBoxProps {}
 
 export default function FeedbackBox({ className }: { className?: string }) {
   const fetcher = useFetcher<FeedbackActionResponse>()
-  // const [submitted, setSubmitted] = useState(false)
   const [open, setOpen] = useState(false)
-  // const [error, setError] = useState(false)
-  //const userEmail = useUser().email?.toString() || "Unknown user email"
+  const [location, setLocation] = useState("Unknown Portal Page")
+  const [pageTitle, setPageTitle] = useState("Unknown page Title")
+
+  useEffect(() => {
+    setLocation(window?.location?.href)
+    setPageTitle(document?.title)
+  }, [])
 
   return (
     <div className="feedback box">
-      {fetcher.state === "submitting" ? (
+      {fetcher.type === "done" && !fetcher.data.error ? (
         <div className="top">
           <div className="row">
             <div className="spaceholder">
-              <img className="image" src={heart} alt="heart image" aria-hidden="true" />
+              <img
+                className="image"
+                src="/heart.svg"
+                alt="heart image"
+                aria-hidden="true"
+              />
             </div>
             <div>
               <h3 className="title">Thanks</h3>{" "}
@@ -51,7 +57,7 @@ export default function FeedbackBox({ className }: { className?: string }) {
               <div className="spaceholder">
                 <img
                   className="image"
-                  src={ShareFeedback}
+                  src="/share-feedback.svg"
                   alt="share feedback"
                   aria-hidden="true"
                 />
@@ -75,62 +81,50 @@ export default function FeedbackBox({ className }: { className?: string }) {
             </button>
           </div>
 
-          {open && (
-            <div className={`animatedBox ${open}`}>
-              <fetcher.Form method="post" action="/api/feedbackform">
-                <textarea
-                  className="textarea"
-                  name="feedback_message"
-                  style={{
-                    border: fetcher.data?.error
-                      ? "1px solid #F93232"
-                      : "1px solid #fafafa",
-                  }}
-                  aria-invalid={fetcher.data?.error ?? false}
-                  aria-errormessage="error"
-                  placeholder="Would be interesting to..."
-                />
-                <input
-                  hidden
-                  name="feedback_location"
-                  value={window?.location?.href || "Unknown Portal Page"}
-                />
-                <input
-                  hidden
-                  name="feedback_pageTitle"
-                  value={document?.title || "Unknown page Title"}
-                />
-                <p
-                  className="bodytext"
-                  id="error"
-                  style={{
-                    color: "#f93232",
-                    paddingTop: "8px",
-                    display: `${fetcher.data?.error ? "block" : "none"}`,
-                  }}
-                >
-                  Text area must be filled out to submit a suggestion.
-                </p>
-                <p
-                  className="bodytext"
-                  style={{
-                    marginBottom: "16px",
-                    paddingTop: "8px",
-                  }}
-                >
-                  Do not share any personal info
-                </p>
-                <button
-                  className="submit"
-                  type="submit"
-                  aria-label="Submit feedback"
-                  title="Submit feedback"
-                >
-                  Submit
-                </button>
-              </fetcher.Form>
-            </div>
-          )}
+          <div className={`animatedBox ${open}`}>
+            <fetcher.Form className="form" method="post" action="/api/feedbackform">
+              <textarea
+                className="textarea"
+                name="feedback_message"
+                style={{
+                  border: fetcher.data?.error
+                    ? "1px solid var(--color-error)"
+                    : "1px solid var(--color-white-main)",
+                }}
+                aria-invalid={fetcher.data?.error ?? false}
+                aria-errormessage="error"
+                placeholder="Would be interesting to..."
+              />
+              <input hidden name="feedback_location" value={location} />
+              <input hidden name="feedback_pageTitle" value={pageTitle} />
+              <p
+                className="bodytext error"
+                id="error"
+                style={{
+                  display: fetcher.data?.error ? "block" : "none",
+                }}
+              >
+                Text area must be filled out to submit a suggestion.
+              </p>
+              <p
+                className="bodytext"
+                style={{
+                  marginBottom: "16px",
+                  paddingTop: "8px",
+                }}
+              >
+                Do not share any personal info
+              </p>
+              <button
+                className="submit"
+                type="submit"
+                aria-label="Submit feedback"
+                title="Submit feedback"
+              >
+                Submit
+              </button>
+            </fetcher.Form>
+          </div>
         </>
       )}
     </div>

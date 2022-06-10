@@ -36,7 +36,9 @@ import ChainWithImage, {
 import Table, { links as TableLinks } from "~/components/shared/Table"
 import { getServiceLevelByChain } from "~/utils/chainUtils"
 import styles from "~/styles/dashboard.index.css"
-import FeedbackCard from "~/components/application/FeedbackCard"
+import FeedbackCard, {
+  links as FeedbackCardLinks,
+} from "~/components/application/FeedbackCard"
 import AdEconomicsForDevs, {
   links as AdEconomicsForDevsLinks,
 } from "~/components/application/AdEconomicsForDevs"
@@ -51,6 +53,7 @@ export const links = () => {
     ...AdEconomicsForDevsLinks(),
     ...TableLinks(),
     ...ChainWithImageLinks(),
+    ...FeedbackCardLinks(),
     { rel: "stylesheet", href: styles },
   ]
 }

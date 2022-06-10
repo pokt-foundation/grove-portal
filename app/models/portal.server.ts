@@ -396,7 +396,7 @@ export type FeedbackFormProps = {
 export type FeedbackFormResponse =
   | {
       error: boolean
-      response: unknown
+      ok: boolean
     }
   | {
       error: boolean
@@ -426,7 +426,8 @@ export const postFeedback = async (
     },
   )
 
-  if (!res || res.status !== 200) {
+  // server sends 204 no content on successful post
+  if (!res || res.status !== 204) {
     return {
       error: true,
       error_message: res.statusText,
@@ -437,6 +438,6 @@ export const postFeedback = async (
 
   return {
     error: false,
-    response: data,
+    ok: true,
   }
 }

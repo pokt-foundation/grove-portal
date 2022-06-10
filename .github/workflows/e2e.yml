@@ -12,8 +12,23 @@ jobs:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: |
           echo "$GITHUB_CONTEXT"
-      - name: Checkout 🛎
-        uses: actions/checkout@v1
+
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v3
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v3
+
+        with:
+          node-version: 16.15.0
+
+      - uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 7.0.0
+
+      - name: 📥 Download deps
+        run: pnpm install
+
       - name: Run Cypress 🌲
         uses: cypress-io/github-action@v2
         env:

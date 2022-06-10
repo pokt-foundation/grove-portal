@@ -1,3 +1,3 @@
-import { Button } from "@mantine/core"
-export { Button }
+import Button from "./Button"
+export * from "./Button"
 export default Button

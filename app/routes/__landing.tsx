@@ -1,10 +1,11 @@
 import { Outlet, useLoaderData } from "@remix-run/react"
 import { Header, links as HeaderLinks } from "~/components/shared/Header"
 import { Footer, links as FooterLinks } from "~/components/shared/Footer"
-import { Nav, links as NavLinks } from "~/components/marketing/Nav"
+import { Nav, links as NavLinks } from "~/components/shared/Nav"
 import { json, LinksFunction, LoaderFunction } from "@remix-run/node"
-import { Auth0Profile } from "remix-auth-auth0"
+import { useMemo } from "react"
 import { getUserProfile } from "~/utils/session.server"
+import { Auth0Profile } from "remix-auth-auth0"
 
 export const links: LinksFunction = () => {
   return [...HeaderLinks(), ...FooterLinks(), ...NavLinks()]
@@ -21,11 +22,40 @@ export const loader: LoaderFunction = async ({ request }) => {
 }
 
 export default function LandingLayout() {
-  const data = useLoaderData() as LoaderData
+  const { user } = useLoaderData() as LoaderData
+  const routes = useMemo(() => {
+    const dashboardRoutes = [
+      {
+        to: "/dashboard",
+        label: "Dashboard",
+      },
+    ]
+    const marketingRoutes = [
+      {
+        to: "/faq",
+        label: "FAQs",
+      },
+      {
+        to: "https://www.pokt.network/",
+        label: "About Pocket",
+        external: true,
+      },
+      {
+        to: "https://docs.pokt.network/home/paths/app-developer",
+        label: "Docs",
+        external: true,
+      },
+    ]
+
+    if (user) {
+      return [...marketingRoutes, ...dashboardRoutes]
+    }
+    return marketingRoutes
+  }, [user])
   return (
     <>
-      <Header nav="right" user={data.user}>
-        <Nav user={data.user} />
+      <Header user={user} nav="right">
+        <Nav routes={routes} />
       </Header>
       <main>
         <Outlet />

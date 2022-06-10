@@ -40,9 +40,15 @@ jobs:
         run: |
           touch .env
           echo NODE_ENV="development" >> .env
-          echo MAINNET_RPC_URL=https://mainnet.gateway.pokt.network/v1/lb/60a2ac11b1747c6552385c61/ >> .env
+          echo BACKEND_URL=https://backend.staging.portal.pokt.network >> .env
           echo AMPLITUDE_API_KEY=4b54fb07298c6322918050a273203084 >> .env
           echo SENTRY_DSN=https://0f9f40d0428b4c31aa94cb516159ec42@o515876.ingest.sentry.io/5631627 >> .env
+          echo SESSION_SECRET=pokt_network_engineering >> .env
+          echo AUTH0_DOMAIN=dev-f8fl5e69.us.auth0.com >> .env
+          echo AUTH0_CLIENT_ID=TJykObV0ZyzCuggvsZXmcCpKARLtEblg >> .env
+          echo AUTH0_CLIENT_SECRET=R4x2EbixEFkvdWR2h_AD3F7GE3e2yU0RZtka1KqjH-2GKNP88oPWiRUGtgRij91E >> .env
+          echo AUTH0_AUDIENCE=https://dev-f8fl5e69.us.auth0.com/api/v2/ >> .env
+          echo AUTH0_SCOPE=read:current_user update:current_user_metadata openid profile email >> .env
 
       - name: 📥 Download deps
         run: pnpm install

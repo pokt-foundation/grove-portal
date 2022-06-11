@@ -1,28 +1,9 @@
 import { json, LoaderFunction } from "@remix-run/node"
-import { useLoaderData, useMatches } from "@remix-run/react"
+import { useLoaderData } from "@remix-run/react"
+import { getLBHourlyLatency, getLBPSessionRelays } from "~/models/portal.server"
 import {
-  getLBDailyRelays,
-  getLBHourlyLatency,
-  getLBOriginClassification,
-  getLBPreviousSuccessfulRelays,
-  getLBPreviousTotalRelays,
-  getLBPSessionRelays,
-  getLBPSuccessfulRelays,
-  getLBStatus,
-  getLBTotalRelays,
-  getLBUserApplications,
-  UserLB,
-} from "~/models/portal.server"
-import {
-  UserLBDailyRelaysResponse,
   UserLBHistoricalLatencyResponse,
-  UserLBOriginBucket,
-  UserLBPreviousTotalSuccessfulRelaysResponse,
-  UserLBPreviousTotalRelaysResponse,
   UserLBSessionRelaysResponse,
-  UserLBTotalSuccessfulRelaysResponse,
-  UserLBOnChainDataResponse,
-  UserLBTotalRelaysResponse,
 } from "@pokt-foundation/portal-types"
 import invariant from "tiny-invariant"
 import AppEndpointCard, {

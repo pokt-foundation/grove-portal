@@ -58,11 +58,45 @@ export const getLBHourlyLatency = async (
   return await res.json()
 }
 
+// LB: ERROR METRICS
+export interface EndpointRpcError {
+  applicationpublickey: string
+  blockchain: string
+  bytes: number
+  code: string
+  elapsedtime: number
+  message: string
+  method: string
+  nodepublickey: string
+  timestamp: string
+}
+
+export const getLBErrorMetrics = async (
+  id: string,
+  request: Request,
+): Promise<EndpointRpcError[]> => {
+  const user = await requireUser(request)
+  const res = await fetch(
+    `${getRequiredClientEnvVar("BACKEND_URL")}/api/lb/error-metrics/${id}`,
+    {
+      headers: {
+        Authorization: `${user.extraParams.token_type} ${user.accessToken}`,
+      },
+    },
+  )
+
+  if (!res || res.status !== 200) {
+    throw new Error(res.statusText)
+  }
+
+  return await res.json()
+}
+
 // LB: ORIGIN CLASSIFICATION
 export const getLBOriginClassification = async (
   id: string,
   request: Request,
-): Promise<UserLBOriginBucket[]> => {
+): Promise<{ origin_classification: UserLBOriginBucket[] }> => {
   const user = await requireUser(request)
   const res = await fetch(
     `${getRequiredClientEnvVar("BACKEND_URL")}/api/lb/origin-classification/${id}`,

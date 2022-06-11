@@ -78,9 +78,9 @@ export default function AppRequestsRateCard({
       <Card>
         <div className="pokt-card-header">
           <h3>Requests Rate</h3>
-          <div>
+          {/* <div>
             <Link to="requests">View Request Details</Link>
-          </div>
+          </div> */}
         </div>
         <div>
           <Grid align="center">

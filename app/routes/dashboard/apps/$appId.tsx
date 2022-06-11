@@ -4,7 +4,11 @@ import { json, LoaderFunction } from "@remix-run/node"
 import invariant from "tiny-invariant"
 import {
   getLBDailyRelays,
+  getLBPreviousSuccessfulRelays,
+  getLBPreviousTotalRelays,
+  getLBPSuccessfulRelays,
   getLBStatus,
+  getLBTotalRelays,
   getLBUserApplications,
   UserLB,
 } from "~/models/portal.server"
@@ -18,6 +22,11 @@ import Grid from "~/components/shared/Grid"
 import {
   UserLBDailyRelaysResponse,
   UserLBOnChainDataResponse,
+  UserLBPreviousTotalRelaysResponse,
+  UserLBPreviousTotalSuccessfulRelaysResponse,
+  UserLBSessionRelaysResponse,
+  UserLBTotalRelaysResponse,
+  UserLBTotalSuccessfulRelaysResponse,
 } from "@pokt-foundation/portal-types"
 
 export const links = () => {
@@ -30,6 +39,10 @@ export type AppIdLoaderData = {
   status: UserLBOnChainDataResponse
   stakedTokens: number
   maxDailyRelays: number
+  previousSeccessfulRelays: UserLBPreviousTotalSuccessfulRelaysResponse
+  previousTotalRelays: UserLBPreviousTotalRelaysResponse
+  successfulRelays: UserLBTotalSuccessfulRelaysResponse
+  totalRelays: UserLBTotalRelaysResponse
 }
 
 export const loader: LoaderFunction = async ({ request, params, context }) => {
@@ -43,8 +56,26 @@ export const loader: LoaderFunction = async ({ request, params, context }) => {
   const stakedTokens = status.stake
   const maxDailyRelays = status.relays * 24
 
+  const previousSeccessfulRelays = await getLBPreviousSuccessfulRelays(
+    params.appId,
+    request,
+  )
+  const previousTotalRelays = await getLBPreviousTotalRelays(params.appId, request)
+  const successfulRelays = await getLBPSuccessfulRelays(params.appId, request)
+  const totalRelays = await getLBTotalRelays(params.appId, request)
+
   return json<AppIdLoaderData>(
-    { app, dailyRelays, status, stakedTokens, maxDailyRelays },
+    {
+      app,
+      dailyRelays,
+      status,
+      stakedTokens,
+      maxDailyRelays,
+      previousSeccessfulRelays,
+      previousTotalRelays,
+      successfulRelays,
+      totalRelays,
+    },
     {
       headers: {
         "Cache-Control": `private, max-age=${

@@ -1,15 +1,13 @@
 import { useState, useEffect } from "react"
 import { useFetcher } from "@remix-run/react"
 import { IconUp, IconDown } from "@pokt-foundation/ui"
-
 import styles from "./styles.css"
 import { FeedbackActionResponse } from "~/routes/api/feedbackform"
+import { useTranslate } from "~/context/TranslateContext"
 
 export const links = () => {
   return [{ rel: "stylesheet", href: styles }]
 }
-
-interface FeedbackBoxProps {}
 
 export default function FeedbackBox({ className }: { className?: string }) {
   const fetcher = useFetcher<FeedbackActionResponse>()
@@ -17,6 +15,9 @@ export default function FeedbackBox({ className }: { className?: string }) {
   const [submitted, setSubmitted] = useState(false)
   const [location, setLocation] = useState("Unknown Portal Page")
   const [pageTitle, setPageTitle] = useState("Unknown page Title")
+  const {
+    t: { common, feedback },
+  } = useTranslate()
 
   useEffect(() => {
     setLocation(window?.location?.href)
@@ -38,13 +39,13 @@ export default function FeedbackBox({ className }: { className?: string }) {
               <img
                 className="image"
                 src="/heart.svg"
-                alt="heart image"
+                alt={feedback.heartImageAlt}
                 aria-hidden="true"
               />
             </div>
             <div>
-              <h3 className="title">Thanks</h3>{" "}
-              <p className="bodytext">For your feedback!</p>
+              <h3 className="title">{feedback.thanksTitle}</h3>{" "}
+              <p className="bodytext">{feedback.thanksSubtext}</p>
             </div>
           </div>
           <button
@@ -65,21 +66,19 @@ export default function FeedbackBox({ className }: { className?: string }) {
                 <img
                   className="image"
                   src="/share-feedback.svg"
-                  alt="share feedback"
+                  alt={feedback.feedbackShareAltText}
                   aria-hidden="true"
                 />
               </div>
               <div>
-                <h3 className="title">Share Feedback</h3>
-                <p className="bodytext">Help us to improve Pocket Portal</p>
+                <h3 className="title">{feedback.feedbackTitle}</h3>
+                <p className="bodytext">{feedback.feedbackSubText}</p>
               </div>
             </div>
             <button
               className="openclosebutton"
-              aria-label={
-                open ? "Click to close feedback box" : "Click to open feedback box"
-              }
-              title={open ? "Click to close feedback box" : "Click to open feedback box"}
+              aria-label={open ? feedback.clickClose : feedback.clickOpen}
+              title={open ? feedback.clickClose : feedback.clickOpen}
               onClick={() => {
                 setOpen(!open)
               }}
@@ -100,7 +99,7 @@ export default function FeedbackBox({ className }: { className?: string }) {
                 }}
                 aria-invalid={fetcher.data?.error ?? false}
                 aria-errormessage="error"
-                placeholder="Would be interesting to..."
+                placeholder={feedback.textAreaPlaceholder}
               />
               <input hidden name="feedback_location" defaultValue={location} />
               <input hidden name="feedback_pageTitle" defaultValue={pageTitle} />
@@ -111,7 +110,7 @@ export default function FeedbackBox({ className }: { className?: string }) {
                   display: fetcher.data?.error ? "block" : "none",
                 }}
               >
-                Text area must be filled out to submit a suggestion.
+                {feedback.errorText}
               </p>
               <p
                 className="bodytext"
@@ -120,7 +119,7 @@ export default function FeedbackBox({ className }: { className?: string }) {
                   paddingTop: "8px",
                 }}
               >
-                Do not share any personal info
+                {feedback.personal}
               </p>
               <button
                 className="submit"
@@ -128,7 +127,7 @@ export default function FeedbackBox({ className }: { className?: string }) {
                 aria-label="Submit feedback"
                 title="Submit feedback"
               >
-                Submit
+                {common.submit}
               </button>
             </fetcher.Form>
           </div>

@@ -1,4 +1,4 @@
-import { json, LoaderFunction } from "@remix-run/node"
+import { json, LoaderFunction, MetaFunction } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
 /*import {
   getLBDailyRelays,
@@ -68,6 +68,12 @@ export const links = () => {
     ...AppUsageCurrentCardLinks(),
     ...AppRequestsRateCardLinks(),
   ]
+}
+
+export const meta: MetaFunction = () => {
+  return {
+    title: "Application Details",
+  }
 }
 
 export type AppIdIndexLoaderData = {

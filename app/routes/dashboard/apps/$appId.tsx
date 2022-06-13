@@ -1,6 +1,6 @@
 import { Outlet, useCatch, useLoaderData } from "@remix-run/react"
 import Nav, { links as NavLinks } from "~/components/shared/Nav"
-import { json, LoaderFunction } from "@remix-run/node"
+import { json, LoaderFunction, MetaFunction } from "@remix-run/node"
 import invariant from "tiny-invariant"
 import {
   getLBDailyRelays,
@@ -30,6 +30,12 @@ export const links = () => {
     ...AdEconomicsForDevsLinks(),
     ...FeedbackCardLinks(),
   ]
+}
+
+export const meta: MetaFunction = () => {
+  return {
+    title: "Application Overview",
+  }
 }
 
 export type AppIdLoaderData = {

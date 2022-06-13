@@ -10,7 +10,7 @@ const STROKE_WIDTH = 2
 // "circumference, found by manually incrementing it :o"
 // That comment above was written by @bpierre,
 // and I can say I found this number in the same way :D
-const DASH_ARRAY = 1100
+// const DASH_ARRAY = 1100
 const GRADIENT_COLOR_START = "#1D8AED"
 const GRADIENT_COLOR_STOP = "#1D8AED"
 const GRADIENT_ID = "loading-screen-logo-gradient"

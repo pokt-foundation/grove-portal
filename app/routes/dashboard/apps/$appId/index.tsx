@@ -1,6 +1,27 @@
-import { json, LoaderFunction } from "@remix-run/node"
+import { json, LoaderFunction, MetaFunction } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
+/*import {
+  getLBDailyRelays,
+  getLBHourlyLatency,
+  getLBOriginClassification,
+  getLBPreviousSuccessfulRelays,
+  getLBPreviousTotalRelays,
+  getLBPSessionRelays,
+  getLBPSuccessfulRelays,
+  getLBStatus,
+  getLBTotalRelays,
+  getLBUserApplications,
+  UserLB,
+} from "~/models/portal.server" */
 import { getLBHourlyLatency, getLBPSessionRelays } from "~/models/portal.server"
+/*import {
+  UserLBDailyRelaysResponse,
+  UserLBHistoricalLatencyResponse,
+  UserLBSessionRelaysResponse,
+  UserLBTotalSuccessfulRelaysResponse,
+  UserLBOnChainDataResponse,
+  UserLBTotalRelaysResponse,
+} from "@pokt-foundation/portal-types" */
 import {
   UserLBHistoricalLatencyResponse,
   UserLBSessionRelaysResponse,
@@ -33,6 +54,12 @@ export const links = () => {
     ...AppUsageCurrentCardLinks(),
     ...AppRequestsRateCardLinks(),
   ]
+}
+
+export const meta: MetaFunction = () => {
+  return {
+    title: "Application Details",
+  }
 }
 
 export type AppIdIndexLoaderData = {

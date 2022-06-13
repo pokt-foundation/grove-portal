@@ -14,6 +14,7 @@ interface FeedbackBoxProps {}
 export default function FeedbackBox({ className }: { className?: string }) {
   const fetcher = useFetcher<FeedbackActionResponse>()
   const [open, setOpen] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
   const [location, setLocation] = useState("Unknown Portal Page")
   const [pageTitle, setPageTitle] = useState("Unknown page Title")
 
@@ -22,9 +23,15 @@ export default function FeedbackBox({ className }: { className?: string }) {
     setPageTitle(document?.title)
   }, [])
 
+  useEffect(() => {
+    if (fetcher.state === "submitting") {
+      setSubmitted(true)
+    }
+  }, [fetcher.state])
+
   return (
     <div className="feedback box">
-      {fetcher.type === "done" && !fetcher.data.error ? (
+      {submitted && fetcher.type === "done" && !fetcher.data.error ? (
         <div className="top">
           <div className="row">
             <div className="spaceholder">
@@ -44,6 +51,7 @@ export default function FeedbackBox({ className }: { className?: string }) {
             className="openclosebutton"
             onClick={() => {
               setOpen(false)
+              setSubmitted(false)
             }}
           >
             x

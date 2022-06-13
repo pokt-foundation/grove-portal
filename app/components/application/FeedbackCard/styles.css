@@ -96,7 +96,7 @@
 }
 
 .animatedBox {
-  transition: max-height 0.75s ease;
+  transition: max-height 1s ease-in-out;
   overflow: hidden;
   max-height: 0px;
 }

@@ -8,7 +8,6 @@ import CardList, {
 } from "~/components/shared/CardList"
 import { IconUp, IconDown } from "@pokt-foundation/ui"
 import Grid from "~/components/shared/Grid"
-import { Link } from "@remix-run/react"
 import { useTranslate } from "~/context/TranslateContext"
 
 export const links = () => {

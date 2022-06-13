@@ -1,0 +1,7 @@
+.pokt-table-ellipsis {
+  overflow: hidden;
+  max-width: 25ch;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin: 0;
+}

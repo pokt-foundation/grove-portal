@@ -73,6 +73,38 @@ interface TranslationData {
     clickOpen: string
     clickClose: string
   }
+  appId: {
+    routes: {
+      overview: string
+      requests: string
+      security: string
+      notifications: string
+    }
+  }
+  AppRequestsByOriginCard: {
+    label: string
+    columns: string[]
+  }
+  AppRequestsErrorsCard: {
+    label: string
+    columns: string[]
+  }
+  AppRequestsRateCard: {
+    label: string
+    list: {
+      successDelta: {
+        label: string
+        help: string
+      }
+      errorRate: {
+        label: string
+        help: string
+      }
+      totalRequests: {
+        label: string
+      }
+    }
+  }
 }
 
 export type Language = typeof languages[number]

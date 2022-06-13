@@ -1,5 +1,5 @@
 import { UserLBOriginBucket } from "@pokt-foundation/portal-types"
-import { json, LoaderFunction } from "@remix-run/node"
+import { json, LoaderFunction, MetaFunction } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
 import invariant from "tiny-invariant"
 import AppRequestsByOriginCard, {
@@ -18,6 +18,12 @@ import {
   getLBOriginClassification,
 } from "~/models/portal.server"
 import { AppIdLoaderData } from "../$appId"
+
+export const meta: MetaFunction = () => {
+  return {
+    title: "Application Requests - POKT Portal - Pocket Network",
+  }
+}
 
 export const links = () => {
   return [

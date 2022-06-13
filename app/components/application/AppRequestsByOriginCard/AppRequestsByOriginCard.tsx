@@ -2,6 +2,7 @@ import styles from "./styles.css"
 import Table, { links as TableLinks } from "~/components/shared/Table"
 import { useMemo } from "react"
 import { UserLBOriginBucket } from "@pokt-foundation/portal-types"
+import { useTranslate } from "~/context/TranslateContext"
 
 export const links = () => {
   return [...TableLinks(), { rel: "stylesheet", href: styles }]
@@ -16,6 +17,8 @@ export default function AppRequestsByOriginCard({
   usagePerOrigin,
   totalRelays,
 }: RequestsByOriginCardProps) {
+  const { t } = useTranslate()
+
   const tableData = useMemo(() => {
     return usagePerOrigin
       .map(({ origin, count }) => ({
@@ -37,9 +40,9 @@ export default function AppRequestsByOriginCard({
   return (
     <div className="pokt-app-requests-by-origin">
       <Table
-        label="Requests By Origin"
+        label={t.AppRequestsByOriginCard.label}
         data={tableData}
-        columns={["Percent", "Origin", "Relays"]}
+        columns={t.AppRequestsByOriginCard.columns}
         paginate
       />
     </div>

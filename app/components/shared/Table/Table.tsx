@@ -1,6 +1,7 @@
 import { Group, Pagination, Table as MantineTable, TextInput } from "@mantine/core"
 import { useMemo, useState } from "react"
 import Card, { links as CardLinks } from "~/components/shared/Card"
+import { useTranslate } from "~/context/TranslateContext"
 import styles from "./styles.css"
 
 export const links = () => {
@@ -39,6 +40,7 @@ export const Table = <T extends IdObj>({
   paginate,
   search = false,
 }: TableProps<T>) => {
+  const { t } = useTranslate()
   const [searchTerm, setSearchTerm] = useState("")
   const totalData = useMemo(() => {
     let rows = data
@@ -102,8 +104,8 @@ export const Table = <T extends IdObj>({
               <TextInput
                 className="pokt-table-search"
                 name="search"
-                aria-label={`Search ${label}`}
-                placeholder={`Search ${label}`}
+                aria-label={`${t.search.label} ${label}`}
+                placeholder={`${t.search.label} ${label}`}
                 size="xs"
                 onChange={(e) => setSearchTerm(e.target.value)}
                 rightSectionWidth={85}

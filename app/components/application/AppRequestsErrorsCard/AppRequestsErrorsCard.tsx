@@ -8,6 +8,7 @@ import CopyTextIcon, {
   links as CopyTextIconLinks,
 } from "~/components/shared/CopyTextIcon"
 import Group from "~/components/shared/Group"
+import { useTranslate } from "~/context/TranslateContext"
 
 export const links = () => {
   return [...TableLinks(), ...CopyTextIconLinks(), { rel: "stylesheet", href: styles }]
@@ -18,6 +19,7 @@ interface RequestsErrorsCardProps {
 }
 
 export default function AppRequestsErrorsCard({ errorMetrics }: RequestsErrorsCardProps) {
+  const { t } = useTranslate()
   const tableData = useMemo(() => {
     return errorMetrics
       .map((error, index) => {
@@ -58,9 +60,9 @@ export default function AppRequestsErrorsCard({ errorMetrics }: RequestsErrorsCa
   return (
     <div className="pokt-app-requests-by-origin">
       <Table
-        label="Requests Errors"
+        label={t.AppRequestsErrorsCard.label}
         data={tableData}
-        columns={["Type", "Node", "Size", "Date"]}
+        columns={t.AppRequestsErrorsCard.columns}
         paginate={{
           perPage: 10,
         }}

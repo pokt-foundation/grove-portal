@@ -30,6 +30,7 @@ import {
 import FeedbackCard, {
   links as FeedbackCardLinks,
 } from "~/components/application/FeedbackCard"
+import { useTranslate } from "~/context/TranslateContext"
 
 export const links = () => {
   return [
@@ -100,6 +101,7 @@ export const loader: LoaderFunction = async ({ request, params, context }) => {
 }
 
 export default function AppIdLayout() {
+  const { t } = useTranslate()
   const { app } = useLoaderData() as AppIdLoaderData
   const routes = [
     {
@@ -109,20 +111,20 @@ export default function AppIdLayout() {
     },
     {
       to: "",
-      label: "Overview",
+      label: t.appId.routes.overview,
       end: true,
     },
     {
       to: "requests",
-      label: "Requests",
+      label: t.appId.routes.requests,
     },
     {
       to: "security",
-      label: "Security",
+      label: t.appId.routes.security,
     },
     {
       to: "notifications",
-      label: "Notifications",
+      label: t.appId.routes.notifications,
     },
   ]
 

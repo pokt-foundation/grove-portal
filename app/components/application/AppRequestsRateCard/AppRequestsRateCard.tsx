@@ -9,6 +9,7 @@ import CardList, {
 import { IconUp, IconDown } from "@pokt-foundation/ui"
 import Grid from "~/components/shared/Grid"
 import { Link } from "@remix-run/react"
+import { useTranslate } from "~/context/TranslateContext"
 
 export const links = () => {
   return [...CardLinks(), ...CardListLinks(), { rel: "stylesheet", href: styles }]
@@ -27,6 +28,8 @@ export default function AppRequestsRateCard({
   successfulRelays,
   totalRelays,
 }: RequestsRateCardProps) {
+  const { t } = useTranslate()
+
   const successRate = useMemo(() => {
     return totalRelays === 0 ? 0 : successfulRelays / totalRelays
   }, [successfulRelays, totalRelays])
@@ -55,20 +58,20 @@ export default function AppRequestsRateCard({
 
   const listItems: CardListItem[] = [
     {
-      label: "Success Delta",
+      label: t.AppRequestsRateCard.list.successDelta.label,
       value: `${Math.abs(successRateDelta as number)}%`,
-      help: "Percentage of success among the total request attempted to perform by the application on the last 24h.",
+      help: t.AppRequestsRateCard.list.successDelta.help,
       color: successRateDelta > 0 ? "success" : "error",
       icon: successRateDelta > 0 ? IconUp : IconDown,
     },
     {
-      label: "Error Rate",
+      label: t.AppRequestsRateCard.list.errorRate.label,
       value: `${Math.abs(errorRateDelta as number)}%`,
-      help: "Percentage of error among the total request attempted to perform by the application.",
+      help: t.AppRequestsRateCard.list.errorRate.help,
       color: errorRateDelta > 0 ? "error" : undefined,
     },
     {
-      label: "Total Requests",
+      label: t.AppRequestsRateCard.list.totalRequests.label,
       value: Intl.NumberFormat().format(totalRelays),
     },
   ]
@@ -77,10 +80,7 @@ export default function AppRequestsRateCard({
     <div className="pokt-app-requests-rate">
       <Card>
         <div className="pokt-card-header">
-          <h3>Requests Rate</h3>
-          {/* <div>
-            <Link to="requests">View Request Details</Link>
-          </div> */}
+          <h3>{t.AppRequestsRateCard.label}</h3>
         </div>
         <div>
           <Grid align="center">

@@ -1,10 +1,10 @@
 import { Group, Pagination, Table as MantineTable, TextInput } from "@mantine/core"
 import { useMemo, useState } from "react"
-import Card from "~/components/shared/Card"
+import Card, { links as CardLinks } from "~/components/shared/Card"
 import styles from "./styles.css"
 
 export const links = () => {
-  return [{ rel: "stylesheet", href: styles }]
+  return [...CardLinks(), { rel: "stylesheet", href: styles }]
 }
 
 interface TableProps<T> {
@@ -27,7 +27,7 @@ interface IdObj {
     | string
     | number
     | {
-        value: string
+        value: string | number
         element: JSX.Element
       }
 }
@@ -112,43 +112,45 @@ export const Table = <T extends IdObj>({
             )}
           </Group>
         )}
-        <MantineTable>
-          <thead>
-            <tr>
-              {columns.map((key) => (
-                <th key={key as string}>{key}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {paginatedData.map((item) => (
-              <tr key={item.id}>
-                {Object.entries(removeIdFromObject(item)).map(([key, value]) => (
-                  <td key={key}>
-                    {typeof value === "object"
-                      ? (
-                          value as {
-                            value: string
-                            element: JSX.Element
-                          }
-                        ).element
-                      : value}
-                  </td>
+        <div className="pokt-table-overflow">
+          <MantineTable>
+            <thead>
+              <tr>
+                {columns.map((key) => (
+                  <th key={key as string}>{key}</th>
                 ))}
               </tr>
-            ))}
-            {emptyRows &&
-              emptyRows.map((row, index) => (
-                <tr key={index} className={row}>
-                  {Object.entries(removeIdFromObject(paginatedData[0])).map(
-                    (_, index) => (
-                      <td key={index}></td>
-                    ),
-                  )}
+            </thead>
+            <tbody>
+              {paginatedData.map((item) => (
+                <tr key={item.id}>
+                  {Object.entries(removeIdFromObject(item)).map(([key, value]) => (
+                    <td key={key}>
+                      {typeof value === "object"
+                        ? (
+                            value as {
+                              value: string
+                              element: JSX.Element
+                            }
+                          ).element
+                        : value}
+                    </td>
+                  ))}
                 </tr>
               ))}
-          </tbody>
-        </MantineTable>
+              {emptyRows &&
+                emptyRows.map((row, index) => (
+                  <tr key={index} className={row}>
+                    {Object.entries(removeIdFromObject(paginatedData[0])).map(
+                      (_, index) => (
+                        <td key={index}></td>
+                      ),
+                    )}
+                  </tr>
+                ))}
+            </tbody>
+          </MantineTable>
+        </div>
         {paginate && (
           <Group position="apart" align="center" className="pokt-table-paginate">
             <Pagination

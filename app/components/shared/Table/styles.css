@@ -1,3 +1,8 @@
+.pokt-table .pokt-table-overflow {
+  width: 100%;
+  overflow-x: auto;
+}
+
 .pokt-table form {
   width: 100%;
 }
@@ -56,4 +61,12 @@
 
 .pokt-table .pokt-table-paginate svg {
   color: var(--color-white-main);
+}
+
+.pokt-table-ellipsis {
+  overflow: hidden;
+  max-width: 20ch;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin: 0;
 }

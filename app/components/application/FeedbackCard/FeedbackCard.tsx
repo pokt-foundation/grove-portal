@@ -102,8 +102,8 @@ export default function FeedbackBox({ className }: { className?: string }) {
                 aria-errormessage="error"
                 placeholder="Would be interesting to..."
               />
-              <input hidden name="feedback_location" value={location} />
-              <input hidden name="feedback_pageTitle" value={pageTitle} />
+              <input hidden name="feedback_location" defaultValue={location} />
+              <input hidden name="feedback_pageTitle" defaultValue={pageTitle} />
               <p
                 className="bodytext error"
                 id="error"

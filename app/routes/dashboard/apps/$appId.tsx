@@ -19,9 +19,17 @@ import {
   UserLBDailyRelaysResponse,
   UserLBOnChainDataResponse,
 } from "@pokt-foundation/portal-types"
+import FeedbackCard, {
+  links as FeedbackCardLinks,
+} from "~/components/application/FeedbackCard"
 
 export const links = () => {
-  return [...NavLinks(), ...AppKeysCardLinks(), ...AdEconomicsForDevsLinks()]
+  return [
+    ...NavLinks(),
+    ...AppKeysCardLinks(),
+    ...AdEconomicsForDevsLinks(),
+    ...FeedbackCardLinks(),
+  ]
 }
 
 export type AppIdLoaderData = {
@@ -107,6 +115,9 @@ export default function AppIdLayout() {
             </section>
             <section>
               <AdEconomicsForDevs />
+            </section>
+            <section>
+              <FeedbackCard />
             </section>
           </>
         )}

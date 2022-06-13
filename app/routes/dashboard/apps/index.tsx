@@ -7,9 +7,12 @@ import Table, { links as TableLinks } from "~/components/shared/Table"
 import AdEconomicsForDevs, {
   links as AdEconomicsForDevsLinks,
 } from "~/components/application/AdEconomicsForDevs"
+import FeedbackCard, {
+  links as FeedbackCardLinks,
+} from "~/components/application/FeedbackCard"
 
 export const links = () => {
-  return [...AdEconomicsForDevsLinks(), ...TableLinks()]
+  return [...FeedbackCardLinks(), ...AdEconomicsForDevsLinks(), ...TableLinks()]
 }
 
 type LoaderData = {
@@ -65,6 +68,9 @@ export const Apps = () => {
       <Grid.Col md={4}>
         <section>
           <AdEconomicsForDevs />
+        </section>
+        <section>
+          <FeedbackCard />
         </section>
       </Grid.Col>
     </Grid>

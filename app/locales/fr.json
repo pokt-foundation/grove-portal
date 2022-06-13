@@ -1,4 +1,7 @@
 {
+  "common": {
+    "submit": "submit -fr"
+  },
   "search": {
     "label": "FrSearch",
     "placeholder": "FrSearch by Transaction Hash, Block # and Address"
@@ -101,5 +104,18 @@
     "getStarted": "Get Started -fr",
     "connect": "Connect to these networks. -fr",
     "whosNext": "See who's next. -fr"
+  },
+  "feedback": {
+    "personal": "Do not share any personal info -fr",
+    "errorText": "Text area must be filled out to submit a suggestion. -fr",
+    "textAreaPlaceholder": "Would be interesting to... -fr",
+    "feedbackSubText": "Help us to improve Pocket Portal -fr",
+    "feedbackTitle": "Share Feedback -fr",
+    "feedbackShareAltText": "share feedback -fr",
+    "thanksSubtext": "For your feedback! -fr",
+    "thanksTitle": "Thanks -fr",
+    "heartImageAlt": "heart image -fr",
+    "clickOpen": "Click to open feedback box -fr",
+    "clickClose": "Click to close feedback box -fr"
   }
 }

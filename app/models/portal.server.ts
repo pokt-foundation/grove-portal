@@ -385,3 +385,55 @@ export const getNetworkWeeklyStats = async (
 
   return await res.json()
 }
+
+// FEEDBACK FORM
+export type FeedbackFormProps = {
+  feedback: string
+  location: string
+  pageTitle: string
+}
+
+export type FeedbackFormResponse =
+  | {
+      error: boolean
+    }
+  | {
+      error: boolean
+      error_message: string
+    }
+
+export const postFeedback = async (
+  formData: FeedbackFormProps,
+  request: Request,
+): Promise<FeedbackFormResponse> => {
+  const user = await requireUser(request)
+  const body = {
+    ...formData,
+    user: user.profile.emails[0].value,
+  }
+
+  console.log({ body })
+
+  const res = await fetch(
+    `${getRequiredClientEnvVar("BACKEND_URL")}/api/users/feedback`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `${user.extraParams.token_type} ${user.accessToken}`,
+      },
+      body: JSON.stringify(body),
+    },
+  )
+
+  // server sends 204 no content on successful post
+  if (!res || res.status !== 204) {
+    return {
+      error: true,
+      error_message: res.statusText,
+    }
+  }
+
+  return {
+    error: false,
+  }
+}

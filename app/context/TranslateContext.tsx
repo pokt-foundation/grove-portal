@@ -10,6 +10,9 @@ const translate: Translate = {
 }
 
 interface TranslationData {
+  common: {
+    submit: string
+  }
   search: {
     label: string
     placeholder: string
@@ -56,6 +59,19 @@ interface TranslationData {
     getStarted: string
     connect: string
     whosNext: string
+  }
+  feedback: {
+    personal: string
+    errorText: string
+    textAreaPlaceholder: string
+    feedbackSubText: string
+    feedbackTitle: string
+    feedbackShareAltText: string
+    thanksSubtext: string
+    thanksTitle: string
+    heartImageAlt: string
+    clickOpen: string
+    clickClose: string
   }
 }
 

@@ -1,4 +1,7 @@
 {
+  "common": {
+    "submit": "submit"
+  },
   "search": {
     "label": "Search",
     "placeholder": "Search by Transaction Hash, Block # and Address"
@@ -101,5 +104,18 @@
     "getStarted": "Get Started",
     "connect": "Connect to these networks.",
     "whosNext": "See who's next."
+  },
+  "feedback": {
+    "personal": "Do not share any personal info",
+    "errorText": "Text area must be filled out to submit a suggestion.",
+    "textAreaPlaceholder": "Would be interesting to...",
+    "feedbackSubText": "Help us to improve Pocket Portal",
+    "feedbackTitle": "Share Feedback",
+    "feedbackShareAltText": "share feedback",
+    "thanksSubtext": "For your feedback!",
+    "thanksTitle": "Thanks",
+    "heartImageAlt": "heart image",
+    "clickOpen": "Click to open feedback box",
+    "clickClose": "Click to close feedback box"
   }
 }

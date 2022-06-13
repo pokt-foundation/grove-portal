@@ -1,6 +1,6 @@
 import { Outlet, useCatch, useLoaderData } from "@remix-run/react"
 import Nav, { links as NavLinks } from "~/components/shared/Nav"
-import { json, LoaderFunction } from "@remix-run/node"
+import { json, LoaderFunction, MetaFunction } from "@remix-run/node"
 import invariant from "tiny-invariant"
 import {
   getLBDailyRelays,
@@ -19,9 +19,23 @@ import {
   UserLBDailyRelaysResponse,
   UserLBOnChainDataResponse,
 } from "@pokt-foundation/portal-types"
+import FeedbackCard, {
+  links as FeedbackCardLinks,
+} from "~/components/application/FeedbackCard"
 
 export const links = () => {
-  return [...NavLinks(), ...AppKeysCardLinks(), ...AdEconomicsForDevsLinks()]
+  return [
+    ...NavLinks(),
+    ...AppKeysCardLinks(),
+    ...AdEconomicsForDevsLinks(),
+    ...FeedbackCardLinks(),
+  ]
+}
+
+export const meta: MetaFunction = () => {
+  return {
+    title: "Application Overview",
+  }
 }
 
 export type AppIdLoaderData = {
@@ -107,6 +121,9 @@ export default function AppIdLayout() {
             </section>
             <section>
               <AdEconomicsForDevs />
+            </section>
+            <section>
+              <FeedbackCard />
             </section>
           </>
         )}

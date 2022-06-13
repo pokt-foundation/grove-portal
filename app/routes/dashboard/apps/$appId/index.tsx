@@ -1,6 +1,6 @@
-import { json, LoaderFunction } from "@remix-run/node"
-import { useLoaderData, useMatches } from "@remix-run/react"
-import {
+import { json, LoaderFunction, MetaFunction } from "@remix-run/node"
+import { useLoaderData } from "@remix-run/react"
+/*import {
   getLBDailyRelays,
   getLBHourlyLatency,
   getLBOriginClassification,
@@ -12,8 +12,16 @@ import {
   getLBTotalRelays,
   getLBUserApplications,
   UserLB,
-} from "~/models/portal.server"
+} from "~/models/portal.server" */
 import {
+  getLBHourlyLatency,
+  getLBPreviousSuccessfulRelays,
+  getLBPreviousTotalRelays,
+  getLBPSessionRelays,
+  getLBPSuccessfulRelays,
+  getLBTotalRelays,
+} from "~/models/portal.server"
+/*import {
   UserLBDailyRelaysResponse,
   UserLBHistoricalLatencyResponse,
   UserLBOriginBucket,
@@ -22,6 +30,14 @@ import {
   UserLBSessionRelaysResponse,
   UserLBTotalSuccessfulRelaysResponse,
   UserLBOnChainDataResponse,
+  UserLBTotalRelaysResponse,
+} from "@pokt-foundation/portal-types" */
+import {
+  UserLBHistoricalLatencyResponse,
+  UserLBPreviousTotalSuccessfulRelaysResponse,
+  UserLBPreviousTotalRelaysResponse,
+  UserLBSessionRelaysResponse,
+  UserLBTotalSuccessfulRelaysResponse,
   UserLBTotalRelaysResponse,
 } from "@pokt-foundation/portal-types"
 import invariant from "tiny-invariant"
@@ -52,6 +68,12 @@ export const links = () => {
     ...AppUsageCurrentCardLinks(),
     ...AppRequestsRateCardLinks(),
   ]
+}
+
+export const meta: MetaFunction = () => {
+  return {
+    title: "Application Details",
+  }
 }
 
 export type AppIdIndexLoaderData = {

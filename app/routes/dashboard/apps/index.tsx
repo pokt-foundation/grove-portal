@@ -1,5 +1,5 @@
 import { Grid } from "@mantine/core"
-import { json, LoaderFunction } from "@remix-run/node"
+import { json, LoaderFunction, MetaFunction } from "@remix-run/node"
 import { Link, useLoaderData } from "@remix-run/react"
 import type { UserLB } from "~/models/portal.server"
 import { getLBUserApplications } from "~/models/portal.server"
@@ -7,9 +7,18 @@ import Table, { links as TableLinks } from "~/components/shared/Table"
 import AdEconomicsForDevs, {
   links as AdEconomicsForDevsLinks,
 } from "~/components/application/AdEconomicsForDevs"
+import FeedbackCard, {
+  links as FeedbackCardLinks,
+} from "~/components/application/FeedbackCard"
 
 export const links = () => {
-  return [...AdEconomicsForDevsLinks(), ...TableLinks()]
+  return [...FeedbackCardLinks(), ...AdEconomicsForDevsLinks(), ...TableLinks()]
+}
+
+export const meta: MetaFunction = () => {
+  return {
+    title: "Applications Page",
+  }
 }
 
 type LoaderData = {
@@ -65,6 +74,9 @@ export const Apps = () => {
       <Grid.Col md={4}>
         <section>
           <AdEconomicsForDevs />
+        </section>
+        <section>
+          <FeedbackCard />
         </section>
       </Grid.Col>
     </Grid>

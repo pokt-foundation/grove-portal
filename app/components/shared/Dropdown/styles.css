@@ -1,0 +1,17 @@
+.pokt-card {
+  background: var(--color-black-main);
+  border-radius: 8px;
+  padding: 32px;
+  margin-bottom: 32px;
+}
+
+.pokt-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.pokt-card-header h3 {
+  margin: 0;
+}

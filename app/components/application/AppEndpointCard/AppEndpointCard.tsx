@@ -10,6 +10,9 @@ import AppEndpointUrl, {
 } from "~/components/application/AppEndpointUrl"
 import Button from "~/components/shared/Button"
 import { IconPlus } from "@pokt-foundation/ui"
+import { useUser } from "~/context/UserContext"
+import Dropdown, { DropdownMenu } from "~/components/shared/Dropdown"
+import { useEffect } from "react"
 
 export const links = () => {
   return [
@@ -29,6 +32,17 @@ export default function AppEndpointCard({ app }: AppEndpointProps) {
   const { name: chainDescription } = app.chain
     ? (prefixFromChainId(chains[0]) as ChainMetadata)
     : { name: "" }
+  const { user, submit } = useUser()
+
+  useEffect(() => {
+    if (app.id && !user.preferences.endpoints) {
+      submit({
+        endpoints: JSON.stringify({
+          [app.id]: JSON.stringify(app.chain ? [app.chain] : ["0021"]),
+        }),
+      })
+    }
+  }, [app, user, submit])
 
   return (
     <div className="pokt-app-endpoint">
@@ -37,10 +51,14 @@ export default function AppEndpointCard({ app }: AppEndpointProps) {
           <h3>Endpoint</h3>
           <div>
             {app.gigastake ? (
-              <Button>
-                Add New <IconPlus />
-              </Button>
+              <Dropdown label="Add New">
+                <DropdownMenu.Label>Chains</DropdownMenu.Label>
+                <DropdownMenu.Item>Chain 1</DropdownMenu.Item>
+              </Dropdown>
             ) : (
+              // <Button>
+              //   Add New <IconPlus />
+              // </Button>
               <ChainWithImage chain={chainDescription} />
             )}
           </div>

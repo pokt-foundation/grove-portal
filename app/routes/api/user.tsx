@@ -23,15 +23,19 @@ export const loader: LoaderFunction = async ({ request }) => {
   return json<UserLoaderActionData>(data)
 }
 
-export const action: ActionFunction = async ({ request }) => {
+export const action: ActionFunction = async ({ request, params }) => {
   const userProfile = await getUserProfile(request)
   const cookieHeader = request.headers.get("Cookie")
   const bodyParams = await request.formData()
   const cookie: UserPreference =
     (await userPrefCookie.parse(cookieHeader)) || defaultUserPreference
 
-  if (bodyParams.has("language")) {
+  if (bodyParams.get("language")) {
     cookie.language = bodyParams.get("language") as Language
+  }
+
+  if (bodyParams.get("endpoints")) {
+    cookie.endpoints = JSON.parse(bodyParams.get("endpoints") as any)
   }
 
   const data = {

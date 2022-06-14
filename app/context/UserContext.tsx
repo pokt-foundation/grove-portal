@@ -1,12 +1,9 @@
 import { useFetcher } from "@remix-run/react"
-import React, { useMemo, useContext, Dispatch, useEffect } from "react"
+import React, { useMemo, useContext, Dispatch, useEffect, useCallback } from "react"
 import { UserLoaderActionData } from "~/routes/api/user"
 import { Language } from "~/context/TranslateContext"
 import { Auth0Profile } from "remix-auth-auth0"
-
-export interface UserPreference {
-  language: Language
-}
+import { UserLB } from "@pokt-foundation/portal-types"
 
 export const defaultUserPreference = {
   language: "en" as Language,
@@ -15,9 +12,21 @@ export const defaultUserPreference = {
 interface IUserContext {
   user: {
     profile: Auth0Profile | undefined
-    preferences: UserPreference
+    preferences: UserPreferenceFormData
   }
-  submit: Dispatch<Partial<UserPreference>>
+  submit: Dispatch<Partial<UserPreferenceFormData>>
+}
+
+export interface UserPreferenceFormData {
+  language: Language
+  endpoints?: string // stringified
+}
+
+export interface UserPreference {
+  language: Language
+  endpoints?: {
+    [key in UserLB["id"]]: string[]
+  }
 }
 
 const UserContext = React.createContext<IUserContext>({
@@ -40,18 +49,21 @@ export function useUser() {
 
 const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
   const fetcher = useFetcher<UserLoaderActionData>()
-  const userPref = useMemo(
-    () => fetcher.data?.preferences ?? defaultUserPreference,
-    [fetcher],
-  )
+  const userPref = useMemo(() => {
+    console.log(fetcher.data)
+    return fetcher.data?.preferences ?? defaultUserPreference
+  }, [fetcher.data])
   const profile = useMemo(() => fetcher.data?.profile ?? undefined, [fetcher])
 
-  const submit = (formData: Partial<UserPreference>) => {
-    fetcher.submit(formData, {
-      action: "/api/user",
-      method: "post",
-    })
-  }
+  const submit = useCallback(
+    (formData: Partial<UserPreferenceFormData>) => {
+      fetcher.submit(formData, {
+        action: "/api/user",
+        method: "post",
+      })
+    },
+    [fetcher],
+  )
 
   useEffect(() => {
     if (fetcher.type === "init") {
@@ -59,13 +71,16 @@ const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, [fetcher])
 
-  const value = {
-    user: {
-      profile: profile,
-      preferences: userPref,
-    },
-    submit,
-  }
+  const value = useMemo(
+    () => ({
+      user: {
+        profile: profile,
+        preferences: userPref,
+      },
+      submit,
+    }),
+    [profile, userPref, submit],
+  )
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>
 }

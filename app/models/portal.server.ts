@@ -359,8 +359,6 @@ export const getNetworkLatestBlock = async (
     },
   )
 
-  console.log(res)
-
   if (!res || res.status !== 200) {
     throw new Error(res.statusText)
   }
@@ -445,8 +443,6 @@ export const postFeedback = async (
     ...formData,
     user: user.profile.emails[0].value,
   }
-
-  console.log({ body })
 
   const res = await fetch(
     `${getRequiredClientEnvVar("BACKEND_URL")}/api/users/feedback`,

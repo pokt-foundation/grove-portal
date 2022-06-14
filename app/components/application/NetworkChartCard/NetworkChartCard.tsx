@@ -23,6 +23,10 @@ export default function NetworkChartCard({
   return (
     <div className="pokt-network-chart">
       <Card>
+        <div className="pokt-card-header">
+          <h3>Relay Count</h3>
+          <p>Last 7 Days</p>
+        </div>
         <LineChart
           backgroundFill="#1B2331"
           borderColor={`rgba(0,0,0,0)`}
@@ -38,13 +42,6 @@ export default function NetworkChartCard({
           renderHorizontalCheckLines
           renderBackground
         />
-        <div>
-          <h3>Total Relays:</h3>
-          <div>
-            <h4>{Intl.NumberFormat().format(weeklyStats.total_relays || 0)}</h4>
-            <h5>Last 7 Days</h5>
-          </div>
-        </div>
       </Card>
     </div>
   )

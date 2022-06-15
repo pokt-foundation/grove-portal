@@ -12,8 +12,12 @@ type DropdownProps = {
 export const Dropdown: React.FC<DropdownProps> = ({ label, children }) => {
   return (
     <DropdownMenu.Root>
-      <DropdownMenu.Trigger>{label}</DropdownMenu.Trigger>
-      <DropdownMenu.Content>{children}</DropdownMenu.Content>
+      <DropdownMenu.Trigger className="pokt-dropdown-trigger">
+        {label}
+      </DropdownMenu.Trigger>
+      <DropdownMenu.Content className="pokt-dropdown-content">
+        {children}
+      </DropdownMenu.Content>
     </DropdownMenu.Root>
   )
 }

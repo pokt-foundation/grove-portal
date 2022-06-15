@@ -1,0 +1,12 @@
+.pokt-chains-dropdown {
+  padding: 4px;
+}
+
+.pokt-dropdown-content {
+  max-height: 300px;
+  overflow: auto;
+}
+
+.pokt-chains-dropdown-chain {
+  padding: 16px;
+}

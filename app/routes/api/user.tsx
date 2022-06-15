@@ -23,7 +23,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   return json<UserLoaderActionData>(data)
 }
 
-export const action: ActionFunction = async ({ request, params }) => {
+export const action: ActionFunction = async ({ request }) => {
   const userProfile = await getUserProfile(request)
   const cookieHeader = request.headers.get("Cookie")
   const bodyParams = await request.formData()
@@ -35,7 +35,10 @@ export const action: ActionFunction = async ({ request, params }) => {
   }
 
   if (bodyParams.get("endpoints")) {
-    cookie.endpoints = JSON.parse(bodyParams.get("endpoints") as any)
+    cookie.endpoints = {
+      ...cookie.endpoints,
+      ...(JSON.parse(bodyParams.get("endpoints") as any) as UserPreference["endpoints"]),
+    }
   }
 
   const data = {

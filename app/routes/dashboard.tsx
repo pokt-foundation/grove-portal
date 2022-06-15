@@ -1,6 +1,7 @@
 import { json, LinksFunction, LoaderFunction } from "@remix-run/node"
 import { Outlet, useCatch, useLoaderData, useTransition } from "@remix-run/react"
 import { Auth0Profile } from "remix-auth-auth0"
+import { Main } from "@pokt-foundation/ui"
 import { requireUserProfile } from "~/utils/session.server"
 import Footer, { links as FooterLinks } from "~/components/shared/Footer"
 import Header, { links as HeaderLinks } from "~/components/shared/Header"
@@ -56,12 +57,14 @@ export default function Dashboard() {
       <Header user={user}>
         <Nav routes={routes} />
       </Header>
-      <main>
-        <Container>
-          {state === "loading" && <Loader />}
-          <Outlet />
-        </Container>
-      </main>
+      <Main>
+        <main>
+          <Container>
+            {state === "loading" && <Loader />}
+            <Outlet />
+          </Container>
+        </main>
+      </Main>
       <Footer />
     </>
   )

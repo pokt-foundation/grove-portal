@@ -417,7 +417,7 @@ export const updateNotifications = async (
     },
   )
 
-  if (!res || res.status !== 200) {
+  if (!res || (res.status !== 200 && res.status !== 204)) {
     throw new Error(res.statusText)
   }
 

@@ -1,0 +1,39 @@
+.pokt-network-notifications-alert {
+  position: relative;
+  width: 100%;
+}
+
+.pokt-network-notifications-alert .pokt-card {
+  position: relative;
+  padding: 16px 16px 16px 32px;
+}
+
+.pokt-network-notifications-alert-border {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 8px;
+  height: 100%;
+  border-radius: 8px 0px 0px 8px;
+}
+
+.pokt-network-notifications-alert-border-positive {
+  background-color: green;
+}
+
+.pokt-network-notifications-alert-border-yellow {
+  background-color: yellow;
+}
+
+.pokt-network-notifications-alert-border-warning {
+  background-color: orange;
+}
+
+.pokt-network-notifications-alert-border-negative {
+  background-color: red;
+}
+
+.pokt-network-notifications-alert-description {
+  display: flex;
+  justify-content: space-between;
+}

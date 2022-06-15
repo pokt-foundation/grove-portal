@@ -58,11 +58,45 @@ export const getLBHourlyLatency = async (
   return await res.json()
 }
 
+// LB: ERROR METRICS
+export interface EndpointRpcError {
+  applicationpublickey: string
+  blockchain: string
+  bytes: number
+  code: string
+  elapsedtime: number
+  message: string
+  method: string
+  nodepublickey: string
+  timestamp: string
+}
+
+export const getLBErrorMetrics = async (
+  id: string,
+  request: Request,
+): Promise<EndpointRpcError[]> => {
+  const user = await requireUser(request)
+  const res = await fetch(
+    `${getRequiredClientEnvVar("BACKEND_URL")}/api/lb/error-metrics/${id}`,
+    {
+      headers: {
+        Authorization: `${user.extraParams.token_type} ${user.accessToken}`,
+      },
+    },
+  )
+
+  if (!res || res.status !== 200) {
+    throw new Error(res.statusText)
+  }
+
+  return await res.json()
+}
+
 // LB: ORIGIN CLASSIFICATION
 export const getLBOriginClassification = async (
   id: string,
   request: Request,
-): Promise<UserLBOriginBucket[]> => {
+): Promise<{ origin_classification: UserLBOriginBucket[] }> => {
   const user = await requireUser(request)
   const res = await fetch(
     `${getRequiredClientEnvVar("BACKEND_URL")}/api/lb/origin-classification/${id}`,
@@ -325,8 +359,6 @@ export const getNetworkLatestBlock = async (
     },
   )
 
-  console.log(res)
-
   if (!res || res.status !== 200) {
     throw new Error(res.statusText)
   }
@@ -422,4 +454,54 @@ export const updateNotifications = async (
   }
 
   return true
+}
+
+// FEEDBACK FORM
+export type FeedbackFormProps = {
+  feedback: string
+  location: string
+  pageTitle: string
+}
+
+export type FeedbackFormResponse =
+  | {
+      error: boolean
+    }
+  | {
+      error: boolean
+      error_message: string
+    }
+
+export const postFeedback = async (
+  formData: FeedbackFormProps,
+  request: Request,
+): Promise<FeedbackFormResponse> => {
+  const user = await requireUser(request)
+  const body = {
+    ...formData,
+    user: user.profile.emails[0].value,
+  }
+
+  const res = await fetch(
+    `${getRequiredClientEnvVar("BACKEND_URL")}/api/users/feedback`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `${user.extraParams.token_type} ${user.accessToken}`,
+      },
+      body: JSON.stringify(body),
+    },
+  )
+
+  // server sends 204 no content on successful post
+  if (!res || res.status !== 204) {
+    return {
+      error: true,
+      error_message: res.statusText,
+    }
+  }
+
+  return {
+    error: false,
+  }
 }

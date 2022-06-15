@@ -1,10 +1,14 @@
 import { Outlet, useCatch, useLoaderData } from "@remix-run/react"
 import Nav, { links as NavLinks } from "~/components/shared/Nav"
-import { json, LoaderFunction } from "@remix-run/node"
+import { json, LoaderFunction, MetaFunction } from "@remix-run/node"
 import invariant from "tiny-invariant"
 import {
   getLBDailyRelays,
+  getLBPreviousSuccessfulRelays,
+  getLBPreviousTotalRelays,
+  getLBPSuccessfulRelays,
   getLBStatus,
+  getLBTotalRelays,
   getLBUserApplications,
   UserLB,
 } from "~/models/portal.server"
@@ -18,10 +22,29 @@ import Grid from "~/components/shared/Grid"
 import {
   UserLBDailyRelaysResponse,
   UserLBOnChainDataResponse,
+  UserLBPreviousTotalRelaysResponse,
+  UserLBPreviousTotalSuccessfulRelaysResponse,
+  UserLBTotalRelaysResponse,
+  UserLBTotalSuccessfulRelaysResponse,
 } from "@pokt-foundation/portal-types"
+import FeedbackCard, {
+  links as FeedbackCardLinks,
+} from "~/components/application/FeedbackCard"
+import { useTranslate } from "~/context/TranslateContext"
 
 export const links = () => {
-  return [...NavLinks(), ...AppKeysCardLinks(), ...AdEconomicsForDevsLinks()]
+  return [
+    ...NavLinks(),
+    ...AppKeysCardLinks(),
+    ...AdEconomicsForDevsLinks(),
+    ...FeedbackCardLinks(),
+  ]
+}
+
+export const meta: MetaFunction = () => {
+  return {
+    title: "Application Overview",
+  }
 }
 
 export type AppIdLoaderData = {
@@ -30,6 +53,10 @@ export type AppIdLoaderData = {
   status: UserLBOnChainDataResponse
   stakedTokens: number
   maxDailyRelays: number
+  previousSeccessfulRelays: UserLBPreviousTotalSuccessfulRelaysResponse
+  previousTotalRelays: UserLBPreviousTotalRelaysResponse
+  successfulRelays: UserLBTotalSuccessfulRelaysResponse
+  totalRelays: UserLBTotalRelaysResponse
 }
 
 export const loader: LoaderFunction = async ({ request, params, context }) => {
@@ -43,8 +70,26 @@ export const loader: LoaderFunction = async ({ request, params, context }) => {
   const stakedTokens = status.stake
   const maxDailyRelays = status.relays * 24
 
+  const previousSeccessfulRelays = await getLBPreviousSuccessfulRelays(
+    params.appId,
+    request,
+  )
+  const previousTotalRelays = await getLBPreviousTotalRelays(params.appId, request)
+  const successfulRelays = await getLBPSuccessfulRelays(params.appId, request)
+  const totalRelays = await getLBTotalRelays(params.appId, request)
+
   return json<AppIdLoaderData>(
-    { app, dailyRelays, status, stakedTokens, maxDailyRelays },
+    {
+      app,
+      dailyRelays,
+      status,
+      stakedTokens,
+      maxDailyRelays,
+      previousSeccessfulRelays,
+      previousTotalRelays,
+      successfulRelays,
+      totalRelays,
+    },
     {
       headers: {
         "Cache-Control": `private, max-age=${
@@ -56,6 +101,7 @@ export const loader: LoaderFunction = async ({ request, params, context }) => {
 }
 
 export default function AppIdLayout() {
+  const { t } = useTranslate()
   const { app } = useLoaderData() as AppIdLoaderData
   const routes = [
     {
@@ -65,20 +111,20 @@ export default function AppIdLayout() {
     },
     {
       to: "",
-      label: "Overview",
+      label: t.appId.routes.overview,
       end: true,
     },
     {
       to: "requests",
-      label: "Requests",
+      label: t.appId.routes.requests,
     },
     {
       to: "security",
-      label: "Security",
+      label: t.appId.routes.security,
     },
     {
       to: "notifications",
-      label: "Notifications",
+      label: t.appId.routes.notifications,
     },
   ]
 
@@ -107,6 +153,9 @@ export default function AppIdLayout() {
             </section>
             <section>
               <AdEconomicsForDevs />
+            </section>
+            <section>
+              <FeedbackCard />
             </section>
           </>
         )}

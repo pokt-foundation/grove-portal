@@ -1,22 +1,25 @@
 {
+  "common": {
+    "submit": "submit -fr"
+  },
   "search": {
-    "label": "FrSearch",
-    "placeholder": "FrSearch by Transaction Hash, Block # and Address"
+    "label": "Search -fr",
+    "placeholder": "Search by Transaction Hash, Block # and Address -fr"
   },
   "terms": {
-    "address": "Fraddress",
-    "addresses": "Fraddresses",
-    "app": "Frapp",
-    "apps": "Frapps",
-    "block": "Frblock",
-    "blocks": "Frblocks",
-    "node": "Frnode",
-    "nodes": "Frnodes",
-    "network": "Frnetwork",
-    "networks": "Frnetworks",
-    "support": "Frsupport",
-    "transaction": "Frtransaction",
-    "transactions": "Frtransactions"
+    "address": "address -fr",
+    "addresses": "addresses -fr",
+    "app": "app -fr",
+    "apps": "apps -fr",
+    "block": "block -fr",
+    "blocks": "blocks -fr",
+    "node": "node -fr",
+    "nodes": "nodes -fr",
+    "network": "network -fr",
+    "networks": "networks -fr",
+    "support": "support -fr",
+    "transaction": "transaction -fr",
+    "transactions": "transactions -fr"
   },
   "error": {
     "default": "FrDefault Error Message",
@@ -101,5 +104,50 @@
     "getStarted": "Get Started -fr",
     "connect": "Connect to these networks. -fr",
     "whosNext": "See who's next. -fr"
+  },
+  "feedback": {
+    "personal": "Do not share any personal info -fr",
+    "errorText": "Text area must be filled out to submit a suggestion. -fr",
+    "textAreaPlaceholder": "Would be interesting to... -fr",
+    "feedbackSubText": "Help us to improve Pocket Portal -fr",
+    "feedbackTitle": "Share Feedback -fr",
+    "feedbackShareAltText": "share feedback -fr",
+    "thanksSubtext": "For your feedback! -fr",
+    "thanksTitle": "Thanks -fr",
+    "heartImageAlt": "heart image -fr",
+    "clickOpen": "Click to open feedback box -fr",
+    "clickClose": "Click to close feedback box -fr"
+  },
+  "appId": {
+    "routes": {
+      "overview": "Overview -fr",
+      "requests": "Requests -fr",
+      "security": "Security -fr",
+      "notifications": "Notifications -fr"
+    }
+  },
+  "AppRequestsByOriginCard": {
+    "label": "Requests By Origin -fr",
+    "columns": ["Percent -fr", "Origin -fr", "Relays -fr"]
+  },
+  "AppRequestsErrorsCard": {
+    "label": "Requests Errors -fr",
+    "columns": ["Type -fr", "Node -fr", "Size -fr", "Date -fr"]
+  },
+  "AppRequestsRateCard": {
+    "label": "Requests Rate -fr",
+    "list": {
+      "successDelta": {
+        "label": "Success Delta -fr",
+        "help": "Percentage of success among the total request attempted to perform by the application on the last 24h. -fr"
+      },
+      "errorRate": {
+        "label": "Error Rate -fr",
+        "help": "Percentage of error among the total request attempted to perform by the application. -fr"
+      },
+      "totalRequests": {
+        "label": "Total Requests -fr"
+      }
+    }
   }
 }

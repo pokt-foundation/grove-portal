@@ -24,8 +24,16 @@ export const requireUser = async (request: Request, defaultRedirect = "/") => {
   const decode = jwt_decode<{
     exp: number
   }>(user.accessToken)
+
   if (Date.now() >= decode.exp * 1000) {
-    throw redirect(defaultRedirect)
+    try {
+      const refreshUser = await authenticator.authenticate("auth0", request)
+      return refreshUser
+    } catch (error) {
+      throw await authenticator.logout(request, {
+        redirectTo: defaultRedirect,
+      })
+    }
   }
   return user
 }

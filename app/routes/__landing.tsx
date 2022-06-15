@@ -2,13 +2,19 @@ import { Outlet, useLoaderData } from "@remix-run/react"
 import { Header, links as HeaderLinks } from "~/components/shared/Header"
 import { Footer, links as FooterLinks } from "~/components/shared/Footer"
 import { Nav, links as NavLinks } from "~/components/shared/Nav"
-import { json, LinksFunction, LoaderFunction } from "@remix-run/node"
+import { json, LinksFunction, LoaderFunction, MetaFunction } from "@remix-run/node"
 import { useMemo } from "react"
 import { getUserProfile } from "~/utils/session.server"
 import { Auth0Profile } from "remix-auth-auth0"
 
 export const links: LinksFunction = () => {
   return [...HeaderLinks(), ...FooterLinks(), ...NavLinks()]
+}
+
+export const meta: MetaFunction = () => {
+  return {
+    title: "Pocket Network Portal",
+  }
 }
 
 type LoaderData = {

@@ -1,7 +1,7 @@
 import React, { useMemo, useContext } from "react"
 import en from "~/locales/en.json"
 import fr from "~/locales/fr.json"
-import { useUserPreference } from "./UserPreferenceContext"
+import { useUser } from "./UserContext"
 
 const languages = ["en", "fr"] as const
 const translate: Translate = {
@@ -10,6 +10,9 @@ const translate: Translate = {
 }
 
 interface TranslationData {
+  common: {
+    submit: string
+  }
   search: {
     label: string
     placeholder: string
@@ -57,6 +60,51 @@ interface TranslationData {
     connect: string
     whosNext: string
   }
+  feedback: {
+    personal: string
+    errorText: string
+    textAreaPlaceholder: string
+    feedbackSubText: string
+    feedbackTitle: string
+    feedbackShareAltText: string
+    thanksSubtext: string
+    thanksTitle: string
+    heartImageAlt: string
+    clickOpen: string
+    clickClose: string
+  }
+  appId: {
+    routes: {
+      overview: string
+      requests: string
+      security: string
+      notifications: string
+    }
+  }
+  AppRequestsByOriginCard: {
+    label: string
+    columns: string[]
+  }
+  AppRequestsErrorsCard: {
+    label: string
+    columns: string[]
+  }
+  AppRequestsRateCard: {
+    label: string
+    list: {
+      successDelta: {
+        label: string
+        help: string
+      }
+      errorRate: {
+        label: string
+        help: string
+      }
+      totalRequests: {
+        label: string
+      }
+    }
+  }
 }
 
 export type Language = typeof languages[number]
@@ -87,8 +135,8 @@ export function useTranslate() {
 }
 
 const TranslateContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const userPref = useUserPreference()
-  const language = useMemo(() => userPref.value.language, [userPref.value])
+  const { user } = useUser()
+  const language = useMemo(() => user.preferences.language, [user.preferences])
   const t = useMemo(() => translate[language as Language], [language])
 
   const memoValue = useMemo(

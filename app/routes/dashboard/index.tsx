@@ -1,4 +1,4 @@
-import { LoaderFunction, json } from "@remix-run/node"
+import { LoaderFunction, json, MetaFunction } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
 import type {
   Chain,
@@ -36,6 +36,9 @@ import ChainWithImage, {
 import Table, { links as TableLinks } from "~/components/shared/Table"
 import { getServiceLevelByChain } from "~/utils/chainUtils"
 import styles from "~/styles/dashboard.index.css"
+import FeedbackCard, {
+  links as FeedbackCardLinks,
+} from "~/components/application/FeedbackCard"
 import AdEconomicsForDevs, {
   links as AdEconomicsForDevsLinks,
 } from "~/components/application/AdEconomicsForDevs"
@@ -50,8 +53,15 @@ export const links = () => {
     ...AdEconomicsForDevsLinks(),
     ...TableLinks(),
     ...ChainWithImageLinks(),
+    ...FeedbackCardLinks(),
     { rel: "stylesheet", href: styles },
   ]
+}
+
+export const meta: MetaFunction = () => {
+  return {
+    title: "Dashboard Home",
+  }
 }
 
 type LoaderData = {
@@ -157,9 +167,9 @@ export default function Index() {
         <section>
           <AdEconomicsForDevs />
         </section>
-        {/* <section>
-            <FeedbackBox />
-          </section> */}
+        <section>
+          <FeedbackCard />
+        </section>
       </Grid.Col>
     </Grid>
   )

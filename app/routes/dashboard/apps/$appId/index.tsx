@@ -1,6 +1,6 @@
-import { json, LoaderFunction } from "@remix-run/node"
-import { useLoaderData, useMatches } from "@remix-run/react"
-import {
+import { json, LoaderFunction, MetaFunction } from "@remix-run/node"
+import { useLoaderData } from "@remix-run/react"
+/*import {
   getLBDailyRelays,
   getLBHourlyLatency,
   getLBOriginClassification,
@@ -12,17 +12,19 @@ import {
   getLBTotalRelays,
   getLBUserApplications,
   UserLB,
-} from "~/models/portal.server"
-import {
+} from "~/models/portal.server" */
+import { getLBHourlyLatency, getLBPSessionRelays } from "~/models/portal.server"
+/*import {
   UserLBDailyRelaysResponse,
   UserLBHistoricalLatencyResponse,
-  UserLBOriginBucket,
-  UserLBPreviousTotalSuccessfulRelaysResponse,
-  UserLBPreviousTotalRelaysResponse,
   UserLBSessionRelaysResponse,
   UserLBTotalSuccessfulRelaysResponse,
   UserLBOnChainDataResponse,
   UserLBTotalRelaysResponse,
+} from "@pokt-foundation/portal-types" */
+import {
+  UserLBHistoricalLatencyResponse,
+  UserLBSessionRelaysResponse,
 } from "@pokt-foundation/portal-types"
 import invariant from "tiny-invariant"
 import AppEndpointCard, {
@@ -54,16 +56,17 @@ export const links = () => {
   ]
 }
 
+export const meta: MetaFunction = () => {
+  return {
+    title: "Application Details",
+  }
+}
+
 export type AppIdIndexLoaderData = {
   // dailyRelays: UserLBDailyRelaysResponse
   hourlyLatency: UserLBHistoricalLatencyResponse
   // status: UserLBOnChainDataResponse
-  // originClassification: UserLBOriginBucket[]
-  previousSeccessfulRelays: UserLBPreviousTotalSuccessfulRelaysResponse
-  previousTotalRelays: UserLBPreviousTotalRelaysResponse
   sessionRelays: UserLBSessionRelaysResponse
-  successfulRelays: UserLBTotalSuccessfulRelaysResponse
-  totalRelays: UserLBTotalRelaysResponse
 }
 
 export const loader: LoaderFunction = async ({ request, params, context }) => {
@@ -73,24 +76,14 @@ export const loader: LoaderFunction = async ({ request, params, context }) => {
   // const dailyRelays = await getLBDailyRelays(id, request)
   const hourlyLatency = await getLBHourlyLatency(id, request)
   // const status = await getLBStatus(id, request)
-  // const originClassification = await getLBOriginClassification(params.id, request)
-  const previousSeccessfulRelays = await getLBPreviousSuccessfulRelays(id, request)
-  const previousTotalRelays = await getLBPreviousTotalRelays(id, request)
   const sessionRelays = await getLBPSessionRelays(id, request)
-  const successfulRelays = await getLBPSuccessfulRelays(id, request)
-  const totalRelays = await getLBTotalRelays(id, request)
 
   return json<AppIdIndexLoaderData>(
     {
       // dailyRelays,
       hourlyLatency,
       // status,
-      // originClassification,
-      previousSeccessfulRelays,
-      previousTotalRelays,
       sessionRelays,
-      successfulRelays,
-      totalRelays,
     },
     {
       headers: {
@@ -125,18 +118,18 @@ export const Application = () => {
           )}
         </Grid.Col>
         <Grid.Col sm={6}>
-          {data.previousSeccessfulRelays &&
-            data.previousTotalRelays &&
-            data.successfulRelays &&
-            data.totalRelays && (
+          {appIdData.previousSeccessfulRelays &&
+            appIdData.previousTotalRelays &&
+            appIdData.successfulRelays &&
+            appIdData.totalRelays && (
               <section>
                 <AppRequestsRateCard
-                  previousRelays={data.previousTotalRelays.total_relays}
+                  previousRelays={appIdData.previousTotalRelays.total_relays}
                   previousSuccessfulRelays={
-                    data.previousSeccessfulRelays.successful_relays
+                    appIdData.previousSeccessfulRelays.successful_relays
                   }
-                  successfulRelays={data.successfulRelays.successful_relays}
-                  totalRelays={data.totalRelays.total_relays}
+                  successfulRelays={appIdData.successfulRelays.successful_relays}
+                  totalRelays={appIdData.totalRelays.total_relays}
                 />
               </section>
             )}

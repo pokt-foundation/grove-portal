@@ -41,7 +41,6 @@ export const action: ActionFunction = async ({ request, params }) => {
 
     return json<boolean>(res)
   } catch (e) {
-    console.log(typeof e)
     return json<any>(e)
   }
 }

@@ -385,3 +385,41 @@ export const getNetworkWeeklyStats = async (
 
   return await res.json()
 }
+
+//LB: NOTIFICATIONS
+type Notifications = {
+  quarter: boolean
+  half: boolean
+  threeQuarters: boolean
+  full: boolean
+}
+
+export const updateNotifications = async (
+  request: Request,
+  appID: string,
+  { quarter, half, threeQuarters, full }: Notifications,
+): Promise<boolean> => {
+  const user = await requireUser(request)
+  const res = await fetch(
+    `${getRequiredClientEnvVar("BACKEND_URL")}/api/lb/notifications/${appID}`,
+    {
+      method: "put",
+      headers: {
+        Authorization: `${user.extraParams.token_type} ${user.accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        quarter,
+        half,
+        threeQuarters,
+        full,
+      }),
+    },
+  )
+
+  if (!res || res.status !== 200) {
+    throw new Error(res.statusText)
+  }
+
+  return true
+}

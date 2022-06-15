@@ -1,3 +1,4 @@
+import { useCallback, useEffect } from "react"
 import { Link, useToast } from "@pokt-foundation/ui"
 import { Grid } from "@mantine/core"
 import { ActionFunction, json, LinksFunction } from "@remix-run/node"
@@ -10,8 +11,7 @@ import NotificationsAlertForm, {
 } from "~/components/application/NotificationsAlertForm/NotificationsAlertForm"
 import { updateNotifications } from "~/models/portal.server"
 import styles from "~/styles/dashboard.apps.$appId.notifications.css"
-import { useActionData } from "@remix-run/react"
-import { useCallback, useEffect } from "react"
+import { useActionData, useCatch } from "@remix-run/react"
 
 export const links: LinksFunction = () => [
   ...NotificationsWeeklyBandwidthUsageCardLinks(),
@@ -82,5 +82,27 @@ export default function AppNotifications() {
         <NotificationsAlertForm />
       </Grid.Col>
     </Grid>
+  )
+}
+
+export const CatchBoundary = () => {
+  const caught = useCatch()
+  if (caught.status === 404) {
+    return (
+      <div className="error-container">
+        <h1>Notifications Catch Error</h1>
+        <p>{caught.statusText}</p>
+      </div>
+    )
+  }
+  throw new Error(`Unexpected caught response with status: ${caught.status}`)  
+}
+
+export const ErrorBoundary = ({ error }: { error: Error }) => {
+  return (
+    <div className="error-container">
+      <h1>Notifications Error</h1>
+      <p>{error.message}</p>
+    </div>
   )
 }

@@ -3,10 +3,26 @@
 }
 
 .pokt-dropdown-content {
+  width: 350px;
   max-height: 300px;
   overflow: auto;
 }
 
 .pokt-chains-dropdown-chain {
   padding: 16px;
+  cursor: pointer;
+}
+
+.pokt-chains-dropdown-chain:not(:last-child) {
+  margin-bottom: 4px;
+}
+
+.pokt-chains-dropdown-chain:hover,
+.pokt-chains-dropdown-chain:focus-visible {
+  outline: none;
+  background-color: var(--color-black-light);
+}
+
+.pokt-chains-dropdown .pokt-dropdown-trigger svg {
+  margin-left: 8px;
 }

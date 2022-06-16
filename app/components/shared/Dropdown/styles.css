@@ -9,6 +9,10 @@
   color: var(--color-white-main);
 }
 
+.pokt-dropdown-trigger:focus-visible {
+  outline: none;
+}
+
 .pokt-dropdown-content {
   margin-top: 8px;
   padding: 16px;

@@ -6,7 +6,7 @@ import Dropdown, {
 } from "~/components/shared/Dropdown"
 import { IconPlus } from "@pokt-foundation/ui"
 import ChainWithImage, { links as ChainWithImageLinks } from "../ChainWithImage"
-import { useState } from "react"
+import React, { SyntheticEvent, useRef, useState } from "react"
 import TextInput from "~/components/shared/TextInput"
 
 export const links = () => {
@@ -18,27 +18,33 @@ export const links = () => {
 }
 
 interface AppEndpointProps {
+  selectedChains: string[]
   handleChainClick: (chainId: string) => void
 }
 
-export default function ChainsDropdown({ handleChainClick }: AppEndpointProps) {
-  const allChains = Array.from(CHAIN_ID_PREFIXES.entries())
+export default function ChainsDropdown({
+  selectedChains,
+  handleChainClick,
+}: AppEndpointProps) {
+  const allChains = Array.from(CHAIN_ID_PREFIXES.entries()).filter(
+    ([id]) => !selectedChains.includes(id),
+  )
   const [query, setQuery] = useState("")
+
+  const handleSearch = (e: SyntheticEvent<HTMLInputElement>) => {
+    setQuery(e.currentTarget.value)
+  }
 
   return (
     <span className="pokt-chains-dropdown">
       <Dropdown
         label={
-          <span>
+          <>
             Add New <IconPlus />
-          </span>
+          </>
         }
       >
-        <TextInput
-          placeholder="Search Chains"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-        />
+        <TextInput placeholder="Search Chains" value={query} onChange={handleSearch} />
         {allChains &&
           allChains
             .filter(([_, row]) =>

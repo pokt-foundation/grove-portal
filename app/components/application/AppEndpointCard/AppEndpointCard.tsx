@@ -60,17 +60,17 @@ export default function AppEndpointCard({ app }: AppEndpointProps) {
     }
   }, [app, user])
 
-  const handleAddToStoredChains = (newChain: string) => {
+  const handleAddToStoredChains = (chain: string) => {
     if (!user.data?.preferences.endpoints || !user.data?.preferences.endpoints[app.id])
       return
-    if (user.data?.preferences.endpoints[app.id].includes(newChain)) return
+    if (user.data?.preferences.endpoints[app.id].includes(chain)) return
 
     user.submit(
       {
         endpoints: JSON.stringify({
           [app.id]: user.data?.preferences.endpoints[app.id]
-            ? [...user.data?.preferences.endpoints[app.id], newChain]
-            : [newChain],
+            ? [...user.data?.preferences.endpoints[app.id], chain]
+            : [chain],
         }),
       },
       {
@@ -80,6 +80,27 @@ export default function AppEndpointCard({ app }: AppEndpointProps) {
     )
   }
 
+  const handleRemoveFromStoredChains = (chain: string) => {
+    if (!user.data?.preferences.endpoints || !user.data?.preferences.endpoints[app.id])
+      return
+    if (user.data?.preferences.endpoints[app.id].includes(chain)) {
+      const restOfEndpoints = user.data?.preferences.endpoints[app.id].filter(
+        (e) => e !== chain,
+      )
+      user.submit(
+        {
+          endpoints: JSON.stringify({
+            [app.id]: restOfEndpoints,
+          }),
+        },
+        {
+          method: "post",
+          action: "/api/user",
+        },
+      )
+    }
+  }
+
   return (
     <div className="pokt-app-endpoint">
       <Card>
@@ -87,7 +108,14 @@ export default function AppEndpointCard({ app }: AppEndpointProps) {
           <h3>Endpoint</h3>
           <div>
             {app.gigastake ? (
-              <ChainsDropdown handleChainClick={handleAddToStoredChains} />
+              <ChainsDropdown
+                selectedChains={
+                  user.data?.preferences.endpoints
+                    ? user.data?.preferences.endpoints[app.id]
+                    : []
+                }
+                handleChainClick={handleAddToStoredChains}
+              />
             ) : (
               <ChainWithImage chain={chainDescription} />
             )}
@@ -95,7 +123,12 @@ export default function AppEndpointCard({ app }: AppEndpointProps) {
         </div>
         {chains &&
           chains.map((chain: string) => (
-            <AppEndpointUrl key={chain} chainId={chain} appId={app.id} />
+            <AppEndpointUrl
+              key={chain}
+              chainId={chain}
+              appId={app.id}
+              handleRemove={handleRemoveFromStoredChains}
+            />
           ))}
       </Card>
     </div>

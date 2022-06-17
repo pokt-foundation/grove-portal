@@ -53,6 +53,20 @@ export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) 
       {
         id: "logout",
         el: () => (
+          <Form action="/api/stripe/create-poral-session" method="post">
+            <Button type="submit" variant="outline">
+              Manage Billing
+            </Button>
+          </Form>
+        ),
+      },
+      {
+        id: "divider2",
+        el: () => <Divider />,
+      },
+      {
+        id: "logout",
+        el: () => (
           <Form action="/api/auth/auth0" method="post">
             <Button type="submit" variant="outline" name="logout" value="true">
               Logout

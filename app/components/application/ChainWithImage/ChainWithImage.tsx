@@ -5,7 +5,7 @@ export const links = () => {
   return [{ rel: "stylesheet", href: styles }]
 }
 
-interface AppEndpointProps {
+export interface AppEndpointProps {
   chain: string
   label?: string
 }

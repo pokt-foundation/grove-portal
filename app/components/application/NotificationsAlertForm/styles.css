@@ -1,11 +1,23 @@
-.pokt-network-notifications-alert {
-  position: relative;
+.pokt-network-notifications-activate-alerts {
   width: 100%;
 }
 
-.pokt-network-notifications-alert .pokt-card {
+.pokt-network-notifications-alerts .pokt-card {
+  padding: 24px;
+}
+
+.pokt-network-notifications-submit-btn {
+  width: 220px;
+  height: 48px;
+  margin-bottom: 32px;
+  border-radius: 10px;
+}
+
+.pokt-network-notifications-alert {
   position: relative;
-  padding: 16px 16px 16px 32px;
+  width: 100%;
+  padding: 8px 8px 8px 32px;
+  margin: 16px 0;
 }
 
 .pokt-network-notifications-alert-border {
@@ -15,6 +27,12 @@
   width: 8px;
   height: 100%;
   border-radius: 8px 0px 0px 8px;
+}
+
+.pokt-network-notifications-alert-btn-container {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .pokt-network-notifications-alert-border-positive {

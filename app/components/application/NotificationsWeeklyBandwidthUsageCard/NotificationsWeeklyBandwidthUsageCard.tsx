@@ -1,5 +1,4 @@
 import { useMemo } from "react"
-import { CircleGraph } from "@pokt-foundation/ui"
 import { SimpleGrid } from "@mantine/core"
 import type { LinksFunction } from "@remix-run/node"
 import Card, { links as CardLinks } from "~/components/shared/Card"
@@ -7,6 +6,7 @@ import { useUsageColor } from "~/utils/applicationUtils"
 import { formatNumberToSICompact } from "~/utils/formattingUtils"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { AppIdLoaderData } from "~/routes/dashboard/apps/$appId"
+import CircleGraphWithGradient from "../CircleGraphWithGradient"
 
 import styles from "./styles.css"
 
@@ -67,6 +67,85 @@ export default function NotificationsWeeklyBandwidthUsageCard() {
 
   const maxRelays = formatNumberToSICompact(maxDailyRelays)
 
+  const graphsConfig = useMemo(
+    () => [
+      {
+        id: "average-usage-gradient",
+        config: {
+          value: Math.min(totalDailyRelays / maxDailyRelays, 1),
+        },
+        gradientConfig: [
+          {
+            color: secondaryAverageUsageColor,
+            offset: "10%",
+            opacity: "100%",
+          },
+          {
+            color: primaryAverageUsageColor,
+            offset: "90%",
+            opacity: "100%",
+          },
+        ],
+        title: "AVG Usage",
+        subtitle: `${Intl.NumberFormat().format(
+          Number(totalDailyRelays.toFixed(0)),
+        )} Relays`,
+      },
+      {
+        id: "max-usage-gradient",
+        config: {
+          value: Math.min(highestDailyAmount / maxDailyRelays, 1),
+        },
+        gradientConfig: [
+          {
+            color: secondaryMaxUsageColor,
+            offset: "10%",
+            opacity: "100%",
+          },
+          {
+            color: primaryMaxUsageColor,
+            offset: "90%",
+            opacity: "100%",
+          },
+        ],
+        title: "Max Usage",
+        subtitle: `${Intl.NumberFormat().format(highestDailyAmount)} Relays`,
+      },
+      {
+        id: "min-usage-gradient",
+        config: {
+          value: Math.min(lowestDailyAmount / maxDailyRelays, 1),
+        },
+        gradientConfig: [
+          {
+            color: secondaryMinUsageColor,
+            offset: "10%",
+            opacity: "100%",
+          },
+          {
+            color: primaryMinUsageColor,
+            offset: "90%",
+            opacity: "100%",
+          },
+        ],
+        title: "Min Usage",
+        subtitle: `${Intl.NumberFormat().format(lowestDailyAmount)} Relays`,
+      },
+    ],
+    [
+      highestDailyAmount,
+      lowestDailyAmount,
+      maxDailyRelays,
+      primaryAverageUsageColor,
+      primaryMaxUsageColor,
+      primaryMinUsageColor,
+      secondaryAverageUsageColor,
+      secondaryMaxUsageColor,
+      secondaryMinUsageColor,
+      totalDailyRelays,
+    ],
+  )
+
   return (
     <section className="pokt-network-notifications-weekly-bandwidth-usage">
       <Card>
@@ -82,86 +161,17 @@ export default function NotificationsWeeklyBandwidthUsageCard() {
             { maxWidth: 600, cols: 1, spacing: "sm" },
           ]}
         >
-          <div>
-            <CircleGraph
-              value={Math.min(totalDailyRelays / maxDailyRelays, 1)}
-              size={130}
-              color="url(#average-usage-gradient)"
-              strokeWidth={20}
-            >
-              <defs>
-                <linearGradient id="average-usage-gradient">
-                  <stop
-                    offset="10%"
-                    stop-opacity="100%"
-                    stop-color={secondaryAverageUsageColor}
-                  />
-                  <stop
-                    offset="90%"
-                    stop-opacity="100%"
-                    stop-color={primaryAverageUsageColor}
-                  />
-                </linearGradient>
-              </defs>
-            </CircleGraph>
-            <h5>AVG Usage</h5>
-            <p>
-              {" "}
-              {Intl.NumberFormat().format(Number(totalDailyRelays.toFixed(0)))} Relays
-            </p>
-          </div>
-
-          <div>
-            <CircleGraph
-              value={Math.min(highestDailyAmount / maxDailyRelays, 1)}
-              size={130}
-              color="url(#max-usage-gradient)"
-              strokeWidth={20}
-            >
-              <defs>
-                <linearGradient id="max-usage-gradient">
-                  <stop
-                    offset="10%"
-                    stop-opacity="100%"
-                    stop-color={secondaryMaxUsageColor}
-                  />
-                  <stop
-                    offset="90%"
-                    stop-opacity="100%"
-                    stop-color={primaryMaxUsageColor}
-                  />
-                </linearGradient>
-              </defs>
-            </CircleGraph>
-            <h5>Max Usage</h5>
-            <p>{Intl.NumberFormat().format(highestDailyAmount)} Relays</p>
-          </div>
-
-          <div>
-            <CircleGraph
-              value={lowestDailyAmount / maxDailyRelays}
-              size={130}
-              color="url(#min-usage-gradient)"
-              strokeWidth={20}
-            >
-              <defs>
-                <linearGradient id="min-usage-gradient">
-                  <stop
-                    offset="10%"
-                    stop-opacity="100%"
-                    stop-color={secondaryMinUsageColor}
-                  />
-                  <stop
-                    offset="90%"
-                    stop-opacity="100%"
-                    stop-color={primaryMinUsageColor}
-                  />
-                </linearGradient>
-              </defs>
-            </CircleGraph>
-            <h5>Min Usage</h5>
-            <p> {Intl.NumberFormat().format(lowestDailyAmount)} Relays</p>
-          </div>
+          {graphsConfig.map(({ config, gradientConfig, id, subtitle, title }) => (
+            <div key={id}>
+              <CircleGraphWithGradient
+                id={id}
+                config={config}
+                gradientConfig={gradientConfig}
+              />
+              <h5>{title}</h5>
+              <p>{subtitle}</p>
+            </div>
+          ))}
         </SimpleGrid>
 
         <p className="pokt-network-notifications-weekly-bandwidth-usage-values-period">

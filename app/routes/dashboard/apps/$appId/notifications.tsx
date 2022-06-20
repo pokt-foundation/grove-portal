@@ -1,6 +1,4 @@
-import { useCallback, useEffect } from "react"
-import { Link, useToast } from "@pokt-foundation/ui"
-import { Grid } from "@mantine/core"
+import { Link } from "@pokt-foundation/ui"
 import { ActionFunction, json, LinksFunction } from "@remix-run/node"
 import invariant from "tiny-invariant"
 import NotificationsWeeklyBandwidthUsageCard, {
@@ -9,9 +7,9 @@ import NotificationsWeeklyBandwidthUsageCard, {
 import NotificationsAlertForm, {
   links as NotificationsAlertFormLinks,
 } from "~/components/application/NotificationsAlertForm/NotificationsAlertForm"
-import { updateNotifications } from "~/models/portal.server"
+import { putNotifications } from "~/models/portal.server"
 import styles from "~/styles/dashboard.apps.$appId.notifications.css"
-import { useActionData, useCatch } from "@remix-run/react"
+import { useCatch } from "@remix-run/react"
 
 export const links: LinksFunction = () => [
   ...NotificationsWeeklyBandwidthUsageCardLinks(),
@@ -32,7 +30,7 @@ export const action: ActionFunction = async ({ request, params }) => {
   const full = formData.get("full")
 
   try {
-    const res = await updateNotifications(request, appId!, {
+    const res = await putNotifications(request, appId!, {
       quarter: quarter === "on" ? true : false,
       half: half === "on" ? true : false,
       threeQuarters: threeQuarters === "on" ? true : false,
@@ -46,42 +44,23 @@ export const action: ActionFunction = async ({ request, params }) => {
 }
 
 export default function AppNotifications() {
-  const actionData = useActionData()
-  const toast = useToast()
-  const addToast = useCallback((msg) => toast(msg), [toast])
-
-  useEffect(() => {
-    if (actionData && typeof actionData === "boolean") {
-      addToast("Notification preferences updated")
-    } else {
-      addToast(actionData)
-    }
-  }, [actionData, addToast])
-
   return (
-    <Grid className="pokt-network-app-notifications">
-      <Grid.Col xl={12}>
-        <h3>Notifications</h3>
-      </Grid.Col>
-      <Grid.Col md={12} lg={8} xl={8}>
-        <p className="pokt-network-app-notifications-p">
-          Set up usage alerts to be warned when you are approaching your relay limits. The
-          Portal automatically redirects all surplus relays to our backup infrastructure.
-          If you want all relays to be unstoppable, stay under your limit or contact the
-          team to up your stake.
-        </p>
-        <NotificationsWeeklyBandwidthUsageCard />
-        <p className="pokt-network-app-notifications-p">
-          If you need more relays for your application or you are looking to stake your
-          own POKT, please{" "}
-          <Link href="mailto:sales@pokt.netowork?subject=Portal Contact">contact us</Link>{" "}
-          and our team will find a solution for you.
-        </p>
-      </Grid.Col>
-      <Grid.Col md={12} lg={4} xl={4}>
-        <NotificationsAlertForm />
-      </Grid.Col>
-    </Grid>
+    <section className="pokt-network-app-notifications">
+      <NotificationsAlertForm />
+      <p className="pokt-network-app-notifications-p">
+        Set up usage alerts to be warned when you are approaching your relay limits. The
+        Portal automatically redirects all surplus relays to our backup infrastructure. If
+        you want all relays to be unstoppable, stay under your limit or contact the team
+        to up your stake.
+      </p>
+      <NotificationsWeeklyBandwidthUsageCard />
+      <p className="pokt-network-app-notifications-p">
+        If you need more relays for your application or you are looking to stake your own
+        POKT, please{" "}
+        <Link href="mailto:sales@pokt.netowork?subject=Portal Contact">contact us</Link>{" "}
+        and our team will find a solution for you.
+      </p>
+    </section>
   )
 }
 
@@ -95,7 +74,7 @@ export const CatchBoundary = () => {
       </div>
     )
   }
-  throw new Error(`Unexpected caught response with status: ${caught.status}`)  
+  throw new Error(`Unexpected caught response with status: ${caught.status}`)
 }
 
 export const ErrorBoundary = ({ error }: { error: Error }) => {

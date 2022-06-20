@@ -426,7 +426,7 @@ type Notifications = {
   full: boolean
 }
 
-export const updateNotifications = async (
+export const putNotifications = async (
   request: Request,
   appID: string,
   { quarter, half, threeQuarters, full }: Notifications,

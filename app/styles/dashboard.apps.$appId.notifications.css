@@ -8,13 +8,6 @@
   margin-top: 0;
 }
 
-.pokt-network-app-notifications .mantine-Button-root {
-  height: 48px;
-  width: 100%;
-  margin-bottom: 32px;
-  border-radius: 10px;
-}
-
 .pokt-network-app-notifications .mantine-Button-outline {
   border: 2px solid #ffffff;
   color: #ffffff;

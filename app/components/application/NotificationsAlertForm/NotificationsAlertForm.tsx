@@ -1,34 +1,113 @@
+import { Switch } from "@mantine/core"
 import { LinksFunction } from "@remix-run/node"
-import { Form } from "@remix-run/react"
+import { Form, useTransition } from "@remix-run/react"
 import Button from "~/components/shared/Button"
-import NotificationsActivateAlertsCard, {
-  links as NotificationsActivateAlertsCardLinks,
-} from "../NotificationsActivateAlertsCard"
-import NotificationsAlertCard, {
-  links as NotificationsAlertCardLinks,
-} from "../NotificationsAlertCard"
+import Card from "~/components/shared/Card"
+import { useMatchesRoute } from "~/hooks/useMatchesRoute"
+import { AppIdLoaderData } from "~/routes/dashboard/apps/$appId"
+import { formatNumberToSICompact } from "~/utils/formattingUtils"
+import styles from "./styles.css"
 
 export const links: LinksFunction = () => [
-  ...NotificationsActivateAlertsCardLinks(),
-  ...NotificationsAlertCardLinks(),
+  {
+    rel: "stylesheet",
+    href: styles,
+  },
 ]
 
-const NOTIFICATIONS_ALERT_LEVELS = ["quarter", "half", "threeQuarters", "full"]
+type NotificationLevel = "quarter" | "half" | "threeQuarters" | "full"
+
+const NOTIFICATIONS_ALERT_LEVELS: NotificationLevel[] = [
+  "quarter",
+  "half",
+  "threeQuarters",
+  "full",
+]
+
+const DEFAULT_ALERT_PERCENTAGES = {
+  quarter: false,
+  half: false,
+  threeQuarters: true,
+  full: true,
+}
+
+function getUsagePercentage(usageLevel: string): string {
+  if (usageLevel === "quarter") {
+    return "25%"
+  } else if (usageLevel === "half") {
+    return "50%"
+  } else if (usageLevel === "threeQuarters") {
+    return "75%"
+  } else {
+    return "100%"
+  }
+}
+
+function backgroundColor(usageLevel: string): string {
+  if (usageLevel === "quarter") {
+    return "positive"
+  } else if (usageLevel === "half") {
+    return "yellow"
+  } else if (usageLevel === "threeQuarters") {
+    return "warning"
+  } else {
+    return "negative"
+  }
+}
 
 export default function NotificationsAlertForm() {
+  const { state } = useTransition()
+  const appIdRoute = useMatchesRoute("routes/dashboard/apps/$appId")
+  const appIdData = appIdRoute?.data as AppIdLoaderData
+  const {
+    maxDailyRelays,
+    app: { notificationSettings },
+  } = appIdData
+
   return (
     <Form method="put">
-      <Button variant="filled" type="submit">
-        Save Changes
-      </Button>
-      <Button>Back to application</Button>
-      <NotificationsActivateAlertsCard />
-      {NOTIFICATIONS_ALERT_LEVELS.map((level) => (
-        <NotificationsAlertCard
-          key={level}
-          level={level as "quarter" | "half" | "threeQuarters" | "full"}
-        />
-      ))}
+      <section className="pokt-network-notifications-activate-alerts">
+        <Card>
+          <h4>Activate Alerts</h4>
+          <p>
+            We will send an email when your usage crosses the thresholds specified below.
+          </p>
+          {NOTIFICATIONS_ALERT_LEVELS.map((level) => (
+            <div key={level} className="pokt-network-notifications-alert">
+              <div
+                className={`pokt-network-notifications-alert-border pokt-network-notifications-alert-border-${backgroundColor(
+                  level,
+                )}`}
+              />
+              <div className="pokt-network-notifications-alert-description">
+                <p>
+                  {getUsagePercentage(level)} of {formatNumberToSICompact(maxDailyRelays)}{" "}
+                  relays per day
+                </p>
+                <Switch
+                  name={level}
+                  defaultChecked={
+                    Object.keys(notificationSettings).length > 0 &&
+                    notificationSettings[level]
+                      ? notificationSettings
+                      : DEFAULT_ALERT_PERCENTAGES[level]
+                  }
+                />
+              </div>
+            </div>
+          ))}
+          <div className="pokt-network-notifications-alert-btn-container">
+            <Button
+              className="pokt-network-notifications-submit-btn"
+              variant="filled"
+              type="submit"
+              disabled={state === "loading" || state === "submitting"}
+            >
+              {state === "loading" || state === "submitting" ? state : "Save Changes"}
+            </Button>
+          </div>
+        </Card>
+      </section>
     </Form>
   )
 }

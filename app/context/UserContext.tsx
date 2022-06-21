@@ -1,8 +1,7 @@
-import { FormProps, SubmitFunction, useFetcher } from "@remix-run/react"
-import React, { useMemo, useContext, Dispatch, useEffect, useCallback } from "react"
+import { SubmitFunction, useFetcher } from "@remix-run/react"
+import React, { useMemo, useContext, useEffect } from "react"
 import { UserLoaderActionData } from "~/routes/api/user"
 import { Language } from "~/context/TranslateContext"
-import { Auth0Profile } from "remix-auth-auth0"
 import { UserLB } from "@pokt-foundation/portal-types"
 
 export const defaultUserPreference = {

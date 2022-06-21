@@ -18,6 +18,12 @@ type InputProps = TextInputProps & {
 export default function TextInput({ copy = false, ...props }: InputProps) {
   const ref = useRef<HTMLInputElement>(null)
 
+  let rightSection = props.rightSection
+
+  if (!rightSection && copy) {
+    rightSection = <CopyTextIcon text={ref.current?.value} />
+  }
+
   return (
     <MantineTextInput
       ref={ref}
@@ -27,13 +33,7 @@ export default function TextInput({ copy = false, ...props }: InputProps) {
       })}
       size={props.size ?? "md"}
       variant={props.variant ?? "unstyled"}
-      rightSection={
-        props.rightSection ? (
-          props.rightSection
-        ) : copy ? (
-          <CopyTextIcon text={ref.current?.value} />
-        ) : null
-      }
+      rightSection={rightSection}
       {...props}
     />
   )

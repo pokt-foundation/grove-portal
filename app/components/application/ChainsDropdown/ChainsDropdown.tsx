@@ -6,7 +6,7 @@ import Dropdown, {
 } from "~/components/shared/Dropdown"
 import { IconPlus } from "@pokt-foundation/ui"
 import ChainWithImage, { links as ChainWithImageLinks } from "../ChainWithImage"
-import React, { SyntheticEvent, useRef, useState } from "react"
+import React, { SyntheticEvent, useState } from "react"
 import TextInput from "~/components/shared/TextInput"
 
 export const links = () => {

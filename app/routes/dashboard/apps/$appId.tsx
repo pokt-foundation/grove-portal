@@ -1,12 +1,6 @@
 import { Outlet, useCatch, useLoaderData } from "@remix-run/react"
 import Nav, { links as NavLinks } from "~/components/shared/Nav"
-import {
-  ActionFunction,
-  json,
-  LoaderFunction,
-  MetaFunction,
-  redirect,
-} from "@remix-run/node"
+import { json, LoaderFunction, MetaFunction } from "@remix-run/node"
 import invariant from "tiny-invariant"
 import {
   getLBDailyRelays,
@@ -16,7 +10,6 @@ import {
   getLBStatus,
   getLBTotalRelays,
   getLBUserApplications,
-  postLBRemoveUserApplication,
   UserLB,
 } from "~/models/portal.server"
 import AppKeysCard, {

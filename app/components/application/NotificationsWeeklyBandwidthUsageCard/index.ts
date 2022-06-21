@@ -1,0 +1,3 @@
+import NotificationsWeeklyBandwidthUsageCard from "./NotificationsWeeklyBandwidthUsageCard"
+export * from "./NotificationsWeeklyBandwidthUsageCard"
+export default NotificationsWeeklyBandwidthUsageCard

@@ -266,6 +266,99 @@ export const getLBUserApplications = async (request: Request): Promise<UserLB[]>
   return await res.json()
 }
 
+// LB: POST NEW USER APPLICATION
+export type UserApplication = {
+  name: string
+  chain: string
+  whitelistOrigins: string[]
+  whitelistUserAgents: string[]
+  whitelistContracts: string[]
+  whitelistMethods: string[]
+  secretKeyRequired: boolean
+}
+export const postLBUserApplication = async (
+  userApp: UserApplication,
+  request: Request,
+): Promise<{ id: string }> => {
+  const user = await requireUser(request)
+
+  // TODO:  why is the chain not passed to this call?
+  const res = await fetch(`${getRequiredClientEnvVar("BACKEND_URL")}/api/lb`, {
+    method: "POST",
+    body: JSON.stringify({
+      name: userApp.name,
+      gatewaySettings: {
+        whitelistOrigins: userApp.whitelistOrigins,
+        whitelistUserAgents: userApp.whitelistUserAgents,
+        whitelistContracts: userApp.whitelistContracts,
+        whitelistMethods: userApp.whitelistMethods,
+        secretKeyRequired: userApp.secretKeyRequired,
+      },
+    }),
+    headers: {
+      Authorization: `${user.extraParams.token_type} ${user.accessToken}`,
+    },
+  })
+
+  if (!res || res.status !== 200) {
+    throw new Error(res.statusText)
+  }
+
+  const { id } = await res.json()
+
+  if (getRequiredClientEnvVar("NODE_ENV") === "production") {
+    // TODO: LOG AMPLITUDE EVENT
+    //
+    //
+    // amplitude.getInstance().logEvent(AmplitudeEvents.EndpointCreation, {
+    //   creationDate: new Date().toISOString(),
+    //   endpointId: id,
+    //   endpointName: data.name,
+    //   chainId: appConfigData.appChain,
+    //   publicKeys: [data.apps[0].publicKey],
+    // })
+  }
+
+  return { id }
+}
+
+// LB: POST REMOVE USER APPLICATION
+export const postLBRemoveUserApplication = async (
+  appId: string,
+  request: Request,
+): Promise<{ id: string }> => {
+  const user = await requireUser(request)
+
+  // TODO:  why is the chain not passed to this call?
+  const res = await fetch(
+    `${getRequiredClientEnvVar("BACKEND_URL")}/api/lb/remove/${appId}`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `${user.extraParams.token_type} ${user.accessToken}`,
+      },
+    },
+  )
+
+  if (!res || res.status !== 200) {
+    throw new Error(res.statusText)
+  }
+
+  const { id } = await res.json()
+
+  if (getRequiredClientEnvVar("NODE_ENV") === "production") {
+    // TODO: LOG AMPLITUDE EVENT
+    //
+    //
+    // amplitude.getInstance().logEvent(AmplitudeEvents.EndpointRemoval, {
+    //   endpointId: appId,
+    // })
+  }
+
+  return { id }
+}
+
+// NETWORK: CHAINS
 export type Chain = {
   id: string
   ticker: string
@@ -275,7 +368,6 @@ export type Chain = {
   isAvailableForStaking: boolean
 }
 
-// NETWORK: CHAINS
 export const getNetworkChains = async (request: Request): Promise<Chain[]> => {
   const user = await requireUser(request)
   const res = await fetch(

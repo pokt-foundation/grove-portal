@@ -27,7 +27,13 @@ export default function TextInput({ copy = false, ...props }: InputProps) {
       })}
       size={props.size ?? "md"}
       variant={props.variant ?? "unstyled"}
-      rightSection={<CopyTextIcon text={ref.current?.value} />}
+      rightSection={
+        props.rightSection ? (
+          props.rightSection
+        ) : copy ? (
+          <CopyTextIcon text={ref.current?.value} />
+        ) : null
+      }
       {...props}
     />
   )

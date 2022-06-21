@@ -1,6 +1,12 @@
 import { Outlet, useCatch, useLoaderData } from "@remix-run/react"
 import Nav, { links as NavLinks } from "~/components/shared/Nav"
-import { json, LoaderFunction, MetaFunction } from "@remix-run/node"
+import {
+  ActionFunction,
+  json,
+  LoaderFunction,
+  MetaFunction,
+  redirect,
+} from "@remix-run/node"
 import invariant from "tiny-invariant"
 import {
   getLBDailyRelays,
@@ -10,6 +16,7 @@ import {
   getLBStatus,
   getLBTotalRelays,
   getLBUserApplications,
+  postLBRemoveUserApplication,
   UserLB,
 } from "~/models/portal.server"
 import AppKeysCard, {
@@ -31,6 +38,9 @@ import FeedbackCard, {
   links as FeedbackCardLinks,
 } from "~/components/application/FeedbackCard"
 import { useTranslate } from "~/context/TranslateContext"
+import AppRemoveModal, {
+  links as AppRemoveModalLinks,
+} from "~/components/application/AppRemoveModal"
 
 export const links = () => {
   return [
@@ -38,6 +48,7 @@ export const links = () => {
     ...AppKeysCardLinks(),
     ...AdEconomicsForDevsLinks(),
     ...FeedbackCardLinks(),
+    ...AppRemoveModalLinks(),
   ]
 }
 
@@ -156,6 +167,9 @@ export default function AppIdLayout() {
             </section>
             <section>
               <FeedbackCard />
+            </section>
+            <section>
+              <AppRemoveModal appId={app.id} />
             </section>
           </>
         )}

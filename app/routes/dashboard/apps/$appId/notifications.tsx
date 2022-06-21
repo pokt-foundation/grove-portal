@@ -47,12 +47,6 @@ export default function AppNotifications() {
   return (
     <section className="pokt-network-app-notifications">
       <NotificationsAlertForm />
-      <p className="pokt-network-app-notifications-p">
-        Set up usage alerts to be warned when you are approaching your relay limits. The
-        Portal automatically redirects all surplus relays to our backup infrastructure. If
-        you want all relays to be unstoppable, stay under your limit or contact the team
-        to up your stake.
-      </p>
       <NotificationsWeeklyBandwidthUsageCard />
       <p className="pokt-network-app-notifications-p">
         If you need more relays for your application or you are looking to stake your own

@@ -1,4 +1,4 @@
-import { Switch } from "@mantine/core"
+import { Switch, Text } from "@mantine/core"
 import { LinksFunction } from "@remix-run/node"
 import { Form, useTransition } from "@remix-run/react"
 import Button from "~/components/shared/Button"
@@ -68,34 +68,39 @@ export default function NotificationsAlertForm() {
     <Form method="put">
       <section className="pokt-network-notifications-activate-alerts">
         <Card>
-          <h4>Activate Alerts</h4>
+          <div className="pokt-card-header">
+            <h3>Activate Alerts</h3>
+          </div>
           <p>
+            Set up usage alerts to be warned when you are approaching your relay limits.
             We will send an email when your usage crosses the thresholds specified below.
           </p>
-          {NOTIFICATIONS_ALERT_LEVELS.map((level) => (
-            <div key={level} className="pokt-network-notifications-alert">
-              <div
-                className={`pokt-network-notifications-alert-border pokt-network-notifications-alert-border-${backgroundColor(
-                  level,
-                )}`}
-              />
-              <div className="pokt-network-notifications-alert-description">
-                <p>
-                  {getUsagePercentage(level)} of {formatNumberToSICompact(maxDailyRelays)}{" "}
-                  relays per day
-                </p>
-                <Switch
-                  name={level}
-                  defaultChecked={
-                    Object.keys(notificationSettings).length > 0 &&
-                    notificationSettings[level]
-                      ? notificationSettings
-                      : DEFAULT_ALERT_PERCENTAGES[level]
-                  }
+          <div className="pokt-network-notifications-alerts">
+            {NOTIFICATIONS_ALERT_LEVELS.map((level) => (
+              <div key={level} className="pokt-network-notifications-alert">
+                <div
+                  className={`pokt-network-notifications-alert-border pokt-network-notifications-alert-border-${backgroundColor(
+                    level,
+                  )}`}
                 />
+                <div className="pokt-network-notifications-alert-description">
+                  <p>
+                    {getUsagePercentage(level)} of{" "}
+                    {formatNumberToSICompact(maxDailyRelays)} relays per day
+                  </p>
+                  <Switch
+                    name={level}
+                    defaultChecked={
+                      Object.keys(notificationSettings).length > 0 &&
+                      notificationSettings[level]
+                        ? notificationSettings
+                        : DEFAULT_ALERT_PERCENTAGES[level]
+                    }
+                  />
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
           <div className="pokt-network-notifications-alert-btn-container">
             <Button
               className="pokt-network-notifications-submit-btn"
@@ -106,6 +111,11 @@ export default function NotificationsAlertForm() {
               {state === "loading" || state === "submitting" ? state : "Save Changes"}
             </Button>
           </div>
+          <Text size="xs" mt={16}>
+            The Portal automatically redirects all surplus relays to our backup
+            infrastructure. If you want all relays to be unstoppable, stay under your
+            limit or contact the team to up your stake.
+          </Text>
         </Card>
       </section>
     </Form>

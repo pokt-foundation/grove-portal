@@ -6,18 +6,15 @@
   padding: 24px;
 }
 
-.pokt-network-notifications-submit-btn {
-  width: 220px;
-  height: 48px;
-  margin-bottom: 32px;
-  border-radius: 10px;
+.pokt-network-notifications-alerts {
+  margin: 32px 0;
 }
 
 .pokt-network-notifications-alert {
   position: relative;
   width: 100%;
-  padding: 8px 8px 8px 32px;
-  margin: 16px 0;
+  padding-left: 24px;
+  margin-bottom: 16px;
 }
 
 .pokt-network-notifications-alert-border {

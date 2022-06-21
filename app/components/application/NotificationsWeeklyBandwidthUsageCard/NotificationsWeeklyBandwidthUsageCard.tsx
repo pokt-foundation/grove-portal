@@ -149,8 +149,8 @@ export default function NotificationsWeeklyBandwidthUsageCard() {
   return (
     <section className="pokt-network-notifications-weekly-bandwidth-usage">
       <Card>
-        <div className="pokt-network-notifications-weekly-bandwidth-usage-title-container">
-          <h4>Weekly Bandwidth Usage</h4>
+        <div className="pokt-card-header">
+          <h3>Weekly Bandwidth Usage</h3>
           <p>Max Relays Per Day: {maxRelays}</p>
         </div>
         <SimpleGrid
@@ -162,7 +162,10 @@ export default function NotificationsWeeklyBandwidthUsageCard() {
           ]}
         >
           {graphsConfig.map(({ config, gradientConfig, id, subtitle, title }) => (
-            <div key={id}>
+            <div
+              key={id}
+              className="pokt-network-notifications-weekly-bandwidth-usage-item"
+            >
               <CircleGraphWithGradient
                 id={id}
                 config={config}

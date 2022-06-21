@@ -12,20 +12,6 @@
   align-items: center;
 }
 
-.pokt-network-notifications-weekly-bandwidth-usage-title-container h4 {
-  font-size: 24px;
-  line-height: 1.5;
-  font-weight: bold;
-  margin-top: 0;
-}
-
-.pokt-network-notifications-weekly-bandwidth-usage-title-container p {
-  font-size: 14px;
-  font-weight: 300;
-  line-height: 1.5;
-  margin-top: 0;
-}
-
 .pokt-network-notifications-weekly-bandwidth-usage
   .pokt-card
   .mantine-SimpleGrid-root
@@ -33,6 +19,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.pokt-network-notifications-weekly-bandwidth-usage-item h5 {
+  margin-bottom: 0;
+}
+
+.pokt-network-notifications-weekly-bandwidth-usage-item p {
+  margin-top: 4px;
 }
 
 .pokt-network-notifications-weekly-bandwidth-usage

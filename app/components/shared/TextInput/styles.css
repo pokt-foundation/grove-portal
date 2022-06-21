@@ -2,10 +2,6 @@
   width: 100%;
 }
 
-.pokt-text-input:not(:last-child) {
-  margin-bottom: 16px;
-}
-
 .pokt-text-input input {
   padding: 8px;
   color: var(--color-white-main);

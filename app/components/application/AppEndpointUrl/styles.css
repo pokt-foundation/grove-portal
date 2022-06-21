@@ -5,12 +5,31 @@
   gap: 16px;
 }
 
+.pokt-app-endpoint-url:not(:last-child) {
+  margin-bottom: 8px;
+}
+
 .pokt-app-endpoint-url input {
   flex-grow: 1;
+  margin-bottom: 0;
 }
 
 .pokt-app-endpoint-url-abbrv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80px;
   padding: 8px;
   border: 1px solid var(--color-white-main);
   border-radius: 4px;
+  font-size: 0.5rem;
+}
+
+.pokt-app-endpoint-url-delete {
+  padding: 0 8px;
+}
+
+.pokt-app-endpoint-url-delete svg {
+  width: 20px;
+  height: 20px;
 }

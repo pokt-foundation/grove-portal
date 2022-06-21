@@ -30,8 +30,15 @@ export const action: ActionFunction = async ({ request }) => {
   const cookie: UserPreference =
     (await userPrefCookie.parse(cookieHeader)) || defaultUserPreference
 
-  if (bodyParams.has("language")) {
+  if (bodyParams.get("language")) {
     cookie.language = bodyParams.get("language") as Language
+  }
+
+  if (bodyParams.get("endpoints")) {
+    cookie.endpoints = {
+      ...cookie.endpoints,
+      ...(JSON.parse(bodyParams.get("endpoints") as any) as UserPreference["endpoints"]),
+    }
   }
 
   const data = {

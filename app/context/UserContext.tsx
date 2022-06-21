@@ -1,31 +1,51 @@
-import { useFetcher } from "@remix-run/react"
-import React, { useMemo, useContext, Dispatch, useEffect } from "react"
+import { SubmitFunction, useFetcher } from "@remix-run/react"
+import React, { useMemo, useContext, useEffect } from "react"
 import { UserLoaderActionData } from "~/routes/api/user"
 import { Language } from "~/context/TranslateContext"
-import { Auth0Profile } from "remix-auth-auth0"
-
-export interface UserPreference {
-  language: Language
-}
+import { UserLB } from "@pokt-foundation/portal-types"
 
 export const defaultUserPreference = {
   language: "en" as Language,
 }
 
+export const defaultUserData = {
+  profile: undefined,
+  preferences: defaultUserPreference,
+}
+
 interface IUserContext {
-  user: {
-    profile: Auth0Profile | undefined
-    preferences: UserPreference
+  data: UserLoaderActionData
+  load: (href: string) => void
+  state: "idle" | "submitting" | "loading"
+  submit: SubmitFunction
+  type:
+    | "init"
+    | "actionSubmission"
+    | "actionRedirect"
+    | "loaderSubmission"
+    | "actionReload"
+    | "normalLoad"
+    | "done"
+}
+
+export interface UserPreferenceFormData {
+  language: Language
+  endpoints?: string // stringified
+}
+
+export interface UserPreference {
+  language: Language
+  endpoints?: {
+    [key: UserLB["id"]]: string[]
   }
-  submit: Dispatch<Partial<UserPreference>>
 }
 
 const UserContext = React.createContext<IUserContext>({
-  user: {
-    profile: undefined,
-    preferences: defaultUserPreference,
-  },
+  data: defaultUserData,
+  load: () => {},
+  state: "idle",
   submit: () => {},
+  type: "init",
 })
 
 export function useUser() {
@@ -39,33 +59,21 @@ export function useUser() {
 }
 
 const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const fetcher = useFetcher<UserLoaderActionData>()
-  const userPref = useMemo(
-    () => fetcher.data?.preferences ?? defaultUserPreference,
-    [fetcher],
-  )
-  const profile = useMemo(() => fetcher.data?.profile ?? undefined, [fetcher])
-
-  const submit = (formData: Partial<UserPreference>) => {
-    fetcher.submit(formData, {
-      action: "/api/user",
-      method: "post",
-    })
-  }
+  const user = useFetcher<UserLoaderActionData>()
 
   useEffect(() => {
-    if (fetcher.type === "init") {
-      fetcher.load("/api/user")
+    if (user.type === "init") {
+      user.load("/api/user")
     }
-  }, [fetcher])
+  }, [user])
 
-  const value = {
-    user: {
-      profile: profile,
-      preferences: userPref,
-    },
-    submit,
-  }
+  const value = useMemo(
+    () => ({
+      ...user,
+      data: user.data ?? defaultUserData,
+    }),
+    [user],
+  )
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>
 }

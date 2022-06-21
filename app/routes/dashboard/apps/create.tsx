@@ -74,7 +74,7 @@ export default function CreateApp() {
               of our suported chains, provided by Pocket Network Inc.
             </Text>
           </div>
-          <Form>
+          <Form method="post">
             <TextInput name="app-name" label="Name" placeholder="New App Name" />
             <Select
               name="app-chain"

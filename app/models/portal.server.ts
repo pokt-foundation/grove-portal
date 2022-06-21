@@ -282,11 +282,12 @@ export const postLBUserApplication = async (
 ): Promise<{ id: string }> => {
   const user = await requireUser(request)
 
-  // TODO:  why is the chain not passed to this call?
+  // TODO: passing chain here seems to have no affect. The API should take this into account.
   const res = await fetch(`${getRequiredClientEnvVar("BACKEND_URL")}/api/lb`, {
     method: "POST",
     body: JSON.stringify({
       name: userApp.name,
+      // chain: userApp.chain,
       gatewaySettings: {
         whitelistOrigins: userApp.whitelistOrigins,
         whitelistUserAgents: userApp.whitelistUserAgents,
@@ -296,6 +297,7 @@ export const postLBUserApplication = async (
       },
     }),
     headers: {
+      "Content-Type": "application/json",
       Authorization: `${user.extraParams.token_type} ${user.accessToken}`,
     },
   })
@@ -326,7 +328,7 @@ export const postLBUserApplication = async (
 export const postLBRemoveUserApplication = async (
   appId: string,
   request: Request,
-): Promise<{ id: string }> => {
+): Promise<{ success: boolean }> => {
   const user = await requireUser(request)
 
   // TODO:  why is the chain not passed to this call?
@@ -340,11 +342,9 @@ export const postLBRemoveUserApplication = async (
     },
   )
 
-  if (!res || res.status !== 200) {
+  if (!res || (res.status !== 200 && res.status !== 204)) {
     throw new Error(res.statusText)
   }
-
-  const { id } = await res.json()
 
   if (getRequiredClientEnvVar("NODE_ENV") === "production") {
     // TODO: LOG AMPLITUDE EVENT
@@ -355,7 +355,7 @@ export const postLBRemoveUserApplication = async (
     // })
   }
 
-  return { id }
+  return { success: true }
 }
 
 // NETWORK: CHAINS

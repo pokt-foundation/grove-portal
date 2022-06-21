@@ -1,7 +1,7 @@
 import { Grid } from "@mantine/core"
 import { UserLB } from "@pokt-foundation/portal-types"
 import { json, LoaderFunction } from "@remix-run/node"
-import { Link, Outlet, useLoaderData, useLocation } from "@remix-run/react"
+import { Link, Outlet, useLoaderData } from "@remix-run/react"
 import AdEconomicsForDevs, {
   links as AdEconomicsForDevsLinks,
 } from "~/components/application/AdEconomicsForDevs"
@@ -56,7 +56,6 @@ export const loader: LoaderFunction = async ({ request }) => {
 export const Apps = () => {
   const { apps, userId } = useLoaderData() as LoaderData
   const appIdRoute = useMatchesRoute("routes/dashboard/apps/$appId")
-  const location = useLocation()
 
   const userAppsStatus: CardListItem[] = [
     {
@@ -65,7 +64,7 @@ export const Apps = () => {
     },
     {
       label: "Max Apps",
-      value: getRequiredClientEnvVar("GODMODE_ACCOUNTS").includes(userId)
+      value: getRequiredClientEnvVar("GODMODE_ACCOUNTS")?.includes(userId)
         ? "unlimited"
         : MAX_USER_APPS,
     },
@@ -84,7 +83,7 @@ export const Apps = () => {
             </div>
             <CardList items={userAppsStatus} />
             {(apps.length < MAX_USER_APPS ||
-              getRequiredClientEnvVar("GODMODE_ACCOUNTS").includes(userId)) && (
+              getRequiredClientEnvVar("GODMODE_ACCOUNTS")?.includes(userId)) && (
               <Button component={Link} to="create" fullWidth mt={32}>
                 Create New Application
               </Button>

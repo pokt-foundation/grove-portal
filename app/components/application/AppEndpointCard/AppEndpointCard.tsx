@@ -110,9 +110,10 @@ export default function AppEndpointCard({ app }: AppEndpointProps) {
             {app.gigastake ? (
               <ChainsDropdown
                 selectedChains={
-                  user.data?.preferences.endpoints
+                  user.data?.preferences.endpoints &&
+                  user.data?.preferences.endpoints[app.id]
                     ? user.data?.preferences.endpoints[app.id]
-                    : []
+                    : ["0021"]
                 }
                 handleChainClick={handleAddToStoredChains}
               />
@@ -127,6 +128,7 @@ export default function AppEndpointCard({ app }: AppEndpointProps) {
               key={chain}
               chainId={chain}
               appId={app.id}
+              gigastake={app.gigastake}
               handleRemove={handleRemoveFromStoredChains}
             />
           ))}

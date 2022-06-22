@@ -57,12 +57,13 @@ export const requireAdmin = async (
   return user.profile
 }
 
-// you can also export the methods individually for your own usage
-export const { getSession, commitSession, destroySession } = sessionStorage
-
 export const getUserId = async (request: Request) => {
-  const user = await requireUser(request)
-  return user.profile.id.replace(/auth0\|/g, "")
+  const user = await authenticator.isAuthenticated(request)
+  return user?.profile.id.replace(/auth0\|/g, "")
+}
+
+export const getPoktId = (id: string) => {
+  return id.replace(/auth0\|/g, "")
 }
 
 export const getUserProfile = async (request: Request) => {

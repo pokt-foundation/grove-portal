@@ -1,23 +1,29 @@
 import { ActionFunction, redirect, json } from "@remix-run/node"
-import { getUserId } from "~/utils/session.server"
+import { authenticator } from "~/utils/auth.server"
 import { stripe } from "~/models/stripe.server"
 import invariant from "tiny-invariant"
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData()
-  const userId = await getUserId(request)
+  const user = await authenticator.isAuthenticated(request)
   const url = new URL(request.url)
   const returnUrl = `${url.origin}/dashboard`
 
+  invariant(user, "user must be logged in")
+
   const lookup_key = formData.get("lookup_key")
-  invariant(lookup_key, "Need a price lookup key in order to place an order.")
-  invariant(typeof lookup_key === "string", "Need a price lookup key must be a string")
+  invariant(
+    lookup_key && typeof lookup_key === "string",
+    "Need a price 'lookup key' of type string in order to place an order.",
+  )
 
   const quantity = formData.get("quantity")
-  invariant(quantity, "Need a quanity value in order to place an order.")
-  invariant(typeof quantity === "number", "Need a quantity value must be a number")
+  invariant(
+    quantity && typeof quantity === "number",
+    "Need a quanity value of type number in order to place an order.",
+  )
 
-  const doesUserExists = await stripe.customers.retrieve(userId)
+  const doesUserExists = await stripe.customers.retrieve("test") //user.poktId)
 
   const prices = await stripe.prices.list({
     lookup_keys: [lookup_key],
@@ -25,7 +31,7 @@ export const action: ActionFunction = async ({ request }) => {
   })
 
   const session = await stripe.checkout.sessions.create({
-    customer: doesUserExists ? userId : undefined,
+    customer: doesUserExists ? user.profile.id : undefined,
     billing_address_collection: "auto",
     line_items: [
       {

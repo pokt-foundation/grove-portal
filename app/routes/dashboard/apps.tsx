@@ -18,7 +18,7 @@ import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { getLBUserApplications } from "~/models/portal.server"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 import { MAX_USER_APPS } from "~/utils/pocketUtils"
-import { getUserId } from "~/utils/session.server"
+import { getPoktId, requireUserProfile } from "~/utils/session.server"
 
 export const links = () => {
   return [
@@ -35,13 +35,13 @@ type LoaderData = {
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
-  const userId = await getUserId(request)
+  const profile = await requireUserProfile(request)
   const apps = await getLBUserApplications(request)
 
   return json<LoaderData>(
     {
       apps,
-      userId,
+      userId: getPoktId(profile.id),
     },
     {
       headers: {

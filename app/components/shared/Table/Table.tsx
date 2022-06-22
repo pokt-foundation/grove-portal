@@ -143,11 +143,9 @@ export const Table = <T extends IdObj>({
               {emptyRows &&
                 emptyRows.map((row, index) => (
                   <tr key={index} className={row}>
-                    {Object.entries(removeIdFromObject(paginatedData[0])).map(
-                      (_, index) => (
-                        <td key={index}></td>
-                      ),
-                    )}
+                    {Object.entries(removeIdFromObject(data[0])).map((_, index) => (
+                      <td key={index}></td>
+                    ))}
                   </tr>
                 ))}
             </tbody>

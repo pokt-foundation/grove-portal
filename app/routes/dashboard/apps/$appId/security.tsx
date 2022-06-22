@@ -415,7 +415,9 @@ export default function AppSecurity() {
           })}
         </div>
 
-        <button type="submit">Save</button>
+        <button className="submit" type="submit">
+          Save
+        </button>
       </Form>
     </div>
   )

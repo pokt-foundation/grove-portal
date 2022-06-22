@@ -25,8 +25,8 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export const action: ActionFunction = async ({ request }) => {
   const userProfile = await getUserProfile(request)
-  const cookieHeader = request.headers.get("Cookie")
   const bodyParams = await request.formData()
+  const cookieHeader = request.headers.get("Cookie")
   const cookie: UserPreference =
     (await userPrefCookie.parse(cookieHeader)) || defaultUserPreference
 

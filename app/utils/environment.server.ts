@@ -7,6 +7,7 @@ function getClientEnv() {
     SENTRY_DSN: process.env.SENTRY_DSN,
     BUILD_ID: process.env.BUILD_ID,
     FLAG_MULTI_LANGUAGE: process.env.FLAG_MULTI_LANGUAGE,
+    GODMODE_ACCOUNTS: process.env.GODMODE_ACCOUNTS,
   }
 }
 

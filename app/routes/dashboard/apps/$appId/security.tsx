@@ -124,7 +124,7 @@ export default function AppSecurity() {
   }
 
   return (
-    <>
+    <div className="security">
       <h3>Application Security</h3>
       <p>
         To maximize the security of your application, you should activate the private
@@ -417,6 +417,6 @@ export default function AppSecurity() {
 
         <button type="submit">Save</button>
       </Form>
-    </>
+    </div>
   )
 }

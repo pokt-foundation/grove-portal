@@ -5,7 +5,7 @@ import invariant from "tiny-invariant"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { getAppSecurity } from "../../../../models/portal.server"
 import { AppIdLoaderData } from "../$appId"
-import styles from "./styles.css"
+import styles from "../../../../styles/dashboard.apps.$appId.security.css"
 import { Checkbox } from "@mantine/core"
 
 export const meta: MetaFunction = () => {

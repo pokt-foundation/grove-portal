@@ -7,15 +7,22 @@ export const links = () => {
 
 type DropdownProps = {
   label: string | React.ReactElement
+  triggerClassName?: string
+  contentClassName?: string
 }
 
-export const Dropdown: React.FC<DropdownProps> = ({ label, children }) => {
+export const Dropdown: React.FC<DropdownProps> = ({
+  label,
+  children,
+  contentClassName = "",
+  triggerClassName = "",
+}) => {
   return (
     <DropdownMenu.Root>
-      <DropdownMenu.Trigger className="pokt-dropdown-trigger">
+      <DropdownMenu.Trigger className={`pokt-dropdown-trigger ${triggerClassName}`}>
         {label}
       </DropdownMenu.Trigger>
-      <DropdownMenu.Content className="pokt-dropdown-content">
+      <DropdownMenu.Content className={`pokt-dropdown-content ${contentClassName}`}>
         {children}
       </DropdownMenu.Content>
     </DropdownMenu.Root>

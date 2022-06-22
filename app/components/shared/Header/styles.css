@@ -38,6 +38,50 @@
   justify-content: end;
 }
 
+.pokt-header-user-menu-trigger {
+  background-color: transparent;
+  border: none;
+  color: var(--color-white-light);
+}
+
+.pokt-header-user-menu-trigger[aria-expanded="true"] {
+  color: var(--color-primary-main);
+}
+
+.pokt-header-user-menu-content {
+  background: linear-gradient(123.23deg, #141c24 11.81%, var(--color-black-light) 98.51%);
+  width: 280px;
+  padding: 16px;
+  border-radius: 10px;
+  border: 1px solid var(--color-primary-main);
+  color: var(--color-white-light);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.pokt-header-user-menu-content > * {
+  margin: 1em 0;
+}
+
+.pokt-header-user-menu-content div[role="menuitem"] {
+  width: fit-content;
+}
+
+.pokt-header-user-menu-content div[role="separator"] {
+  border: 1px solid #32404f;
+}
+
+.pokt-header-user-menu-content h5 {
+  font-size: 18px;
+  margin: 0.5em 0;
+}
+
+.pokt-header-user-menu-content button {
+  border: none;
+  color: var(--color-white-light);
+  padding: 0;
+}
+
 /* START: MOBILE DRAWER MENU */
 .pokt-aside-menu {
   position: absolute;

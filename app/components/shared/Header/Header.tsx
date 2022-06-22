@@ -6,11 +6,17 @@ import { useViewportSize } from "@mantine/hooks"
 import HamburgerMenu, { links as HamburgerMenuLinks } from "../HamburgerMenu"
 import { useEffect, useMemo, useState } from "react"
 import clsx from "clsx"
-import { Divider, Menu } from "@mantine/core"
 import { IconPerson } from "@pokt-foundation/ui"
+import Dropdown from "../Dropdown"
+import { Item, Separator } from "@radix-ui/react-dropdown-menu"
 
 export const links = () => {
   return [{ rel: "stylesheet", href: styles }, ...HamburgerMenuLinks()]
+}
+
+type Route = {
+  id: string
+  el: () => JSX.Element
 }
 
 type HeaderProps = {
@@ -32,29 +38,27 @@ export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) 
     }
   }, [width])
 
-  const routes = useMemo(() => {
+  const routes: Route[] = useMemo(() => {
     const userRoutes = [
       {
         id: "account",
         el: () => <h5>Account</h5>,
       },
       {
-        id: "divider1",
-        el: () => <Divider />,
-      },
-      {
         id: "user",
-        el: () => <p>{user?.displayName}</p>,
-      },
-      {
-        id: "divider2",
-        el: () => <Divider />,
+        el: () => <p>User Profile</p>,
       },
       {
         id: "logout",
         el: () => (
           <Form action="/api/auth/auth0" method="post">
-            <Button type="submit" variant="outline" name="logout" value="true">
+            <Button
+              type="submit"
+              variant="outline"
+              name="logout"
+              value="true"
+              leftIcon={<img src="/logout.svg" alt="logout" />}
+            >
               Logout
             </Button>
           </Form>
@@ -108,7 +112,8 @@ export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) 
           })}
         >
           <div className={`pokt-header-nav nav-${nav} pokt-header-flex`}>{children}</div>
-          {user && (
+          <UserMenuDropdown user={user} routes={routes} />
+          {/* {user && (
             <Menu
               control={
                 <div>
@@ -121,7 +126,7 @@ export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) 
                 return <El key={route.id} />
               })}
             </Menu>
-          )}
+          )} */}
           {!user && (
             <>
               <Form action="/api/auth/auth0" method="post">
@@ -147,6 +152,44 @@ export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) 
       >
         <HeaderChildren user={user} nav={nav} slot={children} />
       </aside>
+    </>
+  )
+}
+
+type UserMenuDropdownProps = {
+  user?: Auth0Profile
+  routes: Route[]
+  triggerClassName?: string
+  contentClassName?: string
+}
+
+function UserMenuDropdown({
+  user,
+  routes,
+  triggerClassName = "pokt-header-user-menu-trigger",
+  contentClassName = "pokt-header-user-menu-content",
+}: UserMenuDropdownProps) {
+  return (
+    <>
+      {user && (
+        <Dropdown
+          label={<IconPerson />}
+          contentClassName={contentClassName}
+          triggerClassName={triggerClassName}
+        >
+          {routes.map(({ el, id: routeID }, index) => {
+            const El = el
+            return (
+              <>
+                <Item key={routeID}>
+                  <El />
+                </Item>
+                {index < routes.length - 1 && <Separator />}
+              </>
+            )
+          })}
+        </Dropdown>
+      )}
     </>
   )
 }

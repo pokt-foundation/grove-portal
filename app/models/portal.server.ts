@@ -471,3 +471,74 @@ export const postFeedback = async (
     error: false,
   }
 }
+
+// APP SECURITY Post Security Settings
+export type AppSecurityProps = {
+  gatewaySettings: {
+    secretKey: string
+    secretKeyRequired: boolean
+    whitelistOrigins: string[]
+    whitelistUserAgents: string[]
+    whitelistBlockchains: string[]
+    whitelistContracts: { blockchainID: string; contracts: string[] }[]
+    whitelistMethods: { blockchainID: string; methods: string[] }[]
+  }
+}
+
+export const appSecurity = async (
+  appID: string,
+  formData: AppSecurityProps,
+  request: Request,
+  type: string,
+): Promise<AppSecurityProps> => {
+  const user = await requireUser(request)
+  const data = { ...formData }
+  const res = await fetch(`${getRequiredClientEnvVar("BACKEND_URL")}/api/lb/${appID}`, {
+    method: type || "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `${user.extraParams.token_type} ${user.accessToken}`,
+    },
+    body: JSON.stringify(data),
+  })
+
+  if (!res || res.status !== 200) {
+    throw new Error(res.statusText)
+  }
+
+  return await res.json()
+}
+
+// APP SECURITY Post Security Settings
+export type getAppSecurityProps = {
+  gatewaySettings: {
+    secretKey: string
+    secretKeyRequired: boolean
+    whitelistOrigins: string[]
+    whitelistUserAgents: string[]
+    whitelistBlockchains: string[]
+    whitelistContracts: { blockchainID: string; contracts: string[] }[]
+    whitelistMethods: { blockchainID: string; methods: string[] }[]
+  }
+}
+
+// Get app security settings
+export const getAppSecurity = async (
+  appID: string,
+  request: Request,
+): Promise<getAppSecurityProps> => {
+  const user = await requireUser(request)
+  const res = await fetch(`${getRequiredClientEnvVar("BACKEND_URL")}/api/lb`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `${user.extraParams.token_type} ${user.accessToken}`,
+    },
+  })
+
+  if (!res || res.status !== 200) {
+    throw new Error(res.statusText)
+  }
+
+  return await res.json()
+}

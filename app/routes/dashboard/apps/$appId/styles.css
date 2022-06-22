@@ -1,0 +1,30 @@
+div.card {
+  background: rgb(25, 36, 48);
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+div.flexRow {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+}
+
+div.flexGrowRow {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  flex-grow: 1;
+  margin-top: 2rem;
+}
+
+input.grow {
+  flex-grow: 1;
+}
+
+p.growInline {
+  display: inline-block;
+  flex-grow: 1;
+}

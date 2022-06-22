@@ -135,8 +135,11 @@ export function useTranslate() {
 }
 
 const TranslateContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const { user } = useUser()
-  const language = useMemo(() => user.preferences.language, [user.preferences])
+  const user = useUser()
+  const language = useMemo(
+    () => user.data?.preferences.language,
+    [user.data?.preferences],
+  )
   const t = useMemo(() => translate[language as Language], [language])
 
   const memoValue = useMemo(

@@ -51,7 +51,7 @@ export function useUsageColor(usage: number): [string, string] {
     return [theme.accent, theme.accentSecondAlternative]
   }
 
-  if (usage <= 0.75) {
+  if (usage <= 0.5) {
     return ["#FFB82E", "#B57905"]
   }
 

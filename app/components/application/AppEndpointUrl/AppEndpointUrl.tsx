@@ -12,12 +12,14 @@ export const links = () => {
 type AppEndpointUrlProp = {
   chainId: string
   appId: string
+  gigastake: boolean
   handleRemove: (chain: string) => void
 }
 
 export default function AppEndpointUrl({
   chainId,
   appId,
+  gigastake,
   handleRemove,
 }: AppEndpointUrlProp) {
   if (!chainId) {
@@ -37,12 +39,14 @@ export default function AppEndpointUrl({
         <ChainWithImage chain={name} label={abbrv} />
       </div>
       <TextInput readOnly copy value={endpoint} />
-      <Button
-        className="pokt-app-endpoint-url-delete"
-        onClick={() => handleRemove(chainId)}
-      >
-        <IconTrashcan />
-      </Button>
+      {gigastake && (
+        <Button
+          className="pokt-app-endpoint-url-delete"
+          onClick={() => handleRemove(chainId)}
+        >
+          <IconTrashcan />
+        </Button>
+      )}
     </div>
   )
 }

@@ -31,6 +31,9 @@ import FeedbackCard, {
   links as FeedbackCardLinks,
 } from "~/components/application/FeedbackCard"
 import { useTranslate } from "~/context/TranslateContext"
+import AppRemoveModal, {
+  links as AppRemoveModalLinks,
+} from "~/components/application/AppRemoveModal"
 
 export const links = () => {
   return [
@@ -38,6 +41,7 @@ export const links = () => {
     ...AppKeysCardLinks(),
     ...AdEconomicsForDevsLinks(),
     ...FeedbackCardLinks(),
+    ...AppRemoveModalLinks(),
   ]
 }
 
@@ -156,6 +160,9 @@ export default function AppIdLayout() {
             </section>
             <section>
               <FeedbackCard />
+            </section>
+            <section>
+              <AppRemoveModal appId={app.id} />
             </section>
           </>
         )}

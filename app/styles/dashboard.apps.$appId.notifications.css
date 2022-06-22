@@ -1,0 +1,19 @@
+.pokt-network-app-notifications-p {
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.5;
+}
+
+.pokt-network-app-notifications-p:first-of-type {
+  margin-top: 0;
+}
+
+.pokt-network-app-notifications .mantine-Button-outline {
+  border: 2px solid #ffffff;
+  color: #ffffff;
+}
+
+.pokt-network-app-notifications .mantine-Button-filled {
+  background-color: #c5ec4b;
+  color: #000000;
+}

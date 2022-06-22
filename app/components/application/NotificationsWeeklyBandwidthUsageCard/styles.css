@@ -1,0 +1,39 @@
+.pokt-network-notifications-weekly-bandwidth-usage {
+  width: 100%;
+}
+
+.pokt-network-notifications-weekly-bandwidth-usage .pokt-card {
+  padding: 24px;
+}
+
+.pokt-network-notifications-weekly-bandwidth-usage-title-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pokt-network-notifications-weekly-bandwidth-usage
+  .pokt-card
+  .mantine-SimpleGrid-root
+  > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pokt-network-notifications-weekly-bandwidth-usage-item h5 {
+  margin-bottom: 0;
+}
+
+.pokt-network-notifications-weekly-bandwidth-usage-item p {
+  margin-top: 4px;
+}
+
+.pokt-network-notifications-weekly-bandwidth-usage
+  .pokt-card
+  .pokt-network-notifications-weekly-bandwidth-usage-values-period {
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 1.5;
+  text-align: center;
+}

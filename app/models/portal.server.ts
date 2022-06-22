@@ -359,8 +359,6 @@ export const getNetworkLatestBlock = async (
     },
   )
 
-  console.log(res)
-
   if (!res || res.status !== 200) {
     throw new Error(res.statusText)
   }
@@ -420,6 +418,44 @@ export const getNetworkWeeklyStats = async (
   return await res.json()
 }
 
+//LB: NOTIFICATIONS
+type Notifications = {
+  quarter: boolean
+  half: boolean
+  threeQuarters: boolean
+  full: boolean
+}
+
+export const putNotifications = async (
+  request: Request,
+  appID: string,
+  { quarter, half, threeQuarters, full }: Notifications,
+): Promise<boolean> => {
+  const user = await requireUser(request)
+  const res = await fetch(
+    `${getRequiredClientEnvVar("BACKEND_URL")}/api/lb/notifications/${appID}`,
+    {
+      method: "put",
+      headers: {
+        Authorization: `${user.extraParams.token_type} ${user.accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        quarter,
+        half,
+        threeQuarters,
+        full,
+      }),
+    },
+  )
+
+  if (!res || (res.status !== 200 && res.status !== 204)) {
+    throw new Error(res.statusText)
+  }
+
+  return true
+}
+
 // FEEDBACK FORM
 export type FeedbackFormProps = {
   feedback: string
@@ -445,8 +481,6 @@ export const postFeedback = async (
     ...formData,
     user: user.profile.emails[0].value,
   }
-
-  console.log({ body })
 
   const res = await fetch(
     `${getRequiredClientEnvVar("BACKEND_URL")}/api/users/feedback`,

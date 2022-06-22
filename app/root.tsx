@@ -16,7 +16,7 @@ import { Center, Alert } from "@mantine/core"
 // import initializeAnalytics from "~/utils/analytics"
 import { getClientEnv } from "./utils/environment.server"
 import { TranslateContextProvider, useTranslate } from "./context/TranslateContext"
-import { UserPreferenceContextProvider } from "./context/UserPreferenceContext"
+import { UserContextProvider } from "./context/UserContext"
 import { FeatureFlagsContextProvider } from "./context/FeatureFlagContext"
 
 export const links: LinksFunction = () => {
@@ -61,9 +61,9 @@ export const loader: LoaderFunction = async ({ request }) => {
 const WithProviders: React.FC = ({ children }) => {
   return (
     <FeatureFlagsContextProvider>
-      <UserPreferenceContextProvider>
+      <UserContextProvider>
         <TranslateContextProvider>{children}</TranslateContextProvider>
-      </UserPreferenceContextProvider>
+      </UserContextProvider>
     </FeatureFlagsContextProvider>
   )
 }

@@ -2,6 +2,8 @@ import { ChainMetadata, prefixFromChainId } from "~/utils/chainUtils"
 import ChainWithImage from "~/components/application/ChainWithImage"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import styles from "./styles.css"
+import Button from "~/components/shared/Button"
+import { IconTrashcan } from "@pokt-foundation/ui"
 
 export const links = () => {
   return [{ rel: "stylesheet", href: styles }, ...TextInputLinks()]
@@ -10,9 +12,14 @@ export const links = () => {
 type AppEndpointUrlProp = {
   chainId: string
   appId: string
+  handleRemove: (chain: string) => void
 }
 
-export default function AppEndpointUrl({ chainId, appId }: AppEndpointUrlProp) {
+export default function AppEndpointUrl({
+  chainId,
+  appId,
+  handleRemove,
+}: AppEndpointUrlProp) {
   if (!chainId) {
     return <></>
   }
@@ -30,6 +37,12 @@ export default function AppEndpointUrl({ chainId, appId }: AppEndpointUrlProp) {
         <ChainWithImage chain={name} label={abbrv} />
       </div>
       <TextInput readOnly copy value={endpoint} />
+      <Button
+        className="pokt-app-endpoint-url-delete"
+        onClick={() => handleRemove(chainId)}
+      >
+        <IconTrashcan />
+      </Button>
     </div>
   )
 }

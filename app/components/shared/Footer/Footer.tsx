@@ -3,7 +3,7 @@ import Button from "~/components/shared/Button"
 import { Grid } from "~/components/shared/Grid"
 import { Group } from "~/components/shared/Group"
 import { useTranslate, Language } from "~/context/TranslateContext"
-import { useUserPreference } from "~/context/UserPreferenceContext"
+import { useUser } from "~/context/UserContext"
 import { useFeatureFlags } from "~/context/FeatureFlagContext"
 
 export const links = () => {
@@ -12,7 +12,7 @@ export const links = () => {
 
 export const Footer = () => {
   const { flags } = useFeatureFlags()
-  const { submit } = useUserPreference()
+  const { submit } = useUser()
   const { language, languages } = useTranslate()
 
   const handleLanguageChange = (l: Language) => {

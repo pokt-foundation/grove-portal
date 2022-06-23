@@ -46,7 +46,7 @@ export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) 
       },
       {
         id: "user",
-        el: () => <p>User Profile</p>,
+        el: () => <Link to="/dashboard/profile">User Profile</Link>,
       },
       {
         id: "logout",
@@ -113,20 +113,6 @@ export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) 
         >
           <div className={`pokt-header-nav nav-${nav} pokt-header-flex`}>{children}</div>
           <UserMenuDropdown user={user} routes={routes} />
-          {/* {user && (
-            <Menu
-              control={
-                <div>
-                  <IconPerson />
-                </div>
-              }
-            >
-              {routes.map((route) => {
-                const El = route.el
-                return <El key={route.id} />
-              })}
-            </Menu>
-          )} */}
           {!user && (
             <>
               <Form action="/api/auth/auth0" method="post">

@@ -21,7 +21,11 @@ export default function Profile() {
     <section className="pokt-network-user-profile">
       <h3>User Profile</h3>
       <Card>
-        <img className="pokt-network-user-profile-img" src={dashboardData.photos[0].value} alt="user profile" />
+        <img
+          className="pokt-network-user-profile-img"
+          src={dashboardData.photos[0].value}
+          alt="user profile"
+        />
         <TextInput
           label={
             <>

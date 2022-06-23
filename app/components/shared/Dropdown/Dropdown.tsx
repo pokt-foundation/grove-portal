@@ -23,7 +23,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
       <DropdownMenu.Trigger className={clsx("pokt-dropdown-trigger", triggerClassName)}>
         {label}
       </DropdownMenu.Trigger>
-      <DropdownMenu.Content className={`pokt-dropdown-content ${contentClassName}`}>
+      <DropdownMenu.Content className={clsx("pokt-dropdown-content", contentClassName)}>
         {children}
       </DropdownMenu.Content>
     </DropdownMenu.Root>

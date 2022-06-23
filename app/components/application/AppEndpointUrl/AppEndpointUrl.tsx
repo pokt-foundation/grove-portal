@@ -5,6 +5,7 @@ import styles from "./styles.css"
 import Button from "~/components/shared/Button"
 import { IconTrashcan } from "@pokt-foundation/ui"
 
+/* c8 ignore next */
 export const links = () => {
   return [{ rel: "stylesheet", href: styles }, ...TextInputLinks()]
 }

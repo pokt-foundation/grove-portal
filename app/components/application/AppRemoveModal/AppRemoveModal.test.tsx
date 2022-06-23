@@ -18,7 +18,7 @@ describe("<AppRemoveModal />", () => {
       screen.getByRole("button", { name: /remove application/i }),
     ).toBeInTheDocument()
   })
-  it("opens modal on click", async () => {
+  it("handles modal open and close", async () => {
     const user = userEvent.setup()
     render(<AppRemoveModal appId={appId} />)
 
@@ -32,6 +32,14 @@ describe("<AppRemoveModal />", () => {
         screen.getByRole("dialog", { name: /remove this application/i }),
       ).toBeInTheDocument()
     })
-    //  expect(screen.getByText()).toBeInTheDocument()
+    expect(screen.getByText(/app id/i)).toHaveTextContent(appId)
+
+    user.click(screen.getByRole("button", { name: /cancel/i }))
+
+    await waitFor(() => {
+      expect(
+        screen.queryByRole("dialog", { name: /remove this application/i }),
+      ).not.toBeInTheDocument()
+    })
   })
 })

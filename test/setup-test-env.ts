@@ -1,4 +1,3 @@
-import { vi } from "vitest"
 import { getClientEnv } from "~/utils/environment.server"
 import { installGlobals } from "@remix-run/node/globals"
 // import "@testing-library/jest-dom"

@@ -1,6 +1,5 @@
 import AppKeysCard from "./AppKeysCard"
 import { render, screen } from "@testing-library/react"
-import userEvent from "@testing-library/user-event"
 
 let id = "123"
 let secret = "456"

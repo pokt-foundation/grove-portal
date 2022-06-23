@@ -29,7 +29,7 @@ let hourlyLatency: UserLBLatencyBucket[] = [
 ]
 
 describe("<AppLatencyCard />", () => {
-  it("renders card", () => {
+  it("renders card with chart", () => {
     render(<AppLatencyCard hourlyLatency={hourlyLatency} />)
 
     expect(screen.getByRole("heading", { name: /average latency/i })).toBeInTheDocument()

@@ -26,11 +26,13 @@ export default function AppEndpointUrl({
     return <></>
   }
 
-  const {
-    prefix = "",
-    abbrv = "",
-    name = "",
-  } = prefixFromChainId(chainId) as ChainMetadata
+  const chain = prefixFromChainId(chainId)
+
+  if (!chain) {
+    return <></>
+  }
+
+  const { prefix, abbrv, name } = chain
   const endpoint = `https://${prefix}.gateway.pokt.network/v1/lb/${appId}`
 
   return (

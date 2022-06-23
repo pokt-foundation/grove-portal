@@ -1,13 +1,9 @@
 import AppKeysCard from "./AppKeysCard"
 import { render, screen } from "@testing-library/react"
 
-let id = "123"
-let secret = "456"
-let publicKey = "789"
-
-beforeEach(() => {
-  // reset defaults before each test
-})
+const id = "123"
+const secret = "456"
+const publicKey = "789"
 
 describe("<AppKeysCard />", () => {
   it("renders application id", () => {

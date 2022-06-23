@@ -7,11 +7,15 @@ import HamburgerMenu, { links as HamburgerMenuLinks } from "../HamburgerMenu"
 import { useEffect, useMemo, useState } from "react"
 import clsx from "clsx"
 import { IconPerson } from "@pokt-foundation/ui"
-import Dropdown from "../Dropdown"
+import Dropdown, { links as DropdownLinks } from "../Dropdown"
 import { Item, Separator } from "@radix-ui/react-dropdown-menu"
 
 export const links = () => {
-  return [{ rel: "stylesheet", href: styles }, ...HamburgerMenuLinks()]
+  return [
+    ...DropdownLinks(),
+    { rel: "stylesheet", href: styles },
+    ...HamburgerMenuLinks(),
+  ]
 }
 
 type Route = {
@@ -145,24 +149,13 @@ export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) 
 type UserMenuDropdownProps = {
   user?: Auth0Profile
   routes: Route[]
-  triggerClassName?: string
-  contentClassName?: string
 }
 
-function UserMenuDropdown({
-  user,
-  routes,
-  triggerClassName = "pokt-header-user-menu-trigger",
-  contentClassName = "pokt-header-user-menu-content",
-}: UserMenuDropdownProps) {
+function UserMenuDropdown({ user, routes }: UserMenuDropdownProps) {
   return (
     <>
       {user && (
-        <Dropdown
-          label={<IconPerson />}
-          contentClassName={contentClassName}
-          triggerClassName={triggerClassName}
-        >
+        <Dropdown label={<IconPerson />}>
           {routes.map(({ el, id: routeID }, index) => {
             const El = el
             return (

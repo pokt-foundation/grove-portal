@@ -1,6 +1,5 @@
 import styles from "./styles.css"
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
-import clsx from "clsx"
 
 export const links = () => {
   return [{ rel: "stylesheet", href: styles }]
@@ -8,22 +7,15 @@ export const links = () => {
 
 type DropdownProps = {
   label: string | React.ReactElement
-  triggerClassName?: string
-  contentClassName?: string
 }
 
-export const Dropdown: React.FC<DropdownProps> = ({
-  label,
-  children,
-  contentClassName = "",
-  triggerClassName = "",
-}) => {
+export const Dropdown: React.FC<DropdownProps> = ({ label, children }) => {
   return (
     <DropdownMenu.Root>
-      <DropdownMenu.Trigger className={clsx("pokt-dropdown-trigger", triggerClassName)}>
+      <DropdownMenu.Trigger className="pokt-dropdown-trigger">
         {label}
       </DropdownMenu.Trigger>
-      <DropdownMenu.Content className={clsx("pokt-dropdown-content", contentClassName)}>
+      <DropdownMenu.Content className="pokt-dropdown-content">
         {children}
       </DropdownMenu.Content>
     </DropdownMenu.Root>

@@ -1,7 +1,7 @@
+import { expect } from "vitest"
 import AppEndpointUrl from "./AppEndpointUrl"
-import { render, screen } from "@testing-library/react"
+import { render, screen, userEvent } from "test/helpers"
 import { ChainMetadata, prefixFromChainId } from "~/utils/chainUtils"
-import userEvent from "@testing-library/user-event"
 
 let chainId = "0021"
 let { prefix, name } = prefixFromChainId(chainId) as ChainMetadata

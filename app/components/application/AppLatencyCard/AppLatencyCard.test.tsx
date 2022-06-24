@@ -1,5 +1,6 @@
+import { expect } from "vitest"
 import AppLatencyCard from "./AppLatencyCard"
-import { render, screen } from "@testing-library/react"
+import { render, screen } from "test/helpers"
 import { UserLBLatencyBucket } from "@pokt-foundation/portal-types"
 
 let hourlyLatency: UserLBLatencyBucket[] = [

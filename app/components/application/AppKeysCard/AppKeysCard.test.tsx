@@ -1,5 +1,6 @@
+import { expect } from "vitest"
 import AppKeysCard from "./AppKeysCard"
-import { render, screen } from "@testing-library/react"
+import { render, screen } from "test/helpers"
 
 const id = "123"
 const secret = "456"

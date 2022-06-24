@@ -1,12 +1,7 @@
+import { expect } from "vitest"
 import AppRemoveModal from "./AppRemoveModal"
-import { render, screen, waitFor } from "@testing-library/react"
+import { render, screen, waitFor } from "test/helpers"
 import userEvent from "@testing-library/user-event"
-
-// mock out remix form as is needs the remix router context to function
-vitest.mock("@remix-run/react", () => ({
-  __esModule: true,
-  Form: () => <div>my mocked form</div>,
-}))
 
 const appId = "605238bf6b986eea7cf36d5e"
 

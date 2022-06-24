@@ -11,5 +11,12 @@ export default defineConfig({
     globals: true,
     environment: "jsdom",
     setupFiles: ["./test/setup-test-env.ts"],
+    coverage: {
+      reporter: ["text", "html", "json-summary"],
+      lines: 50,
+      branches: 50,
+      functions: 50,
+      statements: 50,
+    },
   },
 })

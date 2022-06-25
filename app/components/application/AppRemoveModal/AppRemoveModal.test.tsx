@@ -1,18 +1,23 @@
 import { expect } from "vitest"
 import AppRemoveModal from "./AppRemoveModal"
-import { render, screen, waitFor } from "test/helpers"
+import { render, screen, waitFor, axe } from "test/helpers"
 import userEvent from "@testing-library/user-event"
 
 const appId = "605238bf6b986eea7cf36d5e"
 
 describe("<AppRemoveModal />", () => {
-  it("renders remove button", () => {
+  it("renders", () => {
     render(<AppRemoveModal appId={appId} />)
 
     expect(
       screen.getByRole("button", { name: /remove application/i }),
     ).toBeInTheDocument()
   })
+  // it("meets minimum accessible requirements", async () => {
+  //   const { container } = render(<AppRemoveModal appId={appId} />)
+
+  //   expect(await axe(container)).toHaveNoViolations()
+  // })
   it("handles modal open and close", async () => {
     const user = userEvent.setup()
     render(<AppRemoveModal appId={appId} />)

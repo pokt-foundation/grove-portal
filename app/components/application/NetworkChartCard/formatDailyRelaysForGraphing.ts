@@ -9,10 +9,9 @@ export function formatDailyRelaysForGraphing(dailyRelays: DailyRelayBucket[] = [
   lines: { id: number; values: number[] }[]
   scales: { label: number }[]
 } {
-  dailyRelays.pop()
-  const labels = dailyRelays
-    .map(({ bucket }) => bucket.split("T")[0])
-    .map((bucket) => DAYS[new Date(bucket).getUTCDay()])
+  const labels = dailyRelays.map(
+    ({ bucket }) => DAYS[new Date(bucket.split("T")[0]).getUTCDay()],
+  )
 
   const highestDailyAmount = dailyRelays.reduce(
     (highest, { total_relays: totalRelays }) => Math.max(highest, totalRelays),
@@ -39,9 +38,9 @@ export function formatDailyRelaysForGraphing(dailyRelays: DailyRelayBucket[] = [
   //   ]
   const scales = [
     { label: 0 },
-    { label: Number(highestDailyAmount.toFixed(0)) },
-    { label: Number(highestDailyAmount.toFixed(0)) },
-    { label: Number(highestDailyAmount.toFixed(0)) },
+    { label: Number((highestDailyAmount * 0.25).toFixed(0)) },
+    { label: Number((highestDailyAmount * 0.5).toFixed(0)) },
+    { label: Number((highestDailyAmount * 0.75).toFixed(0)) },
     { label: Number(highestDailyAmount.toFixed(0)) },
   ]
 

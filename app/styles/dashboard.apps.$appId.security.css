@@ -29,6 +29,15 @@
   flex-grow: 1;
 }
 
+.userInputs {
+  padding: 8px;
+  color: var(--color-white-main);
+  background-color: var(--color-black-dark);
+  border: 1px solid var(--color-black-light);
+  border-radius: 4px;
+  font-size: 0.75rem;
+}
+
 .security .submit {
   margin-top: 2rem;
   display: flex;

@@ -7,6 +7,11 @@ import { getAppSecurity } from "../../../../models/portal.server"
 import { AppIdLoaderData } from "../$appId"
 import styles from "../../../../styles/dashboard.apps.$appId.security.css"
 import { Checkbox } from "@mantine/core"
+import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
+import { IconTrashcan } from "@pokt-foundation/ui"
+import ChainsDropdown, {
+  links as ChainsDropdownLinks,
+} from "~/components/application/ChainsDropdown/ChainsDropdown"
 
 export const meta: MetaFunction = () => {
   return {
@@ -15,7 +20,11 @@ export const meta: MetaFunction = () => {
 }
 
 export const links = () => {
-  return [{ rel: "stylesheet", href: styles }]
+  return [
+    ...TextInputLinks(),
+    ...ChainsDropdownLinks(),
+    { rel: "stylesheet", href: styles },
+  ]
 }
 
 export type securitySettings = {
@@ -108,8 +117,6 @@ export default function AppSecurity() {
   }
 
   const findIndex = (data: { id: string; name: string }[], value: string) => {
-    console.log(data)
-    console.log(value)
     return data.findIndex((item) => item.id === value)
   }
 
@@ -144,23 +151,14 @@ export default function AppSecurity() {
         </div>
         <div className="card">
           <div className="flexRow">
-            <label htmlFor="approvedChains">Approved Chains</label>
-            <select
-              id="approvedChains"
-              onChange={(e) => {
-                setWhitelistBlockchains(
-                  addIfMissing(e.target.value, whitelistBlockchains),
-                )
+            <h3>Approved Chains</h3>
+            <ChainsDropdown
+              defaultText="Select Chain"
+              selectedChains={["0021"]}
+              handleChainClick={(val) => {
+                setWhitelistBlockchains(addIfMissing(val, whitelistBlockchains))
               }}
-            >
-              {chains.map((item) => {
-                return (
-                  <option key={item.id} value={item.id}>
-                    {item.name}
-                  </option>
-                )
-              })}
-            </select>
+            />
           </div>
           {whitelistBlockchains.map((item: string) => {
             return (
@@ -171,14 +169,14 @@ export default function AppSecurity() {
                   name="whitelistBlockchains"
                   value={item}
                 />
-                <button>copy</button>
+                <TextInput readOnly copy value={item} />
                 <button
                   onClick={() => {
                     const removedFromArray = removeFromArray(item, whitelistBlockchains)
                     setWhitelistBlockchains(removedFromArray)
                   }}
                 >
-                  remove
+                  <IconTrashcan />
                 </button>
               </div>
             )
@@ -190,7 +188,7 @@ export default function AppSecurity() {
           </div>
           <div className="flexGrowRow">
             <input
-              className="grow"
+              className="grow userInputs"
               id="userAgents"
               name="whitelistUserAgentsInput"
               value={whitelistUserAgentsElement}
@@ -220,14 +218,14 @@ export default function AppSecurity() {
                   defaultValue={item}
                   disabled
                 />
-                <button>copy</button>
+                <TextInput readOnly copy value={item} />
                 <button
                   onClick={() => {
                     const removedFromArray = removeFromArray(item, whitelistUserAgents)
                     setWhitelistUserAgents(removedFromArray)
                   }}
                 >
-                  remove
+                  <IconTrashcan />
                 </button>
               </div>
             )
@@ -239,7 +237,7 @@ export default function AppSecurity() {
           </div>
           <div className="flexGrowRow">
             <input
-              className="grow"
+              className="grow userInputs"
               id="userOrigins"
               value={whitelistOriginsElement}
               onChange={(e) => {
@@ -263,14 +261,14 @@ export default function AppSecurity() {
             return (
               <div className="flexGrowRow" key={item}>
                 <input className="grow" name="whitelistOrigins" value={item} disabled />
-                <button>copy</button>
+                <TextInput readOnly copy value={item} />
                 <button
                   onClick={() => {
                     const removedFromArray = removeFromArray(item, whitelistOrigins)
                     setWhitelistOrigins(removedFromArray)
                   }}
                 >
-                  remove
+                  <IconTrashcan />
                 </button>
               </div>
             )
@@ -280,23 +278,15 @@ export default function AppSecurity() {
           <label htmlFor="approvedContracts">Approved Contracts</label>
 
           <div className="flexGrowRow">
-            <select
-              id="approvedContracts"
-              defaultValue={chains[0].id}
-              onChange={(e) => {
-                setWhitelistContractsDropdown(e.target.value)
+            <ChainsDropdown
+              defaultText="Select Chain"
+              selectedChains={["0021"]}
+              handleChainClick={(val) => {
+                setWhitelistContractsDropdown(val)
               }}
-            >
-              {chains.map((item) => {
-                return (
-                  <option key={item.id} value={item.id}>
-                    {item.name}
-                  </option>
-                )
-              })}
-            </select>
+            />
             <input
-              className="grow"
+              className="grow userInputs"
               name="whitelistContractsInput"
               value={whitelistContractsInput}
               onChange={(e) => {
@@ -322,7 +312,7 @@ export default function AppSecurity() {
                 <p className="growInline">
                   {chains[findIndex(chains, item.id)].name} {item.value}
                 </p>
-                <button>copy</button>
+                <TextInput readOnly copy value={item.value} />
                 <button
                   onClick={() => {
                     const removedFromArray = removeFromArraybyValue(
@@ -332,7 +322,7 @@ export default function AppSecurity() {
                     setWhitelistContracts(removedFromArray)
                   }}
                 >
-                  remove
+                  <IconTrashcan />
                 </button>
 
                 <input
@@ -349,23 +339,15 @@ export default function AppSecurity() {
           <label htmlFor="approvedMethods">Approved Methods</label>
 
           <div className="flexGrowRow">
-            <select
-              id="approvedMethods"
-              defaultValue={chains[0].id}
-              onChange={(e) => {
-                setWhitelistMethodsDropdown(e.target.value)
+            <ChainsDropdown
+              defaultText="Select Chain"
+              selectedChains={["0021"]}
+              handleChainClick={(val) => {
+                setWhitelistMethodsDropdown(val)
               }}
-            >
-              {chains.map((item) => {
-                return (
-                  <option key={item.id} value={item.id}>
-                    {item.name}
-                  </option>
-                )
-              })}
-            </select>
+            />
             <input
-              className="grow"
+              className="grow userInputs"
               name="whitelistMethodsInput"
               value={whitelistMethodsInput}
               onChange={(e) => {
@@ -391,7 +373,7 @@ export default function AppSecurity() {
                 <p className="growInline">
                   {chains[findIndex(chains, item.id)].name} {item.value}
                 </p>
-                <button>copy</button>
+                <TextInput readOnly copy value={item.value} />
                 <button
                   onClick={() => {
                     const removedFromArray = removeFromArraybyValue(
@@ -401,7 +383,7 @@ export default function AppSecurity() {
                     setWhitelistMethods(removedFromArray)
                   }}
                 >
-                  remove
+                  <IconTrashcan />
                 </button>
 
                 <input

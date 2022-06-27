@@ -166,6 +166,7 @@ export default function AppSecurity() {
                 >
                   <IconTrashcan />
                 </button>
+                <input name="whitelistBlockchains" type="hidden" value={item} />
               </div>
             )
           })}
@@ -211,6 +212,7 @@ export default function AppSecurity() {
                 >
                   <IconTrashcan />
                 </button>
+                <input name="whitelistUserAgents" type="hidden" value={item} />
               </div>
             )
           })}
@@ -255,6 +257,7 @@ export default function AppSecurity() {
                 >
                   <IconTrashcan />
                 </button>
+                <input name="whitelistOrigins" type="hidden" value={item} />
               </div>
             )
           })}

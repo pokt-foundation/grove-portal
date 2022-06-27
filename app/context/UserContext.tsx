@@ -13,7 +13,7 @@ export const defaultUserData = {
   preferences: defaultUserPreference,
 }
 
-interface IUserContext {
+export interface IUserContext {
   data: UserLoaderActionData
   load: (href: string) => void
   state: "idle" | "submitting" | "loading"

@@ -8,7 +8,7 @@ import AdEconomicsForDevs, {
 import FeedbackCard, {
   links as FeedbackCardLinks,
 } from "~/components/application/FeedbackCard"
-import Button from "~/components/shared/Button"
+import Button, { links as ButtonLinks } from "~/components/shared/Button"
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import CardList, {
   links as CardListLinks,
@@ -22,6 +22,7 @@ import { getUserId } from "~/utils/session.server"
 
 export const links = () => {
   return [
+    ...ButtonLinks(),
     ...CardLinks(),
     ...CardListLinks(),
     ...FeedbackCardLinks(),

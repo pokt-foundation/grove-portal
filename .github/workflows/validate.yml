@@ -48,5 +48,9 @@ jobs:
       - name: ⚡ Run vitest
         run: pnpm run test:unit:run
 
+      - name: "Post test coverage"
+        if: always() # Also generate the report if tests are failing
+        uses: davelosert/vitest-coverage-report-action@v1
+
       - name: 🏗 Build
         run: pnpm run build

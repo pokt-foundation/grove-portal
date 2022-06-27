@@ -4,6 +4,7 @@ import { Group, Modal, Text } from "@mantine/core"
 import Button from "~/components/shared/Button"
 import { Form } from "@remix-run/react"
 
+/* c8 ignore next */
 export const links = () => {
   return [{ rel: "stylesheet", href: styles }]
 }

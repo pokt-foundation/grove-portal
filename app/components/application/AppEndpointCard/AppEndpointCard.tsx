@@ -12,6 +12,7 @@ import { useUser } from "~/context/UserContext"
 import { useEffect, useMemo } from "react"
 import ChainsDropdown, { links as ChainsDropdownLinks } from "../ChainsDropdown"
 
+/* c8 ignore next */
 export const links = () => {
   return [
     ...CardLinks(),

@@ -29,6 +29,24 @@
   flex-grow: 1;
 }
 
+.security .add {
+  width: 40px;
+  border: 1px solid var(--color-primary-main);
+  background-color: transparent;
+  color: var(--color-white-main);
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+.security .flexGrowRow .pokt-chains-dropdown {
+  padding: 0;
+}
+
+.security .flexGrowRow .pokt-dropdown-trigger {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
 .userInputs {
   padding: 8px;
   color: var(--color-white-main);

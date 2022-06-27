@@ -66,59 +66,46 @@ export default function AppSecurity() {
     app: { gatewaySettings },
   } = appIDRoute?.data as AppIdLoaderData
 
-  const chains = [
-    { name: "Polygon", id: "123" },
-    { name: "Binance", id: "234" },
-    { name: "Pokt", id: "345" },
-    { name: "Harmony", id: "456" },
-    { name: "Boba", id: "567" },
-  ]
-
   const [whitelistBlockchains, setWhitelistBlockchains] = useState<string[]>(
     gatewaySettings.whitelistBlockchains || [],
   )
-
   const [whitelistUserAgentsElement, setWhitelistUserAgentsElement] = useState<string>("")
   const [whitelistUserAgents, setWhitelistUserAgents] = useState<string[]>(
     gatewaySettings.whitelistUserAgents || [],
   )
-
   const [whitelistOriginsElement, setWhitelistOriginsElement] = useState<string>("")
   const [whitelistOrigins, setWhitelistOrigins] = useState<string[]>(
     gatewaySettings.whitelistOrigins || [],
   )
-
   const [whitelistContractsInput, setWhitelistContractsInput] = useState("")
-  const [whitelistContractsDropdown, setWhitelistContractsDropdown] = useState<string>(
-    chains[0].id,
-  )
+  const [whitelistContractsDropdown, setWhitelistContractsDropdown] = useState<string>("")
   const [whitelistContracts, setWhitelistContracts] = useState<
     Array<{ id: string; inputValue: string }>
   >(gatewaySettings.whitelistContracts)
-
   const [whitelistMethodsInput, setWhitelistMethodsInput] = useState<string>("")
   const [whitelistMethodsDropdown, setWhitelistMethodsDropdown] = useState<string>("")
   const [whitelistMethods, setWhitelistMethods] = useState<
     Array<{ id: string; inputValue: string }>
   >(gatewaySettings.whitelistMethods)
 
-  function removeFromArray(item: string, arr: string[]) {
+  const removeFromArray = (item: string, arr: string[]) => {
     let newArr = arr
     newArr.splice(newArr.indexOf(item), 1)
     return newArr
   }
 
-  function addIfMissing(item: string, arr: string[]) {
+  const addIfMissing = (item: string, arr: string[]) => {
     if (arr.indexOf(item) !== -1) {
       return arr
     }
     return [...arr, item]
   }
 
+  /* maybe not necessary....
   const findIndex = (data: { id: string; name: string }[], value: string) => {
     return data.findIndex((item) => item.id === value)
   }
-
+*/
   const getName = (key: string) => {
     const value = CHAIN_ID_PREFIXES.get(key)
     return value?.name || "Undefined"
@@ -135,9 +122,6 @@ export default function AppSecurity() {
     newArr.splice(index, 1)
     return newArr
   }
-
-  console.log(CHAIN_ID_PREFIXES)
-  console.log(CHAIN_ID_PREFIXES.get("0006"))
 
   return (
     <div className="security">
@@ -174,6 +158,7 @@ export default function AppSecurity() {
               <div className="flexGrowRow" key={item}>
                 <TextInput readOnly copy value={getName(item)} />
                 <button
+                  className="trash"
                   onClick={() => {
                     const removedFromArray = removeFromArray(item, whitelistBlockchains)
                     setWhitelistBlockchains(removedFromArray)
@@ -218,6 +203,7 @@ export default function AppSecurity() {
               <div key={item} className="flexGrowRow">
                 <TextInput readOnly copy value={item} />
                 <button
+                  className="trash"
                   onClick={() => {
                     const removedFromArray = removeFromArray(item, whitelistUserAgents)
                     setWhitelistUserAgents(removedFromArray)
@@ -261,6 +247,7 @@ export default function AppSecurity() {
               <div className="flexGrowRow" key={item}>
                 <TextInput readOnly copy value={item} />
                 <button
+                  className="trash"
                   onClick={() => {
                     const removedFromArray = removeFromArray(item, whitelistOrigins)
                     setWhitelistOrigins(removedFromArray)
@@ -318,6 +305,7 @@ export default function AppSecurity() {
                   value={`${getName(item.id)} ${item.inputValue}`}
                 />
                 <button
+                  className="trash"
                   onClick={() => {
                     const removedFromArray = removeFromArraybyValue(
                       whitelistContracts,
@@ -385,6 +373,7 @@ export default function AppSecurity() {
                   value={`${getName(item.id)} ${item.inputValue}`}
                 />
                 <button
+                  className="trash"
                   onClick={() => {
                     const removedFromArray = removeFromArraybyValue(
                       whitelistMethods,

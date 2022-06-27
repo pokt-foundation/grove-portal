@@ -47,13 +47,29 @@
   border-bottom-right-radius: 0;
 }
 
-.userInputs {
+.security button.trash {
+  background-color: transparent;
+  color: var(--color-secondary-main);
+  border: 1px solid var(--color-secondary-main);
+  outline: none;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+.security .userInputs {
   padding: 8px;
   color: var(--color-white-main);
   background-color: var(--color-black-dark);
-  border: 1px solid var(--color-black-light);
-  border-radius: 4px;
+  border-right: none;
+  border-top: 1px solid var(--color-primary-main);
+  border-bottom: 1px solid var(--color-primary-main);
   font-size: 0.75rem;
+}
+
+.security .userInputs:first-child {
+  border-left: 1px solid var(--color-primary-main);
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
 }
 
 .security .submit {

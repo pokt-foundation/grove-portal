@@ -1,5 +1,5 @@
 import { LoaderFunction, MetaFunction } from "@remix-run/node"
-import { useState } from "react"
+import React, { useState } from "react"
 import { Form } from "@remix-run/react"
 import invariant from "tiny-invariant"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
@@ -13,6 +13,7 @@ import ChainsDropdown, {
   links as ChainsDropdownLinks,
 } from "~/components/application/ChainsDropdown/ChainsDropdown"
 import { CHAIN_ID_PREFIXES } from "~/utils/chainUtils"
+import { createDropdownMenuScope } from "@radix-ui/react-dropdown-menu"
 
 export const meta: MetaFunction = () => {
   return {
@@ -91,12 +92,7 @@ export default function AppSecurity() {
   >(gatewaySettings.whitelistMethods)
   const [whitelistMethodsError, setWhitelistMethodsError] = useState<boolean>(false)
 
-  const removeFromArray = (item: string, arr: string[]) => {
-    let newArr = arr
-    newArr.splice(newArr.indexOf(item), 1)
-    return newArr
-  }
-
+  const removeFromArray = (item: string, arr: string[]) => arr.filter((i) => i !== item)
   const addIfMissing = (item: string, arr: string[]) => {
     if (arr.indexOf(item) !== -1) {
       return arr
@@ -104,26 +100,13 @@ export default function AppSecurity() {
     return [...arr, item]
   }
 
-  /* maybe not necessary....
-  const findIndex = (data: { id: string; name: string }[], value: string) => {
-    return data.findIndex((item) => item.id === value)
-  }
-*/
   const getChainName = (key: string) => {
     const value = CHAIN_ID_PREFIXES.get(key)
     return value?.name || "Undefined"
   }
 
-  const removeFromArraybyValue = (
-    data: { id: string; inputValue: string }[],
-    findme: string,
-  ) => {
-    const index = data.findIndex(
-      (item: { inputValue: string }) => item.inputValue === findme,
-    )
-    let newArr = data
-    newArr.splice(index, 1)
-    return newArr
+  const removeFromArrayByValue2 = (item: string, field: string, arr: any[]) => {
+    return arr.filter((obj) => (!obj[field].includes(item) ? obj : null))
   }
 
   return (
@@ -138,7 +121,7 @@ export default function AppSecurity() {
         <input type="hidden" name="appID" value={appID} />
         <div className="card">
           <div className="flexRow">
-            <label htmlFor="secretRequired">Private Secret Key Required</label>
+            <span>Private Secret Key Required</span>
             <Checkbox
               id="secretRequired"
               name="secretKeyRequired"
@@ -148,11 +131,12 @@ export default function AppSecurity() {
         </div>
         <div className="card">
           <div className="flexRow">
-            <h3>Approved Chains</h3>
+            <span>Approved Chains</span>
             <ChainsDropdown
+              icon={true}
               aria-label="Select a chain to add to white list"
               defaultText="Select Chain"
-              selectedChains={["0021"]}
+              selectedChains={[""]}
               handleChainClick={(val) => {
                 setWhitelistBlockchains(addIfMissing(val, whitelistBlockchains))
               }}
@@ -166,13 +150,11 @@ export default function AppSecurity() {
                   type="button"
                   className="trash"
                   onClick={() => {
-                    const removedFromArray = removeFromArray(item, whitelistBlockchains)
-                    setWhitelistBlockchains(removedFromArray)
+                    setWhitelistBlockchains((current) => removeFromArray(item, current))
                   }}
                 >
                   <IconTrashcan />
                 </button>
-                <input name="whitelistBlockchains" type="hidden" value={item} />
               </div>
             )
           })}
@@ -209,26 +191,28 @@ export default function AppSecurity() {
           </div>
           {whitelistUserAgents.map((item: string) => {
             return (
-              <div key={item} className="flexGrowRow">
-                <TextInput readOnly copy value={item} />
-                <button
-                  type="button"
-                  className="trash"
-                  onClick={() => {
-                    const removedFromArray = removeFromArray(item, whitelistUserAgents)
-                    setWhitelistUserAgents(removedFromArray)
-                  }}
-                >
-                  <IconTrashcan />
-                </button>
-                <input name="whitelistUserAgents" type="hidden" value={item} />
-              </div>
+              <React.Fragment key={item}>
+                <div key={item} className="flexGrowRow">
+                  <TextInput readOnly copy value={item} />
+                  <button
+                    type="button"
+                    className="trash"
+                    onClick={() => {
+                      const removedFromArray = removeFromArray(item, whitelistUserAgents)
+                      setWhitelistUserAgents(removedFromArray)
+                    }}
+                  >
+                    <IconTrashcan />
+                  </button>
+                  <input name="whitelistUserAgents" type="hidden" value={item} />
+                </div>
+              </React.Fragment>
             )
           })}
         </div>
         <div className="card">
           <div className="flexRow">
-            <label htmlFor="origins">Whitelisted Origins</label>
+            <span>Whitelisted Origins</span>
           </div>
           <div className="flexGrowRow">
             <input
@@ -263,7 +247,10 @@ export default function AppSecurity() {
                   type="button"
                   className="trash"
                   onClick={() => {
+                    console.log("white list origins clicked")
+                    console.log(item, " item")
                     const removedFromArray = removeFromArray(item, whitelistOrigins)
+                    console.log(removedFromArray)
                     setWhitelistOrigins(removedFromArray)
                   }}
                 >
@@ -275,16 +262,17 @@ export default function AppSecurity() {
           })}
         </div>
         <div className="card">
-          <label htmlFor="approvedContracts">Approved Contracts</label>
+          <span>Approved Contracts</span>
 
           <div className="flexGrowRow">
             <ChainsDropdown
+              icon={false}
               defaultText={
                 whitelistContractsDropdown !== ""
                   ? getChainName(whitelistContractsDropdown)
                   : "Select Chain"
               }
-              selectedChains={["0021"]}
+              selectedChains={[""]}
               handleChainClick={(val) => {
                 setWhitelistContractsDropdown(val)
               }}
@@ -340,9 +328,10 @@ export default function AppSecurity() {
                   type="button"
                   className="trash"
                   onClick={() => {
-                    const removedFromArray = removeFromArraybyValue(
-                      whitelistContracts,
+                    const removedFromArray = removeFromArrayByValue2(
                       item.inputValue,
+                      "inputValue",
+                      whitelistContracts,
                     )
                     setWhitelistContracts(removedFromArray)
                   }}
@@ -361,16 +350,17 @@ export default function AppSecurity() {
           })}
         </div>
         <div className="card">
-          <label htmlFor="approvedMethods">Approved Methods</label>
+          <span>Approved Methods</span>
 
           <div className="flexGrowRow">
             <ChainsDropdown
+              icon={false}
               defaultText={
                 whitelistMethodsDropdown !== ""
                   ? getChainName(whitelistMethodsDropdown)
                   : "Select Chain"
               }
-              selectedChains={["0021"]}
+              selectedChains={[""]}
               handleChainClick={(val) => {
                 setWhitelistMethodsDropdown(val)
               }}
@@ -424,9 +414,10 @@ export default function AppSecurity() {
                   type="button"
                   className="trash"
                   onClick={() => {
-                    const removedFromArray = removeFromArraybyValue(
-                      whitelistMethods,
+                    const removedFromArray = removeFromArrayByValue2(
                       item.inputValue,
+                      "inputValue",
+                      whitelistMethods,
                     )
                     setWhitelistMethods(removedFromArray)
                   }}

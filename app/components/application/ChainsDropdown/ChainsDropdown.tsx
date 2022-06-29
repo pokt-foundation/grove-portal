@@ -20,11 +20,13 @@ export const links = () => {
 interface AppEndpointProps {
   defaultText: string
   selectedChains: string[]
+  icon: boolean
   handleChainClick: (chainId: string) => void
 }
 
 export default function ChainsDropdown({
   defaultText,
+  icon,
   selectedChains,
   handleChainClick,
 }: AppEndpointProps) {
@@ -42,7 +44,7 @@ export default function ChainsDropdown({
       <Dropdown
         label={
           <>
-            {defaultText || "Add New"} <IconPlus />
+            {defaultText || "Add New"} {icon && <IconPlus />}
           </>
         }
       >

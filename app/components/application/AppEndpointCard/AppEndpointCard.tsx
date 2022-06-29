@@ -110,6 +110,7 @@ export default function AppEndpointCard({ app }: AppEndpointProps) {
           <div>
             {app.gigastake ? (
               <ChainsDropdown
+                icon={true}
                 defaultText="Add New"
                 selectedChains={
                   user.data?.preferences.endpoints &&

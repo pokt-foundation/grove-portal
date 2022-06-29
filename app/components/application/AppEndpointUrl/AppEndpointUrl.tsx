@@ -5,6 +5,7 @@ import styles from "./styles.css"
 import Button from "~/components/shared/Button"
 import { IconTrashcan } from "@pokt-foundation/ui"
 
+/* c8 ignore next */
 export const links = () => {
   return [{ rel: "stylesheet", href: styles }, ...TextInputLinks()]
 }
@@ -26,11 +27,13 @@ export default function AppEndpointUrl({
     return <></>
   }
 
-  const {
-    prefix = "",
-    abbrv = "",
-    name = "",
-  } = prefixFromChainId(chainId) as ChainMetadata
+  const chain = prefixFromChainId(chainId)
+
+  if (!chain) {
+    return <></>
+  }
+
+  const { prefix, abbrv, name } = chain
   const endpoint = `https://${prefix}.gateway.pokt.network/v1/lb/${appId}`
 
   return (

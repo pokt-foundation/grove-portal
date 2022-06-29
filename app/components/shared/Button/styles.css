@@ -1,0 +1,6 @@
+.pokt-button.mantine-Button-filled {
+  background-color: var(--color-primary-main);
+}
+.pokt-button.mantine-Button-outline {
+  border-color: var(--color-primary-main);
+}

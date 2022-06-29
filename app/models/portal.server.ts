@@ -600,42 +600,53 @@ export const postFeedback = async (
 
 // APP SECURITY Post Security Settings
 export type AppSecurityProps = {
-  gatewaySettings: {
-    secretKey: string
-    secretKeyRequired: boolean
-    whitelistOrigins: string[]
-    whitelistUserAgents: string[]
-    whitelistBlockchains: string[]
-    whitelistContracts: { blockchainID: string; contracts: string[] }[]
-    whitelistMethods: { blockchainID: string; methods: string[] }[]
-  }
+  appID: string
+  secretKeyRequired: boolean
+  whitelistOrigins: string[]
+  whitelistUserAgents: string[]
+  whitelistBlockchains: string[]
+  whitelistContracts: { blockchainID: string; contracts: string[] }[]
+  whitelistMethods: { blockchainID: string; methods: string[] }[]
 }
 
-export const appSecurity = async (
-  appID: string,
+export type AppSecurityResponse =
+  | {
+      error: boolean
+    }
+  | {
+      error: boolean
+      error_message: string
+    }
+
+export const postAppSecurity = async (
   formData: AppSecurityProps,
   request: Request,
-  type: string,
-): Promise<AppSecurityProps> => {
+): Promise<AppSecurityResponse> => {
   const user = await requireUser(request)
   const data = { ...formData }
-  const res = await fetch(`${getRequiredClientEnvVar("BACKEND_URL")}/api/lb/${appID}`, {
-    method: type || "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `${user.extraParams.token_type} ${user.accessToken}`,
+  const res = await fetch(
+    `${getRequiredClientEnvVar("BACKEND_URL")}/api/lb/${data.appID}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${user.extraParams.token_type} ${user.accessToken}`,
+      },
+      body: JSON.stringify(data),
     },
-    body: JSON.stringify(data),
-  })
+  )
 
   if (!res || res.status !== 200) {
-    throw new Error(res.statusText)
+    return {
+      error: true,
+      error_message: res.statusText,
+    }
   }
 
-  return await res.json()
+  return res.json()
 }
 
-// APP SECURITY Post Security Settings
+// APP SECURITY GET Security Settings
 export type getAppSecurityProps = {
   gatewaySettings: {
     secretKey: string

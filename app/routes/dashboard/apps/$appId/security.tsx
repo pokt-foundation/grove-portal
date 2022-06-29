@@ -65,6 +65,7 @@ export default function AppSecurity() {
   const {
     app: { gatewaySettings },
   } = appIDRoute?.data as AppIdLoaderData
+  const appID = appIDRoute?.id
 
   const [whitelistBlockchains, setWhitelistBlockchains] = useState<string[]>(
     gatewaySettings.whitelistBlockchains || [],
@@ -87,6 +88,7 @@ export default function AppSecurity() {
   const [whitelistMethods, setWhitelistMethods] = useState<
     Array<{ id: string; inputValue: string }>
   >(gatewaySettings.whitelistMethods)
+  const [whitelistMethodsError, setWhitelistMethodsError] = useState<boolean>(false)
 
   const removeFromArray = (item: string, arr: string[]) => {
     let newArr = arr
@@ -106,7 +108,7 @@ export default function AppSecurity() {
     return data.findIndex((item) => item.id === value)
   }
 */
-  const getName = (key: string) => {
+  const getChainName = (key: string) => {
     const value = CHAIN_ID_PREFIXES.get(key)
     return value?.name || "Undefined"
   }
@@ -131,7 +133,8 @@ export default function AppSecurity() {
         secret key for all requests and enable the use of whitelist user agents and
         origins.
       </p>
-      <Form>
+      <Form method="post" action="/api/securitySettings">
+        <input type="hidden" name="appID" value={appID} />
         <div className="card">
           <div className="flexRow">
             <label htmlFor="secretRequired">Private Secret Key Required</label>
@@ -146,6 +149,7 @@ export default function AppSecurity() {
           <div className="flexRow">
             <h3>Approved Chains</h3>
             <ChainsDropdown
+              aria-label="Select a chain to add to white list"
               defaultText="Select Chain"
               selectedChains={["0021"]}
               handleChainClick={(val) => {
@@ -156,8 +160,9 @@ export default function AppSecurity() {
           {whitelistBlockchains.map((item: string) => {
             return (
               <div className="flexGrowRow" key={item}>
-                <TextInput readOnly copy value={getName(item)} />
+                <TextInput readOnly copy value={getChainName(item)} />
                 <button
+                  type="button"
                   className="trash"
                   onClick={() => {
                     const removedFromArray = removeFromArray(item, whitelistBlockchains)
@@ -186,6 +191,8 @@ export default function AppSecurity() {
               }}
             />
             <button
+              type="button"
+              aria-label="Add user agents to white list"
               className="add"
               onClick={() => {
                 if (whitelistUserAgentsElement !== "") {
@@ -204,6 +211,7 @@ export default function AppSecurity() {
               <div key={item} className="flexGrowRow">
                 <TextInput readOnly copy value={item} />
                 <button
+                  type="button"
                   className="trash"
                   onClick={() => {
                     const removedFromArray = removeFromArray(item, whitelistUserAgents)
@@ -231,6 +239,8 @@ export default function AppSecurity() {
               }}
             />
             <button
+              type="button"
+              aria-label="Add origins to white list"
               className="add"
               onClick={() => {
                 if (whitelistOriginsElement !== "") {
@@ -249,6 +259,7 @@ export default function AppSecurity() {
               <div className="flexGrowRow" key={item}>
                 <TextInput readOnly copy value={item} />
                 <button
+                  type="button"
                   className="trash"
                   onClick={() => {
                     const removedFromArray = removeFromArray(item, whitelistOrigins)
@@ -269,7 +280,7 @@ export default function AppSecurity() {
             <ChainsDropdown
               defaultText={
                 whitelistContractsDropdown !== ""
-                  ? getName(whitelistContractsDropdown)
+                  ? getChainName(whitelistContractsDropdown)
                   : "Select Chain"
               }
               selectedChains={["0021"]}
@@ -286,7 +297,9 @@ export default function AppSecurity() {
               }}
             />
             <button
+              type="button"
               className="add"
+              aria-label="Add contract selections to white list"
               onClick={() => {
                 setWhitelistContracts([
                   ...whitelistContracts,
@@ -305,9 +318,10 @@ export default function AppSecurity() {
                 <TextInput
                   readOnly
                   copy
-                  value={`${getName(item.id)} ${item.inputValue}`}
+                  value={`${getChainName(item.id)} ${item.inputValue}`}
                 />
                 <button
+                  type="button"
                   className="trash"
                   onClick={() => {
                     const removedFromArray = removeFromArraybyValue(
@@ -337,7 +351,7 @@ export default function AppSecurity() {
             <ChainsDropdown
               defaultText={
                 whitelistMethodsDropdown !== ""
-                  ? getName(whitelistMethodsDropdown)
+                  ? getChainName(whitelistMethodsDropdown)
                   : "Select Chain"
               }
               selectedChains={["0021"]}
@@ -354,28 +368,43 @@ export default function AppSecurity() {
               }}
             />
             <button
+              type="button"
               className="add"
+              aria-label="Add method selections to white list"
               onClick={() => {
-                setWhitelistMethods([
-                  ...whitelistMethods,
-                  { id: whitelistMethodsDropdown, inputValue: whitelistMethodsInput },
-                ]),
-                  setWhitelistMethodsInput("")
-                setWhitelistMethodsDropdown("")
+                if (whitelistMethodsInput === "" || whitelistMethodsDropdown === "") {
+                  setWhitelistMethodsError(true)
+                } else {
+                  setWhitelistMethodsError(false)
+                  setWhitelistMethods([
+                    ...whitelistMethods,
+                    { id: whitelistMethodsDropdown, inputValue: whitelistMethodsInput },
+                  ]),
+                    setWhitelistMethodsInput("")
+                  setWhitelistMethodsDropdown("")
+                }
               }}
             >
               +
             </button>
           </div>
+          {whitelistMethodsError && (
+            <div>
+              <p className="errorText">
+                You must select a chain and have a value to add to methods whitelist.
+              </p>
+            </div>
+          )}
           {whitelistMethods.map((item) => {
             return (
               <div className="flexGrowRow" key={item.inputValue}>
                 <TextInput
                   readOnly
                   copy
-                  value={`${getName(item.id)} ${item.inputValue}`}
+                  value={`${getChainName(item.id)} ${item.inputValue}`}
                 />
                 <button
+                  type="button"
                   className="trash"
                   onClick={() => {
                     const removedFromArray = removeFromArraybyValue(

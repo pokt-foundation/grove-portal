@@ -95,3 +95,11 @@
   background-color: rgb(182, 216, 74);
   box-shadow: rgb(182 216 74 / 50%) 0px 0px 20px;
 }
+
+.security .errorText {
+  color: var(--color-error);
+}
+
+.security .errorBorder {
+  border-color: var(--color-error);
+}

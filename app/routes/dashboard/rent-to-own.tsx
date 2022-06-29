@@ -2,6 +2,7 @@ import { UserLB } from "@pokt-foundation/portal-types"
 import { ActionFunction, json, LoaderFunction } from "@remix-run/node"
 import { Form, Link, useActionData, useLoaderData } from "@remix-run/react"
 import { SyntheticEvent, useEffect, useMemo, useRef, useState } from "react"
+import { stripe, Stripe } from "~/models/stripe.server"
 import invariant from "tiny-invariant"
 import Button from "~/components/shared/Button"
 import Card, { links as CardLinks } from "~/components/shared/Card"
@@ -12,20 +13,42 @@ import Select, { links as SelectLinks } from "~/components/shared/Select"
 import { getLBUserApplications } from "~/models/portal.server"
 import { subscriptionsCookie } from "~/utils/cookies.server"
 import { getPoktId, requireUserProfile } from "~/utils/session.server"
+import { formatNumberToSICompact } from "~/utils/formattingUtils"
 
 export const links = () => {
   return [...CardLinks(), ...CardListLinks(), ...SelectLinks()]
 }
 
+const getCost = (quantity: number, tiers: Stripe.Price.Tier[]) => {
+  return tiers.reduce((prev, curr: Stripe.Price.Tier) => {
+    if (typeof curr.up_to === "number" && quantity >= curr.up_to) {
+      return (curr.flat_amount ?? 0) / 100
+    } else {
+      return prev === 0 ? (curr.flat_amount ?? 0) / 100 : prev
+    }
+  }, 0)
+}
+
 type LoaderData = {
   apps: UserLB[]
   userId: string
+  price: Stripe.Price
   cart: Subscription[]
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
   const profile = await requireUserProfile(request)
   const apps = await getLBUserApplications(request)
+
+  const priceID = "price_1LFOsXKhNIAUaK2OjjG0gqov"
+  const price = await stripe.prices
+    .retrieve(priceID, {
+      expand: ["tiers"],
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+  invariant(price, "Stripe not able to find price")
 
   const cookieHeader = request.headers.get("Cookie")
   const cookie: { cart: Subscription[] } = (await subscriptionsCookie.parse(
@@ -36,6 +59,7 @@ export const loader: LoaderFunction = async ({ request }) => {
     {
       apps,
       userId: getPoktId(profile.id),
+      price: price,
       cart: cookie.cart,
     },
     {
@@ -86,6 +110,16 @@ export const action: ActionFunction = async ({ request }) => {
   const app = formData.get("subscription-app")
   const quantity = formData.get("subscription-quantity")
 
+  const priceID = "price_1LFOsXKhNIAUaK2OjjG0gqov"
+  const price = await stripe.prices
+    .retrieve(priceID, {
+      expand: ["tiers"],
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+  invariant(price, "Stripe not able to find price")
+
   if (!app) {
     success = false
     errors = {
@@ -125,13 +159,13 @@ export const action: ActionFunction = async ({ request }) => {
     cookieHeader,
   )) || { cart: [] }
 
-  const pokt = (Number(quantity) / 210.41).toFixed(2)
-  const cost = (Number(pokt) / 2).toFixed(2)
-  const subscription = {
+  const pokt = Number(quantity) / 210.41
+  const cost = getCost(Number(quantity), price.tiers as Stripe.Price.Tier[])
+  const subscription: Subscription = {
     app,
     quantity,
-    pokt,
-    cost,
+    pokt: pokt.toFixed(2),
+    cost: cost.toFixed(2),
   }
 
   if (cookie.cart.find((sub) => sub.app === subscription.app)) {
@@ -160,39 +194,15 @@ export const action: ActionFunction = async ({ request }) => {
 }
 
 export default function RentToOwnLayout() {
-  const { apps, cart: initialCart } = useLoaderData() as LoaderData
+  const { apps, price, cart: initialCart } = useLoaderData() as LoaderData
   const action = useActionData() as ActionResponse
   const [cart, setCart] = useState<Subscription[]>(initialCart)
-  const [suggestedQuantities, setSuggestedQuantities] = useState([
-    {
-      label: "1 Million",
-      value: "100000000",
-    },
-    {
-      label: "2 Million",
-      value: "200000000",
-    },
-    {
-      label: "5 Million",
-      value: "500000000",
-    },
-    {
-      label: "10 Million",
-      value: "1000000000",
-    },
-    {
-      label: "20 Million",
-      value: "2000000000",
-    },
-    {
-      label: "50 Million",
-      value: "5000000000",
-    },
-    {
-      label: "100 Million",
-      value: "10000000000",
-    },
-  ])
+  const [suggestedQuantities, setSuggestedQuantities] = useState(
+    price.tiers?.map((tier) => ({
+      label: formatNumberToSICompact(tier.up_to ?? 0),
+      value: String(tier.up_to) ?? "0",
+    })) ?? [],
+  )
   const [quantityError, setQuantityError] = useState(false)
   const handleQuanityCreate = (query: string) => {
     const parsed = parseInt(query, 10)
@@ -200,19 +210,22 @@ export default function RentToOwnLayout() {
       setQuantityError(true)
       return
     }
-    setSuggestedQuantities((current) => [
-      ...current,
-      {
-        label: query,
-        value: String(parsed),
-      },
-    ])
+    setSuggestedQuantities((current) => {
+      let curr = current ?? []
+      return [
+        ...curr,
+        {
+          label: query,
+          value: String(parsed),
+        },
+      ]
+    })
   }
   const handleQuantityChange = (value: string | null) => {
     const pokt = (Number(value) / 210.41).toFixed(2)
-    const cost = (Number(pokt) / 2).toFixed(2)
+    const cost = getCost(Number(value), price.tiers as Stripe.Price.Tier[])
     setPoktReceived(pokt)
-    setCost(cost)
+    setCost(cost.toFixed(2))
     setQuantityError(false)
   }
 
@@ -282,11 +295,11 @@ export default function RentToOwnLayout() {
               <Group align="center" position="apart">
                 <div>
                   <h4>POKT Received</h4>
-                  <p>{poktReceived}</p>
+                  <p>{formatNumberToSICompact(Number(poktReceived))}</p>
                 </div>
                 <div>
                   <h4>Cost</h4>
-                  <p>{cost}</p>
+                  <p>${cost}</p>
                 </div>
               </Group>
               <Button type="submit">Add To Subscription</Button>
@@ -316,10 +329,10 @@ export default function RentToOwnLayout() {
                   <p>{apps.find((app) => app.id === item.app)?.name}</p>
                 </div>
                 <div>
-                  <p>{item.quantity}</p>
+                  <p>{formatNumberToSICompact(Number(item.quantity))}</p>
                 </div>
                 <div>
-                  <p>${item.pokt}</p>
+                  <p>{formatNumberToSICompact(Number(item.pokt))}</p>
                 </div>
                 <div>
                   <p>${item.cost}</p>

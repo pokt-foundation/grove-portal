@@ -38,35 +38,14 @@ export const action: ActionFunction = async ({ request }) => {
   }
 
   // get prices from stripe or create new products with prices if they dont exist
-  let prices: Stripe.ApiList<Stripe.Price>
-  prices = await stripe.prices.list({
-    lookup_keys: products.map((product) => product.id),
-    expand: ["data.product"],
-  })
+  const priceID = "price_1LFOsXKhNIAUaK2OjjG0gqov"
+  const price = await stripe.prices.retrieve(priceID)
 
-  if (prices && prices.data.length !== products.length) {
-    const remainders = products.filter(
-      (product) => !prices.data.find((price) => price.id === product.id),
-    )
-    const newPrices = await Promise.all(
-      remainders.map(async (product) => {
-        await stripe.products.create({
-          id: product.id,
-          name: product.name,
-        })
-        return stripe.prices.create({
-          currency: "usd",
-          product: product.id,
-          lookup_key: product.id,
-          recurring: {
-            interval: "month",
-            usage_type: "licensed",
-          },
-          unit_amount: 100,
-        })
-      }),
-    )
-    prices.data = [...prices.data, ...newPrices]
+  if (!price) {
+    return json({
+      error: true,
+      message: "Stripe price could not be retrieved",
+    })
   }
 
   // create stripe checkout session and redirect to stripe hosted checkout page
@@ -76,9 +55,14 @@ export const action: ActionFunction = async ({ request }) => {
   const session = await stripe.checkout.sessions.create({
     customer: customer.id,
     billing_address_collection: "auto",
-    line_items: prices.data.map((price) => ({
+    line_items: products.map((product) => ({
+      description: `${product.id} - ${product.name}`,
       price: price.id,
-      quantity: Number(products.find((product) => product.id === price.id)?.quantity),
+      quantity: Number(product.quantity),
+      // metadata: {
+      //   appId: product.id,
+      //   appName: product.name,
+      // },
     })),
     mode: "subscription",
     success_url: `${returnUrl}?success=true&session_id={CHECKOUT_SESSION_ID}`,

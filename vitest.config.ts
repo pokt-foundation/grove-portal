@@ -9,7 +9,14 @@ export default defineConfig({
   plugins: [react(), tsconfigPaths()],
   test: {
     globals: true,
-    environment: "happy-dom",
+    environment: "jsdom",
     setupFiles: ["./test/setup-test-env.ts"],
+    coverage: {
+      reporter: ["text", "html", "json-summary"],
+      lines: 50,
+      branches: 50,
+      functions: 50,
+      statements: 50,
+    },
   },
 })

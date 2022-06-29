@@ -5,6 +5,7 @@ import { useMemo } from "react"
 import { UserLBLatencyBucket } from "@pokt-foundation/portal-types"
 import { formatLatencyValuesForGraphing } from "~/utils/applicationUtils"
 
+/* c8 ignore next */
 export const links = () => {
   return [...CardLinks(), { rel: "stylesheet", href: styles }]
 }

@@ -2,6 +2,7 @@ import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/shared/Card"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 
+/* c8 ignore next */
 export const links = () => {
   return [...CardLinks(), ...TextInputLinks(), { rel: "stylesheet", href: styles }]
 }

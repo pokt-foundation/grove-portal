@@ -83,6 +83,7 @@ export default function AppSecurity() {
   const [whitelistContracts, setWhitelistContracts] = useState<
     Array<{ id: string; inputValue: string }>
   >(gatewaySettings.whitelistContracts)
+  const [whitelistContractsError, setWhitelistContractsError] = useState<boolean>(false)
   const [whitelistMethodsInput, setWhitelistMethodsInput] = useState<string>("")
   const [whitelistMethodsDropdown, setWhitelistMethodsDropdown] = useState<string>("")
   const [whitelistMethods, setWhitelistMethods] = useState<
@@ -301,17 +302,32 @@ export default function AppSecurity() {
               className="add"
               aria-label="Add contract selections to white list"
               onClick={() => {
-                setWhitelistContracts([
-                  ...whitelistContracts,
-                  { id: whitelistContractsDropdown, inputValue: whitelistContractsInput },
-                ]),
-                  setWhitelistContractsInput("")
-                setWhitelistContractsDropdown("")
+                if (whitelistContractsInput === "" || whitelistContractsDropdown === "") {
+                  setWhitelistContractsError(true)
+                } else {
+                  setWhitelistContractsError(false)
+                  setWhitelistContracts([
+                    ...whitelistContracts,
+                    {
+                      id: whitelistContractsDropdown,
+                      inputValue: whitelistContractsInput,
+                    },
+                  ]),
+                    setWhitelistContractsInput("")
+                  setWhitelistContractsDropdown("")
+                }
               }}
             >
               +
             </button>
           </div>
+          {whitelistContractsError && (
+            <div>
+              <p className="errorText">
+                You must select a chain and have a value to add to methods whitelist.
+              </p>
+            </div>
+          )}
           {whitelistContracts.map((item) => {
             return (
               <div className="flexGrowRow" key={item.inputValue}>
@@ -388,6 +404,7 @@ export default function AppSecurity() {
               +
             </button>
           </div>
+
           {whitelistMethodsError && (
             <div>
               <p className="errorText">

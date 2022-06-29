@@ -1,14 +1,16 @@
-import { Switch, Text } from "@mantine/core"
+import { Text } from "@mantine/core"
 import { LinksFunction } from "@remix-run/node"
 import { Form, useTransition } from "@remix-run/react"
 import Button from "~/components/shared/Button"
 import Card from "~/components/shared/Card"
+import Switch, { links as SwitchLinks } from "~/components/shared/Switch"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { AppIdLoaderData } from "~/routes/dashboard/apps/$appId"
 import { formatNumberToSICompact } from "~/utils/formattingUtils"
 import styles from "./styles.css"
 
 export const links: LinksFunction = () => [
+  ...SwitchLinks(),
   {
     rel: "stylesheet",
     href: styles,

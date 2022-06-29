@@ -1,12 +1,11 @@
 import { LoaderFunction, MetaFunction } from "@remix-run/node"
 import React, { useState } from "react"
-import { Form } from "@remix-run/react"
+import { Form, useParams } from "@remix-run/react"
 import invariant from "tiny-invariant"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { getAppSecurity } from "../../../../models/portal.server"
 import { AppIdLoaderData } from "../$appId"
 import styles from "../../../../styles/dashboard.apps.$appId.security.css"
-import { Checkbox } from "@mantine/core"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { IconTrashcan } from "@pokt-foundation/ui"
 import ChainsDropdown, {
@@ -14,6 +13,13 @@ import ChainsDropdown, {
 } from "~/components/application/ChainsDropdown/ChainsDropdown"
 import { CHAIN_ID_PREFIXES } from "~/utils/chainUtils"
 import { createDropdownMenuScope } from "@radix-ui/react-dropdown-menu"
+import AppEndpointUrl, {
+  links as AppEndpointUrlLinks,
+} from "~/components/application/AppEndpointUrl"
+import Card, { links as CardLinks } from "~/components/shared/Card"
+import Switch, { links as SwitchLinks } from "~/components/shared/Switch"
+import Button from "~/components/shared/Button"
+import { Text } from "@mantine/core"
 
 export const meta: MetaFunction = () => {
   return {
@@ -23,8 +29,11 @@ export const meta: MetaFunction = () => {
 
 export const links = () => {
   return [
+    ...SwitchLinks(),
+    ...CardLinks(),
     ...TextInputLinks(),
     ...ChainsDropdownLinks(),
+    ...AppEndpointUrlLinks(),
     { rel: "stylesheet", href: styles },
   ]
 }
@@ -63,6 +72,8 @@ export const loader: LoaderFunction = async ({ request, params, context }) => {
 
 export default function AppSecurity() {
   const appIDRoute = useMatchesRoute("routes/dashboard/apps/$appId")
+  const params = useParams()
+
   const {
     app: { gatewaySettings },
   } = appIDRoute?.data as AppIdLoaderData
@@ -111,27 +122,28 @@ export default function AppSecurity() {
 
   return (
     <div className="security">
-      <h3>Application Security</h3>
-      <p>
-        To maximize the security of your application, you should activate the private
-        secret key for all requests and enable the use of whitelist user agents and
-        origins.
-      </p>
       <Form method="post" action="/api/securitySettings">
         <input type="hidden" name="appID" value={appID} />
-        <div className="card">
-          <div className="flexRow">
-            <span>Private Secret Key Required</span>
-            <Checkbox
+        <Card>
+          <div className="pokt-card-header">
+            <h3>Private Secret Key Required</h3>
+            <Switch
               id="secretRequired"
               name="secretKeyRequired"
               defaultValue={gatewaySettings.secretKeyRequired}
             />
           </div>
-        </div>
-        <div className="card">
-          <div className="flexRow">
-            <span>Approved Chains</span>
+          <div>
+            <Text size="sm">
+              To maximize the security of your application, you should activate the
+              private secret key for all requests and enable the use of whitelist user
+              agents and origins.
+            </Text>
+          </div>
+        </Card>
+        <Card>
+          <div className="pokt-card-header">
+            <h3>Approved Chains</h3>
             <ChainsDropdown
               icon={true}
               aria-label="Select a chain to add to white list"
@@ -142,41 +154,35 @@ export default function AppSecurity() {
               }}
             />
           </div>
-          {whitelistBlockchains.map((item: string) => {
-            return (
-              <div className="flexGrowRow" key={item}>
-                <TextInput readOnly copy value={getChainName(item)} />
-                <button
-                  type="button"
-                  className="trash"
-                  onClick={() => {
-                    setWhitelistBlockchains((current) => removeFromArray(item, current))
-                  }}
-                >
-                  <IconTrashcan />
-                </button>
-              </div>
-            )
-          })}
-        </div>
-        <div className="card">
-          <div className="flexRow">
-            <label htmlFor="userAgents">Whitelisted User-Agents</label>
+          {whitelistBlockchains.map((item: string) => (
+            <AppEndpointUrl
+              key={item}
+              inputValue={params.appId ?? ""}
+              chainId={item}
+              hasDelete={true}
+              handleRemove={() => {
+                setWhitelistBlockchains((current) => removeFromArray(item, current))
+              }}
+            />
+          ))}
+        </Card>
+        <Card>
+          <div className="pokt-card-header">
+            <h3>Whitelisted User-Agents</h3>
           </div>
           <div className="flexGrowRow">
-            <input
-              className="grow userInputs"
+            <TextInput
               id="userAgents"
               name="whitelistUserAgentsInput"
+              placeholder="Type user agent here"
               value={whitelistUserAgentsElement}
               onChange={(e) => {
                 setWhitelistUserAgentsElement(e.target.value)
               }}
             />
-            <button
+            <Button
               type="button"
               aria-label="Add user agents to white list"
-              className="add"
               onClick={() => {
                 if (whitelistUserAgentsElement !== "") {
                   setWhitelistUserAgents(
@@ -187,46 +193,39 @@ export default function AppSecurity() {
               }}
             >
               +
-            </button>
+            </Button>
           </div>
-          {whitelistUserAgents.map((item: string) => {
-            return (
-              <React.Fragment key={item}>
-                <div key={item} className="flexGrowRow">
-                  <TextInput readOnly copy value={item} />
-                  <button
-                    type="button"
-                    className="trash"
-                    onClick={() => {
-                      const removedFromArray = removeFromArray(item, whitelistUserAgents)
-                      setWhitelistUserAgents(removedFromArray)
-                    }}
-                  >
-                    <IconTrashcan />
-                  </button>
-                  <input name="whitelistUserAgents" type="hidden" value={item} />
-                </div>
-              </React.Fragment>
-            )
-          })}
-        </div>
-        <div className="card">
-          <div className="flexRow">
-            <span>Whitelisted Origins</span>
+          {whitelistUserAgents.map((item: string) => (
+            <React.Fragment key={item}>
+              <TextInput
+                readOnly
+                copy
+                hasDelete={true}
+                handleRemove={() => {
+                  setWhitelistUserAgents((current) => removeFromArray(item, current))
+                }}
+                value={item}
+              />
+              <input name="whitelistUserAgents" type="hidden" value={item} />
+            </React.Fragment>
+          ))}
+        </Card>
+        <Card>
+          <div className="pokt-card-header">
+            <h3>Whitelisted Origins</h3>
           </div>
           <div className="flexGrowRow">
-            <input
-              className="grow userInputs"
+            <TextInput
               id="userOrigins"
+              placeholder="Type origin here"
               value={whitelistOriginsElement}
               onChange={(e) => {
                 setWhitelistOriginsElement(e.target.value)
               }}
             />
-            <button
+            <Button
               type="button"
               aria-label="Add origins to white list"
-              className="add"
               onClick={() => {
                 if (whitelistOriginsElement !== "") {
                   setWhitelistOrigins(
@@ -237,36 +236,30 @@ export default function AppSecurity() {
               }}
             >
               +
-            </button>
+            </Button>
           </div>
-          {whitelistOrigins.map((item: string) => {
-            return (
-              <div className="flexGrowRow" key={item}>
-                <TextInput readOnly copy value={item} />
-                <button
-                  type="button"
-                  className="trash"
-                  onClick={() => {
-                    console.log("white list origins clicked")
-                    console.log(item, " item")
-                    const removedFromArray = removeFromArray(item, whitelistOrigins)
-                    console.log(removedFromArray)
-                    setWhitelistOrigins(removedFromArray)
-                  }}
-                >
-                  <IconTrashcan />
-                </button>
-                <input name="whitelistOrigins" type="hidden" value={item} />
-              </div>
-            )
-          })}
-        </div>
-        <div className="card">
-          <span>Approved Contracts</span>
+          {whitelistOrigins.map((item: string) => (
+            <React.Fragment key={item}>
+              <TextInput
+                readOnly
+                copy
+                hasDelete={true}
+                handleRemove={() => {
+                  setWhitelistOrigins((current) => removeFromArray(item, current))
+                }}
+                value={item}
+              />
+              <input name="whitelistOrigins" type="hidden" value={item} />
+            </React.Fragment>
+          ))}
+        </Card>
+        <Card>
+          <div className="pokt-card-header">
+            <h3>Approved Contracts</h3>
+          </div>
 
           <div className="flexGrowRow">
             <ChainsDropdown
-              icon={false}
               defaultText={
                 whitelistContractsDropdown !== ""
                   ? getChainName(whitelistContractsDropdown)
@@ -285,9 +278,8 @@ export default function AppSecurity() {
                 setWhitelistContractsInput(e.target.value)
               }}
             />
-            <button
+            <Button
               type="button"
-              className="add"
               aria-label="Add contract selections to white list"
               onClick={() => {
                 if (whitelistContractsInput === "" || whitelistContractsDropdown === "") {
@@ -307,7 +299,7 @@ export default function AppSecurity() {
               }}
             >
               +
-            </button>
+            </Button>
           </div>
           {whitelistContractsError && (
             <div>
@@ -316,41 +308,31 @@ export default function AppSecurity() {
               </p>
             </div>
           )}
-          {whitelistContracts.map((item) => {
-            return (
-              <div className="flexGrowRow" key={item.inputValue}>
-                <TextInput
-                  readOnly
-                  copy
-                  value={`${getChainName(item.id)} ${item.inputValue}`}
-                />
-                <button
-                  type="button"
-                  className="trash"
-                  onClick={() => {
-                    const removedFromArray = removeFromArrayByValue2(
-                      item.inputValue,
-                      "inputValue",
-                      whitelistContracts,
-                    )
-                    setWhitelistContracts(removedFromArray)
-                  }}
-                >
-                  <IconTrashcan />
-                </button>
-
-                <input
-                  name="whitelistContracts"
-                  disabled
-                  type="hidden"
-                  value={`{chain: ${item.id}, value: ${item.inputValue}}`}
-                />
-              </div>
-            )
-          })}
-        </div>
-        <div className="card">
-          <span>Approved Methods</span>
+          {whitelistContracts.map((item) => (
+            <React.Fragment key={item.inputValue}>
+              <AppEndpointUrl
+                inputValue={item.inputValue}
+                chainId={item.id}
+                hasDelete={true}
+                handleRemove={() => {
+                  setWhitelistContracts((current) =>
+                    removeFromArrayByValue2(item.inputValue, "inputValue", current),
+                  )
+                }}
+              />
+              <input
+                name="whitelistContracts"
+                disabled
+                type="hidden"
+                value={`{chain: ${item.id}, value: ${item.inputValue}}`}
+              />
+            </React.Fragment>
+          ))}
+        </Card>
+        <Card>
+          <div className="pokt-card-header">
+            <h3>Approved Methods</h3>
+          </div>
 
           <div className="flexGrowRow">
             <ChainsDropdown
@@ -373,9 +355,8 @@ export default function AppSecurity() {
                 setWhitelistMethodsInput(e.target.value)
               }}
             />
-            <button
+            <Button
               type="button"
-              className="add"
               aria-label="Add method selections to white list"
               onClick={() => {
                 if (whitelistMethodsInput === "" || whitelistMethodsDropdown === "") {
@@ -392,7 +373,7 @@ export default function AppSecurity() {
               }}
             >
               +
-            </button>
+            </Button>
           </div>
 
           {whitelistMethodsError && (
@@ -402,43 +383,31 @@ export default function AppSecurity() {
               </p>
             </div>
           )}
-          {whitelistMethods.map((item) => {
-            return (
-              <div className="flexGrowRow" key={item.inputValue}>
-                <TextInput
-                  readOnly
-                  copy
-                  value={`${getChainName(item.id)} ${item.inputValue}`}
-                />
-                <button
-                  type="button"
-                  className="trash"
-                  onClick={() => {
-                    const removedFromArray = removeFromArrayByValue2(
-                      item.inputValue,
-                      "inputValue",
-                      whitelistMethods,
-                    )
-                    setWhitelistMethods(removedFromArray)
-                  }}
-                >
-                  <IconTrashcan />
-                </button>
+          {whitelistMethods.map((item) => (
+            <React.Fragment key={item.inputValue}>
+              <AppEndpointUrl
+                inputValue={item.inputValue}
+                chainId={item.id}
+                hasDelete={true}
+                handleRemove={() => {
+                  setWhitelistBlockchains((current) =>
+                    removeFromArrayByValue2(item.inputValue, "inputValue", current),
+                  )
+                }}
+              />
+              <input
+                name="whitelistMethods"
+                disabled
+                type="hidden"
+                value={`{chain: ${item.id}, value: ${item.inputValue}}`}
+              />
+            </React.Fragment>
+          ))}
+        </Card>
 
-                <input
-                  name="whitelistMethods"
-                  disabled
-                  type="hidden"
-                  value={`{chain: ${item.id}, value: ${item.inputValue}}`}
-                />
-              </div>
-            )
-          })}
-        </div>
-
-        <button className="submit" type="submit">
+        <Button variant="filled" type="submit">
           Save
-        </button>
+        </Button>
       </Form>
     </div>
   )

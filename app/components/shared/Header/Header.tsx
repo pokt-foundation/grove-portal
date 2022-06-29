@@ -4,7 +4,7 @@ import Button from "~/components/shared/Button"
 import { Auth0Profile } from "remix-auth-auth0"
 import { useViewportSize } from "@mantine/hooks"
 import HamburgerMenu, { links as HamburgerMenuLinks } from "../HamburgerMenu"
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import clsx from "clsx"
 import { IconPerson } from "@pokt-foundation/ui"
 import Dropdown, { links as DropdownLinks } from "../Dropdown"
@@ -31,6 +31,7 @@ type HeaderProps = {
 export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) => {
   const [isActive, setIsActive] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
+  const logoutFormRef = useRef<HTMLFormElement>(null)
   const { width } = useViewportSize()
 
   useEffect(() => {
@@ -55,17 +56,19 @@ export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) 
       {
         id: "logout",
         el: () => (
-          <Form action="/api/auth/auth0" method="post">
-            <Button
-              type="submit"
-              variant="outline"
-              name="logout"
-              value="true"
-              leftIcon={<img src="/logout.svg" alt="logout" />}
-            >
-              Logout
-            </Button>
-          </Form>
+          <Button
+            variant="outline"
+            leftIcon={<img src="/logout.svg" alt="logout" />}
+            onClick={() => {
+              if (logoutFormRef.current) {
+                logoutFormRef.current.dispatchEvent(
+                  new Event("submit", { cancelable: true, bubbles: true }),
+                )
+              }
+            }}
+          >
+            Logout
+          </Button>
         ),
       },
     ]
@@ -116,6 +119,16 @@ export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) 
           })}
         >
           <div className={`pokt-header-nav nav-${nav} pokt-header-flex`}>{children}</div>
+          <Form action="/api/auth/auth0" method="post" ref={logoutFormRef}>
+            <input
+              type="hidden"
+              readOnly
+              name="logout"
+              value="true"
+              aria-label="hidden"
+            />
+          </Form>
+
           <UserMenuDropdown user={user} routes={routes} />
           {!user && (
             <>

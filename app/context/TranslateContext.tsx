@@ -105,6 +105,12 @@ interface TranslationData {
       }
     }
   }
+  AppOverLimitCard: {
+    title: string
+    subtitle: string
+    body: string[]
+    link: string
+  }
 }
 
 export type Language = typeof languages[number]
@@ -137,7 +143,7 @@ export function useTranslate() {
 const TranslateContextProvider = ({ children }: { children: React.ReactNode }) => {
   const user = useUser()
   const language = useMemo(
-    () => user.data?.preferences.language,
+    () => user.data?.preferences?.language ?? "en",
     [user.data?.preferences],
   )
   const t = useMemo(() => translate[language as Language], [language])

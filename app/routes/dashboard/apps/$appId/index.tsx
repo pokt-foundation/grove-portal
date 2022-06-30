@@ -1,30 +1,25 @@
 import { json, LoaderFunction, MetaFunction } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
-/*import {
-  getLBDailyRelays,
-  getLBHourlyLatency,
-  getLBOriginClassification,
-  getLBPreviousSuccessfulRelays,
-  getLBPreviousTotalRelays,
-  getLBPSessionRelays,
-  getLBPSuccessfulRelays,
-  getLBStatus,
-  getLBTotalRelays,
-  getLBUserApplications,
-  UserLB,
-} from "~/models/portal.server" */
-import { getLBHourlyLatency, getLBPSessionRelays } from "~/models/portal.server"
-/*import {
-  UserLBDailyRelaysResponse,
-  UserLBHistoricalLatencyResponse,
-  UserLBSessionRelaysResponse,
-  UserLBTotalSuccessfulRelaysResponse,
-  UserLBOnChainDataResponse,
-  UserLBTotalRelaysResponse,
-} from "@pokt-foundation/portal-types" */
 import {
+  // getLBDailyRelays,
+  getLBHourlyLatency,
+  // getLBOriginClassification,
+  // getLBPreviousSuccessfulRelays,
+  // getLBPreviousTotalRelays,
+  getLBSessionRelays,
+  // getLBSuccessfulRelays,
+  // getLBStatus,
+  getLBTotalRelays,
+  // getLBUserApplications,
+  // UserLB,
+} from "~/models/portal.server"
+import {
+  // UserLBDailyRelaysResponse,
   UserLBHistoricalLatencyResponse,
   UserLBSessionRelaysResponse,
+  // UserLBTotalSuccessfulRelaysResponse,
+  // UserLBOnChainDataResponse,
+  UserLBTotalRelaysResponse,
 } from "@pokt-foundation/portal-types"
 import invariant from "tiny-invariant"
 import AppEndpointCard, {
@@ -45,6 +40,10 @@ import Grid from "~/components/shared/Grid"
 import AppRequestsRateCard, {
   links as AppRequestsRateCardLinks,
 } from "~/components/application/AppRequestsRateCard"
+import { useMemo } from "react"
+import AppOverLimitCard, {
+  links as AppOverLimitCardLinks,
+} from "~/components/application/AppOverSessionLimitCard/AppOverSessionLimitCard"
 
 export const links = () => {
   return [
@@ -53,6 +52,7 @@ export const links = () => {
     ...AppUsageOverTimeCardLinks(),
     ...AppUsageCurrentCardLinks(),
     ...AppRequestsRateCardLinks(),
+    ...AppOverLimitCardLinks(),
   ]
 }
 
@@ -67,6 +67,7 @@ export type AppIdIndexLoaderData = {
   hourlyLatency: UserLBHistoricalLatencyResponse
   // status: UserLBOnChainDataResponse
   sessionRelays: UserLBSessionRelaysResponse
+  totalRelays: UserLBTotalRelaysResponse
 }
 
 export const loader: LoaderFunction = async ({ request, params, context }) => {
@@ -76,7 +77,8 @@ export const loader: LoaderFunction = async ({ request, params, context }) => {
   // const dailyRelays = await getLBDailyRelays(id, request)
   const hourlyLatency = await getLBHourlyLatency(id, request)
   // const status = await getLBStatus(id, request)
-  const sessionRelays = await getLBPSessionRelays(id, request)
+  const sessionRelays = await getLBSessionRelays(id, request)
+  const totalRelays = await getLBTotalRelays(id, request)
 
   return json<AppIdIndexLoaderData>(
     {
@@ -84,6 +86,7 @@ export const loader: LoaderFunction = async ({ request, params, context }) => {
       hourlyLatency,
       // status,
       sessionRelays,
+      totalRelays,
     },
     {
       headers: {
@@ -99,8 +102,23 @@ export const Application = () => {
   const data = useLoaderData() as AppIdIndexLoaderData
   const appIdRoute = useMatchesRoute("routes/dashboard/apps/$appId")
   const appIdData = appIdRoute?.data as AppIdLoaderData
+
+  const exceedsMaxRelays = useMemo(() => {
+    return data.totalRelays.total_relays >= appIdData.maxDailyRelays
+  }, [appIdData.maxDailyRelays, data.totalRelays.total_relays])
+
+  const exceedsSessionRelays = useMemo(() => {
+    return data.sessionRelays.session_relays >= appIdData.maxDailyRelays / 24
+  }, [data.sessionRelays.session_relays, appIdData.maxDailyRelays])
+
   return (
     <>
+      {(exceedsMaxRelays || exceedsSessionRelays) && (
+        <AppOverLimitCard
+          exceedsMaxRelays={exceedsMaxRelays}
+          exceedsSessionRelays={exceedsSessionRelays}
+        />
+      )}
       {appIdData.app && (
         <section>
           <AppEndpointCard app={appIdData.app} />
@@ -108,10 +126,11 @@ export const Application = () => {
       )}
       <Grid gutter={32}>
         <Grid.Col sm={6}>
-          {appIdData.maxDailyRelays && data.sessionRelays && (
+          {appIdData.maxDailyRelays && data.sessionRelays && data.totalRelays && (
             <section>
               <AppUsageCurrentCard
                 maxDailyRelays={appIdData.maxDailyRelays}
+                totalRelays={data.totalRelays.total_relays}
                 sessionRelays={data.sessionRelays.session_relays}
               />
             </section>

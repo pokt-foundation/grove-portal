@@ -16,9 +16,15 @@ export const Footer = () => {
   const { language, languages } = useTranslate()
 
   const handleLanguageChange = (l: Language) => {
-    submit({
-      language: l,
-    })
+    submit(
+      {
+        language: l,
+      },
+      {
+        method: "post",
+        action: "/api/user",
+      },
+    )
   }
 
   return (

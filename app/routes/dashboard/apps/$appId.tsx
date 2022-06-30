@@ -6,7 +6,7 @@ import {
   getLBDailyRelays,
   getLBPreviousSuccessfulRelays,
   getLBPreviousTotalRelays,
-  getLBPSuccessfulRelays,
+  getLBSuccessfulRelays,
   getLBStatus,
   getLBTotalRelays,
   getLBUserApplications,
@@ -79,7 +79,7 @@ export const loader: LoaderFunction = async ({ request, params, context }) => {
     request,
   )
   const previousTotalRelays = await getLBPreviousTotalRelays(params.appId, request)
-  const successfulRelays = await getLBPSuccessfulRelays(params.appId, request)
+  const successfulRelays = await getLBSuccessfulRelays(params.appId, request)
   const totalRelays = await getLBTotalRelays(params.appId, request)
 
   return json<AppIdLoaderData>(

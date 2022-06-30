@@ -149,5 +149,14 @@
         "label": "Total Requests -fr"
       }
     }
+  },
+  "AppOverLimitCard": {
+    "title": "Session Limit Reached -fr",
+    "subtitle": "It's time to up your stake, your app is over the session limit -fr",
+    "body": [
+      "Don't worry, we've got you covered. To maintain service, the Portal automatically redirects all surplus relays to our backup infrastructure. If you want all relays to be served by Pocket Network, you'll need to stake more POKT. -fr",
+      "Please contact the team for further assistance. -fr"
+    ],
+    "link": "Contact POKT Team -fr"
   }
 }

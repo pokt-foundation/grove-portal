@@ -133,7 +133,7 @@ export default function AppEndpointCard({ app }: AppEndpointProps) {
               <AppEndpointUrl
                 key={chain}
                 chainId={chain}
-                inputValue={endpoint}
+                value={endpoint}
                 hasDelete={app.gigastake}
                 handleRemove={() => handleRemoveFromStoredChains(chain)}
               />

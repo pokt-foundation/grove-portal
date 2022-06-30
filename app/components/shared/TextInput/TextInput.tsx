@@ -12,7 +12,7 @@ export const links = () => {
   return [...CopyTextIconLinks(), { rel: "stylesheet", href: styles }]
 }
 
-type InputProps = TextInputProps & {
+export type InputProps = TextInputProps & {
   copy?: boolean
   hasDelete?: boolean
   handleRemove?: () => void

@@ -25,7 +25,7 @@ describe("<AppEndpointUrl />", () => {
     render(
       <AppEndpointUrl
         chainId={chainId}
-        inputValue={inputValue}
+        value={inputValue}
         hasDelete={gigastake}
         handleRemove={handleRemove}
       />,
@@ -42,7 +42,7 @@ describe("<AppEndpointUrl />", () => {
     render(
       <AppEndpointUrl
         chainId={chainId}
-        inputValue={inputValue}
+        value={inputValue}
         hasDelete={gigastake}
         handleRemove={handleRemove}
       />,
@@ -62,7 +62,7 @@ describe("<AppEndpointUrl />", () => {
     render(
       <AppEndpointUrl
         chainId={chainId}
-        inputValue={inputValue}
+        value={inputValue}
         hasDelete={gigastake}
         handleRemove={handleRemove}
       />,
@@ -81,7 +81,7 @@ describe("<AppEndpointUrl />", () => {
     render(
       <AppEndpointUrl
         chainId={chainId}
-        inputValue={inputValue}
+        value={inputValue}
         hasDelete={gigastake}
         handleRemove={handleRemove}
       />,

@@ -150,6 +150,23 @@
       }
     }
   },
+  "AppUsageCurrentCard": {
+    "label": "Daily Usage -fr",
+    "list": {
+      "sessionRelays": {
+        "label": "Session Relays -fr",
+        "help": "Total number of request sent during the current network session, each session has 4 blocks, 15 min each, 1 hour total. -fr"
+      },
+      "dailyRelays": {
+        "label": "Daily Relays -fr",
+        "help": "Total number of request sent during the current day. -fr"
+      },
+      "maxRelays": {
+        "label": "Max Relays -fr",
+        "help": "Maxium number of request this application can send during a single day. -fr"
+      }
+    }
+  },
   "AppOverLimitCard": {
     "title": "Session Limit Reached -fr",
     "subtitle": "It's time to up your stake, your app is over the session limit -fr",

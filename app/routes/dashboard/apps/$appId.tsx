@@ -1,6 +1,7 @@
 import { Outlet, useCatch, useLoaderData } from "@remix-run/react"
 import Nav, { links as NavLinks } from "~/components/shared/Nav"
 import { json, LoaderFunction, MetaFunction } from "@remix-run/node"
+import { SESSIONS_PER_DAY } from "~/utils/pocketUtils"
 import invariant from "tiny-invariant"
 import {
   getLBDailyRelays,
@@ -72,7 +73,7 @@ export const loader: LoaderFunction = async ({ request, params, context }) => {
   const dailyRelays = await getLBDailyRelays(params.appId, request)
   const status = await getLBStatus(params.appId, request)
   const stakedTokens = status.stake
-  const maxDailyRelays = status.relays * 24
+  const maxDailyRelays = status.relays * SESSIONS_PER_DAY
 
   const previousSeccessfulRelays = await getLBPreviousSuccessfulRelays(
     params.appId,

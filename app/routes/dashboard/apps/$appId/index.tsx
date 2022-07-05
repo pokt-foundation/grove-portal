@@ -1,5 +1,6 @@
 import { json, LoaderFunction, MetaFunction } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
+import { SESSIONS_PER_DAY } from "~/utils/pocketUtils"
 import {
   // getLBDailyRelays,
   getLBHourlyLatency,
@@ -108,7 +109,9 @@ export const Application = () => {
   }, [appIdData.maxDailyRelays, data.totalRelays.total_relays])
 
   const exceedsSessionRelays = useMemo(() => {
-    return data.sessionRelays.session_relays >= appIdData.maxDailyRelays / 24
+    return (
+      data.sessionRelays.session_relays >= appIdData.maxDailyRelays / SESSIONS_PER_DAY
+    )
   }, [data.sessionRelays.session_relays, appIdData.maxDailyRelays])
 
   return (

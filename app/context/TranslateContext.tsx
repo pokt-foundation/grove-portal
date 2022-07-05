@@ -105,6 +105,23 @@ interface TranslationData {
       }
     }
   }
+  AppUsageCurrentCard: {
+    label: string
+    list: {
+      sessionRelays: {
+        label: string
+        help: string
+      }
+      dailyRelays: {
+        label: string
+        help: string
+      }
+      maxRelays: {
+        label: string
+        help: string
+      }
+    }
+  }
   AppOverLimitCard: {
     title: string
     subtitle: string

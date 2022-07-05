@@ -11,6 +11,7 @@ import CardList, {
   CardListItem,
   links as CardListLinks,
 } from "~/components/shared/CardList"
+import { useTranslate } from "~/context/TranslateContext"
 
 // const SESSIONS_PER_DAY = 24
 
@@ -29,25 +30,25 @@ export default function AppUsageCurrentCard({
   totalRelays,
   sessionRelays,
 }: UsageCurrentCardProps) {
-  // const maxSessionRelays = maxDailyRelays / SESSIONS_PER_DAY
+  const { t } = useTranslate()
 
   const listItems: CardListItem[] = [
     {
-      label: "Session Relays",
+      label: t.AppUsageCurrentCard.list.sessionRelays.label,
       value: commify(sessionRelays.toFixed(0)),
-      help: "Total number of request sent during the current network session, each session has 4 blocks, 15 min each, 1 hour total.",
+      help: t.AppUsageCurrentCard.list.sessionRelays.help,
       color: "secondary",
     },
     {
-      label: "Total Relays",
+      label: t.AppUsageCurrentCard.list.dailyRelays.label,
       value: commify(totalRelays.toFixed(0)),
-      help: "Total number of request sent during the current day.",
+      help: t.AppUsageCurrentCard.list.dailyRelays.help,
       color: "secondary",
     },
     {
-      label: "Max Relays",
+      label: t.AppUsageCurrentCard.list.maxRelays.label,
       value: commify(maxDailyRelays),
-      help: "Maxium number of request this application can send during a single day.",
+      help: t.AppUsageCurrentCard.list.maxRelays.help,
     },
   ]
 
@@ -55,7 +56,7 @@ export default function AppUsageCurrentCard({
     <div className="pokt-app-usage-over-time">
       <Card>
         <div className="pokt-card-header">
-          <h3>Daily Usage</h3>
+          <h3>{t.AppUsageCurrentCard.label}</h3>
         </div>
         <div>
           <Grid align="center">

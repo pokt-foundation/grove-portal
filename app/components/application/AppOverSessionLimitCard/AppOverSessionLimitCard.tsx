@@ -6,6 +6,7 @@ import { useTranslate } from "~/context/TranslateContext"
 import { Link } from "@remix-run/react"
 import Button from "~/components/shared/Button"
 
+/* c8 ignore next */
 export const links = () => {
   return [...CardLinks(), { rel: "stylesheet", href: styles }]
 }

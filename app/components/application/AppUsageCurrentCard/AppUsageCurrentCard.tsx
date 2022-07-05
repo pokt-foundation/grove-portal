@@ -12,7 +12,7 @@ import CardList, {
   links as CardListLinks,
 } from "~/components/shared/CardList"
 
-const SESSIONS_PER_DAY = 24
+// const SESSIONS_PER_DAY = 24
 
 export const links = () => {
   return [...CardLinks(), ...CardListLinks(), { rel: "stylesheet", href: styles }]
@@ -29,7 +29,7 @@ export default function AppUsageCurrentCard({
   totalRelays,
   sessionRelays,
 }: UsageCurrentCardProps) {
-  const maxSessionRelays = maxDailyRelays / SESSIONS_PER_DAY
+  // const maxSessionRelays = maxDailyRelays / SESSIONS_PER_DAY
 
   const listItems: CardListItem[] = [
     {

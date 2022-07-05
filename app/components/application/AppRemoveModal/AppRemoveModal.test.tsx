@@ -1,6 +1,6 @@
 import { expect } from "vitest"
 import AppRemoveModal from "./AppRemoveModal"
-import { render, screen, waitFor, axe } from "test/helpers"
+import { render, screen, waitFor } from "test/helpers"
 import userEvent from "@testing-library/user-event"
 
 const appId = "605238bf6b986eea7cf36d5e"

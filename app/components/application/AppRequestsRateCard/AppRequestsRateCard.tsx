@@ -60,8 +60,9 @@ export default function AppRequestsRateCard({
       label: t.AppRequestsRateCard.list.successDelta.label,
       value: `${Math.abs(successRateDelta as number)}%`,
       help: t.AppRequestsRateCard.list.successDelta.help,
-      color: successRateDelta > 0 ? "success" : "error",
-      icon: successRateDelta > 0 ? IconUp : IconDown,
+      color:
+        successRateDelta > 0 ? "success" : successRateDelta < 0 ? "error" : undefined,
+      icon: successRateDelta > 0 ? IconUp : successRateDelta < 0 ? IconDown : undefined,
     },
     {
       label: t.AppRequestsRateCard.list.errorRate.label,
@@ -83,17 +84,17 @@ export default function AppRequestsRateCard({
         </div>
         <div>
           <Grid align="center">
-            <Grid.Col xs={3}>
-              {successPercent && (
+            {successPercent > 0 && (
+              <Grid.Col xs={3}>
                 <CircleGraph
                   value={successRate}
                   size={70}
                   color="#c5ec4b"
                   strokeWidth={10}
                 />
-              )}
-            </Grid.Col>
-            <Grid.Col xs={9}>
+              </Grid.Col>
+            )}
+            <Grid.Col xs={successPercent > 0 ? 9 : 12}>
               <CardList items={listItems} />
             </Grid.Col>
           </Grid>

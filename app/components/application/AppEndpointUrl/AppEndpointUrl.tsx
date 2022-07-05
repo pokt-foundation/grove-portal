@@ -1,4 +1,4 @@
-import { ChainMetadata, prefixFromChainId } from "~/utils/chainUtils"
+import { prefixFromChainId } from "~/utils/chainUtils"
 import ChainWithImage from "~/components/application/ChainWithImage"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import styles from "./styles.css"

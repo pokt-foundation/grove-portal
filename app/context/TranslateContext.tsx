@@ -105,6 +105,29 @@ interface TranslationData {
       }
     }
   }
+  AppUsageCurrentCard: {
+    label: string
+    list: {
+      sessionRelays: {
+        label: string
+        help: string
+      }
+      dailyRelays: {
+        label: string
+        help: string
+      }
+      maxRelays: {
+        label: string
+        help: string
+      }
+    }
+  }
+  AppOverLimitCard: {
+    title: string
+    subtitle: string
+    body: string[]
+    link: string
+  }
 }
 
 export type Language = typeof languages[number]
@@ -137,7 +160,7 @@ export function useTranslate() {
 const TranslateContextProvider = ({ children }: { children: React.ReactNode }) => {
   const user = useUser()
   const language = useMemo(
-    () => user.data?.preferences.language,
+    () => user.data?.preferences?.language ?? "en",
     [user.data?.preferences],
   )
   const t = useMemo(() => translate[language as Language], [language])

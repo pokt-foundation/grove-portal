@@ -159,7 +159,7 @@ export const getLBPreviousTotalRelays = async (
 }
 
 // LB: SESSION RELAYS
-export const getLBPSessionRelays = async (
+export const getLBSessionRelays = async (
   id: string,
   request: Request,
 ): Promise<UserLBSessionRelaysResponse> => {
@@ -181,7 +181,7 @@ export const getLBPSessionRelays = async (
 }
 
 // LB: SUCCESSFUL RELAYS
-export const getLBPSuccessfulRelays = async (
+export const getLBSuccessfulRelays = async (
   id: string,
   request: Request,
 ): Promise<UserLBTotalSuccessfulRelaysResponse> => {

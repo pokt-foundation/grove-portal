@@ -10,9 +10,15 @@ import { Skeleton, Title } from "@mantine/core"
 import Button from "~/components/shared/Button"
 import Grid from "~/components/shared/Grid"
 import Card, { links as CardLinks } from "~/components/shared/Card"
+import Section, { links as SectionLinks } from "~/components/shared/Section"
 
 export const links: LinksFunction = () => {
-  return [...CallOutBoxLinks(), ...CardLinks(), { rel: "stylesheet", href: styles }]
+  return [
+    ...CallOutBoxLinks(),
+    ...CardLinks(),
+    ...SectionLinks(),
+    { rel: "stylesheet", href: styles },
+  ]
 }
 
 export default function Index() {
@@ -59,8 +65,8 @@ export default function Index() {
 
   return (
     <>
-      <section>
-        <Container size="xl">
+      <Section p={256} backgroundImage="/pocket-header-bg-animated.gif">
+        <Container size="xs">
           <Title order={1}>
             Get an endpoint for your blockchain, and{" "}
             <Text component="span" weight={900}>
@@ -75,8 +81,8 @@ export default function Index() {
             Try it for free
           </Button>
         </Container>
-      </section>
-      <section>
+      </Section>
+      <Section p={128}>
         <Container size="xl">
           <Title order={5}>ACCESS AND TRACK YOUR APP INFRASTRUCTURE</Title>
           <Group position="apart">
@@ -111,8 +117,37 @@ export default function Index() {
             </Grid.Col>
           </Grid>
         </Container>
-      </section>
-      <section>
+      </Section>
+      <Section p={128}>
+        <Container size="xl">
+          <Group position="apart">
+            <Title order={3}>
+              Supported{" "}
+              <Text component="span" weight={900}>
+                Blockchains
+              </Text>
+            </Title>
+            <Button component={Link} to="#">
+              Find the chain you are looking for
+            </Button>
+          </Group>
+        </Container>
+        <Group noWrap className="logos">
+          {landing.chains.map((name) => {
+            return (
+              <div key={name} className="logo-wrapper">
+                <img
+                  alt={`${name} logo`}
+                  className="logo"
+                  src={`/landing-logos/${name}_logo.png`}
+                />
+              </div>
+            )
+          })}
+        </Group>
+      </Section>
+      <hr />
+      <Section p={128}>
         <Container size="xl">
           <Title order={2}>
             Advantages of the{" "}
@@ -145,7 +180,8 @@ export default function Index() {
             ))}
           </Grid>
         </Container>
-      </section>
+      </Section>
+      <hr />
       {/* <Container>
         <Grid grow>
           <Grid.Col sm={5}>

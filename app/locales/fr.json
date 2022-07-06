@@ -149,5 +149,31 @@
         "label": "Total Requests -fr"
       }
     }
+  },
+  "AppUsageCurrentCard": {
+    "label": "Daily Usage -fr",
+    "list": {
+      "sessionRelays": {
+        "label": "Session Relays -fr",
+        "help": "Total number of request sent during the current network session, each session has 4 blocks, 15 min each, 1 hour total. -fr"
+      },
+      "dailyRelays": {
+        "label": "Daily Relays -fr",
+        "help": "Total number of request sent during the current day. -fr"
+      },
+      "maxRelays": {
+        "label": "Max Relays -fr",
+        "help": "Maxium number of request this application can send during a single day. -fr"
+      }
+    }
+  },
+  "AppOverLimitCard": {
+    "title": "Session Limit Reached -fr",
+    "subtitle": "It's time to up your stake, your app is over the session limit -fr",
+    "body": [
+      "Don't worry, we've got you covered. To maintain service, the Portal automatically redirects all surplus relays to our backup infrastructure. If you want all relays to be served by Pocket Network, you'll need to stake more POKT. -fr",
+      "Please contact the team for further assistance. -fr"
+    ],
+    "link": "Contact POKT Team -fr"
   }
 }

@@ -1,13 +1,18 @@
 import { Container } from "~/components/shared/Container"
-import { Form } from "@remix-run/react"
-import { Grid } from "~/components/shared/Grid"
+import { Form, Link } from "@remix-run/react"
+import { Group } from "~/components/shared/Group"
+import Text from "~/components/shared/Text"
 import { LinksFunction } from "@remix-run/node"
 import { CallOutBox, links as CallOutBoxLinks } from "../../components/shared/CallOutBox"
 import { useTranslate } from "~/context/TranslateContext"
 import styles from "~/styles/landing.css"
+import { Skeleton, Title } from "@mantine/core"
+import Button from "~/components/shared/Button"
+import Grid from "~/components/shared/Grid"
+import Card, { links as CardLinks } from "~/components/shared/Card"
 
 export const links: LinksFunction = () => {
-  return [...CallOutBoxLinks(), { rel: "stylesheet", href: styles }]
+  return [...CallOutBoxLinks(), ...CardLinks(), { rel: "stylesheet", href: styles }]
 }
 
 export default function Index() {
@@ -15,9 +20,133 @@ export default function Index() {
     t: { landing },
   } = useTranslate()
 
+  const highlightList = [
+    {
+      title: "One endpoint and access to multiple chains",
+      description:
+        "The Portal lets you create an endpoint for all the chains you want you want in just a few clicks and provides you with the features you've come to expect in centralized API services, such as usage/uptime metrics and notifications/alerts.",
+    },
+    {
+      title: "Up to a million relays per day",
+      description:
+        "The Portal lets you create an endpoint for all the chains you want you want in just a few clicks and provides you with the features you've come to expect in centralized API services, such as usage/uptime metrics and notifications/alerts.",
+    },
+    {
+      title: "Track your app infrastructure",
+      description:
+        "The Portal lets you create an endpoint for all the chains you want you want in just a few clicks and provides you with the features you've come to expect in centralized API services, such as usage/uptime metrics and notifications/alerts.",
+    },
+  ]
+
+  const advantagesList = [
+    {
+      icon: "test",
+      title: "Nodes",
+      description:
+        "Support your favorite applications and networks while earning from them.",
+    },
+    {
+      icon: "test",
+      title: "Community",
+      description: "Contribute to the movement towards unstoppable infrastructure.",
+    },
+    {
+      icon: "test",
+      title: "Dapps",
+      description: "Pocket provides RPC access to the long tail of blockchain networks.",
+    },
+  ]
+
   return (
     <>
-      <Container>
+      <section>
+        <Container size="xl">
+          <Title order={1}>
+            Get an endpoint for your blockchain, and{" "}
+            <Text component="span" weight={900}>
+              start building
+            </Text>
+          </Title>
+          <Text>
+            Deploy within minutes to decentralized infrastructure that can service dozens
+            of chains.
+          </Text>
+          <Button component={Link} to="#">
+            Try it for free
+          </Button>
+        </Container>
+      </section>
+      <section>
+        <Container size="xl">
+          <Title order={5}>ACCESS AND TRACK YOUR APP INFRASTRUCTURE</Title>
+          <Group position="apart">
+            <Title order={2}>
+              Discover more about{" "}
+              <Text component="span" weight={900} color="blue">
+                Pocket Portal
+              </Text>
+            </Title>
+            <Button component={Link} to="">
+              Get started for free
+            </Button>
+          </Group>
+          <Grid>
+            <Grid.Col lg={8} offsetLg={4}>
+              <img src="/landing-background.png" alt="Subdued Pokt Logo" />
+            </Grid.Col>
+            <Grid.Col lg={4} offsetLg={-12}>
+              <ul className="pokt-highlight-list">
+                {highlightList.map((item) => (
+                  <li key={item.title}>
+                    <Title order={3}>{item.title}</Title>
+                    <Text component="p" size="sm">
+                      {item.description}
+                    </Text>
+                  </li>
+                ))}
+              </ul>
+              <Button component={Link} to="#" color="white">
+                Take a look at our Demo
+              </Button>
+            </Grid.Col>
+          </Grid>
+        </Container>
+      </section>
+      <section>
+        <Container size="xl">
+          <Title order={2}>
+            Advantages of the{" "}
+            <Text component="span" weight={900} color="blue">
+              Pocket Portal
+            </Text>
+          </Title>
+          <Text size="sm">
+            This application allows you to create an endpoint while deploying it on a
+            decentralized infrastructure, making it less vulnerable to outages!
+          </Text>
+
+          <div>
+            <Skeleton height={400} />
+          </div>
+          <Grid>
+            {advantagesList.map((advantage) => (
+              <Grid.Col key={advantage.title} span={12} sm={4}>
+                <Card>
+                  <div className="pokt-card-header">
+                    <h3>{advantage.title}</h3>
+                  </div>
+                  <div>
+                    <Text component="p" size="sm">
+                      {advantage.description}
+                    </Text>
+                  </div>
+                </Card>
+              </Grid.Col>
+            ))}
+          </Grid>
+        </Container>
+      </section>
+      {/* <Container>
         <Grid grow>
           <Grid.Col sm={5}>
             <h2>{landing.title}</h2>
@@ -67,7 +196,7 @@ export default function Index() {
           </div>
         </Grid>
       </Container>
-      <img className="pokt-image" src="/landing-background.png" alt="Subdued Pokt Logo" />
+      <img className="pokt-image" src="/landing-background.png" alt="Subdued Pokt Logo" /> */}
     </>
   )
 }

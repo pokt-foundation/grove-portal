@@ -6,9 +6,10 @@ import { json, LinksFunction, LoaderFunction, MetaFunction } from "@remix-run/no
 import { useMemo } from "react"
 import { getUserProfile } from "~/utils/session.server"
 import { Auth0Profile } from "remix-auth-auth0"
+import Container, { links as ContainerLinks } from "~/components/shared/Container"
 
 export const links: LinksFunction = () => {
-  return [...HeaderLinks(), ...FooterLinks(), ...NavLinks()]
+  return [...HeaderLinks(), ...FooterLinks(), ...NavLinks(), ...ContainerLinks()]
 }
 
 export const meta: MetaFunction = () => {
@@ -64,7 +65,9 @@ export default function LandingLayout() {
         <Nav routes={routes} />
       </Header>
       <main>
-        <Outlet />
+        <Container fluid>
+          <Outlet />
+        </Container>
       </main>
       <Footer />
     </>

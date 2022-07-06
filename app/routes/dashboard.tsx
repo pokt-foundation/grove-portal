@@ -57,7 +57,7 @@ export default function Dashboard() {
         <Nav routes={routes} />
       </Header>
       <main>
-        <Container>
+        <Container fluid>
           {state === "loading" && <Loader />}
           <Outlet />
         </Container>

@@ -11,10 +11,12 @@ export default function Text<C = "p">({ ...props }: TextProps<C>) {
   const { className, ...textProps } = props
   return (
     <MantineText
-      className={clsx({
-        "pokt-text": true,
+      className={clsx(
+        {
+          "pokt-text": true,
+        },
         className,
-      })}
+      )}
       style={props.component === "span" ? { fontSize: "inherit" } : undefined}
       {...textProps}
     />

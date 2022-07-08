@@ -1,4 +1,4 @@
-h3 {
+.callOutBox h3 {
   color: var(--color-secondary-main);
   line-height: 3.25rem;
   font-size: 1.625rem;
@@ -7,7 +7,7 @@ h3 {
   text-align: right;
 }
 
-p.smallText {
+.callOutBox p.smallText {
   margin-top: 0;
   font-size: 0.875rem;
   line-height: 1.625rem;
@@ -23,7 +23,7 @@ p.smallText {
   align-items: center;
 }
 
-.callOutGraphic {
+.callOutBox .callOutGraphic {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
@@ -36,7 +36,7 @@ p.smallText {
   margin-left: 2rem;
 }
 
-.bigBlueText {
+.callOutBox .bigBlueText {
   font-size: 2.25rem;
   line-height: 3.25rem;
   margin: 0;
@@ -45,7 +45,7 @@ p.smallText {
   color: var(--color-secondary-main);
 }
 
-.callOutGraphicDescription {
+.callOutBox .callOutGraphicDescription {
   margin: 0;
   text-align: center;
 }

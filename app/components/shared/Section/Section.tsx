@@ -9,20 +9,22 @@ interface SectionProps {
   children: React.ReactNode
   className?: string
   backgroundImage?: string
-  p?: number
+  px?: number
+  py?: number
 }
 
 export default function Section({
   children,
   className,
   backgroundImage,
-  p = 0,
+  px = 0,
+  py = 0,
   ...props
 }: SectionProps) {
   const backgroundStyles = backgroundImage
     ? { backgroundImage: `url(${backgroundImage})` }
     : {}
-  const paddingStyles = p ? { padding: `${p}px 0` } : {}
+  const paddingStyles = { padding: `${px}px ${py}px` }
   const styles = {
     ...backgroundStyles,
     ...paddingStyles,

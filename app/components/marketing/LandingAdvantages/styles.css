@@ -1,0 +1,22 @@
+.pokt-landing-advantages-video {
+  margin-bottom: 48px;
+}
+
+.pokt-landing-advantages-cards .pokt-card {
+  position: relative;
+  border-top-left-radius: 0;
+}
+
+.pokt-landing-advantages-cards .pokt-card:not(:hover) {
+  background-color: transparent;
+}
+
+.pokt-landing-advantages-cards .pokt-card:hover:after {
+  content: "";
+  position: absolute;
+  height: 4px;
+  width: 45%;
+  top: 0;
+  left: 0;
+  background-color: var(--color-secondary-main);
+}

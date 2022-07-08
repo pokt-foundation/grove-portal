@@ -624,26 +624,28 @@ export const postAppSecurity = async (
 ): Promise<AppSecurityResponse> => {
   const user = await requireUser(request)
   const data = { ...formData }
-  const res = await fetch(
-    `${getRequiredClientEnvVar("BACKEND_URL")}/api/lb/${data.appID}`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `${user.extraParams.token_type} ${user.accessToken}`,
-      },
-      body: JSON.stringify(data),
-    },
-  )
+  console.log(data)
 
-  if (!res || res.status !== 200) {
-    return {
-      error: true,
-      error_message: res.statusText,
-    }
-  }
+  // const res = await fetch(
+  //   `${getRequiredClientEnvVar("BACKEND_URL")}/api/lb/${data.appID}`,
+  //   {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: `${user.extraParams.token_type} ${user.accessToken}`,
+  //     },
+  //     body: JSON.stringify(data),
+  //   },
+  // )
 
-  return res.json()
+  // if (!res || res.status !== 200) {
+  //   return {
+  //     error: true,
+  //     error_message: res.statusText,
+  //   }
+  // }
+
+  return { error: false }
 }
 
 // APP SECURITY GET Security Settings
@@ -664,6 +666,7 @@ export const getAppSecurity = async (
   appID: string,
   request: Request,
 ): Promise<getAppSecurityProps> => {
+  let appData = []
   const user = await requireUser(request)
   const res = await fetch(`${getRequiredClientEnvVar("BACKEND_URL")}/api/lb`, {
     method: "GET",
@@ -677,5 +680,13 @@ export const getAppSecurity = async (
     throw new Error(res.statusText)
   }
 
-  return await res.json()
+  // instead of returning all data for all apps that a user has, get the specific app in question and pass only that data to the frontend
+  const data = await res.json()
+  for (let i = 0; i < data.length; i += 1) {
+    if (data[i].id === appID) {
+      appData = data[i]
+    }
+  }
+
+  return appData
 }

@@ -16,6 +16,7 @@ export interface AppSecurityActionResponse {
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData()
+  console.log(formData, "formdata")
   let data: AppSecurityActionResponse["data"] = {
     appID: "",
     secretKeyRequired: false,
@@ -29,12 +30,11 @@ export const action: ActionFunction = async ({ request }) => {
   if (formData.has("appID")) {
     data.appID = formData.get("appID") as string
   }
-  /*
   if (formData.has("secretKeyRequired")) {
-    data.secretKeyRequired = formData.get("secretKeyRequired") as boolean
-  }
+    data.secretKeyRequired = formData.get("secretKeyRequired") === "on"
+  } /*
   if (formData.has("whitelistUserAgents")) {
-    data.whitelistUserAgents = formData.get("whitelistUserAgents") as string[]
+    data.whitelistUserAgents = formData.get("whitelistUserAgents")
   }
   if (formData.has("whitelistBlockchains")) {
     data.whitelistBlockchains = formData.get("whitelistBlockchains") as string[]
@@ -53,8 +53,7 @@ export const action: ActionFunction = async ({ request }) => {
       blockchainID: string
       methods: string[]
     }[]
-  }
-*/
+  }*/
   const res = await postAppSecurity(data, request)
 
   return json<AppSecurityActionResponse>({

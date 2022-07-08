@@ -1,10 +1,11 @@
 import { LoaderFunction, MetaFunction } from "@remix-run/node"
-import { useState } from "react"
+import React, { useState } from "react"
 import { Form, useParams } from "@remix-run/react"
 import invariant from "tiny-invariant"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { getAppSecurity } from "../../../../models/portal.server"
 import { AppIdLoaderData } from "../$appId"
+import { useLoaderData } from "@remix-run/react"
 import styles from "../../../../styles/dashboard.apps.$appId.security.css"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import ChainsDropdown, {
@@ -52,16 +53,60 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   invariant(params.appId, "app id not found")
   const id = params.appId
   const appSecurityData = await getAppSecurity(id, request)
-  return null
+  return appSecurityData
 }
 
 export default function AppSecurity() {
   const appIDRoute = useMatchesRoute("routes/dashboard/apps/$appId")
   const params = useParams()
+  const appSecurityData = useLoaderData()
+  //console.log(appSecurityData)
 
   const {
     app: { gatewaySettings },
   } = appIDRoute?.data as AppIdLoaderData
+
+  // const datapiece = [
+  //   { blockChain: "0001", methods: ["123", "234", "345"] },
+  //   { blockChain: "0006", methods: ["444"] },
+  // ]
+
+  const formatData = (
+    data: { blockChain: string; [key: string]: string[] | string }[],
+  ) => {
+    let formattedData = []
+    if (data[0]?.contracts || data[0]?.methods) {
+      let key = data[0]?.contracts ? "contracts" : "methods"
+      for (let i = 0; i < data.length; i += 1) {
+        if (data[i][key].length > 1) {
+          for (let j = 0; j < data[i][key].length; j += 1) {
+            formattedData.push({ id: data[i].blockChain, inputValue: data[i][key][j] })
+          }
+        } else {
+          formattedData.push({ id: data[i].blockChain, inputValue: data[i][key][0] })
+        }
+      }
+    }
+    return formattedData
+  }
+
+  //   const reduce = (chain: string, arr: string[], key="contracts"||"methods") => {
+  //     if (typeof arr === "string") {
+  //         return {
+  //             blockchain: chain,
+  //             [key]: arr
+  //         }
+  //     }
+  //     return arr.reduce((prev, curr) => {
+  //         return [
+  //             ...prev,
+  //             {
+  //                 blockchain: chain,
+  //                 [key]: curr
+  //             }
+  //         ]
+  //     }, [])
+  // }
 
   const [secretKeyRequired, setSecretKeyRequired] = useState<boolean>(
     gatewaySettings.secretKeyRequired,
@@ -81,13 +126,13 @@ export default function AppSecurity() {
   const [whitelistContractsDropdown, setWhitelistContractsDropdown] = useState<string>("")
   const [whitelistContracts, setWhitelistContracts] = useState<
     Array<{ id: string; inputValue: string }>
-  >(gatewaySettings.whitelistContracts)
+  >(formatData(gatewaySettings.whitelistContracts))
   const [whitelistContractsError, setWhitelistContractsError] = useState<boolean>(false)
   const [whitelistMethodsInput, setWhitelistMethodsInput] = useState<string>("")
   const [whitelistMethodsDropdown, setWhitelistMethodsDropdown] = useState<string>("")
   const [whitelistMethods, setWhitelistMethods] = useState<
     Array<{ id: string; inputValue: string }>
-  >(gatewaySettings.whitelistMethods)
+  >(formatData(gatewaySettings.whitelistMethods))
   const [whitelistMethodsError, setWhitelistMethodsError] = useState<boolean>(false)
 
   const removeFromArray = (item: string, arr: string[]) => arr.filter((i) => i !== item)
@@ -144,15 +189,18 @@ export default function AppSecurity() {
             />
           </div>
           {whitelistBlockchains.map((item: string) => (
-            <AppEndpointUrl
-              key={item}
-              value={params.appId ?? ""}
-              chainId={item}
-              hasDelete={true}
-              handleRemove={() => {
-                setWhitelistBlockchains((current) => removeFromArray(item, current))
-              }}
-            />
+            <React.Fragment key={item}>
+              <AppEndpointUrl
+                key={item}
+                value={params.appId ?? ""}
+                chainId={item}
+                hasDelete={true}
+                handleRemove={() => {
+                  setWhitelistBlockchains((current) => removeFromArray(item, current))
+                }}
+              />
+              <input name="whitelistBlockchains" type="hidden" value={item} />
+            </React.Fragment>
           ))}
         </Card>
         <Card>

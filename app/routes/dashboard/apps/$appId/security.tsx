@@ -19,6 +19,7 @@ import Card, { links as CardLinks } from "~/components/shared/Card"
 import Switch, { links as SwitchLinks } from "~/components/shared/Switch"
 import Button from "~/components/shared/Button"
 import { Text } from "@mantine/core"
+import { stringify } from "querystring"
 
 export const meta: MetaFunction = () => {
   return {
@@ -65,11 +66,6 @@ export default function AppSecurity() {
   const {
     app: { gatewaySettings },
   } = appIDRoute?.data as AppIdLoaderData
-
-  // const datapiece = [
-  //   { blockChain: "0001", methods: ["123", "234", "345"] },
-  //   { blockChain: "0006", methods: ["444"] },
-  // ]
 
   const formatData = (
     data: { blockChain: string; [key: string]: string[] | string }[],
@@ -363,10 +359,11 @@ export default function AppSecurity() {
                     )
                   }}
                 />
+                <input name="whitelistContractsChains" type="hidden" value={item.id} />
                 <input
-                  name="whitelistContracts"
+                  name="whitelistContractsValues"
                   type="hidden"
-                  value={`{chain: ${item.id}, value: ${item.inputValue}}`}
+                  value={item.inputValue}
                 />
               </div>
             ))}
@@ -443,7 +440,7 @@ export default function AppSecurity() {
                 <input
                   name="whitelistMethods"
                   type="hidden"
-                  value={`{chain: ${item.id}, value: ${item.inputValue}}`}
+                  value={`{"chain": "${item.id}", "value": "${item.inputValue}"}`}
                 />
               </div>
             ))}

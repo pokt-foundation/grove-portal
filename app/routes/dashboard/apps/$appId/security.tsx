@@ -19,7 +19,6 @@ import Card, { links as CardLinks } from "~/components/shared/Card"
 import Switch, { links as SwitchLinks } from "~/components/shared/Switch"
 import Button from "~/components/shared/Button"
 import { Text } from "@mantine/core"
-import { stringify } from "querystring"
 
 export const meta: MetaFunction = () => {
   return {

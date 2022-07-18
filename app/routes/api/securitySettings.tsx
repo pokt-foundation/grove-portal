@@ -1,9 +1,10 @@
 import { ActionFunction, json } from "@remix-run/node"
 import { postAppSecurity } from "~/models/portal.server"
 
-const unifyArrays = (chains: string[], values: string[]) => {
+const unifyArrays = (chains: string[], values: string[], inputKey: string) => {
   let together = {} as { [key: string]: string[] }
-  let formatted = [] as { [key: string]: string[] }[]
+
+  let formatted = [] as { blockchainID: string; contracts: string[] }[]
   if (chains.length > 0) {
     for (let i = 0; i < chains.length; i += 1) {
       if (together[chains[i]] === undefined) {
@@ -15,7 +16,10 @@ const unifyArrays = (chains: string[], values: string[]) => {
 
   if (Object.keys(together).length !== 0) {
     for (const [key, value] of Object.entries(together)) {
-      formatted.push({ [key]: value })
+      formatted.push({
+        blockchainID: key,
+        [(inputKey = "contracts" || "methods")]: value,
+      })
     }
   }
   return formatted
@@ -31,6 +35,10 @@ export interface AppSecurityActionResponse {
     whitelistBlockchains: string[]
     whitelistContracts: { blockchainID: string; contracts: string[] }[]
     whitelistMethods: { blockchainID: string; methods: string[] }[]
+    whitelistContractsChains: string[]
+    whitelistContractsValues: string[]
+    whitelistMethodsChains: string[]
+    whitelistMethodsValues: string[]
   }
 }
 
@@ -44,6 +52,10 @@ export const action: ActionFunction = async ({ request }) => {
     whitelistUserAgents: [],
     whitelistBlockchains: [],
     whitelistContracts: [],
+    whitelistContractsChains: [],
+    whitelistContractsValues: [],
+    whitelistMethodsChains: [],
+    whitelistMethodsValues: [],
     whitelistMethods: [],
   }
 
@@ -63,15 +75,20 @@ export const action: ActionFunction = async ({ request }) => {
     data.whitelistOrigins = formData.getAll("whitelistOrigins") as string[]
   }
 
-  // if (formData.has("whitelistContracts")) {
-  //   data.whitelistContracts = formData.getAll("whitelistContracts")
+  if (
+    formData.has("whitelistContractsChains") &&
+    formData.has("whitelistContractsValues")
+  ) {
+    const chains = formData.getAll("whitelistContractsChains") as string[]
+    const values = formData.getAll("whitelistContractsValues") as string[]
+    data.whitelistContracts = unifyArrays(chains, values, "contracts")
+  }
 
-  // if (formData.has("whitelistMethods")) {
-  //   data.whitelistMethods = formData.getAll("whitelistMethods") as {
-  //     blockchainID: string
-  //     methods: string[]
-  //   }[]
-  // }
+  if (formData.has("whitelistMethodsChains") && formData.has("whitelistMethodsValues")) {
+    const chains = formData.getAll("whitelistMethodsChains") as string[]
+    const values = formData.getAll("whitelistMethodsValues") as string[]
+    data.whitelistContracts = unifyArrays(chains, values, "methods")
+  }
   const res = await postAppSecurity(data, request)
 
   return json<AppSecurityActionResponse>({

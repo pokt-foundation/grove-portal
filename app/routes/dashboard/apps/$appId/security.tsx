@@ -1,11 +1,8 @@
-import { LoaderFunction, MetaFunction } from "@remix-run/node"
+import { MetaFunction } from "@remix-run/node"
 import React, { useState } from "react"
-import { Form, useParams } from "@remix-run/react"
-import invariant from "tiny-invariant"
+import { useFetcher, Form, useParams } from "@remix-run/react"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
-import { getAppSecurity } from "../../../../models/portal.server"
 import { AppIdLoaderData } from "../$appId"
-import { useLoaderData } from "@remix-run/react"
 import styles from "../../../../styles/dashboard.apps.$appId.security.css"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import ChainsDropdown, {
@@ -49,25 +46,18 @@ export type securitySettings = {
   }
 }
 
-export const loader: LoaderFunction = async ({ request, params }) => {
-  invariant(params.appId, "app id not found")
-  const id = params.appId
-  const appSecurityData = await getAppSecurity(id, request)
-  return appSecurityData
-}
-
 export default function AppSecurity() {
   const appIDRoute = useMatchesRoute("routes/dashboard/apps/$appId")
   const params = useParams()
-  const appSecurityData = useLoaderData()
-  //console.log(appSecurityData)
+
+  const securityAction = useFetcher()
 
   const {
     app: { gatewaySettings },
   } = appIDRoute?.data as AppIdLoaderData
 
   const formatData = (
-    data: { blockChain: string; [key: string]: string[] | string }[],
+    data: { blockchainID: string; [key: string]: string[] | string }[],
   ) => {
     let formattedData = []
     if (data[0]?.contracts || data[0]?.methods) {
@@ -75,33 +65,18 @@ export default function AppSecurity() {
       for (let i = 0; i < data.length; i += 1) {
         if (data[i][key].length > 1) {
           for (let j = 0; j < data[i][key].length; j += 1) {
-            formattedData.push({ id: data[i].blockChain, inputValue: data[i][key][j] })
+            formattedData.push({
+              id: data[i].blockchainID,
+              inputValue: data[i][key][j],
+            })
           }
         } else {
-          formattedData.push({ id: data[i].blockChain, inputValue: data[i][key][0] })
+          formattedData.push({ id: data[i].blockchainID, inputValue: data[i][key][0] })
         }
       }
     }
     return formattedData
   }
-
-  //   const reduce = (chain: string, arr: string[], key="contracts"||"methods") => {
-  //     if (typeof arr === "string") {
-  //         return {
-  //             blockchain: chain,
-  //             [key]: arr
-  //         }
-  //     }
-  //     return arr.reduce((prev, curr) => {
-  //         return [
-  //             ...prev,
-  //             {
-  //                 blockchain: chain,
-  //                 [key]: curr
-  //             }
-  //         ]
-  //     }, [])
-  // }
 
   const [secretKeyRequired, setSecretKeyRequired] = useState<boolean>(
     gatewaySettings.secretKeyRequired,
@@ -149,7 +124,7 @@ export default function AppSecurity() {
 
   return (
     <div className="security">
-      <Form method="post" action="/api/securitySettings">
+      <securityAction.Form method="post" action="/api/securitySettings">
         <input type="hidden" name="appID" value={params.appId} />
         <Card>
           <div className="pokt-card-header">
@@ -449,7 +424,7 @@ export default function AppSecurity() {
         <Button variant="filled" type="submit">
           Save
         </Button>
-      </Form>
+      </securityAction.Form>
     </div>
   )
 }

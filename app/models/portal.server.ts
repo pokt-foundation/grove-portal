@@ -586,7 +586,7 @@ export const postFeedback = async (
   )
 
   // server sends 204 no content on successful post
-  if (!res || res.status !== 204) {
+  if (!res || (res.status !== 200 && res.status !== 204)) {
     return {
       error: true,
       error_message: res.statusText,
@@ -598,7 +598,7 @@ export const postFeedback = async (
   }
 }
 
-// APP SECURITY Post Security Settings
+// APP SECURITY Put Security Settings
 export type AppSecurityProps = {
   appID: string
   secretKeyRequired: boolean
@@ -611,82 +611,35 @@ export type AppSecurityProps = {
 
 export type AppSecurityResponse =
   | {
-      error: boolean
+      error: false
     }
   | {
-      error: boolean
+      error: true
       error_message: string
     }
 
-export const postAppSecurity = async (
+export const putAppSecurity = async (
   formData: AppSecurityProps,
   request: Request,
 ): Promise<AppSecurityResponse> => {
   const user = await requireUser(request)
-  const data = { ...formData }
-  console.log(data, "inside postappsecurity")
-
-  // const res = await fetch(
-  //   `${getRequiredClientEnvVar("BACKEND_URL")}/api/lb/${data.appID}`,
-  //   {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       Authorization: `${user.extraParams.token_type} ${user.accessToken}`,
-  //     },
-  //     body: JSON.stringify(data),
-  //   },
-  // )
-
-  // if (!res || res.status !== 200) {
-  //   return {
-  //     error: true,
-  //     error_message: res.statusText,
-  //   }
-  // }
-
-  return { error: false }
-}
-
-// APP SECURITY GET Security Settings
-export type getAppSecurityProps = {
-  gatewaySettings: {
-    secretKey: string
-    secretKeyRequired: boolean
-    whitelistOrigins: string[]
-    whitelistUserAgents: string[]
-    whitelistBlockchains: string[]
-    whitelistContracts: { blockchainID: string; contracts: string[] }[]
-    whitelistMethods: { blockchainID: string; methods: string[] }[]
-  }
-}
-
-// Get app security settings
-export const getAppSecurity = async (
-  appID: string,
-  request: Request,
-): Promise<getAppSecurityProps> => {
-  let appData = []
-  const user = await requireUser(request)
-  const res = await fetch(`${getRequiredClientEnvVar("BACKEND_URL")}/api/lb`, {
-    method: "GET",
+  const { appID, ...data } = formData
+  const res = await fetch(`${getRequiredClientEnvVar("BACKEND_URL")}/api/lb/${appID}`, {
+    method: "PUT",
     headers: {
       "Content-Type": "application/json",
       Authorization: `${user.extraParams.token_type} ${user.accessToken}`,
     },
+    body: JSON.stringify({ gatewaySettings: data }),
   })
 
-  if (!res || res.status !== 200) {
-    throw new Error(res.statusText)
-  }
-
-  // instead of returning all data for all apps that a user has, get the specific app in question and pass only that data to the frontend
-  const data = await res.json()
-  for (let i = 0; i < data.length; i += 1) {
-    if (data[i].id === appID) {
-      appData = data[i]
+  // server sends 204 on successful put
+  if (!res || (res.status !== 200 && res.status !== 204)) {
+    return {
+      error: true,
+      error_message: res.statusText,
     }
   }
 
-  return appData
+  return { error: false }
 }

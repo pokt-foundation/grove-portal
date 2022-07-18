@@ -1,5 +1,5 @@
-import { ActionFunction, json } from "@remix-run/node"
-import { postAppSecurity } from "~/models/portal.server"
+import { ActionFunction, redirect } from "@remix-run/node"
+import { putAppSecurity } from "~/models/portal.server"
 
 const unifyContracts = (chains: string[], values: string[]) => {
   let together = {} as { [key: string]: string[] }
@@ -68,7 +68,6 @@ export interface AppSecurityActionResponse {
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData()
-  console.log(formData, "formdata")
   let data: AppSecurityActionResponse["data"] = {
     appID: "",
     secretKeyRequired: false,
@@ -114,11 +113,11 @@ export const action: ActionFunction = async ({ request }) => {
     data.whitelistMethods = unifyMethods(chains, values)
   }
 
-  console.log(data, "data sending to action")
-  const res = await postAppSecurity(data, request)
+  const res = await putAppSecurity(data, request)
 
-  return json<AppSecurityActionResponse>({
-    error: res.error,
-    data: data,
-  })
+  if (res.error === false) {
+    return redirect(`dashboard/apps/${data.appID}/security`)
+  }
+
+  throw new Error(res.error_message)
 }

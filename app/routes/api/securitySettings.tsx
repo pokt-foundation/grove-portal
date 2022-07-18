@@ -1,10 +1,10 @@
 import { ActionFunction, json } from "@remix-run/node"
 import { postAppSecurity } from "~/models/portal.server"
 
-const unifyArrays = (chains: string[], values: string[], inputKey: string) => {
+const unifyContracts = (chains: string[], values: string[]) => {
   let together = {} as { [key: string]: string[] }
 
-  let formatted = [] as { blockchainID: string; contracts: string[] }[]
+  let formatted = []
   if (chains.length > 0) {
     for (let i = 0; i < chains.length; i += 1) {
       if (together[chains[i]] === undefined) {
@@ -18,7 +18,31 @@ const unifyArrays = (chains: string[], values: string[], inputKey: string) => {
     for (const [key, value] of Object.entries(together)) {
       formatted.push({
         blockchainID: key,
-        [(inputKey = "contracts" || "methods")]: value,
+        contracts: value,
+      })
+    }
+  }
+  return formatted
+}
+
+const unifyMethods = (chains: string[], values: string[]) => {
+  let together = {} as { [key: string]: string[] }
+
+  let formatted = []
+  if (chains.length > 0) {
+    for (let i = 0; i < chains.length; i += 1) {
+      if (together[chains[i]] === undefined) {
+        together[chains[i]] = []
+      }
+      together[chains[i]].push(values[i])
+    }
+  }
+
+  if (Object.keys(together).length !== 0) {
+    for (const [key, value] of Object.entries(together)) {
+      formatted.push({
+        blockchainID: key,
+        methods: value,
       })
     }
   }
@@ -81,13 +105,13 @@ export const action: ActionFunction = async ({ request }) => {
   ) {
     const chains = formData.getAll("whitelistContractsChains") as string[]
     const values = formData.getAll("whitelistContractsValues") as string[]
-    data.whitelistContracts = unifyArrays(chains, values, "contracts")
+    data.whitelistContracts = unifyContracts(chains, values)
   }
 
   if (formData.has("whitelistMethodsChains") && formData.has("whitelistMethodsValues")) {
     const chains = formData.getAll("whitelistMethodsChains") as string[]
     const values = formData.getAll("whitelistMethodsValues") as string[]
-    data.whitelistContracts = unifyArrays(chains, values, "methods")
+    data.whitelistMethods = unifyMethods(chains, values)
   }
   const res = await postAppSecurity(data, request)
 

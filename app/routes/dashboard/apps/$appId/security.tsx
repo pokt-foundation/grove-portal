@@ -436,10 +436,11 @@ export default function AppSecurity() {
                     )
                   }}
                 />
+                <input name="whitelistMethodsChains" type="hidden" value={item.id} />
                 <input
-                  name="whitelistMethods"
+                  name="whitelistMethodsValues"
                   type="hidden"
-                  value={`{"chain": "${item.id}", "value": "${item.inputValue}"}`}
+                  value={item.inputValue}
                 />
               </div>
             ))}

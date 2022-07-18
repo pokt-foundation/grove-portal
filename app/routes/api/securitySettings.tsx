@@ -113,6 +113,8 @@ export const action: ActionFunction = async ({ request }) => {
     const values = formData.getAll("whitelistMethodsValues") as string[]
     data.whitelistMethods = unifyMethods(chains, values)
   }
+
+  console.log(data, "data sending to action")
   const res = await postAppSecurity(data, request)
 
   return json<AppSecurityActionResponse>({

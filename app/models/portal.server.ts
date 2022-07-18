@@ -624,7 +624,7 @@ export const postAppSecurity = async (
 ): Promise<AppSecurityResponse> => {
   const user = await requireUser(request)
   const data = { ...formData }
-  console.log(data)
+  console.log(data, "inside postappsecurity")
 
   // const res = await fetch(
   //   `${getRequiredClientEnvVar("BACKEND_URL")}/api/lb/${data.appID}`,

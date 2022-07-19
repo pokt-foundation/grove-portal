@@ -15,9 +15,15 @@ export const PoweredBy = ({ to, image, alt }: PoweredByProps) => {
   return (
     <div className="pokt-powered-by">
       <p>POWERED BY</p>
-      <Link to={to} rel="noreferrer">
-        <img src={image} alt={alt} />
-      </Link>
+      {/https?:\/\//.test(to) ? (
+        <a href={to} rel="noreferrer nofollow">
+          <img src={image} alt={alt} />
+        </a>
+      ) : (
+        <Link to={to} rel="noreferrer nofollow">
+          <img src={image} alt={alt} />
+        </Link>
+      )}
     </div>
   )
 }

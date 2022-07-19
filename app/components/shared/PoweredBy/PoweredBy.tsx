@@ -20,7 +20,7 @@ export const PoweredBy = ({ to, image, alt }: PoweredByProps) => {
           <img src={image} alt={alt} />
         </a>
       ) : (
-        <Link to={to} rel="noreferrer nofollow">
+        <Link to={to}>
           <img src={image} alt={alt} />
         </Link>
       )}

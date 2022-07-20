@@ -105,6 +105,32 @@
     "connect": "Connect to these networks. -fr",
     "whosNext": "See who's next. -fr"
   },
+  "testimonials": [
+    {
+      "quote": "Adding Pocket Network to our list of default Ethereum nodes was a no-brainer. One of the key ideals of blockchain is decentralization, and Pocket is a piece that fits into that puzzle perfectly. -fr",
+      "speaker": {
+        "name": "Jordan Spence -fr",
+        "title": "Chief Marketing Officer -fr",
+        "company": "MyCrypto -fr"
+      }
+    },
+    {
+      "quote": "It’s hard to beat a person who never gives up. -fr",
+      "speaker": {
+        "name": "Babe Ruth -fr",
+        "title": "Chief Marketing Officer -fr",
+        "company": "MyCrypto -fr"
+      }
+    },
+    {
+      "quote": "Love is the most important thing in the world, but baseball is pretty good, too. -fr",
+      "speaker": {
+        "name": "Yogi Berra -fr",
+        "title": "Chief Marketing Officer -fr",
+        "company": "MyCrypto -fr"
+      }
+    }
+  ],
   "feedback": {
     "personal": "Do not share any personal info -fr",
     "errorText": "Text area must be filled out to submit a suggestion. -fr",

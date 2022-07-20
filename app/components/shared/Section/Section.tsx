@@ -32,10 +32,12 @@ export default function Section({
 
   return (
     <section
-      className={clsx({
-        "pokt-section": true,
+      className={clsx(
+        {
+          "pokt-section": true,
+        },
         className,
-      })}
+      )}
       style={styles}
       {...props}
     >

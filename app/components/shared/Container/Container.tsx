@@ -7,7 +7,7 @@ export const links = () => {
 
 export const Container = ({ children, ...props }: ContainerProps) => {
   return (
-    <MantineContainer className="container" {...props}>
+    <MantineContainer className="pokt-container" {...props}>
       {children}
     </MantineContainer>
   )

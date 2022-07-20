@@ -47,7 +47,7 @@ export default function LandingDiscover() {
             ACCESS AND TRACK YOUR APP INFRASTRUCTURE
           </Title>
           <Group position="apart">
-            <Title order={2}>
+            <Title order={2} className="pokt-title">
               Discover more about{" "}
               <Text component="span" weight={900} color="blue">
                 Pocket Portal

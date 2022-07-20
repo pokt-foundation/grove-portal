@@ -1,12 +1,52 @@
 .pokt-landing-quotes .swiper-slide {
+  height: 100%;
   transition: transform ease-in-out 3s;
 }
 
-.pokt-landing-quotes :not(.swiper-slide-active) {
+.pokt-landing-quotes .swiper-slide:not(.swiper-slide-active) {
   transform: scale(90%);
+}
+
+.pokt-landing-quotes .pokt-card {
+  height: 200px;
+  margin-bottom: 0;
+  background-color: rgba(50, 64, 79, 0.2);
+}
+.pokt-landing-quotes .pokt-card .pokt-card {
+  background-color: var(--color-black-main);
+}
+
+.pokt-landing-quotes h3,
+.pokt-landing-quotes h6 {
+  margin: 0;
+}
+
+/* navigation styles */
+.pokt-landing-testimonials .swiper {
+  padding-bottom: 80px;
+}
+
+.pokt-landing-testimonials .swiper-button-next {
+  right: calc(50% - (var(--swiper-navigation-size)) - 16px);
+}
+
+.pokt-landing-testimonials .swiper-button-prev {
+  left: calc(50% - (var(--swiper-navigation-size)) - 16px);
 }
 
 .pokt-landing-testimonials .swiper-button-next,
 .pokt-landing-testimonials .swiper-button-prev {
-  position: relative !important;
+  top: auto;
+  bottom: 0px;
+  background: var(--color-black-main);
+  width: var(--swiper-navigation-size);
+  height: var(--swiper-navigation-size);
+  padding: 16px;
+  border-radius: 50%;
+}
+
+.pokt-landing-testimonials .swiper-button-next:after,
+.pokt-landing-testimonials .swiper-button-prev:after {
+  color: var(--color-white-main);
+  font-size: 16px;
 }

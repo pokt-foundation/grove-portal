@@ -29,7 +29,7 @@ export default function LandingHero() {
           Deploy within minutes to decentralized infrastructure that can service dozens of
           chains.
         </Text>
-        <Button component={Link} to="#">
+        <Button component={Link} to="#" variant="filled">
           Try it for free
         </Button>
       </Container>

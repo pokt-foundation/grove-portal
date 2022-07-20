@@ -60,6 +60,14 @@ interface TranslationData {
     connect: string
     whosNext: string
   }
+  testimonials: {
+    quote: string
+    speaker: {
+      name: string
+      title: string
+      company: string
+    }
+  }[]
   feedback: {
     personal: string
     errorText: string

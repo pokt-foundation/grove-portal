@@ -7,24 +7,21 @@ import { Link } from "@remix-run/react"
 import { useTranslate } from "~/context/TranslateContext"
 import styles from "./styles.css"
 import Group from "~/components/shared/Group"
+import Swiper, { links as SwiperLinks } from "~/components/shared/Swiper"
+import { Autoplay } from "swiper"
 
 export const links = () => {
   return [
     ...SectionLinks(),
     ...TitleLinks(),
     ...TextLinks(),
+    ...SwiperLinks(),
     { rel: "stylesheet", href: styles },
   ]
 }
 
 export default function LandingBlockchains() {
   const { t } = useTranslate()
-
-  const chains = [
-    ...t.landing.chains.slice(-3),
-    ...t.landing.chains,
-    ...t.landing.chains.slice(0, 3),
-  ]
 
   return (
     <Section px={128}>
@@ -43,8 +40,33 @@ export default function LandingBlockchains() {
           </Group>
         </div>
       </Container>
-      <Group noWrap className="pokt-landing-logos">
-        {chains.map((name) => {
+      <Swiper
+        className="pokt-landing-logos"
+        spaceBetween={16}
+        slidesPerView={3}
+        loop={true}
+        speed={3000}
+        autoplay={{
+          delay: 0,
+          disableOnInteraction: false,
+        }}
+        breakpoints={{
+          640: {
+            slidesPerView: 4,
+          },
+          768: {
+            slidesPerView: 5,
+          },
+          1024: {
+            slidesPerView: 6,
+          },
+          1220: {
+            slidesPerView: 7,
+          },
+        }}
+        modules={[Autoplay]}
+      >
+        {t.landing.chains.map((name) => {
           return (
             <div key={name} className="logo-wrapper">
               <img
@@ -55,7 +77,7 @@ export default function LandingBlockchains() {
             </div>
           )
         })}
-      </Group>
+      </Swiper>
     </Section>
   )
 }

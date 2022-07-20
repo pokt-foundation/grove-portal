@@ -1,0 +1,12 @@
+.pokt-landing-quotes .swiper-slide {
+  transition: transform ease-in-out 3s;
+}
+
+.pokt-landing-quotes :not(.swiper-slide-active) {
+  transform: scale(90%);
+}
+
+.pokt-landing-testimonials .swiper-button-next,
+.pokt-landing-testimonials .swiper-button-prev {
+  position: relative !important;
+}

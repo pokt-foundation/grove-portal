@@ -58,7 +58,7 @@ export default function LandingAdvantages() {
       </Container>
       <Container size="xl">
         <div className="pokt-landing-advantages-video">
-          <Skeleton pt="56.25%" />
+          <div style={{ paddingTop: "56.25%", backgroundColor: "#222" }} />
         </div>
         <Grid className="pokt-landing-advantages-cards">
           {advantagesList.map((advantage) => (

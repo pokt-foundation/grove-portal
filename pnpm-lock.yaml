@@ -52,6 +52,7 @@ specifiers:
   remix-auth-auth0: ^1.3.7
   start-server-and-test: ^1.14.0
   styled-components: ^5.3.5
+  swiper: ^8.3.1
   tiny-invariant: ^1.2.0
   typescript: ^4.5.5
   vite: ^2.9.8
@@ -82,6 +83,7 @@ dependencies:
   remix-auth: 3.2.2_@remix-run+react@1.4.3
   remix-auth-auth0: 1.3.7_22xosm4xmomkgn3fgsd4kkgmjq
   styled-components: 5.3.5_sfoxds7t5ydpegc3knd667wn6m
+  swiper: 8.3.1
   tiny-invariant: 1.2.0
 
 devDependencies:
@@ -3807,6 +3809,12 @@ packages:
       domelementtype: 2.3.0
       domhandler: 4.2.2
       entities: 2.2.0
+    dev: false
+
+  /dom7/4.0.4:
+    resolution: {integrity: sha512-DSSgBzQ4rJWQp1u6o+3FVwMNnT5bzQbMb+o31TjYYeRi05uAcpF8koxdfzeoe5ElzPmua7W7N28YJhF7iEKqIw==}
+    dependencies:
+      ssr-window: 4.0.2
     dev: false
 
   /domelementtype/2.3.0:
@@ -9007,6 +9015,10 @@ packages:
       tweetnacl: 0.14.5
     dev: true
 
+  /ssr-window/4.0.2:
+    resolution: {integrity: sha512-ISv/Ch+ig7SOtw7G2+qkwfVASzazUnvlDTwypdLoPoySv+6MqlOV10VwPSE6EWkGjhW50lUmghPmpYZXMu/+AQ==}
+    dev: false
+
   /ssri/8.0.1:
     resolution: {integrity: sha512-97qShzy1AiyxvPNIkLWoGua7xoQzzPjQ0HAH4B0rWKo7SZ6USuPcrUiAFrws0UH8RrbWmgq3LMTObhPIHbbBeQ==}
     engines: {node: '>= 8'}
@@ -9216,6 +9228,15 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
     dev: true
+
+  /swiper/8.3.1:
+    resolution: {integrity: sha512-oASYsulsERlbQVTZ8FjlTDJSN4YZwhp+AkvepOj8EOhgpvxzKoMpWpBPrk7ypkMioQUx6x2NPvkRU0Qv9mpS0A==}
+    engines: {node: '>= 4.7.0'}
+    requiresBuild: true
+    dependencies:
+      dom7: 4.0.4
+      ssr-window: 4.0.2
+    dev: false
 
   /symbol-tree/3.2.4:
     resolution: {integrity: sha512-9QNk5KwDF+Bvz+PyObkmSYjI5ksVUYtjW7AU22r2NKcfLJcXp96hkDWU3+XndOsUb+AQ9QhfzfCT2O+CNWT5Tw==}

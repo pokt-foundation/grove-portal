@@ -26,6 +26,9 @@ import LandingAdvantages, {
 import LandingFAQs, {
   links as LandingFAQsLinks,
 } from "~/components/marketing/LandingFAQs"
+import LandingTestimonials, {
+  links as LandingTestimonialsLinks,
+} from "~/components/marketing/LandingTestimonials"
 
 export const links: LinksFunction = () => {
   return [
@@ -37,6 +40,7 @@ export const links: LinksFunction = () => {
     ...LandingBlockchainsLinks(),
     ...LandingAdvantagesLinks(),
     ...LandingFAQsLinks(),
+    ...LandingTestimonialsLinks(),
     { rel: "stylesheet", href: styles },
   ]
 }
@@ -53,72 +57,7 @@ export default function Index() {
       <LandingAdvantages />
       <hr />
       <LandingFAQs />
-      <Section px={128}>
-        <Container size="xl">
-          <Title order={2} align="center">
-            The best choice for those{" "}
-            <Text component="span" weight={900}>
-              who want to get ahead!
-            </Text>
-          </Title>
-          <Group noWrap>
-            <Skeleton height={300} />
-            <Skeleton height={300} />
-            <Skeleton height={300} />
-          </Group>
-        </Container>
-      </Section>
-      {/* <Container>
-        <Grid grow>
-          <Grid.Col sm={5}>
-            <h2>{landing.title}</h2>
-            <p className="text">{landing.subtitle}</p>
-            <p className="text"></p>
-            <Form action="/api/auth/auth0" method="post">
-              <button type="submit" name="login" className="button" value="true">
-                {landing.getStarted}
-              </button>
-            </Form>
-          </Grid.Col>
-
-          <Grid.Col sm={5} offset={2}>
-            {landing.callOutBoxText.map((item) => {
-              return (
-                <CallOutBox
-                  key={item.title}
-                  title={item.title}
-                  smallText={item.smallText}
-                  blueText={item.blueText}
-                  description={item.description}
-                />
-              )
-            })}
-          </Grid.Col>
-          <Grid.Col>
-            <p className="text">
-              {landing.connect}{" "}
-              <Form className="inline-form" action="/api/auth/auth0" method="post">
-                <button type="submit" name="signup" className="link" value="true">
-                  {landing.whosNext}
-                </button>
-              </Form>
-            </p>
-          </Grid.Col>
-          <div className="logo-box">
-            {landing.chains.map((name) => {
-              return (
-                <img
-                  key={name}
-                  alt={`${name} logo`}
-                  className="landing-logos"
-                  src={`/landing-logos/${name}_logo.png`}
-                />
-              )
-            })}
-          </div>
-        </Grid>
-      </Container>
-      <img className="pokt-image" src="/landing-background.png" alt="Subdued Pokt Logo" /> */}
+      <LandingTestimonials />
     </>
   )
 }

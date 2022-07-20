@@ -115,9 +115,9 @@ export const action: ActionFunction = async ({ request }) => {
 
   const res = await putAppSecurity(data, request)
 
-  if (res.error === false) {
-    return redirect(`dashboard/apps/${data.appID}/security`)
+  if (res.error === true) {
+    throw new Error(res.error_message)
   }
 
-  throw new Error(res.error_message)
+  return redirect(`dashboard/apps/${data.appID}/security`)
 }

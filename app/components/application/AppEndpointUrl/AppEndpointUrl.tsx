@@ -2,27 +2,18 @@ import { prefixFromChainId } from "~/utils/chainUtils"
 import ChainWithImage from "~/components/application/ChainWithImage"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import styles from "./styles.css"
-import Button from "~/components/shared/Button"
-import { IconTrashcan } from "@pokt-foundation/ui"
+import { InputProps } from "~/components/shared/TextInput"
 
 /* c8 ignore next */
 export const links = () => {
   return [{ rel: "stylesheet", href: styles }, ...TextInputLinks()]
 }
 
-type AppEndpointUrlProp = {
+type AppEndpointUrlProp = InputProps & {
   chainId: string
-  appId: string
-  gigastake: boolean
-  handleRemove: (chain: string) => void
 }
 
-export default function AppEndpointUrl({
-  chainId,
-  appId,
-  gigastake,
-  handleRemove,
-}: AppEndpointUrlProp) {
+export default function AppEndpointUrl({ chainId, ...props }: AppEndpointUrlProp) {
   if (!chainId) {
     return <></>
   }
@@ -33,23 +24,14 @@ export default function AppEndpointUrl({
     return <></>
   }
 
-  const { prefix, abbrv, name } = chain
-  const endpoint = `https://${prefix}.gateway.pokt.network/v1/lb/${appId}`
+  const { abbrv, name } = chain
 
   return (
     <div className="pokt-app-endpoint-url">
       <div className="pokt-app-endpoint-url-abbrv">
         <ChainWithImage chain={name} label={abbrv} />
       </div>
-      <TextInput readOnly copy value={endpoint} />
-      {gigastake && (
-        <Button
-          className="pokt-app-endpoint-url-delete"
-          onClick={() => handleRemove(chainId)}
-        >
-          <IconTrashcan />
-        </Button>
-      )}
+      <TextInput {...props} />
     </div>
   )
 }

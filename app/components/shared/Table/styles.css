@@ -48,6 +48,10 @@
   padding: 16px 8px;
   border: none;
   color: var(--color-white-main);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100px;
 }
 
 .pokt-table tbody tr.empty {

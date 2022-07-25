@@ -383,7 +383,7 @@ export const getNetworkChains = async (request: Request): Promise<Chain[]> => {
     throw new Error(res.statusText)
   }
 
-  console.log(res)
+  console.log(await res.json())
 
   return await res.json()
 }
@@ -482,6 +482,8 @@ export const getNetworkSummary = async (request: Request): Promise<SummaryData> 
   if (!res || res.status !== 200) {
     throw new Error(res.statusText)
   }
+
+  console.log(await res.json())
 
   return await res.json()
 }

@@ -379,6 +379,8 @@ export const getNetworkChains = async (request: Request): Promise<Chain[]> => {
     },
   )
 
+  console.log(res)
+
   if (!res || res.status !== 200) {
     throw new Error(res.statusText)
   }
@@ -479,6 +481,8 @@ export const getNetworkSummary = async (request: Request): Promise<SummaryData> 
       },
     },
   )
+
+  console.log(res)
 
   if (!res || res.status !== 200) {
     throw new Error(res.statusText)

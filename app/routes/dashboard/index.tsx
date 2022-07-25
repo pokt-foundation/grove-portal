@@ -65,7 +65,7 @@ export const meta: MetaFunction = () => {
 type LoaderData = {
   chains: Chain[]
   latestBlock: LatestBlockAndPerformanceData
-  summary: SummaryData
+  // summary: SummaryData
   dailyNetworkRelays: RelayMetric[]
   weeklyNetworkRelays: RelayMetric
 }
@@ -73,7 +73,7 @@ type LoaderData = {
 export const loader: LoaderFunction = async ({ request }) => {
   const chains = await getNetworkChains(request)
   const latestBlock = await getNetworkLatestBlock(request)
-  const summary = await getNetworkSummary(request)
+  // const summary = await getNetworkSummary(request)
 
   const dailyNetworkRelays = await Promise.all(
     [0, 1, 2, 3, 4, 5, 6].map(async (num) => {
@@ -97,7 +97,7 @@ export const loader: LoaderFunction = async ({ request }) => {
     {
       chains,
       latestBlock,
-      summary,
+      // summary,
       dailyNetworkRelays,
       weeklyNetworkRelays,
     },
@@ -126,13 +126,13 @@ export default function Index() {
                 imgSrc="/networkSummaryNodes.png"
               />
             </Grid.Col>
-            <Grid.Col sm={4}>
+            {/* <Grid.Col sm={4}>
               <NetworkSummaryCard
                 title="Apps Staked"
                 subtitle={String(data.summary.appsStaked)}
                 imgSrc="/networkSummaryApps.png"
               />
-            </Grid.Col>
+            </Grid.Col> */}
             <Grid.Col sm={4}>
               <NetworkSummaryCard
                 title="Networks"

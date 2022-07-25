@@ -26,26 +26,19 @@ export const getNetworkRelays = async (
   to?: string,
 ): Promise<RelayMetric> => {
   if (!to || !from) {
-    to = dayjs()
-      .utc()
-      .hour(0)
-      .minute(0)
-      .second(0)
-      .millisecond(0)
-      .subtract(1, "day")
-      .format()
+    to = dayjs().utc().hour(0).minute(0).second(0).millisecond(0).format()
     from = dayjs()
       .utc()
       .hour(0)
       .minute(0)
       .second(0)
       .millisecond(0)
-      .subtract(7, "day")
+      .subtract(6, "day")
       .format()
   }
 
   const res = await fetch(
-    `${getRequiredClientEnvVar("RELAY_METER_URL")}/network?to=${to}&from=${from}`,
+    `${getRequiredClientEnvVar("RELAY_METER_API_URL")}/network?to=${to}&from=${from}`,
   )
 
   if (!res || res.status !== 200) {

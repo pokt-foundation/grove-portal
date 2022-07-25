@@ -9,12 +9,16 @@ interface NetworkSummaryCardProps {
   title: string
   subtitle: string
   imgSrc: string
+  error?: boolean
+  errorMessage?: string
 }
 
 export default function NetworkSummaryCard({
   imgSrc,
   subtitle,
   title,
+  error,
+  errorMessage,
 }: NetworkSummaryCardProps) {
   return (
     <div className="pokt-network-summary">

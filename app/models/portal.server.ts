@@ -14,6 +14,28 @@ import {
   UserLBTotalSuccessfulRelaysResponse,
 } from "@pokt-foundation/portal-types"
 
+// const https = require("https")
+
+export type ErrorResponse = {
+  error: true
+  message: string
+}
+export type SuccessResponse<T> = {
+  error: false
+  data: T
+}
+
+const fetchOptions = (user: Awaited<ReturnType<typeof requireUser>>) => {
+  return {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `${user.extraParams.token_type} ${user.accessToken}`,
+    },
+    // agent: new https.Agent({ keepAlive: true }),
+    timeout: 5000,
+  }
+}
+
 // LB: DAILY RELAYS
 export const getLBDailyRelays = async (
   id: string,
@@ -23,9 +45,7 @@ export const getLBDailyRelays = async (
   const res = await fetch(
     `${getRequiredClientEnvVar("BACKEND_URL")}/api/lb/daily-relays/${id}`,
     {
-      headers: {
-        Authorization: `${user.extraParams.token_type} ${user.accessToken}`,
-      },
+      ...fetchOptions(user),
     },
   )
 
@@ -45,9 +65,7 @@ export const getLBHourlyLatency = async (
   const res = await fetch(
     `${getRequiredClientEnvVar("BACKEND_URL")}/api/lb/hourly-latency/${id}`,
     {
-      headers: {
-        Authorization: `${user.extraParams.token_type} ${user.accessToken}`,
-      },
+      ...fetchOptions(user),
     },
   )
 
@@ -79,9 +97,7 @@ export const getLBErrorMetrics = async (
   const res = await fetch(
     `${getRequiredClientEnvVar("BACKEND_URL")}/api/lb/error-metrics/${id}`,
     {
-      headers: {
-        Authorization: `${user.extraParams.token_type} ${user.accessToken}`,
-      },
+      ...fetchOptions(user),
     },
   )
 
@@ -101,9 +117,7 @@ export const getLBOriginClassification = async (
   const res = await fetch(
     `${getRequiredClientEnvVar("BACKEND_URL")}/api/lb/origin-classification/${id}`,
     {
-      headers: {
-        Authorization: `${user.extraParams.token_type} ${user.accessToken}`,
-      },
+      ...fetchOptions(user),
     },
   )
 
@@ -123,9 +137,7 @@ export const getLBPreviousSuccessfulRelays = async (
   const res = await fetch(
     `${getRequiredClientEnvVar("BACKEND_URL")}/api/lb/previous-successful-relays/${id}`,
     {
-      headers: {
-        Authorization: `${user.extraParams.token_type} ${user.accessToken}`,
-      },
+      ...fetchOptions(user),
     },
   )
 
@@ -145,9 +157,7 @@ export const getLBPreviousTotalRelays = async (
   const res = await fetch(
     `${getRequiredClientEnvVar("BACKEND_URL")}/api/lb/previous-total-relays/${id}`,
     {
-      headers: {
-        Authorization: `${user.extraParams.token_type} ${user.accessToken}`,
-      },
+      ...fetchOptions(user),
     },
   )
 
@@ -167,9 +177,7 @@ export const getLBSessionRelays = async (
   const res = await fetch(
     `${getRequiredClientEnvVar("BACKEND_URL")}/api/lb/session-relays/${id}`,
     {
-      headers: {
-        Authorization: `${user.extraParams.token_type} ${user.accessToken}`,
-      },
+      ...fetchOptions(user),
     },
   )
 
@@ -189,9 +197,7 @@ export const getLBSuccessfulRelays = async (
   const res = await fetch(
     `${getRequiredClientEnvVar("BACKEND_URL")}/api/lb/successful-relays/${id}`,
     {
-      headers: {
-        Authorization: `${user.extraParams.token_type} ${user.accessToken}`,
-      },
+      ...fetchOptions(user),
     },
   )
 
@@ -211,9 +217,7 @@ export const getLBStatus = async (
   const res = await fetch(
     `${getRequiredClientEnvVar("BACKEND_URL")}/api/lb/status/${id}`,
     {
-      headers: {
-        Authorization: `${user.extraParams.token_type} ${user.accessToken}`,
-      },
+      ...fetchOptions(user),
     },
   )
 
@@ -233,9 +237,7 @@ export const getLBTotalRelays = async (
   const res = await fetch(
     `${getRequiredClientEnvVar("BACKEND_URL")}/api/lb/total-relays/${id}`,
     {
-      headers: {
-        Authorization: `${user.extraParams.token_type} ${user.accessToken}`,
-      },
+      ...fetchOptions(user),
     },
   )
 
@@ -254,9 +256,7 @@ export type UserLB = PortalUserLB & {
 export const getLBUserApplications = async (request: Request): Promise<UserLB[]> => {
   const user = await requireUser(request)
   const res = await fetch(`${getRequiredClientEnvVar("BACKEND_URL")}/api/lb`, {
-    headers: {
-      Authorization: `${user.extraParams.token_type} ${user.accessToken}`,
-    },
+    ...fetchOptions(user),
   })
 
   if (!res || res.status !== 200) {
@@ -296,10 +296,7 @@ export const postLBUserApplication = async (
         secretKeyRequired: userApp.secretKeyRequired,
       },
     }),
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `${user.extraParams.token_type} ${user.accessToken}`,
-    },
+    ...fetchOptions(user),
   })
 
   if (!res || res.status !== 200) {
@@ -336,9 +333,7 @@ export const postLBRemoveUserApplication = async (
     `${getRequiredClientEnvVar("BACKEND_URL")}/api/lb/remove/${appId}`,
     {
       method: "POST",
-      headers: {
-        Authorization: `${user.extraParams.token_type} ${user.accessToken}`,
-      },
+      ...fetchOptions(user),
     },
   )
 
@@ -368,22 +363,30 @@ export type Chain = {
   isAvailableForStaking: boolean
 }
 
-export const getNetworkChains = async (request: Request): Promise<Chain[]> => {
+export const getNetworkChains = async (
+  request: Request,
+): Promise<SuccessResponse<Chain[]> | ErrorResponse> => {
   const user = await requireUser(request)
   const res = await fetch(
     `${getRequiredClientEnvVar("BACKEND_URL")}/api/network/usable-chains`,
     {
-      headers: {
-        Authorization: `${user.extraParams.token_type} ${user.accessToken}`,
-      },
+      ...fetchOptions(user),
     },
-  )
+  ).catch((error) => {
+    return new Response(error, { status: 500 })
+  })
 
   if (!res || res.status !== 200) {
-    throw new Error(res.statusText)
+    return {
+      error: true,
+      message: res.statusText,
+    }
   }
 
-  return await res.json()
+  return {
+    error: false,
+    data: await res.json(),
+  }
 }
 
 // NETWORK: DAILY RELAYS
@@ -399,9 +402,7 @@ export const getNetworkDailyRelays = async (
   const res = await fetch(
     `${getRequiredClientEnvVar("BACKEND_URL")}/api/network/daily-relays`,
     {
-      headers: {
-        Authorization: `${user.extraParams.token_type} ${user.accessToken}`,
-      },
+      ...fetchOptions(user),
     },
   )
 
@@ -445,9 +446,7 @@ export const getNetworkLatestBlock = async (
   const res = await fetch(
     `${getRequiredClientEnvVar("BACKEND_URL")}/api/network/latest-block-and-performance`,
     {
-      headers: {
-        Authorization: `${user.extraParams.token_type} ${user.accessToken}`,
-      },
+      ...fetchOptions(user),
     },
   )
 
@@ -471,9 +470,7 @@ export const getNetworkSummary = async (request: Request): Promise<SummaryData> 
   const res = await fetch(
     `${getRequiredClientEnvVar("BACKEND_URL")}/api/network/summary`,
     {
-      headers: {
-        Authorization: `${user.extraParams.token_type} ${user.accessToken}`,
-      },
+      ...fetchOptions(user),
     },
   )
 
@@ -502,9 +499,7 @@ export const getNetworkWeeklyStats = async (
   const res = await fetch(
     `${getRequiredClientEnvVar("BACKEND_URL")}/api/network/weekly-aggregate-stats`,
     {
-      headers: {
-        Authorization: `${user.extraParams.token_type} ${user.accessToken}`,
-      },
+      ...fetchOptions(user),
     },
   )
 
@@ -583,10 +578,8 @@ export const postFeedback = async (
     `${getRequiredClientEnvVar("BACKEND_URL")}/api/users/feedback`,
     {
       method: "POST",
-      headers: {
-        Authorization: `${user.extraParams.token_type} ${user.accessToken}`,
-      },
       body: JSON.stringify(body),
+      ...fetchOptions(user),
     },
   )
 
@@ -631,11 +624,8 @@ export const putAppSecurity = async (
   const { appID, ...data } = formData
   const res = await fetch(`${getRequiredClientEnvVar("BACKEND_URL")}/api/lb/${appID}`, {
     method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `${user.extraParams.token_type} ${user.accessToken}`,
-    },
     body: JSON.stringify({ gatewaySettings: data }),
+    ...fetchOptions(user),
   })
 
   // server sends 204 on successful put

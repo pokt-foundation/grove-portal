@@ -1,15 +1,5 @@
 import { LoaderFunction, json, MetaFunction } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
-import type {
-  Chain,
-  LatestBlockAndPerformanceData,
-  SummaryData,
-} from "~/models/portal.server"
-import {
-  getNetworkChains,
-  getNetworkLatestBlock,
-  getNetworkSummary,
-} from "~/models/portal.server"
 import NetworkSummaryCard, {
   links as NetworkSummaryCardLinks,
 } from "~/components/application/NetworkSummaryCard"
@@ -40,6 +30,8 @@ import AdEconomicsForDevs, {
 } from "~/components/application/AdEconomicsForDevs"
 import { getNetworkRelays, RelayMetric } from "~/models/relaymeter.server"
 import { dayjs } from "~/utils/dayjs"
+import { initPortalClient } from "~/models/portal/portal.server"
+import { BlockchainsQuery } from "~/models/portal/sdk"
 
 export const links = () => {
   return [
@@ -63,17 +55,18 @@ export const meta: MetaFunction = () => {
 }
 
 type LoaderData = {
-  chains: Chain[]
+  blockchains: BlockchainsQuery["blockchains"]
   // latestBlock: LatestBlockAndPerformanceData
   // summary: SummaryData
   dailyNetworkRelays: RelayMetric[]
+  todayNetworkRelays: RelayMetric
   weeklyNetworkRelays: RelayMetric
+  monthlyNetworkRelays: RelayMetric
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
-  const chains = await getNetworkChains(request)
-  // const latestBlock = await getNetworkLatestBlock(request)
-  // const summary = await getNetworkSummary(request)
+  const portal = initPortalClient()
+  const { blockchains } = await portal.blockchains({ active: true })
 
   const dailyNetworkRelays = await Promise.all(
     [0, 1, 2, 3, 4, 5, 6].map(async (num) => {
@@ -86,20 +79,38 @@ export const loader: LoaderFunction = async ({ request }) => {
         .subtract(num, "day")
         .format()
 
+      // api auto adjusts to/from to begining and end of each day so putting the same time here gives us back one day
       const network = await getNetworkRelays(from, from)
       return network
     }),
   )
 
+  // api auto adjusts to/from to begining and end of each day so putting the same time here gives us back one day
+  const fromToday = dayjs().utc().hour(0).minute(0).second(0).millisecond(0).format()
+  const todayNetworkRelays = await getNetworkRelays(fromToday, fromToday)
+
   const weeklyNetworkRelays = await getNetworkRelays()
+
+  const fromMonth = dayjs()
+    .utc()
+    .hour(0)
+    .minute(0)
+    .second(0)
+    .millisecond(0)
+    .subtract(1, "month")
+    .format()
+  const toMonth = dayjs().utc().hour(0).minute(0).second(0).millisecond(0).format()
+  const monthlyNetworkRelays = await getNetworkRelays(fromMonth, toMonth)
 
   return json<LoaderData>(
     {
-      chains,
+      blockchains,
       // latestBlock,
       // summary,
       dailyNetworkRelays,
+      todayNetworkRelays,
       weeklyNetworkRelays,
+      monthlyNetworkRelays,
     },
     {
       headers: {
@@ -136,7 +147,7 @@ export default function Index() {
             <Grid.Col sm={4}>
               <NetworkSummaryCard
                 title="Networks"
-                subtitle={String(data.chains.length)}
+                subtitle={String(data.blockchains.length)}
                 imgSrc="/networkSummaryNetworks.png"
               />
             </Grid.Col>
@@ -148,17 +159,26 @@ export default function Index() {
         <section>
           <Table
             label="Available Networks"
-            data={data.chains.map((chain) => ({
-              id: chain.id,
-              network: {
-                value: chain.description,
-                element: <ChainWithImage chain={chain.description} />,
-              },
-              apps: chain.appCount ? String(chain.appCount) : "0",
-              chainId: chain.id,
-              status: getServiceLevelByChain(chain.id),
-            }))}
-            columns={["Network", "Nodes", "ID", "Status"]}
+            data={data.blockchains.map((chain) => {
+              if (!chain) {
+                return {
+                  id: 1,
+                  network: "",
+                  chainId: "",
+                  status: "",
+                }
+              }
+              return {
+                id: chain.id,
+                network: {
+                  value: chain.description,
+                  element: <ChainWithImage chain={chain.description} />,
+                },
+                chainId: chain.id,
+                status: getServiceLevelByChain(chain.id),
+              }
+            })}
+            columns={["Network", "ID", "Status"]}
             paginate
             search
           />
@@ -171,10 +191,14 @@ export default function Index() {
         </section>
         {/* <section>
           <NetworkLatestBlockCard latestBlock={data.latestBlock} />
-        </section>
+        </section>*/}
         <section>
-          <NetworkRelayPerformanceCard latestBlock={data.latestBlock} />
-        </section> */}
+          <NetworkRelayPerformanceCard
+            today={data.todayNetworkRelays}
+            week={data.weeklyNetworkRelays}
+            month={data.monthlyNetworkRelays}
+          />
+        </section>
         <section>
           <AdEconomicsForDevs />
         </section>

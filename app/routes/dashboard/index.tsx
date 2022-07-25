@@ -63,7 +63,7 @@ export const meta: MetaFunction = () => {
 }
 
 type LoaderData = {
-  chains: Chain[]
+  // chains: Chain[]
   latestBlock: LatestBlockAndPerformanceData
   // summary: SummaryData
   dailyNetworkRelays: RelayMetric[]
@@ -71,7 +71,7 @@ type LoaderData = {
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
-  const chains = await getNetworkChains(request)
+  // const chains = await getNetworkChains(request)
   const latestBlock = await getNetworkLatestBlock(request)
   // const summary = await getNetworkSummary(request)
 
@@ -95,7 +95,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   return json<LoaderData>(
     {
-      chains,
+      // chains,
       latestBlock,
       // summary,
       dailyNetworkRelays,
@@ -133,19 +133,19 @@ export default function Index() {
                 imgSrc="/networkSummaryApps.png"
               />
             </Grid.Col> */}
-            <Grid.Col sm={4}>
+            {/* <Grid.Col sm={4}>
               <NetworkSummaryCard
                 title="Networks"
                 subtitle={String(data.chains.length)}
                 imgSrc="/networkSummaryNetworks.png"
               />
-            </Grid.Col>
+            </Grid.Col> */}
           </Grid>
         </section>
         <section>
           <NetworkChartCard dailyRelays={data.dailyNetworkRelays} />
         </section>
-        <section>
+        {/* <section>
           <Table
             label="Available Networks"
             data={data.chains.map((chain) => ({
@@ -162,7 +162,7 @@ export default function Index() {
             paginate
             search
           />
-        </section>
+        </section> */}
       </Grid.Col>
       <Grid.Col md={4}>
         <section>

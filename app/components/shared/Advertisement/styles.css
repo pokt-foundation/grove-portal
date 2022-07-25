@@ -1,9 +1,9 @@
 .pokt-ad {
   position: relative;
-  background-size: cover;
   background-repeat: no-repeat;
+  background-position: center bottom;
   background-blend-mode: overlay;
-  background-position: bottom;
+  background-size: cover;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -12,20 +12,41 @@
   margin-bottom: 32px;
   border-radius: 8px;
   overflow: hidden;
+  max-height: 264px;
+  height: 100%;
 }
 
 .pokt-ad .pokt-card {
   background: transparent;
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-items: center;
+  align-items: center;
+}
+
+.pokt-ad h3 {
+  text-align: center;
+}
+
+.pokt-ad h3 span {
+  display: block;
+  text-align: center;
+  color: var(--color-secondary-light);
+  font-size: 1.5rem;
+  font-weight: 500;
 }
 
 .pokt-ad-action {
-  display: inline-block;
   font-weight: bold;
-  padding: 8px 24px;
+  padding: 0px 42px;
   background: transparent;
   border: 2px solid var(--color-white-main);
   color: var(--color-white-main);
   border: "0";
   margin-top: 32px;
+  height: 52px;
+  min-width: 224px;
+  border-radius: 8px;
 }

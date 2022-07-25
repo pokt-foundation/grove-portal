@@ -1,7 +1,7 @@
 .pokt-ad {
   position: relative;
   background-repeat: no-repeat;
-  background-position: center bottom;
+  background-position: center;
   background-blend-mode: overlay;
   background-size: cover;
   display: flex;
@@ -39,12 +39,12 @@
 }
 
 .pokt-ad-action {
+  font-size: 0.875rem;
   font-weight: bold;
   padding: 0px 42px;
   background: transparent;
   border: 2px solid var(--color-white-main);
   color: var(--color-white-main);
-  border: "0";
   margin-top: 32px;
   height: 52px;
   min-width: 224px;

@@ -128,6 +128,10 @@ interface TranslationData {
     body: string[]
     link: string
   }
+  footer: {
+    termsOfUse: string
+    privacyPolicy: string
+  }
 }
 
 export type Language = typeof languages[number]

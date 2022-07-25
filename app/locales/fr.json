@@ -175,5 +175,9 @@
       "Please contact the team for further assistance. -fr"
     ],
     "link": "Contact POKT Team -fr"
+  },
+  "footer": {
+    "termsOfUse": "Site Terms of Use -fr",
+    "privacyPolicy": "Privacy Policy -fr"
   }
 }

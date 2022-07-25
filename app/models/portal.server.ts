@@ -383,6 +383,8 @@ export const getNetworkChains = async (request: Request): Promise<Chain[]> => {
     throw new Error(res.statusText)
   }
 
+  console.log(res)
+
   return await res.json()
 }
 

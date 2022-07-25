@@ -2,17 +2,13 @@ import { LoaderFunction, json, MetaFunction } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
 import type {
   Chain,
-  DailyRelayBucket,
   LatestBlockAndPerformanceData,
-  NetworkRelayStats,
   SummaryData,
 } from "~/models/portal.server"
 import {
   getNetworkChains,
-  getNetworkDailyRelays,
   getNetworkLatestBlock,
   getNetworkSummary,
-  getNetworkWeeklyStats,
 } from "~/models/portal.server"
 import NetworkSummaryCard, {
   links as NetworkSummaryCardLinks,
@@ -42,6 +38,8 @@ import FeedbackCard, {
 import AdEconomicsForDevs, {
   links as AdEconomicsForDevsLinks,
 } from "~/components/application/AdEconomicsForDevs"
+import { getNetworkRelays, RelayMetric } from "~/models/relaymeter.server"
+import { dayjs } from "~/utils/dayjs"
 
 export const links = () => {
   return [
@@ -66,26 +64,42 @@ export const meta: MetaFunction = () => {
 
 type LoaderData = {
   chains: Chain[]
-  dailyRelays: DailyRelayBucket[]
   latestBlock: LatestBlockAndPerformanceData
   summary: SummaryData
-  weeklyStats: NetworkRelayStats
+  dailyNetworkRelays: RelayMetric[]
+  weeklyNetworkRelays: RelayMetric
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
   const chains = await getNetworkChains(request)
-  const dailyRelays = await getNetworkDailyRelays(request)
   const latestBlock = await getNetworkLatestBlock(request)
   const summary = await getNetworkSummary(request)
-  const weeklyStats = await getNetworkWeeklyStats(request)
+
+  const dailyNetworkRelays = await Promise.all(
+    [0, 1, 2, 3, 4, 5, 6].map(async (num) => {
+      const from = dayjs()
+        .utc()
+        .hour(0)
+        .minute(0)
+        .second(0)
+        .millisecond(0)
+        .subtract(num, "day")
+        .format()
+
+      const network = await getNetworkRelays(from, from)
+      return network
+    }),
+  )
+
+  const weeklyNetworkRelays = await getNetworkRelays()
 
   return json<LoaderData>(
     {
       chains,
-      dailyRelays,
       latestBlock,
       summary,
-      weeklyStats,
+      dailyNetworkRelays,
+      weeklyNetworkRelays,
     },
     {
       headers: {
@@ -129,10 +143,7 @@ export default function Index() {
           </Grid>
         </section>
         <section>
-          <NetworkChartCard
-            dailyRelays={data.dailyRelays}
-            weeklyStats={data.weeklyStats}
-          />
+          <NetworkChartCard dailyRelays={data.dailyNetworkRelays} />
         </section>
         <section>
           <Table
@@ -156,7 +167,7 @@ export default function Index() {
       <Grid.Col md={4}>
         <section>
           <h3>Network Success Rate</h3>
-          <NetworkSuccessRateCard weeklyStats={data.weeklyStats} />
+          <NetworkSuccessRateCard weeklyRelays={data.weeklyNetworkRelays} />
         </section>
         <section>
           <NetworkLatestBlockCard latestBlock={data.latestBlock} />

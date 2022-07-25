@@ -1,6 +1,6 @@
 import { CircleGraph, useTheme } from "@pokt-foundation/ui"
 import { Card, links as CardLinks } from "~/components/shared/Card"
-import { NetworkRelayStats } from "~/models/portal.server"
+import { RelayMetric } from "~/models/relaymeter.server"
 import styles from "./styles.css"
 
 export const links = () => {
@@ -8,11 +8,11 @@ export const links = () => {
 }
 
 interface NetworkSuccessRateCardProps {
-  weeklyStats: NetworkRelayStats
+  weeklyRelays: RelayMetric
 }
 
 export default function NetworkSuccessRateCard({
-  weeklyStats,
+  weeklyRelays,
 }: NetworkSuccessRateCardProps) {
   const theme = useTheme()
   return (
@@ -21,7 +21,7 @@ export default function NetworkSuccessRateCard({
         <CircleGraph
           size={80}
           strokeWidth={12}
-          value={weeklyStats.successful_relays / weeklyStats.total_relays}
+          value={weeklyRelays.Count / weeklyRelays.Count}
           color="url(#network-success-gradient)"
         >
           <defs>
@@ -37,7 +37,7 @@ export default function NetworkSuccessRateCard({
         </CircleGraph>
 
         <div className="pokt-network-success-rate-content">
-          <h5>{Intl.NumberFormat().format(weeklyStats.successful_relays)}</h5>
+          <h5>{Intl.NumberFormat().format(weeklyRelays.Count)}</h5>
           <p>
             <span />
             <svg

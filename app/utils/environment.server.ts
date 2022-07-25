@@ -4,6 +4,7 @@ function getClientEnv() {
     NODE_ENV: process.env.NODE_ENV,
     AMPLITUDE_API_KEY: process.env.AMPLITUDE_API_KEY,
     BACKEND_URL: process.env.BACKEND_URL,
+    RELAY_METER_URL: process.env.RELAY_METER_URL,
     SENTRY_DSN: process.env.SENTRY_DSN,
     BUILD_ID: process.env.BUILD_ID,
     FLAG_MULTI_LANGUAGE: process.env.FLAG_MULTI_LANGUAGE,

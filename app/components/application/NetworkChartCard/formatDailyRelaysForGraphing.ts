@@ -1,20 +1,22 @@
-// import { format } from "d3-format"
-import { DailyRelayBucket } from "~/models/portal.server"
+import { RelayMetric } from "~/models/relaymeter.server"
 import { norm } from "~/utils/mathUtils"
+import { dayjs } from "~/utils/dayjs"
+import { formatNumberToSICompact } from "~/utils/formattingUtils"
 
 const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
 
-export function formatDailyRelaysForGraphing(dailyRelays: DailyRelayBucket[] = []): {
+export function formatDailyRelaysForGraphing(dailyRelays: RelayMetric[] = []): {
   labels: string[]
   lines: { id: number; values: number[] }[]
-  scales: { label: number }[]
+  scales: { label: string }[]
 } {
-  const labels = dailyRelays.map(
-    ({ bucket }) => DAYS[new Date(bucket.split("T")[0]).getUTCDay()],
+  const sortDates = dailyRelays.sort(
+    (a, b) => dayjs(a.From).utc().valueOf() - dayjs(b.From).utc().valueOf(),
   )
+  const labels = sortDates.map(({ From }) => DAYS[dayjs(From).utc().day()])
 
-  const { high, low } = dailyRelays.reduce(
-    ({ high: highest, low: lowest }, { total_relays: totalRelays }) => ({
+  const { high, low } = sortDates.reduce(
+    ({ high: highest, low: lowest }, { Count: totalRelays }) => ({
       high: Math.max(highest, totalRelays),
       low: lowest === 0 ? totalRelays : Math.min(lowest, totalRelays),
     }),
@@ -29,26 +31,16 @@ export function formatDailyRelaysForGraphing(dailyRelays: DailyRelayBucket[] = [
   const lines = [
     {
       id: 1,
-      values: dailyRelays.map(({ total_relays: totalRelays }) =>
-        norm(totalRelays, low, high),
-      ),
+      values: sortDates.map(({ Count: totalRelays }) => norm(totalRelays, low, high)),
     },
   ]
-  //   const formatSi = format(".2s")
 
-  //   const scales = [
-  //     { label: 0 },
-  //     { label: formatSi((highestDailyAmount * 0.25).toFixed(0)) },
-  //     { label: formatSi((highestDailyAmount * 0.5).toFixed(0)) },
-  //     { label: formatSi((highestDailyAmount * 0.75).toFixed(0)) },
-  //     { label: formatSi(highestDailyAmount.toFixed(0)) },
-  //   ]
   const scales = [
-    { label: Number(low.toFixed(0)) },
-    { label: Number((low + quarter).toFixed(0)) },
-    { label: Number((low + half).toFixed(0)) },
-    { label: Number((low + threeQuarter).toFixed(0)) },
-    { label: Number(high.toFixed(0)) },
+    { label: formatNumberToSICompact(Number(low.toFixed(0))) },
+    { label: formatNumberToSICompact(Number((low + quarter).toFixed(0))) },
+    { label: formatNumberToSICompact(Number((low + half).toFixed(0))) },
+    { label: formatNumberToSICompact(Number((low + threeQuarter).toFixed(0))) },
+    { label: formatNumberToSICompact(Number(high.toFixed(0))) },
   ]
 
   return {

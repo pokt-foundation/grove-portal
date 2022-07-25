@@ -64,16 +64,16 @@ export const meta: MetaFunction = () => {
 
 type LoaderData = {
   chains: Chain[]
-  // latestBlock: LatestBlockAndPerformanceData
-  summary: SummaryData
+  latestBlock: LatestBlockAndPerformanceData
+  // summary: SummaryData
   dailyNetworkRelays: RelayMetric[]
   weeklyNetworkRelays: RelayMetric
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
   const chains = await getNetworkChains(request)
-  // const latestBlock = await getNetworkLatestBlock(request)
-  const summary = await getNetworkSummary(request)
+  const latestBlock = await getNetworkLatestBlock(request)
+  // const summary = await getNetworkSummary(request)
 
   const dailyNetworkRelays = await Promise.all(
     [0, 1, 2, 3, 4, 5, 6].map(async (num) => {
@@ -96,8 +96,8 @@ export const loader: LoaderFunction = async ({ request }) => {
   return json<LoaderData>(
     {
       chains,
-      // latestBlock,
-      summary,
+      latestBlock,
+      // summary,
       dailyNetworkRelays,
       weeklyNetworkRelays,
     },
@@ -126,13 +126,13 @@ export default function Index() {
                 imgSrc="/networkSummaryNodes.png"
               />
             </Grid.Col>
-            <Grid.Col sm={4}>
+            {/* <Grid.Col sm={4}>
               <NetworkSummaryCard
                 title="Apps Staked"
                 subtitle={String(data.summary.appsStaked)}
                 imgSrc="/networkSummaryApps.png"
               />
-            </Grid.Col>
+            </Grid.Col> */}
             <Grid.Col sm={4}>
               <NetworkSummaryCard
                 title="Networks"
@@ -169,12 +169,12 @@ export default function Index() {
           <h3>Network Success Rate</h3>
           <NetworkSuccessRateCard weeklyRelays={data.weeklyNetworkRelays} />
         </section>
-        {/* <section>
+        <section>
           <NetworkLatestBlockCard latestBlock={data.latestBlock} />
         </section>
         <section>
           <NetworkRelayPerformanceCard latestBlock={data.latestBlock} />
-        </section> */}
+        </section>
         <section>
           <AdEconomicsForDevs />
         </section>

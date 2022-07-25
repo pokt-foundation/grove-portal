@@ -64,7 +64,7 @@ export const meta: MetaFunction = () => {
 
 type LoaderData = {
   // chains: Chain[]
-  latestBlock: LatestBlockAndPerformanceData
+  // latestBlock: LatestBlockAndPerformanceData
   // summary: SummaryData
   dailyNetworkRelays: RelayMetric[]
   weeklyNetworkRelays: RelayMetric
@@ -72,7 +72,7 @@ type LoaderData = {
 
 export const loader: LoaderFunction = async ({ request }) => {
   // const chains = await getNetworkChains(request)
-  const latestBlock = await getNetworkLatestBlock(request)
+  // const latestBlock = await getNetworkLatestBlock(request)
   // const summary = await getNetworkSummary(request)
 
   const dailyNetworkRelays = await Promise.all(
@@ -96,7 +96,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   return json<LoaderData>(
     {
       // chains,
-      latestBlock,
+      // latestBlock,
       // summary,
       dailyNetworkRelays,
       weeklyNetworkRelays,
@@ -169,12 +169,12 @@ export default function Index() {
           <h3>Network Success Rate</h3>
           <NetworkSuccessRateCard weeklyRelays={data.weeklyNetworkRelays} />
         </section>
-        <section>
+        {/* <section>
           <NetworkLatestBlockCard latestBlock={data.latestBlock} />
         </section>
         <section>
           <NetworkRelayPerformanceCard latestBlock={data.latestBlock} />
-        </section>
+        </section> */}
         <section>
           <AdEconomicsForDevs />
         </section>

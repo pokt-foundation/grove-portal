@@ -383,9 +383,10 @@ export const getNetworkChains = async (request: Request): Promise<Chain[]> => {
     throw new Error(res.statusText)
   }
 
-  console.log(await res.json())
+  const body = await res.json()
+  console.log(body)
 
-  return await res.json()
+  return body
 }
 
 // NETWORK: DAILY RELAYS
@@ -483,9 +484,10 @@ export const getNetworkSummary = async (request: Request): Promise<SummaryData> 
     throw new Error(res.statusText)
   }
 
-  console.log(await res.json())
+  const body = await res.json()
+  console.log(body)
 
-  return await res.json()
+  return body
 }
 
 // NETWORK: WEEKLY AGGREGATE STATS

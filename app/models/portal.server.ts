@@ -379,16 +379,11 @@ export const getNetworkChains = async (request: Request): Promise<Chain[]> => {
     },
   )
 
-  console.log(res)
-
   if (!res || res.status !== 200) {
     throw new Error(res.statusText)
   }
 
-  const body = await res.json()
-  console.log(body)
-
-  return body
+  return await res.json()
 }
 
 // NETWORK: DAILY RELAYS

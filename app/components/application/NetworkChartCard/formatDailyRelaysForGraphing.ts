@@ -1,7 +1,7 @@
 // import { format } from "d3-format"
-import { DailyRelayBucket } from "~/models/portal.server"
 import { RelayMetric } from "~/models/relaymeter.server"
 import { dayjs } from "~/utils/dayjs"
+import { formatNumberToSICompact } from "~/utils/formattingUtils"
 import { norm } from "~/utils/mathUtils"
 
 const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
@@ -9,7 +9,7 @@ const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
 export function formatDailyRelaysForGraphing(relays: RelayMetric[] = []): {
   labels: string[]
   lines: { id: number; values: number[] }[]
-  scales: { label: number }[]
+  scales: { label: string }[]
 } {
   const sortRelaysByDate = relays.sort(
     (a, b) => dayjs(a.From).utc().valueOf() - dayjs(b.From).utc().valueOf(),
@@ -44,11 +44,11 @@ export function formatDailyRelaysForGraphing(relays: RelayMetric[] = []): {
   ]
 
   const scales = [
-    { label: Number(low.toFixed(0)) },
-    { label: Number((low + quarter).toFixed(0)) },
-    { label: Number((low + half).toFixed(0)) },
-    { label: Number((low + threeQuarter).toFixed(0)) },
-    { label: Number(high.toFixed(0)) },
+    { label: formatNumberToSICompact(Number(low.toFixed(0))) },
+    { label: formatNumberToSICompact(Number((low + quarter).toFixed(0))) },
+    { label: formatNumberToSICompact(Number((low + half).toFixed(0))) },
+    { label: formatNumberToSICompact(Number((low + threeQuarter).toFixed(0))) },
+    { label: formatNumberToSICompact(Number(high.toFixed(0))) },
   ]
 
   return {

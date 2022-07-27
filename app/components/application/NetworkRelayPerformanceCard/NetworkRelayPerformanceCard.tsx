@@ -1,11 +1,10 @@
 import { Grid } from "@mantine/core"
 import { Card, links as CardLinks } from "~/components/shared/Card"
-import PoweredBy, { links as PoweredByLinks } from "~/components/shared/PoweredBy"
 import { RelayMetric } from "~/models/relaymeter.server"
 import styles from "./styles.css"
 
 export const links = () => {
-  return [...CardLinks(), ...PoweredByLinks(), { rel: "stylesheet", href: styles }]
+  return [...CardLinks(), { rel: "stylesheet", href: styles }]
 }
 
 interface NetworkSuccessRateCardProps {

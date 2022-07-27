@@ -1,5 +1,4 @@
 import { Grid } from "@mantine/core"
-import { UserLB } from "@pokt-foundation/portal-types"
 import { json, LoaderFunction } from "@remix-run/node"
 import { Link, Outlet, useLoaderData } from "@remix-run/react"
 import AdEconomicsForDevs, {
@@ -8,6 +7,9 @@ import AdEconomicsForDevs, {
 import FeedbackCard, {
   links as FeedbackCardLinks,
 } from "~/components/application/FeedbackCard"
+import NetworkRelayPerformanceCard, {
+  links as NetworkRelayPerformanceCardLinks,
+} from "~/components/application/NetworkRelayPerformanceCard"
 import Button, { links as ButtonLinks } from "~/components/shared/Button"
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import CardList, {
@@ -15,10 +17,13 @@ import CardList, {
   CardListItem,
 } from "~/components/shared/CardList"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
-import { getLBUserApplications } from "~/models/portal.server"
+import { initPortalClient } from "~/models/portal/portal.server"
+import { EndpointsQuery } from "~/models/portal/sdk"
+import { getUserRelays, RelayMetric } from "~/models/relaymeter.server"
+import { dayjs } from "~/utils/dayjs"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 import { MAX_USER_APPS } from "~/utils/pocketUtils"
-import { getUserId } from "~/utils/session.server"
+import { getUserId, requireUser } from "~/utils/session.server"
 
 export const links = () => {
   return [
@@ -27,22 +32,53 @@ export const links = () => {
     ...CardListLinks(),
     ...FeedbackCardLinks(),
     ...AdEconomicsForDevsLinks(),
+    ...NetworkRelayPerformanceCardLinks(),
   ]
 }
 
-type LoaderData = {
-  apps: UserLB[]
+export type AppsLayoutLoaderData = {
+  endpoints: EndpointsQuery["endpoints"]
   userId: string
+  dailyNetworkRelays: RelayMetric
+  weeklyNetworkRelays: RelayMetric
+  monthlyNetworkRelays: RelayMetric
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
+  const user = await requireUser(request)
   const userId = await getUserId(request)
-  const apps = await getLBUserApplications(request)
-
-  return json<LoaderData>(
+  const portal = initPortalClient()
+  const { endpoints } = await portal.endpoints(
+    {},
     {
-      apps,
-      userId,
+      Authorization: `Bearer ${user.accessToken}`,
+    },
+  )
+
+  // api auto adjusts to/from to begining and end of each day so putting the same time here gives us back one day
+  const fromToday = dayjs().utc().hour(0).minute(0).second(0).millisecond(0).format()
+  const dailyNetworkRelays = await getUserRelays(userId, fromToday, fromToday)
+
+  const weeklyNetworkRelays = await getUserRelays(userId)
+
+  const fromMonth = dayjs()
+    .utc()
+    .hour(0)
+    .minute(0)
+    .second(0)
+    .millisecond(0)
+    .subtract(1, "month")
+    .format()
+  const toMonth = dayjs().utc().hour(0).minute(0).second(0).millisecond(0).format()
+  const monthlyNetworkRelays = await getUserRelays(userId, fromMonth, toMonth)
+
+  return json<AppsLayoutLoaderData>(
+    {
+      endpoints,
+      userId: user.profile.id.replace(/auth0\|/g, ""),
+      dailyNetworkRelays,
+      weeklyNetworkRelays,
+      monthlyNetworkRelays,
     },
     {
       headers: {
@@ -54,14 +90,20 @@ export const loader: LoaderFunction = async ({ request }) => {
   )
 }
 
-export const Apps = () => {
-  const { apps, userId } = useLoaderData() as LoaderData
+export const AppsLayout = () => {
+  const {
+    endpoints,
+    userId,
+    dailyNetworkRelays,
+    weeklyNetworkRelays,
+    monthlyNetworkRelays,
+  } = useLoaderData() as AppsLayoutLoaderData
   const appIdRoute = useMatchesRoute("routes/dashboard/apps/$appId")
 
   const userAppsStatus: CardListItem[] = [
     {
       label: "Current Apps",
-      value: apps.length,
+      value: endpoints.length,
     },
     {
       label: "Max Apps",
@@ -83,13 +125,20 @@ export const Apps = () => {
               <h3>Account</h3>
             </div>
             <CardList items={userAppsStatus} />
-            {(apps.length < MAX_USER_APPS ||
+            {(endpoints.length < MAX_USER_APPS ||
               getRequiredClientEnvVar("GODMODE_ACCOUNTS")?.includes(userId)) && (
               <Button component={Link} to="create" fullWidth mt={32}>
                 Create New Application
               </Button>
             )}
           </Card>
+          <section>
+            <NetworkRelayPerformanceCard
+              today={dailyNetworkRelays}
+              week={weeklyNetworkRelays}
+              month={monthlyNetworkRelays}
+            />
+          </section>
           <section>
             <AdEconomicsForDevs />
           </section>
@@ -104,7 +153,7 @@ export const Apps = () => {
   return <Outlet />
 }
 
-export default Apps
+export default AppsLayout
 
 export const ErrorBoundary = ({ error }: { error: Error }) => {
   return (

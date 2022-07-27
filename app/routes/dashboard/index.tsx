@@ -32,6 +32,8 @@ import { getNetworkRelays, RelayMetric } from "~/models/relaymeter.server"
 import { dayjs } from "~/utils/dayjs"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { BlockchainsQuery } from "~/models/portal/sdk"
+import { initIndexerClient } from "~/models/indexer/indexer.server"
+import { Order, QueryBlocksQuery } from "~/models/indexer/sdk"
 
 export const links = () => {
   return [
@@ -56,10 +58,10 @@ export const meta: MetaFunction = () => {
 
 type LoaderData = {
   blockchains: BlockchainsQuery["blockchains"]
-  // latestBlock: LatestBlockAndPerformanceData
+  latestBlock: QueryBlocksQuery["queryBlocks"]
   // summary: SummaryData
-  dailyNetworkRelays: RelayMetric[]
-  todayNetworkRelays: RelayMetric
+  dailyNetworkRelaysPerWeek: RelayMetric[]
+  dailyNetworkRelays: RelayMetric
   weeklyNetworkRelays: RelayMetric
   monthlyNetworkRelays: RelayMetric
 }
@@ -68,7 +70,14 @@ export const loader: LoaderFunction = async ({ request }) => {
   const portal = initPortalClient()
   const { blockchains } = await portal.blockchains({ active: true })
 
-  const dailyNetworkRelays = await Promise.all(
+  const indexer = initIndexerClient()
+  const { queryBlocks } = await indexer.queryBlocks({
+    page: 1,
+    perPage: 1,
+    order: Order.Desc,
+  })
+
+  const dailyNetworkRelaysPerWeek = await Promise.all(
     [0, 1, 2, 3, 4, 5, 6].map(async (num) => {
       const from = dayjs()
         .utc()
@@ -87,7 +96,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   // api auto adjusts to/from to begining and end of each day so putting the same time here gives us back one day
   const fromToday = dayjs().utc().hour(0).minute(0).second(0).millisecond(0).format()
-  const todayNetworkRelays = await getNetworkRelays(fromToday, fromToday)
+  const dailyNetworkRelays = await getNetworkRelays(fromToday, fromToday)
 
   const weeklyNetworkRelays = await getNetworkRelays()
 
@@ -105,10 +114,10 @@ export const loader: LoaderFunction = async ({ request }) => {
   return json<LoaderData>(
     {
       blockchains,
-      // latestBlock,
+      latestBlock: queryBlocks,
       // summary,
+      dailyNetworkRelaysPerWeek,
       dailyNetworkRelays,
-      todayNetworkRelays,
       weeklyNetworkRelays,
       monthlyNetworkRelays,
     },
@@ -124,6 +133,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export default function Index() {
   const data = useLoaderData() as LoaderData
+  const latestBlock = data.latestBlock?.blocks![0]
   return (
     <Grid gutter={32}>
       <Grid.Col md={8}>
@@ -154,7 +164,7 @@ export default function Index() {
           </Grid>
         </section>
         <section>
-          <NetworkChartCard dailyRelays={data.dailyNetworkRelays} />
+          <NetworkChartCard dailyRelays={data.dailyNetworkRelaysPerWeek} />
         </section>
         <section>
           <Table
@@ -189,12 +199,12 @@ export default function Index() {
           <h3>Network Success Rate</h3>
           <NetworkSuccessRateCard weeklyRelays={data.weeklyNetworkRelays} />
         </section>
-        {/* <section>
-          <NetworkLatestBlockCard latestBlock={data.latestBlock} />
-        </section>*/}
+        <section>
+          <NetworkLatestBlockCard latestBlock={latestBlock} />
+        </section>
         <section>
           <NetworkRelayPerformanceCard
-            today={data.todayNetworkRelays}
+            today={data.dailyNetworkRelays}
             week={data.weeklyNetworkRelays}
             month={data.monthlyNetworkRelays}
           />

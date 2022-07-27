@@ -76,16 +76,17 @@ export const loader: LoaderFunction = async ({ request, params, context }) => {
   const id = params.appId
 
   // const dailyRelays = await getLBDailyRelays(id, request)
-  const hourlyLatency = await getLBHourlyLatency(id, request)
   // const status = await getLBStatus(id, request)
+
+  const hourlyLatency = await getLBHourlyLatency(id, request)
   const sessionRelays = await getLBSessionRelays(id, request)
   const totalRelays = await getLBTotalRelays(id, request)
 
   return json<AppIdIndexLoaderData>(
     {
       // dailyRelays,
-      hourlyLatency,
       // status,
+      hourlyLatency,
       sessionRelays,
       totalRelays,
     },
@@ -140,21 +141,22 @@ export const Application = () => {
           )}
         </Grid.Col>
         <Grid.Col sm={6}>
-          {appIdData.previousSeccessfulRelays &&
-            appIdData.previousTotalRelays &&
-            appIdData.successfulRelays &&
-            appIdData.totalRelays && (
-              <section>
-                <AppRequestsRateCard
-                  previousRelays={appIdData.previousTotalRelays.total_relays}
-                  previousSuccessfulRelays={
-                    appIdData.previousSeccessfulRelays.successful_relays
-                  }
-                  successfulRelays={appIdData.successfulRelays.successful_relays}
-                  totalRelays={appIdData.totalRelays.total_relays}
-                />
-              </section>
-            )}
+          {appIdData.relaysYesterday && appIdData.relaysToday && (
+            <section>
+              <AppRequestsRateCard
+                previousRelays={
+                  appIdData.relaysYesterday.Count.Success +
+                  appIdData.relaysYesterday.Count.Failure
+                }
+                previousSuccessfulRelays={appIdData.relaysYesterday.Count.Success}
+                successfulRelays={appIdData.relaysToday.Count.Success}
+                totalRelays={
+                  appIdData.relaysToday.Count.Success +
+                  appIdData.relaysToday.Count.Failure
+                }
+              />
+            </section>
+          )}
         </Grid.Col>
       </Grid>
       {data.hourlyLatency && (
@@ -162,10 +164,10 @@ export const Application = () => {
           <AppLatencyCard hourlyLatency={data.hourlyLatency.hourly_latency} />
         </section>
       )}
-      {appIdData.dailyRelays && appIdData.maxDailyRelays && (
+      {appIdData.dailyRelaysPerWeek && appIdData.maxDailyRelays && (
         <section>
           <AppUsageOverTimeCard
-            dailyRelays={appIdData.dailyRelays.daily_relays}
+            dailyRelays={appIdData.dailyRelaysPerWeek}
             maxDailyRelays={appIdData.maxDailyRelays}
           />
         </section>

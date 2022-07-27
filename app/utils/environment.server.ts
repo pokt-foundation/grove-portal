@@ -6,6 +6,7 @@ function getClientEnv() {
     BACKEND_URL: process.env.BACKEND_URL,
     RELAY_METER_API_URL: process.env.RELAY_METER_API_URL,
     PORTAL_API_URL: process.env.PORTAL_API_URL,
+    INDEXER_API_URL: process.env.INDEXER_API_URL,
     SENTRY_DSN: process.env.SENTRY_DSN,
     BUILD_ID: process.env.BUILD_ID,
     FLAG_MULTI_LANGUAGE: process.env.FLAG_MULTI_LANGUAGE,

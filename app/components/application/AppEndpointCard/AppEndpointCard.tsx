@@ -3,7 +3,6 @@ import ChainWithImage, {
   links as ChainWithImageLinks,
 } from "~/components/application/ChainWithImage"
 import styles from "./styles.css"
-import { UserLB } from "~/models/portal.server"
 import { ChainMetadata, prefixFromChainId } from "~/utils/chainUtils"
 import AppEndpointUrl, {
   links as AppEndpointUrlLinks,
@@ -11,6 +10,7 @@ import AppEndpointUrl, {
 import { useUser } from "~/context/UserContext"
 import { useEffect, useMemo } from "react"
 import ChainsDropdown, { links as ChainsDropdownLinks } from "../ChainsDropdown"
+import { ProcessedEndpoint } from "~/models/portal/sdk"
 
 /* c8 ignore next */
 export const links = () => {
@@ -24,7 +24,7 @@ export const links = () => {
 }
 
 interface AppEndpointProps {
-  app: UserLB
+  app: ProcessedEndpoint
 }
 
 export default function AppEndpointCard({ app }: AppEndpointProps) {

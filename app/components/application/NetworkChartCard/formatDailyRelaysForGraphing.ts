@@ -16,9 +16,12 @@ export function formatDailyRelaysForGraphing(dailyRelays: RelayMetric[] = []): {
   const labels = sortDates.map(({ From }) => DAYS[dayjs(From).utc().day()])
 
   const { high, low } = sortDates.reduce(
-    ({ high: highest, low: lowest }, { Count: totalRelays }) => ({
-      high: Math.max(highest, totalRelays),
-      low: lowest === 0 ? totalRelays : Math.min(lowest, totalRelays),
+    ({ high: highest, low: lowest }, { Count }) => ({
+      high: Math.max(highest, Count.Success + Count.Failure),
+      low:
+        lowest === 0
+          ? Count.Success + Count.Failure
+          : Math.min(lowest, Count.Success + Count.Failure),
     }),
     { high: 0, low: 0 },
   )
@@ -31,7 +34,9 @@ export function formatDailyRelaysForGraphing(dailyRelays: RelayMetric[] = []): {
   const lines = [
     {
       id: 1,
-      values: sortDates.map(({ Count: totalRelays }) => norm(totalRelays, low, high)),
+      values: sortDates.map(({ Count }) =>
+        norm(Count.Success + Count.Failure, low, high),
+      ),
     },
   ]
 

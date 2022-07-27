@@ -1,8 +1,9 @@
-import { json, LoaderFunction, MetaFunction } from "@remix-run/node"
-import { Link, useLoaderData } from "@remix-run/react"
-import type { UserLB } from "~/models/portal.server"
-import { getLBUserApplications } from "~/models/portal.server"
+import { MetaFunction } from "@remix-run/node"
+import { Link } from "@remix-run/react"
 import Table, { links as TableLinks } from "~/components/shared/Table"
+import { ProcessedEndpoint } from "~/models/portal/sdk"
+import { useMatchesRoute } from "~/hooks/useMatchesRoute"
+import { AppsLayoutLoaderData } from "../apps"
 
 export const links = () => {
   return [...TableLinks()]
@@ -14,46 +15,29 @@ export const meta: MetaFunction = () => {
   }
 }
 
-type LoaderData = {
-  userApps: UserLB[]
-}
-
-export const loader: LoaderFunction = async ({ request }) => {
-  const userApps = await getLBUserApplications(request)
-
-  return json<LoaderData>(
-    {
-      userApps,
-    },
-    {
-      headers: {
-        "Cache-Control": `private, max-age=${
-          process.env.NODE_ENV === "production" ? "3600" : "60"
-        }`,
-      },
-    },
-  )
-}
-
 export const Apps = () => {
-  const data = useLoaderData() as LoaderData
+  const appIdRoute = useMatchesRoute("routes/dashboard/apps")
+  const { endpoints } = appIdRoute?.data as AppsLayoutLoaderData
+  const tableData = endpoints
+    .filter((e): e is ProcessedEndpoint => e !== null)
+    .map((app) => ({
+      id: app.id,
+      app: {
+        value: app.name,
+        element: <Link to={app.id}>{app.name}</Link>,
+      },
+      chain: app.chain,
+      status: app.status,
+      action: {
+        value: "",
+        element: <Link to={app.id}>...</Link>,
+      },
+    }))
   return (
     <section>
       <Table
         label="Applications"
-        data={data.userApps.map((app) => ({
-          id: app.id,
-          app: {
-            value: app.name,
-            element: <Link to={app.id}>{app.name}</Link>,
-          },
-          chain: app.chain,
-          status: app.status,
-          action: {
-            value: "",
-            element: <Link to={app.id}>...</Link>,
-          },
-        }))}
+        data={tableData}
         columns={["App", "Chain", "Status", ""]}
         paginate={{
           perPage: 10,

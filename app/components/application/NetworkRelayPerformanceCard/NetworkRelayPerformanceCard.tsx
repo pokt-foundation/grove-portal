@@ -1,12 +1,10 @@
 import { Grid } from "@mantine/core"
 import { Card, links as CardLinks } from "~/components/shared/Card"
-import PoweredBy, { links as PoweredByLinks } from "~/components/shared/PoweredBy"
-import { LatestBlockAndPerformanceData } from "~/models/portal.server"
 import { RelayMetric } from "~/models/relaymeter.server"
 import styles from "./styles.css"
 
 export const links = () => {
-  return [...CardLinks(), ...PoweredByLinks(), { rel: "stylesheet", href: styles }]
+  return [...CardLinks(), { rel: "stylesheet", href: styles }]
 }
 
 interface NetworkSuccessRateCardProps {
@@ -28,15 +26,15 @@ export default function NetworkSuccessRateCard({
   const rows = [
     {
       description: "Today",
-      data: numbersFormatter.format(today.Count),
+      data: numbersFormatter.format(today.Count.Success + today.Count.Failure),
     },
     {
       description: "Week",
-      data: numbersFormatter.format(week.Count),
+      data: numbersFormatter.format(week.Count.Success + week.Count.Failure),
     },
     {
       description: "Month",
-      data: numbersFormatter.format(month.Count),
+      data: numbersFormatter.format(month.Count.Success + month.Count.Failure),
     },
   ]
 

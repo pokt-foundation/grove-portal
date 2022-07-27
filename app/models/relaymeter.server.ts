@@ -3,11 +3,10 @@ import { getRequiredClientEnvVar } from "~/utils/environment"
 import { dayjs } from "~/utils/dayjs"
 
 export type RelayMetric = {
-  Count: number
-  //   Count: {
-  //     Success: number
-  //     Failure: number
-  //   }
+  Count: {
+    Success: number
+    Failure: number
+  }
   From: string
   To: string
 }
@@ -39,6 +38,66 @@ export const getNetworkRelays = async (
 
   const res = await fetch(
     `${getRequiredClientEnvVar("RELAY_METER_API_URL")}/network?to=${to}&from=${from}`,
+  )
+
+  if (!res || res.status !== 200) {
+    throw new Error(res.statusText)
+  }
+
+  return await res.json()
+}
+
+// RelayMeter: USER
+export const getUserRelays = async (
+  user: string,
+  from?: string,
+  to?: string,
+): Promise<RelayMetric> => {
+  if (!to || !from) {
+    to = dayjs().utc().hour(0).minute(0).second(0).millisecond(0).format()
+    from = dayjs()
+      .utc()
+      .hour(0)
+      .minute(0)
+      .second(0)
+      .millisecond(0)
+      .subtract(6, "day")
+      .format()
+  }
+
+  const res = await fetch(
+    `${getRequiredClientEnvVar(
+      "RELAY_METER_API_URL",
+    )}/users?USER=${user}&to=${to}&from=${from}`,
+  )
+
+  if (!res || res.status !== 200) {
+    throw new Error(res.statusText)
+  }
+
+  return await res.json()
+}
+
+// RelayMeter: APP
+export const getAppRelays = async (
+  app: string,
+  from?: string,
+  to?: string,
+): Promise<RelayMetric> => {
+  if (!to || !from) {
+    to = dayjs().utc().hour(0).minute(0).second(0).millisecond(0).format()
+    from = dayjs()
+      .utc()
+      .hour(0)
+      .minute(0)
+      .second(0)
+      .millisecond(0)
+      .subtract(6, "day")
+      .format()
+  }
+
+  const res = await fetch(
+    `${getRequiredClientEnvVar("RELAY_METER_API_URL")}/apps/${app}?to=${to}&from=${from}`,
   )
 
   if (!res || res.status !== 200) {

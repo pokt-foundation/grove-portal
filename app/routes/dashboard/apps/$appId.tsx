@@ -35,6 +35,11 @@ import { useTranslate } from "~/context/TranslateContext"
 import AppRemoveModal, {
   links as AppRemoveModalLinks,
 } from "~/components/application/AppRemoveModal"
+import { requireUser } from "~/utils/session.server"
+import { initPortalClient } from "~/models/portal/portal.server"
+import { ProcessedEndpoint } from "~/models/portal/sdk"
+import { dayjs } from "~/utils/dayjs"
+import { getAppRelays, RelayMetric } from "~/models/relaymeter.server"
 
 export const links = () => {
   return [
@@ -53,47 +58,58 @@ export const meta: MetaFunction = () => {
 }
 
 export type AppIdLoaderData = {
-  app: UserLB
-  dailyRelays: UserLBDailyRelaysResponse
-  status: UserLBOnChainDataResponse
-  stakedTokens: number
+  app: ProcessedEndpoint
   maxDailyRelays: number
-  previousSeccessfulRelays: UserLBPreviousTotalSuccessfulRelaysResponse
-  previousTotalRelays: UserLBPreviousTotalRelaysResponse
-  successfulRelays: UserLBTotalSuccessfulRelaysResponse
-  totalRelays: UserLBTotalRelaysResponse
+  relaysToday: RelayMetric
+  relaysYesterday: RelayMetric
+  dailyRelaysPerWeek: RelayMetric[]
 }
 
 export const loader: LoaderFunction = async ({ request, params, context }) => {
   invariant(params.appId, "app id not found")
-  const userApps = await getLBUserApplications(request)
-  const app = userApps.find((app) => app.id === params.appId)
+  const user = await requireUser(request)
+  const portal = initPortalClient()
+  const { endpoint: app } = await portal.endpoint(
+    { endpointID: params.appId },
+    {
+      Authorization: `Bearer ${user.accessToken}`,
+    },
+  )
   invariant(app, "app id not found")
 
-  const dailyRelays = await getLBDailyRelays(params.appId, request)
-  const status = await getLBStatus(params.appId, request)
-  const stakedTokens = status.stake
-  const maxDailyRelays = status.relays * SESSIONS_PER_DAY
+  const dailyRelaysPerWeek = await Promise.all(
+    [0, 1, 2, 3, 4, 5, 6].map(async (num) => {
+      const from = dayjs()
+        .utc()
+        .hour(0)
+        .minute(0)
+        .second(0)
+        .millisecond(0)
+        .subtract(num, "day")
+        .format()
 
-  const previousSeccessfulRelays = await getLBPreviousSuccessfulRelays(
-    params.appId,
-    request,
+      // api auto adjusts to/from to begining and end of each day so putting the same time here gives us back one day
+      const network = await getAppRelays(app.id, from, from)
+      return network
+    }),
   )
-  const previousTotalRelays = await getLBPreviousTotalRelays(params.appId, request)
-  const successfulRelays = await getLBSuccessfulRelays(params.appId, request)
-  const totalRelays = await getLBTotalRelays(params.appId, request)
+
+  // api auto adjusts to/from to begining and end of each day so putting the same time here gives us back one day
+  const today = dayjs().utc().hour(0).minute(0).second(0).millisecond(0).format()
+  const relaysToday = await getAppRelays(app.id, today, today)
+  const yesterday = dayjs().utc().hour(0).minute(0).second(0).millisecond(0).format()
+  const relaysYesterday = await getAppRelays(app.id, yesterday, yesterday)
+
+  const status = await getLBStatus(params.appId, request)
+  const maxDailyRelays = status.relays * SESSIONS_PER_DAY
 
   return json<AppIdLoaderData>(
     {
       app,
-      dailyRelays,
-      status,
-      stakedTokens,
       maxDailyRelays,
-      previousSeccessfulRelays,
-      previousTotalRelays,
-      successfulRelays,
-      totalRelays,
+      relaysToday,
+      relaysYesterday,
+      dailyRelaysPerWeek,
     },
     {
       headers: {
@@ -152,8 +168,8 @@ export default function AppIdLayout() {
             <section>
               <AppKeysCard
                 id={app.id}
-                secret={app.gatewaySettings.secretKey}
-                publicKey={app.apps[0].publicKey}
+                secret={app.gatewaySettings.secretKey ?? ""}
+                publicKey={app.apps[0]?.publicKey}
               />
             </section>
             <section>

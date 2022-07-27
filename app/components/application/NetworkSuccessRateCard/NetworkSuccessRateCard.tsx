@@ -21,7 +21,10 @@ export default function NetworkSuccessRateCard({
         <CircleGraph
           size={80}
           strokeWidth={12}
-          value={weeklyRelays.Count / weeklyRelays.Count}
+          value={
+            weeklyRelays.Count.Success /
+            (weeklyRelays.Count.Success + weeklyRelays.Count.Failure)
+          }
           color="url(#network-success-gradient)"
         >
           <defs>
@@ -37,7 +40,7 @@ export default function NetworkSuccessRateCard({
         </CircleGraph>
 
         <div className="pokt-network-success-rate-content">
-          <h5>{Intl.NumberFormat().format(weeklyRelays.Count)}</h5>
+          <h5>{Intl.NumberFormat().format(weeklyRelays.Count.Success)}</h5>
           <p>
             <span />
             <svg

@@ -2,15 +2,15 @@ import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/shared/Card"
 import { LineChart } from "@pokt-foundation/ui"
 import { useMemo } from "react"
-import { UserLBDailyRelaysResponse } from "@pokt-foundation/portal-types"
-import { formatDailyRelaysForGraphing } from "~/utils/applicationUtils"
+import { formatDailyRelaysForGraphing } from "~/components/application/NetworkChartCard/formatDailyRelaysForGraphing"
+import { RelayMetric } from "~/models/relaymeter.server"
 
 export const links = () => {
   return [...CardLinks(), { rel: "stylesheet", href: styles }]
 }
 
 interface UsageOverTimeCardProps {
-  dailyRelays: UserLBDailyRelaysResponse["daily_relays"]
+  dailyRelays: RelayMetric[]
   maxDailyRelays: number
 }
 
@@ -27,7 +27,7 @@ export default function AppUsageOverTimeCard({
   const highestDailyRelay = useMemo(
     () =>
       dailyRelays.reduce(
-        (highest, { daily_relays: totalRelays }) => Math.max(highest, totalRelays),
+        (highest, { Count }) => Math.max(highest, Count.Success + Count.Failure),
         0,
       ),
     [dailyRelays],

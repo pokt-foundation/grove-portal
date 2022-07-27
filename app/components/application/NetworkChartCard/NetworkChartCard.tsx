@@ -1,6 +1,5 @@
 import { LineChart, useTheme } from "@pokt-foundation/ui"
 import { Card, links as CardLinks } from "~/components/shared/Card"
-import { DailyRelayBucket, NetworkRelayStats } from "~/models/portal.server"
 import { RelayMetric } from "~/models/relaymeter.server"
 import { formatDailyRelaysForGraphing } from "./formatDailyRelaysForGraphing"
 import styles from "./styles.css"

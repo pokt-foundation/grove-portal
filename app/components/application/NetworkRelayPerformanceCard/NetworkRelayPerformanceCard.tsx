@@ -1,7 +1,7 @@
 import { Grid } from "@mantine/core"
 import { Card, links as CardLinks } from "~/components/shared/Card"
 import PoweredBy, { links as PoweredByLinks } from "~/components/shared/PoweredBy"
-import { LatestBlockAndPerformanceData } from "~/models/portal.server"
+import { RelayMetric } from "~/models/relaymeter.server"
 import styles from "./styles.css"
 
 export const links = () => {
@@ -9,7 +9,9 @@ export const links = () => {
 }
 
 interface NetworkSuccessRateCardProps {
-  latestBlock: LatestBlockAndPerformanceData
+  today: RelayMetric
+  week: RelayMetric
+  month: RelayMetric
 }
 
 const numbersFormatter = Intl.NumberFormat("en", {
@@ -18,22 +20,22 @@ const numbersFormatter = Intl.NumberFormat("en", {
 })
 
 export default function NetworkSuccessRateCard({
-  latestBlock,
+  today,
+  week,
+  month,
 }: NetworkSuccessRateCardProps) {
   const rows = [
     {
       description: "Today",
-      data: numbersFormatter.format(latestBlock.getRelaysPerformance.today_relays),
+      data: numbersFormatter.format(today.Count.Success + today.Count.Failure),
+    },
+    {
+      description: "Week",
+      data: numbersFormatter.format(week.Count.Success + week.Count.Failure),
     },
     {
       description: "Month",
-      data: numbersFormatter.format(
-        latestBlock.getRelaysPerformance.thirty_day_relays_avg,
-      ),
-    },
-    {
-      description: "Max",
-      data: numbersFormatter.format(latestBlock.getRelaysPerformance.max_relays),
+      data: numbersFormatter.format(month.Count.Success + month.Count.Failure),
     },
   ]
 
@@ -51,7 +53,6 @@ export default function NetworkSuccessRateCard({
             </Grid.Col>
           ))}
         </Grid>
-        <PoweredBy to="https://poktscan.com/" image="/poktscanLogo.png" alt="Poktscan" />
       </Card>
     </div>
   )

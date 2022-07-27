@@ -1,6 +1,7 @@
 import { LineChart, useTheme } from "@pokt-foundation/ui"
 import { Card, links as CardLinks } from "~/components/shared/Card"
 import { DailyRelayBucket, NetworkRelayStats } from "~/models/portal.server"
+import { RelayMetric } from "~/models/relaymeter.server"
 import { formatDailyRelaysForGraphing } from "./formatDailyRelaysForGraphing"
 import styles from "./styles.css"
 
@@ -9,17 +10,13 @@ export const links = () => {
 }
 
 interface NetworkChardCardProps {
-  weeklyStats: NetworkRelayStats
-  dailyRelays: DailyRelayBucket[]
+  relays: RelayMetric[]
 }
 
-export default function NetworkChartCard({
-  weeklyStats,
-  dailyRelays,
-}: NetworkChardCardProps) {
+export default function NetworkChartCard({ relays }: NetworkChardCardProps) {
   const theme = useTheme()
 
-  const { labels, lines, scales } = formatDailyRelaysForGraphing(dailyRelays)
+  const { labels, lines, scales } = formatDailyRelaysForGraphing(relays)
   return (
     <div className="pokt-network-chart">
       <Card>

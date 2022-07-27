@@ -42,6 +42,8 @@ import FeedbackCard, {
 import AdEconomicsForDevs, {
   links as AdEconomicsForDevsLinks,
 } from "~/components/application/AdEconomicsForDevs"
+import { initIndexerClient } from "~/models/indexer/indexer.server"
+import { Block, Order } from "~/models/indexer/sdk"
 
 export const links = () => {
   return [
@@ -64,10 +66,20 @@ export const meta: MetaFunction = () => {
   }
 }
 
+export type LatestBlockType = Block & {
+  // took: number
+  total_accounts: number
+  total_apps: number
+  total_nodes: number
+  // total_relays_completed: number
+  total_txs: number
+}
+
 type LoaderData = {
   chains: Chain[]
   dailyRelays: DailyRelayBucket[]
-  latestBlock: LatestBlockAndPerformanceData
+  latestBlock: LatestBlockType | null
+  latestBlockPOKTScan: LatestBlockAndPerformanceData
   summary: SummaryData
   weeklyStats: NetworkRelayStats
 }
@@ -75,15 +87,42 @@ type LoaderData = {
 export const loader: LoaderFunction = async ({ request }) => {
   const chains = await getNetworkChains(request)
   const dailyRelays = await getNetworkDailyRelays(request)
-  const latestBlock = await getNetworkLatestBlock(request)
+  const latestBlockPOKTScan = await getNetworkLatestBlock(request)
   const summary = await getNetworkSummary(request)
   const weeklyStats = await getNetworkWeeklyStats(request)
+
+  const indexer = initIndexerClient()
+  const { queryBlocks } = await indexer.queryBlocks({
+    page: 1,
+    perPage: 1,
+    order: Order.Desc,
+  })
+  let latestBlock = null
+
+  if (queryBlocks?.blocks) {
+    latestBlock = queryBlocks.blocks[0]
+    const height = Number(latestBlock?.height)
+    const { queryAccounts } = await indexer.queryAccounts({ height: height })
+    const { queryApps } = await indexer.queryApps({ height: height })
+    const { queryNodes } = await indexer.queryNodes({ height: height })
+    const { queryTransactionsByHeight } = await indexer.queryTransactionsByHeight({
+      height: height,
+    })
+    latestBlock = {
+      ...latestBlock,
+      total_accounts: Number(queryAccounts?.totalCount),
+      total_apps: Number(queryApps?.totalCount),
+      total_nodes: Number(queryNodes?.totalCount),
+      total_txs: Number(queryTransactionsByHeight?.totalCount),
+    } as LatestBlockType
+  }
 
   return json<LoaderData>(
     {
       chains,
       dailyRelays,
       latestBlock,
+      latestBlockPOKTScan,
       summary,
       weeklyStats,
     },
@@ -158,11 +197,13 @@ export default function Index() {
           <h3>Network Success Rate</h3>
           <NetworkSuccessRateCard weeklyStats={data.weeklyStats} />
         </section>
+        {data.latestBlock && (
+          <section>
+            <NetworkLatestBlockCard latestBlock={data.latestBlock} />
+          </section>
+        )}
         <section>
-          <NetworkLatestBlockCard latestBlock={data.latestBlock} />
-        </section>
-        <section>
-          <NetworkRelayPerformanceCard latestBlock={data.latestBlock} />
+          <NetworkRelayPerformanceCard latestBlock={data.latestBlockPOKTScan} />
         </section>
         <section>
           <AdEconomicsForDevs />

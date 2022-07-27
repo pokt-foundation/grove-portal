@@ -27,6 +27,17 @@ export default function AppRequestsErrorsCard({ errorMetrics }: RequestsErrorsCa
         return {
           id: `${error.timestamp}-${error.nodepublickey}-${error.bytes}-${index}`,
           method: error.method,
+          message: {
+            value: error?.message ? error.message : "null",
+            element: (
+              <Group>
+                <p className="pokt-table-ellipsis">
+                  {error?.message ? error.message : "null"}
+                </p>
+                <CopyTextIcon text={error?.message ? error.message : "null"} />
+              </Group>
+            ),
+          },
           address: {
             value: error.nodepublickey,
             element: (

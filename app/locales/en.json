@@ -132,7 +132,7 @@
   },
   "AppRequestsErrorsCard": {
     "label": "Requests Errors",
-    "columns": ["Type", "Node", "Size", "Date"]
+    "columns": ["Type", "Message", "Node", "Size", "Date"]
   },
   "AppRequestsRateCard": {
     "label": "Requests Rate",

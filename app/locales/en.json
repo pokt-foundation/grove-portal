@@ -158,7 +158,7 @@
   },
   "AppRequestsErrorsCard": {
     "label": "Requests Errors",
-    "columns": ["Type", "Node", "Size", "Date"]
+    "columns": ["Type", "Message", "Node", "Size", "Date"]
   },
   "AppRequestsRateCard": {
     "label": "Requests Rate",
@@ -201,5 +201,9 @@
       "Please contact the team for further assistance."
     ],
     "link": "Contact POKT Team"
+  },
+  "footer": {
+    "termsOfUse": "Site Terms of Use",
+    "privacyPolicy": "Privacy Policy"
   }
 }

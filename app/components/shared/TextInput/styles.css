@@ -1,8 +1,18 @@
-.pokt-text-input {
+.pokt-text {
   width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.pokt-text-input {
+  flex-grow: 1;
+  margin-bottom: 0;
 }
 
 .pokt-text-input input {
+  margin-bottom: 0;
   padding: 8px;
   color: var(--color-white-main);
   background-color: var(--color-black-dark);
@@ -26,6 +36,19 @@
 }
 
 .pokt-text-input .pokt-text-input-copy svg {
+  width: 20px;
+  height: 20px;
+}
+
+.pokt-text:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+.pokt-text-delete {
+  padding: 0 8px;
+}
+
+.pokt-text-delete svg {
   width: 20px;
   height: 20px;
 }

@@ -112,6 +112,8 @@ export default function AppEndpointCard({ app }: AppEndpointProps) {
           <div>
             {app.gigastake ? (
               <ChainsDropdown
+                icon={true}
+                defaultText="Add New"
                 selectedChains={
                   user.data?.preferences.endpoints &&
                   user.data?.preferences.endpoints[app.id]
@@ -126,15 +128,19 @@ export default function AppEndpointCard({ app }: AppEndpointProps) {
           </div>
         </div>
         {chains &&
-          chains.map((chain: string) => (
-            <AppEndpointUrl
-              key={chain}
-              chainId={chain}
-              appId={app.id}
-              gigastake={app.gigastake}
-              handleRemove={handleRemoveFromStoredChains}
-            />
-          ))}
+          chains.map((chain: string) => {
+            const { prefix } = prefixFromChainId(chain) ?? { prefix: "" }
+            const endpoint = `https://${prefix}.gateway.pokt.network/v1/lb/${app.id}`
+            return (
+              <AppEndpointUrl
+                key={chain}
+                chainId={chain}
+                value={endpoint}
+                hasDelete={app.gigastake}
+                handleRemove={() => handleRemoveFromStoredChains(chain)}
+              />
+            )
+          })}
       </Card>
     </div>
   )

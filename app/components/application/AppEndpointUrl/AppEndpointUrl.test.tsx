@@ -6,6 +6,7 @@ import { ChainMetadata, prefixFromChainId } from "~/utils/chainUtils"
 let chainId = "0021"
 let { prefix, name } = prefixFromChainId(chainId) as ChainMetadata
 let appId = "1234567890"
+let inputValue = `https://${prefix}.gateway.pokt.network/v1/lb/${appId}`
 let gigastake = false
 const handleRemove = vitest.fn()
 
@@ -14,6 +15,7 @@ beforeEach(() => {
   chainId = "0021"
   ;({ prefix, name } = prefixFromChainId(chainId) as ChainMetadata)
   appId = "1234567890"
+  inputValue = `https://${prefix}.gateway.pokt.network/v1/lb/${appId}`
   gigastake = false
 })
 
@@ -23,8 +25,8 @@ describe("<AppEndpointUrl />", () => {
     render(
       <AppEndpointUrl
         chainId={chainId}
-        appId={appId}
-        gigastake={gigastake}
+        value={inputValue}
+        hasDelete={gigastake}
         handleRemove={handleRemove}
       />,
     )
@@ -40,8 +42,8 @@ describe("<AppEndpointUrl />", () => {
     render(
       <AppEndpointUrl
         chainId={chainId}
-        appId={appId}
-        gigastake={gigastake}
+        value={inputValue}
+        hasDelete={gigastake}
         handleRemove={handleRemove}
       />,
     )
@@ -56,11 +58,12 @@ describe("<AppEndpointUrl />", () => {
   it("handles different chains", () => {
     chainId = "0003"
     ;({ prefix, name } = prefixFromChainId(chainId) as ChainMetadata)
+    inputValue = `https://${prefix}.gateway.pokt.network/v1/lb/${appId}`
     render(
       <AppEndpointUrl
         chainId={chainId}
-        appId={appId}
-        gigastake={gigastake}
+        value={inputValue}
+        hasDelete={gigastake}
         handleRemove={handleRemove}
       />,
     )
@@ -78,8 +81,8 @@ describe("<AppEndpointUrl />", () => {
     render(
       <AppEndpointUrl
         chainId={chainId}
-        appId={appId}
-        gigastake={gigastake}
+        value={inputValue}
+        hasDelete={gigastake}
         handleRemove={handleRemove}
       />,
     )
@@ -87,6 +90,6 @@ describe("<AppEndpointUrl />", () => {
     expect(button).toBeInTheDocument()
 
     await user.click(button)
-    expect(handleRemove).toHaveBeenCalledWith(chainId)
+    expect(handleRemove).toHaveBeenCalled()
   })
 })

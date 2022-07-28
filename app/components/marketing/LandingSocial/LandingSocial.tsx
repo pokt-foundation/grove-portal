@@ -1,22 +1,11 @@
-import Container from "~/components/shared/Container"
-import Section, { links as SectionLinks } from "~/components/shared/Section"
-import Title, { links as TitleLinks } from "~/components/shared/Title"
 import Text, { links as TextLinks } from "~/components/shared/Text"
-import Button from "~/components/shared/Button"
-import { Link } from "@remix-run/react"
 import { useTranslate } from "~/context/TranslateContext"
 import styles from "./styles.css"
 import Group from "~/components/shared/Group"
-import Grid from "~/components/shared/Grid"
-import { Stack } from "@mantine/core"
+import { IconCog } from "@pokt-foundation/ui"
 
 export const links = () => {
-  return [
-    ...SectionLinks(),
-    ...TitleLinks(),
-    ...TextLinks(),
-    { rel: "stylesheet", href: styles },
-  ]
+  return [...TextLinks(), { rel: "stylesheet", href: styles }]
 }
 
 export default function LandingSocial() {
@@ -25,31 +14,63 @@ export default function LandingSocial() {
   const socialList = [
     {
       brand: "Twitter",
-      handle: "#pokt",
+      icon: <IconCog />,
+      handle: "@pocket",
       link: "#",
     },
     {
-      brand: "Twitter",
-      handle: "#pokt",
+      brand: "Telegram",
+      icon: <IconCog />,
+      handle: "@pocket",
+      link: "#",
+    },
+    {
+      brand: "Linkedin",
+      icon: <IconCog />,
+      handle: "@pocket",
+      link: "#",
+    },
+    {
+      brand: "Github",
+      icon: <IconCog />,
+      handle: "@pocket",
+      link: "#",
+    },
+    {
+      brand: "Chat",
+      icon: <IconCog />,
+      handle: "@pocket",
+      link: "#",
+    },
+    {
+      brand: "Discord",
+      icon: <IconCog />,
+      handle: "@pocket",
       link: "#",
     },
   ]
 
   return (
-    <div>
+    <div className="pokt-landing-social">
       <Text>
         Learn more about Pocket, chat with the team, others in the community, and have
         your say in shaping the future of blockchain.
       </Text>
-      <Stack>
+      <ul className="social-list">
         {socialList.map((social) => (
-          <div key={social.brand}>
-            <a href={social.link}>
-              {social.brand}: {social.handle}
+          <li key={social.brand}>
+            <a href={social.link} className="social-link">
+              <Group position="apart">
+                <Group spacing="xs">
+                  <div className="social-icon">{social.icon}</div>
+                  <div className="social-brand">{social.brand}</div>
+                </Group>
+                <div className="social-handle">{social.handle}</div>
+              </Group>
             </a>
-          </div>
+          </li>
         ))}
-      </Stack>
+      </ul>
     </div>
   )
 }

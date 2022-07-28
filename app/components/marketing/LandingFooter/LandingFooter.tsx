@@ -16,16 +16,16 @@ export default function LandingFooter() {
       children: [
         {
           label: "Pocket Dashboard",
-          link: "/",
+          link: "#",
         },
         {
           label: "Wallet",
-          link: "/",
+          link: "#",
           external: true,
         },
         {
           label: "wPOKT",
-          link: "/",
+          link: "#",
           external: true,
         },
       ],
@@ -35,27 +35,27 @@ export default function LandingFooter() {
       children: [
         {
           label: "Company",
-          link: "/",
+          link: "#",
           external: true,
         },
         {
           label: "Protocol",
-          link: "/",
+          link: "#",
           external: true,
         },
         {
           label: "Foundation",
-          link: "/",
+          link: "#",
           external: true,
         },
         {
           label: "DAO",
-          link: "/",
+          link: "#",
           external: true,
         },
         {
           label: "Careers",
-          link: "/",
+          link: "#",
           external: true,
         },
       ],
@@ -65,12 +65,12 @@ export default function LandingFooter() {
       children: [
         {
           label: "Docs",
-          link: "/",
+          link: "#",
           external: true,
         },
         {
           label: "Economics",
-          link: "/",
+          link: "#",
           external: true,
         },
       ],
@@ -80,17 +80,17 @@ export default function LandingFooter() {
       children: [
         {
           label: "Blog",
-          link: "/",
+          link: "#",
           external: true,
         },
         {
           label: "Forum",
-          link: "/",
+          link: "#",
           external: true,
         },
         {
           label: "Press Kit",
-          link: "/",
+          link: "#",
           external: true,
         },
       ],
@@ -98,19 +98,23 @@ export default function LandingFooter() {
   ]
 
   return (
-    <div>
+    <div className="pokt-landing-footer">
       {/* <img src="/pnlogo.svg" alt="Pocket Network logo" /> */}
       <Group position="apart" align="flex-start">
         {navigationList.map((nav) => (
-          <div key={nav.title}>
-            <h4>{nav.title}</h4>
-            <ul>
+          <div key={nav.title} className="nav-group">
+            <h4 className="nav-title">{nav.title}</h4>
+            <ul className="nav-list">
               {nav.children.map((list) => (
                 <li key={list.label}>
                   {list.external ? (
-                    <a href={list.link}>{list.label}</a>
+                    <a href={list.link} className="nav-link">
+                      {list.label}
+                    </a>
                   ) : (
-                    <Link to={list.link}>{list.label}</Link>
+                    <Link to={list.link} className="nav-link">
+                      {list.label}
+                    </Link>
                   )}
                 </li>
               ))}

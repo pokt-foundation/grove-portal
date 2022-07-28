@@ -586,7 +586,7 @@ export const postFeedback = async (
   )
 
   // server sends 204 no content on successful post
-  if (!res || res.status !== 204) {
+  if (!res || (res.status !== 200 && res.status !== 204)) {
     return {
       error: true,
       error_message: res.statusText,
@@ -596,4 +596,50 @@ export const postFeedback = async (
   return {
     error: false,
   }
+}
+
+// APP SECURITY Put Security Settings
+export type AppSecurityProps = {
+  appID: string
+  secretKeyRequired: boolean
+  whitelistOrigins: string[]
+  whitelistUserAgents: string[]
+  whitelistBlockchains: string[]
+  whitelistContracts: { blockchainID: string; contracts: string[] }[]
+  whitelistMethods: { blockchainID: string; methods: string[] }[]
+}
+
+export type AppSecurityResponse =
+  | {
+      error: false
+    }
+  | {
+      error: true
+      error_message: string
+    }
+
+export const putAppSecurity = async (
+  formData: AppSecurityProps,
+  request: Request,
+): Promise<AppSecurityResponse> => {
+  const user = await requireUser(request)
+  const { appID, ...data } = formData
+  const res = await fetch(`${getRequiredClientEnvVar("BACKEND_URL")}/api/lb/${appID}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `${user.extraParams.token_type} ${user.accessToken}`,
+    },
+    body: JSON.stringify({ gatewaySettings: data }),
+  })
+
+  // server sends 204 on successful put
+  if (!res || (res.status !== 200 && res.status !== 204)) {
+    return {
+      error: true,
+      error_message: res.statusText,
+    }
+  }
+
+  return { error: false }
 }

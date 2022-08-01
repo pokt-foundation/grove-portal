@@ -130,6 +130,7 @@ interface TranslationData {
   }
   appAddressCard: {
     heading: string
+    error: string
   }
 }
 

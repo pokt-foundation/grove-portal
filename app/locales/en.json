@@ -177,6 +177,7 @@
     "link": "Contact POKT Team"
   },
   "appAddressCard": {
-    "heading": "POKT App Addresses"
+    "heading": "POKT App Addresses",
+    "error": "No apps found."
   }
 }

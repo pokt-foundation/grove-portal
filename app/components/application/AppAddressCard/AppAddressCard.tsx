@@ -29,7 +29,7 @@ export default function AppAddressCard({ apps }: AppAddressCardProps) {
             return <TextInput key={item.appId} readOnly copy value={item.appId} />
           })
         ) : (
-          <p>No apps found.</p>
+          <p>{appAddressCard.error}</p>
         )}
       </Card>
     </div>

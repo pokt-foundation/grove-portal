@@ -241,7 +241,7 @@ const schema = {
     link: "Contact POKT Team",
   },
   appAddressCard: {
-    header: "POKT App Addresses",
+    heading: "POKT App Addresses",
     error: "No apps found.",
   },
   footer: {

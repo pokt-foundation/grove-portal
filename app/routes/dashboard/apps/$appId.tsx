@@ -16,6 +16,9 @@ import {
 import AppKeysCard, {
   links as AppKeysCardLinks,
 } from "~/components/application/AppKeysCard"
+import AppAddressCard, {
+  links as AppAddressCardLinks,
+} from "~/components/application/AppAddressCard"
 import AdEconomicsForDevs, {
   links as AdEconomicsForDevsLinks,
 } from "~/components/application/AdEconomicsForDevs"
@@ -40,6 +43,7 @@ export const links = () => {
   return [
     ...NavLinks(),
     ...AppKeysCardLinks(),
+    ...AppAddressCardLinks(),
     ...AdEconomicsForDevsLinks(),
     ...FeedbackCardLinks(),
     ...AppRemoveModalLinks(),
@@ -155,6 +159,9 @@ export default function AppIdLayout() {
                 secret={app.gatewaySettings.secretKey}
                 publicKey={app.apps[0].publicKey}
               />
+            </section>
+            <section>
+              <AppAddressCard apps={app.apps} />
             </section>
             <section>
               <AdEconomicsForDevs />

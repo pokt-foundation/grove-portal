@@ -128,6 +128,9 @@ interface TranslationData {
     body: string[]
     link: string
   }
+  appAddressCard: {
+    heading: string
+  }
 }
 
 export type Language = typeof languages[number]

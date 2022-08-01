@@ -1,6 +1,6 @@
 import React, { useMemo, useContext } from "react"
-import en from "~/locales/en.json"
-import fr from "~/locales/fr.json"
+import en from "~/locales/en"
+import fr from "~/locales/fr"
 import { useUser } from "./UserContext"
 
 const languages = ["en", "fr"] as const
@@ -42,7 +42,7 @@ interface TranslationData {
     subtitle: string
     faqs: {
       question: string
-      answer: string
+      answer: string | React.ReactNode | JSX.Element
     }[]
   }
   landing: {
@@ -131,6 +131,10 @@ interface TranslationData {
   appAddressCard: {
     heading: string
     error: string
+  }
+  footer: {
+    termsOfUse: string
+    privacyPolicy: string
   }
 }
 

@@ -21,6 +21,9 @@ export const requireUser = async (request: Request, defaultRedirect = "/") => {
   if (!user) {
     throw redirect(defaultRedirect)
   }
+  if (!user?.profile._json.email_verified) {
+    throw await authenticator.logout(request, { redirectTo: "/validate" })
+  }
   const decode = jwt_decode<{
     exp: number
   }>(user.accessToken)

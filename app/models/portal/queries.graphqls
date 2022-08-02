@@ -1,0 +1,82 @@
+query endpoints {
+  endpoints {
+    id
+    user
+    name
+    status
+    apps {
+      address
+      appId
+      publicKey
+    }
+    chain
+    freeTier
+    gigastake
+    gatewaySettings {
+      secretKey
+      secretKeyRequired
+      whitelistOrigins
+      whitelistUserAgents
+    }
+    notificationSettings {
+      signedUp
+      quarter
+      half
+      threeQuarters
+      full
+    }
+    createdAt
+    updatedAt
+  }
+}
+
+query endpoint($endpointID: ID!) {
+  endpoint(endpointID: $endpointID) {
+    id
+    user
+    name
+    status
+    apps {
+      address
+      appId
+      publicKey
+    }
+    chain
+    freeTier
+    gigastake
+    gatewaySettings {
+      secretKey
+      secretKeyRequired
+      whitelistOrigins
+      whitelistUserAgents
+    }
+    notificationSettings {
+      signedUp
+      quarter
+      half
+      threeQuarters
+      full
+    }
+    createdAt
+    updatedAt
+  }
+}
+
+query blockchains($active: Boolean!) {
+  blockchains(active: $active) {
+    id
+    ticker
+    network
+    description
+    index
+    blockchain
+    active
+    enforceResult
+    chainIDCheck
+    syncCheck
+    syncAllowance
+    logLimitBlocks
+    path
+    blockchainAliases
+  }
+}

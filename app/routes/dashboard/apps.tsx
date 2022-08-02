@@ -16,9 +16,11 @@ import CardList, {
 } from "~/components/shared/CardList"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { getLBUserApplications } from "~/models/portal.server"
+import { initPortalClient } from "~/models/portal/portal.server"
+import { ProcessedEndpoint } from "~/models/portal/sdk"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 import { MAX_USER_APPS } from "~/utils/pocketUtils"
-import { getUserId } from "~/utils/session.server"
+import { getUserId, requireUser } from "~/utils/session.server"
 
 export const links = () => {
   return [
@@ -30,18 +32,25 @@ export const links = () => {
   ]
 }
 
-type LoaderData = {
-  apps: UserLB[]
+export type AllAppsLoaderData = {
+  endpoints: ProcessedEndpoint[]
   userId: string
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
+  const user = await requireUser(request)
   const userId = await getUserId(request)
-  const apps = await getLBUserApplications(request)
-
-  return json<LoaderData>(
+  const portal = initPortalClient()
+  const { endpoints } = await portal.endpoints(
+    {},
     {
-      apps,
+      Authorization: `Bearer ${user.accessToken}`,
+    },
+  )
+
+  return json<AllAppsLoaderData>(
+    {
+      endpoints: endpoints.filter((endpoint) => endpoint !== null) as ProcessedEndpoint[],
       userId,
     },
     {
@@ -55,13 +64,13 @@ export const loader: LoaderFunction = async ({ request }) => {
 }
 
 export const Apps = () => {
-  const { apps, userId } = useLoaderData() as LoaderData
+  const { endpoints, userId } = useLoaderData() as AllAppsLoaderData
   const appIdRoute = useMatchesRoute("routes/dashboard/apps/$appId")
 
   const userAppsStatus: CardListItem[] = [
     {
       label: "Current Apps",
-      value: apps.length,
+      value: endpoints.length,
     },
     {
       label: "Max Apps",
@@ -83,7 +92,7 @@ export const Apps = () => {
               <h3>Account</h3>
             </div>
             <CardList items={userAppsStatus} />
-            {(apps.length < MAX_USER_APPS ||
+            {(endpoints.length < MAX_USER_APPS ||
               getRequiredClientEnvVar("GODMODE_ACCOUNTS")?.includes(userId)) && (
               <Button component={Link} to="create" fullWidth mt={32}>
                 Create New Application

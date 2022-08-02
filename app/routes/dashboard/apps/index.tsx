@@ -3,6 +3,8 @@ import { Link, useLoaderData } from "@remix-run/react"
 import type { UserLB } from "~/models/portal.server"
 import { getLBUserApplications } from "~/models/portal.server"
 import Table, { links as TableLinks } from "~/components/shared/Table"
+import { useMatchesRoute } from "~/hooks/useMatchesRoute"
+import { AllAppsLoaderData } from "../apps"
 
 export const links = () => {
   return [...TableLinks()]
@@ -14,34 +16,15 @@ export const meta: MetaFunction = () => {
   }
 }
 
-type LoaderData = {
-  userApps: UserLB[]
-}
-
-export const loader: LoaderFunction = async ({ request }) => {
-  const userApps = await getLBUserApplications(request)
-
-  return json<LoaderData>(
-    {
-      userApps,
-    },
-    {
-      headers: {
-        "Cache-Control": `private, max-age=${
-          process.env.NODE_ENV === "production" ? "3600" : "60"
-        }`,
-      },
-    },
-  )
-}
-
 export const Apps = () => {
-  const data = useLoaderData() as LoaderData
+  const allAppsRoute = useMatchesRoute("routes/dashboard/apps")
+  const { endpoints } = allAppsRoute?.data as AllAppsLoaderData
+
   return (
     <section>
       <Table
         label="Applications"
-        data={data.userApps.map((app) => ({
+        data={endpoints.map((app) => ({
           id: app.id,
           app: {
             value: app.name,

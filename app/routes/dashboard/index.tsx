@@ -44,6 +44,8 @@ import AdEconomicsForDevs, {
 } from "~/components/application/AdEconomicsForDevs"
 import { getNetworkRelays, RelayMetric } from "~/models/relaymeter.server"
 import { dayjs } from "~/utils/dayjs"
+import { initPortalClient } from "~/models/portal/portal.server"
+import { Blockchain } from "~/models/portal/sdk"
 
 export const links = () => {
   return [
@@ -67,11 +69,8 @@ export const meta: MetaFunction = () => {
 }
 
 type LoaderData = {
-  chains: Chain[]
-  dailyRelays: DailyRelayBucket[]
+  blockchains: Blockchain[]
   latestBlock: LatestBlockAndPerformanceData
-  summary: SummaryData
-  weeklyStats: NetworkRelayStats
   dailyNetworkRelaysPerWeek: RelayMetric[]
   dailyNetworkRelays: RelayMetric
   weeklyNetworkRelays: RelayMetric
@@ -79,11 +78,11 @@ type LoaderData = {
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
-  const chains = await getNetworkChains(request)
-  const dailyRelays = await getNetworkDailyRelays(request)
+  const portal = initPortalClient()
+  const { blockchains } = await portal.blockchains({ active: true })
+
+  // OLD BACKEND API CALL
   const latestBlock = await getNetworkLatestBlock(request)
-  const summary = await getNetworkSummary(request)
-  const weeklyStats = await getNetworkWeeklyStats(request)
 
   const dailyNetworkRelaysPerWeek = await Promise.all(
     [0, 1, 2, 3, 4, 5, 6].map(async (num) => {
@@ -117,11 +116,8 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   return json<LoaderData>(
     {
-      chains,
-      dailyRelays,
+      blockchains: blockchains.filter((chain) => chain !== null) as Blockchain[],
       latestBlock,
-      summary,
-      weeklyStats,
       dailyNetworkRelaysPerWeek,
       dailyNetworkRelays,
       weeklyNetworkRelays,
@@ -155,14 +151,14 @@ export default function Index() {
             <Grid.Col sm={4}>
               <NetworkSummaryCard
                 title="Apps Staked"
-                subtitle={String(data.summary.appsStaked)}
+                subtitle="2000+"
                 imgSrc="/networkSummaryApps.png"
               />
             </Grid.Col>
             <Grid.Col sm={4}>
               <NetworkSummaryCard
                 title="Networks"
-                subtitle={String(data.chains.length)}
+                subtitle={String(data.blockchains.length)}
                 imgSrc="/networkSummaryNetworks.png"
               />
             </Grid.Col>
@@ -174,17 +170,16 @@ export default function Index() {
         <section>
           <Table
             label="Available Networks"
-            data={data.chains.map((chain) => ({
+            data={data.blockchains.map((chain) => ({
               id: chain.id,
               network: {
                 value: chain.description,
                 element: <ChainWithImage chain={chain.description} />,
               },
-              apps: chain.appCount ? String(chain.appCount) : "0",
               chainId: chain.id,
               status: getServiceLevelByChain(chain.id),
             }))}
-            columns={["Network", "Nodes", "ID", "Status"]}
+            columns={["Network", "ID", "Status"]}
             paginate
             search
           />

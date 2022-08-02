@@ -44,6 +44,8 @@ import AdEconomicsForDevs, {
 } from "~/components/application/AdEconomicsForDevs"
 import { initIndexerClient } from "~/models/indexer/indexer.server"
 import { Block, Order } from "~/models/indexer/sdk"
+import { getNetworkRelays, RelayMetric } from "~/models/relaymeter.server"
+import { dayjs } from "~/utils/dayjs"
 
 export const links = () => {
   return [
@@ -82,6 +84,10 @@ type LoaderData = {
   latestBlockPOKTScan: LatestBlockAndPerformanceData
   summary: SummaryData
   weeklyStats: NetworkRelayStats
+  dailyNetworkRelaysPerWeek: RelayMetric[]
+  dailyNetworkRelays: RelayMetric
+  weeklyNetworkRelays: RelayMetric
+  monthlyNetworkRelays: RelayMetric
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -116,6 +122,35 @@ export const loader: LoaderFunction = async ({ request }) => {
       total_txs: Number(queryTransactionsByHeight?.totalCount),
     } as LatestBlockType
   }
+  const dailyNetworkRelaysPerWeek = await Promise.all(
+    [0, 1, 2, 3, 4, 5, 6].map(async (num) => {
+      const day = dayjs()
+        .utc()
+        .hour(0)
+        .minute(0)
+        .second(0)
+        .millisecond(0)
+        .subtract(num, "day")
+        .format()
+
+      // api auto adjusts to/from to begining and end of each day so putting the same time here gives us back one full day
+      return await getNetworkRelays(day, day)
+    }),
+  )
+
+  // api auto adjusts to/from to begining and end of each day so putting the same time here gives us back one full day
+  const today = dayjs().utc().hour(0).minute(0).second(0).millisecond(0).format()
+  const month = dayjs()
+    .utc()
+    .hour(0)
+    .minute(0)
+    .second(0)
+    .millisecond(0)
+    .subtract(1, "month")
+    .format()
+  const dailyNetworkRelays = await getNetworkRelays(today, today)
+  const weeklyNetworkRelays = await getNetworkRelays()
+  const monthlyNetworkRelays = await getNetworkRelays(month, today)
 
   return json<LoaderData>(
     {
@@ -125,6 +160,10 @@ export const loader: LoaderFunction = async ({ request }) => {
       latestBlockPOKTScan,
       summary,
       weeklyStats,
+      dailyNetworkRelaysPerWeek,
+      dailyNetworkRelays,
+      weeklyNetworkRelays,
+      monthlyNetworkRelays,
     },
     {
       headers: {
@@ -168,10 +207,7 @@ export default function Index() {
           </Grid>
         </section>
         <section>
-          <NetworkChartCard
-            dailyRelays={data.dailyRelays}
-            weeklyStats={data.weeklyStats}
-          />
+          <NetworkChartCard relays={data.dailyNetworkRelaysPerWeek} />
         </section>
         <section>
           <Table
@@ -195,7 +231,7 @@ export default function Index() {
       <Grid.Col md={4}>
         <section>
           <h3>Network Success Rate</h3>
-          <NetworkSuccessRateCard weeklyStats={data.weeklyStats} />
+          <NetworkSuccessRateCard relays={data.weeklyNetworkRelays} />
         </section>
         {data.latestBlock && (
           <section>
@@ -203,7 +239,11 @@ export default function Index() {
           </section>
         )}
         <section>
-          <NetworkRelayPerformanceCard latestBlock={data.latestBlockPOKTScan} />
+          <NetworkRelayPerformanceCard
+            today={data.dailyNetworkRelays}
+            week={data.weeklyNetworkRelays}
+            month={data.monthlyNetworkRelays}
+          />
         </section>
         <section>
           <AdEconomicsForDevs />

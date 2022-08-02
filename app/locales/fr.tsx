@@ -185,6 +185,10 @@ const schema = {
     ],
     link: "Contact POKT Team -fr",
   },
+  appAddressCard: {
+    heading: "POKT App Addresses -fr",
+    error: "No apps found. -fr",
+  },
   footer: {
     termsOfUse: "Site Terms of Use -fr",
     privacyPolicy: "Privacy Policy -fr",

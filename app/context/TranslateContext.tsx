@@ -128,6 +128,10 @@ interface TranslationData {
     body: string[]
     link: string
   }
+  appAddressCard: {
+    heading: string
+    error: string
+  }
   footer: {
     termsOfUse: string
     privacyPolicy: string

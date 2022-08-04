@@ -3,6 +3,7 @@ import { useState } from "react"
 import { Group, Modal, Text } from "@mantine/core"
 import Button from "~/components/shared/Button"
 import { Form } from "@remix-run/react"
+import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 
 /* c8 ignore next */
 export const links = () => {
@@ -36,7 +37,14 @@ export default function AppEndpointCard({ appId }: AppRemoveModalProps) {
         </div>
         <Group align="center" position="apart">
           <Form method="post" action={`/dashboard/apps/${appId}/remove`}>
-            <Button type="submit">Remove Application</Button>
+            <Button
+              type="submit"
+              onClick={() => {
+                trackEvent(AmplitudeEvents.EndpointRemoval)
+              }}
+            >
+              Remove Application
+            </Button>
           </Form>
           <Button variant="subtle" onClick={() => setOpened(false)}>
             Cancel

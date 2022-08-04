@@ -41,10 +41,11 @@ import Grid from "~/components/shared/Grid"
 import AppRequestsRateCard, {
   links as AppRequestsRateCardLinks,
 } from "~/components/application/AppRequestsRateCard"
-import { useMemo } from "react"
+import { useEffect, useMemo } from "react"
 import AppOverLimitCard, {
   links as AppOverLimitCardLinks,
 } from "~/components/application/AppOverSessionLimitCard/AppOverSessionLimitCard"
+import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 
 export const links = () => {
   return [
@@ -103,6 +104,10 @@ export const Application = () => {
   const data = useLoaderData() as AppIdIndexLoaderData
   const appIdRoute = useMatchesRoute("routes/dashboard/apps/$appId")
   const appIdData = appIdRoute?.data as AppIdLoaderData
+
+  useEffect(() => {
+    trackEvent(AmplitudeEvents.AppDetailsView)
+  }, [])
 
   const exceedsMaxRelays = useMemo(() => {
     return data.totalRelays.total_relays >= appIdData.maxDailyRelays

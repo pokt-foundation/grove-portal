@@ -6,6 +6,7 @@ import Card from "~/components/shared/Card"
 import Switch, { links as SwitchLinks } from "~/components/shared/Switch"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { AppIdLoaderData } from "~/routes/dashboard/apps/$appId"
+import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { formatNumberToSICompact } from "~/utils/formattingUtils"
 import styles from "./styles.css"
 
@@ -109,6 +110,9 @@ export default function NotificationsAlertForm() {
               variant="filled"
               type="submit"
               disabled={state === "loading" || state === "submitting"}
+              onClick={() => {
+                trackEvent(AmplitudeEvents.NotificationSettingsChange)
+              }}
             >
               {state === "loading" || state === "submitting" ? state : "Save Changes"}
             </Button>

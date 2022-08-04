@@ -9,6 +9,8 @@ import Nav, { links as NavLinks } from "~/components/shared/Nav"
 import Loader, { links as LoaderLinks } from "~/components/shared/Loader"
 import { IconApp, IconNetwork } from "~/components/shared/Icons"
 import { useTranslate } from "~/context/TranslateContext"
+import analyticsInit, { trackEvent } from "../utils/analytics"
+import { useEffect } from "react"
 
 export const links: LinksFunction = () => {
   return [
@@ -34,6 +36,11 @@ export default function Dashboard() {
   const { user } = useLoaderData() as LoaderData
   const { t } = useTranslate()
   const { state } = useTransition()
+
+  useEffect(() => {
+    analyticsInit(user)
+  }, [])
+
   const routes = [
     {
       to: "/dashboard",

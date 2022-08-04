@@ -1,5 +1,5 @@
 import { MetaFunction } from "@remix-run/node"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useFetcher, Form, useParams } from "@remix-run/react"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { AppIdLoaderData } from "../$appId"
@@ -16,6 +16,7 @@ import Card, { links as CardLinks } from "~/components/shared/Card"
 import Switch, { links as SwitchLinks } from "~/components/shared/Switch"
 import Button from "~/components/shared/Button"
 import { Text } from "@mantine/core"
+import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 
 export const meta: MetaFunction = () => {
   return {
@@ -49,8 +50,11 @@ export type securitySettings = {
 export default function AppSecurity() {
   const appIDRoute = useMatchesRoute("routes/dashboard/apps/$appId")
   const params = useParams()
-
   const securityAction = useFetcher()
+
+  useEffect(() => {
+    trackEvent(AmplitudeEvents.SecurityDetailsView)
+  }, [])
 
   const {
     app: { gatewaySettings },
@@ -421,7 +425,13 @@ export default function AppSecurity() {
             ))}
           </div>
         </Card>
-        <Button variant="filled" type="submit">
+        <Button
+          variant="filled"
+          type="submit"
+          onClick={() => {
+            trackEvent(AmplitudeEvents.SecuritySettingsUpdate)
+          }}
+        >
           Save
         </Button>
       </securityAction.Form>

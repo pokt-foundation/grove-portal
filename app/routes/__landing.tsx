@@ -3,9 +3,10 @@ import { Header, links as HeaderLinks } from "~/components/shared/Header"
 import { Footer, links as FooterLinks } from "~/components/shared/Footer"
 import { Nav, links as NavLinks } from "~/components/shared/Nav"
 import { json, LinksFunction, LoaderFunction, MetaFunction } from "@remix-run/node"
-import { useMemo } from "react"
+import { useEffect, useMemo } from "react"
 import { getUserProfile } from "~/utils/session.server"
 import { Auth0Profile } from "remix-auth-auth0"
+import analyticsInit from "~/utils/analytics"
 
 export const links: LinksFunction = () => {
   return [...HeaderLinks(), ...FooterLinks(), ...NavLinks()]
@@ -29,6 +30,11 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export default function LandingLayout() {
   const { user } = useLoaderData() as LoaderData
+
+  useEffect(() => {
+    analyticsInit(user)
+  }, [])
+
   const routes = useMemo(() => {
     const dashboardRoutes = [
       {

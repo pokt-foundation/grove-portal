@@ -65,7 +65,7 @@ export const { getSession, commitSession, destroySession } = sessionStorage
 
 export const getUserId = async (request: Request) => {
   const user = await requireUser(request)
-  return user.profile.id.replace(/auth0\|/g, "")
+  return user.profile.id.split("|")[1]
 }
 
 export const getUserProfile = async (request: Request) => {

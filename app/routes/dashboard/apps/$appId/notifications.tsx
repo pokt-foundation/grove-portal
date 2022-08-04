@@ -10,6 +10,8 @@ import NotificationsAlertForm, {
 import { putNotifications } from "~/models/portal.server"
 import styles from "~/styles/dashboard.apps.$appId.notifications.css"
 import { useCatch } from "@remix-run/react"
+import { useEffect } from "react"
+import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 
 export const links: LinksFunction = () => [
   ...NotificationsWeeklyBandwidthUsageCardLinks(),
@@ -44,6 +46,10 @@ export const action: ActionFunction = async ({ request, params }) => {
 }
 
 export default function AppNotifications() {
+  useEffect(() => {
+    trackEvent(AmplitudeEvents.NotificationDetailsView)
+  }, [])
+
   return (
     <section className="pokt-network-app-notifications">
       <NotificationsAlertForm />

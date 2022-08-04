@@ -1,38 +1,12 @@
-import { json, LoaderFunction, MetaFunction } from "@remix-run/node"
-import { useLoaderData } from "@remix-run/react"
-import { SESSIONS_PER_DAY } from "~/utils/pocketUtils"
-import {
-  // getLBDailyRelays,
-  getLBHourlyLatency,
-  // getLBOriginClassification,
-  // getLBPreviousSuccessfulRelays,
-  // getLBPreviousTotalRelays,
-  getLBSessionRelays,
-  // getLBSuccessfulRelays,
-  // getLBStatus,
-  getLBTotalRelays,
-  // getLBUserApplications,
-  // UserLB,
-} from "~/models/portal.server"
-import {
-  // UserLBDailyRelaysResponse,
-  UserLBHistoricalLatencyResponse,
-  UserLBSessionRelaysResponse,
-  // UserLBTotalSuccessfulRelaysResponse,
-  // UserLBOnChainDataResponse,
-  UserLBTotalRelaysResponse,
-} from "@pokt-foundation/portal-types"
-import invariant from "tiny-invariant"
+import { MetaFunction } from "@remix-run/node"
+import { FREE_TIER_MAX_RELAYS } from "~/utils/pocketUtils"
 import AppEndpointCard, {
   links as AppEndpointCardLinks,
 } from "~/components/application/AppEndpointCard"
-import AppLatencyCard, {
-  links as AppLatencyCardLinks,
-} from "~/components/application/AppLatencyCard"
+// import AppLatencyCard, {
+//   links as AppLatencyCardLinks,
+// } from "~/components/application/AppLatencyCard"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
-import AppUsageOverTimeCard, {
-  links as AppUsageOverTimeCardLinks,
-} from "~/components/application/AppUsageOverTimeCard"
 import { AppIdLoaderData } from "../$appId"
 import AppUsageCurrentCard, {
   links as AppUsageCurrentCardLinks,
@@ -45,15 +19,18 @@ import { useMemo } from "react"
 import AppOverLimitCard, {
   links as AppOverLimitCardLinks,
 } from "~/components/application/AppOverSessionLimitCard/AppOverSessionLimitCard"
+import UsageChartCard, {
+  links as UsageChartCardLinks,
+} from "~/components/application/UsageChartCard"
 
 export const links = () => {
   return [
     ...AppEndpointCardLinks(),
-    ...AppLatencyCardLinks(),
-    ...AppUsageOverTimeCardLinks(),
+    // ...AppLatencyCardLinks(),
     ...AppUsageCurrentCardLinks(),
     ...AppRequestsRateCardLinks(),
     ...AppOverLimitCardLinks(),
+    ...UsageChartCardLinks(),
   ]
 }
 
@@ -63,111 +40,53 @@ export const meta: MetaFunction = () => {
   }
 }
 
-export type AppIdIndexLoaderData = {
-  // dailyRelays: UserLBDailyRelaysResponse
-  hourlyLatency: UserLBHistoricalLatencyResponse
-  // status: UserLBOnChainDataResponse
-  sessionRelays: UserLBSessionRelaysResponse
-  totalRelays: UserLBTotalRelaysResponse
-}
-
-export const loader: LoaderFunction = async ({ request, params, context }) => {
-  invariant(params.appId, "app id not found")
-  const id = params.appId
-
-  // const dailyRelays = await getLBDailyRelays(id, request)
-  const hourlyLatency = await getLBHourlyLatency(id, request)
-  // const status = await getLBStatus(id, request)
-  const sessionRelays = await getLBSessionRelays(id, request)
-  const totalRelays = await getLBTotalRelays(id, request)
-
-  return json<AppIdIndexLoaderData>(
-    {
-      // dailyRelays,
-      hourlyLatency,
-      // status,
-      sessionRelays,
-      totalRelays,
-    },
-    {
-      headers: {
-        "Cache-Control": `private, max-age=${
-          process.env.NODE_ENV === "production" ? "3600" : "60"
-        }`,
-      },
-    },
-  )
-}
-
 export const Application = () => {
-  const data = useLoaderData() as AppIdIndexLoaderData
   const appIdRoute = useMatchesRoute("routes/dashboard/apps/$appId")
   const appIdData = appIdRoute?.data as AppIdLoaderData
 
   const exceedsMaxRelays = useMemo(() => {
-    return data.totalRelays.total_relays >= appIdData.maxDailyRelays
-  }, [appIdData.maxDailyRelays, data.totalRelays.total_relays])
-
-  const exceedsSessionRelays = useMemo(() => {
-    return (
-      data.sessionRelays.session_relays >= appIdData.maxDailyRelays / SESSIONS_PER_DAY
-    )
-  }, [data.sessionRelays.session_relays, appIdData.maxDailyRelays])
+    return appIdData.relaysToday.Count.Total >= FREE_TIER_MAX_RELAYS
+  }, [appIdData.relaysToday.Count.Total])
 
   return (
     <>
-      {(exceedsMaxRelays || exceedsSessionRelays) && (
-        <AppOverLimitCard
-          exceedsMaxRelays={exceedsMaxRelays}
-          exceedsSessionRelays={exceedsSessionRelays}
-        />
-      )}
-      {appIdData.app && (
+      {exceedsMaxRelays && <AppOverLimitCard exceedsMaxRelays={exceedsMaxRelays} />}
+      {appIdData.endpoint && (
         <section>
-          <AppEndpointCard app={appIdData.app} />
+          <AppEndpointCard app={appIdData.endpoint} />
         </section>
       )}
       <Grid gutter={32}>
         <Grid.Col sm={6}>
-          {appIdData.maxDailyRelays && data.sessionRelays && data.totalRelays && (
+          {appIdData.relaysToday.Count && (
             <section>
               <AppUsageCurrentCard
-                maxDailyRelays={appIdData.maxDailyRelays}
-                totalRelays={data.totalRelays.total_relays}
-                sessionRelays={data.sessionRelays.session_relays}
+                maxDailyRelays={FREE_TIER_MAX_RELAYS}
+                totalRelays={appIdData.relaysToday.Count.Total}
+                sessionRelays={0}
               />
             </section>
           )}
         </Grid.Col>
         <Grid.Col sm={6}>
-          {appIdData.previousSeccessfulRelays &&
-            appIdData.previousTotalRelays &&
-            appIdData.successfulRelays &&
-            appIdData.totalRelays && (
-              <section>
-                <AppRequestsRateCard
-                  previousRelays={appIdData.previousTotalRelays.total_relays}
-                  previousSuccessfulRelays={
-                    appIdData.previousSeccessfulRelays.successful_relays
-                  }
-                  successfulRelays={appIdData.successfulRelays.successful_relays}
-                  totalRelays={appIdData.totalRelays.total_relays}
-                />
-              </section>
-            )}
+          {appIdData.relaysToday.Count && appIdData.relaysYesterday.Count && (
+            <section>
+              <AppRequestsRateCard
+                previousRelays={appIdData.relaysYesterday.Count}
+                currentRelays={appIdData.relaysToday.Count}
+              />
+            </section>
+          )}
         </Grid.Col>
       </Grid>
-      {data.hourlyLatency && (
+      {/* {data.hourlyLatency && (
         <section>
           <AppLatencyCard hourlyLatency={data.hourlyLatency.hourly_latency} />
         </section>
-      )}
-      {appIdData.dailyRelays && appIdData.maxDailyRelays && (
+      )} */}
+      {appIdData.dailyNetworkRelaysPerWeek && (
         <section>
-          <AppUsageOverTimeCard
-            dailyRelays={appIdData.dailyRelays.daily_relays}
-            maxDailyRelays={appIdData.maxDailyRelays}
-          />
+          <UsageChartCard relays={appIdData.dailyNetworkRelaysPerWeek} />
         </section>
       )}
     </>

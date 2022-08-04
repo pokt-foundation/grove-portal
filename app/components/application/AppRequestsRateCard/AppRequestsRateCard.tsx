@@ -9,32 +9,29 @@ import CardList, {
 import { IconUp, IconDown } from "@pokt-foundation/ui"
 import Grid from "~/components/shared/Grid"
 import { useTranslate } from "~/context/TranslateContext"
+import { RelayMetric } from "~/models/relaymeter.server"
 
 export const links = () => {
   return [...CardLinks(), ...CardListLinks(), { rel: "stylesheet", href: styles }]
 }
 
 interface RequestsRateCardProps {
-  previousRelays: number
-  previousSuccessfulRelays: number
-  successfulRelays: number
-  totalRelays: number
+  previousRelays: RelayMetric["Count"]
+  currentRelays: RelayMetric["Count"]
 }
 
 export default function AppRequestsRateCard({
   previousRelays,
-  previousSuccessfulRelays,
-  successfulRelays,
-  totalRelays,
+  currentRelays,
 }: RequestsRateCardProps) {
   const { t } = useTranslate()
 
   const successRate = useMemo(() => {
-    return totalRelays === 0 ? 0 : successfulRelays / totalRelays
-  }, [successfulRelays, totalRelays])
+    return currentRelays.Total === 0 ? 0 : currentRelays.Success / currentRelays.Total
+  }, [currentRelays])
   const previousSuccessRate = useMemo(() => {
-    return previousSuccessfulRelays === 0 ? 0 : previousSuccessfulRelays / previousRelays
-  }, [previousSuccessfulRelays, previousRelays])
+    return previousRelays.Total === 0 ? 0 : previousRelays.Success / previousRelays.Total
+  }, [previousRelays])
 
   const successRateDelta = useMemo(() => {
     const actualPreviousSuccessRate = previousSuccessRate > 1.0 ? 1 : previousSuccessRate
@@ -47,11 +44,11 @@ export default function AppRequestsRateCard({
   }, [previousSuccessRate, successRate])
 
   const errorRateDelta = useMemo(() => {
-    if (successRate >= 0.9999 || (totalRelays === 0 && successRate === 0)) {
+    if (successRate >= 0.9999 || (currentRelays.Total === 0 && successRate === 0)) {
       return Number((0).toFixed(2))
     }
     return Number((100 - successRate * 100).toFixed(2))
-  }, [successRate, totalRelays])
+  }, [successRate, currentRelays])
 
   const successPercent = useMemo(() => Math.min(successRate * 100, 100), [successRate])
 
@@ -72,7 +69,7 @@ export default function AppRequestsRateCard({
     },
     {
       label: t.AppRequestsRateCard.list.totalRequests.label,
-      value: Intl.NumberFormat().format(totalRelays),
+      value: Intl.NumberFormat().format(currentRelays.Total),
     },
   ]
 

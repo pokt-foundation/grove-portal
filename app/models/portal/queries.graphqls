@@ -8,6 +8,11 @@ query endpoints {
       address
       appId
       publicKey
+      unstakingTime
+      maxRelays
+      stakedTokens
+      status
+      jailed
     }
     chain
     freeTier
@@ -24,6 +29,10 @@ query endpoints {
       half
       threeQuarters
       full
+    }
+    stakeRelayStatus {
+      stake
+      relays
     }
     createdAt
     updatedAt
@@ -40,6 +49,11 @@ query endpoint($endpointID: ID!) {
       address
       appId
       publicKey
+      unstakingTime
+      maxRelays
+      stakedTokens
+      status
+      jailed
     }
     chain
     freeTier
@@ -56,6 +70,10 @@ query endpoint($endpointID: ID!) {
       half
       threeQuarters
       full
+    }
+    stakeRelayStatus {
+      stake
+      relays
     }
     createdAt
     updatedAt

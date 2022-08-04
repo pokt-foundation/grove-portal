@@ -156,6 +156,33 @@ export type UpdateEndpointInput = {
   notificationSettings?: InputMaybe<NotificationSettingsInput>
 }
 
+export type CreateEndpointMutationVariables = Exact<{
+  input?: InputMaybe<CreateNewEndpointInput>
+}>
+
+export type CreateEndpointMutation = {
+  __typename?: "Mutation"
+  createNewEndpoint?: { __typename?: "ProcessedEndpoint"; id: string } | null
+}
+
+export type UpdateEndpointMutationVariables = Exact<{
+  input?: InputMaybe<UpdateEndpointInput>
+}>
+
+export type UpdateEndpointMutation = {
+  __typename?: "Mutation"
+  updateEndpoint?: { __typename?: "ProcessedEndpoint"; id: string } | null
+}
+
+export type RemoveEndpointMutationVariables = Exact<{
+  endpointID: Scalars["ID"]
+}>
+
+export type RemoveEndpointMutation = {
+  __typename?: "Mutation"
+  removeEndpoint?: { __typename?: "ProcessedEndpoint"; id: string } | null
+}
+
 export type EndpointsQueryVariables = Exact<{ [key: string]: never }>
 
 export type EndpointsQuery = {
@@ -176,6 +203,11 @@ export type EndpointsQuery = {
       address: string
       appId: string
       publicKey: string
+      unstakingTime?: string | null
+      maxRelays?: number | null
+      stakedTokens?: number | null
+      status?: number | null
+      jailed?: boolean | null
     } | null>
     gatewaySettings: {
       __typename?: "EndpointGatewaySettings"
@@ -192,6 +224,11 @@ export type EndpointsQuery = {
       threeQuarters?: boolean | null
       full?: boolean | null
     }
+    stakeRelayStatus?: {
+      __typename?: "StakeRelayStatus"
+      stake: number
+      relays: number
+    } | null
   } | null>
 }
 
@@ -217,6 +254,11 @@ export type EndpointQuery = {
       address: string
       appId: string
       publicKey: string
+      unstakingTime?: string | null
+      maxRelays?: number | null
+      stakedTokens?: number | null
+      status?: number | null
+      jailed?: boolean | null
     } | null>
     gatewaySettings: {
       __typename?: "EndpointGatewaySettings"
@@ -233,6 +275,11 @@ export type EndpointQuery = {
       threeQuarters?: boolean | null
       full?: boolean | null
     }
+    stakeRelayStatus?: {
+      __typename?: "StakeRelayStatus"
+      stake: number
+      relays: number
+    } | null
   }
 }
 
@@ -261,6 +308,27 @@ export type BlockchainsQuery = {
   } | null>
 }
 
+export const CreateEndpointDocument = gql`
+  mutation createEndpoint($input: CreateNewEndpointInput) {
+    createNewEndpoint(input: $input) {
+      id
+    }
+  }
+`
+export const UpdateEndpointDocument = gql`
+  mutation updateEndpoint($input: UpdateEndpointInput) {
+    updateEndpoint(input: $input) {
+      id
+    }
+  }
+`
+export const RemoveEndpointDocument = gql`
+  mutation removeEndpoint($endpointID: ID!) {
+    removeEndpoint(endpointID: $endpointID) {
+      id
+    }
+  }
+`
 export const EndpointsDocument = gql`
   query endpoints {
     endpoints {
@@ -272,6 +340,11 @@ export const EndpointsDocument = gql`
         address
         appId
         publicKey
+        unstakingTime
+        maxRelays
+        stakedTokens
+        status
+        jailed
       }
       chain
       freeTier
@@ -288,6 +361,10 @@ export const EndpointsDocument = gql`
         half
         threeQuarters
         full
+      }
+      stakeRelayStatus {
+        stake
+        relays
       }
       createdAt
       updatedAt
@@ -305,6 +382,11 @@ export const EndpointDocument = gql`
         address
         appId
         publicKey
+        unstakingTime
+        maxRelays
+        stakedTokens
+        status
+        jailed
       }
       chain
       freeTier
@@ -321,6 +403,10 @@ export const EndpointDocument = gql`
         half
         threeQuarters
         full
+      }
+      stakeRelayStatus {
+        stake
+        relays
       }
       createdAt
       updatedAt
@@ -362,6 +448,48 @@ export function getSdk(
   withWrapper: SdkFunctionWrapper = defaultWrapper,
 ) {
   return {
+    createEndpoint(
+      variables?: CreateEndpointMutationVariables,
+      requestHeaders?: Dom.RequestInit["headers"],
+    ): Promise<CreateEndpointMutation> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<CreateEndpointMutation>(CreateEndpointDocument, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        "createEndpoint",
+        "mutation",
+      )
+    },
+    updateEndpoint(
+      variables?: UpdateEndpointMutationVariables,
+      requestHeaders?: Dom.RequestInit["headers"],
+    ): Promise<UpdateEndpointMutation> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<UpdateEndpointMutation>(UpdateEndpointDocument, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        "updateEndpoint",
+        "mutation",
+      )
+    },
+    removeEndpoint(
+      variables: RemoveEndpointMutationVariables,
+      requestHeaders?: Dom.RequestInit["headers"],
+    ): Promise<RemoveEndpointMutation> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<RemoveEndpointMutation>(RemoveEndpointDocument, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        "removeEndpoint",
+        "mutation",
+      )
+    },
     endpoints(
       variables?: EndpointsQueryVariables,
       requestHeaders?: Dom.RequestInit["headers"],

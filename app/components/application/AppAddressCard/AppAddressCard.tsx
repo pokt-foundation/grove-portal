@@ -2,6 +2,7 @@ import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/shared/Card"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { useTranslate } from "~/context/TranslateContext"
+import { ProcessedEndpoint } from "~/models/portal/sdk"
 
 /* c8 ignore next */
 export const links = () => {
@@ -9,7 +10,7 @@ export const links = () => {
 }
 
 interface AppAddressCardProps {
-  apps: { appId: string }[]
+  apps: ProcessedEndpoint["apps"]
 }
 
 export default function AppAddressCard({ apps }: AppAddressCardProps) {
@@ -25,9 +26,9 @@ export default function AppAddressCard({ apps }: AppAddressCardProps) {
           {apps.length > 0 && <p>{apps.length}</p>}
         </div>
         {apps && apps.length > 0 ? (
-          apps.map((item) => {
-            return <TextInput key={item.appId} readOnly copy value={item.appId} />
-          })
+          apps.map((item) =>
+            item ? <TextInput key={item.appId} readOnly copy value={item.appId} /> : null,
+          )
         ) : (
           <p>{appAddressCard.error}</p>
         )}

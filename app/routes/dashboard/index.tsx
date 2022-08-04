@@ -1,19 +1,7 @@
 import { LoaderFunction, json, MetaFunction } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
-import type {
-  Chain,
-  DailyRelayBucket,
-  LatestBlockAndPerformanceData,
-  NetworkRelayStats,
-  SummaryData,
-} from "~/models/portal.server"
-import {
-  getNetworkChains,
-  getNetworkDailyRelays,
-  getNetworkLatestBlock,
-  getNetworkSummary,
-  getNetworkWeeklyStats,
-} from "~/models/portal.server"
+import type { LatestBlockAndPerformanceData } from "~/models/portal.server"
+import { getNetworkLatestBlock } from "~/models/portal.server"
 import NetworkSummaryCard, {
   links as NetworkSummaryCardLinks,
 } from "~/components/application/NetworkSummaryCard"
@@ -24,9 +12,6 @@ import NetworkSuccessRateCard, {
 import NetworkLatestBlockCard, {
   links as NetworkLatestBlockCardLinks,
 } from "~/components/application/NetworkLatestBlockCard"
-import NetworkChartCard, {
-  links as NetworkChartCardLinks,
-} from "~/components/application/NetworkChartCard"
 import NetworkRelayPerformanceCard, {
   links as NetworkRelayPerformanceCardLinks,
 } from "~/components/application/NetworkRelayPerformanceCard"
@@ -46,14 +31,17 @@ import { getNetworkRelays, RelayMetric } from "~/models/relaymeter.server"
 import { dayjs } from "~/utils/dayjs"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { Blockchain } from "~/models/portal/sdk"
+import UsageChartCard, {
+  links as UsageChartCardLinks,
+} from "~/components/application/UsageChartCard"
 
 export const links = () => {
   return [
     ...NetworkSummaryCardLinks(),
     ...NetworkLatestBlockCardLinks(),
     ...NetworkSuccessRateCardLinks(),
-    ...NetworkChartCardLinks(),
     ...NetworkRelayPerformanceCardLinks(),
+    ...UsageChartCardLinks(),
     ...AdEconomicsForDevsLinks(),
     ...TableLinks(),
     ...ChainWithImageLinks(),
@@ -165,7 +153,7 @@ export default function Index() {
           </Grid>
         </section>
         <section>
-          <NetworkChartCard relays={data.dailyNetworkRelaysPerWeek} />
+          <UsageChartCard relays={data.dailyNetworkRelaysPerWeek} />
         </section>
         <section>
           <Table

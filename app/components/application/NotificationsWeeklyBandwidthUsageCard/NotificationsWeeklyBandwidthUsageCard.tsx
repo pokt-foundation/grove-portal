@@ -9,6 +9,7 @@ import { AppIdLoaderData } from "~/routes/dashboard/apps/$appId"
 import CircleGraphWithGradient from "../CircleGraphWithGradient"
 
 import styles from "./styles.css"
+import { FREE_TIER_MAX_RELAYS } from "~/utils/pocketUtils"
 
 export const links: LinksFunction = () => [
   ...CardLinks(),
@@ -21,58 +22,53 @@ export const links: LinksFunction = () => [
 export default function NotificationsWeeklyBandwidthUsageCard() {
   const appIdRoute = useMatchesRoute("routes/dashboard/apps/$appId")
   const appIdData = appIdRoute?.data as AppIdLoaderData
-  const {
-    dailyRelays: { daily_relays: dailyRelays },
-    maxDailyRelays,
-  } = appIdData
+  const { dailyNetworkRelaysPerWeek } = appIdData
 
   const highestDailyAmount = useMemo(
     () =>
-      dailyRelays.reduce(
-        (highest, { daily_relays: dailyRelays }) => Math.max(highest, dailyRelays),
+      dailyNetworkRelaysPerWeek.reduce(
+        (highest, { Count }) => Math.max(highest, Count.Total),
         0,
       ),
-    [dailyRelays],
+    [dailyNetworkRelaysPerWeek],
   )
 
   const lowestDailyAmount = useMemo(
     () =>
-      dailyRelays.length === 0
+      dailyNetworkRelaysPerWeek.length === 0
         ? 0
-        : dailyRelays.reduce(
-            (lowest, { daily_relays: dailyRelays }) => Math.min(lowest, dailyRelays),
+        : dailyNetworkRelaysPerWeek.reduce(
+            (lowest, { Count }) => Math.min(lowest, Count.Total),
             Number.POSITIVE_INFINITY,
           ),
-    [dailyRelays],
+    [dailyNetworkRelaysPerWeek],
   )
 
   const totalDailyRelays = useMemo(() => {
-    return dailyRelays.length === 0
+    return dailyNetworkRelaysPerWeek.length === 0
       ? 0
-      : dailyRelays.reduce(
-          (sum, { daily_relays: dailyRelays = 0 }) => sum + dailyRelays,
-          0,
-        ) / dailyRelays.length
-  }, [dailyRelays])
+      : dailyNetworkRelaysPerWeek.reduce((sum, { Count }) => sum + Count.Total, 0) /
+          dailyNetworkRelaysPerWeek.length
+  }, [dailyNetworkRelaysPerWeek])
 
   const [primaryAverageUsageColor, secondaryAverageUsageColor] = useUsageColor(
-    totalDailyRelays / maxDailyRelays,
+    totalDailyRelays / FREE_TIER_MAX_RELAYS,
   )
   const [primaryMaxUsageColor, secondaryMaxUsageColor] = useUsageColor(
-    highestDailyAmount / maxDailyRelays,
+    highestDailyAmount / FREE_TIER_MAX_RELAYS,
   )
   const [primaryMinUsageColor, secondaryMinUsageColor] = useUsageColor(
-    lowestDailyAmount / maxDailyRelays,
+    lowestDailyAmount / FREE_TIER_MAX_RELAYS,
   )
 
-  const maxRelays = formatNumberToSICompact(maxDailyRelays)
+  const maxRelays = formatNumberToSICompact(FREE_TIER_MAX_RELAYS)
 
   const graphsConfig = useMemo(
     () => [
       {
         id: "average-usage-gradient",
         config: {
-          value: Math.min(totalDailyRelays / maxDailyRelays, 1),
+          value: Math.min(totalDailyRelays / FREE_TIER_MAX_RELAYS, 1),
         },
         gradientConfig: [
           {
@@ -94,7 +90,7 @@ export default function NotificationsWeeklyBandwidthUsageCard() {
       {
         id: "max-usage-gradient",
         config: {
-          value: Math.min(highestDailyAmount / maxDailyRelays, 1),
+          value: Math.min(highestDailyAmount / FREE_TIER_MAX_RELAYS, 1),
         },
         gradientConfig: [
           {
@@ -114,7 +110,7 @@ export default function NotificationsWeeklyBandwidthUsageCard() {
       {
         id: "min-usage-gradient",
         config: {
-          value: Math.min(lowestDailyAmount / maxDailyRelays, 1),
+          value: Math.min(lowestDailyAmount / FREE_TIER_MAX_RELAYS, 1),
         },
         gradientConfig: [
           {
@@ -135,7 +131,6 @@ export default function NotificationsWeeklyBandwidthUsageCard() {
     [
       highestDailyAmount,
       lowestDailyAmount,
-      maxDailyRelays,
       primaryAverageUsageColor,
       primaryMaxUsageColor,
       primaryMinUsageColor,

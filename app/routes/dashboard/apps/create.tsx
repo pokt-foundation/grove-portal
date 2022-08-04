@@ -11,8 +11,9 @@ import Button from "~/components/shared/Button"
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import Select, { links as SelectLinks } from "~/components/shared/Select"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
-import { postLBUserApplication, UserApplication } from "~/models/portal.server"
+import { initPortalClient } from "~/models/portal/portal.server"
 import { CHAIN_ID_PREFIXES } from "~/utils/chainUtils"
+import { requireUser } from "~/utils/session.server"
 
 export const meta: MetaFunction = () => {
   return {
@@ -25,6 +26,8 @@ export const links = () => {
 }
 
 export const action: ActionFunction = async ({ request }) => {
+  const user = await requireUser(request)
+  const portal = initPortalClient(user.accessToken)
   const formData = await request.formData()
   const name = formData.get("app-name")
   const chain = formData.get("app-chain")
@@ -32,19 +35,14 @@ export const action: ActionFunction = async ({ request }) => {
   invariant(name && typeof name === "string", "app name not found")
   invariant(chain && typeof chain === "string", "app name not found")
 
-  const userAppParams: UserApplication = {
-    name: name,
-    chain: chain,
-    secretKeyRequired: false,
-    whitelistContracts: [],
-    whitelistMethods: [],
-    whitelistOrigins: [],
-    whitelistUserAgents: [],
-  }
+  // TODO: chain is not currently supported in new API
+  const { createNewEndpoint } = await portal.createEndpoint({
+    input: {
+      name,
+    },
+  })
 
-  const response = await postLBUserApplication(userAppParams, request)
-
-  return redirect(`/dashboard/apps/${response.id}`)
+  return redirect(`/dashboard/apps/${createNewEndpoint?.id}`)
 }
 
 const SelectItem = forwardRef<HTMLDivElement, AppEndpointProps>(

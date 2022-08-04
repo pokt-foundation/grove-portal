@@ -7,6 +7,7 @@ import Switch, { links as SwitchLinks } from "~/components/shared/Switch"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { AppIdLoaderData } from "~/routes/dashboard/apps/$appId"
 import { formatNumberToSICompact } from "~/utils/formattingUtils"
+import { FREE_TIER_MAX_RELAYS } from "~/utils/pocketUtils"
 import styles from "./styles.css"
 
 export const links: LinksFunction = () => [
@@ -62,8 +63,7 @@ export default function NotificationsAlertForm() {
   const appIdRoute = useMatchesRoute("routes/dashboard/apps/$appId")
   const appIdData = appIdRoute?.data as AppIdLoaderData
   const {
-    maxDailyRelays,
-    app: { notificationSettings },
+    endpoint: { notificationSettings },
   } = appIdData
 
   return (
@@ -88,14 +88,14 @@ export default function NotificationsAlertForm() {
                 <div className="pokt-network-notifications-alert-description">
                   <p>
                     {getUsagePercentage(level)} of{" "}
-                    {formatNumberToSICompact(maxDailyRelays)} relays per day
+                    {formatNumberToSICompact(FREE_TIER_MAX_RELAYS)} relays per day
                   </p>
                   <Switch
                     name={level}
                     defaultChecked={
                       Object.keys(notificationSettings).length > 0 &&
                       notificationSettings[level]
-                        ? notificationSettings
+                        ? (notificationSettings[level] as boolean)
                         : DEFAULT_ALERT_PERCENTAGES[level]
                     }
                   />

@@ -4,6 +4,7 @@ import { dayjs } from "~/utils/dayjs"
 
 export type RelayMetric = {
   Count: {
+    Total: number
     Success: number
     Failure: number
   }
@@ -44,7 +45,16 @@ export const getNetworkRelays = async (
     throw new Error(res.statusText)
   }
 
-  return (await res.json()) as RelayMetric
+  const body = (await res.json()) as RelayMetric
+  const relay = {
+    ...body,
+    Count: {
+      ...body.Count,
+      Total: body.Count.Success + body.Count.Failure,
+    },
+  }
+
+  return relay
 }
 
 // RelayMeter: USER
@@ -75,7 +85,16 @@ export const getUserRelays = async (
     throw new Error(res.statusText)
   }
 
-  return await res.json()
+  const body = (await res.json()) as RelayMetricUser
+  const relay = {
+    ...body,
+    Count: {
+      ...body.Count,
+      Total: body.Count.Success + body.Count.Failure,
+    },
+  }
+
+  return relay
 }
 
 // RelayMeter: APP
@@ -104,5 +123,14 @@ export const getAppRelays = async (
     throw new Error(res.statusText)
   }
 
-  return await res.json()
+  const body = (await res.json()) as RelayMetricApp
+  const relay = {
+    ...body,
+    Count: {
+      ...body.Count,
+      Total: body.Count.Success + body.Count.Failure,
+    },
+  }
+
+  return relay
 }

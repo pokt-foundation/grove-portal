@@ -1,5 +1,4 @@
 import { Grid } from "@mantine/core"
-import { UserLB } from "@pokt-foundation/portal-types"
 import { json, LoaderFunction } from "@remix-run/node"
 import { Link, Outlet, useLoaderData } from "@remix-run/react"
 import AdEconomicsForDevs, {
@@ -15,7 +14,6 @@ import CardList, {
   CardListItem,
 } from "~/components/shared/CardList"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
-import { getLBUserApplications } from "~/models/portal.server"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { ProcessedEndpoint } from "~/models/portal/sdk"
 import { getRequiredClientEnvVar } from "~/utils/environment"
@@ -40,13 +38,8 @@ export type AllAppsLoaderData = {
 export const loader: LoaderFunction = async ({ request }) => {
   const user = await requireUser(request)
   const userId = await getUserId(request)
-  const portal = initPortalClient()
-  const { endpoints } = await portal.endpoints(
-    {},
-    {
-      Authorization: `Bearer ${user.accessToken}`,
-    },
-  )
+  const portal = initPortalClient(user.accessToken)
+  const { endpoints } = await portal.endpoints()
 
   return json<AllAppsLoaderData>(
     {

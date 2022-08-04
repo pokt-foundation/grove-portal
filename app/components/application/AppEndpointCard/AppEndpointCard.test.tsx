@@ -2,10 +2,10 @@ import { expect } from "vitest"
 import AppEndpointCard from "./AppEndpointCard"
 import { render, screen } from "test/helpers"
 import { ChainMetadata, prefixFromChainId } from "~/utils/chainUtils"
-import { UserLB } from "~/models/portal.server"
 import { IUserContext, UserContext } from "~/context/UserContext"
+import { ProcessedEndpoint } from "~/models/portal/sdk"
 
-let app: UserLB
+let app: ProcessedEndpoint
 
 let userValue: IUserContext
 

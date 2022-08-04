@@ -11,6 +11,7 @@ import AppEndpointUrl, {
 import { useUser } from "~/context/UserContext"
 import { useEffect, useMemo } from "react"
 import ChainsDropdown, { links as ChainsDropdownLinks } from "../ChainsDropdown"
+import { ProcessedEndpoint } from "~/models/portal/sdk"
 
 /* c8 ignore next */
 export const links = () => {
@@ -24,7 +25,7 @@ export const links = () => {
 }
 
 interface AppEndpointProps {
-  app: UserLB
+  app: ProcessedEndpoint
 }
 
 export default function AppEndpointCard({ app }: AppEndpointProps) {

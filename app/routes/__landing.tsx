@@ -6,7 +6,7 @@ import { json, LinksFunction, LoaderFunction, MetaFunction } from "@remix-run/no
 import { useEffect, useMemo } from "react"
 import { getUserProfile } from "~/utils/session.server"
 import { Auth0Profile } from "remix-auth-auth0"
-import analyticsInit from "~/utils/analytics"
+import analyticsInit, { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 
 export const links: LinksFunction = () => {
   return [...HeaderLinks(), ...FooterLinks(), ...NavLinks()]
@@ -33,6 +33,7 @@ export default function LandingLayout() {
 
   useEffect(() => {
     analyticsInit(user)
+    trackEvent(AmplitudeEvents.LandingView)
   }, [])
 
   const routes = useMemo(() => {

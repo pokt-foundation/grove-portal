@@ -9,7 +9,7 @@ import Nav, { links as NavLinks } from "~/components/shared/Nav"
 import Loader, { links as LoaderLinks } from "~/components/shared/Loader"
 import { IconApp, IconNetwork } from "~/components/shared/Icons"
 import { useTranslate } from "~/context/TranslateContext"
-import analyticsInit, { trackEvent } from "../utils/analytics"
+import analyticsInit, { AmplitudeEvents, trackEvent } from "../utils/analytics"
 import { useEffect } from "react"
 
 export const links: LinksFunction = () => {
@@ -39,6 +39,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     analyticsInit(user)
+    trackEvent(AmplitudeEvents.DashboardView)
   }, [])
 
   const routes = [

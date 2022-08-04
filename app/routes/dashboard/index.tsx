@@ -34,6 +34,7 @@ import { Blockchain } from "~/models/portal/sdk"
 import UsageChartCard, {
   links as UsageChartCardLinks,
 } from "~/components/application/UsageChartCard"
+import { requireUser } from "~/utils/session.server"
 
 export const links = () => {
   return [
@@ -66,7 +67,8 @@ type LoaderData = {
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
-  const portal = initPortalClient()
+  const user = await requireUser(request)
+  const portal = initPortalClient(user.accessToken)
   const { blockchains } = await portal.blockchains({ active: true })
 
   // OLD BACKEND API CALL

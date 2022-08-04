@@ -52,15 +52,10 @@ export type AppIdLoaderData = {
 export const loader: LoaderFunction = async ({ request, params, context }) => {
   invariant(params.appId, "app id not found")
   const user = await requireUser(request)
-  const portal = initPortalClient()
-  const { endpoint } = await portal.endpoint(
-    {
-      endpointID: params.appId,
-    },
-    {
-      Authorization: `Bearer ${user.accessToken}`,
-    },
-  )
+  const portal = initPortalClient(user.accessToken)
+  const { endpoint } = await portal.endpoint({
+    endpointID: params.appId,
+  })
   invariant(endpoint, "app id not found")
 
   console.log(endpoint.id)

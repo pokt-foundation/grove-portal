@@ -1,48 +1,48 @@
+import { Grid } from "@mantine/core"
 import { LoaderFunction, json, MetaFunction } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
-import type {
-  Chain,
-  DailyRelayBucket,
-  NetworkRelayStats,
-  SummaryData,
-} from "~/models/portal.server"
+import AdEconomicsForDevs, {
+  links as AdEconomicsForDevsLinks,
+} from "~/components/application/AdEconomicsForDevs"
+import ChainWithImage, {
+  links as ChainWithImageLinks,
+} from "~/components/application/ChainWithImage"
+import FeedbackCard, {
+  links as FeedbackCardLinks,
+} from "~/components/application/FeedbackCard"
+import NetworkChartCard, {
+  links as NetworkChartCardLinks,
+} from "~/components/application/NetworkChartCard"
+import NetworkLatestBlockCard, {
+  links as NetworkLatestBlockCardLinks,
+} from "~/components/application/NetworkLatestBlockCard"
+import NetworkRelayPerformanceCard, {
+  links as NetworkRelayPerformanceCardLinks,
+} from "~/components/application/NetworkRelayPerformanceCard"
+import NetworkSuccessRateCard, {
+  links as NetworkSuccessRateCardLinks,
+} from "~/components/application/NetworkSuccessRateCard"
+import NetworkSummaryCard, {
+  links as NetworkSummaryCardLinks,
+} from "~/components/application/NetworkSummaryCard"
+import Table, { links as TableLinks } from "~/components/shared/Table"
+import { initIndexerClient } from "~/models/indexer/indexer.server"
+import { Block, Order } from "~/models/indexer/sdk"
 import {
   getNetworkChains,
   getNetworkDailyRelays,
   getNetworkSummary,
   getNetworkWeeklyStats,
 } from "~/models/portal.server"
-import NetworkSummaryCard, {
-  links as NetworkSummaryCardLinks,
-} from "~/components/application/NetworkSummaryCard"
-import { Grid } from "@mantine/core"
-import NetworkSuccessRateCard, {
-  links as NetworkSuccessRateCardLinks,
-} from "~/components/application/NetworkSuccessRateCard"
-import NetworkLatestBlockCard, {
-  links as NetworkLatestBlockCardLinks,
-} from "~/components/application/NetworkLatestBlockCard"
-import NetworkChartCard, {
-  links as NetworkChartCardLinks,
-} from "~/components/application/NetworkChartCard"
-import NetworkRelayPerformanceCard, {
-  links as NetworkRelayPerformanceCardLinks,
-} from "~/components/application/NetworkRelayPerformanceCard"
-import ChainWithImage, {
-  links as ChainWithImageLinks,
-} from "~/components/application/ChainWithImage"
-import Table, { links as TableLinks } from "~/components/shared/Table"
-import { getServiceLevelByChain } from "~/utils/chainUtils"
-import styles from "~/styles/dashboard.index.css"
-import FeedbackCard, {
-  links as FeedbackCardLinks,
-} from "~/components/application/FeedbackCard"
-import AdEconomicsForDevs, {
-  links as AdEconomicsForDevsLinks,
-} from "~/components/application/AdEconomicsForDevs"
-import { initIndexerClient } from "~/models/indexer/indexer.server"
-import { Block, Order } from "~/models/indexer/sdk"
+import type {
+  Chain,
+  DailyRelayBucket,
+  NetworkRelayStats,
+  SummaryData,
+} from "~/models/portal.server"
 import { getNetworkRelays, RelayMetric } from "~/models/relaymeter.server"
+import styles from "~/styles/dashboard.index.css"
+import { getServiceLevelByChain } from "~/utils/chainUtils"
 import { dayjs } from "~/utils/dayjs"
 
 export const links = () => {
@@ -180,23 +180,23 @@ export default function Index() {
           <Grid gutter={32}>
             <Grid.Col sm={4}>
               <NetworkSummaryCard
-                title="Nodes Staked"
-                subtitle="7000+"
                 imgSrc="/networkSummaryNodes.png"
+                subtitle="7000+"
+                title="Nodes Staked"
               />
             </Grid.Col>
             <Grid.Col sm={4}>
               <NetworkSummaryCard
-                title="Apps Staked"
-                subtitle={String(data.summary.appsStaked)}
                 imgSrc="/networkSummaryApps.png"
+                subtitle={String(data.summary.appsStaked)}
+                title="Apps Staked"
               />
             </Grid.Col>
             <Grid.Col sm={4}>
               <NetworkSummaryCard
-                title="Networks"
-                subtitle={String(data.chains.length)}
                 imgSrc="/networkSummaryNetworks.png"
+                subtitle={String(data.chains.length)}
+                title="Networks"
               />
             </Grid.Col>
           </Grid>
@@ -206,7 +206,9 @@ export default function Index() {
         </section>
         <section>
           <Table
-            label="Available Networks"
+            paginate
+            search
+            columns={["Network", "Nodes", "ID", "Status"]}
             data={data.chains.map((chain) => ({
               id: chain.id,
               network: {
@@ -217,9 +219,7 @@ export default function Index() {
               chainId: chain.id,
               status: getServiceLevelByChain(chain.id),
             }))}
-            columns={["Network", "Nodes", "ID", "Status"]}
-            paginate
-            search
+            label="Available Networks"
           />
         </section>
       </Grid.Col>
@@ -235,9 +235,9 @@ export default function Index() {
         )}
         <section>
           <NetworkRelayPerformanceCard
+            month={data.monthlyNetworkRelays}
             today={data.dailyNetworkRelays}
             week={data.weeklyNetworkRelays}
-            month={data.monthlyNetworkRelays}
           />
         </section>
         <section>

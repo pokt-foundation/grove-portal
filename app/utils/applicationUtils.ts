@@ -2,8 +2,8 @@
 // import dayJsutcPlugin from 'dayjs/esm/plugin/utc'
 import { UserLBDailyRelayBucket } from "@pokt-foundation/portal-types"
 import { useTheme } from "@pokt-foundation/ui"
-import { norm } from "./mathUtils"
 import { formatNumberToSICompact } from "./formattingUtils"
+import { norm } from "./mathUtils"
 
 const ONE_MILLION = 1000000
 const ONE_SECOND = 1 // Data for graphs come in second
@@ -81,6 +81,7 @@ export function formatDailyRelaysForGraphing(
     .map(({ bucket }) => bucket.split("T")[0])
     .map((bucket) => DAYS[new Date(bucket).getUTCDay()])
 
+  /* eslint-disable no-nested-ternary */
   const processedDailyRelays =
     dailyRelays.length === 1
       ? [...dailyRelays, { daily_relays: 0 }]

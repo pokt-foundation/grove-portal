@@ -1,4 +1,7 @@
-import { json, LinksFunction, LoaderFunction, MetaFunction } from "@remix-run/node"
+// import initializeSentry from "~/utils/sentry"
+// import initializeAnalytics from "~/utils/analytics"
+import { Alert, Center } from "@mantine/core"
+import { LinksFunction, LoaderFunction, MetaFunction, json } from "@remix-run/node"
 import {
   Links,
   LiveReload,
@@ -9,15 +12,12 @@ import {
   useCatch,
   useLoaderData,
 } from "@remix-run/react"
-import rootStyles from "~/styles/root.css"
-import normalizeStyles from "~/styles/normalize.css"
-import { Center, Alert } from "@mantine/core"
-// import initializeSentry from "~/utils/sentry"
-// import initializeAnalytics from "~/utils/analytics"
-import { getClientEnv } from "./utils/environment.server"
+import { FeatureFlagsContextProvider } from "./context/FeatureFlagContext"
 import { TranslateContextProvider, useTranslate } from "./context/TranslateContext"
 import { UserContextProvider } from "./context/UserContext"
-import { FeatureFlagsContextProvider } from "./context/FeatureFlagContext"
+import { getClientEnv } from "./utils/environment.server"
+import normalizeStyles from "~/styles/normalize.css"
+import rootStyles from "~/styles/root.css"
 
 export const links: LinksFunction = () => {
   return [
@@ -115,7 +115,7 @@ export const CatchBoundary = () => {
       <WithProviders>
         <Document title={`${caught.status} ${caught.statusText}`}>
           <Center className="error-container" mt="xl">
-            <Alert title={`Application Error: ${caught.status}`} color="red">
+            <Alert color="red" title={`Application Error: ${caught.status}`}>
               {caught.statusText}
             </Alert>
           </Center>
@@ -131,7 +131,7 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
     <WithProviders>
       <Document title="Uh-oh!">
         <div className="error-container">
-          <dialog title="Application Error" color="red">
+          <dialog color="red" title="Application Error">
             {error.message}
           </dialog>
         </div>

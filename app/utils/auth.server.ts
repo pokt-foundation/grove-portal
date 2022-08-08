@@ -1,5 +1,5 @@
 import { Authenticator } from "remix-auth"
-import { Auth0Strategy, Auth0Profile, Auth0ExtraParams } from "remix-auth-auth0"
+import { Auth0ExtraParams, Auth0Profile, Auth0Strategy } from "remix-auth-auth0"
 import { getRequiredServerEnvVar } from "./environment"
 import { sessionStorage } from "./session.server"
 

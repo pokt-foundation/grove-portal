@@ -1,4 +1,4 @@
-import { Button as MantineButton, ButtonProps } from "@mantine/core"
+import { ButtonProps, Button as MantineButton } from "@mantine/core"
 import styles from "./styles.css"
 
 export const links = () => {

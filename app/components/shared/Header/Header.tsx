@@ -1,14 +1,14 @@
-import styles from "./styles.css"
-import { Form, Link } from "@remix-run/react"
-import Button from "~/components/shared/Button"
-import { Auth0Profile } from "remix-auth-auth0"
 import { useViewportSize } from "@mantine/hooks"
-import HamburgerMenu, { links as HamburgerMenuLinks } from "../HamburgerMenu"
-import { useEffect, useMemo, useRef, useState } from "react"
-import clsx from "clsx"
 import { IconPerson } from "@pokt-foundation/ui"
-import Dropdown, { links as DropdownLinks } from "../Dropdown"
 import { Item, Separator } from "@radix-ui/react-dropdown-menu"
+import { Form, Link } from "@remix-run/react"
+import clsx from "clsx"
+import { useEffect, useMemo, useRef, useState } from "react"
+import { Auth0Profile } from "remix-auth-auth0"
+import Dropdown, { links as DropdownLinks } from "../Dropdown"
+import HamburgerMenu, { links as HamburgerMenuLinks } from "../HamburgerMenu"
+import styles from "./styles.css"
+import Button from "~/components/shared/Button"
 
 export const links = () => {
   return [
@@ -57,8 +57,8 @@ export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) 
         id: "logout",
         el: () => (
           <Button
+            leftIcon={<img alt="logout" src="/logout.svg" />}
             variant="outline"
-            leftIcon={<img src="/logout.svg" alt="logout" />}
             onClick={() => {
               if (logoutFormRef.current) {
                 logoutFormRef.current.dispatchEvent(
@@ -98,16 +98,16 @@ export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) 
         <div className="pokt-header-branding pokt-header-flex">
           <Link to="/">
             <img
-              src="/logo.svg"
-              loading="lazy"
               alt="pocket network"
               className="pokt-header-brand"
+              loading="lazy"
+              src="/logo.svg"
             ></img>
           </Link>
         </div>
         <HamburgerMenu
-          isVisible={isMobile}
           isActive={isActive}
+          isVisible={isMobile}
           onClick={() => setIsActive(!isActive)}
         />
         <div
@@ -119,17 +119,17 @@ export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) 
           })}
         >
           <div className={`pokt-header-nav nav-${nav} pokt-header-flex`}>{children}</div>
-          <Form action="/api/auth/auth0" method="post" ref={logoutFormRef}>
+          <Form ref={logoutFormRef} action="/api/auth/auth0" method="post">
             <input
-              type="hidden"
               readOnly
-              name="logout"
-              value="true"
               aria-label="hidden"
+              name="logout"
+              type="hidden"
+              value="true"
             />
           </Form>
 
-          <UserMenuDropdown user={user} routes={routes} />
+          <UserMenuDropdown routes={routes} user={user} />
           {!user && (
             <>
               <Form action="/api/auth/auth0" method="post">
@@ -138,7 +138,7 @@ export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) 
                 </Button>
               </Form>
               <Form action="/api/auth/auth0" method="post">
-                <Button type="submit" variant="outline" name="signup" value="true">
+                <Button name="signup" type="submit" value="true" variant="outline">
                   Sign Up
                 </Button>
               </Form>
@@ -153,7 +153,7 @@ export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) 
           open: isActive,
         })}
       >
-        <HeaderChildren user={user} nav={nav} slot={children} />
+        <HeaderChildren nav={nav} slot={children} user={user} />
       </aside>
     </>
   )
@@ -204,7 +204,7 @@ const HeaderChildren = ({ user, nav, slot }: HeaderChildrenProps) => {
       )}
       {user && (
         <Form action="/api/auth/auth0" method="post">
-          <Button type="submit" variant="outline" name="logout" value="true">
+          <Button name="logout" type="submit" value="true" variant="outline">
             Logout
           </Button>
         </Form>

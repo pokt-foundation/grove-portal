@@ -14,7 +14,7 @@ export const Footer = () => {
   return (
     <footer className="pokt-footer">
       <Grid align="center">
-        <Grid.Col className="center" span={4} offset={4}>
+        <Grid.Col className="center" offset={4} span={4}>
           &copy; 2022 Pocket Network Inc
         </Grid.Col>
         <Grid.Col className="right" span={4}>

@@ -13,7 +13,7 @@ export interface AppEndpointProps {
 export default function ChainWithImage({ chain, label = chain }: AppEndpointProps) {
   return (
     <span className="pokt-chain-with-image">
-      {getImageForChain(chain) && <img src={getImageForChain(chain)} alt={chain} />}
+      {getImageForChain(chain) && <img alt={chain} src={getImageForChain(chain)} />}
       <p>{label}</p>
     </span>
   )

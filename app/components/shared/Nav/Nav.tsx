@@ -1,8 +1,8 @@
 import { NavLink } from "@remix-run/react"
 import React from "react"
+import styles from "./styles.css"
 // import { useTranslate } from "~/context/TranslateContext"
 // import { IconApp, IconNetwork } from "~/components/shared/Icons"
-import styles from "./styles.css"
 
 export const links = () => {
   return [{ rel: "stylesheet", href: styles }]
@@ -34,11 +34,11 @@ export const Nav = ({ routes }: NavProps) => {
                 </a>
               ) : (
                 <NavLink
-                  to={route.to}
-                  end={route.end}
                   className={({ isActive }) =>
                     `nav-link ${isActive ? "nav-link-active" : ""}`
                   }
+                  end={route.end}
+                  to={route.to}
                 >
                   {/* @ts-ignore eslint-disable-next-line */}
                   {route.icon && <Icon />}

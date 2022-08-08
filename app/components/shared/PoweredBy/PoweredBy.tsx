@@ -17,11 +17,11 @@ export const PoweredBy = ({ to, image, alt }: PoweredByProps) => {
       <p>POWERED BY</p>
       {/https?:\/\//.test(to) ? (
         <a href={to} rel="noreferrer nofollow">
-          <img src={image} alt={alt} />
+          <img alt={alt} src={image} />
         </a>
       ) : (
         <Link to={to}>
-          <img src={image} alt={alt} />
+          <img alt={alt} src={image} />
         </Link>
       )}
     </div>

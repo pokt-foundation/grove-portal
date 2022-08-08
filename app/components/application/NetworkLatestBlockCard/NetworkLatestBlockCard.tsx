@@ -1,6 +1,6 @@
 import { useMemo } from "react"
-import { Card, links as CardLinks } from "~/components/shared/Card"
 import styles from "./styles.css"
+import { Card, links as CardLinks } from "~/components/shared/Card"
 import CardList, {
   CardListItem,
   links as CardListLinks,

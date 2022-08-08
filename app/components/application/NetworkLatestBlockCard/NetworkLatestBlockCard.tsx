@@ -5,20 +5,14 @@ import CardList, {
   CardListItem,
   links as CardListLinks,
 } from "~/components/shared/CardList"
-import PoweredBy, { links as PoweredByLinks } from "~/components/shared/PoweredBy"
-import { LatestBlockAndPerformanceData } from "~/models/portal.server"
+import { LatestBlockType } from "~/routes/dashboard/index"
 
 export const links = () => {
-  return [
-    ...CardLinks(),
-    ...PoweredByLinks(),
-    ...CardListLinks(),
-    { rel: "stylesheet", href: styles },
-  ]
+  return [...CardLinks(), ...CardListLinks(), { rel: "stylesheet", href: styles }]
 }
 
 interface LatestBlockProps {
-  latestBlock: LatestBlockAndPerformanceData
+  latestBlock: LatestBlockType
 }
 
 function appendZeroToTime(time: string) {
@@ -27,7 +21,7 @@ function appendZeroToTime(time: string) {
 
 export default function LatestBlock({ latestBlock }: LatestBlockProps) {
   const blockProducedDateInLocalTime = useMemo(() => {
-    const blockProducedTimeInDate = new Date(latestBlock.highestBlock.item.time)
+    const blockProducedTimeInDate = new Date(latestBlock.time)
     const hours = appendZeroToTime(blockProducedTimeInDate.getHours().toLocaleString())
     const minutes = appendZeroToTime(
       blockProducedTimeInDate.getMinutes().toLocaleString(),
@@ -36,35 +30,47 @@ export default function LatestBlock({ latestBlock }: LatestBlockProps) {
     return `${hours}:${minutes} ${Intl.DateTimeFormat().resolvedOptions().timeZone}`
   }, [latestBlock])
 
-  if (!latestBlock.highestBlock) {
+  if (!latestBlock) {
     return null
   }
 
   const rows: CardListItem[] = [
     {
       label: "Block",
-      value: latestBlock.highestBlock.item.height,
+      value: latestBlock.height,
     },
     {
       label: "Time",
       value: blockProducedDateInLocalTime,
     },
-    {
-      label: "Relays",
-      value: latestBlock.highestBlock.item.total_relays_completed.toLocaleString(),
-    },
+    // {
+    //   label: "Relays",
+    //   value: latestBlock.total_relays_completed.toLocaleString(),
+    // },
     {
       label: "Txs",
-      value: latestBlock.highestBlock.item.total_txs.toLocaleString(),
+      value: latestBlock.total_txs.toLocaleString(),
     },
     {
-      label: "Produced in",
-      value: `${latestBlock.highestBlock.item.took.toFixed(2)} min`,
+      label: "Apps",
+      value: latestBlock.total_apps.toLocaleString(),
     },
     {
-      label: "Validator Threshold",
-      value: latestBlock.highestBlock.validatorThreshold.toLocaleString(),
+      label: "Nodes",
+      value: latestBlock.total_nodes.toLocaleString(),
     },
+    {
+      label: "Accounts",
+      value: latestBlock.total_accounts.toLocaleString(),
+    },
+    // {
+    //   label: "Produced in",
+    //   value: `${latestBlock.took.toFixed(2)} min`,
+    // },
+    // {
+    //   label: "Validator Threshold",
+    //   value: latestBlock.validatorThreshold.toLocaleString(),
+    // },
   ]
 
   return (
@@ -74,7 +80,6 @@ export default function LatestBlock({ latestBlock }: LatestBlockProps) {
           <h3>Latest Block</h3>
         </div>
         <CardList items={rows} />
-        <PoweredBy alt="Poktscan" image="/poktscanLogo.png" to="https://poktscan.com/" />
       </Card>
     </div>
   )

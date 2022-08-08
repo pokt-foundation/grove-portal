@@ -36,11 +36,20 @@ jobs:
           VER=`node --version`; echo "Node ver: $VER"
           VER=`pnpm --version`; echo "pnpm ver: $VER"
 
+      - name: Make envfile
+        uses: SpicyPizza/create-envfile@v1
+        with:
+          envkey_INDEXER_API_URL: ${{ secrets.INDEXER_API_URL }}
+          file_name: .env
+
       - name: 📥 Download deps
         run: pnpm install
 
+      - name: 🔬 Generate Types
+        run: pnpm run generate:types
+
       - name: 🔬 Lint
-        run: pnpm run lint
+        run: pnpm run lint:fix
 
       - name: 🔎 Type check
         run: pnpm run typecheck
@@ -51,6 +60,3 @@ jobs:
       - name: "Post test coverage"
         if: always() # Also generate the report if tests are failing
         uses: davelosert/vitest-coverage-report-action@v1
-
-      - name: 🏗 Build
-        run: pnpm run build

@@ -1,0 +1,316 @@
+query queryBlockByHash($hash: String!) {
+  queryBlockByHash(hash: $hash) {
+    hash
+    height
+    time
+    proposerAddress
+    txCount
+    __typename
+  }
+}
+
+query queryBlockByHeight($height: Int!) {
+  queryBlockByHeight(height: $height) {
+    hash
+    height
+    time
+    proposerAddress
+    txCount
+    __typename
+  }
+}
+
+query queryBlocks($page: Int, $perPage: Int, $order: Order) {
+  queryBlocks(page: $page, perPage: $perPage, order: $order) {
+    blocks {
+      hash
+      height
+      time
+      proposerAddress
+      txCount
+      __typename
+    }
+    pageCount
+    page
+    totalPages
+    totalCount
+  }
+}
+
+query queryTransactionByHash($hash: String!) {
+  queryTransactionByHash(hash: $hash) {
+    hash
+    fromAddress
+    toAddress
+    appPubKey
+    blockchains
+    messageType
+    height
+    index
+    stdTx {
+      entropy
+      fee {
+        amount
+        denom
+      }
+      memo
+      msg {
+        type
+        value
+      }
+      signature {
+        pubKey
+        signature
+      }
+    }
+    txResult {
+      code
+      codespace
+      data
+      events
+      info
+      log
+      messageType
+      recipient
+      signer
+    }
+    tx
+    entropy
+    fee
+    feeDenomination
+    __typename
+  }
+}
+
+query queryTransactions($page: Int, $perPage: Int) {
+  queryTransactions(page: $page, perPage: $perPage) {
+    transactions {
+      hash
+      fromAddress
+      toAddress
+      appPubKey
+      blockchains
+      messageType
+      height
+      index
+      stdTx {
+        entropy
+        fee {
+          amount
+          denom
+        }
+        memo
+        msg {
+          type
+          value
+        }
+        signature {
+          pubKey
+          signature
+        }
+      }
+      txResult {
+        code
+        codespace
+        data
+        events
+        info
+        log
+        messageType
+        recipient
+        signer
+      }
+      tx
+      entropy
+      fee
+      feeDenomination
+      __typename
+    }
+    pageCount
+    page
+    totalPages
+    totalCount
+  }
+}
+
+query queryTransactionsByAddress($address: String!, $page: Int, $perPage: Int) {
+  queryTransactionsByAddress(address: $address, page: $page, perPage: $perPage) {
+    transactions {
+      hash
+      fromAddress
+      toAddress
+      appPubKey
+      blockchains
+      messageType
+      height
+      index
+      stdTx {
+        entropy
+        fee {
+          amount
+          denom
+        }
+        memo
+        msg {
+          type
+          value
+        }
+        signature {
+          pubKey
+          signature
+        }
+      }
+      txResult {
+        code
+        codespace
+        data
+        events
+        info
+        log
+        messageType
+        recipient
+        signer
+      }
+      tx
+      entropy
+      fee
+      feeDenomination
+      __typename
+    }
+    pageCount
+    page
+    totalPages
+    totalCount
+  }
+}
+
+query queryTransactionsByHeight($height: Int!, $page: Int, $perPage: Int) {
+  queryTransactionsByHeight(height: $height, page: $page, perPage: $perPage) {
+    transactions {
+      hash
+      fromAddress
+      toAddress
+      appPubKey
+      blockchains
+      messageType
+      height
+      index
+      stdTx {
+        entropy
+        fee {
+          amount
+          denom
+        }
+        memo
+        msg {
+          type
+          value
+        }
+        signature {
+          pubKey
+          signature
+        }
+      }
+      txResult {
+        code
+        codespace
+        data
+        events
+        info
+        log
+        messageType
+        recipient
+        signer
+      }
+      tx
+      entropy
+      fee
+      feeDenomination
+      __typename
+    }
+    pageCount
+    page
+    totalPages
+    totalCount
+  }
+}
+
+query queryAccounts($height: Int, $page: Int, $perPage: Int) {
+  queryAccounts(height: $height, page: $page, perPage: $perPage) {
+    accounts {
+      address
+      height
+      accountType
+      balance
+      balanceDenomination
+    }
+    pageCount
+    page
+    totalPages
+    totalCount
+  }
+}
+
+query queryAccountByAddress($address: String!, $height: Int) {
+  queryAccountByAddress(address: $address, height: $height) {
+    address
+    height
+    accountType
+    balance
+    balanceDenomination
+  }
+}
+
+query queryNodes($height: Int, $page: Int, $perPage: Int) {
+  queryNodes(height: $height, page: $page, perPage: $perPage) {
+    nodes {
+      address
+      height
+      jailed
+      publicKey
+      serviceURL
+      tokens
+    }
+    pageCount
+    page
+    totalPages
+    totalCount
+  }
+}
+
+query queryNodeByAddress($address: String!, $height: Int) {
+  queryNodeByAddress(address: $address, height: $height) {
+    address
+    height
+    jailed
+    publicKey
+    serviceURL
+    tokens
+  }
+}
+
+query queryApps($height: Int, $page: Int, $perPage: Int) {
+  queryApps(height: $height, page: $page, perPage: $perPage) {
+    apps {
+      address
+      height
+      jailed
+      publicKey
+      stakedTokens
+    }
+    pageCount
+    page
+    totalPages
+    totalCount
+  }
+}
+
+query queryAppByAddress($address: String!, $height: Int) {
+  queryAppByAddress(address: $address, height: $height) {
+    address
+    height
+    jailed
+    publicKey
+    stakedTokens
+  }
+}

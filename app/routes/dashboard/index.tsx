@@ -1,5 +1,5 @@
 import { Grid } from "@mantine/core"
-import { LoaderFunction, MetaFunction, json } from "@remix-run/node"
+import { LoaderFunction, json, MetaFunction } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
 import AdEconomicsForDevs, {
   links as AdEconomicsForDevsLinks,
@@ -26,21 +26,21 @@ import NetworkSummaryCard, {
   links as NetworkSummaryCardLinks,
 } from "~/components/application/NetworkSummaryCard"
 import Table, { links as TableLinks } from "~/components/shared/Table"
+import { initIndexerClient } from "~/models/indexer/indexer.server"
+import { Block, Order } from "~/models/indexer/sdk"
 import {
   getNetworkChains,
   getNetworkDailyRelays,
-  getNetworkLatestBlock,
   getNetworkSummary,
   getNetworkWeeklyStats,
 } from "~/models/portal.server"
 import type {
   Chain,
   DailyRelayBucket,
-  LatestBlockAndPerformanceData,
   NetworkRelayStats,
   SummaryData,
 } from "~/models/portal.server"
-import { RelayMetric, getNetworkRelays } from "~/models/relaymeter.server"
+import { getNetworkRelays, RelayMetric } from "~/models/relaymeter.server"
 import styles from "~/styles/dashboard.index.css"
 import { getServiceLevelByChain } from "~/utils/chainUtils"
 import { dayjs } from "~/utils/dayjs"
@@ -66,10 +66,19 @@ export const meta: MetaFunction = () => {
   }
 }
 
+export type LatestBlockType = Block & {
+  // took: number
+  total_accounts: number
+  total_apps: number
+  total_nodes: number
+  // total_relays_completed: number
+  total_txs: number
+}
+
 type LoaderData = {
   chains: Chain[]
   dailyRelays: DailyRelayBucket[]
-  latestBlock: LatestBlockAndPerformanceData
+  latestBlock: LatestBlockType | null
   summary: SummaryData
   weeklyStats: NetworkRelayStats
   dailyNetworkRelaysPerWeek: RelayMetric[]
@@ -81,10 +90,34 @@ type LoaderData = {
 export const loader: LoaderFunction = async ({ request }) => {
   const chains = await getNetworkChains(request)
   const dailyRelays = await getNetworkDailyRelays(request)
-  const latestBlock = await getNetworkLatestBlock(request)
   const summary = await getNetworkSummary(request)
   const weeklyStats = await getNetworkWeeklyStats(request)
 
+  const indexer = initIndexerClient()
+  const { queryBlocks } = await indexer.queryBlocks({
+    page: 1,
+    perPage: 1,
+    order: Order.Desc,
+  })
+  let latestBlock = null
+
+  if (queryBlocks?.blocks) {
+    latestBlock = queryBlocks.blocks[0]
+    const height = Number(latestBlock?.height)
+    const { queryAccounts } = await indexer.queryAccounts({ height: height })
+    const { queryApps } = await indexer.queryApps({ height: height })
+    const { queryNodes } = await indexer.queryNodes({ height: height })
+    const { queryTransactionsByHeight } = await indexer.queryTransactionsByHeight({
+      height: height,
+    })
+    latestBlock = {
+      ...latestBlock,
+      total_accounts: Number(queryAccounts?.totalCount),
+      total_apps: Number(queryApps?.totalCount),
+      total_nodes: Number(queryNodes?.totalCount),
+      total_txs: Number(queryTransactionsByHeight?.totalCount),
+    } as LatestBlockType
+  }
   const dailyNetworkRelaysPerWeek = await Promise.all(
     [0, 1, 2, 3, 4, 5, 6].map(async (num) => {
       const day = dayjs()
@@ -195,9 +228,11 @@ export default function Index() {
           <h3>Network Success Rate</h3>
           <NetworkSuccessRateCard relays={data.weeklyNetworkRelays} />
         </section>
-        <section>
-          <NetworkLatestBlockCard latestBlock={data.latestBlock} />
-        </section>
+        {data.latestBlock && (
+          <section>
+            <NetworkLatestBlockCard latestBlock={data.latestBlock} />
+          </section>
+        )}
         <section>
           <NetworkRelayPerformanceCard
             month={data.monthlyNetworkRelays}

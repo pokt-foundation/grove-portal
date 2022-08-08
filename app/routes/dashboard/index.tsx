@@ -3,14 +3,12 @@ import { useLoaderData } from "@remix-run/react"
 import type {
   Chain,
   DailyRelayBucket,
-  LatestBlockAndPerformanceData,
   NetworkRelayStats,
   SummaryData,
 } from "~/models/portal.server"
 import {
   getNetworkChains,
   getNetworkDailyRelays,
-  getNetworkLatestBlock,
   getNetworkSummary,
   getNetworkWeeklyStats,
 } from "~/models/portal.server"
@@ -81,7 +79,6 @@ type LoaderData = {
   chains: Chain[]
   dailyRelays: DailyRelayBucket[]
   latestBlock: LatestBlockType | null
-  latestBlockPOKTScan: LatestBlockAndPerformanceData
   summary: SummaryData
   weeklyStats: NetworkRelayStats
   dailyNetworkRelaysPerWeek: RelayMetric[]
@@ -93,7 +90,6 @@ type LoaderData = {
 export const loader: LoaderFunction = async ({ request }) => {
   const chains = await getNetworkChains(request)
   const dailyRelays = await getNetworkDailyRelays(request)
-  const latestBlockPOKTScan = await getNetworkLatestBlock(request)
   const summary = await getNetworkSummary(request)
   const weeklyStats = await getNetworkWeeklyStats(request)
 
@@ -157,7 +153,6 @@ export const loader: LoaderFunction = async ({ request }) => {
       chains,
       dailyRelays,
       latestBlock,
-      latestBlockPOKTScan,
       summary,
       weeklyStats,
       dailyNetworkRelaysPerWeek,

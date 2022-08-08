@@ -1,8 +1,8 @@
-import { prefixFromChainId } from "~/utils/chainUtils"
+import styles from "./styles.css"
 import ChainWithImage from "~/components/application/ChainWithImage"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
-import styles from "./styles.css"
 import { InputProps } from "~/components/shared/TextInput"
+import { prefixFromChainId } from "~/utils/chainUtils"
 
 /* c8 ignore next */
 export const links = () => {

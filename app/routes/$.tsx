@@ -16,7 +16,7 @@ export default function Route404() {
   const data = useLoaderData() as LoaderData
   return (
     <Center className="error-container" mt="xl">
-      <Alert title="Page Not Found" color="red">
+      <Alert color="red" title="Page Not Found">
         {data.param ?? "No Param"}
       </Alert>
     </Center>

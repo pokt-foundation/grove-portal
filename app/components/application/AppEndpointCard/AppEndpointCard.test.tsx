@@ -1,9 +1,9 @@
 import { expect } from "vitest"
 import AppEndpointCard from "./AppEndpointCard"
 import { render, screen } from "test/helpers"
-import { ChainMetadata, prefixFromChainId } from "~/utils/chainUtils"
-import { UserLB } from "~/models/portal.server"
 import { IUserContext, UserContext } from "~/context/UserContext"
+import { UserLB } from "~/models/portal.server"
+import { ChainMetadata, prefixFromChainId } from "~/utils/chainUtils"
 
 let app: UserLB
 

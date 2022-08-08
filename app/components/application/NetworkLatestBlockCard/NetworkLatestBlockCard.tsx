@@ -1,12 +1,12 @@
 import { useMemo } from "react"
-import { Card, links as CardLinks } from "~/components/shared/Card"
-import { LatestBlockAndPerformanceData } from "~/models/portal.server"
 import styles from "./styles.css"
-import PoweredBy, { links as PoweredByLinks } from "~/components/shared/PoweredBy"
+import { Card, links as CardLinks } from "~/components/shared/Card"
 import CardList, {
   CardListItem,
   links as CardListLinks,
 } from "~/components/shared/CardList"
+import PoweredBy, { links as PoweredByLinks } from "~/components/shared/PoweredBy"
+import { LatestBlockAndPerformanceData } from "~/models/portal.server"
 
 export const links = () => {
   return [
@@ -74,7 +74,7 @@ export default function LatestBlock({ latestBlock }: LatestBlockProps) {
           <h3>Latest Block</h3>
         </div>
         <CardList items={rows} />
-        <PoweredBy to="https://poktscan.com/" image="/poktscanLogo.png" alt="Poktscan" />
+        <PoweredBy alt="Poktscan" image="/poktscanLogo.png" to="https://poktscan.com/" />
       </Card>
     </div>
   )

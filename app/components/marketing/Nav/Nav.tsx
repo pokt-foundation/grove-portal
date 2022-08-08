@@ -51,10 +51,10 @@ export const Nav = ({ user }: NavProps) => {
               </a>
             ) : (
               <NavLink
-                to={route.to}
                 className={({ isActive }) =>
                   `nav-link ${isActive ? "nav-link-active" : ""}`
                 }
+                to={route.to}
               >
                 {route.label}
               </NavLink>

@@ -25,9 +25,9 @@ describe("<AppEndpointUrl />", () => {
     render(
       <AppEndpointUrl
         chainId={chainId}
-        value={inputValue}
-        hasDelete={gigastake}
         handleRemove={handleRemove}
+        hasDelete={gigastake}
+        value={inputValue}
       />,
     )
     const image = screen.queryByRole("img", { name: name })
@@ -42,9 +42,9 @@ describe("<AppEndpointUrl />", () => {
     render(
       <AppEndpointUrl
         chainId={chainId}
-        value={inputValue}
-        hasDelete={gigastake}
         handleRemove={handleRemove}
+        hasDelete={gigastake}
+        value={inputValue}
       />,
     )
     const image = screen.getByRole("img", { name: name })
@@ -62,9 +62,9 @@ describe("<AppEndpointUrl />", () => {
     render(
       <AppEndpointUrl
         chainId={chainId}
-        value={inputValue}
-        hasDelete={gigastake}
         handleRemove={handleRemove}
+        hasDelete={gigastake}
+        value={inputValue}
       />,
     )
     const image = screen.getByRole("img", { name: name })
@@ -81,9 +81,9 @@ describe("<AppEndpointUrl />", () => {
     render(
       <AppEndpointUrl
         chainId={chainId}
-        value={inputValue}
-        hasDelete={gigastake}
         handleRemove={handleRemove}
+        hasDelete={gigastake}
+        value={inputValue}
       />,
     )
     const button = screen.getByRole("button")

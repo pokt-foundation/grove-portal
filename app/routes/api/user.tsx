@@ -1,7 +1,7 @@
-import { ActionFunction, json, LoaderFunction } from "@remix-run/node"
+import { ActionFunction, LoaderFunction, json } from "@remix-run/node"
 import { Auth0Profile } from "remix-auth-auth0"
 import { Language } from "~/context/TranslateContext"
-import { defaultUserPreference, UserPreference } from "~/context/UserContext"
+import { UserPreference, defaultUserPreference } from "~/context/UserContext"
 import { userPrefCookie } from "~/utils/cookies.server"
 import { getUserProfile } from "~/utils/session.server"
 

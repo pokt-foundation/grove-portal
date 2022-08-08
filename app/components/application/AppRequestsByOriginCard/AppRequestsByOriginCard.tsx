@@ -1,7 +1,7 @@
+import { UserLBOriginBucket } from "@pokt-foundation/portal-types"
+import { useMemo } from "react"
 import styles from "./styles.css"
 import Table, { links as TableLinks } from "~/components/shared/Table"
-import { useMemo } from "react"
-import { UserLBOriginBucket } from "@pokt-foundation/portal-types"
 import { useTranslate } from "~/context/TranslateContext"
 
 export const links = () => {
@@ -27,7 +27,7 @@ export default function AppRequestsByOriginCard({
         origin: {
           value: origin,
           element: (
-            <a href={origin} target="_blank" rel="noreferrer">
+            <a href={origin} rel="noreferrer" target="_blank">
               {origin}
             </a>
           ),
@@ -40,10 +40,10 @@ export default function AppRequestsByOriginCard({
   return (
     <div className="pokt-app-requests-by-origin">
       <Table
-        label={t.AppRequestsByOriginCard.label}
-        data={tableData}
-        columns={t.AppRequestsByOriginCard.columns}
         paginate
+        columns={t.AppRequestsByOriginCard.columns}
+        data={tableData}
+        label={t.AppRequestsByOriginCard.label}
       />
     </div>
   )

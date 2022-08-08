@@ -1,6 +1,6 @@
 import { expect } from "vitest"
 import AppRequestsByOriginCard from "./AppRequestsByOriginCard"
-import { render, screen, axe } from "test/helpers"
+import { axe, render, screen } from "test/helpers"
 
 let totalRelays = 13474836
 let usagePerOrigin = [

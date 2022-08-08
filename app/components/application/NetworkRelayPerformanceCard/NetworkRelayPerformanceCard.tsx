@@ -1,7 +1,7 @@
 import { Grid } from "@mantine/core"
+import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/shared/Card"
 import { RelayMetric } from "~/models/relaymeter.server"
-import styles from "./styles.css"
 
 export const links = () => {
   return [...CardLinks(), { rel: "stylesheet", href: styles }]

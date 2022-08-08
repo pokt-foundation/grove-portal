@@ -10,8 +10,8 @@ import FeedbackCard, {
 import Button, { links as ButtonLinks } from "~/components/shared/Button"
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import CardList, {
-  links as CardListLinks,
   CardListItem,
+  links as CardListLinks,
 } from "~/components/shared/CardList"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { initPortalClient } from "~/models/portal/portal.server"
@@ -96,7 +96,7 @@ export const Apps = () => {
               <CardList items={userAppsStatus} />
               {(endpoints.length < MAX_USER_APPS ||
                 getRequiredClientEnvVar("GODMODE_ACCOUNTS")?.includes(userId)) && (
-                <Button component={Link} to="create" fullWidth mt={32}>
+                <Button fullWidth component={Link} mt={32} to="create">
                   Create New Application
                 </Button>
               )}

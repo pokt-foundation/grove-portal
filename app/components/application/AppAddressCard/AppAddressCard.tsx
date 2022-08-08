@@ -27,7 +27,7 @@ export default function AppAddressCard({ apps }: AppAddressCardProps) {
         </div>
         {apps && apps.length > 0 ? (
           apps.map((item) =>
-            item ? <TextInput key={item.appId} readOnly copy value={item.appId} /> : null,
+            item ? <TextInput key={item.appId} copy readOnly value={item.appId} /> : null,
           )
         ) : (
           <p>{appAddressCard.error}</p>

@@ -19,5 +19,24 @@ module.exports = {
   ignorePatterns: ["public/build/*", "api/*", "coverage/*"],
   rules: {
     "@typescript-eslint/consistent-type-imports": 0,
+    "import/order": [
+      "error",
+      {
+        alphabetize: { order: "asc", caseInsensitive: true },
+        groups: ["builtin", "external", "index", "parent", ["internal", "sibling"]],
+      },
+    ],
+    "react/jsx-sort-props": [
+      "error",
+      {
+        callbacksLast: true,
+        shorthandFirst: true,
+        ignoreCase: false,
+        reservedFirst: true,
+      },
+    ],
+    eqeqeq: "warn",
+    "no-unneeded-ternary": "error",
+    "no-nested-ternary": "error",
   },
 }

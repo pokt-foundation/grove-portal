@@ -1,12 +1,12 @@
+import { CircleGraph } from "@pokt-foundation/ui"
+import { IconDown, IconUp } from "@pokt-foundation/ui"
+import { useMemo } from "react"
 import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/shared/Card"
-import { CircleGraph } from "@pokt-foundation/ui"
-import { useMemo } from "react"
 import CardList, {
   CardListItem,
   links as CardListLinks,
 } from "~/components/shared/CardList"
-import { IconUp, IconDown } from "@pokt-foundation/ui"
 import Grid from "~/components/shared/Grid"
 import { useTranslate } from "~/context/TranslateContext"
 import { RelayMetric } from "~/models/relaymeter.server"
@@ -57,9 +57,8 @@ export default function AppRequestsRateCard({
       label: t.AppRequestsRateCard.list.successDelta.label,
       value: `${Math.abs(successRateDelta as number)}%`,
       help: t.AppRequestsRateCard.list.successDelta.help,
-      color:
-        successRateDelta > 0 ? "success" : successRateDelta < 0 ? "error" : undefined,
-      icon: successRateDelta > 0 ? IconUp : successRateDelta < 0 ? IconDown : undefined,
+      color: successRateDelta >= 0 ? "success" : "error",
+      icon: successRateDelta >= 0 ? IconUp : IconDown,
     },
     {
       label: t.AppRequestsRateCard.list.errorRate.label,
@@ -84,10 +83,10 @@ export default function AppRequestsRateCard({
             {successPercent > 0 && (
               <Grid.Col xs={3}>
                 <CircleGraph
-                  value={successRate}
-                  size={70}
                   color="#c5ec4b"
+                  size={70}
                   strokeWidth={10}
+                  value={successRate}
                 />
               </Grid.Col>
             )}

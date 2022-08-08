@@ -1,6 +1,6 @@
 import { fetch } from "@remix-run/node"
-import { getRequiredClientEnvVar } from "~/utils/environment"
 import { dayjs } from "~/utils/dayjs"
+import { getRequiredClientEnvVar } from "~/utils/environment"
 
 export type RelayMetric = {
   Count: {

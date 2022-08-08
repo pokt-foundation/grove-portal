@@ -1,3 +1,5 @@
+app/models/indexer/sdk.ts
+
 node_modules
 
 .cache

@@ -1,21 +1,21 @@
+import { Text } from "@mantine/core"
 import { MetaFunction } from "@remix-run/node"
+import { Form, useFetcher, useParams } from "@remix-run/react"
 import React, { useState } from "react"
-import { useFetcher, Form, useParams } from "@remix-run/react"
-import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { AppIdLoaderData } from "../$appId"
 import styles from "../../../../styles/dashboard.apps.$appId.security.css"
-import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
-import ChainsDropdown, {
-  links as ChainsDropdownLinks,
-} from "~/components/application/ChainsDropdown/ChainsDropdown"
-import { CHAIN_ID_PREFIXES } from "~/utils/chainUtils"
 import AppEndpointUrl, {
   links as AppEndpointUrlLinks,
 } from "~/components/application/AppEndpointUrl"
+import ChainsDropdown, {
+  links as ChainsDropdownLinks,
+} from "~/components/application/ChainsDropdown/ChainsDropdown"
+import Button from "~/components/shared/Button"
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import Switch, { links as SwitchLinks } from "~/components/shared/Switch"
-import Button from "~/components/shared/Button"
-import { Text } from "@mantine/core"
+import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
+import { useMatchesRoute } from "~/hooks/useMatchesRoute"
+import { CHAIN_ID_PREFIXES } from "~/utils/chainUtils"
 
 export const meta: MetaFunction = () => {
   return {
@@ -131,16 +131,16 @@ export default function AppSecurity() {
 
   return (
     <div className="security">
-      <securityAction.Form method="post" action="/api/securitySettings">
-        <input type="hidden" name="appID" value={params.appId} />
+      <securityAction.Form action="/api/securitySettings" method="post">
+        <input name="appID" type="hidden" value={params.appId} />
         <Card>
           <div className="pokt-card-header">
             <h3>Private Secret Key Required</h3>
             <Switch
               aria-label="Private key required"
+              checked={secretKeyRequired}
               id="secretRequired"
               name="secretKeyRequired"
-              checked={secretKeyRequired}
               onChange={(event) => setSecretKeyRequired(event.currentTarget.checked)}
             />
           </div>
@@ -156,25 +156,25 @@ export default function AppSecurity() {
           <div className="pokt-card-header">
             <h3>Approved Chains</h3>
             <ChainsDropdown
-              icon={true}
               aria-label="Select a chain to add to white list"
               defaultText="Select Chain"
-              selectedChains={[""]}
               handleChainClick={(val) => {
                 setWhitelistBlockchains(addIfMissing(val, whitelistBlockchains))
               }}
+              icon={true}
+              selectedChains={[""]}
             />
           </div>
           {whitelistBlockchains.map((item: string) => (
             <React.Fragment key={item}>
               <AppEndpointUrl
                 key={item}
-                value={params.appId ?? ""}
                 chainId={item}
-                hasDelete={true}
                 handleRemove={() => {
                   setWhitelistBlockchains((current) => removeFromArray(item, current))
                 }}
+                hasDelete={true}
+                value={params.appId ?? ""}
               />
               <input name="whitelistBlockchains" type="hidden" value={item} />
             </React.Fragment>
@@ -195,8 +195,8 @@ export default function AppSecurity() {
               }}
             />
             <Button
-              type="button"
               aria-label="Add user agents to white list"
+              type="button"
               onClick={() => {
                 if (whitelistUserAgentsElement !== "") {
                   setWhitelistUserAgents(
@@ -211,14 +211,14 @@ export default function AppSecurity() {
           </div>
           <div>
             {whitelistUserAgents.map((item: string) => (
-              <div className="list" key={item}>
+              <div key={item} className="list">
                 <TextInput
-                  readOnly
                   copy
-                  hasDelete={true}
+                  readOnly
                   handleRemove={() => {
                     setWhitelistUserAgents((current) => removeFromArray(item, current))
                   }}
+                  hasDelete={true}
                   value={item}
                 />
                 <input name="whitelistUserAgents" type="hidden" value={item} />
@@ -240,8 +240,8 @@ export default function AppSecurity() {
               }}
             />
             <Button
-              type="button"
               aria-label="Add origins to white list"
+              type="button"
               onClick={() => {
                 if (whitelistOriginsElement !== "") {
                   setWhitelistOrigins(
@@ -256,14 +256,14 @@ export default function AppSecurity() {
           </div>
           <div>
             {whitelistOrigins.map((item: string) => (
-              <div className="list" key={item}>
+              <div key={item} className="list">
                 <TextInput
-                  readOnly
                   copy
-                  hasDelete={true}
+                  readOnly
                   handleRemove={() => {
                     setWhitelistOrigins((current) => removeFromArray(item, current))
                   }}
+                  hasDelete={true}
                   value={item}
                 />
                 <input name="whitelistOrigins" type="hidden" value={item} />
@@ -282,10 +282,10 @@ export default function AppSecurity() {
                   ? getChainName(whitelistContractsDropdown)
                   : "Select Chain"
               }
-              selectedChains={[""]}
               handleChainClick={(val) => {
                 setWhitelistContractsDropdown(val)
               }}
+              selectedChains={[""]}
             />
             <input
               className="grow userInputs"
@@ -296,8 +296,8 @@ export default function AppSecurity() {
               }}
             />
             <Button
-              type="button"
               aria-label="Add contract selections to white list"
+              type="button"
               onClick={() => {
                 if (whitelistContractsInput === "" || whitelistContractsDropdown === "") {
                   setWhitelistContractsError(true)
@@ -327,18 +327,18 @@ export default function AppSecurity() {
           )}
           <div>
             {whitelistContracts.map((item) => (
-              <div className="list" key={`${item.id} ${item.inputValue}`}>
+              <div key={`${item.id} ${item.inputValue}`} className="list">
                 <AppEndpointUrl
-                  chainId={item.id}
-                  value={item.inputValue}
                   copy
-                  readOnly
                   hasDelete
+                  readOnly
+                  chainId={item.id}
                   handleRemove={() => {
                     setWhitelistContracts((current) =>
                       removeFromArrayByValue(item.inputValue, "inputValue", current),
                     )
                   }}
+                  value={item.inputValue}
                 />
                 <input name="whitelistContractsChains" type="hidden" value={item.id} />
                 <input
@@ -356,16 +356,16 @@ export default function AppSecurity() {
           </div>
           <div className="flexGrowRow">
             <ChainsDropdown
-              icon={false}
               defaultText={
                 whitelistMethodsDropdown !== ""
                   ? getChainName(whitelistMethodsDropdown)
                   : "Select Chain"
               }
-              selectedChains={[""]}
               handleChainClick={(val) => {
                 setWhitelistMethodsDropdown(val)
               }}
+              icon={false}
+              selectedChains={[""]}
             />
             <input
               className="grow userInputs"
@@ -376,8 +376,8 @@ export default function AppSecurity() {
               }}
             />
             <Button
-              type="button"
               aria-label="Add method selections to white list"
+              type="button"
               onClick={() => {
                 if (whitelistMethodsInput === "" || whitelistMethodsDropdown === "") {
                   setWhitelistMethodsError(true)
@@ -405,18 +405,18 @@ export default function AppSecurity() {
           )}
           <div>
             {whitelistMethods.map((item) => (
-              <div className="list" key={`${item.id} ${item.inputValue}`}>
+              <div key={`${item.id} ${item.inputValue}`} className="list">
                 <AppEndpointUrl
-                  chainId={item.id}
-                  value={item.inputValue}
-                  hasDelete
                   copy
+                  hasDelete
                   readOnly
+                  chainId={item.id}
                   handleRemove={() => {
                     setWhitelistMethods((current) =>
                       removeFromArrayByValue(item.inputValue, "inputValue", current),
                     )
                   }}
+                  value={item.inputValue}
                 />
                 <input name="whitelistMethodsChains" type="hidden" value={item.id} />
                 <input
@@ -428,7 +428,7 @@ export default function AppSecurity() {
             ))}
           </div>
         </Card>
-        <Button variant="filled" type="submit">
+        <Button type="submit" variant="filled">
           Save
         </Button>
       </securityAction.Form>

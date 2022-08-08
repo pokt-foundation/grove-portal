@@ -1,39 +1,39 @@
+import { Grid } from "@mantine/core"
 import { LoaderFunction, json, MetaFunction } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
-import type { LatestBlockAndPerformanceData } from "~/models/portal.server"
-import { getNetworkLatestBlock } from "~/models/portal.server"
-import NetworkSummaryCard, {
-  links as NetworkSummaryCardLinks,
-} from "~/components/application/NetworkSummaryCard"
-import { Grid } from "@mantine/core"
-import NetworkSuccessRateCard, {
-  links as NetworkSuccessRateCardLinks,
-} from "~/components/application/NetworkSuccessRateCard"
+import AdEconomicsForDevs, {
+  links as AdEconomicsForDevsLinks,
+} from "~/components/application/AdEconomicsForDevs"
+import ChainWithImage, {
+  links as ChainWithImageLinks,
+} from "~/components/application/ChainWithImage"
+import FeedbackCard, {
+  links as FeedbackCardLinks,
+} from "~/components/application/FeedbackCard"
 import NetworkLatestBlockCard, {
   links as NetworkLatestBlockCardLinks,
 } from "~/components/application/NetworkLatestBlockCard"
 import NetworkRelayPerformanceCard, {
   links as NetworkRelayPerformanceCardLinks,
 } from "~/components/application/NetworkRelayPerformanceCard"
-import ChainWithImage, {
-  links as ChainWithImageLinks,
-} from "~/components/application/ChainWithImage"
-import Table, { links as TableLinks } from "~/components/shared/Table"
-import { getServiceLevelByChain } from "~/utils/chainUtils"
-import styles from "~/styles/dashboard.index.css"
-import FeedbackCard, {
-  links as FeedbackCardLinks,
-} from "~/components/application/FeedbackCard"
-import AdEconomicsForDevs, {
-  links as AdEconomicsForDevsLinks,
-} from "~/components/application/AdEconomicsForDevs"
-import { getNetworkRelays, RelayMetric } from "~/models/relaymeter.server"
-import { dayjs } from "~/utils/dayjs"
-import { initPortalClient } from "~/models/portal/portal.server"
-import { Blockchain } from "~/models/portal/sdk"
+import NetworkSuccessRateCard, {
+  links as NetworkSuccessRateCardLinks,
+} from "~/components/application/NetworkSuccessRateCard"
+import NetworkSummaryCard, {
+  links as NetworkSummaryCardLinks,
+} from "~/components/application/NetworkSummaryCard"
 import UsageChartCard, {
   links as UsageChartCardLinks,
 } from "~/components/application/UsageChartCard"
+import Table, { links as TableLinks } from "~/components/shared/Table"
+import { initIndexerClient } from "~/models/indexer/indexer.server"
+import { Block, Order } from "~/models/indexer/sdk"
+import { initPortalClient } from "~/models/portal/portal.server"
+import { Blockchain } from "~/models/portal/sdk"
+import { getNetworkRelays, RelayMetric } from "~/models/relaymeter.server"
+import styles from "~/styles/dashboard.index.css"
+import { getServiceLevelByChain } from "~/utils/chainUtils"
+import { dayjs } from "~/utils/dayjs"
 import { requireUser } from "~/utils/session.server"
 
 export const links = () => {
@@ -57,9 +57,18 @@ export const meta: MetaFunction = () => {
   }
 }
 
+export type LatestBlockType = Block & {
+  // took: number
+  total_accounts: number
+  total_apps: number
+  total_nodes: number
+  // total_relays_completed: number
+  total_txs: number
+}
+
 type LoaderData = {
   blockchains: Blockchain[] | null
-  latestBlock: LatestBlockAndPerformanceData
+  latestBlock: LatestBlockType | null
   dailyNetworkRelaysPerWeek: RelayMetric[]
   dailyNetworkRelays: RelayMetric
   weeklyNetworkRelays: RelayMetric
@@ -73,9 +82,31 @@ export const loader: LoaderFunction = async ({ request }) => {
     console.log(e)
   })
 
-  // OLD BACKEND API CALL
-  const latestBlock = await getNetworkLatestBlock(request)
+  const indexer = initIndexerClient()
+  const { queryBlocks } = await indexer.queryBlocks({
+    page: 1,
+    perPage: 1,
+    order: Order.Desc,
+  })
+  let latestBlock = null
 
+  if (queryBlocks?.blocks) {
+    latestBlock = queryBlocks.blocks[0]
+    const height = Number(latestBlock?.height)
+    const { queryAccounts } = await indexer.queryAccounts({ height: height })
+    const { queryApps } = await indexer.queryApps({ height: height })
+    const { queryNodes } = await indexer.queryNodes({ height: height })
+    const { queryTransactionsByHeight } = await indexer.queryTransactionsByHeight({
+      height: height,
+    })
+    latestBlock = {
+      ...latestBlock,
+      total_accounts: Number(queryAccounts?.totalCount),
+      total_apps: Number(queryApps?.totalCount),
+      total_nodes: Number(queryNodes?.totalCount),
+      total_txs: Number(queryTransactionsByHeight?.totalCount),
+    } as LatestBlockType
+  }
   const dailyNetworkRelaysPerWeek = await Promise.all(
     [0, 1, 2, 3, 4, 5, 6].map(async (num) => {
       const day = dayjs()
@@ -146,23 +177,23 @@ export default function Index() {
           <Grid gutter={32}>
             <Grid.Col sm={4}>
               <NetworkSummaryCard
-                title="Nodes Staked"
-                subtitle="7000+"
                 imgSrc="/networkSummaryNodes.png"
+                subtitle="7000+"
+                title="Nodes Staked"
               />
             </Grid.Col>
             <Grid.Col sm={4}>
               <NetworkSummaryCard
-                title="Apps Staked"
-                subtitle="2000+"
                 imgSrc="/networkSummaryApps.png"
+                subtitle="2000+"
+                title="Apps Staked"
               />
             </Grid.Col>
             <Grid.Col sm={4}>
               <NetworkSummaryCard
-                title="Networks"
-                subtitle={String(blockchains ? blockchains.length : 0)}
                 imgSrc="/networkSummaryNetworks.png"
+                subtitle={String(blockchains ? blockchains.length : 0)}
+                title="Networks"
               />
             </Grid.Col>
           </Grid>
@@ -173,7 +204,9 @@ export default function Index() {
         {blockchains && (
           <section>
             <Table
-              label="Available Networks"
+              paginate
+              search
+              columns={["Network", "ID", "Status"]}
               data={blockchains.map((chain) => ({
                 id: chain.id,
                 network: {
@@ -183,9 +216,7 @@ export default function Index() {
                 chainId: chain.id,
                 status: getServiceLevelByChain(chain.id),
               }))}
-              columns={["Network", "ID", "Status"]}
-              paginate
-              search
+              label="Available Networks"
             />
           </section>
         )}
@@ -195,14 +226,16 @@ export default function Index() {
           <h3>Network Success Rate</h3>
           <NetworkSuccessRateCard relays={weeklyNetworkRelays} />
         </section>
-        <section>
-          <NetworkLatestBlockCard latestBlock={latestBlock} />
-        </section>
+        {latestBlock && (
+          <section>
+            <NetworkLatestBlockCard latestBlock={latestBlock} />
+          </section>
+        )}
         <section>
           <NetworkRelayPerformanceCard
+            month={monthlyNetworkRelays}
             today={dailyNetworkRelays}
             week={weeklyNetworkRelays}
-            month={monthlyNetworkRelays}
           />
         </section>
         <section>

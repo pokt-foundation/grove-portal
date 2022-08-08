@@ -1,17 +1,16 @@
-import { Card, links as CardLinks } from "~/components/shared/Card"
-import ChainWithImage, {
-  links as ChainWithImageLinks,
-} from "~/components/application/ChainWithImage"
+import { useEffect, useMemo } from "react"
+import ChainsDropdown, { links as ChainsDropdownLinks } from "../ChainsDropdown"
 import styles from "./styles.css"
-import { UserLB } from "~/models/portal.server"
-import { ChainMetadata, prefixFromChainId } from "~/utils/chainUtils"
 import AppEndpointUrl, {
   links as AppEndpointUrlLinks,
 } from "~/components/application/AppEndpointUrl"
+import ChainWithImage, {
+  links as ChainWithImageLinks,
+} from "~/components/application/ChainWithImage"
+import { Card, links as CardLinks } from "~/components/shared/Card"
 import { useUser } from "~/context/UserContext"
-import { useEffect, useMemo } from "react"
-import ChainsDropdown, { links as ChainsDropdownLinks } from "../ChainsDropdown"
 import { ProcessedEndpoint } from "~/models/portal/sdk"
+import { ChainMetadata, prefixFromChainId } from "~/utils/chainUtils"
 
 /* c8 ignore next */
 export const links = () => {
@@ -113,15 +112,15 @@ export default function AppEndpointCard({ app }: AppEndpointProps) {
           <div>
             {app.gigastake ? (
               <ChainsDropdown
-                icon={true}
                 defaultText="Add New"
+                handleChainClick={handleAddToStoredChains}
+                icon={true}
                 selectedChains={
                   user.data?.preferences.endpoints &&
                   user.data?.preferences.endpoints[app.id]
                     ? user.data?.preferences.endpoints[app.id]
                     : ["0021"]
                 }
-                handleChainClick={handleAddToStoredChains}
               />
             ) : (
               <ChainWithImage chain={chainDescription} />
@@ -136,9 +135,9 @@ export default function AppEndpointCard({ app }: AppEndpointProps) {
               <AppEndpointUrl
                 key={chain}
                 chainId={chain}
-                value={endpoint}
-                hasDelete={app.gigastake}
                 handleRemove={() => handleRemoveFromStoredChains(chain)}
+                hasDelete={app.gigastake}
+                value={endpoint}
               />
             )
           })}

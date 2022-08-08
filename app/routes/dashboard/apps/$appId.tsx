@@ -1,28 +1,28 @@
+import { LoaderFunction, MetaFunction, json } from "@remix-run/node"
 import { Outlet, useCatch, useLoaderData } from "@remix-run/react"
-import Nav, { links as NavLinks } from "~/components/shared/Nav"
-import { json, LoaderFunction, MetaFunction } from "@remix-run/node"
 import invariant from "tiny-invariant"
-import AppKeysCard, {
-  links as AppKeysCardLinks,
-} from "~/components/application/AppKeysCard"
-import AppAddressCard, {
-  links as AppAddressCardLinks,
-} from "~/components/application/AppAddressCard"
 import AdEconomicsForDevs, {
   links as AdEconomicsForDevsLinks,
 } from "~/components/application/AdEconomicsForDevs"
-import Grid from "~/components/shared/Grid"
-import FeedbackCard, {
-  links as FeedbackCardLinks,
-} from "~/components/application/FeedbackCard"
-import { useTranslate } from "~/context/TranslateContext"
+import AppAddressCard, {
+  links as AppAddressCardLinks,
+} from "~/components/application/AppAddressCard"
+import AppKeysCard, {
+  links as AppKeysCardLinks,
+} from "~/components/application/AppKeysCard"
 import AppRemoveModal, {
   links as AppRemoveModalLinks,
 } from "~/components/application/AppRemoveModal"
-import { dayjs } from "~/utils/dayjs"
-import { getAppRelays, RelayMetric } from "~/models/relaymeter.server"
+import FeedbackCard, {
+  links as FeedbackCardLinks,
+} from "~/components/application/FeedbackCard"
+import Grid from "~/components/shared/Grid"
+import Nav, { links as NavLinks } from "~/components/shared/Nav"
+import { useTranslate } from "~/context/TranslateContext"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { ProcessedEndpoint } from "~/models/portal/sdk"
+import { getAppRelays, RelayMetric } from "~/models/relaymeter.server"
+import { dayjs } from "~/utils/dayjs"
 import { requireUser } from "~/utils/session.server"
 
 export const links = () => {
@@ -146,8 +146,8 @@ export default function AppIdLayout() {
             <section>
               <AppKeysCard
                 id={endpoint.id}
-                secret={endpoint.gatewaySettings.secretKey ?? ""}
                 publicKey={endpoint.apps[0]?.publicKey}
+                secret={endpoint.gatewaySettings.secretKey ?? ""}
               />
             </section>
             <section>

@@ -1,5 +1,5 @@
-import Card, { links as CardLinks } from "~/components/shared/Card"
 import styles from "./styles.css"
+import Card, { links as CardLinks } from "~/components/shared/Card"
 
 export const links = () => {
   return [...CardLinks(), { rel: "stylesheet", href: styles }]

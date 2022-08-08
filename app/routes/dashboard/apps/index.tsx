@@ -1,9 +1,9 @@
 import { MetaFunction } from "@remix-run/node"
 import { Link } from "@remix-run/react"
+import { AllAppsLoaderData } from "../apps"
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import Table, { links as TableLinks } from "~/components/shared/Table"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
-import { AllAppsLoaderData } from "../apps"
 
 export const links = () => {
   return [...TableLinks(), ...CardLinks()]
@@ -23,7 +23,8 @@ export const Apps = () => {
     <section>
       {endpoints && endpoints.length > 0 ? (
         <Table
-          label="Applications"
+          search
+          columns={["App", "Chain", "Status", ""]}
           data={endpoints.map((app) => ({
             id: app.id,
             app: {
@@ -37,11 +38,10 @@ export const Apps = () => {
               element: <Link to={app.id}>...</Link>,
             },
           }))}
-          columns={["App", "Chain", "Status", ""]}
+          label="Applications"
           paginate={{
             perPage: 10,
           }}
-          search
         />
       ) : (
         <Card>

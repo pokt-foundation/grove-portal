@@ -1,15 +1,15 @@
 import { Link } from "@pokt-foundation/ui"
-import { ActionFunction, json, LinksFunction } from "@remix-run/node"
+import { ActionFunction, LinksFunction, json } from "@remix-run/node"
+import { useCatch } from "@remix-run/react"
 import invariant from "tiny-invariant"
-import NotificationsWeeklyBandwidthUsageCard, {
-  links as NotificationsWeeklyBandwidthUsageCardLinks,
-} from "~/components/application/NotificationsWeeklyBandwidthUsageCard"
 import NotificationsAlertForm, {
   links as NotificationsAlertFormLinks,
 } from "~/components/application/NotificationsAlertForm/NotificationsAlertForm"
-import styles from "~/styles/dashboard.apps.$appId.notifications.css"
-import { useCatch } from "@remix-run/react"
+import NotificationsWeeklyBandwidthUsageCard, {
+  links as NotificationsWeeklyBandwidthUsageCardLinks,
+} from "~/components/application/NotificationsWeeklyBandwidthUsageCard"
 import { initPortalClient } from "~/models/portal/portal.server"
+import styles from "~/styles/dashboard.apps.$appId.notifications.css"
 import { requireUser } from "~/utils/session.server"
 
 export const links: LinksFunction = () => [
@@ -39,10 +39,10 @@ export const action: ActionFunction = async ({ request, params }) => {
         id: appId,
         notificationSettings: {
           signedUp: true,
-          quarter: quarter === "on" ? true : false,
-          half: half === "on" ? true : false,
-          threeQuarters: threeQuarters === "on" ? true : false,
-          full: full === "on" ? true : false,
+          quarter: quarter === "on",
+          half: half === "on",
+          threeQuarters: threeQuarters === "on",
+          full: full === "on",
         },
       },
     })

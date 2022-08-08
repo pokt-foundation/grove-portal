@@ -1,8 +1,8 @@
-import styles from "./styles.css"
-import { useState } from "react"
 import { Group, Modal, Text } from "@mantine/core"
-import Button from "~/components/shared/Button"
 import { Form } from "@remix-run/react"
+import { useState } from "react"
+import styles from "./styles.css"
+import Button from "~/components/shared/Button"
 
 /* c8 ignore next */
 export const links = () => {
@@ -18,24 +18,24 @@ export default function AppEndpointCard({ appId }: AppRemoveModalProps) {
 
   return (
     <div className="pokt-app-remove">
-      <Button variant="subtle" fullWidth onClick={() => setOpened(true)}>
+      <Button fullWidth variant="subtle" onClick={() => setOpened(true)}>
         <img
+          alt="Remove Application"
           className="pokt-app-remove-delete-icon"
           src="/delete.svg"
-          alt="Remove Application"
         />
         Remove Application
       </Button>
       <Modal
         opened={opened}
-        onClose={() => setOpened(false)}
         title="You're about to remove this application!"
+        onClose={() => setOpened(false)}
       >
         <div>
           <Text>App ID: {appId}</Text>
         </div>
         <Group align="center" position="apart">
-          <Form method="post" action={`/dashboard/apps/${appId}/remove`}>
+          <Form action={`/dashboard/apps/${appId}/remove`} method="post">
             <Button type="submit">Remove Application</Button>
           </Form>
           <Button variant="subtle" onClick={() => setOpened(false)}>

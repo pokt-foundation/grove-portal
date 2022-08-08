@@ -1,27 +1,27 @@
 import { MetaFunction } from "@remix-run/node"
-import { FREE_TIER_MAX_RELAYS } from "~/utils/pocketUtils"
-import AppEndpointCard, {
-  links as AppEndpointCardLinks,
-} from "~/components/application/AppEndpointCard"
 // import AppLatencyCard, {
 //   links as AppLatencyCardLinks,
 // } from "~/components/application/AppLatencyCard"
-import { useMatchesRoute } from "~/hooks/useMatchesRoute"
-import { AppIdLoaderData } from "../$appId"
-import AppUsageCurrentCard, {
-  links as AppUsageCurrentCardLinks,
-} from "~/components/application/AppUsageCurrentCard"
-import Grid from "~/components/shared/Grid"
-import AppRequestsRateCard, {
-  links as AppRequestsRateCardLinks,
-} from "~/components/application/AppRequestsRateCard"
 import { useMemo } from "react"
+import { AppIdLoaderData } from "../$appId"
+import AppEndpointCard, {
+  links as AppEndpointCardLinks,
+} from "~/components/application/AppEndpointCard"
 import AppOverLimitCard, {
   links as AppOverLimitCardLinks,
 } from "~/components/application/AppOverSessionLimitCard/AppOverSessionLimitCard"
+import AppRequestsRateCard, {
+  links as AppRequestsRateCardLinks,
+} from "~/components/application/AppRequestsRateCard"
+import AppUsageCurrentCard, {
+  links as AppUsageCurrentCardLinks,
+} from "~/components/application/AppUsageCurrentCard"
 import UsageChartCard, {
   links as UsageChartCardLinks,
 } from "~/components/application/UsageChartCard"
+import Grid from "~/components/shared/Grid"
+import { useMatchesRoute } from "~/hooks/useMatchesRoute"
+import { FREE_TIER_MAX_RELAYS } from "~/utils/pocketUtils"
 
 export const links = () => {
   return [
@@ -62,8 +62,8 @@ export const Application = () => {
             <section>
               <AppUsageCurrentCard
                 maxDailyRelays={FREE_TIER_MAX_RELAYS}
-                totalRelays={appIdData.relaysToday.Count.Total}
                 sessionRelays={0}
+                totalRelays={appIdData.relaysToday.Count.Total}
               />
             </section>
           )}
@@ -72,8 +72,8 @@ export const Application = () => {
           {appIdData.relaysToday.Count && appIdData.relaysYesterday.Count && (
             <section>
               <AppRequestsRateCard
-                previousRelays={appIdData.relaysYesterday.Count}
                 currentRelays={appIdData.relaysToday.Count}
+                previousRelays={appIdData.relaysYesterday.Count}
               />
             </section>
           )}

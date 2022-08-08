@@ -1,8 +1,8 @@
-import { getClientEnv } from "~/utils/environment.server"
 import { installGlobals } from "@remix-run/node/globals"
 // import "@testing-library/jest-dom"
-import { toHaveNoViolations } from "jest-axe"
 import matchers, { TestingLibraryMatchers } from "@testing-library/jest-dom/matchers"
+import { toHaveNoViolations } from "jest-axe"
+import { getClientEnv } from "~/utils/environment.server"
 
 declare global {
   namespace Vi {

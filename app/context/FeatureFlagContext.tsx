@@ -1,5 +1,5 @@
 import { useFetcher } from "@remix-run/react"
-import React, { useMemo, useContext, Dispatch, useEffect } from "react"
+import React, { Dispatch, useContext, useEffect, useMemo } from "react"
 import { FeatureFlagsLoaderActionData } from "~/routes/api/featureflags"
 
 export interface FeatureFlags {

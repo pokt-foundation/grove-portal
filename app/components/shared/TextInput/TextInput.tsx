@@ -1,4 +1,3 @@
-
 import { TextInput as MantineTextInput, TextInputProps } from "@mantine/core"
 import clsx from "clsx"
 import { IconTrashcan } from "@pokt-foundation/ui"

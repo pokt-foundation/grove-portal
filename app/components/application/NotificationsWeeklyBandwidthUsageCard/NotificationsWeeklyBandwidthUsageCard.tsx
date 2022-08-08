@@ -9,7 +9,6 @@ import { formatNumberToSICompact } from "~/utils/formattingUtils"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { AppIdLoaderData } from "~/routes/dashboard/apps/$appId"
 
-
 export const links: LinksFunction = () => [
   ...CardLinks(),
   {

@@ -35,6 +35,7 @@ jobs:
           echo "SHA:        ${{ github.sha }}"
           VER=`node --version`; echo "Node ver: $VER"
           VER=`pnpm --version`; echo "pnpm ver: $VER"
+          export INDEXER_API_URL=${{ secrets.INDEXER_API_URL }}
 
       - name: 📥 Download deps
         run: pnpm install

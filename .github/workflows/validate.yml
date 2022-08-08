@@ -39,6 +39,9 @@ jobs:
       - name: 📥 Download deps
         run: pnpm install
 
+      - name: 🔬 Generate Types
+        run: pnpm run generate:types
+
       - name: 🔬 Lint
         run: pnpm run lint:fix
 

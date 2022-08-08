@@ -1,7 +1,7 @@
 import HelpTooltip, { links as HelpTooltipLinks } from "../HelpTooltip"
 import styles from "./styles.css"
-import List from "~/components/shared/List"
 import Grid from "~/components/shared/Grid"
+import List from "~/components/shared/List"
 
 export const links = () => {
   return [...HelpTooltipLinks(), { rel: "stylesheet", href: styles }]

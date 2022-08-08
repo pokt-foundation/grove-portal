@@ -3,9 +3,9 @@ import { IconInfo } from "@pokt-foundation/ui"
 import { Link } from "@remix-run/react"
 import React from "react"
 import styles from "./styles.css"
+import Button from "~/components/shared/Button"
 import { Card, links as CardLinks } from "~/components/shared/Card"
 import { useTranslate } from "~/context/TranslateContext"
-import Button from "~/components/shared/Button"
 
 /* c8 ignore next */
 export const links = () => {

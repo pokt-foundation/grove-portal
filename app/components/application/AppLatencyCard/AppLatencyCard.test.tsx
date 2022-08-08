@@ -1,5 +1,5 @@
-import { expect } from "vitest"
 import { UserLBLatencyBucket } from "@pokt-foundation/portal-types"
+import { expect } from "vitest"
 import AppLatencyCard from "./AppLatencyCard"
 import { render, screen } from "test/helpers"
 

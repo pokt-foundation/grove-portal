@@ -1,21 +1,21 @@
+import { Text } from "@mantine/core"
+import { MetaFunction } from "@remix-run/node"
 import { Form, useFetcher, useParams } from "@remix-run/react"
 import React, { useState } from "react"
-import { MetaFunction } from "@remix-run/node"
-import { Text } from "@mantine/core"
 import { AppIdLoaderData } from "../$appId"
 import styles from "../../../../styles/dashboard.apps.$appId.security.css"
-import { useMatchesRoute } from "~/hooks/useMatchesRoute"
-import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
-import ChainsDropdown, {
-  links as ChainsDropdownLinks,
-} from "~/components/application/ChainsDropdown/ChainsDropdown"
-import { CHAIN_ID_PREFIXES } from "~/utils/chainUtils"
 import AppEndpointUrl, {
   links as AppEndpointUrlLinks,
 } from "~/components/application/AppEndpointUrl"
+import ChainsDropdown, {
+  links as ChainsDropdownLinks,
+} from "~/components/application/ChainsDropdown/ChainsDropdown"
+import Button from "~/components/shared/Button"
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import Switch, { links as SwitchLinks } from "~/components/shared/Switch"
-import Button from "~/components/shared/Button"
+import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
+import { useMatchesRoute } from "~/hooks/useMatchesRoute"
+import { CHAIN_ID_PREFIXES } from "~/utils/chainUtils"
 
 export const meta: MetaFunction = () => {
   return {

@@ -1,8 +1,8 @@
 import { IconQuestion } from "@pokt-foundation/ui"
 import { useEffect, useState } from "react"
 import styles from "./styles.css"
-import Tooltip, { TooltipProps } from "~/components/shared/Tooltip"
 import Button from "~/components/shared/Button"
+import Tooltip, { TooltipProps } from "~/components/shared/Tooltip"
 
 export const links = () => {
   return [{ rel: "stylesheet", href: styles }]

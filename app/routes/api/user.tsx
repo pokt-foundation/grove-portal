@@ -1,5 +1,5 @@
-import { Auth0Profile } from "remix-auth-auth0"
 import { ActionFunction, LoaderFunction, json } from "@remix-run/node"
+import { Auth0Profile } from "remix-auth-auth0"
 import { Language } from "~/context/TranslateContext"
 import { UserPreference, defaultUserPreference } from "~/context/UserContext"
 import { userPrefCookie } from "~/utils/cookies.server"

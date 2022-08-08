@@ -1,6 +1,6 @@
-import { Form, useTransition } from "@remix-run/react"
-import { LinksFunction } from "@remix-run/node"
 import { Text } from "@mantine/core"
+import { LinksFunction } from "@remix-run/node"
+import { Form, useTransition } from "@remix-run/react"
 import styles from "./styles.css"
 import Button from "~/components/shared/Button"
 import Card from "~/components/shared/Card"

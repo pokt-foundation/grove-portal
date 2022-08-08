@@ -1,9 +1,9 @@
 import { LinksFunction, LoaderFunction, MetaFunction, json } from "@remix-run/node"
-import { useMemo } from "react"
 import { Outlet, useLoaderData } from "@remix-run/react"
+import { useMemo } from "react"
 import { Auth0Profile } from "remix-auth-auth0"
-import { Header, links as HeaderLinks } from "~/components/shared/Header"
 import { Footer, links as FooterLinks } from "~/components/shared/Footer"
+import { Header, links as HeaderLinks } from "~/components/shared/Header"
 import { Nav, links as NavLinks } from "~/components/shared/Nav"
 import { getUserProfile } from "~/utils/session.server"
 

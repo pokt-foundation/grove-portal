@@ -1,13 +1,13 @@
-import invariant from "tiny-invariant"
-import { ActionFunction, LinksFunction, json } from "@remix-run/node"
 import { Link } from "@pokt-foundation/ui"
+import { ActionFunction, LinksFunction, json } from "@remix-run/node"
 import { useCatch } from "@remix-run/react"
-import NotificationsWeeklyBandwidthUsageCard, {
-  links as NotificationsWeeklyBandwidthUsageCardLinks,
-} from "~/components/application/NotificationsWeeklyBandwidthUsageCard"
+import invariant from "tiny-invariant"
 import NotificationsAlertForm, {
   links as NotificationsAlertFormLinks,
 } from "~/components/application/NotificationsAlertForm/NotificationsAlertForm"
+import NotificationsWeeklyBandwidthUsageCard, {
+  links as NotificationsWeeklyBandwidthUsageCardLinks,
+} from "~/components/application/NotificationsWeeklyBandwidthUsageCard"
 import { putNotifications } from "~/models/portal.server"
 import styles from "~/styles/dashboard.apps.$appId.notifications.css"
 

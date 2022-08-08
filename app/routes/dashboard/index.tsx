@@ -1,6 +1,31 @@
 import { Grid } from "@mantine/core"
-import { useLoaderData } from "@remix-run/react"
 import { LoaderFunction, MetaFunction, json } from "@remix-run/node"
+import { useLoaderData } from "@remix-run/react"
+import AdEconomicsForDevs, {
+  links as AdEconomicsForDevsLinks,
+} from "~/components/application/AdEconomicsForDevs"
+import ChainWithImage, {
+  links as ChainWithImageLinks,
+} from "~/components/application/ChainWithImage"
+import FeedbackCard, {
+  links as FeedbackCardLinks,
+} from "~/components/application/FeedbackCard"
+import NetworkChartCard, {
+  links as NetworkChartCardLinks,
+} from "~/components/application/NetworkChartCard"
+import NetworkLatestBlockCard, {
+  links as NetworkLatestBlockCardLinks,
+} from "~/components/application/NetworkLatestBlockCard"
+import NetworkRelayPerformanceCard, {
+  links as NetworkRelayPerformanceCardLinks,
+} from "~/components/application/NetworkRelayPerformanceCard"
+import NetworkSuccessRateCard, {
+  links as NetworkSuccessRateCardLinks,
+} from "~/components/application/NetworkSuccessRateCard"
+import NetworkSummaryCard, {
+  links as NetworkSummaryCardLinks,
+} from "~/components/application/NetworkSummaryCard"
+import Table, { links as TableLinks } from "~/components/shared/Table"
 import {
   getNetworkChains,
   getNetworkDailyRelays,
@@ -8,35 +33,6 @@ import {
   getNetworkSummary,
   getNetworkWeeklyStats,
 } from "~/models/portal.server"
-import NetworkSummaryCard, {
-  links as NetworkSummaryCardLinks,
-} from "~/components/application/NetworkSummaryCard"
-import NetworkSuccessRateCard, {
-  links as NetworkSuccessRateCardLinks,
-} from "~/components/application/NetworkSuccessRateCard"
-import NetworkLatestBlockCard, {
-  links as NetworkLatestBlockCardLinks,
-} from "~/components/application/NetworkLatestBlockCard"
-import NetworkChartCard, {
-  links as NetworkChartCardLinks,
-} from "~/components/application/NetworkChartCard"
-import NetworkRelayPerformanceCard, {
-  links as NetworkRelayPerformanceCardLinks,
-} from "~/components/application/NetworkRelayPerformanceCard"
-import ChainWithImage, {
-  links as ChainWithImageLinks,
-} from "~/components/application/ChainWithImage"
-import Table, { links as TableLinks } from "~/components/shared/Table"
-import { getServiceLevelByChain } from "~/utils/chainUtils"
-import styles from "~/styles/dashboard.index.css"
-import FeedbackCard, {
-  links as FeedbackCardLinks,
-} from "~/components/application/FeedbackCard"
-import AdEconomicsForDevs, {
-  links as AdEconomicsForDevsLinks,
-} from "~/components/application/AdEconomicsForDevs"
-import { RelayMetric, getNetworkRelays } from "~/models/relaymeter.server"
-import { dayjs } from "~/utils/dayjs"
 import type {
   Chain,
   DailyRelayBucket,
@@ -44,6 +40,10 @@ import type {
   NetworkRelayStats,
   SummaryData,
 } from "~/models/portal.server"
+import { RelayMetric, getNetworkRelays } from "~/models/relaymeter.server"
+import styles from "~/styles/dashboard.index.css"
+import { getServiceLevelByChain } from "~/utils/chainUtils"
+import { dayjs } from "~/utils/dayjs"
 
 export const links = () => {
   return [

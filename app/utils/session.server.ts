@@ -1,8 +1,8 @@
 import { createCookieSessionStorage, redirect } from "@remix-run/node"
-import { Auth0Profile } from "remix-auth-auth0"
 import jwt_decode from "jwt-decode"
-import { getRequiredServerEnvVar } from "./environment"
+import { Auth0Profile } from "remix-auth-auth0"
 import { authenticator } from "./auth.server"
+import { getRequiredServerEnvVar } from "./environment"
 
 // export the whole sessionStorage object
 export const sessionStorage = createCookieSessionStorage({

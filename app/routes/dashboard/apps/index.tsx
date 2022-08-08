@@ -1,7 +1,7 @@
 import { LoaderFunction, MetaFunction, json } from "@remix-run/node"
 import { Link, useLoaderData } from "@remix-run/react"
-import { getLBUserApplications } from "~/models/portal.server"
 import Table, { links as TableLinks } from "~/components/shared/Table"
+import { getLBUserApplications } from "~/models/portal.server"
 import type { UserLB } from "~/models/portal.server"
 
 export const links = () => {

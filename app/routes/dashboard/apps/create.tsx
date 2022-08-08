@@ -1,8 +1,8 @@
-import invariant from "tiny-invariant"
-import { forwardRef } from "react"
-import { Form, Link } from "@remix-run/react"
-import { ActionFunction, MetaFunction, redirect } from "@remix-run/node"
 import { Group, Text } from "@mantine/core"
+import { ActionFunction, MetaFunction, redirect } from "@remix-run/node"
+import { Form, Link } from "@remix-run/react"
+import { forwardRef } from "react"
+import invariant from "tiny-invariant"
 import ChainWithImage, {
   AppEndpointProps,
   links as ChainWithImageLinks,

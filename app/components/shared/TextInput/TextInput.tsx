@@ -1,11 +1,11 @@
 import { TextInput as MantineTextInput, TextInputProps } from "@mantine/core"
-import clsx from "clsx"
 import { IconTrashcan } from "@pokt-foundation/ui"
+import clsx from "clsx"
 import Button from "../Button"
+import styles from "./styles.css"
 import CopyTextIcon, {
   links as CopyTextIconLinks,
 } from "~/components/shared/CopyTextIcon"
-import styles from "./styles.css"
 
 export const links = () => {
   return [...CopyTextIconLinks(), { rel: "stylesheet", href: styles }]

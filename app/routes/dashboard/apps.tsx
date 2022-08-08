@@ -1,7 +1,7 @@
-import { Link, Outlet, useLoaderData } from "@remix-run/react"
-import { LoaderFunction, json } from "@remix-run/node"
-import { UserLB } from "@pokt-foundation/portal-types"
 import { Grid } from "@mantine/core"
+import { UserLB } from "@pokt-foundation/portal-types"
+import { LoaderFunction, json } from "@remix-run/node"
+import { Link, Outlet, useLoaderData } from "@remix-run/react"
 import AdEconomicsForDevs, {
   links as AdEconomicsForDevsLinks,
 } from "~/components/application/AdEconomicsForDevs"

@@ -6,11 +6,27 @@ import {
   UserLBTotalRelaysResponse,
   UserLBTotalSuccessfulRelaysResponse,
 } from "@pokt-foundation/portal-types"
-import invariant from "tiny-invariant"
 import { LoaderFunction, MetaFunction, json } from "@remix-run/node"
 import { Outlet, useCatch, useLoaderData } from "@remix-run/react"
+import invariant from "tiny-invariant"
+import AdEconomicsForDevs, {
+  links as AdEconomicsForDevsLinks,
+} from "~/components/application/AdEconomicsForDevs"
+import AppAddressCard, {
+  links as AppAddressCardLinks,
+} from "~/components/application/AppAddressCard"
+import AppKeysCard, {
+  links as AppKeysCardLinks,
+} from "~/components/application/AppKeysCard"
+import AppRemoveModal, {
+  links as AppRemoveModalLinks,
+} from "~/components/application/AppRemoveModal"
+import FeedbackCard, {
+  links as FeedbackCardLinks,
+} from "~/components/application/FeedbackCard"
+import Grid from "~/components/shared/Grid"
 import Nav, { links as NavLinks } from "~/components/shared/Nav"
-import { SESSIONS_PER_DAY } from "~/utils/pocketUtils"
+import { useTranslate } from "~/context/TranslateContext"
 import {
   UserLB,
   getLBDailyRelays,
@@ -21,23 +37,7 @@ import {
   getLBTotalRelays,
   getLBUserApplications,
 } from "~/models/portal.server"
-import AppKeysCard, {
-  links as AppKeysCardLinks,
-} from "~/components/application/AppKeysCard"
-import AppAddressCard, {
-  links as AppAddressCardLinks,
-} from "~/components/application/AppAddressCard"
-import AdEconomicsForDevs, {
-  links as AdEconomicsForDevsLinks,
-} from "~/components/application/AdEconomicsForDevs"
-import Grid from "~/components/shared/Grid"
-import FeedbackCard, {
-  links as FeedbackCardLinks,
-} from "~/components/application/FeedbackCard"
-import { useTranslate } from "~/context/TranslateContext"
-import AppRemoveModal, {
-  links as AppRemoveModalLinks,
-} from "~/components/application/AppRemoveModal"
+import { SESSIONS_PER_DAY } from "~/utils/pocketUtils"
 
 export const links = () => {
   return [

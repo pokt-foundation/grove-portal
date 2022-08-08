@@ -1,6 +1,7 @@
 // import initializeSentry from "~/utils/sentry"
 // import initializeAnalytics from "~/utils/analytics"
 import { Alert, Center } from "@mantine/core"
+import { LinksFunction, LoaderFunction, MetaFunction, json } from "@remix-run/node"
 import {
   Links,
   LiveReload,
@@ -11,11 +12,10 @@ import {
   useCatch,
   useLoaderData,
 } from "@remix-run/react"
-import { LinksFunction, LoaderFunction, MetaFunction, json } from "@remix-run/node"
-import { getClientEnv } from "./utils/environment.server"
+import { FeatureFlagsContextProvider } from "./context/FeatureFlagContext"
 import { TranslateContextProvider, useTranslate } from "./context/TranslateContext"
 import { UserContextProvider } from "./context/UserContext"
-import { FeatureFlagsContextProvider } from "./context/FeatureFlagContext"
+import { getClientEnv } from "./utils/environment.server"
 import normalizeStyles from "~/styles/normalize.css"
 import rootStyles from "~/styles/root.css"
 

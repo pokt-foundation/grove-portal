@@ -1,6 +1,6 @@
 import { CircleGraph } from "@pokt-foundation/ui"
-import { useMemo } from "react"
 import { IconDown, IconUp } from "@pokt-foundation/ui"
+import { useMemo } from "react"
 import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/shared/Card"
 import CardList, {

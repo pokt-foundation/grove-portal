@@ -1,8 +1,8 @@
-import { useState } from "react"
 import { Group, Modal, Text } from "@mantine/core"
 import { Form } from "@remix-run/react"
-import Button from "~/components/shared/Button"
+import { useState } from "react"
 import styles from "./styles.css"
+import Button from "~/components/shared/Button"
 
 /* c8 ignore next */
 export const links = () => {

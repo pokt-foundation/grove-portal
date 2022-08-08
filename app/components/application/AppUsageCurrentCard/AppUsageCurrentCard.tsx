@@ -5,13 +5,13 @@ import {
 import { CircleGraph } from "@pokt-foundation/ui"
 import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/shared/Card"
-import { commify } from "~/utils/formattingUtils"
-import Grid from "~/components/shared/Grid"
 import CardList, {
   CardListItem,
   links as CardListLinks,
 } from "~/components/shared/CardList"
+import Grid from "~/components/shared/Grid"
 import { useTranslate } from "~/context/TranslateContext"
+import { commify } from "~/utils/formattingUtils"
 
 // const SESSIONS_PER_DAY = 24
 

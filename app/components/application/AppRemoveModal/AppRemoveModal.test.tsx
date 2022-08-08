@@ -1,5 +1,5 @@
-import { expect } from "vitest"
 import userEvent from "@testing-library/user-event"
+import { expect } from "vitest"
 import AppRemoveModal from "./AppRemoveModal"
 import { render, screen, waitFor } from "test/helpers"
 

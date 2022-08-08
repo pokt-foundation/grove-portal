@@ -1,12 +1,12 @@
 import { useMemo } from "react"
 import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/shared/Card"
-import { LatestBlockAndPerformanceData } from "~/models/portal.server"
-import PoweredBy, { links as PoweredByLinks } from "~/components/shared/PoweredBy"
 import CardList, {
   CardListItem,
   links as CardListLinks,
 } from "~/components/shared/CardList"
+import PoweredBy, { links as PoweredByLinks } from "~/components/shared/PoweredBy"
+import { LatestBlockAndPerformanceData } from "~/models/portal.server"
 
 export const links = () => {
   return [

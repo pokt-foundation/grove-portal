@@ -2,8 +2,8 @@ import { Grid, Space, Title } from "@mantine/core"
 import { LoaderFunction, json } from "@remix-run/node"
 import { Link, Outlet } from "@remix-run/react"
 import { Auth0Profile } from "remix-auth-auth0"
-import { requireAdmin } from "~/utils/session.server"
 import Container from "~/components/shared/Container"
+import { requireAdmin } from "~/utils/session.server"
 
 type LoaderData = {
   admin: Awaited<Auth0Profile>

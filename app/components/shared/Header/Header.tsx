@@ -1,14 +1,14 @@
-import { Form, Link } from "@remix-run/react"
-import { Auth0Profile } from "remix-auth-auth0"
 import { useViewportSize } from "@mantine/hooks"
-import { useEffect, useMemo, useRef, useState } from "react"
-import clsx from "clsx"
 import { IconPerson } from "@pokt-foundation/ui"
 import { Item, Separator } from "@radix-ui/react-dropdown-menu"
+import { Form, Link } from "@remix-run/react"
+import clsx from "clsx"
+import { useEffect, useMemo, useRef, useState } from "react"
+import { Auth0Profile } from "remix-auth-auth0"
 import Dropdown, { links as DropdownLinks } from "../Dropdown"
 import HamburgerMenu, { links as HamburgerMenuLinks } from "../HamburgerMenu"
-import Button from "~/components/shared/Button"
 import styles from "./styles.css"
+import Button from "~/components/shared/Button"
 
 export const links = () => {
   return [

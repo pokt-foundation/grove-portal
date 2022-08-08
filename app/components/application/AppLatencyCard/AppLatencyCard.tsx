@@ -1,6 +1,6 @@
+import { UserLBLatencyBucket } from "@pokt-foundation/portal-types"
 import { BarChart } from "@pokt-foundation/ui"
 import { useMemo } from "react"
-import { UserLBLatencyBucket } from "@pokt-foundation/portal-types"
 import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/shared/Card"
 import { formatLatencyValuesForGraphing } from "~/utils/applicationUtils"

@@ -2,9 +2,9 @@ import { IconDown, IconUp } from "@pokt-foundation/ui"
 import { useFetcher } from "@remix-run/react"
 import { useEffect, useState } from "react"
 import styles from "./styles.css"
-import { FeedbackActionResponse } from "~/routes/api/feedbackform"
-import { useTranslate } from "~/context/TranslateContext"
 import Card, { links as CardLinks } from "~/components/shared/Card"
+import { useTranslate } from "~/context/TranslateContext"
+import { FeedbackActionResponse } from "~/routes/api/feedbackform"
 
 export const links = () => {
   return [...CardLinks(), { rel: "stylesheet", href: styles }]

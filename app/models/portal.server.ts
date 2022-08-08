@@ -1,4 +1,3 @@
-import { fetch } from "@remix-run/node"
 import {
   UserLB as PortalUserLB,
   UserLBDailyRelaysResponse,
@@ -11,8 +10,9 @@ import {
   UserLBTotalRelaysResponse,
   UserLBTotalSuccessfulRelaysResponse,
 } from "@pokt-foundation/portal-types"
-import { requireUser } from "~/utils/session.server"
+import { fetch } from "@remix-run/node"
 import { getRequiredClientEnvVar } from "~/utils/environment"
+import { requireUser } from "~/utils/session.server"
 
 // LB: DAILY RELAYS
 export const getLBDailyRelays = async (

@@ -1,6 +1,6 @@
+import { UserLBDailyRelaysResponse } from "@pokt-foundation/portal-types"
 import { LineChart } from "@pokt-foundation/ui"
 import { useMemo } from "react"
-import { UserLBDailyRelaysResponse } from "@pokt-foundation/portal-types"
 import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/shared/Card"
 import { formatDailyRelaysForGraphing } from "~/utils/applicationUtils"

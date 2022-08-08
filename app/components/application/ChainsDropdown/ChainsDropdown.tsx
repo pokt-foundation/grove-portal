@@ -2,12 +2,12 @@ import { IconPlus } from "@pokt-foundation/ui"
 import React, { SyntheticEvent, useState } from "react"
 import ChainWithImage, { links as ChainWithImageLinks } from "../ChainWithImage"
 import styles from "./styles.css"
-import { CHAIN_ID_PREFIXES } from "~/utils/chainUtils"
 import Dropdown, {
   links as DropdownLinks,
   DropdownMenu,
 } from "~/components/shared/Dropdown"
 import TextInput from "~/components/shared/TextInput"
+import { CHAIN_ID_PREFIXES } from "~/utils/chainUtils"
 
 export const links = () => {
   return [

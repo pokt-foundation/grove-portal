@@ -1,6 +1,6 @@
 import { IconPerson } from "@pokt-foundation/ui"
-import type { Auth0Profile } from "remix-auth-auth0"
 import type { LinksFunction } from "@remix-run/node"
+import type { Auth0Profile } from "remix-auth-auth0"
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"

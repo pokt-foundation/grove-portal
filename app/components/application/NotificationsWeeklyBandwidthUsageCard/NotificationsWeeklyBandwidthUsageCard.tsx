@@ -1,13 +1,13 @@
 import { SimpleGrid } from "@mantine/core"
-import { useMemo } from "react"
 import type { LinksFunction } from "@remix-run/node"
+import { useMemo } from "react"
 import CircleGraphWithGradient from "../CircleGraphWithGradient"
 import styles from "./styles.css"
 import Card, { links as CardLinks } from "~/components/shared/Card"
-import { useUsageColor } from "~/utils/applicationUtils"
-import { formatNumberToSICompact } from "~/utils/formattingUtils"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { AppIdLoaderData } from "~/routes/dashboard/apps/$appId"
+import { useUsageColor } from "~/utils/applicationUtils"
+import { formatNumberToSICompact } from "~/utils/formattingUtils"
 
 export const links: LinksFunction = () => [
   ...CardLinks(),

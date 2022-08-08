@@ -1,4 +1,4 @@
-import { render as rtlRender, RenderOptions } from "@testing-library/react"
+import { RenderOptions, render as rtlRender } from "@testing-library/react"
 import { RemixBrowser } from "@remix-run/react"
 import userEvent from "@testing-library/user-event"
 

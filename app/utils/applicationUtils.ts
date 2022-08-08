@@ -81,6 +81,7 @@ export function formatDailyRelaysForGraphing(
     .map(({ bucket }) => bucket.split("T")[0])
     .map((bucket) => DAYS[new Date(bucket).getUTCDay()])
 
+  /* eslint-disable no-nested-ternary */
   const processedDailyRelays =
     dailyRelays.length === 1
       ? [...dailyRelays, { daily_relays: 0 }]

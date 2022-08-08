@@ -1,12 +1,12 @@
 import { describe, expect, it, vi } from "vitest"
+import { Auth0Profile } from "remix-auth-auth0"
 import {
+  getUserProfile,
+  requireAdmin,
   requireUser,
   requireUserProfile,
-  requireAdmin,
-  getUserProfile,
 } from "./session.server"
 import { authenticator } from "./auth.server"
-import { Auth0Profile } from "remix-auth-auth0"
 
 vi.mock("./auth.server", () => ({
   authenticator: {

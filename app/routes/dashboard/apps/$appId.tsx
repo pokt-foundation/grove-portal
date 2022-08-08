@@ -1,17 +1,25 @@
+import {
+  UserLBDailyRelaysResponse,
+  UserLBOnChainDataResponse,
+  UserLBPreviousTotalRelaysResponse,
+  UserLBPreviousTotalSuccessfulRelaysResponse,
+  UserLBTotalRelaysResponse,
+  UserLBTotalSuccessfulRelaysResponse,
+} from "@pokt-foundation/portal-types"
+import invariant from "tiny-invariant"
+import { LoaderFunction, MetaFunction, json } from "@remix-run/node"
 import { Outlet, useCatch, useLoaderData } from "@remix-run/react"
 import Nav, { links as NavLinks } from "~/components/shared/Nav"
-import { json, LoaderFunction, MetaFunction } from "@remix-run/node"
 import { SESSIONS_PER_DAY } from "~/utils/pocketUtils"
-import invariant from "tiny-invariant"
 import {
+  UserLB,
   getLBDailyRelays,
   getLBPreviousSuccessfulRelays,
   getLBPreviousTotalRelays,
-  getLBSuccessfulRelays,
   getLBStatus,
+  getLBSuccessfulRelays,
   getLBTotalRelays,
   getLBUserApplications,
-  UserLB,
 } from "~/models/portal.server"
 import AppKeysCard, {
   links as AppKeysCardLinks,
@@ -23,14 +31,6 @@ import AdEconomicsForDevs, {
   links as AdEconomicsForDevsLinks,
 } from "~/components/application/AdEconomicsForDevs"
 import Grid from "~/components/shared/Grid"
-import {
-  UserLBDailyRelaysResponse,
-  UserLBOnChainDataResponse,
-  UserLBPreviousTotalRelaysResponse,
-  UserLBPreviousTotalSuccessfulRelaysResponse,
-  UserLBTotalRelaysResponse,
-  UserLBTotalSuccessfulRelaysResponse,
-} from "@pokt-foundation/portal-types"
 import FeedbackCard, {
   links as FeedbackCardLinks,
 } from "~/components/application/FeedbackCard"
@@ -156,8 +156,8 @@ export default function AppIdLayout() {
             <section>
               <AppKeysCard
                 id={app.id}
-                secret={app.gatewaySettings.secretKey}
                 publicKey={app.apps[0].publicKey}
+                secret={app.gatewaySettings.secretKey}
               />
             </section>
             <section>

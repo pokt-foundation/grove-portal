@@ -1,7 +1,7 @@
 import { expect } from "vitest"
+import { UserLBLatencyBucket } from "@pokt-foundation/portal-types"
 import AppLatencyCard from "./AppLatencyCard"
 import { render, screen } from "test/helpers"
-import { UserLBLatencyBucket } from "@pokt-foundation/portal-types"
 
 let hourlyLatency: UserLBLatencyBucket[] = [
   { bucket: "2022-06-22T16:00:00Z", latency: 0.4508345 },

@@ -1,14 +1,14 @@
-import { useMemo } from "react"
 import { SimpleGrid } from "@mantine/core"
+import { useMemo } from "react"
 import type { LinksFunction } from "@remix-run/node"
+import CircleGraphWithGradient from "../CircleGraphWithGradient"
+import styles from "./styles.css"
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import { useUsageColor } from "~/utils/applicationUtils"
 import { formatNumberToSICompact } from "~/utils/formattingUtils"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { AppIdLoaderData } from "~/routes/dashboard/apps/$appId"
-import CircleGraphWithGradient from "../CircleGraphWithGradient"
 
-import styles from "./styles.css"
 
 export const links: LinksFunction = () => [
   ...CardLinks(),
@@ -154,12 +154,12 @@ export default function NotificationsWeeklyBandwidthUsageCard() {
           <p>Max Relays Per Day: {maxRelays}</p>
         </div>
         <SimpleGrid
-          cols={3}
           breakpoints={[
             { maxWidth: 980, cols: 3, spacing: "md" },
             { maxWidth: 755, cols: 2, spacing: "sm" },
             { maxWidth: 600, cols: 1, spacing: "sm" },
           ]}
+          cols={3}
         >
           {graphsConfig.map(({ config, gradientConfig, id, subtitle, title }) => (
             <div
@@ -167,9 +167,9 @@ export default function NotificationsWeeklyBandwidthUsageCard() {
               className="pokt-network-notifications-weekly-bandwidth-usage-item"
             >
               <CircleGraphWithGradient
-                id={id}
                 config={config}
                 gradientConfig={gradientConfig}
+                id={id}
               />
               <h5>{title}</h5>
               <p>{subtitle}</p>

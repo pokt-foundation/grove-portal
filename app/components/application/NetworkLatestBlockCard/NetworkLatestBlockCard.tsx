@@ -1,7 +1,7 @@
 import { useMemo } from "react"
+import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/shared/Card"
 import { LatestBlockAndPerformanceData } from "~/models/portal.server"
-import styles from "./styles.css"
 import PoweredBy, { links as PoweredByLinks } from "~/components/shared/PoweredBy"
 import CardList, {
   CardListItem,
@@ -74,7 +74,7 @@ export default function LatestBlock({ latestBlock }: LatestBlockProps) {
           <h3>Latest Block</h3>
         </div>
         <CardList items={rows} />
-        <PoweredBy to="https://poktscan.com/" image="/poktscanLogo.png" alt="Poktscan" />
+        <PoweredBy alt="Poktscan" image="/poktscanLogo.png" to="https://poktscan.com/" />
       </Card>
     </div>
   )

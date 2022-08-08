@@ -1,8 +1,8 @@
-import styles from "./styles.css"
-import { Card, links as CardLinks } from "~/components/shared/Card"
 import { LineChart } from "@pokt-foundation/ui"
 import { useMemo } from "react"
 import { UserLBDailyRelaysResponse } from "@pokt-foundation/portal-types"
+import styles from "./styles.css"
+import { Card, links as CardLinks } from "~/components/shared/Card"
 import { formatDailyRelaysForGraphing } from "~/utils/applicationUtils"
 
 export const links = () => {
@@ -47,18 +47,18 @@ export default function AppUsageOverTimeCard({
         <div>
           {labels && lines && scales && (
             <LineChart
-              className="pokt-app-usage-over-time-chart"
-              lines={lines}
-              label={(i: number) => labels[i]}
-              height={300}
-              color={() => "var(--color-secondary-main)"}
-              renderCheckpoints
-              dotRadius={8}
-              threshold={displayThreshold}
-              scales={scales}
-              dotColor="var(--color-primary-main)"
-              renderVerticalCheckLines
               renderBackground
+              renderCheckpoints
+              renderVerticalCheckLines
+              className="pokt-app-usage-over-time-chart"
+              color={() => "var(--color-secondary-main)"}
+              dotColor="var(--color-primary-main)"
+              dotRadius={8}
+              height={300}
+              label={(i: number) => labels[i]}
+              lines={lines}
+              scales={scales}
+              threshold={displayThreshold}
             />
           )}
         </div>

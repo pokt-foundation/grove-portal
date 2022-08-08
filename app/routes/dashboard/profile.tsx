@@ -1,6 +1,6 @@
-import type { LinksFunction } from "@remix-run/node"
-import type { Auth0Profile } from "remix-auth-auth0"
 import { IconPerson } from "@pokt-foundation/ui"
+import type { Auth0Profile } from "remix-auth-auth0"
+import type { LinksFunction } from "@remix-run/node"
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
@@ -22,21 +22,22 @@ export default function Profile() {
       <h3>User Profile</h3>
       <Card>
         <img
+          alt="user profile"
           className="pokt-network-user-profile-img"
           src={dashboardData.photos[0].value}
-          alt="user profile"
         />
         <TextInput
+          readOnly
           label={
             <>
-              <img src={"/mail.svg"} alt="email" />
+              <img alt="email" src={"/mail.svg"} />
               Email Address
             </>
           }
           value={dashboardData.emails[0].value}
-          readOnly
         />
         <TextInput
+          readOnly
           label={
             <>
               <IconPerson />
@@ -44,18 +45,17 @@ export default function Profile() {
             </>
           }
           value={nickname}
-          readOnly
         />
         <TextInput
+          readOnly
           label="Email Verified"
-          value={emailVerified ? "Verified" : "Not verified"}
           rightSection={
             <img
-              src={emailVerified ? "/checkmark.svg" : "/cross.svg"}
               alt={emailVerified ? "Verified" : "Not verified"}
+              src={emailVerified ? "/checkmark.svg" : "/cross.svg"}
             />
           }
-          readOnly
+          value={emailVerified ? "Verified" : "Not verified"}
         />
       </Card>
     </section>

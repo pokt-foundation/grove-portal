@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react"
+import { IconDown, IconUp } from "@pokt-foundation/ui"
 import { useFetcher } from "@remix-run/react"
-import { IconUp, IconDown } from "@pokt-foundation/ui"
+import { useEffect, useState } from "react"
 import styles from "./styles.css"
 import { FeedbackActionResponse } from "~/routes/api/feedbackform"
 import { useTranslate } from "~/context/TranslateContext"
@@ -39,10 +39,10 @@ export default function FeedbackBox({ className }: { className?: string }) {
             <div className="row">
               <div className="spaceholder">
                 <img
-                  className="image"
-                  src="/heart.svg"
                   alt={feedback.heartImageAlt}
                   aria-hidden="true"
+                  className="image"
+                  src="/heart.svg"
                 />
               </div>
               <div>
@@ -66,10 +66,10 @@ export default function FeedbackBox({ className }: { className?: string }) {
               <div className="row">
                 <div className="spaceholder">
                   <img
-                    className="image"
-                    src="/share-feedback.svg"
                     alt={feedback.feedbackShareAltText}
                     aria-hidden="true"
+                    className="image"
+                    src="/share-feedback.svg"
                   />
                 </div>
                 <div>
@@ -78,8 +78,8 @@ export default function FeedbackBox({ className }: { className?: string }) {
                 </div>
               </div>
               <button
-                className="openclosebutton"
                 aria-label={open ? feedback.clickClose : feedback.clickOpen}
+                className="openclosebutton"
                 title={open ? feedback.clickClose : feedback.clickOpen}
                 onClick={() => {
                   setOpen(!open)
@@ -90,21 +90,21 @@ export default function FeedbackBox({ className }: { className?: string }) {
             </div>
 
             <div className={`animatedBox ${open}`}>
-              <fetcher.Form className="form" method="post" action="/api/feedbackform">
+              <fetcher.Form action="/api/feedbackform" className="form" method="post">
                 <textarea
+                  aria-errormessage="error"
+                  aria-invalid={fetcher.data?.error ?? false}
                   className="textarea"
                   name="feedback_message"
+                  placeholder={feedback.textAreaPlaceholder}
                   style={{
                     border: fetcher.data?.error
                       ? "1px solid var(--color-error)"
                       : "1px solid var(--color-white-main)",
                   }}
-                  aria-invalid={fetcher.data?.error ?? false}
-                  aria-errormessage="error"
-                  placeholder={feedback.textAreaPlaceholder}
                 />
-                <input hidden name="feedback_location" defaultValue={location} />
-                <input hidden name="feedback_pageTitle" defaultValue={pageTitle} />
+                <input hidden defaultValue={location} name="feedback_location" />
+                <input hidden defaultValue={pageTitle} name="feedback_pageTitle" />
                 <p
                   className="bodytext error"
                   id="error"
@@ -124,10 +124,10 @@ export default function FeedbackBox({ className }: { className?: string }) {
                   {feedback.personal}
                 </p>
                 <button
-                  className="submit"
-                  type="submit"
                   aria-label="Submit feedback"
+                  className="submit"
                   title="Submit feedback"
+                  type="submit"
                 >
                   {common.submit}
                 </button>

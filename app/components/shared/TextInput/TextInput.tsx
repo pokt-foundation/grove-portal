@@ -1,12 +1,12 @@
-import styles from "./styles.css"
 
 import { TextInput as MantineTextInput, TextInputProps } from "@mantine/core"
+import clsx from "clsx"
+import { IconTrashcan } from "@pokt-foundation/ui"
+import Button from "../Button"
 import CopyTextIcon, {
   links as CopyTextIconLinks,
 } from "~/components/shared/CopyTextIcon"
-import clsx from "clsx"
-import Button from "../Button"
-import { IconTrashcan } from "@pokt-foundation/ui"
+import styles from "./styles.css"
 
 export const links = () => {
   return [...CopyTextIconLinks(), { rel: "stylesheet", href: styles }]
@@ -37,9 +37,9 @@ export default function TextInput({
           "pokt-text-input": true,
           "right-section": props.rightSection,
         })}
+        rightSection={rightSection}
         size={props.size ?? "md"}
         variant={props.variant ?? "unstyled"}
-        rightSection={rightSection}
         {...props}
       />
       {hasDelete && (

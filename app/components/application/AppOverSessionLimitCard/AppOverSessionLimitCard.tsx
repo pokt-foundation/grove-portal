@@ -1,11 +1,11 @@
-import styles from "./styles.css"
-import { Card, links as CardLinks } from "~/components/shared/Card"
 import { Avatar } from "@mantine/core"
 import { IconInfo } from "@pokt-foundation/ui"
-import { useTranslate } from "~/context/TranslateContext"
 import { Link } from "@remix-run/react"
-import Button from "~/components/shared/Button"
 import React from "react"
+import styles from "./styles.css"
+import { Card, links as CardLinks } from "~/components/shared/Card"
+import { useTranslate } from "~/context/TranslateContext"
+import Button from "~/components/shared/Button"
 
 /* c8 ignore next */
 export const links = () => {
@@ -30,7 +30,7 @@ export default function AppOverLimitCard({
           <Card>
             <div className="pokt-card-header">
               <h3>{t.AppOverLimitCard.title}</h3>
-              <Avatar color="red" size="sm" radius="xl">
+              <Avatar color="red" radius="xl" size="sm">
                 <IconInfo />
               </Avatar>
             </div>

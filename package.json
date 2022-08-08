@@ -9,6 +9,7 @@
     "dev": "remix dev",
     "format": "prettier --write .",
     "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint .",
+    "lint:fix": "eslint --fix --cache --cache-location ./node_modules/.cache/eslint .",
     "test": "vitest",
     "test:unit:run": "vitest run --coverage",
     "test:e2e:dev": "start-server-and-test dev http://localhost:3001 \"cypress open\"",

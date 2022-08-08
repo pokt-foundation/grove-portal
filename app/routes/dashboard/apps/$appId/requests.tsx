@@ -1,7 +1,8 @@
 import { UserLBOriginBucket } from "@pokt-foundation/portal-types"
-import { json, LoaderFunction, MetaFunction } from "@remix-run/node"
+import { LoaderFunction, MetaFunction, json } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
 import invariant from "tiny-invariant"
+import { AppIdLoaderData } from "../$appId"
 import AppRequestsByOriginCard, {
   links as AppRequestsByOriginCardLinks,
 } from "~/components/application/AppRequestsByOriginCard"
@@ -17,7 +18,6 @@ import {
   getLBErrorMetrics,
   getLBOriginClassification,
 } from "~/models/portal.server"
-import { AppIdLoaderData } from "../$appId"
 
 export const meta: MetaFunction = () => {
   return {
@@ -85,8 +85,8 @@ export default function AppIdRequests() {
       {appIdData.totalRelays && originClassification && (
         <section>
           <AppRequestsByOriginCard
-            usagePerOrigin={originClassification}
             totalRelays={appIdData.totalRelays.total_relays}
+            usagePerOrigin={originClassification}
           />
         </section>
       )}

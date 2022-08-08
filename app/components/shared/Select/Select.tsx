@@ -1,7 +1,7 @@
-import styles from "./styles.css"
 
 import { Select as MantineSelect, SelectProps } from "@mantine/core"
 import clsx from "clsx"
+import styles from "./styles.css"
 
 export const links = () => {
   return [{ rel: "stylesheet", href: styles }]

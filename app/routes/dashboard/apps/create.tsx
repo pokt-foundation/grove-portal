@@ -1,8 +1,8 @@
-import { Group, Text } from "@mantine/core"
-import { ActionFunction, MetaFunction, redirect } from "@remix-run/node"
-import { Form, Link } from "@remix-run/react"
-import { forwardRef } from "react"
 import invariant from "tiny-invariant"
+import { forwardRef } from "react"
+import { Form, Link } from "@remix-run/react"
+import { ActionFunction, MetaFunction, redirect } from "@remix-run/node"
+import { Group, Text } from "@mantine/core"
 import ChainWithImage, {
   AppEndpointProps,
   links as ChainWithImageLinks,
@@ -11,7 +11,7 @@ import Button from "~/components/shared/Button"
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import Select, { links as SelectLinks } from "~/components/shared/Select"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
-import { postLBUserApplication, UserApplication } from "~/models/portal.server"
+import { UserApplication, postLBUserApplication } from "~/models/portal.server"
 import { CHAIN_ID_PREFIXES } from "~/utils/chainUtils"
 
 export const meta: MetaFunction = () => {
@@ -75,27 +75,27 @@ export default function CreateApp() {
             </Text>
           </div>
           <Form method="post">
-            <TextInput name="app-name" label="Name" placeholder="New App Name" />
+            <TextInput label="Name" name="app-name" placeholder="New App Name" />
             <Select
-              name="app-chain"
-              label="Chain"
-              placeholder="Select Chain"
               searchable
-              nothingFound="No options"
-              itemComponent={SelectItem}
               data={chains}
               filter={(value, item) =>
                 item.chain.toLowerCase().includes(value.toLowerCase().trim()) ||
                 item.value.toLowerCase().includes(value.toLowerCase().trim())
               }
+              itemComponent={SelectItem}
+              label="Chain"
+              name="app-chain"
+              nothingFound="No options"
+              placeholder="Select Chain"
             />
             <div>
-              <Text size="xs" mt={32} mb={16}>
+              <Text mb={16} mt={32} size="xs">
                 By using this application and the service, you agree to our{" "}
                 <a
                   href="https://www.pokt.network/site-terms-of-use"
-                  target="_blank"
                   rel="noreferrer"
+                  target="_blank"
                 >
                   Terms of Use
                 </a>

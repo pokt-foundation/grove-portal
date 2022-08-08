@@ -1,10 +1,10 @@
-import styles from "./styles.css"
-import { Card, links as CardLinks } from "~/components/shared/Card"
-import { CircleGraph } from "@pokt-foundation/ui"
 import {
   UserLBSessionRelaysResponse,
   UserLBTotalRelaysResponse,
 } from "@pokt-foundation/portal-types"
+import { CircleGraph } from "@pokt-foundation/ui"
+import styles from "./styles.css"
+import { Card, links as CardLinks } from "~/components/shared/Card"
 import { commify } from "~/utils/formattingUtils"
 import Grid from "~/components/shared/Grid"
 import CardList, {
@@ -64,10 +64,10 @@ export default function AppUsageCurrentCard({
               <Grid.Col xs={3}>
                 {maxDailyRelays && totalRelays && (
                   <CircleGraph
-                    value={Math.min(1, totalRelays / maxDailyRelays)}
-                    size={70}
                     color="#c5ec4b"
+                    size={70}
                     strokeWidth={10}
+                    value={Math.min(1, totalRelays / maxDailyRelays)}
                   />
                 )}
               </Grid.Col>

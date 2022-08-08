@@ -8,7 +8,7 @@ export default function FeatureFlags() {
 
   return (
     <Container>
-      <fetcher.Form method="post" action="/api/featureflags">
+      <fetcher.Form action="/api/featureflags" method="post">
         {Object.entries(flags).map(([key, value]) => (
           <fieldset key={key}>
             <label>{key}: </label>

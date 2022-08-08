@@ -1,5 +1,16 @@
-import { json, LoaderFunction, MetaFunction } from "@remix-run/node"
+import { useMemo } from "react"
+import invariant from "tiny-invariant"
+import {
+  // UserLBDailyRelaysResponse,
+  UserLBHistoricalLatencyResponse,
+  UserLBSessionRelaysResponse,
+  // UserLBTotalSuccessfulRelaysResponse,
+  // UserLBOnChainDataResponse,
+  UserLBTotalRelaysResponse,
+} from "@pokt-foundation/portal-types"
 import { useLoaderData } from "@remix-run/react"
+import { LoaderFunction, MetaFunction, json } from "@remix-run/node"
+import { AppIdLoaderData } from "../$appId"
 import { SESSIONS_PER_DAY } from "~/utils/pocketUtils"
 import {
   // getLBDailyRelays,
@@ -14,15 +25,6 @@ import {
   // getLBUserApplications,
   // UserLB,
 } from "~/models/portal.server"
-import {
-  // UserLBDailyRelaysResponse,
-  UserLBHistoricalLatencyResponse,
-  UserLBSessionRelaysResponse,
-  // UserLBTotalSuccessfulRelaysResponse,
-  // UserLBOnChainDataResponse,
-  UserLBTotalRelaysResponse,
-} from "@pokt-foundation/portal-types"
-import invariant from "tiny-invariant"
 import AppEndpointCard, {
   links as AppEndpointCardLinks,
 } from "~/components/application/AppEndpointCard"
@@ -33,7 +35,6 @@ import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import AppUsageOverTimeCard, {
   links as AppUsageOverTimeCardLinks,
 } from "~/components/application/AppUsageOverTimeCard"
-import { AppIdLoaderData } from "../$appId"
 import AppUsageCurrentCard, {
   links as AppUsageCurrentCardLinks,
 } from "~/components/application/AppUsageCurrentCard"
@@ -41,7 +42,6 @@ import Grid from "~/components/shared/Grid"
 import AppRequestsRateCard, {
   links as AppRequestsRateCardLinks,
 } from "~/components/application/AppRequestsRateCard"
-import { useMemo } from "react"
 import AppOverLimitCard, {
   links as AppOverLimitCardLinks,
 } from "~/components/application/AppOverSessionLimitCard/AppOverSessionLimitCard"
@@ -133,8 +133,8 @@ export const Application = () => {
             <section>
               <AppUsageCurrentCard
                 maxDailyRelays={appIdData.maxDailyRelays}
-                totalRelays={data.totalRelays.total_relays}
                 sessionRelays={data.sessionRelays.session_relays}
+                totalRelays={data.totalRelays.total_relays}
               />
             </section>
           )}

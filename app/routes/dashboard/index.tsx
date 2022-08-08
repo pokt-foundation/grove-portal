@@ -1,12 +1,6 @@
-import { LoaderFunction, json, MetaFunction } from "@remix-run/node"
+import { Grid } from "@mantine/core"
 import { useLoaderData } from "@remix-run/react"
-import type {
-  Chain,
-  DailyRelayBucket,
-  LatestBlockAndPerformanceData,
-  NetworkRelayStats,
-  SummaryData,
-} from "~/models/portal.server"
+import { LoaderFunction, MetaFunction, json } from "@remix-run/node"
 import {
   getNetworkChains,
   getNetworkDailyRelays,
@@ -17,7 +11,6 @@ import {
 import NetworkSummaryCard, {
   links as NetworkSummaryCardLinks,
 } from "~/components/application/NetworkSummaryCard"
-import { Grid } from "@mantine/core"
 import NetworkSuccessRateCard, {
   links as NetworkSuccessRateCardLinks,
 } from "~/components/application/NetworkSuccessRateCard"
@@ -42,8 +35,15 @@ import FeedbackCard, {
 import AdEconomicsForDevs, {
   links as AdEconomicsForDevsLinks,
 } from "~/components/application/AdEconomicsForDevs"
-import { getNetworkRelays, RelayMetric } from "~/models/relaymeter.server"
+import { RelayMetric, getNetworkRelays } from "~/models/relaymeter.server"
 import { dayjs } from "~/utils/dayjs"
+import type {
+  Chain,
+  DailyRelayBucket,
+  LatestBlockAndPerformanceData,
+  NetworkRelayStats,
+  SummaryData,
+} from "~/models/portal.server"
 
 export const links = () => {
   return [
@@ -147,23 +147,23 @@ export default function Index() {
           <Grid gutter={32}>
             <Grid.Col sm={4}>
               <NetworkSummaryCard
-                title="Nodes Staked"
-                subtitle="7000+"
                 imgSrc="/networkSummaryNodes.png"
+                subtitle="7000+"
+                title="Nodes Staked"
               />
             </Grid.Col>
             <Grid.Col sm={4}>
               <NetworkSummaryCard
-                title="Apps Staked"
-                subtitle={String(data.summary.appsStaked)}
                 imgSrc="/networkSummaryApps.png"
+                subtitle={String(data.summary.appsStaked)}
+                title="Apps Staked"
               />
             </Grid.Col>
             <Grid.Col sm={4}>
               <NetworkSummaryCard
-                title="Networks"
-                subtitle={String(data.chains.length)}
                 imgSrc="/networkSummaryNetworks.png"
+                subtitle={String(data.chains.length)}
+                title="Networks"
               />
             </Grid.Col>
           </Grid>
@@ -173,7 +173,9 @@ export default function Index() {
         </section>
         <section>
           <Table
-            label="Available Networks"
+            paginate
+            search
+            columns={["Network", "Nodes", "ID", "Status"]}
             data={data.chains.map((chain) => ({
               id: chain.id,
               network: {
@@ -184,9 +186,7 @@ export default function Index() {
               chainId: chain.id,
               status: getServiceLevelByChain(chain.id),
             }))}
-            columns={["Network", "Nodes", "ID", "Status"]}
-            paginate
-            search
+            label="Available Networks"
           />
         </section>
       </Grid.Col>
@@ -200,9 +200,9 @@ export default function Index() {
         </section>
         <section>
           <NetworkRelayPerformanceCard
+            month={data.monthlyNetworkRelays}
             today={data.dailyNetworkRelays}
             week={data.weeklyNetworkRelays}
-            month={data.monthlyNetworkRelays}
           />
         </section>
         <section>

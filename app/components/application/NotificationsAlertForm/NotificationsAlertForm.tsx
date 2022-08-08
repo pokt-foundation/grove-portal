@@ -1,13 +1,13 @@
-import { Text } from "@mantine/core"
-import { LinksFunction } from "@remix-run/node"
 import { Form, useTransition } from "@remix-run/react"
+import { LinksFunction } from "@remix-run/node"
+import { Text } from "@mantine/core"
+import styles from "./styles.css"
 import Button from "~/components/shared/Button"
 import Card from "~/components/shared/Card"
 import Switch, { links as SwitchLinks } from "~/components/shared/Switch"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { AppIdLoaderData } from "~/routes/dashboard/apps/$appId"
 import { formatNumberToSICompact } from "~/utils/formattingUtils"
-import styles from "./styles.css"
 
 export const links: LinksFunction = () => [
   ...SwitchLinks(),
@@ -91,13 +91,13 @@ export default function NotificationsAlertForm() {
                     {formatNumberToSICompact(maxDailyRelays)} relays per day
                   </p>
                   <Switch
-                    name={level}
                     defaultChecked={
                       Object.keys(notificationSettings).length > 0 &&
                       notificationSettings[level]
                         ? notificationSettings
                         : DEFAULT_ALERT_PERCENTAGES[level]
                     }
+                    name={level}
                   />
                 </div>
               </div>
@@ -106,14 +106,14 @@ export default function NotificationsAlertForm() {
           <div className="pokt-network-notifications-alert-btn-container">
             <Button
               className="pokt-network-notifications-submit-btn"
-              variant="filled"
-              type="submit"
               disabled={state === "loading" || state === "submitting"}
+              type="submit"
+              variant="filled"
             >
               {state === "loading" || state === "submitting" ? state : "Save Changes"}
             </Button>
           </div>
-          <Text size="xs" mt={16}>
+          <Text mt={16} size="xs">
             The Portal automatically redirects all surplus relays to our backup
             infrastructure. If you want all relays to be unstoppable, stay under your
             limit or contact the team to up your stake.

@@ -1,7 +1,7 @@
-import React, { useMemo, useContext } from "react"
+import React, { useContext, useMemo } from "react"
+import { useUser } from "./UserContext"
 import en from "~/locales/en"
 import fr from "~/locales/fr"
-import { useUser } from "./UserContext"
 
 const languages = ["en", "fr"] as const
 const translate: Translate = {

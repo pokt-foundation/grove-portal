@@ -1,5 +1,5 @@
-import styles from "./styles.css"
 import { Switch as MantineSwitch, SwitchProps } from "@mantine/core"
+import styles from "./styles.css"
 
 export const links = () => {
   return [{ rel: "stylesheet", href: styles }]

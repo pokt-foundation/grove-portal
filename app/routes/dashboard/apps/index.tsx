@@ -1,8 +1,8 @@
-import { json, LoaderFunction, MetaFunction } from "@remix-run/node"
+import { LoaderFunction, MetaFunction, json } from "@remix-run/node"
 import { Link, useLoaderData } from "@remix-run/react"
-import type { UserLB } from "~/models/portal.server"
 import { getLBUserApplications } from "~/models/portal.server"
 import Table, { links as TableLinks } from "~/components/shared/Table"
+import type { UserLB } from "~/models/portal.server"
 
 export const links = () => {
   return [...TableLinks()]
@@ -40,7 +40,8 @@ export const Apps = () => {
   return (
     <section>
       <Table
-        label="Applications"
+        search
+        columns={["App", "Chain", "Status", ""]}
         data={data.userApps.map((app) => ({
           id: app.id,
           app: {
@@ -54,11 +55,10 @@ export const Apps = () => {
             element: <Link to={app.id}>...</Link>,
           },
         }))}
-        columns={["App", "Chain", "Status", ""]}
+        label="Applications"
         paginate={{
           perPage: 10,
         }}
-        search
       />
     </section>
   )

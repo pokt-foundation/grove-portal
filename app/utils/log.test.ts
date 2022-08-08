@@ -1,5 +1,5 @@
-import * as environment from "./environment"
 import { captureMessage } from "@sentry/react"
+import * as environment from "./environment"
 import { log } from "./log"
 
 const message = "Test Error"

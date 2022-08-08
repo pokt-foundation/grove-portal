@@ -58,7 +58,7 @@ export const meta: MetaFunction = () => {
 }
 
 type LoaderData = {
-  blockchains: Blockchain[]
+  blockchains: Blockchain[] | null
   latestBlock: LatestBlockAndPerformanceData
   dailyNetworkRelaysPerWeek: RelayMetric[]
   dailyNetworkRelays: RelayMetric
@@ -69,7 +69,9 @@ type LoaderData = {
 export const loader: LoaderFunction = async ({ request }) => {
   const user = await requireUser(request)
   const portal = initPortalClient(user.accessToken)
-  const { blockchains } = await portal.blockchains({ active: true })
+  const blockchainResponse = await portal.blockchains({ active: true }).catch((e) => {
+    console.log(e)
+  })
 
   // OLD BACKEND API CALL
   const latestBlock = await getNetworkLatestBlock(request)
@@ -106,7 +108,11 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   return json<LoaderData>(
     {
-      blockchains: blockchains.filter((chain) => chain !== null) as Blockchain[],
+      blockchains: blockchainResponse
+        ? (blockchainResponse.blockchains.filter(
+            (chain) => chain !== null,
+          ) as Blockchain[])
+        : null,
       latestBlock,
       dailyNetworkRelaysPerWeek,
       dailyNetworkRelays,
@@ -124,7 +130,14 @@ export const loader: LoaderFunction = async ({ request }) => {
 }
 
 export default function Index() {
-  const data = useLoaderData() as LoaderData
+  const {
+    blockchains,
+    dailyNetworkRelaysPerWeek,
+    dailyNetworkRelays,
+    monthlyNetworkRelays,
+    weeklyNetworkRelays,
+    latestBlock,
+  } = useLoaderData() as LoaderData
   return (
     <Grid gutter={32}>
       <Grid.Col md={8}>
@@ -148,46 +161,48 @@ export default function Index() {
             <Grid.Col sm={4}>
               <NetworkSummaryCard
                 title="Networks"
-                subtitle={String(data.blockchains.length)}
+                subtitle={String(blockchains ? blockchains.length : 0)}
                 imgSrc="/networkSummaryNetworks.png"
               />
             </Grid.Col>
           </Grid>
         </section>
         <section>
-          <UsageChartCard relays={data.dailyNetworkRelaysPerWeek} />
+          <UsageChartCard relays={dailyNetworkRelaysPerWeek} />
         </section>
-        <section>
-          <Table
-            label="Available Networks"
-            data={data.blockchains.map((chain) => ({
-              id: chain.id,
-              network: {
-                value: chain.description,
-                element: <ChainWithImage chain={chain.description} />,
-              },
-              chainId: chain.id,
-              status: getServiceLevelByChain(chain.id),
-            }))}
-            columns={["Network", "ID", "Status"]}
-            paginate
-            search
-          />
-        </section>
+        {blockchains && (
+          <section>
+            <Table
+              label="Available Networks"
+              data={blockchains.map((chain) => ({
+                id: chain.id,
+                network: {
+                  value: chain.description,
+                  element: <ChainWithImage chain={chain.description} />,
+                },
+                chainId: chain.id,
+                status: getServiceLevelByChain(chain.id),
+              }))}
+              columns={["Network", "ID", "Status"]}
+              paginate
+              search
+            />
+          </section>
+        )}
       </Grid.Col>
       <Grid.Col md={4}>
         <section>
           <h3>Network Success Rate</h3>
-          <NetworkSuccessRateCard relays={data.weeklyNetworkRelays} />
+          <NetworkSuccessRateCard relays={weeklyNetworkRelays} />
         </section>
         <section>
-          <NetworkLatestBlockCard latestBlock={data.latestBlock} />
+          <NetworkLatestBlockCard latestBlock={latestBlock} />
         </section>
         <section>
           <NetworkRelayPerformanceCard
-            today={data.dailyNetworkRelays}
-            week={data.weeklyNetworkRelays}
-            month={data.monthlyNetworkRelays}
+            today={dailyNetworkRelays}
+            week={weeklyNetworkRelays}
+            month={monthlyNetworkRelays}
           />
         </section>
         <section>

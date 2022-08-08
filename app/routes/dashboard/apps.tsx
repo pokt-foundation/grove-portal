@@ -31,7 +31,7 @@ export const links = () => {
 }
 
 export type AllAppsLoaderData = {
-  endpoints: ProcessedEndpoint[]
+  endpoints: ProcessedEndpoint[] | null
   userId: string
 }
 
@@ -39,11 +39,19 @@ export const loader: LoaderFunction = async ({ request }) => {
   const user = await requireUser(request)
   const userId = await getUserId(request)
   const portal = initPortalClient(user.accessToken)
-  const { endpoints } = await portal.endpoints()
+  console.log(user.accessToken)
+  const endpointsResponse = await portal.endpoints().catch((e) => {
+    console.log(e)
+  })
+  const endpoints = endpointsResponse
+    ? (endpointsResponse.endpoints.filter(
+        (endpoint) => endpoint !== null,
+      ) as ProcessedEndpoint[])
+    : null
 
   return json<AllAppsLoaderData>(
     {
-      endpoints: endpoints.filter((endpoint) => endpoint !== null) as ProcessedEndpoint[],
+      endpoints,
       userId,
     },
     {
@@ -63,7 +71,7 @@ export const Apps = () => {
   const userAppsStatus: CardListItem[] = [
     {
       label: "Current Apps",
-      value: endpoints.length,
+      value: Number(endpoints?.length),
     },
     {
       label: "Max Apps",
@@ -80,18 +88,20 @@ export const Apps = () => {
           <Outlet />
         </Grid.Col>
         <Grid.Col md={4}>
-          <Card>
-            <div className="pokt-card-header">
-              <h3>Account</h3>
-            </div>
-            <CardList items={userAppsStatus} />
-            {(endpoints.length < MAX_USER_APPS ||
-              getRequiredClientEnvVar("GODMODE_ACCOUNTS")?.includes(userId)) && (
-              <Button component={Link} to="create" fullWidth mt={32}>
-                Create New Application
-              </Button>
-            )}
-          </Card>
+          {endpoints && (
+            <Card>
+              <div className="pokt-card-header">
+                <h3>Account</h3>
+              </div>
+              <CardList items={userAppsStatus} />
+              {(endpoints.length < MAX_USER_APPS ||
+                getRequiredClientEnvVar("GODMODE_ACCOUNTS")?.includes(userId)) && (
+                <Button component={Link} to="create" fullWidth mt={32}>
+                  Create New Application
+                </Button>
+              )}
+            </Card>
+          )}
           <section>
             <AdEconomicsForDevs />
           </section>

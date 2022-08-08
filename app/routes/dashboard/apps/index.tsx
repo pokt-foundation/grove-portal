@@ -1,11 +1,12 @@
 import { MetaFunction } from "@remix-run/node"
 import { Link } from "@remix-run/react"
+import Card, { links as CardLinks } from "~/components/shared/Card"
 import Table, { links as TableLinks } from "~/components/shared/Table"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { AllAppsLoaderData } from "../apps"
 
 export const links = () => {
-  return [...TableLinks()]
+  return [...TableLinks(), ...CardLinks()]
 }
 
 export const meta: MetaFunction = () => {
@@ -20,27 +21,35 @@ export const Apps = () => {
 
   return (
     <section>
-      <Table
-        label="Applications"
-        data={endpoints.map((app) => ({
-          id: app.id,
-          app: {
-            value: app.name,
-            element: <Link to={app.id}>{app.name}</Link>,
-          },
-          chain: app.chain,
-          status: app.status,
-          action: {
-            value: "",
-            element: <Link to={app.id}>...</Link>,
-          },
-        }))}
-        columns={["App", "Chain", "Status", ""]}
-        paginate={{
-          perPage: 10,
-        }}
-        search
-      />
+      {endpoints && endpoints.length > 0 ? (
+        <Table
+          label="Applications"
+          data={endpoints.map((app) => ({
+            id: app.id,
+            app: {
+              value: app.name,
+              element: <Link to={app.id}>{app.name}</Link>,
+            },
+            chain: app.chain,
+            status: app.status,
+            action: {
+              value: "",
+              element: <Link to={app.id}>...</Link>,
+            },
+          }))}
+          columns={["App", "Chain", "Status", ""]}
+          paginate={{
+            perPage: 10,
+          }}
+          search
+        />
+      ) : (
+        <Card>
+          <div className="pokt-card-header">
+            <h3>Applications</h3>
+          </div>
+        </Card>
+      )}
     </section>
   )
 }

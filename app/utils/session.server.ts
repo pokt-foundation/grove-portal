@@ -29,14 +29,15 @@ export const requireUser = async (request: Request, defaultRedirect = "/") => {
   }>(user.accessToken)
 
   if (Date.now() >= decode.exp * 1000) {
-    try {
-      const refreshUser = await authenticator.authenticate("auth0", request)
-      return refreshUser
-    } catch (error) {
-      throw await authenticator.logout(request, {
-        redirectTo: defaultRedirect,
-      })
-    }
+    throw await authenticator.logout(request, { redirectTo: "/validate" })
+    // try {
+    //   const refreshUser = await authenticator.authenticate("auth0", request)
+    //   return refreshUser
+    // } catch (error) {
+    //   throw await authenticator.logout(request, {
+    //     redirectTo: defaultRedirect,
+    //   })
+    // }
   }
   return user
 }

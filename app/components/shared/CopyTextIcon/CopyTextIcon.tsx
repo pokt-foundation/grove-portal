@@ -1,6 +1,6 @@
+import { IconCopy, IconPlus } from "@pokt-foundation/ui"
 import styles from "./styles.css"
 import { useClipboard } from "~/hooks/useClipboard"
-import { IconCopy, IconPlus } from "@pokt-foundation/ui"
 
 export const links = () => {
   return [{ rel: "stylesheet", href: styles }]

@@ -1,6 +1,6 @@
-import { ActionFunction, json, LoaderFunction } from "@remix-run/node"
+import { ActionFunction, LoaderFunction, json } from "@remix-run/node"
+import { FeatureFlags, defaultFeatureFlags } from "~/context/FeatureFlagContext"
 import { featureFlagsCookie } from "~/utils/cookies.server"
-import { defaultFeatureFlags, FeatureFlags } from "~/context/FeatureFlagContext"
 import { requireAdmin } from "~/utils/session.server"
 
 export interface FeatureFlagsLoaderActionData {

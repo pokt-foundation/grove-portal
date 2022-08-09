@@ -17,7 +17,7 @@ const GRADIENT_ID = "loading-screen-logo-gradient"
 
 export default function AnimatedLogo() {
   return (
-    <svg width={100} height={100} viewBox="0 0 100 100" overflow="visible">
+    <svg height={100} overflow="visible" viewBox="0 0 100 100" width={100}>
       <Outline />
       <Outline
         gradient
@@ -41,12 +41,12 @@ export default function AnimatedLogo() {
       />
       <defs>
         <linearGradient
+          gradientUnits="userSpaceOnUse"
           id={GRADIENT_ID}
           x1={0}
-          y1={75.052}
           x2={143.077}
+          y1={75.052}
           y2={75.052}
-          gradientUnits="userSpaceOnUse"
         >
           <stop offset={0} stopColor={GRADIENT_COLOR_START} />
           <stop offset={1} stopColor={GRADIENT_COLOR_STOP} />

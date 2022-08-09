@@ -1,5 +1,5 @@
-import { Card, links as CardLinks } from "~/components/shared/Card"
 import styles from "./styles.css"
+import { Card, links as CardLinks } from "~/components/shared/Card"
 
 export const links = () => {
   return [...CardLinks(), { rel: "stylesheet", href: styles }]
@@ -24,9 +24,9 @@ export default function NetworkSummaryCard({
           <p>{subtitle}</p>
         </div>
         <img
+          alt="network summary nodes"
           className="pokt-network-summary-image"
           src={imgSrc}
-          alt="network summary nodes"
         />
       </Card>
     </div>

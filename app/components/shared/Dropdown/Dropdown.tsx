@@ -1,5 +1,5 @@
-import styles from "./styles.css"
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
+import styles from "./styles.css"
 
 export const links = () => {
   return [{ rel: "stylesheet", href: styles }]

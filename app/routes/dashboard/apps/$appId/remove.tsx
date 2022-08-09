@@ -1,4 +1,4 @@
-import { ActionFunction, redirect, json } from "@remix-run/node"
+import { ActionFunction, json, redirect } from "@remix-run/node"
 import invariant from "tiny-invariant"
 import { postLBRemoveUserApplication } from "~/models/portal.server"
 

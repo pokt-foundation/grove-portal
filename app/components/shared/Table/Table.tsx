@@ -1,8 +1,8 @@
-import { Group, Pagination, Table as MantineTable, TextInput } from "@mantine/core"
+import { Group, Table as MantineTable, Pagination, TextInput } from "@mantine/core"
 import { useMemo, useState } from "react"
+import styles from "./styles.css"
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import { useTranslate } from "~/context/TranslateContext"
-import styles from "./styles.css"
 
 export const links = () => {
   return [...CardLinks(), { rel: "stylesheet", href: styles }]
@@ -98,18 +98,18 @@ export const Table = <T extends IdObj>({
     <div className="pokt-table">
       <Card>
         {(label || search) && (
-          <Group position="apart" align="center" className="pokt-table-header">
+          <Group align="center" className="pokt-table-header" position="apart">
             {label && <h3>{label}</h3>}
             {search && (
               <TextInput
+                aria-label={`${t.search.label} ${label}`}
                 className="pokt-table-search"
                 name="search"
-                aria-label={`${t.search.label} ${label}`}
                 placeholder={`${t.search.label} ${label}`}
-                size="xs"
-                onChange={(e) => setSearchTerm(e.target.value)}
                 rightSectionWidth={85}
+                size="xs"
                 variant="default"
+                onChange={(e) => setSearchTerm(e.target.value)}
               />
             )}
           </Group>
@@ -152,17 +152,17 @@ export const Table = <T extends IdObj>({
           </MantineTable>
         </div>
         {paginate && (
-          <Group position="apart" align="center" className="pokt-table-paginate">
+          <Group align="center" className="pokt-table-paginate" position="apart">
             <Pagination
-              mt={30}
-              position="right"
-              page={page}
               initialPage={page}
-              onChange={__handlePageChange}
-              total={totalPages}
-              size="sm"
+              mt={30}
+              page={page}
+              position="right"
               radius="md"
+              size="sm"
+              total={totalPages}
               withControls={false}
+              onChange={__handlePageChange}
             />
           </Group>
         )}

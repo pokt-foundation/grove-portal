@@ -1,5 +1,5 @@
-import { Container } from "~/components/shared/Container"
 import { LinksFunction } from "@remix-run/node"
+import { Container } from "~/components/shared/Container"
 import { useTranslate } from "~/context/TranslateContext"
 import styles from "~/styles/landing.css"
 
@@ -37,7 +37,7 @@ export default function FAQs() {
 export const ErrorBoundary = ({ error }: { error: Error }) => {
   return (
     <div className="error-container">
-      <dialog title="Index Error" color="red">
+      <dialog color="red" title="Index Error">
         {error.message}
       </dialog>
     </div>

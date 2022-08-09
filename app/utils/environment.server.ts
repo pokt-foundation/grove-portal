@@ -1,5 +1,6 @@
 function getClientEnv() {
   return {
+    INDEXER_API_URL: process.env.INDEXER_API_URL,
     RELAY_METER_API_URL: process.env.RELAY_METER_API_URL,
     BACKEND_URL: process.env.BACKEND_URL,
     MAINNET_RPC_URL: process.env.MAINNET_RPC_URL,

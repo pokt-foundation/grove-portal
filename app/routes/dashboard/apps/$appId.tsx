@@ -1,28 +1,3 @@
-import { Outlet, useCatch, useLoaderData } from "@remix-run/react"
-import Nav, { links as NavLinks } from "~/components/shared/Nav"
-import { json, LoaderFunction, MetaFunction } from "@remix-run/node"
-import { SESSIONS_PER_DAY } from "~/utils/pocketUtils"
-import invariant from "tiny-invariant"
-import {
-  getLBDailyRelays,
-  getLBPreviousSuccessfulRelays,
-  getLBPreviousTotalRelays,
-  getLBSuccessfulRelays,
-  getLBStatus,
-  getLBTotalRelays,
-  getLBUserApplications,
-  UserLB,
-} from "~/models/portal.server"
-import AppKeysCard, {
-  links as AppKeysCardLinks,
-} from "~/components/application/AppKeysCard"
-import AppAddressCard, {
-  links as AppAddressCardLinks,
-} from "~/components/application/AppAddressCard"
-import AdEconomicsForDevs, {
-  links as AdEconomicsForDevsLinks,
-} from "~/components/application/AdEconomicsForDevs"
-import Grid from "~/components/shared/Grid"
 import {
   UserLBDailyRelaysResponse,
   UserLBOnChainDataResponse,
@@ -31,13 +6,38 @@ import {
   UserLBTotalRelaysResponse,
   UserLBTotalSuccessfulRelaysResponse,
 } from "@pokt-foundation/portal-types"
-import FeedbackCard, {
-  links as FeedbackCardLinks,
-} from "~/components/application/FeedbackCard"
-import { useTranslate } from "~/context/TranslateContext"
+import { LoaderFunction, MetaFunction, json } from "@remix-run/node"
+import { Outlet, useCatch, useLoaderData } from "@remix-run/react"
+import invariant from "tiny-invariant"
+import AdEconomicsForDevs, {
+  links as AdEconomicsForDevsLinks,
+} from "~/components/application/AdEconomicsForDevs"
+import AppAddressCard, {
+  links as AppAddressCardLinks,
+} from "~/components/application/AppAddressCard"
+import AppKeysCard, {
+  links as AppKeysCardLinks,
+} from "~/components/application/AppKeysCard"
 import AppRemoveModal, {
   links as AppRemoveModalLinks,
 } from "~/components/application/AppRemoveModal"
+import FeedbackCard, {
+  links as FeedbackCardLinks,
+} from "~/components/application/FeedbackCard"
+import Grid from "~/components/shared/Grid"
+import Nav, { links as NavLinks } from "~/components/shared/Nav"
+import { useTranslate } from "~/context/TranslateContext"
+import {
+  UserLB,
+  getLBDailyRelays,
+  getLBPreviousSuccessfulRelays,
+  getLBPreviousTotalRelays,
+  getLBStatus,
+  getLBSuccessfulRelays,
+  getLBTotalRelays,
+  getLBUserApplications,
+} from "~/models/portal.server"
+import { SESSIONS_PER_DAY } from "~/utils/pocketUtils"
 
 export const links = () => {
   return [
@@ -156,8 +156,8 @@ export default function AppIdLayout() {
             <section>
               <AppKeysCard
                 id={app.id}
-                secret={app.gatewaySettings.secretKey}
                 publicKey={app.apps[0].publicKey}
+                secret={app.gatewaySettings.secretKey}
               />
             </section>
             <section>

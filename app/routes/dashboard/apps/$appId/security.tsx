@@ -15,8 +15,8 @@ import Card, { links as CardLinks } from "~/components/shared/Card"
 import Switch, { links as SwitchLinks } from "~/components/shared/Switch"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
-import { CHAIN_ID_PREFIXES } from "~/utils/chainUtils"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
+import { CHAIN_ID_PREFIXES } from "~/utils/chainUtils"
 
 export const meta: MetaFunction = () => {
   return {
@@ -426,8 +426,8 @@ export default function AppSecurity() {
           </div>
         </Card>
         <Button
-          variant="filled"
           type="submit"
+          variant="filled"
           onClick={() => {
             trackEvent(AmplitudeEvents.SecuritySettingsUpdate)
           }}

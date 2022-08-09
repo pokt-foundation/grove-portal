@@ -1,9 +1,9 @@
 import { Group, Modal, Text } from "@mantine/core"
 import { Form } from "@remix-run/react"
-import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { useState } from "react"
 import styles from "./styles.css"
 import Button from "~/components/shared/Button"
+import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 
 /* c8 ignore next */
 export const links = () => {

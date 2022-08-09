@@ -44,8 +44,8 @@ import {
   // getLBUserApplications,
   // UserLB,
 } from "~/models/portal.server"
-import { SESSIONS_PER_DAY } from "~/utils/pocketUtils"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
+import { SESSIONS_PER_DAY } from "~/utils/pocketUtils"
 
 export const links = () => {
   return [

@@ -1,6 +1,7 @@
 import { Link } from "@pokt-foundation/ui"
 import { ActionFunction, LinksFunction, json } from "@remix-run/node"
 import { useCatch } from "@remix-run/react"
+import { useEffect } from "react"
 import invariant from "tiny-invariant"
 import NotificationsAlertForm, {
   links as NotificationsAlertFormLinks,
@@ -11,7 +12,6 @@ import NotificationsWeeklyBandwidthUsageCard, {
 import { putNotifications } from "~/models/portal.server"
 import styles from "~/styles/dashboard.apps.$appId.notifications.css"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
-import { useEffect } from "react"
 
 export const links: LinksFunction = () => [
   ...NotificationsWeeklyBandwidthUsageCardLinks(),

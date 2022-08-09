@@ -108,11 +108,11 @@ export default function NotificationsAlertForm() {
             <Button
               className="pokt-network-notifications-submit-btn"
               disabled={state === "loading" || state === "submitting"}
+              type="submit"
+              variant="filled"
               onClick={() => {
                 trackEvent(AmplitudeEvents.NotificationSettingsChange)
               }}
-              type="submit"
-              variant="filled"
             >
               {state === "loading" || state === "submitting" ? state : "Save Changes"}
             </Button>

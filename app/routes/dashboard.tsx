@@ -40,7 +40,7 @@ export default function Dashboard() {
   useEffect(() => {
     analyticsInit(user)
     trackEvent(AmplitudeEvents.DashboardView)
-  }, [])
+  }, [user])
 
   const routes = [
     {

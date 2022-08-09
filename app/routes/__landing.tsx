@@ -34,7 +34,7 @@ export default function LandingLayout() {
   useEffect(() => {
     analyticsInit(user)
     trackEvent(AmplitudeEvents.LandingView)
-  }, [])
+  }, [user])
 
   const routes = useMemo(() => {
     const dashboardRoutes = [

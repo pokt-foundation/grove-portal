@@ -1,10 +1,10 @@
 import { LoaderFunction, MetaFunction, json } from "@remix-run/node"
 import { Link, useLoaderData } from "@remix-run/react"
+import { useEffect } from "react"
 import Table, { links as TableLinks } from "~/components/shared/Table"
 import { getLBUserApplications } from "~/models/portal.server"
 import type { UserLB } from "~/models/portal.server"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
-import { useEffect } from "react"
 
 export const links = () => {
   return [...TableLinks()]

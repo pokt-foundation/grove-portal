@@ -8,6 +8,7 @@ export const AmplitudeEvents = {
   // RelayMetricUpdate: "RELAY_METRIC_UPDATE",
   AllAppsView: "ALL_APPS_VIEW",
   ProfileView: "PROFILE_VIEW",
+  SupportView: "SUPPORT_VIEW",
   EndpointCreation: "ENDPOINT_CREATION",
   EndpointRemoval: "ENDPOINT_REMOVAL",
   LandingView: "LANDING_VIEW",

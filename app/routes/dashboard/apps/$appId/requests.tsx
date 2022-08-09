@@ -1,6 +1,7 @@
 import { UserLBOriginBucket } from "@pokt-foundation/portal-types"
 import { LoaderFunction, MetaFunction, json } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
+import { useEffect } from "react"
 import invariant from "tiny-invariant"
 import { AppIdLoaderData } from "../$appId"
 import AppRequestsByOriginCard, {
@@ -18,6 +19,7 @@ import {
   getLBErrorMetrics,
   getLBOriginClassification,
 } from "~/models/portal.server"
+import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 
 export const meta: MetaFunction = () => {
   return {
@@ -64,6 +66,10 @@ export default function AppIdRequests() {
     useLoaderData() as AppIdRequestsLoaderData
   const appIdIndexRoute = useMatchesRoute("routes/dashboard/apps/$appId")
   const appIdData = appIdIndexRoute?.data as AppIdLoaderData
+
+  useEffect(() => {
+    trackEvent(AmplitudeEvents.RequestDetailsView)
+  }, [])
 
   return (
     <>

@@ -7,6 +7,7 @@ import Card from "~/components/shared/Card"
 import Switch, { links as SwitchLinks } from "~/components/shared/Switch"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { AppIdLoaderData } from "~/routes/dashboard/apps/$appId"
+import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { formatNumberToSICompact } from "~/utils/formattingUtils"
 
 export const links: LinksFunction = () => [
@@ -109,6 +110,9 @@ export default function NotificationsAlertForm() {
               disabled={state === "loading" || state === "submitting"}
               type="submit"
               variant="filled"
+              onClick={() => {
+                trackEvent(AmplitudeEvents.NotificationSettingsChange)
+              }}
             >
               {state === "loading" || state === "submitting" ? state : "Save Changes"}
             </Button>

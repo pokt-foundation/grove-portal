@@ -8,7 +8,7 @@ import {
 } from "@pokt-foundation/portal-types"
 import { LoaderFunction, MetaFunction, json } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
-import { useMemo } from "react"
+import { useMemo, useEffect } from "react"
 import invariant from "tiny-invariant"
 import { AppIdLoaderData } from "../$appId"
 import AppEndpointCard, {
@@ -44,6 +44,7 @@ import {
   // getLBUserApplications,
   // UserLB,
 } from "~/models/portal.server"
+import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { SESSIONS_PER_DAY } from "~/utils/pocketUtils"
 
 export const links = () => {
@@ -103,6 +104,10 @@ export const Application = () => {
   const data = useLoaderData() as AppIdIndexLoaderData
   const appIdRoute = useMatchesRoute("routes/dashboard/apps/$appId")
   const appIdData = appIdRoute?.data as AppIdLoaderData
+
+  useEffect(() => {
+    trackEvent(AmplitudeEvents.AppDetailsView)
+  }, [])
 
   const exceedsMaxRelays = useMemo(() => {
     return data.totalRelays.total_relays >= appIdData.maxDailyRelays

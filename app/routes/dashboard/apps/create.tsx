@@ -12,6 +12,7 @@ import Card, { links as CardLinks } from "~/components/shared/Card"
 import Select, { links as SelectLinks } from "~/components/shared/Select"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { UserApplication, postLBUserApplication } from "~/models/portal.server"
+import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { CHAIN_ID_PREFIXES } from "~/utils/chainUtils"
 
 export const meta: MetaFunction = () => {
@@ -103,7 +104,14 @@ export default function CreateApp() {
               </Text>
             </div>
             <Group align="center" position="apart">
-              <Button type="submit">Launch Application</Button>
+              <Button
+                type="submit"
+                onClick={() => {
+                  trackEvent(AmplitudeEvents.EndpointCreation)
+                }}
+              >
+                Launch Application
+              </Button>
               <Button component={Link} to="/dashboard/apps" variant="subtle">
                 Back
               </Button>

@@ -1,10 +1,11 @@
 import { LinksFunction, LoaderFunction, MetaFunction, json } from "@remix-run/node"
 import { Outlet, useLoaderData } from "@remix-run/react"
-import { useMemo } from "react"
+import { useMemo, useEffect } from "react"
 import { Auth0Profile } from "remix-auth-auth0"
 import { Footer, links as FooterLinks } from "~/components/shared/Footer"
 import { Header, links as HeaderLinks } from "~/components/shared/Header"
 import { Nav, links as NavLinks } from "~/components/shared/Nav"
+import analyticsInit, { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { getUserProfile } from "~/utils/session.server"
 
 export const links: LinksFunction = () => {
@@ -29,6 +30,12 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export default function LandingLayout() {
   const { user } = useLoaderData() as LoaderData
+
+  useEffect(() => {
+    analyticsInit(user)
+    trackEvent(AmplitudeEvents.LandingView)
+  }, [user])
+
   const routes = useMemo(() => {
     const dashboardRoutes = [
       {

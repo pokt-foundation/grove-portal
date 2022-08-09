@@ -1,7 +1,7 @@
 import { Text } from "@mantine/core"
 import { MetaFunction } from "@remix-run/node"
 import { Form, useFetcher, useParams } from "@remix-run/react"
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { AppIdLoaderData } from "../$appId"
 import styles from "../../../../styles/dashboard.apps.$appId.security.css"
 import AppEndpointUrl, {
@@ -15,6 +15,7 @@ import Card, { links as CardLinks } from "~/components/shared/Card"
 import Switch, { links as SwitchLinks } from "~/components/shared/Switch"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
+import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { CHAIN_ID_PREFIXES } from "~/utils/chainUtils"
 
 export const meta: MetaFunction = () => {
@@ -49,8 +50,11 @@ export type securitySettings = {
 export default function AppSecurity() {
   const appIDRoute = useMatchesRoute("routes/dashboard/apps/$appId")
   const params = useParams()
-
   const securityAction = useFetcher()
+
+  useEffect(() => {
+    trackEvent(AmplitudeEvents.SecurityDetailsView)
+  }, [])
 
   const {
     app: { gatewaySettings },
@@ -421,7 +425,13 @@ export default function AppSecurity() {
             ))}
           </div>
         </Card>
-        <Button type="submit" variant="filled">
+        <Button
+          type="submit"
+          variant="filled"
+          onClick={() => {
+            trackEvent(AmplitudeEvents.SecuritySettingsUpdate)
+          }}
+        >
           Save
         </Button>
       </securityAction.Form>

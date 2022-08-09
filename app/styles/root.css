@@ -13,6 +13,10 @@
   --color-white-dark: #d9d9d9;
   --color-success: #03e200;
   --color-error: #e61c0e;
+  --zindex-none: -1;
+  --zindex-base: 1;
+  --zindex-nav: 100;
+  --zindex-overlay: 200;
 }
 
 a {
@@ -33,7 +37,10 @@ html {
 body {
   display: flex;
   flex-direction: column;
+  width: 100vw;
   min-height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
   font-family: "Manrope";
   background-color: var(--color-black-dark);
   color: var(--color-white-main);

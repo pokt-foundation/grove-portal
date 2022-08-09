@@ -1,5 +1,5 @@
-import { Container } from "~/components/shared/Container"
 import { LinksFunction } from "@remix-run/node"
+import { Container } from "~/components/shared/Container"
 import { useTranslate } from "~/context/TranslateContext"
 import styles from "~/styles/landing.css"
 
@@ -15,18 +15,20 @@ export default function FAQs() {
   return (
     <>
       <Container>
-        <h1 className="center faqTitle">
-          {faq.title}
-          <span className="blue block">{faq.subtitle}</span>
-        </h1>
-        {faq.faqs.map((item) => {
-          return (
-            <>
-              <h2 className="blue faqQuestion">{item.question}</h2>
-              <p className="faqAnswer">{item.answer}</p>
-            </>
-          )
-        })}
+        <div className="container__content">
+          <h1 className="center faqTitle">
+            {faq.title}
+            <span className="blue block">{faq.subtitle}</span>
+          </h1>
+          {faq.faqs.map((item) => {
+            return (
+              <>
+                <h2 className="blue faqQuestion">{item.question}</h2>
+                <p className="faqAnswer">{item.answer}</p>
+              </>
+            )
+          })}
+        </div>
       </Container>
     </>
   )
@@ -35,7 +37,7 @@ export default function FAQs() {
 export const ErrorBoundary = ({ error }: { error: Error }) => {
   return (
     <div className="error-container">
-      <dialog title="Index Error" color="red">
+      <dialog color="red" title="Index Error">
         {error.message}
       </dialog>
     </div>

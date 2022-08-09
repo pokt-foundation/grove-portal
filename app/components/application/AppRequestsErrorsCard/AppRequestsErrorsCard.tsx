@@ -1,14 +1,14 @@
-import styles from "./styles.css"
-import Table, { links as TableLinks } from "~/components/shared/Table"
-import { useMemo } from "react"
-import { EndpointRpcError } from "~/models/portal.server"
-import Tooltip from "~/components/shared/Tooltip"
 import { IconClock } from "@pokt-foundation/ui"
+import { useMemo } from "react"
+import styles from "./styles.css"
 import CopyTextIcon, {
   links as CopyTextIconLinks,
 } from "~/components/shared/CopyTextIcon"
 import Group from "~/components/shared/Group"
+import Table, { links as TableLinks } from "~/components/shared/Table"
+import Tooltip from "~/components/shared/Tooltip"
 import { useTranslate } from "~/context/TranslateContext"
+import { EndpointRpcError } from "~/models/portal.server"
 
 export const links = () => {
   return [...TableLinks(), ...CopyTextIconLinks(), { rel: "stylesheet", href: styles }]
@@ -27,6 +27,17 @@ export default function AppRequestsErrorsCard({ errorMetrics }: RequestsErrorsCa
         return {
           id: `${error.timestamp}-${error.nodepublickey}-${error.bytes}-${index}`,
           method: error.method,
+          message: {
+            value: error?.message ? error.message : "null",
+            element: (
+              <Group>
+                <p className="pokt-table-ellipsis">
+                  {error?.message ? error.message : "null"}
+                </p>
+                <CopyTextIcon text={error?.message ? error.message : "null"} />
+              </Group>
+            ),
+          },
           address: {
             value: error.nodepublickey,
             element: (
@@ -42,9 +53,9 @@ export default function AppRequestsErrorsCard({ errorMetrics }: RequestsErrorsCa
             element: (
               <Tooltip
                 withArrow
+                label={`${date.toDateString()} ${date.toTimeString()}`}
                 transition="fade"
                 transitionDuration={200}
-                label={`${date.toDateString()} ${date.toTimeString()}`}
               >
                 <div>
                   <IconClock />
@@ -60,13 +71,13 @@ export default function AppRequestsErrorsCard({ errorMetrics }: RequestsErrorsCa
   return (
     <div className="pokt-app-requests-by-origin">
       <Table
-        label={t.AppRequestsErrorsCard.label}
-        data={tableData}
+        search
         columns={t.AppRequestsErrorsCard.columns}
+        data={tableData}
+        label={t.AppRequestsErrorsCard.label}
         paginate={{
           perPage: 10,
         }}
-        search
       />
     </div>
   )

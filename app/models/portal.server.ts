@@ -1,6 +1,3 @@
-import { fetch } from "@remix-run/node"
-import { requireUser } from "~/utils/session.server"
-import { getRequiredClientEnvVar } from "~/utils/environment"
 import {
   UserLB as PortalUserLB,
   UserLBDailyRelaysResponse,
@@ -13,6 +10,9 @@ import {
   UserLBTotalRelaysResponse,
   UserLBTotalSuccessfulRelaysResponse,
 } from "@pokt-foundation/portal-types"
+import { fetch } from "@remix-run/node"
+import { getRequiredClientEnvVar } from "~/utils/environment"
+import { requireUser } from "~/utils/session.server"
 
 // LB: DAILY RELAYS
 export const getLBDailyRelays = async (
@@ -159,7 +159,7 @@ export const getLBPreviousTotalRelays = async (
 }
 
 // LB: SESSION RELAYS
-export const getLBPSessionRelays = async (
+export const getLBSessionRelays = async (
   id: string,
   request: Request,
 ): Promise<UserLBSessionRelaysResponse> => {
@@ -181,7 +181,7 @@ export const getLBPSessionRelays = async (
 }
 
 // LB: SUCCESSFUL RELAYS
-export const getLBPSuccessfulRelays = async (
+export const getLBSuccessfulRelays = async (
   id: string,
   request: Request,
 ): Promise<UserLBTotalSuccessfulRelaysResponse> => {
@@ -586,7 +586,7 @@ export const postFeedback = async (
   )
 
   // server sends 204 no content on successful post
-  if (!res || res.status !== 204) {
+  if (!res || (res.status !== 200 && res.status !== 204)) {
     return {
       error: true,
       error_message: res.statusText,
@@ -596,4 +596,50 @@ export const postFeedback = async (
   return {
     error: false,
   }
+}
+
+// APP SECURITY Put Security Settings
+export type AppSecurityProps = {
+  appID: string
+  secretKeyRequired: boolean
+  whitelistOrigins: string[]
+  whitelistUserAgents: string[]
+  whitelistBlockchains: string[]
+  whitelistContracts: { blockchainID: string; contracts: string[] }[]
+  whitelistMethods: { blockchainID: string; methods: string[] }[]
+}
+
+export type AppSecurityResponse =
+  | {
+      error: false
+    }
+  | {
+      error: true
+      error_message: string
+    }
+
+export const putAppSecurity = async (
+  formData: AppSecurityProps,
+  request: Request,
+): Promise<AppSecurityResponse> => {
+  const user = await requireUser(request)
+  const { appID, ...data } = formData
+  const res = await fetch(`${getRequiredClientEnvVar("BACKEND_URL")}/api/lb/${appID}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `${user.extraParams.token_type} ${user.accessToken}`,
+    },
+    body: JSON.stringify({ gatewaySettings: data }),
+  })
+
+  // server sends 204 on successful put
+  if (!res || (res.status !== 200 && res.status !== 204)) {
+    return {
+      error: true,
+      error_message: res.statusText,
+    }
+  }
+
+  return { error: false }
 }

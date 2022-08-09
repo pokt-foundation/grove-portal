@@ -1,14 +1,14 @@
-import { json, LinksFunction, LoaderFunction } from "@remix-run/node"
+import { LinksFunction, LoaderFunction, json } from "@remix-run/node"
 import { Outlet, useCatch, useLoaderData, useTransition } from "@remix-run/react"
 import { Auth0Profile } from "remix-auth-auth0"
-import { requireUserProfile } from "~/utils/session.server"
+import Container, { links as ContainerLinks } from "~/components/shared/Container"
 import Footer, { links as FooterLinks } from "~/components/shared/Footer"
 import Header, { links as HeaderLinks } from "~/components/shared/Header"
-import Container, { links as ContainerLinks } from "~/components/shared/Container"
-import Nav, { links as NavLinks } from "~/components/shared/Nav"
-import Loader, { links as LoaderLinks } from "~/components/shared/Loader"
 import { IconApp, IconNetwork } from "~/components/shared/Icons"
+import Loader, { links as LoaderLinks } from "~/components/shared/Loader"
+import Nav, { links as NavLinks } from "~/components/shared/Nav"
 import { useTranslate } from "~/context/TranslateContext"
+import { requireUserProfile } from "~/utils/session.server"
 
 export const links: LinksFunction = () => {
   return [

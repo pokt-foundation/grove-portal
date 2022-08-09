@@ -1,5 +1,5 @@
 import { Grid, Space, Title } from "@mantine/core"
-import { json, LoaderFunction } from "@remix-run/node"
+import { LoaderFunction, json } from "@remix-run/node"
 import { Link, Outlet } from "@remix-run/react"
 import { Auth0Profile } from "remix-auth-auth0"
 import Container from "~/components/shared/Container"

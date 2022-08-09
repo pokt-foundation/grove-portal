@@ -1,6 +1,6 @@
 import { Grid } from "@mantine/core"
 import { UserLB } from "@pokt-foundation/portal-types"
-import { json, LoaderFunction } from "@remix-run/node"
+import { LoaderFunction, json } from "@remix-run/node"
 import { Link, Outlet, useLoaderData } from "@remix-run/react"
 import AdEconomicsForDevs, {
   links as AdEconomicsForDevsLinks,
@@ -8,11 +8,11 @@ import AdEconomicsForDevs, {
 import FeedbackCard, {
   links as FeedbackCardLinks,
 } from "~/components/application/FeedbackCard"
-import Button from "~/components/shared/Button"
+import Button, { links as ButtonLinks } from "~/components/shared/Button"
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import CardList, {
-  links as CardListLinks,
   CardListItem,
+  links as CardListLinks,
 } from "~/components/shared/CardList"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { getLBUserApplications } from "~/models/portal.server"
@@ -22,6 +22,7 @@ import { getPoktId, requireUserProfile } from "~/utils/session.server"
 
 export const links = () => {
   return [
+    ...ButtonLinks(),
     ...CardLinks(),
     ...CardListLinks(),
     ...FeedbackCardLinks(),
@@ -84,7 +85,7 @@ export const Apps = () => {
             <CardList items={userAppsStatus} />
             {(apps.length < MAX_USER_APPS ||
               getRequiredClientEnvVar("GODMODE_ACCOUNTS")?.includes(userId)) && (
-              <Button component={Link} to="create" fullWidth mt={32}>
+              <Button fullWidth component={Link} mt={32} to="create">
                 Create New Application
               </Button>
             )}

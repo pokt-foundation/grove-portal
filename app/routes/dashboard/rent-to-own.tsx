@@ -2,7 +2,6 @@ import { UserLB } from "@pokt-foundation/portal-types"
 import { ActionFunction, json, LoaderFunction } from "@remix-run/node"
 import { Form, Link, useActionData, useLoaderData } from "@remix-run/react"
 import { SyntheticEvent, useEffect, useMemo, useRef, useState } from "react"
-import { stripe, Stripe } from "~/models/stripe.server"
 import invariant from "tiny-invariant"
 import Button from "~/components/shared/Button"
 import Card, { links as CardLinks } from "~/components/shared/Card"
@@ -11,9 +10,10 @@ import Grid from "~/components/shared/Grid"
 import Group from "~/components/shared/Group"
 import Select, { links as SelectLinks } from "~/components/shared/Select"
 import { getLBUserApplications } from "~/models/portal.server"
+import { stripe, Stripe } from "~/models/stripe.server"
 import { subscriptionsCookie } from "~/utils/cookies.server"
-import { getPoktId, requireUserProfile } from "~/utils/session.server"
 import { formatNumberToSICompact } from "~/utils/formattingUtils"
+import { getPoktId, requireUserProfile } from "~/utils/session.server"
 
 export const links = () => {
   return [...CardLinks(), ...CardListLinks(), ...SelectLinks()]
@@ -248,49 +248,50 @@ export default function RentToOwnLayout() {
           <div>
             <Form method="post">
               <Select
-                name="subscription-app"
-                label="Application"
-                placeholder="Select Application"
-                searchable
                 clearable
-                nothingFound="No options"
+                searchable
                 data={apps.map((app) => ({
                   label: app.name,
                   value: app.id,
                 }))}
-                filter={(value, item) =>
-                  item.label?.toLowerCase().includes(value.toLowerCase().trim()) ||
-                  item.value.toLowerCase().includes(value.toLowerCase().trim())
-                }
                 error={
                   !action?.success && action?.errors?.app?.error
                     ? action.errors.app.message
                     : null
                 }
-              />
-              <Select
-                name="subscription-quantity"
-                label="Relay Quantity"
-                placeholder="Select Relay Quanity"
-                searchable
-                clearable
-                nothingFound="No options"
-                data={suggestedQuantities}
                 filter={(value, item) =>
                   item.label?.toLowerCase().includes(value.toLowerCase().trim()) ||
-                  String(item.value).toLowerCase().includes(value.toLowerCase().trim())
+                  item.value.toLowerCase().includes(value.toLowerCase().trim())
                 }
+                label="Application"
+                name="subscription-app"
+                nothingFound="No options"
+                placeholder="Select Application"
+              />
+              <Select
+                clearable
+                creatable
+                searchable
+                data={suggestedQuantities}
                 error={
+                  // eslint-disable-next-line no-nested-ternary
                   !action?.success && action?.errors?.quantity?.error
                     ? action.errors.quantity.message
                     : quantityError
                     ? "Quantity must be a number"
                     : false
                 }
-                creatable
+                filter={(value, item) =>
+                  item.label?.toLowerCase().includes(value.toLowerCase().trim()) ||
+                  String(item.value).toLowerCase().includes(value.toLowerCase().trim())
+                }
                 getCreateLabel={(query) => `+ Create ${query}`}
-                onCreate={handleQuanityCreate}
+                label="Relay Quantity"
+                name="subscription-quantity"
+                nothingFound="No options"
+                placeholder="Select Relay Quanity"
                 onChange={handleQuantityChange}
+                onCreate={handleQuanityCreate}
               />
               <Group align="center" position="apart">
                 <div>
@@ -312,13 +313,13 @@ export default function RentToOwnLayout() {
           <div className="pokt-card-header">
             <h3>Subscription</h3>
           </div>
-          <Form method="post" action="/api/stripe/checkout-session">
+          <Form action="/api/stripe/checkout-session" method="post">
             {cart.map((item) => (
               <Group key={item.app} align="center" position="apart">
                 <input
                   hidden
-                  type="text"
                   name="product"
+                  type="text"
                   value={JSON.stringify({
                     id: item.app,
                     name: apps.find((app) => app.id === item.app)?.name,
@@ -339,7 +340,7 @@ export default function RentToOwnLayout() {
                 </div>
               </Group>
             ))}
-            <Button type="submit" fullWidth mt={32}>
+            <Button fullWidth mt={32} type="submit">
               Checkout
             </Button>
           </Form>

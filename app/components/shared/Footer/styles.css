@@ -6,4 +6,20 @@
   /* move color to mantine: var(--mantine-color-blue-9) */
   background-color: rgb(25, 36, 48);
   color: white;
+  min-height: 64px;
+}
+
+.pokt-footer .mantine-Grid-root {
+  width: 100%;
+}
+
+.pokt-footer .center {
+  text-align: center;
+  font-size: 12px;
+}
+
+.pokt-footer .right {
+  text-align: right;
+  padding-right: 40px;
+  font-size: 9px;
 }

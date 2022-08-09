@@ -23,15 +23,15 @@ export default function CircleGraphWithGradient({
 
   return (
     <CircleGraph
-      value={value}
-      size={size}
       color={`url(#${id})`}
+      size={size}
       strokeWidth={strokeWidth}
+      value={value}
     >
       <defs>
         <linearGradient id={id}>
           {gradientConfig.map(({ color, offset, opacity }, id) => (
-            <stop key={id} offset={offset} stopOpacity={opacity} stopColor={color} />
+            <stop key={id} offset={offset} stopColor={color} stopOpacity={opacity} />
           ))}
         </linearGradient>
       </defs>

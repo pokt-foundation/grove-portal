@@ -1,7 +1,7 @@
-import React, { useMemo, useContext } from "react"
-import en from "~/locales/en.json"
-import fr from "~/locales/fr.json"
+import React, { useContext, useMemo } from "react"
 import { useUser } from "./UserContext"
+import en from "~/locales/en"
+import fr from "~/locales/fr"
 
 const languages = ["en", "fr"] as const
 const translate: Translate = {
@@ -43,7 +43,7 @@ interface TranslationData {
     subtitle: string
     faqs: {
       question: string
-      answer: string
+      answer: string | React.ReactNode | JSX.Element
     }[]
   }
   landing: {
@@ -106,6 +106,37 @@ interface TranslationData {
       }
     }
   }
+  AppUsageCurrentCard: {
+    label: string
+    list: {
+      sessionRelays: {
+        label: string
+        help: string
+      }
+      dailyRelays: {
+        label: string
+        help: string
+      }
+      maxRelays: {
+        label: string
+        help: string
+      }
+    }
+  }
+  AppOverLimitCard: {
+    title: string
+    subtitle: string
+    body: string[]
+    link: string
+  }
+  appAddressCard: {
+    heading: string
+    error: string
+  }
+  footer: {
+    termsOfUse: string
+    privacyPolicy: string
+  }
 }
 
 export type Language = typeof languages[number]
@@ -138,7 +169,7 @@ export function useTranslate() {
 const TranslateContextProvider = ({ children }: { children: React.ReactNode }) => {
   const user = useUser()
   const language = useMemo(
-    () => user.data?.preferences.language,
+    () => user.data?.preferences?.language ?? "en",
     [user.data?.preferences],
   )
   const t = useMemo(() => translate[language as Language], [language])

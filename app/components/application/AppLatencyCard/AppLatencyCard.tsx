@@ -1,10 +1,11 @@
-import styles from "./styles.css"
-import { Card, links as CardLinks } from "~/components/shared/Card"
+import { UserLBLatencyBucket } from "@pokt-foundation/portal-types"
 import { BarChart } from "@pokt-foundation/ui"
 import { useMemo } from "react"
-import { UserLBLatencyBucket } from "@pokt-foundation/portal-types"
+import styles from "./styles.css"
+import { Card, links as CardLinks } from "~/components/shared/Card"
 import { formatLatencyValuesForGraphing } from "~/utils/applicationUtils"
 
+/* c8 ignore next */
 export const links = () => {
   return [...CardLinks(), { rel: "stylesheet", href: styles }]
 }
@@ -48,10 +49,10 @@ export default function AppEndpointCard({ hourlyLatency }: LatencyCardProps) {
         <div>
           {labels && barValues && scales && (
             <BarChart
-              lines={barValues}
-              label={labels}
-              height={200}
               color={() => "var(--color-secondary-main)"}
+              height={200}
+              label={labels}
+              lines={barValues}
               scales={scales}
             />
           )}

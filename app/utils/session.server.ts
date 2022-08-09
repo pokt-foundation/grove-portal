@@ -1,8 +1,8 @@
 import { createCookieSessionStorage, redirect } from "@remix-run/node"
+import jwt_decode from "jwt-decode"
 import { Auth0Profile } from "remix-auth-auth0"
 import { authenticator } from "./auth.server"
 import { getRequiredServerEnvVar } from "./environment"
-import jwt_decode from "jwt-decode"
 
 // export the whole sessionStorage object
 export const sessionStorage = createCookieSessionStorage({
@@ -20,6 +20,9 @@ export const requireUser = async (request: Request, defaultRedirect = "/") => {
   const user = await authenticator.isAuthenticated(request)
   if (!user) {
     throw redirect(defaultRedirect)
+  }
+  if (!user?.profile._json.email_verified) {
+    throw await authenticator.logout(request, { redirectTo: "/validate" })
   }
   const decode = jwt_decode<{
     exp: number

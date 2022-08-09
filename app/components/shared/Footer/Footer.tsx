@@ -1,46 +1,25 @@
 import styles from "./styles.css"
-import Button from "~/components/shared/Button"
 import { Grid } from "~/components/shared/Grid"
-import { Group } from "~/components/shared/Group"
-import { useTranslate, Language } from "~/context/TranslateContext"
-import { useUser } from "~/context/UserContext"
-import { useFeatureFlags } from "~/context/FeatureFlagContext"
+import { useTranslate } from "~/context/TranslateContext"
 
 export const links = () => {
   return [{ rel: "stylesheet", href: styles }]
 }
 
 export const Footer = () => {
-  const { flags } = useFeatureFlags()
-  const { submit } = useUser()
-  const { language, languages } = useTranslate()
-
-  const handleLanguageChange = (l: Language) => {
-    submit({
-      language: l,
-    })
-  }
+  const {
+    t: { footer },
+  } = useTranslate()
 
   return (
     <footer className="pokt-footer">
-      <Grid>
-        <Grid.Col span={12}>
-          {flags.MULTI_LANGUAGE === "true" && (
-            <Group>
-              {language &&
-                languages &&
-                languages.map((l) => (
-                  <Button
-                    key={l}
-                    value={l}
-                    color={l === language ? "primary" : "gray"}
-                    onClick={() => handleLanguageChange(l)}
-                  >
-                    {l}
-                  </Button>
-                ))}
-            </Group>
-          )}
+      <Grid align="center">
+        <Grid.Col className="center" offset={4} span={4}>
+          &copy; 2022 Pocket Network Inc
+        </Grid.Col>
+        <Grid.Col className="right" span={4}>
+          <a href="https://www.pokt.network/site-terms-of-use">{footer.termsOfUse}</a> |{" "}
+          <a href="https://www.pokt.network/privacy-policy">{footer.privacyPolicy}</a>
         </Grid.Col>
       </Grid>
     </footer>

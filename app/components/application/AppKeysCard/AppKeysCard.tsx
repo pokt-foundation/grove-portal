@@ -2,6 +2,7 @@ import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/shared/Card"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 
+/* c8 ignore next */
 export const links = () => {
   return [...CardLinks(), ...TextInputLinks(), { rel: "stylesheet", href: styles }]
 }
@@ -16,12 +17,12 @@ export default function AppKeysCard({ id, secret, publicKey }: AppKeysCardProps)
   return (
     <div className="pokt-app-keys">
       <Card>
-        <TextInput readOnly copy value={id} label="Portal ID" />
+        <TextInput copy readOnly label="Portal ID" value={id} />
         {secret && (
-          <TextInput readOnly copy type="password" value={secret} label="Secret Key" />
+          <TextInput copy readOnly label="Secret Key" type="password" value={secret} />
         )}
         {publicKey && (
-          <TextInput readOnly copy type="password" value={publicKey} label="Public Key" />
+          <TextInput copy readOnly label="Public Key" type="password" value={publicKey} />
         )}
       </Card>
     </div>

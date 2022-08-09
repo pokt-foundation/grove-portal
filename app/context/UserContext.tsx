@@ -1,8 +1,8 @@
-import { SubmitFunction, useFetcher } from "@remix-run/react"
-import React, { useMemo, useContext, useEffect } from "react"
-import { UserLoaderActionData } from "~/routes/api/user"
-import { Language } from "~/context/TranslateContext"
 import { UserLB } from "@pokt-foundation/portal-types"
+import { SubmitFunction, useFetcher } from "@remix-run/react"
+import React, { useContext, useEffect, useMemo } from "react"
+import { Language } from "~/context/TranslateContext"
+import { UserLoaderActionData } from "~/routes/api/user"
 
 export const defaultUserPreference = {
   language: "en" as Language,
@@ -13,7 +13,7 @@ export const defaultUserData = {
   preferences: defaultUserPreference,
 }
 
-interface IUserContext {
+export interface IUserContext {
   data: UserLoaderActionData
   load: (href: string) => void
   state: "idle" | "submitting" | "loading"

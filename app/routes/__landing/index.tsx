@@ -1,8 +1,8 @@
-import { Container } from "~/components/shared/Container"
-import { Form } from "@remix-run/react"
-import { Grid } from "~/components/shared/Grid"
 import { LinksFunction } from "@remix-run/node"
+import { Form } from "@remix-run/react"
 import { CallOutBox, links as CallOutBoxLinks } from "../../components/shared/CallOutBox"
+import { Container } from "~/components/shared/Container"
+import { Grid } from "~/components/shared/Grid"
 import { useTranslate } from "~/context/TranslateContext"
 import styles from "~/styles/landing.css"
 
@@ -24,21 +24,21 @@ export default function Index() {
             <p className="text">{landing.subtitle}</p>
             <p className="text"></p>
             <Form action="/api/auth/auth0" method="post">
-              <button type="submit" name="login" className="button" value="true">
+              <button className="button" name="login" type="submit" value="true">
                 {landing.getStarted}
               </button>
             </Form>
           </Grid.Col>
 
-          <Grid.Col sm={5} offset={2}>
+          <Grid.Col offset={2} sm={5}>
             {landing.callOutBoxText.map((item) => {
               return (
                 <CallOutBox
                   key={item.title}
-                  title={item.title}
-                  smallText={item.smallText}
                   blueText={item.blueText}
                   description={item.description}
+                  smallText={item.smallText}
+                  title={item.title}
                 />
               )
             })}
@@ -46,8 +46,8 @@ export default function Index() {
           <Grid.Col>
             <p className="text">
               {landing.connect}{" "}
-              <Form className="inline-form" action="/api/auth/auth0" method="post">
-                <button type="submit" name="signup" className="link" value="true">
+              <Form action="/api/auth/auth0" className="inline-form" method="post">
+                <button className="link" name="signup" type="submit" value="true">
                   {landing.whosNext}
                 </button>
               </Form>
@@ -67,7 +67,7 @@ export default function Index() {
           </div>
         </Grid>
       </Container>
-      <img className="pokt-image" src="/landing-background.png" alt="Subdued Pokt Logo" />
+      <img alt="Subdued Pokt Logo" className="pokt-image" src="/landing-background.png" />
     </>
   )
 }
@@ -75,7 +75,7 @@ export default function Index() {
 export const ErrorBoundary = ({ error }: { error: Error }) => {
   return (
     <div className="error-container">
-      <dialog title="Index Error" color="red">
+      <dialog color="red" title="Index Error">
         {error.message}
       </dialog>
     </div>

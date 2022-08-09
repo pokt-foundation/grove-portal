@@ -1,16 +1,26 @@
-import styles from "./styles.css"
-import { Form, Link } from "@remix-run/react"
-import Button from "~/components/shared/Button"
-import { Auth0Profile } from "remix-auth-auth0"
 import { useViewportSize } from "@mantine/hooks"
-import HamburgerMenu, { links as HamburgerMenuLinks } from "../HamburgerMenu"
-import { useEffect, useMemo, useState } from "react"
-import clsx from "clsx"
-import { Divider, Menu } from "@mantine/core"
 import { IconPerson } from "@pokt-foundation/ui"
+import { Item, Separator } from "@radix-ui/react-dropdown-menu"
+import { Form, Link } from "@remix-run/react"
+import clsx from "clsx"
+import { useEffect, useMemo, useRef, useState } from "react"
+import { Auth0Profile } from "remix-auth-auth0"
+import Dropdown, { links as DropdownLinks } from "../Dropdown"
+import HamburgerMenu, { links as HamburgerMenuLinks } from "../HamburgerMenu"
+import styles from "./styles.css"
+import Button from "~/components/shared/Button"
 
 export const links = () => {
-  return [{ rel: "stylesheet", href: styles }, ...HamburgerMenuLinks()]
+  return [
+    ...DropdownLinks(),
+    { rel: "stylesheet", href: styles },
+    ...HamburgerMenuLinks(),
+  ]
+}
+
+type Route = {
+  id: string
+  el: () => JSX.Element
 }
 
 type HeaderProps = {
@@ -21,6 +31,7 @@ type HeaderProps = {
 export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) => {
   const [isActive, setIsActive] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
+  const logoutFormRef = useRef<HTMLFormElement>(null)
   const { width } = useViewportSize()
 
   useEffect(() => {
@@ -32,26 +43,18 @@ export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) 
     }
   }, [width])
 
-  const routes = useMemo(() => {
+  const routes: Route[] = useMemo(() => {
     const userRoutes = [
       {
         id: "account",
         el: () => <h5>Account</h5>,
       },
       {
-        id: "divider1",
-        el: () => <Divider />,
-      },
-      {
         id: "user",
-        el: () => <p>{user?.displayName}</p>,
+        el: () => <Link to="/dashboard/profile">User Profile</Link>,
       },
       {
-        id: "divider2",
-        el: () => <Divider />,
-      },
-      {
-        id: "logout",
+        id: "billing",
         el: () => (
           <Form action="/api/stripe/portal-session" method="post">
             <Button type="submit" variant="outline">
@@ -61,17 +64,21 @@ export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) 
         ),
       },
       {
-        id: "divider2",
-        el: () => <Divider />,
-      },
-      {
         id: "logout",
         el: () => (
-          <Form action="/api/auth/auth0" method="post">
-            <Button type="submit" variant="outline" name="logout" value="true">
-              Logout
-            </Button>
-          </Form>
+          <Button
+            leftIcon={<img alt="logout" src="/logout.svg" />}
+            variant="outline"
+            onClick={() => {
+              if (logoutFormRef.current) {
+                logoutFormRef.current.dispatchEvent(
+                  new Event("submit", { cancelable: true, bubbles: true }),
+                )
+              }
+            }}
+          >
+            Logout
+          </Button>
         ),
       },
     ]
@@ -101,16 +108,16 @@ export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) 
         <div className="pokt-header-branding pokt-header-flex">
           <Link to="/">
             <img
-              src="/logo.svg"
-              loading="lazy"
               alt="pocket network"
               className="pokt-header-brand"
+              loading="lazy"
+              src="/logo.svg"
             ></img>
           </Link>
         </div>
         <HamburgerMenu
-          isVisible={isMobile}
           isActive={isActive}
+          isVisible={isMobile}
           onClick={() => setIsActive(!isActive)}
         />
         <div
@@ -122,20 +129,17 @@ export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) 
           })}
         >
           <div className={`pokt-header-nav nav-${nav} pokt-header-flex`}>{children}</div>
-          {user && (
-            <Menu
-              control={
-                <div>
-                  <IconPerson />
-                </div>
-              }
-            >
-              {routes.map((route) => {
-                const El = route.el
-                return <El key={route.id} />
-              })}
-            </Menu>
-          )}
+          <Form ref={logoutFormRef} action="/api/auth/auth0" method="post">
+            <input
+              readOnly
+              aria-label="hidden"
+              name="logout"
+              type="hidden"
+              value="true"
+            />
+          </Form>
+
+          <UserMenuDropdown routes={routes} user={user} />
           {!user && (
             <>
               <Form action="/api/auth/auth0" method="post">
@@ -144,7 +148,7 @@ export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) 
                 </Button>
               </Form>
               <Form action="/api/auth/auth0" method="post">
-                <Button type="submit" variant="outline" name="signup" value="true">
+                <Button name="signup" type="submit" value="true" variant="outline">
                   Sign Up
                 </Button>
               </Form>
@@ -159,8 +163,35 @@ export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) 
           open: isActive,
         })}
       >
-        <HeaderChildren user={user} nav={nav} slot={children} />
+        <HeaderChildren nav={nav} slot={children} user={user} />
       </aside>
+    </>
+  )
+}
+
+type UserMenuDropdownProps = {
+  user?: Auth0Profile
+  routes: Route[]
+}
+
+function UserMenuDropdown({ user, routes }: UserMenuDropdownProps) {
+  return (
+    <>
+      {user && (
+        <Dropdown label={<IconPerson />}>
+          {routes.map(({ el, id: routeID }, index) => {
+            const El = el
+            return (
+              <>
+                <Item key={routeID}>
+                  <El />
+                </Item>
+                {index < routes.length - 1 && <Separator />}
+              </>
+            )
+          })}
+        </Dropdown>
+      )}
     </>
   )
 }
@@ -183,7 +214,7 @@ const HeaderChildren = ({ user, nav, slot }: HeaderChildrenProps) => {
       )}
       {user && (
         <Form action="/api/auth/auth0" method="post">
-          <Button type="submit" variant="outline" name="logout" value="true">
+          <Button name="logout" type="submit" value="true" variant="outline">
             Logout
           </Button>
         </Form>

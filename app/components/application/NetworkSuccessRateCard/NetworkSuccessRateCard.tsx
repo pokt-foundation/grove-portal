@@ -1,52 +1,50 @@
 import { CircleGraph, useTheme } from "@pokt-foundation/ui"
-import { Card, links as CardLinks } from "~/components/shared/Card"
-import { NetworkRelayStats } from "~/models/portal.server"
 import styles from "./styles.css"
+import { Card, links as CardLinks } from "~/components/shared/Card"
+import { RelayMetric } from "~/models/relaymeter.server"
 
 export const links = () => {
   return [...CardLinks(), { rel: "stylesheet", href: styles }]
 }
 
 interface NetworkSuccessRateCardProps {
-  weeklyStats: NetworkRelayStats
+  relays: RelayMetric
 }
 
-export default function NetworkSuccessRateCard({
-  weeklyStats,
-}: NetworkSuccessRateCardProps) {
+export default function NetworkSuccessRateCard({ relays }: NetworkSuccessRateCardProps) {
   const theme = useTheme()
   return (
     <div className="pokt-network-success-rate">
       <Card>
         <CircleGraph
+          color="url(#network-success-gradient)"
           size={80}
           strokeWidth={12}
-          value={weeklyStats.successful_relays / weeklyStats.total_relays}
-          color="url(#network-success-gradient)"
+          value={relays.Count.Success / (relays.Count.Success + relays.Count.Failure)}
         >
           <defs>
             <linearGradient id="network-success-gradient">
               <stop
                 offset="10%"
-                stopOpacity="100%"
                 stopColor={theme.accentSecondAlternative}
+                stopOpacity="100%"
               />
-              <stop offset="90%" stopOpacity="100%" stopColor={theme.accent} />
+              <stop offset="90%" stopColor={theme.accent} stopOpacity="100%" />
             </linearGradient>
           </defs>
         </CircleGraph>
 
         <div className="pokt-network-success-rate-content">
-          <h5>{Intl.NumberFormat().format(weeklyStats.successful_relays)}</h5>
+          <h5>{Intl.NumberFormat().format(relays.Count.Success)}</h5>
           <p>
             <span />
             <svg
-              viewBox="0 0 10 10"
-              xmlns="http://www.w3.org/2000/svg"
-              width="10"
               height="10"
+              viewBox="0 0 10 10"
+              width="10"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              <circle cx="5" cy="5" r="5" fill={theme.accent} />
+              <circle cx="5" cy="5" fill={theme.accent} r="5" />
             </svg>
             Successful relays
           </p>

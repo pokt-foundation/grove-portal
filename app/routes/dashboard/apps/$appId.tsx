@@ -1,24 +1,3 @@
-import { Outlet, useCatch, useLoaderData } from "@remix-run/react"
-import Nav, { links as NavLinks } from "~/components/shared/Nav"
-import { json, LoaderFunction, MetaFunction } from "@remix-run/node"
-import invariant from "tiny-invariant"
-import {
-  getLBDailyRelays,
-  getLBPreviousSuccessfulRelays,
-  getLBPreviousTotalRelays,
-  getLBPSuccessfulRelays,
-  getLBStatus,
-  getLBTotalRelays,
-  getLBUserApplications,
-  UserLB,
-} from "~/models/portal.server"
-import AppKeysCard, {
-  links as AppKeysCardLinks,
-} from "~/components/application/AppKeysCard"
-import AdEconomicsForDevs, {
-  links as AdEconomicsForDevsLinks,
-} from "~/components/application/AdEconomicsForDevs"
-import Grid from "~/components/shared/Grid"
 import {
   UserLBDailyRelaysResponse,
   UserLBOnChainDataResponse,
@@ -27,18 +6,44 @@ import {
   UserLBTotalRelaysResponse,
   UserLBTotalSuccessfulRelaysResponse,
 } from "@pokt-foundation/portal-types"
-import FeedbackCard, {
-  links as FeedbackCardLinks,
-} from "~/components/application/FeedbackCard"
-import { useTranslate } from "~/context/TranslateContext"
+import { LoaderFunction, MetaFunction, json } from "@remix-run/node"
+import { Outlet, useCatch, useLoaderData } from "@remix-run/react"
+import invariant from "tiny-invariant"
+import AdEconomicsForDevs, {
+  links as AdEconomicsForDevsLinks,
+} from "~/components/application/AdEconomicsForDevs"
+import AppAddressCard, {
+  links as AppAddressCardLinks,
+} from "~/components/application/AppAddressCard"
+import AppKeysCard, {
+  links as AppKeysCardLinks,
+} from "~/components/application/AppKeysCard"
 import AppRemoveModal, {
   links as AppRemoveModalLinks,
 } from "~/components/application/AppRemoveModal"
+import FeedbackCard, {
+  links as FeedbackCardLinks,
+} from "~/components/application/FeedbackCard"
+import Grid from "~/components/shared/Grid"
+import Nav, { links as NavLinks } from "~/components/shared/Nav"
+import { useTranslate } from "~/context/TranslateContext"
+import {
+  UserLB,
+  getLBDailyRelays,
+  getLBPreviousSuccessfulRelays,
+  getLBPreviousTotalRelays,
+  getLBStatus,
+  getLBSuccessfulRelays,
+  getLBTotalRelays,
+  getLBUserApplications,
+} from "~/models/portal.server"
+import { SESSIONS_PER_DAY } from "~/utils/pocketUtils"
 
 export const links = () => {
   return [
     ...NavLinks(),
     ...AppKeysCardLinks(),
+    ...AppAddressCardLinks(),
     ...AdEconomicsForDevsLinks(),
     ...FeedbackCardLinks(),
     ...AppRemoveModalLinks(),
@@ -72,14 +77,14 @@ export const loader: LoaderFunction = async ({ request, params, context }) => {
   const dailyRelays = await getLBDailyRelays(params.appId, request)
   const status = await getLBStatus(params.appId, request)
   const stakedTokens = status.stake
-  const maxDailyRelays = status.relays * 24
+  const maxDailyRelays = status.relays * SESSIONS_PER_DAY
 
   const previousSeccessfulRelays = await getLBPreviousSuccessfulRelays(
     params.appId,
     request,
   )
   const previousTotalRelays = await getLBPreviousTotalRelays(params.appId, request)
-  const successfulRelays = await getLBPSuccessfulRelays(params.appId, request)
+  const successfulRelays = await getLBSuccessfulRelays(params.appId, request)
   const totalRelays = await getLBTotalRelays(params.appId, request)
 
   return json<AppIdLoaderData>(
@@ -151,9 +156,12 @@ export default function AppIdLayout() {
             <section>
               <AppKeysCard
                 id={app.id}
-                secret={app.gatewaySettings.secretKey}
                 publicKey={app.apps[0].publicKey}
+                secret={app.gatewaySettings.secretKey}
               />
+            </section>
+            <section>
+              <AppAddressCard apps={app.apps} />
             </section>
             <section>
               <AdEconomicsForDevs />

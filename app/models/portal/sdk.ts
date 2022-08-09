@@ -55,32 +55,38 @@ export type Blockchain = {
 }
 
 export type CreateNewEndpointInput = {
-  gatewaySettings?: InputMaybe<GatewaySettingsInput>
+  gatewaySettings: GatewaySettingsInput
   name: Scalars["String"]
-  notificationSettings?: InputMaybe<NotificationSettingsInput>
+  notificationSettings: NotificationSettingsInput
 }
 
 export type EndpointGatewaySettings = {
   __typename?: "EndpointGatewaySettings"
-  secretKey?: Maybe<Scalars["String"]>
-  secretKeyRequired?: Maybe<Scalars["Boolean"]>
-  whitelistOrigins?: Maybe<Array<Maybe<Scalars["String"]>>>
-  whitelistUserAgents?: Maybe<Array<Maybe<Scalars["String"]>>>
+  secretKey: Scalars["String"]
+  secretKeyRequired: Scalars["Boolean"]
+  whitelistBlockchains: Array<Scalars["String"]>
+  whitelistContracts: Array<WhitelistContracts>
+  whitelistMethods: Array<WhitelistMethods>
+  whitelistOrigins: Array<Scalars["String"]>
+  whitelistUserAgents: Array<Scalars["String"]>
 }
 
 export type EndpointNotificationSettings = {
   __typename?: "EndpointNotificationSettings"
-  full?: Maybe<Scalars["Boolean"]>
-  half?: Maybe<Scalars["Boolean"]>
-  quarter?: Maybe<Scalars["Boolean"]>
-  signedUp?: Maybe<Scalars["Boolean"]>
-  threeQuarters?: Maybe<Scalars["Boolean"]>
+  full: Scalars["Boolean"]
+  half: Scalars["Boolean"]
+  quarter: Scalars["Boolean"]
+  signedUp: Scalars["Boolean"]
+  threeQuarters: Scalars["Boolean"]
 }
 
 export type GatewaySettingsInput = {
   secretKeyRequired: Scalars["Boolean"]
-  whitelistOrigins: Array<InputMaybe<Scalars["String"]>>
-  whitelistUserAgents: Array<InputMaybe<Scalars["String"]>>
+  whitelistBlockchains: Array<Scalars["String"]>
+  whitelistContracts: Array<WhitelistContractInput>
+  whitelistMethods: Array<WhitelistMethodInput>
+  whitelistOrigins: Array<Scalars["String"]>
+  whitelistUserAgents: Array<Scalars["String"]>
 }
 
 export type Mutation = {
@@ -91,7 +97,7 @@ export type Mutation = {
 }
 
 export type MutationCreateNewEndpointArgs = {
-  input?: InputMaybe<CreateNewEndpointInput>
+  input: CreateNewEndpointInput
 }
 
 export type MutationRemoveEndpointArgs = {
@@ -99,7 +105,7 @@ export type MutationRemoveEndpointArgs = {
 }
 
 export type MutationUpdateEndpointArgs = {
-  input?: InputMaybe<UpdateEndpointInput>
+  input: UpdateEndpointInput
 }
 
 export type NotificationSettingsInput = {
@@ -125,7 +131,7 @@ export type ProcessedEndpoint = {
   stakeRelayStatus?: Maybe<StakeRelayStatus>
   status: Scalars["String"]
   updatedAt?: Maybe<Scalars["String"]>
-  user: Scalars["String"]
+  userId: Scalars["String"]
 }
 
 export type Query = {
@@ -133,10 +139,6 @@ export type Query = {
   blockchains: Array<Maybe<Blockchain>>
   endpoint: ProcessedEndpoint
   endpoints: Array<Maybe<ProcessedEndpoint>>
-}
-
-export type QueryBlockchainsArgs = {
-  active: Scalars["Boolean"]
 }
 
 export type QueryEndpointArgs = {
@@ -156,8 +158,30 @@ export type UpdateEndpointInput = {
   notificationSettings?: InputMaybe<NotificationSettingsInput>
 }
 
+export type WhitelistContractInput = {
+  blockchainId: Scalars["String"]
+  contracts: Array<Scalars["String"]>
+}
+
+export type WhitelistContracts = {
+  __typename?: "WhitelistContracts"
+  blockchainId: Scalars["String"]
+  contracts: Array<Scalars["String"]>
+}
+
+export type WhitelistMethodInput = {
+  blockchainId: Scalars["String"]
+  methods: Array<Scalars["String"]>
+}
+
+export type WhitelistMethods = {
+  __typename?: "WhitelistMethods"
+  blockchainId: Scalars["String"]
+  methods: Array<Scalars["String"]>
+}
+
 export type CreateEndpointMutationVariables = Exact<{
-  input?: InputMaybe<CreateNewEndpointInput>
+  input: CreateNewEndpointInput
 }>
 
 export type CreateEndpointMutation = {
@@ -166,7 +190,7 @@ export type CreateEndpointMutation = {
 }
 
 export type UpdateEndpointMutationVariables = Exact<{
-  input?: InputMaybe<UpdateEndpointInput>
+  input: UpdateEndpointInput
 }>
 
 export type UpdateEndpointMutation = {
@@ -190,7 +214,7 @@ export type EndpointsQuery = {
   endpoints: Array<{
     __typename?: "ProcessedEndpoint"
     id: string
-    user: string
+    userId: string
     name: string
     status: string
     chain: string
@@ -211,18 +235,18 @@ export type EndpointsQuery = {
     } | null>
     gatewaySettings: {
       __typename?: "EndpointGatewaySettings"
-      secretKey?: string | null
-      secretKeyRequired?: boolean | null
-      whitelistOrigins?: Array<string | null> | null
-      whitelistUserAgents?: Array<string | null> | null
+      secretKey: string
+      secretKeyRequired: boolean
+      whitelistOrigins: Array<string>
+      whitelistUserAgents: Array<string>
     }
     notificationSettings: {
       __typename?: "EndpointNotificationSettings"
-      signedUp?: boolean | null
-      quarter?: boolean | null
-      half?: boolean | null
-      threeQuarters?: boolean | null
-      full?: boolean | null
+      signedUp: boolean
+      quarter: boolean
+      half: boolean
+      threeQuarters: boolean
+      full: boolean
     }
     stakeRelayStatus?: {
       __typename?: "StakeRelayStatus"
@@ -241,7 +265,7 @@ export type EndpointQuery = {
   endpoint: {
     __typename?: "ProcessedEndpoint"
     id: string
-    user: string
+    userId: string
     name: string
     status: string
     chain: string
@@ -262,18 +286,29 @@ export type EndpointQuery = {
     } | null>
     gatewaySettings: {
       __typename?: "EndpointGatewaySettings"
-      secretKey?: string | null
-      secretKeyRequired?: boolean | null
-      whitelistOrigins?: Array<string | null> | null
-      whitelistUserAgents?: Array<string | null> | null
+      secretKey: string
+      secretKeyRequired: boolean
+      whitelistBlockchains: Array<string>
+      whitelistOrigins: Array<string>
+      whitelistUserAgents: Array<string>
+      whitelistContracts: Array<{
+        __typename?: "WhitelistContracts"
+        blockchainId: string
+        contracts: Array<string>
+      }>
+      whitelistMethods: Array<{
+        __typename?: "WhitelistMethods"
+        blockchainId: string
+        methods: Array<string>
+      }>
     }
     notificationSettings: {
       __typename?: "EndpointNotificationSettings"
-      signedUp?: boolean | null
-      quarter?: boolean | null
-      half?: boolean | null
-      threeQuarters?: boolean | null
-      full?: boolean | null
+      signedUp: boolean
+      quarter: boolean
+      half: boolean
+      threeQuarters: boolean
+      full: boolean
     }
     stakeRelayStatus?: {
       __typename?: "StakeRelayStatus"
@@ -283,9 +318,7 @@ export type EndpointQuery = {
   }
 }
 
-export type BlockchainsQueryVariables = Exact<{
-  active: Scalars["Boolean"]
-}>
+export type BlockchainsQueryVariables = Exact<{ [key: string]: never }>
 
 export type BlockchainsQuery = {
   __typename?: "Query"
@@ -309,14 +342,14 @@ export type BlockchainsQuery = {
 }
 
 export const CreateEndpointDocument = gql`
-  mutation createEndpoint($input: CreateNewEndpointInput) {
+  mutation createEndpoint($input: CreateNewEndpointInput!) {
     createNewEndpoint(input: $input) {
       id
     }
   }
 `
 export const UpdateEndpointDocument = gql`
-  mutation updateEndpoint($input: UpdateEndpointInput) {
+  mutation updateEndpoint($input: UpdateEndpointInput!) {
     updateEndpoint(input: $input) {
       id
     }
@@ -333,7 +366,7 @@ export const EndpointsDocument = gql`
   query endpoints {
     endpoints {
       id
-      user
+      userId
       name
       status
       apps {
@@ -375,7 +408,7 @@ export const EndpointDocument = gql`
   query endpoint($endpointID: ID!) {
     endpoint(endpointID: $endpointID) {
       id
-      user
+      userId
       name
       status
       apps {
@@ -394,8 +427,17 @@ export const EndpointDocument = gql`
       gatewaySettings {
         secretKey
         secretKeyRequired
+        whitelistBlockchains
         whitelistOrigins
         whitelistUserAgents
+        whitelistContracts {
+          blockchainId
+          contracts
+        }
+        whitelistMethods {
+          blockchainId
+          methods
+        }
       }
       notificationSettings {
         signedUp
@@ -414,8 +456,8 @@ export const EndpointDocument = gql`
   }
 `
 export const BlockchainsDocument = gql`
-  query blockchains($active: Boolean!) {
-    blockchains(active: $active) {
+  query blockchains {
+    blockchains {
       id
       ticker
       network
@@ -449,7 +491,7 @@ export function getSdk(
 ) {
   return {
     createEndpoint(
-      variables?: CreateEndpointMutationVariables,
+      variables: CreateEndpointMutationVariables,
       requestHeaders?: Dom.RequestInit["headers"],
     ): Promise<CreateEndpointMutation> {
       return withWrapper(
@@ -463,7 +505,7 @@ export function getSdk(
       )
     },
     updateEndpoint(
-      variables?: UpdateEndpointMutationVariables,
+      variables: UpdateEndpointMutationVariables,
       requestHeaders?: Dom.RequestInit["headers"],
     ): Promise<UpdateEndpointMutation> {
       return withWrapper(
@@ -519,7 +561,7 @@ export function getSdk(
       )
     },
     blockchains(
-      variables: BlockchainsQueryVariables,
+      variables?: BlockchainsQueryVariables,
       requestHeaders?: Dom.RequestInit["headers"],
     ): Promise<BlockchainsQuery> {
       return withWrapper(

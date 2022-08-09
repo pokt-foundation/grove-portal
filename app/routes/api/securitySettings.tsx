@@ -1,5 +1,6 @@
 import { ActionFunction, redirect } from "@remix-run/node"
-import { putAppSecurity } from "~/models/portal.server"
+import { initPortalClient } from "~/models/portal/portal.server"
+import { requireUser } from "~/utils/session.server"
 
 const unifyContracts = (chains: string[], values: string[]) => {
   let together = {} as { [key: string]: string[] }
@@ -17,7 +18,7 @@ const unifyContracts = (chains: string[], values: string[]) => {
   if (Object.keys(together).length !== 0) {
     for (const [key, value] of Object.entries(together)) {
       formatted.push({
-        blockchainID: key,
+        blockchainId: key,
         contracts: value,
       })
     }
@@ -41,7 +42,7 @@ const unifyMethods = (chains: string[], values: string[]) => {
   if (Object.keys(together).length !== 0) {
     for (const [key, value] of Object.entries(together)) {
       formatted.push({
-        blockchainID: key,
+        blockchainId: key,
         methods: value,
       })
     }
@@ -57,8 +58,8 @@ export interface AppSecurityActionResponse {
     whitelistOrigins: string[]
     whitelistUserAgents: string[]
     whitelistBlockchains: string[]
-    whitelistContracts: { blockchainID: string; contracts: string[] }[]
-    whitelistMethods: { blockchainID: string; methods: string[] }[]
+    whitelistContracts: { blockchainId: string; contracts: string[] }[]
+    whitelistMethods: { blockchainId: string; methods: string[] }[]
     whitelistContractsChains: string[]
     whitelistContractsValues: string[]
     whitelistMethodsChains: string[]
@@ -113,11 +114,21 @@ export const action: ActionFunction = async ({ request }) => {
     data.whitelistMethods = unifyMethods(chains, values)
   }
 
-  const res = await putAppSecurity(data, request)
-
-  if (res.error === true) {
-    throw new Error(res.error_message)
-  }
+  const user = await requireUser(request)
+  const portal = initPortalClient(user.accessToken)
+  await portal.updateEndpoint({
+    input: {
+      id: data.appID,
+      gatewaySettings: {
+        secretKeyRequired: data.secretKeyRequired,
+        whitelistBlockchains: data.whitelistBlockchains,
+        whitelistContracts: data.whitelistContracts,
+        whitelistMethods: data.whitelistMethods,
+        whitelistOrigins: data.whitelistOrigins,
+        whitelistUserAgents: data.whitelistUserAgents,
+      },
+    },
+  })
 
   return redirect(`dashboard/apps/${data.appID}/security`)
 }

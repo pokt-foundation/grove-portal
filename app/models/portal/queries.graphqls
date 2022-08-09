@@ -1,7 +1,7 @@
 query endpoints {
   endpoints {
     id
-    user
+    userId
     name
     status
     apps {
@@ -42,7 +42,7 @@ query endpoints {
 query endpoint($endpointID: ID!) {
   endpoint(endpointID: $endpointID) {
     id
-    user
+    userId
     name
     status
     apps {
@@ -61,8 +61,17 @@ query endpoint($endpointID: ID!) {
     gatewaySettings {
       secretKey
       secretKeyRequired
+      whitelistBlockchains
       whitelistOrigins
       whitelistUserAgents
+      whitelistContracts {
+        blockchainId
+        contracts
+      }
+      whitelistMethods {
+        blockchainId
+        methods
+      }
     }
     notificationSettings {
       signedUp
@@ -80,8 +89,8 @@ query endpoint($endpointID: ID!) {
   }
 }
 
-query blockchains($active: Boolean!) {
-  blockchains(active: $active) {
+query blockchains {
+  blockchains {
     id
     ticker
     network

@@ -57,7 +57,7 @@ export default function AppSecurity() {
   } = appIDRoute?.data as AppIdLoaderData
 
   const formatData = (
-    data: { blockchainID: string; [key: string]: string[] | string }[],
+    data: { blockchainId: string; [key: string]: string[] | string }[],
   ) => {
     let formattedData = []
     if (data[0]?.contracts || data[0]?.methods) {
@@ -66,12 +66,12 @@ export default function AppSecurity() {
         if (data[i][key].length > 1) {
           for (let j = 0; j < data[i][key].length; j += 1) {
             formattedData.push({
-              id: data[i].blockchainID,
+              id: data[i].blockchainId,
               inputValue: data[i][key][j],
             })
           }
         } else {
-          formattedData.push({ id: data[i].blockchainID, inputValue: data[i][key][0] })
+          formattedData.push({ id: data[i].blockchainId, inputValue: data[i][key][0] })
         }
       }
     }
@@ -95,21 +95,15 @@ export default function AppSecurity() {
   )
   const [whitelistContractsInput, setWhitelistContractsInput] = useState("")
   const [whitelistContractsDropdown, setWhitelistContractsDropdown] = useState<string>("")
-  // const [whitelistContracts, setWhitelistContracts] = useState<
-  //   Array<{ id: string; inputValue: string }>
-  // >(formatData(gatewaySettings?.whitelistContracts))
   const [whitelistContracts, setWhitelistContracts] = useState<
     Array<{ id: string; inputValue: string }>
-  >([])
+  >(formatData(gatewaySettings?.whitelistContracts))
   const [whitelistContractsError, setWhitelistContractsError] = useState<boolean>(false)
   const [whitelistMethodsInput, setWhitelistMethodsInput] = useState<string>("")
   const [whitelistMethodsDropdown, setWhitelistMethodsDropdown] = useState<string>("")
-  // const [whitelistMethods, setWhitelistMethods] = useState<
-  //   Array<{ id: string; inputValue: string }>
-  // >(formatData(gatewaySettings.whitelistMethods))
   const [whitelistMethods, setWhitelistMethods] = useState<
     Array<{ id: string; inputValue: string }>
-  >([])
+  >(formatData(gatewaySettings.whitelistMethods))
   const [whitelistMethodsError, setWhitelistMethodsError] = useState<boolean>(false)
 
   const removeFromArray = (item: string, arr: string[]) => arr.filter((i) => i !== item)

@@ -1,10 +1,10 @@
-mutation createEndpoint($input: CreateNewEndpointInput) {
+mutation createEndpoint($input: CreateNewEndpointInput!) {
   createNewEndpoint(input: $input) {
     id
   }
 }
 
-mutation updateEndpoint($input: UpdateEndpointInput) {
+mutation updateEndpoint($input: UpdateEndpointInput!) {
   updateEndpoint(input: $input) {
     id
   }

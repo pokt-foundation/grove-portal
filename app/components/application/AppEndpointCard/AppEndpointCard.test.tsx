@@ -17,11 +17,25 @@ beforeEach(() => {
     gigastake: false,
     freeTier: true,
     apps: [],
-    gatewaySettings: {},
+    gatewaySettings: {
+      secretKey: "12434",
+      secretKeyRequired: false,
+      whitelistBlockchains: [],
+      whitelistContracts: [],
+      whitelistMethods: [],
+      whitelistOrigins: [],
+      whitelistUserAgents: [],
+    },
     name: "",
-    notificationSettings: {},
+    notificationSettings: {
+      full: true,
+      half: true,
+      quarter: true,
+      signedUp: true,
+      threeQuarters: true,
+    },
     status: "IN_SERVICE",
-    user: "60ec71e6980d0b0034b3f2f3",
+    userId: "60ec71e6980d0b0034b3f2f3",
   }
   userValue = {
     submit: vitest.fn(),

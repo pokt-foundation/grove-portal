@@ -39,7 +39,6 @@ export const loader: LoaderFunction = async ({ request }) => {
   const user = await requireUser(request)
   const userId = await getUserId(request)
   const portal = initPortalClient(user.accessToken)
-  console.log(user.accessToken)
   const endpointsResponse = await portal.endpoints().catch((e) => {
     console.log(e)
   })

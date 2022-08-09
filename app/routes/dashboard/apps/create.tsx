@@ -1,7 +1,7 @@
-import { Group, Text } from "@mantine/core"
-import { ActionFunction, MetaFunction, redirect } from "@remix-run/node"
-import { Form, Link } from "@remix-run/react"
-import { forwardRef } from "react"
+import { Group, Loader, LoadingOverlay, Text } from "@mantine/core"
+import { ActionFunction, json, MetaFunction, redirect } from "@remix-run/node"
+import { Form, Link, useActionData, useTransition } from "@remix-run/react"
+import { forwardRef, useRef } from "react"
 import invariant from "tiny-invariant"
 import ChainWithImage, {
   AppEndpointProps,
@@ -12,6 +12,7 @@ import Card, { links as CardLinks } from "~/components/shared/Card"
 import Select, { links as SelectLinks } from "~/components/shared/Select"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { initPortalClient } from "~/models/portal/portal.server"
+import { getErrorMessage } from "~/utils/catchError"
 import { CHAIN_ID_PREFIXES } from "~/utils/chainUtils"
 import { requireUser } from "~/utils/session.server"
 
@@ -25,6 +26,11 @@ export const links = () => {
   return [...CardLinks(), ...TextInputLinks(), ...SelectLinks(), ...ChainWithImageLinks()]
 }
 
+type ActionData = {
+  error: true
+  message: string
+}
+
 export const action: ActionFunction = async ({ request }) => {
   const user = await requireUser(request)
   const portal = initPortalClient(user.accessToken)
@@ -35,14 +41,35 @@ export const action: ActionFunction = async ({ request }) => {
   invariant(name && typeof name === "string", "app name not found")
   invariant(chain && typeof chain === "string", "app name not found")
 
-  // TODO: chain is not currently supported in new API
-  const { createNewEndpoint } = await portal.createEndpoint({
-    input: {
-      name,
-    },
-  })
+  try {
+    const { createNewEndpoint } = await portal.createEndpoint({
+      input: {
+        name,
+        notificationSettings: {
+          signedUp: true,
+          quarter: false,
+          half: false,
+          threeQuarters: true,
+          full: true,
+        },
+        gatewaySettings: {
+          secretKeyRequired: false,
+          whitelistBlockchains: [],
+          whitelistContracts: [],
+          whitelistMethods: [],
+          whitelistOrigins: [],
+          whitelistUserAgents: [],
+        },
+      },
+    })
 
-  return redirect(`/dashboard/apps/${createNewEndpoint?.id}`)
+    return redirect(`/dashboard/apps/${createNewEndpoint?.id}`)
+  } catch (error) {
+    return json({
+      error: true,
+      message: getErrorMessage(error),
+    })
+  }
 }
 
 const SelectItem = forwardRef<HTMLDivElement, AppEndpointProps>(
@@ -59,6 +86,8 @@ export default function CreateApp() {
     label: name,
     value: id,
   }))
+  const transition = useTransition()
+  const action = useActionData() as ActionData
   return (
     <>
       <section>
@@ -101,13 +130,21 @@ export default function CreateApp() {
               </Text>
             </div>
             <Group align="center" position="apart">
-              <Button type="submit">Launch Application</Button>
+              <Button disabled={transition.state === "submitting"} type="submit">
+                Launch Application
+                {transition.state !== "idle" && <Loader ml="sm" size={16} />}
+              </Button>
               <Button component={Link} to="/dashboard/apps" variant="subtle">
                 Back
               </Button>
             </Group>
           </Form>
         </Card>
+        {action && (
+          <Card>
+            <p>{action.message}</p>
+          </Card>
+        )}
       </section>
     </>
   )

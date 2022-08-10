@@ -1,15 +1,32 @@
 describe("smoke tests", () => {
-  // it("should allow you to search for a blockId, transactionHash and address", () => {
-  //   const appAddress = "00353abd21ef72725b295ba5a9a5eb6082548e23"
-  //   cy.visit("/")
-  //   cy.findByRole("banner")
-  //     .findByRole("textbox", { name: "Search POKT Explorer" })
-  //     .type(appAddress)
-  //   cy.findByRole("banner").findByRole("button", { name: "Search" }).click()
-  //   cy.location("pathname", { timeout: 20000 }).should(
-  //     "include",
-  //     `/addresses/${appAddress}`,
-  //   )
-  //   cy.findByText(appAddress)
-  // })
+  it("should load landing page", () => {
+    cy.visit("/")
+
+    // should find heading
+    cy.findByRole("heading", { name: /your gateway to web3 done right/i }).should(
+      "be.visible",
+    )
+
+    // should find main cta
+    cy.findByRole("button", { name: /get started/i }).should("be.visible")
+
+    // should find 'about pocket' in navigation
+    cy.findByRole("banner")
+      .findByRole("navigation")
+      .findByRole("link", { name: /about pocket/i })
+      .should("have.attr", "href", "https://www.pokt.network/")
+
+    // should find 'docs' in navigation
+    cy.findByRole("banner")
+      .findByRole("navigation")
+      .findByRole("link", { name: /docs/i })
+      .should("have.attr", "href", "https://docs.pokt.network/home/paths/app-developer")
+
+    // should find FAQs link and take you to the FAQs page
+    cy.findByRole("banner")
+      .findByRole("navigation")
+      .findByRole("link", { name: /faqs/i })
+      .click()
+    cy.url().should("include", "faq")
+  })
 })

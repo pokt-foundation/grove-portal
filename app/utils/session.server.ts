@@ -62,11 +62,12 @@ export const requireAdmin = async (
 
 export const getUserId = async (request: Request) => {
   const user = await authenticator.isAuthenticated(request)
-  return user?.profile.id.replace(/auth0\|/g, "")
+  if (!user) return undefined
+  return getPoktId(user.profile.id)
 }
 
 export const getPoktId = (id: string) => {
-  return id.replace(/auth0\|/g, "")
+  return id.split("|")[1]
 }
 
 export const getUserProfile = async (request: Request) => {

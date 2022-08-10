@@ -1,9 +1,11 @@
 import { MetaFunction } from "@remix-run/node"
 import { Link } from "@remix-run/react"
+import { useEffect } from "react"
 import { AllAppsLoaderData } from "../apps"
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import Table, { links as TableLinks } from "~/components/shared/Table"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
+import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 
 export const links = () => {
   return [...TableLinks(), ...CardLinks()]
@@ -18,6 +20,10 @@ export const meta: MetaFunction = () => {
 export const Apps = () => {
   const allAppsRoute = useMatchesRoute("routes/dashboard/apps")
   const { endpoints } = allAppsRoute?.data as AllAppsLoaderData
+
+  useEffect(() => {
+    trackEvent(AmplitudeEvents.AllAppsView)
+  }, [])
 
   return (
     <section>

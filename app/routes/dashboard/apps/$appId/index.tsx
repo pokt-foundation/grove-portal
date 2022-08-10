@@ -2,7 +2,7 @@ import { MetaFunction } from "@remix-run/node"
 // import AppLatencyCard, {
 //   links as AppLatencyCardLinks,
 // } from "~/components/application/AppLatencyCard"
-import { useMemo } from "react"
+import { useMemo, useEffect } from "react"
 import { AppIdLoaderData } from "../$appId"
 import AppEndpointCard, {
   links as AppEndpointCardLinks,
@@ -21,6 +21,7 @@ import UsageChartCard, {
 } from "~/components/application/UsageChartCard"
 import Grid from "~/components/shared/Grid"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
+import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { FREE_TIER_MAX_RELAYS } from "~/utils/pocketUtils"
 
 export const links = () => {
@@ -43,6 +44,10 @@ export const meta: MetaFunction = () => {
 export const Application = () => {
   const appIdRoute = useMatchesRoute("routes/dashboard/apps/$appId")
   const appIdData = appIdRoute?.data as AppIdLoaderData
+
+  useEffect(() => {
+    trackEvent(AmplitudeEvents.AppDetailsView)
+  }, [])
 
   const exceedsMaxRelays = useMemo(() => {
     return appIdData.relaysToday.Count.Total >= FREE_TIER_MAX_RELAYS

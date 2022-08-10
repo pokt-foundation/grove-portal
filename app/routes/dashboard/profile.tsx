@@ -1,10 +1,12 @@
 import { IconPerson } from "@pokt-foundation/ui"
 import type { LinksFunction } from "@remix-run/node"
+import { useEffect } from "react"
 import type { Auth0Profile } from "remix-auth-auth0"
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import styles from "~/styles/dashboard.profile.css"
+import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 
 export const links: LinksFunction = () => [
   ...CardLinks(),
@@ -16,6 +18,10 @@ export default function Profile() {
   const dashboardRoute = useMatchesRoute("routes/dashboard")
   const dashboardData = dashboardRoute?.data.user as Auth0Profile
   const { email_verified: emailVerified = false, nickname = "" } = dashboardData._json
+
+  useEffect(() => {
+    trackEvent(AmplitudeEvents.ProfileView)
+  }, [])
 
   return (
     <section className="pokt-network-user-profile">

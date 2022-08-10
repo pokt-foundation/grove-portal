@@ -18,6 +18,8 @@
 //   getLBOriginClassification,
 // } from "~/models/portal.server"
 // import { AppIdLoaderData } from "../$appId"
+import { useEffect } from "react"
+import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 
 // export const meta: MetaFunction = () => {
 //   return {
@@ -100,5 +102,8 @@
 // }
 
 export default function AppIdRequests() {
+  useEffect(() => {
+    trackEvent(AmplitudeEvents.RequestDetailsView)
+  }, [])
   return <></>
 }

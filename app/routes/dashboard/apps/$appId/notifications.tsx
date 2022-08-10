@@ -1,6 +1,7 @@
 import { Link } from "@pokt-foundation/ui"
 import { ActionFunction, LinksFunction, json } from "@remix-run/node"
 import { useCatch } from "@remix-run/react"
+import { useEffect } from "react"
 import invariant from "tiny-invariant"
 import NotificationsAlertForm, {
   links as NotificationsAlertFormLinks,
@@ -10,6 +11,7 @@ import NotificationsWeeklyBandwidthUsageCard, {
 } from "~/components/application/NotificationsWeeklyBandwidthUsageCard"
 import { initPortalClient } from "~/models/portal/portal.server"
 import styles from "~/styles/dashboard.apps.$appId.notifications.css"
+import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { requireUser } from "~/utils/session.server"
 
 export const links: LinksFunction = () => [
@@ -54,6 +56,10 @@ export const action: ActionFunction = async ({ request, params }) => {
 }
 
 export default function AppNotifications() {
+  useEffect(() => {
+    trackEvent(AmplitudeEvents.NotificationDetailsView)
+  }, [])
+
   return (
     <section className="pokt-network-app-notifications">
       <NotificationsAlertForm />

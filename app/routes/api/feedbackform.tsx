@@ -32,8 +32,6 @@ export const action: ActionFunction = async ({ request }) => {
 
   const res = await postFeedback(data, request)
 
-  console.log(res)
-
   return json<FeedbackActionResponse>({
     error: res.error,
     data: data,

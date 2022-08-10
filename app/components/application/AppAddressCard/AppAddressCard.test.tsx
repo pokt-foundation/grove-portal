@@ -19,16 +19,16 @@ describe("<AppAddressCard />", () => {
   it("renders heading", () => {
     render(<AppAddressCard apps={apps} />)
     const heading = "POKT App Addresses"
-    expect(screen.queryByText(heading)).toBeInTheDocument()
+    expect(screen.getByText(heading)).toBeInTheDocument()
   })
   it("renders number of Apps", () => {
     render(<AppAddressCard apps={apps} />)
     const numberOfApps = "2"
-    expect(screen.queryByText(numberOfApps)).toBeInTheDocument()
+    expect(screen.getByText(numberOfApps)).toBeInTheDocument()
   })
   it("renders Errortext when no apps found", () => {
     render(<AppAddressCard apps={[]} />)
     const errorText = "No apps found."
-    expect(screen.queryByText(errorText)).toBeInTheDocument()
+    expect(screen.getByText(errorText)).toBeInTheDocument()
   })
 })

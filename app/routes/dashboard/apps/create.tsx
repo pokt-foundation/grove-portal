@@ -13,6 +13,8 @@ import Select, { links as SelectLinks } from "~/components/shared/Select"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { getErrorMessage } from "~/utils/catchError"
+import { UserApplication, postLBUserApplication } from "~/models/portal.server"
+import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { CHAIN_ID_PREFIXES } from "~/utils/chainUtils"
 import { requireUser } from "~/utils/session.server"
 
@@ -130,7 +132,13 @@ export default function CreateApp() {
               </Text>
             </div>
             <Group align="center" position="apart">
-              <Button disabled={transition.state === "submitting"} type="submit">
+              <Button
+                disabled={transition.state === "submitting"}
+                type="submit"
+                onClick={() => {
+                  trackEvent(AmplitudeEvents.EndpointCreation)
+                }}
+              >
                 Launch Application
                 {transition.state !== "idle" && <Loader ml="sm" size={16} />}
               </Button>

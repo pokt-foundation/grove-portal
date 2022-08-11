@@ -1,6 +1,6 @@
 import { Grid } from "@mantine/core"
 import { json, LoaderFunction } from "@remix-run/node"
-import { Link, Outlet, useLoaderData } from "@remix-run/react"
+import { Link, Outlet, useLoaderData, useTransition } from "@remix-run/react"
 import AdEconomicsForDevs, {
   links as AdEconomicsForDevsLinks,
 } from "~/components/application/AdEconomicsForDevs"
@@ -13,6 +13,7 @@ import CardList, {
   CardListItem,
   links as CardListLinks,
 } from "~/components/shared/CardList"
+import Loader, { links as LoaderLinks } from "~/components/shared/Loader"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { ProcessedEndpoint } from "~/models/portal/sdk"
@@ -27,6 +28,7 @@ export const links = () => {
     ...CardListLinks(),
     ...FeedbackCardLinks(),
     ...AdEconomicsForDevsLinks(),
+    ...LoaderLinks(),
   ]
 }
 
@@ -65,6 +67,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 export const Apps = () => {
   const { endpoints, userId } = useLoaderData() as AllAppsLoaderData
   const appIdRoute = useMatchesRoute("routes/dashboard/apps/$appId")
+  const { state } = useTransition()
 
   const userAppsStatus: CardListItem[] = [
     {
@@ -83,6 +86,7 @@ export const Apps = () => {
     return (
       <Grid gutter={32}>
         <Grid.Col md={8}>
+          {state === "loading" && <Loader />}
           <Outlet />
         </Grid.Col>
         <Grid.Col md={4}>

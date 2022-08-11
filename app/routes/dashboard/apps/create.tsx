@@ -17,8 +17,8 @@ import Button from "~/components/shared/Button"
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import Select, { links as SelectLinks } from "~/components/shared/Select"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
-import { initPortalClient } from "~/models/portal/portal.server"
 import { useFeatureFlags } from "~/context/FeatureFlagContext"
+import { initPortalClient } from "~/models/portal/portal.server"
 import { Stripe, stripe } from "~/models/stripe.server"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { getErrorMessage } from "~/utils/catchError"
@@ -259,6 +259,11 @@ export default function CreateApp() {
           </Group>
         </Form>
       </Card>
+      {action && (
+        <Card>
+          <p>{action.message}</p>
+        </Card>
+      )}
     </section>
   )
 }

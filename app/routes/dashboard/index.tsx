@@ -1,6 +1,6 @@
 import { Grid } from "@mantine/core"
 import { LoaderFunction, json, MetaFunction } from "@remix-run/node"
-import { useLoaderData } from "@remix-run/react"
+import { useLoaderData, useTransition } from "@remix-run/react"
 import AdEconomicsForDevs, {
   links as AdEconomicsForDevsLinks,
 } from "~/components/application/AdEconomicsForDevs"
@@ -25,6 +25,7 @@ import NetworkSummaryCard, {
 import UsageChartCard, {
   links as UsageChartCardLinks,
 } from "~/components/application/UsageChartCard"
+import Loader, { links as LoaderLinks } from "~/components/shared/Loader"
 import Table, { links as TableLinks } from "~/components/shared/Table"
 import { initIndexerClient } from "~/models/indexer/indexer.server"
 import { Block, Order } from "~/models/indexer/sdk"
@@ -47,6 +48,7 @@ export const links = () => {
     ...TableLinks(),
     ...ChainWithImageLinks(),
     ...FeedbackCardLinks(),
+    ...LoaderLinks(),
     { rel: "stylesheet", href: styles },
   ]
 }
@@ -169,83 +171,87 @@ export default function Index() {
     weeklyNetworkRelays,
     latestBlock,
   } = useLoaderData() as LoaderData
+  const { state } = useTransition()
   return (
-    <Grid gutter={32}>
-      <Grid.Col md={8}>
-        <section>
-          <h3>Network Summary</h3>
-          <Grid gutter={32}>
-            <Grid.Col sm={4}>
-              <NetworkSummaryCard
-                imgSrc="/networkSummaryNodes.png"
-                subtitle="7000+"
-                title="Nodes Staked"
-              />
-            </Grid.Col>
-            <Grid.Col sm={4}>
-              <NetworkSummaryCard
-                imgSrc="/networkSummaryApps.png"
-                subtitle="2000+"
-                title="Apps Staked"
-              />
-            </Grid.Col>
-            <Grid.Col sm={4}>
-              <NetworkSummaryCard
-                imgSrc="/networkSummaryNetworks.png"
-                subtitle={String(blockchains ? blockchains.length : 0)}
-                title="Networks"
-              />
-            </Grid.Col>
-          </Grid>
-        </section>
-        <section>
-          <UsageChartCard relays={dailyNetworkRelaysPerWeek} />
-        </section>
-        {blockchains && (
+    <>
+      {state === "loading" && <Loader />}
+      <Grid gutter={32}>
+        <Grid.Col md={8}>
           <section>
-            <Table
-              paginate
-              search
-              columns={["Network", "ID", "Status"]}
-              data={blockchains.map((chain) => ({
-                id: chain.id,
-                network: {
-                  value: chain.description,
-                  element: <ChainWithImage chain={chain.description} />,
-                },
-                chainId: chain.id,
-                status: getServiceLevelByChain(chain.id),
-              }))}
-              label="Available Networks"
+            <h3>Network Summary</h3>
+            <Grid gutter={32}>
+              <Grid.Col sm={4}>
+                <NetworkSummaryCard
+                  imgSrc="/networkSummaryNodes.png"
+                  subtitle="7000+"
+                  title="Nodes Staked"
+                />
+              </Grid.Col>
+              <Grid.Col sm={4}>
+                <NetworkSummaryCard
+                  imgSrc="/networkSummaryApps.png"
+                  subtitle="2000+"
+                  title="Apps Staked"
+                />
+              </Grid.Col>
+              <Grid.Col sm={4}>
+                <NetworkSummaryCard
+                  imgSrc="/networkSummaryNetworks.png"
+                  subtitle={String(blockchains ? blockchains.length : 0)}
+                  title="Networks"
+                />
+              </Grid.Col>
+            </Grid>
+          </section>
+          <section>
+            <UsageChartCard relays={dailyNetworkRelaysPerWeek} />
+          </section>
+          {blockchains && (
+            <section>
+              <Table
+                paginate
+                search
+                columns={["Network", "ID", "Status"]}
+                data={blockchains.map((chain) => ({
+                  id: chain.id,
+                  network: {
+                    value: chain.description,
+                    element: <ChainWithImage chain={chain.description} />,
+                  },
+                  chainId: chain.id,
+                  status: getServiceLevelByChain(chain.id),
+                }))}
+                label="Available Networks"
+              />
+            </section>
+          )}
+        </Grid.Col>
+        <Grid.Col md={4}>
+          <section>
+            <h3>Network Success Rate</h3>
+            <NetworkSuccessRateCard relays={weeklyNetworkRelays} />
+          </section>
+          {latestBlock && (
+            <section>
+              <NetworkLatestBlockCard latestBlock={latestBlock} />
+            </section>
+          )}
+          <section>
+            <NetworkRelayPerformanceCard
+              month={monthlyNetworkRelays}
+              today={dailyNetworkRelays}
+              week={weeklyNetworkRelays}
             />
           </section>
-        )}
-      </Grid.Col>
-      <Grid.Col md={4}>
-        <section>
-          <h3>Network Success Rate</h3>
-          <NetworkSuccessRateCard relays={weeklyNetworkRelays} />
-        </section>
-        {latestBlock && (
           <section>
-            <NetworkLatestBlockCard latestBlock={latestBlock} />
+            <AdEconomicsForDevs />
           </section>
-        )}
-        <section>
-          <NetworkRelayPerformanceCard
-            month={monthlyNetworkRelays}
-            today={dailyNetworkRelays}
-            week={weeklyNetworkRelays}
-          />
-        </section>
-        <section>
-          <AdEconomicsForDevs />
-        </section>
-        <section>
-          <FeedbackCard />
-        </section>
-      </Grid.Col>
-    </Grid>
+          <section>
+            <FeedbackCard />
+          </section>
+        </Grid.Col>
+      </Grid>
+    </>
   )
 }
 

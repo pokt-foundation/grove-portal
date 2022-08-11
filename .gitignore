@@ -1,4 +1,5 @@
 app/models/indexer/sdk.ts
+app/models/portal/sdk.ts
 
 node_modules
 

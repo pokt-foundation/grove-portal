@@ -32,6 +32,7 @@ export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) 
   const [isActive, setIsActive] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const logoutFormRef = useRef<HTMLFormElement>(null)
+  const billingFormRef = useRef<HTMLFormElement>(null)
   const { width } = useViewportSize()
 
   useEffect(() => {
@@ -56,11 +57,19 @@ export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) 
       {
         id: "billing",
         el: () => (
-          <Form action="/api/stripe/portal-session" method="post">
-            <Button type="submit" variant="outline">
-              Manage Billing
-            </Button>
-          </Form>
+          <Button
+            leftIcon={<img alt="logout" src="/logout.svg" />}
+            variant="outline"
+            onClick={() => {
+              if (billingFormRef.current) {
+                billingFormRef.current.dispatchEvent(
+                  new Event("submit", { cancelable: true, bubbles: true }),
+                )
+              }
+            }}
+          >
+            Manage Billing
+          </Button>
         ),
       },
       {
@@ -134,6 +143,15 @@ export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) 
               readOnly
               aria-label="hidden"
               name="logout"
+              type="hidden"
+              value="true"
+            />
+          </Form>
+          <Form ref={billingFormRef} action="/api/stripe/portal-session" method="post">
+            <input
+              readOnly
+              aria-label="hidden"
+              name="billing"
               type="hidden"
               value="true"
             />

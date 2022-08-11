@@ -91,14 +91,10 @@ export const action: ActionFunction = async ({ request }) => {
 
   if (subscription === "paid") {
     formData.append("app-id", response.id)
-    console.log(formData)
-    return await fetch(
-      `https://${getRequiredServerEnvVar("VERCEL_URL")}/api/stripe/checkout-session`,
-      {
-        method: "POST",
-        body: formData,
-      },
-    )
+
+    // setting to any because of a TS nnown error: https://github.com/microsoft/TypeScript/issues/19806
+    const params = new URLSearchParams(formData as any).toString()
+    return redirect(`/api/stripe/checkout-session?${params}`)
   }
 
   return redirect(`/dashboard/apps/${response.id}`)

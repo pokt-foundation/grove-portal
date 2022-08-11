@@ -47,10 +47,6 @@ export default function Dashboard() {
       icon: IconApp,
     },
     {
-      to: "/dashboard/rent-to-own",
-      label: t.terms.rentToOwn,
-    },
-    {
       to: "/dashboard/support",
       label: t.terms.support,
     },

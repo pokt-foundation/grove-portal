@@ -15,6 +15,8 @@ export const action: ActionFunction = async ({ request }) => {
     email: user.profile.emails[0].value,
   })
 
+  console.log({ customer })
+
   if (customer) {
     const portalSession = await stripe.billingPortal.sessions.create({
       customer: customer.data[0].id,

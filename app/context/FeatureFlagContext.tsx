@@ -4,10 +4,14 @@ import { FeatureFlagsLoaderActionData } from "~/routes/api/featureflags"
 
 export interface FeatureFlags {
   MULTI_LANGUAGE: string
+  STRIPE_PAYMENT: string
+  ENTERPRISE: string
 }
 
 export const defaultFeatureFlags = {
   MULTI_LANGUAGE: ENV.FLAG_MULTI_LANGUAGE ?? "false",
+  STRIPE_PAYMENT: ENV.FLAG_STRIPE_PAYMENT || "true",
+  ENTERPRISE: "false" || ENV.FLAG_ENTERPRISE, //change once enterprise is available
 }
 
 interface IFeatureFlagsContext {

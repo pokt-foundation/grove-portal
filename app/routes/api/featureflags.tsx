@@ -29,6 +29,12 @@ export const action: ActionFunction = async ({ request }) => {
   if (bodyParams.has("MULTI_LANGUAGE")) {
     cookie.MULTI_LANGUAGE = bodyParams.get("MULTI_LANGUAGE") as string
   }
+  if (bodyParams.has("STRIPE_PAYMENT")) {
+    cookie.STRIPE_PAYMENT = bodyParams.get("STRIPE_PAYMENT") as string
+  }
+  if (bodyParams.has("ENTERPRISE")) {
+    cookie.ENTERPRISE = bodyParams.get("ENTERPRISE") as string
+  }
 
   const data = {
     POKT_FEATURE_FLAGS: cookie,

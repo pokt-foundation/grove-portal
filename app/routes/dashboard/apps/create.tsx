@@ -18,6 +18,7 @@ import Card, { links as CardLinks } from "~/components/shared/Card"
 import Select, { links as SelectLinks } from "~/components/shared/Select"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { initPortalClient } from "~/models/portal/portal.server"
+import { useFeatureFlags } from "~/context/FeatureFlagContext"
 import { Stripe, stripe } from "~/models/stripe.server"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { getErrorMessage } from "~/utils/catchError"
@@ -141,6 +142,7 @@ export default function CreateApp() {
     label: name,
     value: id,
   }))
+  const { flags } = useFeatureFlags()
   const { price } = useLoaderData() as LoaderData
   const transition = useTransition()
   const action = useActionData() as ActionData
@@ -149,10 +151,17 @@ export default function CreateApp() {
     {
       name: "Always Free",
       value: "free",
+      active: "true",
     },
     {
       name: "Pay As You Go",
       value: "paid",
+      active: flags.STRIPE_PAYMENT,
+    },
+    {
+      name: "Enterprise",
+      value: "enterprise",
+      active: flags.ENTERPRISE,
     },
   ]
 
@@ -193,39 +202,34 @@ export default function CreateApp() {
                     <Card>
                       <div>
                         <h4>{tier.name}</h4>
-                        <p>{price.tiers![index].unit_amount_decimal}</p>
+                        <p>
+                          {tier.active && price.tiers![index]
+                            ? price.tiers![index].unit_amount_decimal
+                            : "0"}
+                        </p>
                       </div>
                       <div>
-                        <Button name="app-subscription" type="submit" value={tier.value}>
-                          Select
-                        </Button>
-                        <Button
-                          disabled={transition.state === "submitting"}
-                          type="submit"
-                          onClick={() => {
-                            trackEvent(AmplitudeEvents.EndpointCreation)
-                          }}
-                        >
-                          Launch Application
-                          {transition.state !== "idle" && <Loader ml="sm" size={16} />}
-                        </Button>
+                        {tier.active === "true" ? (
+                          <Button
+                            disabled={transition.state === "submitting"}
+                            name="app-subscription"
+                            type="submit"
+                            value={tier.value}
+                            onClick={() => {
+                              trackEvent(AmplitudeEvents.EndpointCreation)
+                            }}
+                          >
+                            Select
+                          </Button>
+                        ) : (
+                          <Button disabled name="app-subscription" type="submit" value="">
+                            Coming Soon!
+                          </Button>
+                        )}
                       </div>
                     </Card>
                   </Grid.Col>
                 ))}
-                <Grid.Col sm={4} xs={12}>
-                  <Card>
-                    <div>
-                      <h4>Enterprise</h4>
-                      <p>custom</p>
-                    </div>
-                    <div>
-                      <Button name="subscription" type="submit" value="enterprise">
-                        Get in touch
-                      </Button>
-                    </div>
-                  </Card>
-                </Grid.Col>
               </Grid>
             </Box>
           )}

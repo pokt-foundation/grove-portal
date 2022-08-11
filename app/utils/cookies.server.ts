@@ -1,11 +1,6 @@
 import { createCookie } from "@remix-run/node"
 import { getRequiredServerEnvVar } from "./environment"
 
-export const subscriptionsCookie = createCookie("POKT_SUBSCRIPTIONS", {
-  maxAge: 604_800, // one week,
-  secrets: [getRequiredServerEnvVar("SESSION_SECRET")],
-})
-
 export const userPrefCookie = createCookie("POKT_USER_PREF", {
   maxAge: 604_800, // one week,
   secrets: [getRequiredServerEnvVar("SESSION_SECRET")],

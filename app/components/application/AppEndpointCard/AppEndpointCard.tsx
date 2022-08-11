@@ -9,7 +9,7 @@ import ChainWithImage, {
 } from "~/components/application/ChainWithImage"
 import { Card, links as CardLinks } from "~/components/shared/Card"
 import { useUser } from "~/context/UserContext"
-import { UserLB } from "~/models/portal.server"
+import { ProcessedEndpoint } from "~/models/portal/sdk"
 import { ChainMetadata, prefixFromChainId } from "~/utils/chainUtils"
 
 /* c8 ignore next */
@@ -24,7 +24,7 @@ export const links = () => {
 }
 
 interface AppEndpointProps {
-  app: UserLB
+  app: ProcessedEndpoint
 }
 
 export default function AppEndpointCard({ app }: AppEndpointProps) {

@@ -1,4 +1,4 @@
-import { Box, Grid, Group, Text, Title } from "@mantine/core"
+import { Box, Grid, Group, Loader, Text, Title } from "@mantine/core"
 import {
   ActionFunction,
   json,
@@ -6,7 +6,7 @@ import {
   MetaFunction,
   redirect,
 } from "@remix-run/node"
-import { Form, Link, useLoaderData } from "@remix-run/react"
+import { Form, Link, useLoaderData, useActionData, useTransition } from "@remix-run/react"
 import { forwardRef } from "react"
 import invariant from "tiny-invariant"
 import ChainWithImage, {
@@ -17,11 +17,11 @@ import Button from "~/components/shared/Button"
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import Select, { links as SelectLinks } from "~/components/shared/Select"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
-import { UserApplication, postLBUserApplication } from "~/models/portal.server"
+import { initPortalClient } from "~/models/portal/portal.server"
 import { Stripe, stripe } from "~/models/stripe.server"
+import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
+import { getErrorMessage } from "~/utils/catchError"
 import { CHAIN_ID_PREFIXES } from "~/utils/chainUtils"
-import { getRequiredServerEnvVar } from "~/utils/environment"
-import { getClientEnv } from "~/utils/environment.server"
 import { requireUser } from "~/utils/session.server"
 
 export const meta: MetaFunction = () => {
@@ -64,7 +64,14 @@ export const loader: LoaderFunction = async ({ request }) => {
   )
 }
 
+type ActionData = {
+  error: true
+  message: string
+}
+
 export const action: ActionFunction = async ({ request }) => {
+  const user = await requireUser(request)
+  const portal = initPortalClient(user.accessToken)
   const formData = await request.formData()
   const subscription = formData.get("app-subscription")
   const name = formData.get("app-name")
@@ -77,27 +84,47 @@ export const action: ActionFunction = async ({ request }) => {
   invariant(name && typeof name === "string", "app name not found")
   invariant(chain && typeof chain === "string", "app name not found")
 
-  const userAppParams: UserApplication = {
-    name: name,
-    chain: chain,
-    secretKeyRequired: false,
-    whitelistContracts: [],
-    whitelistMethods: [],
-    whitelistOrigins: [],
-    whitelistUserAgents: [],
+  try {
+    const { createNewEndpoint } = await portal.createEndpoint({
+      input: {
+        name,
+        notificationSettings: {
+          signedUp: true,
+          quarter: false,
+          half: false,
+          threeQuarters: true,
+          full: true,
+        },
+        gatewaySettings: {
+          secretKeyRequired: false,
+          whitelistBlockchains: [],
+          whitelistContracts: [],
+          whitelistMethods: [],
+          whitelistOrigins: [],
+          whitelistUserAgents: [],
+        },
+      },
+    })
+
+    if (!createNewEndpoint) {
+      throw new Error("portal api could not create new endpoint")
+    }
+
+    if (subscription === "paid") {
+      formData.append("app-id", createNewEndpoint.id)
+
+      // setting to any because of a TS nnown error: https://github.com/microsoft/TypeScript/issues/19806
+      const params = new URLSearchParams(formData as any).toString()
+      return redirect(`/api/stripe/checkout-session?${params}`)
+    }
+
+    return redirect(`/dashboard/apps/${createNewEndpoint.id}`)
+  } catch (error) {
+    return json({
+      error: true,
+      message: getErrorMessage(error),
+    })
   }
-
-  const response = await postLBUserApplication(userAppParams, request)
-
-  if (subscription === "paid") {
-    formData.append("app-id", response.id)
-
-    // setting to any because of a TS nnown error: https://github.com/microsoft/TypeScript/issues/19806
-    const params = new URLSearchParams(formData as any).toString()
-    return redirect(`/api/stripe/checkout-session?${params}`)
-  }
-
-  return redirect(`/dashboard/apps/${response.id}`)
 }
 
 const SelectItem = forwardRef<HTMLDivElement, AppEndpointProps>(
@@ -115,6 +142,8 @@ export default function CreateApp() {
     value: id,
   }))
   const { price } = useLoaderData() as LoaderData
+  const transition = useTransition()
+  const action = useActionData() as ActionData
 
   const tiers = [
     {
@@ -169,6 +198,16 @@ export default function CreateApp() {
                       <div>
                         <Button name="app-subscription" type="submit" value={tier.value}>
                           Select
+                        </Button>
+                        <Button
+                          disabled={transition.state === "submitting"}
+                          type="submit"
+                          onClick={() => {
+                            trackEvent(AmplitudeEvents.EndpointCreation)
+                          }}
+                        >
+                          Launch Application
+                          {transition.state !== "idle" && <Loader ml="sm" size={16} />}
                         </Button>
                       </div>
                     </Card>

@@ -20,11 +20,8 @@ export function formatDailyRelaysForGraphing(relays: RelayMetric[] = []): {
 
   const { high, low } = sortRelaysByDate.reduce(
     ({ high: highest, low: lowest }, { Count }) => ({
-      high: Math.max(highest, Count.Success + Count.Failure),
-      low:
-        lowest === 0
-          ? Count.Success + Count.Failure
-          : Math.min(lowest, Count.Success + Count.Failure),
+      high: Math.max(highest, Count.Total),
+      low: lowest === 0 ? Count.Total : Math.min(lowest, Count.Total),
     }),
     { high: 0, low: 0 },
   )
@@ -37,9 +34,7 @@ export function formatDailyRelaysForGraphing(relays: RelayMetric[] = []): {
   const lines = [
     {
       id: 1,
-      values: sortRelaysByDate.map(({ Count }) =>
-        norm(Count.Success + Count.Failure, low, high),
-      ),
+      values: sortRelaysByDate.map(({ Count }) => norm(Count.Total, low, high)),
     },
   ]
 

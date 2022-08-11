@@ -1,6 +1,5 @@
 import { Grid } from "@mantine/core"
-import { UserLB } from "@pokt-foundation/portal-types"
-import { LoaderFunction, json } from "@remix-run/node"
+import { json, LoaderFunction } from "@remix-run/node"
 import { Link, Outlet, useLoaderData } from "@remix-run/react"
 import AdEconomicsForDevs, {
   links as AdEconomicsForDevsLinks,
@@ -15,10 +14,11 @@ import CardList, {
   links as CardListLinks,
 } from "~/components/shared/CardList"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
-import { getLBUserApplications } from "~/models/portal.server"
+import { initPortalClient } from "~/models/portal/portal.server"
+import { ProcessedEndpoint } from "~/models/portal/sdk"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 import { MAX_USER_APPS } from "~/utils/pocketUtils"
-import { getPoktId, requireUserProfile } from "~/utils/session.server"
+import { getPoktId, requireUser } from "~/utils/session.server"
 
 export const links = () => {
   return [
@@ -30,19 +30,27 @@ export const links = () => {
   ]
 }
 
-type LoaderData = {
-  apps: UserLB[]
+export type AllAppsLoaderData = {
+  endpoints: ProcessedEndpoint[] | null
   userId: string
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
-  const profile = await requireUserProfile(request)
-  const apps = await getLBUserApplications(request)
+  const user = await requireUser(request)
+  const portal = initPortalClient(user.accessToken)
+  const endpointsResponse = await portal.endpoints().catch((e) => {
+    console.log(e)
+  })
+  const endpoints = endpointsResponse
+    ? (endpointsResponse.endpoints.filter(
+        (endpoint) => endpoint !== null,
+      ) as ProcessedEndpoint[])
+    : null
 
-  return json<LoaderData>(
+  return json<AllAppsLoaderData>(
     {
-      apps,
-      userId: getPoktId(profile.id),
+      endpoints,
+      userId: getPoktId(user.profile.id),
     },
     {
       headers: {
@@ -55,13 +63,13 @@ export const loader: LoaderFunction = async ({ request }) => {
 }
 
 export const Apps = () => {
-  const { apps, userId } = useLoaderData() as LoaderData
+  const { endpoints, userId } = useLoaderData() as AllAppsLoaderData
   const appIdRoute = useMatchesRoute("routes/dashboard/apps/$appId")
 
   const userAppsStatus: CardListItem[] = [
     {
       label: "Current Apps",
-      value: apps.length,
+      value: Number(endpoints?.length),
     },
     {
       label: "Max Apps",
@@ -78,18 +86,20 @@ export const Apps = () => {
           <Outlet />
         </Grid.Col>
         <Grid.Col md={4}>
-          <Card>
-            <div className="pokt-card-header">
-              <h3>Account</h3>
-            </div>
-            <CardList items={userAppsStatus} />
-            {(apps.length < MAX_USER_APPS ||
-              getRequiredClientEnvVar("GODMODE_ACCOUNTS")?.includes(userId)) && (
-              <Button fullWidth component={Link} mt={32} to="create">
-                Create New Application
-              </Button>
-            )}
-          </Card>
+          {endpoints && (
+            <Card>
+              <div className="pokt-card-header">
+                <h3>Account</h3>
+              </div>
+              <CardList items={userAppsStatus} />
+              {(endpoints.length < MAX_USER_APPS ||
+                getRequiredClientEnvVar("GODMODE_ACCOUNTS")?.includes(userId)) && (
+                <Button fullWidth component={Link} mt={32} to="create">
+                  Create New Application
+                </Button>
+              )}
+            </Card>
+          )}
           <section>
             <AdEconomicsForDevs />
           </section>

@@ -1,6 +1,6 @@
 import { ActionFunction, redirect, json } from "@remix-run/node"
 import invariant from "tiny-invariant"
-import { stripe, Stripe } from "~/models/stripe.server"
+import { stripe } from "~/models/stripe.server"
 import { authenticator } from "~/utils/auth.server"
 // import { getPoktId } from "~/utils/session.server"
 
@@ -14,8 +14,6 @@ export const action: ActionFunction = async ({ request }) => {
   const customer = await stripe.customers.list({
     email: user.profile.emails[0].value,
   })
-
-  console.log({ customer })
 
   if (customer) {
     const portalSession = await stripe.billingPortal.sessions.create({

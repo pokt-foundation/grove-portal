@@ -1,7 +1,7 @@
 import { Text } from "@mantine/core"
 import { MetaFunction } from "@remix-run/node"
-import { Form, useFetcher, useParams } from "@remix-run/react"
-import React, { useState } from "react"
+import { useFetcher, useParams } from "@remix-run/react"
+import React, { useState, useEffect } from "react"
 import { AppIdLoaderData } from "../$appId"
 import styles from "../../../../styles/dashboard.apps.$appId.security.css"
 import AppEndpointUrl, {
@@ -15,6 +15,7 @@ import Card, { links as CardLinks } from "~/components/shared/Card"
 import Switch, { links as SwitchLinks } from "~/components/shared/Switch"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
+import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { CHAIN_ID_PREFIXES } from "~/utils/chainUtils"
 
 export const meta: MetaFunction = () => {
@@ -49,15 +50,18 @@ export type securitySettings = {
 export default function AppSecurity() {
   const appIDRoute = useMatchesRoute("routes/dashboard/apps/$appId")
   const params = useParams()
-
   const securityAction = useFetcher()
 
+  useEffect(() => {
+    trackEvent(AmplitudeEvents.SecurityDetailsView)
+  }, [])
+
   const {
-    app: { gatewaySettings },
+    endpoint: { gatewaySettings },
   } = appIDRoute?.data as AppIdLoaderData
 
   const formatData = (
-    data: { blockchainID: string; [key: string]: string[] | string }[],
+    data: { blockchainId: string; [key: string]: string[] | string }[],
   ) => {
     let formattedData = []
     if (data[0]?.contracts || data[0]?.methods) {
@@ -66,12 +70,12 @@ export default function AppSecurity() {
         if (data[i][key].length > 1) {
           for (let j = 0; j < data[i][key].length; j += 1) {
             formattedData.push({
-              id: data[i].blockchainID,
+              id: data[i].blockchainId,
               inputValue: data[i][key][j],
             })
           }
         } else {
-          formattedData.push({ id: data[i].blockchainID, inputValue: data[i][key][0] })
+          formattedData.push({ id: data[i].blockchainId, inputValue: data[i][key][0] })
         }
       }
     }
@@ -79,24 +83,25 @@ export default function AppSecurity() {
   }
 
   const [secretKeyRequired, setSecretKeyRequired] = useState<boolean>(
-    gatewaySettings.secretKeyRequired,
+    Boolean(gatewaySettings.secretKeyRequired),
   )
-  const [whitelistBlockchains, setWhitelistBlockchains] = useState<string[]>(
-    gatewaySettings.whitelistBlockchains || [],
-  )
+  // const [whitelistBlockchains, setWhitelistBlockchains] = useState<string[]>(
+  //   gatewaySettings.whitelistBlockchains || [],
+  // )
+  const [whitelistBlockchains, setWhitelistBlockchains] = useState<string[]>([])
   const [whitelistUserAgentsElement, setWhitelistUserAgentsElement] = useState<string>("")
   const [whitelistUserAgents, setWhitelistUserAgents] = useState<string[]>(
-    gatewaySettings.whitelistUserAgents || [],
+    (gatewaySettings?.whitelistUserAgents as string[]) || [],
   )
   const [whitelistOriginsElement, setWhitelistOriginsElement] = useState<string>("")
   const [whitelistOrigins, setWhitelistOrigins] = useState<string[]>(
-    gatewaySettings.whitelistOrigins || [],
+    (gatewaySettings?.whitelistOrigins as string[]) || [],
   )
   const [whitelistContractsInput, setWhitelistContractsInput] = useState("")
   const [whitelistContractsDropdown, setWhitelistContractsDropdown] = useState<string>("")
   const [whitelistContracts, setWhitelistContracts] = useState<
     Array<{ id: string; inputValue: string }>
-  >(formatData(gatewaySettings.whitelistContracts))
+  >(formatData(gatewaySettings?.whitelistContracts))
   const [whitelistContractsError, setWhitelistContractsError] = useState<boolean>(false)
   const [whitelistMethodsInput, setWhitelistMethodsInput] = useState<string>("")
   const [whitelistMethodsDropdown, setWhitelistMethodsDropdown] = useState<string>("")
@@ -302,8 +307,8 @@ export default function AppSecurity() {
                       id: whitelistContractsDropdown,
                       inputValue: whitelistContractsInput,
                     },
-                  ]),
-                    setWhitelistContractsInput("")
+                  ])
+                  setWhitelistContractsInput("")
                   setWhitelistContractsDropdown("")
                 }
               }}
@@ -421,7 +426,13 @@ export default function AppSecurity() {
             ))}
           </div>
         </Card>
-        <Button type="submit" variant="filled">
+        <Button
+          type="submit"
+          variant="filled"
+          onClick={() => {
+            trackEvent(AmplitudeEvents.SecuritySettingsUpdate)
+          }}
+        >
           Save
         </Button>
       </securityAction.Form>

@@ -159,7 +159,7 @@ export default function CreateApp() {
             placeholder="Select Chain"
           />
           {/* TODO: add feature flag wrap */}
-          {price !== undefined && price && (
+          {price && (
             <Box sx={{ textAlign: "center" }}>
               <Title mb={16} mt={32} order={3}>
                 Flexible plans that grow with your app
@@ -190,7 +190,7 @@ export default function CreateApp() {
                             Select
                           </Button>
                         ) : (
-                          <Button name="app-subscription" type="submit" value="" disabled>
+                          <Button disabled name="app-subscription" type="submit" value="">
                             Coming Soon!
                           </Button>
                         )}

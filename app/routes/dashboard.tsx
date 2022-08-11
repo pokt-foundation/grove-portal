@@ -66,7 +66,7 @@ export default function Dashboard() {
       </Header>
       <main>
         <Container>
-          {state === "loading" && <Loader />}
+          {/* {state === "loading" && <Loader />} */}
           <Outlet />
         </Container>
       </main>

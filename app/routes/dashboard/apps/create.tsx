@@ -1,7 +1,7 @@
-import { Group, Text } from "@mantine/core"
-import { ActionFunction, MetaFunction, redirect } from "@remix-run/node"
-import { Form, Link } from "@remix-run/react"
-import { forwardRef } from "react"
+import { Group, Loader, LoadingOverlay, Text } from "@mantine/core"
+import { ActionFunction, json, MetaFunction, redirect } from "@remix-run/node"
+import { Form, Link, useActionData, useTransition } from "@remix-run/react"
+import { forwardRef, useRef } from "react"
 import invariant from "tiny-invariant"
 import ChainWithImage, {
   AppEndpointProps,
@@ -12,8 +12,11 @@ import Card, { links as CardLinks } from "~/components/shared/Card"
 import Select, { links as SelectLinks } from "~/components/shared/Select"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { UserApplication, postLBUserApplication } from "~/models/portal.server"
+import { initPortalClient } from "~/models/portal/portal.server"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
+import { getErrorMessage } from "~/utils/catchError"
 import { CHAIN_ID_PREFIXES } from "~/utils/chainUtils"
+import { requireUser } from "~/utils/session.server"
 
 export const meta: MetaFunction = () => {
   return {
@@ -25,7 +28,14 @@ export const links = () => {
   return [...CardLinks(), ...TextInputLinks(), ...SelectLinks(), ...ChainWithImageLinks()]
 }
 
+type ActionData = {
+  error: true
+  message: string
+}
+
 export const action: ActionFunction = async ({ request }) => {
+  const user = await requireUser(request)
+  const portal = initPortalClient(user.accessToken)
   const formData = await request.formData()
   const name = formData.get("app-name")
   const chain = formData.get("app-chain")
@@ -33,19 +43,35 @@ export const action: ActionFunction = async ({ request }) => {
   invariant(name && typeof name === "string", "app name not found")
   invariant(chain && typeof chain === "string", "app name not found")
 
-  const userAppParams: UserApplication = {
-    name: name,
-    chain: chain,
-    secretKeyRequired: false,
-    whitelistContracts: [],
-    whitelistMethods: [],
-    whitelistOrigins: [],
-    whitelistUserAgents: [],
+  try {
+    const { createNewEndpoint } = await portal.createEndpoint({
+      input: {
+        name,
+        notificationSettings: {
+          signedUp: true,
+          quarter: false,
+          half: false,
+          threeQuarters: true,
+          full: true,
+        },
+        gatewaySettings: {
+          secretKeyRequired: false,
+          whitelistBlockchains: [],
+          whitelistContracts: [],
+          whitelistMethods: [],
+          whitelistOrigins: [],
+          whitelistUserAgents: [],
+        },
+      },
+    })
+
+    return redirect(`/dashboard/apps/${createNewEndpoint?.id}`)
+  } catch (error) {
+    return json({
+      error: true,
+      message: getErrorMessage(error),
+    })
   }
-
-  const response = await postLBUserApplication(userAppParams, request)
-
-  return redirect(`/dashboard/apps/${response.id}`)
 }
 
 const SelectItem = forwardRef<HTMLDivElement, AppEndpointProps>(
@@ -62,6 +88,8 @@ export default function CreateApp() {
     label: name,
     value: id,
   }))
+  const transition = useTransition()
+  const action = useActionData() as ActionData
   return (
     <>
       <section>
@@ -105,12 +133,14 @@ export default function CreateApp() {
             </div>
             <Group align="center" position="apart">
               <Button
+                disabled={transition.state === "submitting"}
                 type="submit"
                 onClick={() => {
                   trackEvent(AmplitudeEvents.EndpointCreation)
                 }}
               >
                 Launch Application
+                {transition.state !== "idle" && <Loader ml="sm" size={16} />}
               </Button>
               <Button component={Link} to="/dashboard/apps" variant="subtle">
                 Back
@@ -118,6 +148,11 @@ export default function CreateApp() {
             </Group>
           </Form>
         </Card>
+        {action && (
+          <Card>
+            <p>{action.message}</p>
+          </Card>
+        )}
       </section>
     </>
   )

@@ -1,11 +1,3 @@
-import {
-  UserLBDailyRelaysResponse,
-  UserLBOnChainDataResponse,
-  UserLBPreviousTotalRelaysResponse,
-  UserLBPreviousTotalSuccessfulRelaysResponse,
-  UserLBTotalRelaysResponse,
-  UserLBTotalSuccessfulRelaysResponse,
-} from "@pokt-foundation/portal-types"
 import { LoaderFunction, MetaFunction, json } from "@remix-run/node"
 import { Outlet, useCatch, useLoaderData } from "@remix-run/react"
 import invariant from "tiny-invariant"
@@ -27,17 +19,11 @@ import FeedbackCard, {
 import Grid from "~/components/shared/Grid"
 import Nav, { links as NavLinks } from "~/components/shared/Nav"
 import { useTranslate } from "~/context/TranslateContext"
-import {
-  UserLB,
-  getLBDailyRelays,
-  getLBPreviousSuccessfulRelays,
-  getLBPreviousTotalRelays,
-  getLBStatus,
-  getLBSuccessfulRelays,
-  getLBTotalRelays,
-  getLBUserApplications,
-} from "~/models/portal.server"
-import { SESSIONS_PER_DAY } from "~/utils/pocketUtils"
+import { initPortalClient } from "~/models/portal/portal.server"
+import { ProcessedEndpoint } from "~/models/portal/sdk"
+import { getAppRelays, RelayMetric } from "~/models/relaymeter.server"
+import { dayjs } from "~/utils/dayjs"
+import { requireUser } from "~/utils/session.server"
 
 export const links = () => {
   return [
@@ -57,47 +43,49 @@ export const meta: MetaFunction = () => {
 }
 
 export type AppIdLoaderData = {
-  app: UserLB
-  dailyRelays: UserLBDailyRelaysResponse
-  status: UserLBOnChainDataResponse
-  stakedTokens: number
-  maxDailyRelays: number
-  previousSeccessfulRelays: UserLBPreviousTotalSuccessfulRelaysResponse
-  previousTotalRelays: UserLBPreviousTotalRelaysResponse
-  successfulRelays: UserLBTotalSuccessfulRelaysResponse
-  totalRelays: UserLBTotalRelaysResponse
+  endpoint: ProcessedEndpoint
+  relaysToday: RelayMetric
+  relaysYesterday: RelayMetric
+  dailyNetworkRelaysPerWeek: RelayMetric[]
 }
 
 export const loader: LoaderFunction = async ({ request, params, context }) => {
   invariant(params.appId, "app id not found")
-  const userApps = await getLBUserApplications(request)
-  const app = userApps.find((app) => app.id === params.appId)
-  invariant(app, "app id not found")
+  const user = await requireUser(request)
+  const portal = initPortalClient(user.accessToken)
+  const { endpoint } = await portal.endpoint({
+    endpointID: params.appId,
+  })
+  invariant(endpoint, "app id not found")
 
-  const dailyRelays = await getLBDailyRelays(params.appId, request)
-  const status = await getLBStatus(params.appId, request)
-  const stakedTokens = status.stake
-  const maxDailyRelays = status.relays * SESSIONS_PER_DAY
+  const dailyNetworkRelaysPerWeek = await Promise.all(
+    [0, 1, 2, 3, 4, 5, 6].map(async (num) => {
+      const day = dayjs()
+        .utc()
+        .hour(0)
+        .minute(0)
+        .second(0)
+        .millisecond(0)
+        .subtract(num, "day")
+        .format()
 
-  const previousSeccessfulRelays = await getLBPreviousSuccessfulRelays(
-    params.appId,
-    request,
+      // api auto adjusts to/from to begining and end of each day so putting the same time here gives us back one full day
+      return await getAppRelays(endpoint.id, day, day)
+    }),
   )
-  const previousTotalRelays = await getLBPreviousTotalRelays(params.appId, request)
-  const successfulRelays = await getLBSuccessfulRelays(params.appId, request)
-  const totalRelays = await getLBTotalRelays(params.appId, request)
+
+  // api auto adjusts to/from to begining and end of each day so putting the same time here gives us back one full day
+  const today = dayjs().utc().format()
+  const yesterday = dayjs().utc().subtract(1, "day").format()
+  const relaysToday = await getAppRelays(endpoint.id, today, today)
+  const relaysYesterday = await getAppRelays(endpoint.id, yesterday, yesterday)
 
   return json<AppIdLoaderData>(
     {
-      app,
-      dailyRelays,
-      status,
-      stakedTokens,
-      maxDailyRelays,
-      previousSeccessfulRelays,
-      previousTotalRelays,
-      successfulRelays,
-      totalRelays,
+      endpoint,
+      dailyNetworkRelaysPerWeek,
+      relaysToday,
+      relaysYesterday,
     },
     {
       headers: {
@@ -111,7 +99,7 @@ export const loader: LoaderFunction = async ({ request, params, context }) => {
 
 export default function AppIdLayout() {
   const { t } = useTranslate()
-  const { app } = useLoaderData() as AppIdLoaderData
+  const { endpoint } = useLoaderData() as AppIdLoaderData
   const routes = [
     {
       to: "/dashboard/apps",
@@ -139,10 +127,10 @@ export default function AppIdLayout() {
 
   return (
     <Grid gutter={32}>
-      {app && (
+      {endpoint && (
         <Grid.Col xs={12}>
           <div>
-            <h1>{app.name}</h1>
+            <h1>{endpoint.name}</h1>
             <Nav routes={routes} />
           </div>
         </Grid.Col>
@@ -151,17 +139,17 @@ export default function AppIdLayout() {
         <Outlet />
       </Grid.Col>
       <Grid.Col md={4}>
-        {app && (
+        {endpoint && (
           <>
             <section>
               <AppKeysCard
-                id={app.id}
-                publicKey={app.apps[0].publicKey}
-                secret={app.gatewaySettings.secretKey}
+                id={endpoint.id}
+                publicKey={endpoint.apps[0]?.publicKey}
+                secret={endpoint.gatewaySettings.secretKey ?? ""}
               />
             </section>
             <section>
-              <AppAddressCard apps={app.apps} />
+              <AppAddressCard apps={endpoint.apps} />
             </section>
             <section>
               <AdEconomicsForDevs />
@@ -170,7 +158,7 @@ export default function AppIdLayout() {
               <FeedbackCard />
             </section>
             <section>
-              <AppRemoveModal appId={app.id} />
+              <AppRemoveModal appId={endpoint.id} />
             </section>
           </>
         )}

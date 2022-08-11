@@ -40,6 +40,7 @@ jobs:
         uses: SpicyPizza/create-envfile@v1
         with:
           envkey_INDEXER_API_URL: ${{ secrets.INDEXER_API_URL }}
+          envkey_PORTAL_API_URL: ${{ secrets.PORTAL_API_URL }}
           file_name: .env
 
       - name: 📥 Download deps

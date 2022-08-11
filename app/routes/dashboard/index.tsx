@@ -10,9 +10,6 @@ import ChainWithImage, {
 import FeedbackCard, {
   links as FeedbackCardLinks,
 } from "~/components/application/FeedbackCard"
-import NetworkChartCard, {
-  links as NetworkChartCardLinks,
-} from "~/components/application/NetworkChartCard"
 import NetworkLatestBlockCard, {
   links as NetworkLatestBlockCardLinks,
 } from "~/components/application/NetworkLatestBlockCard"
@@ -25,33 +22,27 @@ import NetworkSuccessRateCard, {
 import NetworkSummaryCard, {
   links as NetworkSummaryCardLinks,
 } from "~/components/application/NetworkSummaryCard"
+import UsageChartCard, {
+  links as UsageChartCardLinks,
+} from "~/components/application/UsageChartCard"
 import Table, { links as TableLinks } from "~/components/shared/Table"
 import { initIndexerClient } from "~/models/indexer/indexer.server"
 import { Block, Order } from "~/models/indexer/sdk"
-import {
-  getNetworkChains,
-  getNetworkDailyRelays,
-  getNetworkSummary,
-  getNetworkWeeklyStats,
-} from "~/models/portal.server"
-import type {
-  Chain,
-  DailyRelayBucket,
-  NetworkRelayStats,
-  SummaryData,
-} from "~/models/portal.server"
+import { initPortalClient } from "~/models/portal/portal.server"
+import { Blockchain } from "~/models/portal/sdk"
 import { getNetworkRelays, RelayMetric } from "~/models/relaymeter.server"
 import styles from "~/styles/dashboard.index.css"
 import { getServiceLevelByChain } from "~/utils/chainUtils"
 import { dayjs } from "~/utils/dayjs"
+import { requireUser } from "~/utils/session.server"
 
 export const links = () => {
   return [
     ...NetworkSummaryCardLinks(),
     ...NetworkLatestBlockCardLinks(),
     ...NetworkSuccessRateCardLinks(),
-    ...NetworkChartCardLinks(),
     ...NetworkRelayPerformanceCardLinks(),
+    ...UsageChartCardLinks(),
     ...AdEconomicsForDevsLinks(),
     ...TableLinks(),
     ...ChainWithImageLinks(),
@@ -76,11 +67,8 @@ export type LatestBlockType = Block & {
 }
 
 type LoaderData = {
-  chains: Chain[]
-  dailyRelays: DailyRelayBucket[]
+  blockchains: Blockchain[] | null
   latestBlock: LatestBlockType | null
-  summary: SummaryData
-  weeklyStats: NetworkRelayStats
   dailyNetworkRelaysPerWeek: RelayMetric[]
   dailyNetworkRelays: RelayMetric
   weeklyNetworkRelays: RelayMetric
@@ -88,10 +76,11 @@ type LoaderData = {
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
-  const chains = await getNetworkChains(request)
-  const dailyRelays = await getNetworkDailyRelays(request)
-  const summary = await getNetworkSummary(request)
-  const weeklyStats = await getNetworkWeeklyStats(request)
+  const user = await requireUser(request)
+  const portal = initPortalClient(user.accessToken)
+  const blockchainResponse = await portal.blockchains().catch((e) => {
+    console.log(e)
+  })
 
   const indexer = initIndexerClient()
   const { queryBlocks } = await indexer.queryBlocks({
@@ -150,11 +139,12 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   return json<LoaderData>(
     {
-      chains,
-      dailyRelays,
+      blockchains: blockchainResponse
+        ? (blockchainResponse.blockchains.filter(
+            (chain) => chain !== null,
+          ) as Blockchain[])
+        : null,
       latestBlock,
-      summary,
-      weeklyStats,
       dailyNetworkRelaysPerWeek,
       dailyNetworkRelays,
       weeklyNetworkRelays,
@@ -171,7 +161,14 @@ export const loader: LoaderFunction = async ({ request }) => {
 }
 
 export default function Index() {
-  const data = useLoaderData() as LoaderData
+  const {
+    blockchains,
+    dailyNetworkRelaysPerWeek,
+    dailyNetworkRelays,
+    monthlyNetworkRelays,
+    weeklyNetworkRelays,
+    latestBlock,
+  } = useLoaderData() as LoaderData
   return (
     <Grid gutter={32}>
       <Grid.Col md={8}>
@@ -188,56 +185,57 @@ export default function Index() {
             <Grid.Col sm={4}>
               <NetworkSummaryCard
                 imgSrc="/networkSummaryApps.png"
-                subtitle={String(data.summary.appsStaked)}
+                subtitle="2000+"
                 title="Apps Staked"
               />
             </Grid.Col>
             <Grid.Col sm={4}>
               <NetworkSummaryCard
                 imgSrc="/networkSummaryNetworks.png"
-                subtitle={String(data.chains.length)}
+                subtitle={String(blockchains ? blockchains.length : 0)}
                 title="Networks"
               />
             </Grid.Col>
           </Grid>
         </section>
         <section>
-          <NetworkChartCard relays={data.dailyNetworkRelaysPerWeek} />
+          <UsageChartCard relays={dailyNetworkRelaysPerWeek} />
         </section>
-        <section>
-          <Table
-            paginate
-            search
-            columns={["Network", "Nodes", "ID", "Status"]}
-            data={data.chains.map((chain) => ({
-              id: chain.id,
-              network: {
-                value: chain.description,
-                element: <ChainWithImage chain={chain.description} />,
-              },
-              apps: chain.appCount ? String(chain.appCount) : "0",
-              chainId: chain.id,
-              status: getServiceLevelByChain(chain.id),
-            }))}
-            label="Available Networks"
-          />
-        </section>
+        {blockchains && (
+          <section>
+            <Table
+              paginate
+              search
+              columns={["Network", "ID", "Status"]}
+              data={blockchains.map((chain) => ({
+                id: chain.id,
+                network: {
+                  value: chain.description,
+                  element: <ChainWithImage chain={chain.description} />,
+                },
+                chainId: chain.id,
+                status: getServiceLevelByChain(chain.id),
+              }))}
+              label="Available Networks"
+            />
+          </section>
+        )}
       </Grid.Col>
       <Grid.Col md={4}>
         <section>
           <h3>Network Success Rate</h3>
-          <NetworkSuccessRateCard relays={data.weeklyNetworkRelays} />
+          <NetworkSuccessRateCard relays={weeklyNetworkRelays} />
         </section>
-        {data.latestBlock && (
+        {latestBlock && (
           <section>
-            <NetworkLatestBlockCard latestBlock={data.latestBlock} />
+            <NetworkLatestBlockCard latestBlock={latestBlock} />
           </section>
         )}
         <section>
           <NetworkRelayPerformanceCard
-            month={data.monthlyNetworkRelays}
-            today={data.dailyNetworkRelays}
-            week={data.weeklyNetworkRelays}
+            month={monthlyNetworkRelays}
+            today={dailyNetworkRelays}
+            week={weeklyNetworkRelays}
           />
         </section>
         <section>

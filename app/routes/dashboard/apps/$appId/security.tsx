@@ -57,11 +57,11 @@ export default function AppSecurity() {
   }, [])
 
   const {
-    app: { gatewaySettings },
+    endpoint: { gatewaySettings },
   } = appIDRoute?.data as AppIdLoaderData
 
   const formatData = (
-    data: { blockchainID: string; [key: string]: string[] | string }[],
+    data: { blockchainId: string; [key: string]: string[] | string }[],
   ) => {
     let formattedData = []
     if (data[0]?.contracts || data[0]?.methods) {
@@ -70,12 +70,12 @@ export default function AppSecurity() {
         if (data[i][key].length > 1) {
           for (let j = 0; j < data[i][key].length; j += 1) {
             formattedData.push({
-              id: data[i].blockchainID,
+              id: data[i].blockchainId,
               inputValue: data[i][key][j],
             })
           }
         } else {
-          formattedData.push({ id: data[i].blockchainID, inputValue: data[i][key][0] })
+          formattedData.push({ id: data[i].blockchainId, inputValue: data[i][key][0] })
         }
       }
     }
@@ -83,24 +83,25 @@ export default function AppSecurity() {
   }
 
   const [secretKeyRequired, setSecretKeyRequired] = useState<boolean>(
-    gatewaySettings.secretKeyRequired,
+    Boolean(gatewaySettings.secretKeyRequired),
   )
-  const [whitelistBlockchains, setWhitelistBlockchains] = useState<string[]>(
-    gatewaySettings.whitelistBlockchains || [],
-  )
+  // const [whitelistBlockchains, setWhitelistBlockchains] = useState<string[]>(
+  //   gatewaySettings.whitelistBlockchains || [],
+  // )
+  const [whitelistBlockchains, setWhitelistBlockchains] = useState<string[]>([])
   const [whitelistUserAgentsElement, setWhitelistUserAgentsElement] = useState<string>("")
   const [whitelistUserAgents, setWhitelistUserAgents] = useState<string[]>(
-    gatewaySettings.whitelistUserAgents || [],
+    (gatewaySettings?.whitelistUserAgents as string[]) || [],
   )
   const [whitelistOriginsElement, setWhitelistOriginsElement] = useState<string>("")
   const [whitelistOrigins, setWhitelistOrigins] = useState<string[]>(
-    gatewaySettings.whitelistOrigins || [],
+    (gatewaySettings?.whitelistOrigins as string[]) || [],
   )
   const [whitelistContractsInput, setWhitelistContractsInput] = useState("")
   const [whitelistContractsDropdown, setWhitelistContractsDropdown] = useState<string>("")
   const [whitelistContracts, setWhitelistContracts] = useState<
     Array<{ id: string; inputValue: string }>
-  >(formatData(gatewaySettings.whitelistContracts))
+  >(formatData(gatewaySettings?.whitelistContracts))
   const [whitelistContractsError, setWhitelistContractsError] = useState<boolean>(false)
   const [whitelistMethodsInput, setWhitelistMethodsInput] = useState<string>("")
   const [whitelistMethodsDropdown, setWhitelistMethodsDropdown] = useState<string>("")

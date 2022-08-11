@@ -1,10 +1,14 @@
 import { expect } from "vitest"
 import AppAddressCard from "./AppAddressCard"
 import { render, screen } from "test/helpers"
+import { ProcessedEndpoint } from "~/models/portal/sdk"
 
-const apps = [{ appId: "123" }, { appId: "234" }]
-const value1 = apps[0].appId
-const value2 = apps[1].appId
+const apps: ProcessedEndpoint["apps"] = [
+  { appId: "123", address: "", publicKey: "" },
+  { appId: "234", address: "", publicKey: "" },
+]
+const value1 = apps[0]?.appId ?? ""
+const value2 = apps[1]?.appId ?? ""
 
 describe("<AppAddressCard />", () => {
   it("renders applications passed to it", () => {

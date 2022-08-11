@@ -10,9 +10,15 @@ export const links = () => {
 
 interface NetworkChardCardProps {
   relays: RelayMetric[]
+  title?: string
+  detail?: string
 }
 
-export default function NetworkChartCard({ relays }: NetworkChardCardProps) {
+export default function UsageChartCard({
+  relays,
+  title = "Relay Count",
+  detail = "last 7 Days",
+}: NetworkChardCardProps) {
   const theme = useTheme()
 
   const { labels, lines, scales } = formatDailyRelaysForGraphing(relays)
@@ -20,8 +26,8 @@ export default function NetworkChartCard({ relays }: NetworkChardCardProps) {
     <div className="pokt-network-chart">
       <Card>
         <div className="pokt-card-header">
-          <h3>Relay Count</h3>
-          <p>Last 7 Days</p>
+          <h3>{title}</h3>
+          <p>{detail}</p>
         </div>
         <LineChart
           renderBackground
@@ -32,7 +38,7 @@ export default function NetworkChartCard({ relays }: NetworkChardCardProps) {
           borderColor={`rgba(0,0,0,0)`}
           color={() => theme.accentAlternative}
           dotColor={theme.accent}
-          dotRadius={12}
+          dotRadius={8}
           height={240}
           label={(index: number) => labels[index]}
           lines={lines}

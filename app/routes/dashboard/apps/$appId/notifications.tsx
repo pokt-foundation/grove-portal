@@ -9,9 +9,10 @@ import NotificationsAlertForm, {
 import NotificationsWeeklyBandwidthUsageCard, {
   links as NotificationsWeeklyBandwidthUsageCardLinks,
 } from "~/components/application/NotificationsWeeklyBandwidthUsageCard"
-import { putNotifications } from "~/models/portal.server"
+import { initPortalClient } from "~/models/portal/portal.server"
 import styles from "~/styles/dashboard.apps.$appId.notifications.css"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
+import { requireUser } from "~/utils/session.server"
 
 export const links: LinksFunction = () => [
   ...NotificationsWeeklyBandwidthUsageCardLinks(),
@@ -25,6 +26,9 @@ export const links: LinksFunction = () => [
 export const action: ActionFunction = async ({ request, params }) => {
   const { appId } = params
   invariant(appId, "app id not found")
+  const user = await requireUser(request)
+  const portal = initPortalClient(user.accessToken)
+
   const formData = await request.formData()
   const quarter = formData.get("quarter")
   const half = formData.get("half")
@@ -32,14 +36,20 @@ export const action: ActionFunction = async ({ request, params }) => {
   const full = formData.get("full")
 
   try {
-    const res = await putNotifications(request, appId!, {
-      quarter: quarter === "on",
-      half: half === "on",
-      threeQuarters: threeQuarters === "on",
-      full: full === "on",
+    await portal.updateEndpoint({
+      input: {
+        id: appId,
+        notificationSettings: {
+          signedUp: true,
+          quarter: quarter === "on",
+          half: half === "on",
+          threeQuarters: threeQuarters === "on",
+          full: full === "on",
+        },
+      },
     })
 
-    return json<boolean>(res)
+    return json<boolean>(true)
   } catch (e) {
     return json<any>(e)
   }

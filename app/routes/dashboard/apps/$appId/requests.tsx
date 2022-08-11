@@ -1,5 +1,5 @@
 import { UserLBOriginBucket } from "@pokt-foundation/portal-types"
-import { LoaderFunction, MetaFunction, json } from "@remix-run/node"
+import { json, LoaderFunction, MetaFunction } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
 import { useEffect } from "react"
 import invariant from "tiny-invariant"
@@ -36,19 +36,28 @@ export const links = () => {
 }
 
 export type AppIdRequestsLoaderData = {
-  originClassification: UserLBOriginBucket[]
-  errorMetrics: EndpointRpcError[]
+  originClassification: UserLBOriginBucket[] | null
+  errorMetrics: EndpointRpcError[] | null
 }
 
 export const loader: LoaderFunction = async ({ request, params, context }) => {
   invariant(params.appId, "app id not found")
 
-  const originClassification = await getLBOriginClassification(params.appId, request)
-  const errorMetrics = await getLBErrorMetrics(params.appId, request)
+  let originClassification = null
+  let errorMetrics = null
+
+  try {
+    const originResponse = await getLBOriginClassification(params.appId, request)
+    originClassification = originResponse.origin_classification
+    errorMetrics = await getLBErrorMetrics(params.appId, request)
+  } catch (error) {}
+
+  // const originClassification = await getLBOriginClassification(params.appId, request)
+  // const errorMetrics = await getLBErrorMetrics(params.appId, request)
 
   return json<AppIdRequestsLoaderData>(
     {
-      originClassification: originClassification.origin_classification,
+      originClassification: originClassification,
       errorMetrics: errorMetrics,
     },
     {
@@ -73,25 +82,18 @@ export default function AppIdRequests() {
 
   return (
     <>
-      {appIdData.previousSeccessfulRelays &&
-        appIdData.previousTotalRelays &&
-        appIdData.successfulRelays &&
-        appIdData.totalRelays && (
-          <section>
-            <AppRequestsRateCard
-              previousRelays={appIdData.previousTotalRelays.total_relays}
-              previousSuccessfulRelays={
-                appIdData.previousSeccessfulRelays.successful_relays
-              }
-              successfulRelays={appIdData.successfulRelays.successful_relays}
-              totalRelays={appIdData.totalRelays.total_relays}
-            />
-          </section>
-        )}
-      {appIdData.totalRelays && originClassification && (
+      {appIdData.relaysToday.Count && appIdData.relaysYesterday.Count && (
+        <section>
+          <AppRequestsRateCard
+            currentRelays={appIdData.relaysToday.Count}
+            previousRelays={appIdData.relaysYesterday.Count}
+          />
+        </section>
+      )}
+      {appIdData.relaysToday.Count && originClassification && (
         <section>
           <AppRequestsByOriginCard
-            totalRelays={appIdData.totalRelays.total_relays}
+            totalRelays={appIdData.relaysToday.Count.Total}
             usagePerOrigin={originClassification}
           />
         </section>
@@ -104,3 +106,10 @@ export default function AppIdRequests() {
     </>
   )
 }
+
+// export default function AppIdRequests() {
+//   useEffect(() => {
+//     trackEvent(AmplitudeEvents.RequestDetailsView)
+//   }, [])
+//   return <></>
+// }

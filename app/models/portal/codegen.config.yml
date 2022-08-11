@@ -1,0 +1,9 @@
+schema: ${PORTAL_API_URL}
+documents: "./app/models/portal/*.graphqls"
+generates:
+  ./app/models/portal/sdk.ts:
+    overwrite: true
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-graphql-request"

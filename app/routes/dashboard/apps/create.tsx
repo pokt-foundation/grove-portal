@@ -118,7 +118,6 @@ export default function CreateApp() {
   const { flags } = useFeatureFlags()
   const { price } = useLoaderData() as LoaderData
 
-  console.log(price)
   const tiers = [
     {
       name: "Always Free",

@@ -8,8 +8,10 @@ function getClientEnv() {
     AMPLITUDE_API_KEY: process.env.AMPLITUDE_API_KEY,
     SENTRY_DSN: process.env.SENTRY_DSN,
     BUILD_ID: process.env.BUILD_ID,
-    FLAG_MULTI_LANGUAGE: process.env.FLAG_MULTI_LANGUAGE,
     GODMODE_ACCOUNTS: process.env.GODMODE_ACCOUNTS,
+    FLAG_MULTI_LANGUAGE: process.env.FLAG_MULTI_LANGUAGE,
+    FLAG_STRIPE_PAYMENT: process.env.FLAG_STRIPE_PAYMENT,
+    FLAG_ENTERPRISE: process.env.FLAG_ENTERPRISE,
   }
 }
 

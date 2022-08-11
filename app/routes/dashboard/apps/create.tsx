@@ -23,6 +23,7 @@ import { Stripe, stripe } from "~/models/stripe.server"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { getErrorMessage } from "~/utils/catchError"
 import { CHAIN_ID_PREFIXES } from "~/utils/chainUtils"
+import { getRequiredServerEnvVar } from "~/utils/environment"
 import { requireUser } from "~/utils/session.server"
 
 export const meta: MetaFunction = () => {
@@ -42,7 +43,7 @@ type LoaderData = {
 export const loader: LoaderFunction = async ({ request }) => {
   await requireUser(request)
 
-  const priceID = "price_1LUzM7KhNIAUaK2O2JOUw5iU"
+  const priceID = getRequiredServerEnvVar("STRIPE_PRICE_ID")
   const price = await stripe.prices
     .retrieve(priceID, {
       expand: ["tiers"],

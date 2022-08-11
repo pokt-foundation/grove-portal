@@ -3,6 +3,7 @@ import invariant from "tiny-invariant"
 import { stripe, Stripe } from "~/models/stripe.server"
 import { authenticator } from "~/utils/auth.server"
 import { getErrorMessage } from "~/utils/catchError"
+import { getRequiredServerEnvVar } from "~/utils/environment"
 import { getPoktId, requireUser } from "~/utils/session.server"
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -18,7 +19,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   try {
     // get pokemon relay price
-    const priceID = "price_1LUzM7KhNIAUaK2O2JOUw5iU"
+    const priceID = getRequiredServerEnvVar("STRIPE_PRICE_ID")
     const price = await stripe.prices.retrieve(priceID, {
       expand: ["tiers"],
     })
@@ -106,7 +107,7 @@ export const action: ActionFunction = async ({ request }) => {
   }
 
   // get prices from stripe or create new products with prices if they dont exist
-  const priceID = "price_1LFOsXKhNIAUaK2OjjG0gqov"
+  const priceID = getRequiredServerEnvVar("STRIPE_PRICE_ID")
   const price = await stripe.prices.retrieve(priceID)
 
   if (!price) {

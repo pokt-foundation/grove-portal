@@ -16,7 +16,7 @@ module.exports = {
       version: 27,
     },
   },
-  ignorePatterns: ["public/build/*", "api/*", "coverage/*"],
+  ignorePatterns: ["public/build/*", "api/*", "coverage/*", "cypress/*"],
   rules: {
     "@typescript-eslint/consistent-type-imports": 0,
     "import/order": [

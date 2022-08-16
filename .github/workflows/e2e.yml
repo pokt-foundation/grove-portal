@@ -47,6 +47,7 @@ jobs:
           install: false
           config-file: cypress.config.ts
         env:
+          NODE_ENV: development
           CYPRESS_BASE_URL: ${{ github.event.deployment_status.target_url }}
 
       - uses: actions/upload-artifact@v2

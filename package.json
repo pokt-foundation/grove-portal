@@ -17,8 +17,8 @@
     "remix:dev": "remix dev",
     "test": "vitest",
     "test:unit:run": "vitest run --coverage",
-    "test:e2e:dev": "start-server-and-test dev http://localhost:3001 \"cypress open\"",
-    "test:e2e:run": "start-server-and-test dev http://localhost:3001 \"cypress run\"",
+    "test:e2e:dev": "start-server-and-test dev http://localhost:3001 \"cypress open --config-file=cypress.config.ts\"",
+    "test:e2e:run": "start-server-and-test dev http://localhost:3001 \"cypress run --config-file=cypress.config.ts\"",
     "typecheck": "tsc -b && tsc -b cypress",
     "prepare": "husky install"
   },

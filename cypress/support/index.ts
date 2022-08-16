@@ -17,8 +17,6 @@
 import "@testing-library/cypress/add-commands"
 import "./commands"
 
-cy.configureCypressTestingLibrary({})
-
 declare global {
   namespace Cypress {
     interface Chainable {

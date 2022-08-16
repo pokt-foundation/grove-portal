@@ -10,8 +10,8 @@ describe("dashboard page tests", () => {
     cy.findByRole("heading", { name: /nodes staked/i }).should("be.visible")
     // should find apps staked
     cy.findByRole("heading", { name: /apps staked/i }).should("be.visible")
-    // should find networks
-    cy.findByRole("heading", { name: /networks/i }).should("be.visible")
+    // should find networks. using string so it matches only this card and not "available networks" card
+    cy.findByRole("heading", { name: "Networks" }).should("be.visible")
   })
   it("should have relay count", () => {
     cy.findByRole("heading", { name: /relay count/i }).should("be.visible")

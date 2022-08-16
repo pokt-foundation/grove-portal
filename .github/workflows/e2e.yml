@@ -48,3 +48,15 @@ jobs:
           config-file: cypress.config.ts
         env:
           CYPRESS_BASE_URL: ${{ github.event.deployment_status.target_url }}
+
+      - uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
+
+      - uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: cypress-videos
+          path: cypress/videos

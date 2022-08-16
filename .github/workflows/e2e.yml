@@ -44,6 +44,6 @@ jobs:
       - name: Run Cypress 🌲
         uses: cypress-io/github-action@v2
         with:
-          install: false
+          config-file: cypress.config.ts
         env:
           CYPRESS_BASE_URL: ${{ github.event.deployment_status.target_url }}

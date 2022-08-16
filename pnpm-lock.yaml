@@ -44,6 +44,7 @@ specifiers:
   cypress: 10.4.0
   d3-format: ^3.1.0
   dayjs: ^1.11.4
+  dotenv: ^16.0.1
   eslint: ^8.14.0
   eslint-config-prettier: ^8.5.0
   graphql: ^16.5.0
@@ -123,6 +124,7 @@ devDependencies:
   c8: 7.11.2
   cross-env: 7.0.3
   cypress: 10.4.0
+  dotenv: 16.0.1
   eslint: 8.14.0
   eslint-config-prettier: 8.5.0_eslint@8.14.0
   husky: 8.0.1
@@ -1775,7 +1777,7 @@ packages:
       '@types/jsonwebtoken': 8.5.8
       chalk: 4.1.2
       debug: 4.3.4
-      dotenv: 16.0.0
+      dotenv: 16.0.1
       graphql: 16.5.0
       graphql-request: 4.3.0_graphql@16.5.0
       http-proxy-agent: 5.0.0
@@ -2517,7 +2519,7 @@ packages:
       cacache: 15.3.0
       chalk: 4.1.2
       chokidar: 3.5.3
-      dotenv: 16.0.0
+      dotenv: 16.0.1
       esbuild: 0.14.22
       esbuild-plugin-cache: 0.2.9
       execa: 5.1.1
@@ -5030,8 +5032,8 @@ packages:
       tslib: 2.4.0
     dev: true
 
-  /dotenv/16.0.0:
-    resolution: {integrity: sha512-qD9WU0MPM4SWLPJy/r2Be+2WgQj8plChsyrCNQzW/0WjvcJQiKQJ9mH3ZgB3fxbUUxgc/11ZJ0Fi5KiimWGz2Q==}
+  /dotenv/16.0.1:
+    resolution: {integrity: sha512-1K6hR6wtk2FviQ4kEiSjFiH5rpzEVi8WW0x96aztHVMhEspNpc4DVOUTEHtEva5VThQ8IaBX1Pe4gSzpVVUsKQ==}
     engines: {node: '>=12'}
     dev: true
 

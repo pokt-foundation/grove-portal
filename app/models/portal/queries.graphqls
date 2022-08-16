@@ -1,69 +1,21 @@
 query endpoints {
   endpoints {
-    id
-    userId
-    name
-    status
     apps {
       address
       appId
       publicKey
       unstakingTime
-      maxRelays
       stakedTokens
       status
       jailed
     }
     chain
-    freeTier
-    gigastake
-    gatewaySettings {
-      secretKey
-      secretKeyRequired
-      whitelistOrigins
-      whitelistUserAgents
-    }
-    notificationSettings {
-      signedUp
-      quarter
-      half
-      threeQuarters
-      full
-    }
-    stakeRelayStatus {
-      stake
-      relays
-    }
     createdAt
-    updatedAt
-  }
-}
-
-query endpoint($endpointID: ID!) {
-  endpoint(endpointID: $endpointID) {
-    id
-    userId
-    name
-    status
-    apps {
-      address
-      appId
-      publicKey
-      unstakingTime
-      maxRelays
-      stakedTokens
-      status
-      jailed
-    }
-    chain
     freeTier
-    gigastake
     gatewaySettings {
       secretKey
       secretKeyRequired
       whitelistBlockchains
-      whitelistOrigins
-      whitelistUserAgents
       whitelistContracts {
         blockchainId
         contracts
@@ -72,20 +24,69 @@ query endpoint($endpointID: ID!) {
         blockchainId
         methods
       }
+      whitelistOrigins
+      whitelistUserAgents
     }
+    gigastake
+    id
+    name
     notificationSettings {
-      signedUp
-      quarter
-      half
-      threeQuarters
       full
+      half
+      quarter
+      signedUp
+      threeQuarters
     }
-    stakeRelayStatus {
-      stake
-      relays
-    }
-    createdAt
+    status
+    stake
     updatedAt
+    userId
+  }
+}
+
+query endpoint($endpointID: ID!) {
+  endpoint(endpointID: $endpointID) {
+    apps {
+      address
+      appId
+      publicKey
+      unstakingTime
+      stakedTokens
+      status
+      jailed
+    }
+    chain
+    createdAt
+    freeTier
+    gatewaySettings {
+      secretKey
+      secretKeyRequired
+      whitelistBlockchains
+      whitelistContracts {
+        blockchainId
+        contracts
+      }
+      whitelistMethods {
+        blockchainId
+        methods
+      }
+      whitelistOrigins
+      whitelistUserAgents
+    }
+    gigastake
+    id
+    name
+    notificationSettings {
+      full
+      half
+      quarter
+      signedUp
+      threeQuarters
+    }
+    status
+    stake
+    updatedAt
+    userId
   }
 }
 

@@ -4,6 +4,7 @@ import styles from "./styles.css"
 import Table, { links as TableLinks } from "~/components/shared/Table"
 import { useTranslate } from "~/context/TranslateContext"
 
+/* c8 ignore next */
 export const links = () => {
   return [...TableLinks(), { rel: "stylesheet", href: styles }]
 }

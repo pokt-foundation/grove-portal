@@ -1,39 +1,37 @@
 describe("dashboard page tests", () => {
   it("should login", () => {
     cy.login("sales@pokt.network", "Oh3%BW53nzQjot")
-  })
-  it("should have network summary", () => {
-    // should find heading
-    cy.findByRole("heading", { name: /network summary/i }).should("be.visible")
 
-    // should find nodes staked
+    // should have network summary heading
+    cy.findByRole("heading", { name: /network summary/i }).should("be.visible")
+    // should have network summary nodes staked
     cy.findByRole("heading", { name: /nodes staked/i }).should("be.visible")
-    // should find apps staked
+    // should have network summary apps staked
     cy.findByRole("heading", { name: /apps staked/i }).should("be.visible")
-    // should find networks. using string so it matches only this card and not "available networks" card
+    // should have network summary networks. using string so it matches only this card and not "available networks" card
     cy.findByRole("heading", { name: "Networks" }).should("be.visible")
-  })
-  it("should have relay count", () => {
+
+    //should have relay count
     cy.findByRole("heading", { name: /relay count/i }).should("be.visible")
-  })
-  it("should have available networks", () => {
+
+    // should have available networks
     cy.findByRole("heading", { name: /available networks/i }).should("be.visible")
-  })
-  it("should have network success rate", () => {
+
+    // should have network success rate
     cy.findByRole("heading", { name: /network success rate/i }).should("be.visible")
-  })
-  it("should have latest block", () => {
+
+    // should have latest block
     cy.findByRole("heading", { name: /latest block/i }).should("be.visible")
-  })
-  it("should have relay performance", () => {
+
+    // should have relay performance
     cy.findByRole("heading", { name: /relay performance/i }).should("be.visible")
-  })
-  it("should have pocket economics for app developers", () => {
+
+    // should have developer ad
     cy.findByRole("heading", { name: /pocket economics for app developers/i }).should(
       "be.visible",
     )
-  })
-  it("should have share feedback", () => {
+
+    // should have share feedback
     cy.findByRole("heading", { name: /share feedback/i }).should("be.visible")
   })
 })

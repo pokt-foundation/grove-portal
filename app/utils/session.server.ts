@@ -21,16 +21,16 @@ let cookie:
   secure: process.env.NODE_ENV === "production", // enable this in prod only
 }
 
-if (getRequiredServerEnvVar("NODE_ENV") === "production") {
+if (getRequiredServerEnvVar("VERCEL_URL").includes("pokt.network")) {
   cookie = {
     ...cookie,
-    secrets: [getRequiredServerEnvVar("SESSION_SECRET")],
+    secrets: [getRequiredServerEnvVar("SESSION_SECRET")], // replace this with an actual secret
   }
 }
 
 // export the whole sessionStorage object
 export const sessionStorage = createCookieSessionStorage({
-  cookie: cookie,
+  cookie,
 })
 
 export const requireUser = async (request: Request, defaultRedirect = "/") => {

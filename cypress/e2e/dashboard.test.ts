@@ -1,5 +1,5 @@
 describe("dashboard page tests", () => {
-  it("should login", () => {
+  it("should login and show dashboard", () => {
     cy.login("sales@pokt.network", "Oh3%BW53nzQjot")
 
     // should have network summary heading

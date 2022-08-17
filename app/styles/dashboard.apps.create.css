@@ -1,0 +1,54 @@
+.create-application form {
+  margin-bottom: 32px;
+}
+
+.radio-card-grid {
+  padding: 36px 0;
+  align-items: stretch;
+}
+
+.radio-card {
+  padding: 24px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  border: 2px solid var(--color-white-main);
+  height: 100%;
+  align-content: baseline;
+  border-radius: 8px;
+}
+
+.radio-card label {
+  font-size: 24px;
+}
+
+.radio-card.active {
+  border-color: var(--color-primary-main);
+}
+
+.radio-card p {
+  color: var(--color-white-main);
+}
+
+div.mantine-Radio-radioWrapper {
+  width: 100%;
+}
+
+label.mantine-Radio-label {
+  color: var(--color-white-main);
+}
+
+.create-application button[type="submit"] {
+  float: right;
+  width: 160px;
+  color: var(--color-black-dark);
+}
+
+.create-application .termsOfUseText {
+  margin-top: 48px;
+  text-align: right;
+}
+
+.create-application .termsOfUseText a {
+  color: var(--color-primary-main);
+}

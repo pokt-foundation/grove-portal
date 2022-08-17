@@ -15,6 +15,7 @@ import { commify } from "~/utils/formattingUtils"
 
 // const SESSIONS_PER_DAY = 24
 
+/* c8 ignore next */
 export const links = () => {
   return [...CardLinks(), ...CardListLinks(), { rel: "stylesheet", href: styles }]
 }

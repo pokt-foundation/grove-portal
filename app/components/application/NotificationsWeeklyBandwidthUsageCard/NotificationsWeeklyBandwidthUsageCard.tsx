@@ -10,6 +10,7 @@ import { useUsageColor } from "~/utils/applicationUtils"
 import { formatNumberToSICompact } from "~/utils/formattingUtils"
 import { FREE_TIER_MAX_RELAYS } from "~/utils/pocketUtils"
 
+/* c8 ignore next */
 export const links: LinksFunction = () => [
   ...CardLinks(),
   {

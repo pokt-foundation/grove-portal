@@ -1,6 +1,6 @@
 import { Text } from "@mantine/core"
 import { MetaFunction } from "@remix-run/node"
-import { Form, useFetcher, useParams } from "@remix-run/react"
+import { useFetcher, useParams } from "@remix-run/react"
 import React, { useState, useEffect } from "react"
 import { AppIdLoaderData } from "../$appId"
 import styles from "../../../../styles/dashboard.apps.$appId.security.css"
@@ -307,8 +307,8 @@ export default function AppSecurity() {
                       id: whitelistContractsDropdown,
                       inputValue: whitelistContractsInput,
                     },
-                  ]),
-                    setWhitelistContractsInput("")
+                  ])
+                  setWhitelistContractsInput("")
                   setWhitelistContractsDropdown("")
                 }
               }}

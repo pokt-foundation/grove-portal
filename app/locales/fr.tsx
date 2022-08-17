@@ -17,6 +17,7 @@ const schema = {
     nodes: "nodes -fr",
     network: "network -fr",
     networks: "networks -fr",
+    rentToOwn: "rent to own -fr",
     support: "support -fr",
     transaction: "transaction -fr",
     transactions: "transactions -fr",

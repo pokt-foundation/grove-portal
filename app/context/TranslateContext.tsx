@@ -28,6 +28,7 @@ interface TranslationData {
     nodes: string
     network: string
     networks: string
+    rentToOwn: string
     support: string
     transaction: string
     transactions: string

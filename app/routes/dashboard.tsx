@@ -7,7 +7,7 @@ import Container, { links as ContainerLinks } from "~/components/shared/Containe
 import Footer, { links as FooterLinks } from "~/components/shared/Footer"
 import Header, { links as HeaderLinks } from "~/components/shared/Header"
 import { IconApp, IconNetwork } from "~/components/shared/Icons"
-import Loader, { links as LoaderLinks } from "~/components/shared/Loader"
+// import Loader, { links as LoaderLinks } from "~/components/shared/Loader"
 import Nav, { links as NavLinks } from "~/components/shared/Nav"
 import { useTranslate } from "~/context/TranslateContext"
 import { requireUserProfile } from "~/utils/session.server"
@@ -18,7 +18,7 @@ export const links: LinksFunction = () => {
     ...FooterLinks(),
     ...NavLinks(),
     ...ContainerLinks(),
-    ...LoaderLinks(),
+    // ...LoaderLinks(),
   ]
 }
 
@@ -35,7 +35,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 export default function Dashboard() {
   const { user } = useLoaderData() as LoaderData
   const { t } = useTranslate()
-  const { state } = useTransition()
+  // const { state } = useTransition()
 
   useEffect(() => {
     analyticsInit(user)

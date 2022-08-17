@@ -1,6 +1,6 @@
 describe("dashboard page tests", () => {
   it("should login and show dashboard", () => {
-    cy.login("sales@pokt.network", "Oh3%BW53nzQjot")
+    cy.login(Cypress.env("auth0_user"), Cypress.env("auth0_password"))
 
     // should have network summary heading
     cy.findByRole("heading", { name: /network summary/i }).should("be.visible")

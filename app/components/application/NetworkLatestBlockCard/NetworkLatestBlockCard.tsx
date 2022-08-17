@@ -7,6 +7,7 @@ import CardList, {
 } from "~/components/shared/CardList"
 import { LatestBlockType } from "~/routes/dashboard/index"
 
+/* c8 ignore next */
 export const links = () => {
   return [...CardLinks(), ...CardListLinks(), { rel: "stylesheet", href: styles }]
 }

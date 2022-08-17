@@ -9,6 +9,7 @@ import Dropdown, {
 import TextInput from "~/components/shared/TextInput"
 import { CHAIN_ID_PREFIXES } from "~/utils/chainUtils"
 
+/* c8 ignore next */
 export const links = () => {
   return [
     ...DropdownLinks(),

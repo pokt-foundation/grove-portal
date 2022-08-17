@@ -2,7 +2,7 @@ import { expect } from "vitest"
 import AppEndpointCard from "./AppEndpointCard"
 import { render, screen } from "test/helpers"
 import { IUserContext, UserContext } from "~/context/UserContext"
-import { ProcessedEndpoint } from "~/models/portal/sdk"
+import { AppStatus, ProcessedEndpoint } from "~/models/portal/sdk"
 import { ChainMetadata, prefixFromChainId } from "~/utils/chainUtils"
 
 let app: ProcessedEndpoint
@@ -34,7 +34,8 @@ beforeEach(() => {
       signedUp: true,
       threeQuarters: true,
     },
-    status: "IN_SERVICE",
+    stake: 0,
+    status: AppStatus.InService,
     userId: "60ec71e6980d0b0034b3f2f3",
   }
   userValue = {

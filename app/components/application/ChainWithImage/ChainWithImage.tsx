@@ -1,6 +1,7 @@
 import styles from "./styles.css"
 import { getImageForChain } from "~/utils/known-chains/known-chains"
 
+/* c8 ignore next */
 export const links = () => {
   return [{ rel: "stylesheet", href: styles }]
 }

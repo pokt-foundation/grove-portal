@@ -1,6 +1,6 @@
 {
-  "exclude": ["./cypress", "./app/models/**/sdk.ts"],
-  "include": ["remix.env.d.ts", "./test/setup-test-env.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["remix.env.d.ts", "./test/*", "./app/**/*.ts", "./app/**/*.tsx"],
+  "exclude": ["./app/models/**/sdk.ts"],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2019"],
     "types": ["vitest/globals"],

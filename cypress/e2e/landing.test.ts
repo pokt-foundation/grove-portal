@@ -1,4 +1,4 @@
-describe("smoke tests", () => {
+describe("landing page tests", () => {
   it("should load landing page", () => {
     cy.visit("/")
 

@@ -69,7 +69,7 @@ export const loader: LoaderFunction = async ({ request }) => {
       error: "true",
       message: getErrorMessage(error),
     })
-    return redirect(`/dashboard/apps/create?${params}`)
+    return redirect(`/dashboard/apps/${id}?${params}`)
   }
 }
 

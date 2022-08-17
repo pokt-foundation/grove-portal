@@ -5,6 +5,7 @@ import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/shared/Card"
 import { formatDailyRelaysForGraphing } from "~/utils/applicationUtils"
 
+/* c8 ignore next */
 export const links = () => {
   return [...CardLinks(), { rel: "stylesheet", href: styles }]
 }

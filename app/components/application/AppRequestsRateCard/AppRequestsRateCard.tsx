@@ -11,6 +11,7 @@ import Grid from "~/components/shared/Grid"
 import { useTranslate } from "~/context/TranslateContext"
 import { RelayMetric } from "~/models/relaymeter.server"
 
+/* c8 ignore next */
 export const links = () => {
   return [...CardLinks(), ...CardListLinks(), { rel: "stylesheet", href: styles }]
 }

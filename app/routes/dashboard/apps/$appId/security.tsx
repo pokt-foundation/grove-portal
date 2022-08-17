@@ -101,13 +101,13 @@ export default function AppSecurity() {
   const [whitelistContractsDropdown, setWhitelistContractsDropdown] = useState<string>("")
   const [whitelistContracts, setWhitelistContracts] = useState<
     Array<{ id: string; inputValue: string }>
-  >(formatData(gatewaySettings?.whitelistContracts))
+  >(formatData(gatewaySettings?.whitelistContracts || []))
   const [whitelistContractsError, setWhitelistContractsError] = useState<boolean>(false)
   const [whitelistMethodsInput, setWhitelistMethodsInput] = useState<string>("")
   const [whitelistMethodsDropdown, setWhitelistMethodsDropdown] = useState<string>("")
   const [whitelistMethods, setWhitelistMethods] = useState<
     Array<{ id: string; inputValue: string }>
-  >(formatData(gatewaySettings.whitelistMethods))
+  >(formatData(gatewaySettings.whitelistMethods || []))
   const [whitelistMethodsError, setWhitelistMethodsError] = useState<boolean>(false)
 
   const removeFromArray = (item: string, arr: string[]) => arr.filter((i) => i !== item)

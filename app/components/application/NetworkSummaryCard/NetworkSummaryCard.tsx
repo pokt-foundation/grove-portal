@@ -1,6 +1,7 @@
 import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/shared/Card"
 
+/* c8 ignore next */
 export const links = () => {
   return [...CardLinks(), { rel: "stylesheet", href: styles }]
 }

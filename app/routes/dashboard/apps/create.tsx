@@ -88,24 +88,7 @@ export const action: ActionFunction = async ({ request }) => {
 
   try {
     const { createNewEndpoint } = await portal.createEndpoint({
-      input: {
-        name,
-        notificationSettings: {
-          signedUp: true,
-          quarter: false,
-          half: false,
-          threeQuarters: true,
-          full: true,
-        },
-        gatewaySettings: {
-          secretKeyRequired: false,
-          whitelistBlockchains: [],
-          whitelistContracts: [],
-          whitelistMethods: [],
-          whitelistOrigins: [],
-          whitelistUserAgents: [],
-        },
-      },
+      name,
     })
 
     if (!createNewEndpoint) {

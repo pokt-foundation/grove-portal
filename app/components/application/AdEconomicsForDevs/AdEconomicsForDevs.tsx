@@ -4,6 +4,7 @@ import Advertisement, {
 } from "~/components/shared/Advertisement"
 import Button from "~/components/shared/Button"
 
+/* c8 ignore next */
 export const links = () => {
   return [...AdvertisementLinks()]
 }

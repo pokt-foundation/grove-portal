@@ -7,7 +7,7 @@ import {
   redirect,
 } from "@remix-run/node"
 import { Form, Link, useLoaderData, useActionData, useTransition } from "@remix-run/react"
-import { forwardRef } from "react"
+import { forwardRef, useEffect, useState } from "react"
 import invariant from "tiny-invariant"
 import ChainWithImage, {
   AppEndpointProps,
@@ -130,6 +130,15 @@ export default function CreateApp() {
   const { price } = useLoaderData() as LoaderData
   const transition = useTransition()
   const action = useActionData() as ActionData
+  const [referral, setReferral] = useState("")
+
+  useEffect(() => {
+    const rid = window.localStorage.getItem("rid")
+
+    if (rid) {
+      setReferral(rid)
+    }
+  }, [])
 
   const tiers = [
     {
@@ -156,6 +165,7 @@ export default function CreateApp() {
           <h3>Create New App</h3>
         </div>
         <Form method="post">
+          <input hidden name="referral-id" type="text" value={referral} />
           <TextInput label="Name" name="app-name" placeholder="New App Name" />
           <Select
             searchable

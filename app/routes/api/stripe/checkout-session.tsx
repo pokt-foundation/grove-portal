@@ -13,6 +13,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url)
   const id = url.searchParams.get("app-id")
   const name = url.searchParams.get("app-name")
+  const referral = url.searchParams.get("referral-id")
 
   console.log({ id })
   console.log({ name })
@@ -41,6 +42,19 @@ export const loader: LoaderFunction = async ({ request }) => {
       })
     }
 
+    // handle metadata that gets tied to the subscription
+    let metadata: {} = {
+      endpoint_id: id,
+      endpoint_name: name,
+    }
+
+    if (referral) {
+      metadata = {
+        ...metadata,
+        referral_id: referral,
+      }
+    }
+
     // create stripe checkout session and redirect to stripe hosted checkout page
     // TODO: metadata doesnt seem to be sending here: https://stripe.com/docs/api/checkout/sessions/object
     const returnUrl = `${url.origin}/dashboard/apps/${id}`
@@ -53,10 +67,7 @@ export const loader: LoaderFunction = async ({ request }) => {
         },
       ],
       mode: "subscription",
-      metadata: {
-        endpoint_id: id,
-        endpoint_name: name,
-      },
+      metadata,
       success_url: `${returnUrl}?success=true&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${returnUrl}?success=false`,
     })

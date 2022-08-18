@@ -12,125 +12,41 @@ export type RelayMetric = {
   To: string
 }
 
-type RelayMetricUser = RelayMetric & {
-  User: string
-}
+type RelayType = "network" | "users" | "endpoints" | "apps"
 
-type RelayMetricApp = RelayMetric & {
-  Application: string
-}
-
-// RelayMeter: NETWORK
-export const getNetworkRelays = async (
-  from?: string,
-  to?: string,
+// RelayMeter
+export const getRelays = async (
+  type: RelayType = "network",
+  from: string,
+  to: string,
+  id?: string,
 ): Promise<RelayMetric> => {
-  if (!to || !from) {
-    to = dayjs().utc().hour(0).minute(0).second(0).millisecond(0).format()
-    from = dayjs()
-      .utc()
-      .hour(0)
-      .minute(0)
-      .second(0)
-      .millisecond(0)
-      .subtract(6, "day")
-      .format()
+  let path = `${type}`
+
+  if (id) {
+    path = `${path}/${id}`
   }
 
-  const res = await fetch(
-    `${getRequiredClientEnvVar("RELAY_METER_API_URL")}/network?to=${to}&from=${from}`,
-  )
+  path = `${path}?to=${to}&from=${from}`
+
+  const res = await fetch(`${getRequiredClientEnvVar("RELAY_METER_API_URL")}/${path}`)
 
   if (!res || res.status !== 200) {
     throw new Error(res.statusText)
   }
 
-  const body = (await res.json()) as RelayMetric
-  const relay = {
-    ...body,
-    Count: {
-      ...body.Count,
-      Total: body.Count.Success + body.Count.Failure,
-    },
-  }
+  const body = await res.json()
+  const relay = addTotalToResponse(body) as RelayMetric
 
   return relay
 }
 
-// RelayMeter: USER
-export const getUserRelays = async (
-  user: string,
-  from?: string,
-  to?: string,
-): Promise<RelayMetricUser> => {
-  if (!to || !from) {
-    to = dayjs().utc().hour(0).minute(0).second(0).millisecond(0).format()
-    from = dayjs()
-      .utc()
-      .hour(0)
-      .minute(0)
-      .second(0)
-      .millisecond(0)
-      .subtract(6, "day")
-      .format()
-  }
-
-  const res = await fetch(
-    `${getRequiredClientEnvVar(
-      "RELAY_METER_API_URL",
-    )}/users/${user}?to=${to}&from=${from}`,
-  )
-
-  if (!res || res.status !== 200) {
-    throw new Error(res.statusText)
-  }
-
-  const body = (await res.json()) as RelayMetricUser
-  const relay = {
+const addTotalToResponse = (body: RelayMetric) => {
+  return {
     ...body,
     Count: {
       ...body.Count,
       Total: body.Count.Success + body.Count.Failure,
     },
   }
-
-  return relay
-}
-
-// RelayMeter: APP
-export const getAppRelays = async (
-  app: string,
-  from?: string,
-  to?: string,
-): Promise<RelayMetricApp> => {
-  if (!to || !from) {
-    to = dayjs().utc().hour(0).minute(0).second(0).millisecond(0).format()
-    from = dayjs()
-      .utc()
-      .hour(0)
-      .minute(0)
-      .second(0)
-      .millisecond(0)
-      .subtract(6, "day")
-      .format()
-  }
-
-  const res = await fetch(
-    `${getRequiredClientEnvVar("RELAY_METER_API_URL")}/apps/${app}?to=${to}&from=${from}`,
-  )
-
-  if (!res || res.status !== 200) {
-    throw new Error(res.statusText)
-  }
-
-  const body = (await res.json()) as RelayMetricApp
-  const relay = {
-    ...body,
-    Count: {
-      ...body.Count,
-      Total: body.Count.Success + body.Count.Failure,
-    },
-  }
-
-  return relay
 }

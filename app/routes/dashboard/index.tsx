@@ -31,7 +31,7 @@ import { initIndexerClient } from "~/models/indexer/indexer.server"
 import { Block, Order } from "~/models/indexer/sdk"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { Blockchain } from "~/models/portal/sdk"
-import { getNetworkRelays, RelayMetric } from "~/models/relaymeter.server"
+import { getRelays, RelayMetric } from "~/models/relaymeter.server"
 import styles from "~/styles/dashboard.index.css"
 import { getServiceLevelByChain } from "~/utils/chainUtils"
 import { dayjs } from "~/utils/dayjs"
@@ -121,12 +121,20 @@ export const loader: LoaderFunction = async ({ request }) => {
         .format()
 
       // api auto adjusts to/from to begining and end of each day so putting the same time here gives us back one full day
-      return await getNetworkRelays(day, day)
+      return await getRelays("network", day, day)
     }),
   )
 
   // api auto adjusts to/from to begining and end of each day so putting the same time here gives us back one full day
   const today = dayjs().utc().hour(0).minute(0).second(0).millisecond(0).format()
+  const week = dayjs()
+    .utc()
+    .hour(0)
+    .minute(0)
+    .second(0)
+    .millisecond(0)
+    .subtract(6, "day")
+    .format()
   const month = dayjs()
     .utc()
     .hour(0)
@@ -135,9 +143,9 @@ export const loader: LoaderFunction = async ({ request }) => {
     .millisecond(0)
     .subtract(1, "month")
     .format()
-  const dailyNetworkRelays = await getNetworkRelays(today, today)
-  const weeklyNetworkRelays = await getNetworkRelays()
-  const monthlyNetworkRelays = await getNetworkRelays(month, today)
+  const dailyNetworkRelays = await getRelays("network", today, today)
+  const weeklyNetworkRelays = await getRelays("network", week, today)
+  const monthlyNetworkRelays = await getRelays("network", month, today)
 
   return json<LoaderData>(
     {

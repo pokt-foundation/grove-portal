@@ -54,8 +54,8 @@ export const loader: LoaderFunction = async ({ request }) => {
       ],
       mode: "subscription",
       metadata: {
-        app_id: id,
-        app_name: name,
+        endpoint_id: id,
+        endpoint_name: name,
       },
       success_url: `${returnUrl}?success=true&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${returnUrl}?success=false`,

@@ -1,17 +1,12 @@
-import { ActionFunction, json, LoaderFunction } from "@remix-run/node"
+import { ActionFunction, json } from "@remix-run/node"
 import { Stripe, stripe } from "~/models/stripe.server"
 import { getErrorMessage } from "~/utils/catchError"
 import { getRequiredServerEnvVar } from "~/utils/environment"
-import { getUserProfile } from "~/utils/session.server"
-
-export const loader: LoaderFunction = async ({ request }) => {
-  return json({ success: true }, 200)
-}
 
 function arrayBufferToBufferCycle(ab: ArrayBuffer) {
   var buffer = Buffer.alloc(ab.byteLength)
   var view = new Uint8Array(ab)
-  for (var i = 0; i < buffer.length; ++i) {
+  for (var i = 0; i < buffer.length; i++) {
     buffer[i] = view[i]
   }
   return buffer
@@ -24,10 +19,6 @@ export const action: ActionFunction = async ({ request }) => {
   if (request.method !== "POST") {
     return json({ message: "Method not allowed" }, 405)
   }
-
-  const user = await getUserProfile(request)
-
-  console.log({ user })
 
   const body = await request.arrayBuffer()
   const buf = arrayBufferToBufferCycle(body)

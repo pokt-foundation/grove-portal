@@ -80,6 +80,7 @@ interface TranslationData {
       requests: string
       security: string
       notifications: string
+      plan: string
     }
   }
   AppRequestsByOriginCard: {

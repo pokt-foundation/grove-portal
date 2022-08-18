@@ -1,5 +1,6 @@
 import { LoaderFunction, MetaFunction, json } from "@remix-run/node"
 import { Outlet, useCatch, useLoaderData } from "@remix-run/react"
+import { useEffect, useState } from "react"
 import invariant from "tiny-invariant"
 import AdEconomicsForDevs, {
   links as AdEconomicsForDevsLinks,
@@ -100,7 +101,7 @@ export const loader: LoaderFunction = async ({ request, params, context }) => {
 export default function AppIdLayout() {
   const { t } = useTranslate()
   const { endpoint } = useLoaderData() as AppIdLoaderData
-  const routes = [
+  const [routes, setRoutes] = useState([
     {
       to: "/dashboard/apps",
       icon: () => <span>{"<"}</span>,
@@ -123,7 +124,20 @@ export default function AppIdLayout() {
       to: "notifications",
       label: t.appId.routes.notifications,
     },
-  ]
+  ])
+
+  useEffect(() => {
+    // change out freeTier for plan_type once the API updates
+    if (!endpoint.freeTier) {
+      setRoutes((curr) => [
+        ...curr,
+        {
+          to: "plan",
+          label: t.appId.routes.plan,
+        },
+      ])
+    }
+  }, [endpoint, t])
 
   return (
     <Grid gutter={32}>

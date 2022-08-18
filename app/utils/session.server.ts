@@ -1,19 +1,36 @@
-import { createCookieSessionStorage, redirect } from "@remix-run/node"
+import {
+  Cookie,
+  CookieParseOptions,
+  CookieSerializeOptions,
+  CookieSignatureOptions,
+  createCookieSessionStorage,
+  redirect,
+} from "@remix-run/node"
 import jwt_decode from "jwt-decode"
 import { Auth0Profile } from "remix-auth-auth0"
 import { authenticator } from "./auth.server"
 import { getRequiredServerEnvVar } from "./environment"
 
+let cookie:
+  | Cookie
+  | (CookieParseOptions & CookieSerializeOptions & CookieSignatureOptions) = {
+  name: "_session", // use any name you want here
+  httpOnly: true, // for security reasons, make this cookie http only
+  path: "/", // remember to add this so the cookie will work in all routes
+  sameSite: "lax", // this helps with CSRF
+  secure: process.env.NODE_ENV === "production", // enable this in prod only
+}
+
+if (getRequiredServerEnvVar("VERCEL_URL").includes("pokt.network")) {
+  cookie = {
+    ...cookie,
+    secrets: [getRequiredServerEnvVar("SESSION_SECRET")], // replace this with an actual secret
+  }
+}
+
 // export the whole sessionStorage object
 export const sessionStorage = createCookieSessionStorage({
-  cookie: {
-    name: "_session", // use any name you want here
-    httpOnly: true, // for security reasons, make this cookie http only
-    path: "/", // remember to add this so the cookie will work in all routes
-    sameSite: "lax", // this helps with CSRF
-    secrets: [getRequiredServerEnvVar("SESSION_SECRET")], // replace this with an actual secret
-    secure: process.env.NODE_ENV === "production", // enable this in prod only
-  },
+  cookie,
 })
 
 export const requireUser = async (request: Request, defaultRedirect = "/") => {

@@ -42,6 +42,19 @@ export const action: ActionFunction = async ({ request }) => {
   // Handle the event
   if (event) {
     switch (event.type) {
+      case "checkout.session.completed":
+        const sessionCompleted = event.data.object as Stripe.Checkout.Session
+
+        if (
+          sessionCompleted.subscription &&
+          typeof sessionCompleted.subscription === "string"
+        ) {
+          await stripe.subscriptions.update(sessionCompleted.subscription, {
+            metadata: sessionCompleted.metadata,
+          })
+        }
+
+        break
       case "customer.subscription.created":
         const subscriptionCreated = event.data.object as Stripe.Subscription
         console.log(`Customer subscription create for ${subscriptionCreated.id}!`)
@@ -54,8 +67,8 @@ export const action: ActionFunction = async ({ request }) => {
         // --- update user's endpoint plan_type field to be "paid_stripe"
         break
       case "customer.subscription.deleted":
-        const subscription = event.data.object as Stripe.Subscription
-        console.log(`Customer subscription deleted for ${subscription.id}!`)
+        const subscriptionDeleted = event.data.object as Stripe.Subscription
+        console.log(`Customer subscription deleted for ${subscriptionDeleted.id}!`)
 
         // TODO
         // - get pocket user id from stripe customer metadata

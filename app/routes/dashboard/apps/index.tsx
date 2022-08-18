@@ -8,7 +8,7 @@ import UsageChartCard, {
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import Table, { links as TableLinks } from "~/components/shared/Table"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
-import { getUserRelays, RelayMetric } from "~/models/relaymeter.server"
+import { getRelays, RelayMetric } from "~/models/relaymeter.server"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { dayjs } from "~/utils/dayjs"
 import { getPoktId, requireUser } from "~/utils/session.server"
@@ -43,7 +43,7 @@ export const loader: LoaderFunction = async ({ request }) => {
         .format()
 
       // api auto adjusts to/from to begining and end of each day so putting the same time here gives us back one full day
-      return await getUserRelays(userId, day, day)
+      return await getRelays("users", day, day, userId)
     }),
   )
 

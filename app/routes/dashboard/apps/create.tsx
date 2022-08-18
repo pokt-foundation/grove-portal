@@ -9,6 +9,7 @@ import {
 import { Form, Link, useLoaderData, useActionData, useTransition } from "@remix-run/react"
 import clsx from "clsx"
 import { forwardRef, useState } from "react"
+import ReactHtmlParser from "react-html-parser"
 import invariant from "tiny-invariant"
 import ChainWithImage, {
   AppEndpointProps,
@@ -27,7 +28,6 @@ import { getErrorMessage } from "~/utils/catchError"
 import { CHAIN_ID_PREFIXES } from "~/utils/chainUtils"
 import { getRequiredServerEnvVar } from "~/utils/environment"
 import { requireUser } from "~/utils/session.server"
-import ReactHtmlParser from "react-html-parser"
 
 export const meta: MetaFunction = () => {
   return {
@@ -287,7 +287,7 @@ export default function CreateApp() {
           </Text>
         </Form>
         <Box sx={{ textAlign: "left" }}>
-          <Title mb={16} mt={32} order={3} className="plan-data-overview title">
+          <Title className="plan-data-overview title" mb={16} mt={32} order={3}>
             Flexible plans that grow with your app
           </Title>
           <Text mb={32}>
@@ -296,7 +296,7 @@ export default function CreateApp() {
           </Text>
         </Box>
         <Box sx={{ textAlign: "left" }}>
-          <Title mb={16} mt={32} order={3} className="plan-data title">
+          <Title className="plan-data title" mb={16} mt={32} order={3}>
             {planDetails[radioSelectedValue as keyof typeof planDetails].title}
           </Title>
           <Text mb={32}>
@@ -308,7 +308,7 @@ export default function CreateApp() {
         </Box>
         <Grid>
           <Grid.Col sm={3} xs={12}>
-            <Title mb={16} mt={32} order={4} className="plan-data-highlights">
+            <Title className="plan-data-highlights" mb={16} mt={32} order={4}>
               {planDetailsTitles.pricing}
             </Title>
             <Text mb={32}>
@@ -318,7 +318,7 @@ export default function CreateApp() {
             </Text>
           </Grid.Col>
           <Grid.Col sm={3} xs={12}>
-            <Title mb={16} mt={32} order={4} className="plan-data-highlights">
+            <Title className="plan-data-highlights" mb={16} mt={32} order={4}>
               {planDetailsTitles.relayLimit}
             </Title>
             <Text mb={32}>
@@ -326,7 +326,7 @@ export default function CreateApp() {
             </Text>
           </Grid.Col>
           <Grid.Col sm={3} xs={12}>
-            <Title mb={16} mt={32} order={4} className="plan-data-highlights">
+            <Title className="plan-data-highlights" mb={16} mt={32} order={4}>
               {planDetailsTitles.chainAccess}
             </Title>
             <Text mb={32}>
@@ -334,7 +334,7 @@ export default function CreateApp() {
             </Text>
           </Grid.Col>
           <Grid.Col sm={3} xs={12}>
-            <Title mb={16} mt={32} order={4} className="plan-data-highlights">
+            <Title className="plan-data-highlights" mb={16} mt={32} order={4}>
               {planDetailsTitles.appsLimit}
             </Title>
             <Text mb={32}>

@@ -21,7 +21,7 @@ import Nav, { links as NavLinks } from "~/components/shared/Nav"
 import { useTranslate } from "~/context/TranslateContext"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { ProcessedEndpoint } from "~/models/portal/sdk"
-import { getAppRelays, RelayMetric } from "~/models/relaymeter.server"
+import { getRelays, RelayMetric } from "~/models/relaymeter.server"
 import { dayjs } from "~/utils/dayjs"
 import { requireUser } from "~/utils/session.server"
 
@@ -70,15 +70,15 @@ export const loader: LoaderFunction = async ({ request, params, context }) => {
         .format()
 
       // api auto adjusts to/from to begining and end of each day so putting the same time here gives us back one full day
-      return await getAppRelays(endpoint.id, day, day)
+      return await getRelays("endpoints", day, day, endpoint.id)
     }),
   )
 
   // api auto adjusts to/from to begining and end of each day so putting the same time here gives us back one full day
   const today = dayjs().utc().format()
   const yesterday = dayjs().utc().subtract(1, "day").format()
-  const relaysToday = await getAppRelays(endpoint.id, today, today)
-  const relaysYesterday = await getAppRelays(endpoint.id, yesterday, yesterday)
+  const relaysToday = await getRelays("endpoints", today, today, endpoint.id)
+  const relaysYesterday = await getRelays("endpoints", yesterday, yesterday, endpoint.id)
 
   return json<AppIdLoaderData>(
     {

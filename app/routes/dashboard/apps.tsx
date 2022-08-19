@@ -90,20 +90,19 @@ export const Apps = () => {
           <Outlet />
         </Grid.Col>
         <Grid.Col md={4}>
-          {endpoints && (
-            <Card>
-              <div className="pokt-card-header">
-                <h3>Account</h3>
-              </div>
-              <CardList items={userAppsStatus} />
-              {(endpoints.length < MAX_USER_APPS ||
-                getRequiredClientEnvVar("GODMODE_ACCOUNTS")?.includes(userId)) && (
-                <Button fullWidth component={Link} mt={32} to="create">
-                  Create New Application
-                </Button>
-              )}
-            </Card>
-          )}
+          <Card>
+            <div className="pokt-card-header">
+              <h3>Account</h3>
+            </div>
+            <CardList items={userAppsStatus} />
+            {(!endpoints ||
+              endpoints.length < MAX_USER_APPS ||
+              getRequiredClientEnvVar("GODMODE_ACCOUNTS")?.includes(userId)) && (
+              <Button fullWidth component={Link} mt={32} to="create">
+                Create New Application
+              </Button>
+            )}
+          </Card>
           <section>
             <AdEconomicsForDevs />
           </section>

@@ -72,7 +72,7 @@ export const Apps = () => {
   const userAppsStatus: CardListItem[] = [
     {
       label: "Current Apps",
-      value: Number(endpoints?.length),
+      value: Number(endpoints?.length) || 0,
     },
     {
       label: "Max Apps",

@@ -1,5 +1,10 @@
 query endpoints {
   endpoints {
+    appLimits {
+      dailyLimit
+      planType
+      publicKey
+    }
     apps {
       address
       appId
@@ -46,6 +51,11 @@ query endpoints {
 
 query endpoint($endpointID: ID!) {
   endpoint(endpointID: $endpointID) {
+    appLimits {
+      dailyLimit
+      planType
+      publicKey
+    }
     apps {
       address
       appId

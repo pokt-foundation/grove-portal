@@ -50,7 +50,7 @@ export type AppIdLoaderData = {
   dailyNetworkRelaysPerWeek: RelayMetric[]
 }
 
-export const loader: LoaderFunction = async ({ request, params, context }) => {
+export const loader: LoaderFunction = async ({ request, params }) => {
   invariant(params.appId, "app id not found")
   const user = await requireUser(request)
   const portal = initPortalClient(user.accessToken)

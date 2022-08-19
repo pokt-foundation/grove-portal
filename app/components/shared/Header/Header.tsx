@@ -4,6 +4,7 @@ import { Item, Separator } from "@radix-ui/react-dropdown-menu"
 import { Form, Link } from "@remix-run/react"
 import clsx from "clsx"
 import { useEffect, useMemo, useRef, useState } from "react"
+import React from "react"
 import { Auth0Profile } from "remix-auth-auth0"
 import Dropdown, { links as DropdownLinks } from "../Dropdown"
 import HamburgerMenu, { links as HamburgerMenuLinks } from "../HamburgerMenu"
@@ -200,12 +201,12 @@ function UserMenuDropdown({ user, routes }: UserMenuDropdownProps) {
           {routes.map(({ el, id: routeID }, index) => {
             const El = el
             return (
-              <>
-                <Item key={routeID}>
+              <React.Fragment key={routeID}>
+                <Item>
                   <El />
                 </Item>
                 {index < routes.length - 1 && <Separator />}
-              </>
+              </React.Fragment>
             )
           })}
         </Dropdown>

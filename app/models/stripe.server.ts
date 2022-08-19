@@ -6,3 +6,18 @@ export const stripe = new Stripe(getRequiredServerEnvVar("STRIPE_SECRET_KEY"), {
 })
 
 export * from "stripe"
+
+export const getCustomer = async (
+  email: string,
+  userId: string,
+): Promise<Stripe.Customer | undefined> => {
+  const potentialCustomers = await stripe.customers.list({
+    email: email,
+  })
+
+  const customer = potentialCustomers.data.filter(
+    (cust) => cust.metadata.user_id === userId,
+  )[0]
+
+  return customer
+}

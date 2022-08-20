@@ -98,7 +98,7 @@ export const Apps = () => {
             {(!endpoints ||
               endpoints.length < MAX_USER_APPS ||
               getRequiredClientEnvVar("GODMODE_ACCOUNTS")?.includes(userId)) && (
-              <Button fullWidth component={Link} mt={32} to="create">
+              <Button fullWidth component={Link} mt={32} to="/dashboard/create">
                 Create New Application
               </Button>
             )}

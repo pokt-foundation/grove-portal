@@ -238,6 +238,7 @@ export default function CreateApp() {
             placeholder="Select Chain"
           /> 
           */}
+          {/* TO DO componentize radio-cards */}
           <Grid align="center" className="radio-card-grid">
             {tiers.map((tier) => (
               <Grid.Col key={tier.name} sm={4} xs={12}>
@@ -286,6 +287,7 @@ export default function CreateApp() {
             .
           </Text>
         </Form>
+        {/* TO DO - componentize plan details */}
         <Box sx={{ textAlign: "left" }}>
           <Title className="plan-data-overview title" mb={16} mt={32} order={3}>
             Flexible plans that grow with your app

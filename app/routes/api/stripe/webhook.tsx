@@ -55,6 +55,7 @@ export const action: ActionFunction = async ({ request }) => {
               metadata: sessionCompleted.metadata,
             },
           )
+          // there is only ever 1 subscription item in our subscriptions so just grabbing it here
           await stripe.subscriptionItems.update(subscription.items.data[0].id, {
             metadata: sessionCompleted.metadata,
           })

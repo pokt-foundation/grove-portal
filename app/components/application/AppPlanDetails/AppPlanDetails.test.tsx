@@ -53,7 +53,7 @@ describe("<AppPlanDetails />", () => {
     )
     const buttonText = /Upgrade/i
     expect(screen.queryByText(buttonText)).not.toBeInTheDocument()
-    expect(screen.queryByRole("button")).toBeInTheDocument()
+    expect(screen.getByRole("button")).toBeInTheDocument()
     expect(screen.queryByRole("link")).not.toBeInTheDocument()
   })
   it("renders upgrade button with free plan", () => {
@@ -62,8 +62,8 @@ describe("<AppPlanDetails />", () => {
     )
     const buttonText = /Upgrade/i
     expect(screen.getByText(buttonText)).toBeInTheDocument()
-    expect(screen.queryByRole("button")).toBeInTheDocument()
-    expect(screen.queryByRole("button")).toBeInTheDocument()
+    expect(screen.getByRole("button")).toBeInTheDocument()
+    expect(screen.getByRole("button")).toBeInTheDocument()
     expect(screen.getByRole("link")).toBeInTheDocument()
   })
 })

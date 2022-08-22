@@ -12,6 +12,11 @@ let userValue: IUserContext
 beforeEach(() => {
   //reset defaults before each test
   app = {
+    appLimits: {
+      dailyLimit: 250000,
+      planType: PayPlanType.FreetierV0,
+      publicKey: "abc",
+    },
     id: "605238bf6b986eea7cf36d5e",
     chain: "0003",
     gigastake: false,
@@ -37,11 +42,6 @@ beforeEach(() => {
     stake: 0,
     status: AppStatus.InService,
     userId: "60ec71e6980d0b0034b3f2f3",
-    appLimits: {
-      dailyLimit: 250000,
-      planType: PayPlanType.FreetierV0,
-      publicKey: "mock_key_1234",
-    },
   }
   userValue = {
     submit: vitest.fn(),

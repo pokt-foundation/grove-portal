@@ -1,5 +1,5 @@
 import { json, LoaderFunction, MetaFunction, redirect } from "@remix-run/node"
-import { useLoaderData } from "@remix-run/react"
+import { Form, useLoaderData } from "@remix-run/react"
 import { useEffect } from "react"
 import invariant from "tiny-invariant"
 import Button from "~/components/shared/Button"
@@ -8,9 +8,11 @@ import CardList, {
   CardListItem,
   links as CardListLinks,
 } from "~/components/shared/CardList"
+import Grid from "~/components/shared/Grid"
 import Group from "~/components/shared/Group"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { ProcessedEndpoint } from "~/models/portal/sdk"
+import { getRelays, RelayMetric } from "~/models/relaymeter.server"
 import { getCustomer, Stripe, stripe } from "~/models/stripe.server"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { getErrorMessage } from "~/utils/catchError"
@@ -34,6 +36,7 @@ type AppPlanLoaderData =
       subscription: Stripe.Subscription
       usageRecords: Stripe.ApiList<Stripe.UsageRecordSummary>
       invoice: Stripe.Invoice
+      relaysLatestInvoice: RelayMetric
       endpoint: ProcessedEndpoint
     }
   | {
@@ -71,12 +74,27 @@ export const loader: LoaderFunction = async ({ request, params }) => {
           const invoiceLatest = await stripe.invoices.retrieve(
             `${subscription.latest_invoice}`,
           )
+
+          const invoicePeriodStart = dayjs
+            .unix(Number(invoiceLatest.period_start))
+            .toISOString()
+          const invoicePeriodEnd = dayjs
+            .unix(Number(invoiceLatest.period_start))
+            .toISOString()
+          const relaysLatestInvoice = await getRelays(
+            "endpoints",
+            invoicePeriodStart,
+            invoicePeriodEnd,
+            endpoint.id,
+          )
+
           return json(
             {
               error: false,
               subscription: subscription,
               usageRecords,
               invoice: invoiceLatest,
+              relaysLatestInvoice,
               endpoint,
             },
             {
@@ -109,8 +127,23 @@ export const AppPlanDetails = () => {
 
   const subscriptionItems: CardListItem[] = [
     {
+      label: "Subscription",
+      value: !data.error ? data.subscription.id : "",
+    },
+    {
+      label: "Status",
+      // eslint-disable-next-line no-nested-ternary
+      value: !data.error ? data.subscription.status : "",
+    },
+    {
       label: "Total Relays on this Billing Period",
       value: !data.error ? data.usageRecords.data[0].total_usage : 0,
+    },
+    {
+      label: "Start Date",
+      value: !data.error
+        ? dayjs.unix(Number(data.subscription.start_date)).toString()
+        : "",
     },
   ]
 
@@ -123,6 +156,16 @@ export const AppPlanDetails = () => {
       label: "Status",
       // eslint-disable-next-line no-nested-ternary
       value: !data.error ? (data.invoice.paid ? "Paid" : "Open") : "",
+    },
+    {
+      label: "Relays Billed",
+      // eslint-disable-next-line no-nested-ternary
+      value: !data.error ? data.usageRecords.data[0].total_usage : 0,
+    },
+    {
+      label: "Relays Used",
+      // eslint-disable-next-line no-nested-ternary
+      value: !data.error ? data.relaysLatestInvoice.Count.Total : 0,
     },
     {
       label: "Period Start",
@@ -144,7 +187,13 @@ export const AppPlanDetails = () => {
             </div>
             <div>
               <CardList items={subscriptionItems} />
-              {data.subscription.id}
+              <Group mt="xl" position="right">
+                <Form action="/api/stripe/portal-session" method="post">
+                  <Button type="submit" variant="outline">
+                    Manage Plan in Stripe
+                  </Button>
+                </Form>
+              </Group>
             </div>
           </Card>
           <Card>
@@ -152,7 +201,7 @@ export const AppPlanDetails = () => {
               <h3>Latest Invoice</h3>
             </div>
             <CardList items={invoiceItems} />
-            <Group mt="xl" position="apart">
+            <Group mt="xl" position="right">
               <Button
                 component="a"
                 href={data.invoice.hosted_invoice_url ?? ""}

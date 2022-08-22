@@ -21,7 +21,7 @@ import Grid from "~/components/shared/Grid"
 import Nav, { links as NavLinks } from "~/components/shared/Nav"
 import { useTranslate } from "~/context/TranslateContext"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { ProcessedEndpoint } from "~/models/portal/sdk"
+import { PayPlanType, ProcessedEndpoint } from "~/models/portal/sdk"
 import { getRelays, RelayMetric } from "~/models/relaymeter.server"
 import { dayjs } from "~/utils/dayjs"
 import { requireUser } from "~/utils/session.server"
@@ -51,9 +51,25 @@ export type AppIdLoaderData = {
 }
 
 export const loader: LoaderFunction = async ({ request, params }) => {
+  const url = new URL(request.url)
+  const searchParams = url.searchParams
+
   invariant(params.appId, "app id not found")
+
   const user = await requireUser(request)
   const portal = initPortalClient(user.accessToken)
+
+  if (searchParams.get("success") === "true") {
+    try {
+      await portal.updateEndpoint({
+        input: {
+          id: params.appId,
+          payPlanType: PayPlanType.PayAsYouGoV0,
+        },
+      })
+    } catch (e) {}
+  }
+
   const { endpoint } = await portal.endpoint({
     endpointID: params.appId,
   })
@@ -127,8 +143,10 @@ export default function AppIdLayout() {
   ])
 
   useEffect(() => {
-    // change out freeTier for plan_type once the API updates
-    if (!endpoint.freeTier) {
+    if (
+      endpoint.appLimits.planType === PayPlanType.PayAsYouGoV0 &&
+      !routes.filter((route) => route.to === "plan")[0]
+    ) {
       setRoutes((curr) => [
         ...curr,
         {
@@ -137,7 +155,7 @@ export default function AppIdLayout() {
         },
       ])
     }
-  }, [endpoint, t])
+  }, [endpoint, t, routes])
 
   return (
     <Grid gutter={32}>

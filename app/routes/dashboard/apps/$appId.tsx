@@ -7,18 +7,19 @@ import AdEconomicsForDevs, {
 import AppAddressCard, {
   links as AppAddressCardLinks,
 } from "~/components/application/AppAddressCard"
+import AppEndpointUrl from "~/components/application/AppEndpointUrl"
 import AppKeysCard, {
   links as AppKeysCardLinks,
 } from "~/components/application/AppKeysCard"
+import AppPlanDetails, {
+  links as AppPlanDetailsLinks,
+} from "~/components/application/AppPlanDetails"
 import AppRemoveModal, {
   links as AppRemoveModalLinks,
 } from "~/components/application/AppRemoveModal"
 import FeedbackCard, {
   links as FeedbackCardLinks,
 } from "~/components/application/FeedbackCard"
-import AppPlanDetails, {
-  links as AppPlanDetailsLinks,
-} from "~/components/application/AppPlanDetails"
 import Grid from "~/components/shared/Grid"
 import Nav, { links as NavLinks } from "~/components/shared/Nav"
 import { useTranslate } from "~/context/TranslateContext"
@@ -27,7 +28,6 @@ import { ProcessedEndpoint } from "~/models/portal/sdk"
 import { getRelays, RelayMetric } from "~/models/relaymeter.server"
 import { dayjs } from "~/utils/dayjs"
 import { requireUser } from "~/utils/session.server"
-import AppEndpointUrl from "~/components/application/AppEndpointUrl"
 
 export const links = () => {
   return [
@@ -149,10 +149,10 @@ export default function AppIdLayout() {
           <>
             <section>
               <AppPlanDetails
+                dailyLimit={endpoint.appLimits.dailyLimit}
                 id={endpoint.id}
                 name={endpoint.name}
                 planType={endpoint.appLimits.planType}
-                dailyLimit={endpoint.appLimits.dailyLimit}
               />
             </section>
             <section>

@@ -11,7 +11,7 @@ const name = "myApp"
 describe("<AppPlanDetails />", () => {
   it("renders application with paid plan", () => {
     render(
-      <AppPlanDetails id={id} name={name} dailyLimit={dailyLimit} planType={paidPlan} />,
+      <AppPlanDetails dailyLimit={dailyLimit} id={id} name={name} planType={paidPlan} />,
     )
     const relayLimit = "Relays Limit"
     const currentPlan = "Current Plan"
@@ -25,7 +25,7 @@ describe("<AppPlanDetails />", () => {
   })
   it("renders application with free plan", () => {
     render(
-      <AppPlanDetails id={id} name={name} dailyLimit={dailyLimit} planType={freePlan} />,
+      <AppPlanDetails dailyLimit={dailyLimit} id={id} name={name} planType={freePlan} />,
     )
     const relayLimit = "Relays Limit"
     const currentPlan = "Current Plan"
@@ -39,21 +39,21 @@ describe("<AppPlanDetails />", () => {
   })
   it("does NOT render upgrade button with paid plan", () => {
     render(
-      <AppPlanDetails id={id} name={name} dailyLimit={dailyLimit} planType={paidPlan} />,
+      <AppPlanDetails dailyLimit={dailyLimit} id={id} name={name} planType={paidPlan} />,
     )
     const buttonText = /Upgrade/i
-    expect(screen.queryByText(buttonText)).toBeNull()
-    expect(screen.queryAllByRole("button")).toHaveLength(1)
-    expect(screen.queryAllByRole("link")).toHaveLength(0)
+    expect(screen.queryByText(buttonText)).not.toBeInTheDocument()
+    expect(screen.queryByRole("button")).toBeInTheDocument()
+    expect(screen.queryByRole("link")).not.toBeInTheDocument()
   })
   it("renders upgrade button with free plan", () => {
     render(
-      <AppPlanDetails id={id} name={name} dailyLimit={dailyLimit} planType={freePlan} />,
+      <AppPlanDetails dailyLimit={dailyLimit} id={id} name={name} planType={freePlan} />,
     )
     const buttonText = /Upgrade/i
     expect(screen.getByText(buttonText)).toBeInTheDocument()
     expect(screen.queryByRole("button")).toBeInTheDocument()
-    expect(screen.queryAllByRole("button")).toHaveLength(1)
+    expect(screen.queryByRole("button")).toBeInTheDocument()
     expect(screen.getByRole("link")).toBeInTheDocument()
   })
 })

@@ -26,3 +26,12 @@ export function shorten(string: string, characters = 4): string {
   }
   return string.slice(0, characters) + "…"
 }
+
+export function isFreePlan(planType: string) {
+  if (planType === "") {
+    return true
+  } else if (planType === "free") {
+    return true
+  }
+  return false
+}

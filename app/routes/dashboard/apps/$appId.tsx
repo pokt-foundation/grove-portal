@@ -1,5 +1,6 @@
+import { Button } from "@mantine/core/lib/components/Button"
 import { LoaderFunction, MetaFunction, json } from "@remix-run/node"
-import { Outlet, useCatch, useLoaderData } from "@remix-run/react"
+import { Link, Outlet, useCatch, useLoaderData } from "@remix-run/react"
 import invariant from "tiny-invariant"
 import AdEconomicsForDevs, {
   links as AdEconomicsForDevsLinks,
@@ -24,6 +25,7 @@ import { ProcessedEndpoint } from "~/models/portal/sdk"
 import { getRelays, RelayMetric } from "~/models/relaymeter.server"
 import { dayjs } from "~/utils/dayjs"
 import { requireUser } from "~/utils/session.server"
+import { isFreePlan } from "~/utils/utils"
 
 export const links = () => {
   return [
@@ -100,6 +102,7 @@ export const loader: LoaderFunction = async ({ request, params, context }) => {
 export default function AppIdLayout() {
   const { t } = useTranslate()
   const { endpoint } = useLoaderData() as AppIdLoaderData
+  const stripe = "unknown"
   const routes = [
     {
       to: "/dashboard/apps",
@@ -158,7 +161,13 @@ export default function AppIdLayout() {
               <FeedbackCard />
             </section>
             <section>
-              <AppRemoveModal appId={endpoint.id} />
+              {isFreePlan(endpoint.appLimits.planType) ? (
+                <AppRemoveModal appId={endpoint.id} />
+              ) : (
+                <Button fullWidth component={Link} to={stripe} variant="subtle">
+                  Stop Subscription
+                </Button>
+              )}
             </section>
           </>
         )}

@@ -1,4 +1,3 @@
-import { Button } from "@mantine/core/lib/components/Button"
 import { LoaderFunction, MetaFunction, json } from "@remix-run/node"
 import { Link, Outlet, useCatch, useLoaderData } from "@remix-run/react"
 import invariant from "tiny-invariant"
@@ -17,6 +16,7 @@ import AppRemoveModal, {
 import FeedbackCard, {
   links as FeedbackCardLinks,
 } from "~/components/application/FeedbackCard"
+import Button from "~/components/shared/Button"
 import Grid from "~/components/shared/Grid"
 import Nav, { links as NavLinks } from "~/components/shared/Nav"
 import { useTranslate } from "~/context/TranslateContext"
@@ -102,7 +102,8 @@ export const loader: LoaderFunction = async ({ request, params, context }) => {
 export default function AppIdLayout() {
   const { t } = useTranslate()
   const { endpoint } = useLoaderData() as AppIdLoaderData
-  const stripe = "unknown"
+
+  const stripe = "/api/stripe/portal-session"
   const routes = [
     {
       to: "/dashboard/apps",
@@ -165,6 +166,11 @@ export default function AppIdLayout() {
                 <AppRemoveModal appId={endpoint.id} />
               ) : (
                 <Button fullWidth component={Link} to={stripe} variant="subtle">
+                  <img
+                    alt="Remove Application"
+                    className="pokt-app-remove-delete-icon"
+                    src="/delete.svg"
+                  />{" "}
                   Stop Subscription
                 </Button>
               )}

@@ -1,0 +1,33 @@
+.pokt-app-plan-details .flexRow {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.pokt-app-plan-details .flexRow:first-child {
+  margin-bottom: 32px;
+}
+
+.pokt-app-plan-details .flexRow div {
+  text-align: right;
+}
+
+.pokt-app-plan-details .flexRow p {
+  font-size: 16px;
+}
+
+.pokt-app-plan-details .flexRow .smallText {
+  font-size: 12px;
+}
+
+.pokt-app-plan-details h3 {
+  font-size: 18px;
+}
+
+.pokt-app-plan-details .centerGap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}

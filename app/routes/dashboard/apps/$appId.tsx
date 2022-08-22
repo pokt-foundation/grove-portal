@@ -16,6 +16,9 @@ import AppRemoveModal, {
 import FeedbackCard, {
   links as FeedbackCardLinks,
 } from "~/components/application/FeedbackCard"
+import AppPlanDetails, {
+  links as AppPlanDetailsLinks,
+} from "~/components/application/AppPlanDetails"
 import Grid from "~/components/shared/Grid"
 import Nav, { links as NavLinks } from "~/components/shared/Nav"
 import { useTranslate } from "~/context/TranslateContext"
@@ -24,6 +27,7 @@ import { ProcessedEndpoint } from "~/models/portal/sdk"
 import { getRelays, RelayMetric } from "~/models/relaymeter.server"
 import { dayjs } from "~/utils/dayjs"
 import { requireUser } from "~/utils/session.server"
+import AppEndpointUrl from "~/components/application/AppEndpointUrl"
 
 export const links = () => {
   return [
@@ -33,6 +37,7 @@ export const links = () => {
     ...AdEconomicsForDevsLinks(),
     ...FeedbackCardLinks(),
     ...AppRemoveModalLinks(),
+    ...AppPlanDetailsLinks(),
   ]
 }
 
@@ -100,6 +105,7 @@ export const loader: LoaderFunction = async ({ request, params, context }) => {
 export default function AppIdLayout() {
   const { t } = useTranslate()
   const { endpoint } = useLoaderData() as AppIdLoaderData
+  console.log(endpoint)
   const routes = [
     {
       to: "/dashboard/apps",
@@ -141,6 +147,14 @@ export default function AppIdLayout() {
       <Grid.Col md={4}>
         {endpoint && (
           <>
+            <section>
+              <AppPlanDetails
+                id={endpoint.id}
+                name={endpoint.name}
+                planType={endpoint.appLimits.planType}
+                dailyLimit={endpoint.appLimits.dailyLimit}
+              />
+            </section>
             <section>
               <AppKeysCard
                 id={endpoint.id}

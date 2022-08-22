@@ -137,6 +137,13 @@ interface TranslationData {
     termsOfUse: string
     privacyPolicy: string
   }
+  AppPlanDetails: {
+    relayLimit: string
+    relaysPerDay: string
+    currentPlan: string
+    currentPlanToolTip: string
+    upgrade: string
+  }
 }
 
 export type Language = typeof languages[number]

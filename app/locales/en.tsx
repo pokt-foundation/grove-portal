@@ -249,6 +249,13 @@ const schema = {
     termsOfUse: "Site Terms of Use",
     privacyPolicy: "Privacy Policy",
   },
+  AppPlanDetails: {
+    relayLimit: "Relays Limit",
+    relaysPerDay: "relays per day",
+    currentPlan: "Current Plan",
+    currentPlanToolTip: "This is the current plan for this specific application.",
+    upgrade: "Upgrade",
+  },
 }
 
 export default schema

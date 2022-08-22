@@ -4,6 +4,7 @@ import styles from "./styles.css"
 import Button from "~/components/shared/Button"
 import { Card, links as CardLinks } from "~/components/shared/Card"
 import HelpTooltip from "~/components/shared/HelpTooltip"
+import { useTranslate } from "~/context/TranslateContext"
 
 /* c8 ignore next */
 export const links = () => {
@@ -23,32 +24,31 @@ export default function AppPlanDetails({
   id,
   name,
 }: AppPlanDetailsProps) {
+  const { t } = useTranslate()
   const stripe = `/api/stripe/checkout-session?app-id=${id}&app-name=${name}`
   return (
     <div className="pokt-app-plan-details">
       <Card>
         <div className="flexRow">
           <Title mb={16} mt={8} order={3}>
-            Relays Limit
+            {t.AppPlanDetails.relayLimit}
           </Title>
           <div>
             <Text>{dailyLimit}</Text>
-            <Text className="smallText">relays per day</Text>
+            <Text className="smallText">{t.AppPlanDetails.relaysPerDay}</Text>
           </div>
         </div>
         <div className="flexRow">
           <Title className="centerGap" mb={16} mt={8} order={3}>
-            Current Plan{" "}
-            <HelpTooltip
-              label={"This is the current plan for this specific application."}
-            />
+            {t.AppPlanDetails.currentPlan}{" "}
+            <HelpTooltip label={t.AppPlanDetails.currentPlanToolTip} />
           </Title>
           <div>
             <Text className="centerGap">
               {planType || "Free"}
               {(planType === "free" || planType === "") && (
                 <Button component={Link} to={stripe} variant="outline">
-                  Upgrade
+                  {t.AppPlanDetails.upgrade}
                 </Button>
               )}
             </Text>

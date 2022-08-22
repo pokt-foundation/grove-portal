@@ -49,7 +49,13 @@ export const action: ActionFunction = async ({ request }) => {
           sessionCompleted.subscription &&
           typeof sessionCompleted.subscription === "string"
         ) {
-          await stripe.subscriptions.update(sessionCompleted.subscription, {
+          const subscription = await stripe.subscriptions.update(
+            sessionCompleted.subscription,
+            {
+              metadata: sessionCompleted.metadata,
+            },
+          )
+          await stripe.subscriptionItems.update(subscription.items.data[0].id, {
             metadata: sessionCompleted.metadata,
           })
         }

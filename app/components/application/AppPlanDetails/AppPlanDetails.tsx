@@ -5,6 +5,7 @@ import Button from "~/components/shared/Button"
 import { Card, links as CardLinks } from "~/components/shared/Card"
 import HelpTooltip from "~/components/shared/HelpTooltip"
 import { useTranslate } from "~/context/TranslateContext"
+import { isFreePlan } from "~/utils/utils"
 
 /* c8 ignore next */
 export const links = () => {
@@ -34,7 +35,7 @@ export default function AppPlanDetails({
             {t.AppPlanDetails.relayLimit}
           </Title>
           <div>
-            <Text>{dailyLimit}</Text>
+            <Text>{dailyLimit !== 0 ? dailyLimit : "Unlimited"}</Text>
             <Text className="smallText">{t.AppPlanDetails.relaysPerDay}</Text>
           </div>
         </div>
@@ -46,7 +47,7 @@ export default function AppPlanDetails({
           <div>
             <Text className="centerGap">
               {planType || "Free"}
-              {(planType === "free" || planType === "") && (
+              {isFreePlan(planType) && (
                 <Button component={Link} to={stripe} variant="outline">
                   {t.AppPlanDetails.upgrade}
                 </Button>

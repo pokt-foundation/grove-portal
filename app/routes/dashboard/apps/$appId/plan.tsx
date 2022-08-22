@@ -125,25 +125,41 @@ export const AppPlanDetails = () => {
     trackEvent(AmplitudeEvents.AppPlanDetailsView)
   }, [])
 
+  if (data.error) {
+    return (
+      <Card>
+        <div className="pokt-card-header">
+          <h3>Stripe Error</h3>
+        </div>
+        <p>
+          We are sorry but there appears to be an issue with out connection to stripe. You
+          can try managing your account directly in Stripe's subscription portal.
+        </p>
+        <Form action="/api/stripe/portal-session" method="post">
+          <Button type="submit" variant="outline">
+            Manage Plan in Stripe
+          </Button>
+        </Form>
+      </Card>
+    )
+  }
+
   const subscriptionItems: CardListItem[] = [
     {
       label: "Subscription",
-      value: !data.error ? data.subscription.id : "",
+      value: data.subscription.id,
     },
     {
       label: "Status",
-      // eslint-disable-next-line no-nested-ternary
-      value: !data.error ? data.subscription.status : "",
+      value: data.subscription.status,
     },
     {
       label: "Total Relays on this Billing Period",
-      value: !data.error ? data.usageRecords.data[0].total_usage : 0,
+      value: data.usageRecords.data[0].total_usage,
     },
     {
       label: "Start Date",
-      value: !data.error
-        ? dayjs.unix(Number(data.subscription.start_date)).toString()
-        : "",
+      value: dayjs.unix(Number(data.subscription.start_date)).toString(),
     },
   ]
 
@@ -154,74 +170,67 @@ export const AppPlanDetails = () => {
     },
     {
       label: "Status",
-      // eslint-disable-next-line no-nested-ternary
-      value: !data.error ? (data.invoice.paid ? "Paid" : "Open") : "",
+      value: data.invoice.paid ? "Paid" : "Open",
     },
     {
       label: "Relays Billed",
-      // eslint-disable-next-line no-nested-ternary
-      value: !data.error ? data.usageRecords.data[0].total_usage : 0,
+      value: data.usageRecords.data[0].total_usage,
     },
     {
       label: "Relays Used",
-      // eslint-disable-next-line no-nested-ternary
-      value: !data.error ? data.relaysLatestInvoice.Count.Total : 0,
+      value: data.relaysLatestInvoice.Count.Total,
     },
     {
       label: "Period Start",
-      value: !data.error ? dayjs.unix(Number(data.invoice.period_start)).toString() : "",
+      value: dayjs.unix(Number(data.invoice.period_start)).toString(),
     },
     {
       label: "Period End",
-      value: !data.error ? dayjs.unix(Number(data.invoice.period_end)).toString() : "",
+      value: dayjs.unix(Number(data.invoice.period_end)).toString(),
     },
   ]
 
   return (
     <>
-      {!data.error && (
-        <>
-          <Card>
-            <div className="pokt-card-header">
-              <h3>Application Plan</h3>
-            </div>
-            <div>
-              <CardList items={subscriptionItems} />
-              <Group mt="xl" position="right">
-                <Form action="/api/stripe/portal-session" method="post">
-                  <Button type="submit" variant="outline">
-                    Manage Plan in Stripe
-                  </Button>
-                </Form>
-              </Group>
-            </div>
-          </Card>
-          <Card>
-            <div className="pokt-card-header">
-              <h3>Latest Invoice</h3>
-            </div>
-            <CardList items={invoiceItems} />
-            <Group mt="xl" position="right">
-              <Button
-                component="a"
-                href={data.invoice.hosted_invoice_url ?? ""}
-                rel="noreferrer"
-                target="_blank"
-              >
-                View in Stripe
+      <Card>
+        <div className="pokt-card-header">
+          <h3>Application Plan</h3>
+        </div>
+        <div>
+          <CardList items={subscriptionItems} />
+          <Group mt="xl" position="right">
+            <Form action="/api/stripe/portal-session" method="post">
+              <Button type="submit" variant="outline">
+                Manage Plan in Stripe
               </Button>
-              <Button
-                component="a"
-                href={data.invoice.invoice_pdf ?? ""}
-                rel="noreferrer"
-                target="_blank"
-              >
-                Download
-              </Button>
-            </Group>
-          </Card>
-        </>
-      )}
+            </Form>
+          </Group>
+        </div>
+      </Card>
+      <Card>
+        <div className="pokt-card-header">
+          <h3>Latest Invoice</h3>
+        </div>
+        <CardList items={invoiceItems} />
+        <Group mt="xl" position="right">
+          <Button
+            component="a"
+            href={data.invoice.hosted_invoice_url ?? ""}
+            rel="noreferrer"
+            target="_blank"
+          >
+            View in Stripe
+          </Button>
+          <Button
+            component="a"
+            href={data.invoice.invoice_pdf ?? ""}
+            rel="noreferrer"
+            target="_blank"
+          >
+            Download
+          </Button>
+        </Group>
+      </Card>
     </>
   )
 }

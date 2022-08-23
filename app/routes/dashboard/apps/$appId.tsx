@@ -7,7 +7,6 @@ import AdEconomicsForDevs, {
 import AppAddressCard, {
   links as AppAddressCardLinks,
 } from "~/components/application/AppAddressCard"
-import AppEndpointUrl from "~/components/application/AppEndpointUrl"
 import AppKeysCard, {
   links as AppKeysCardLinks,
 } from "~/components/application/AppKeysCard"
@@ -105,7 +104,6 @@ export const loader: LoaderFunction = async ({ request, params, context }) => {
 export default function AppIdLayout() {
   const { t } = useTranslate()
   const { endpoint } = useLoaderData() as AppIdLoaderData
-  console.log(endpoint)
   const routes = [
     {
       to: "/dashboard/apps",

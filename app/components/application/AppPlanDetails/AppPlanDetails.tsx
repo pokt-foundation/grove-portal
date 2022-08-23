@@ -50,10 +50,10 @@ export default function AppPlanDetails({
         </div>
         {isFreePlan(planType) && (
           <Button
+            className="upgrade-button pokt-button"
             component={Link}
             to={stripe}
             variant="outline"
-            className="upgrade-button pokt-button"
           >
             {t.AppPlanDetails.upgrade}
           </Button>

@@ -16,7 +16,6 @@ interface AppRemoveModalProps {
 
 export default function AppEndpointCard({ appId }: AppRemoveModalProps) {
   const [opened, setOpened] = useState(false)
-  const stripe = "unknown"
 
   return (
     <div className="pokt-app-remove">

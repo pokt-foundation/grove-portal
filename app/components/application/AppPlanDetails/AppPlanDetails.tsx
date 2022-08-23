@@ -45,16 +45,19 @@ export default function AppPlanDetails({
             <HelpTooltip label={t.AppPlanDetails.currentPlanToolTip} />
           </Title>
           <div>
-            <Text className="centerGap">
-              {planType || "Free"}
-              {isFreePlan(planType) && (
-                <Button component={Link} to={stripe} variant="outline">
-                  {t.AppPlanDetails.upgrade}
-                </Button>
-              )}
-            </Text>
+            <Text className="centerGap">{planType || "Free"}</Text>
           </div>
         </div>
+        {isFreePlan(planType) && (
+          <Button
+            component={Link}
+            to={stripe}
+            variant="outline"
+            className="upgrade-button pokt-button"
+          >
+            {t.AppPlanDetails.upgrade}
+          </Button>
+        )}
       </Card>
     </div>
   )

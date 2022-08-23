@@ -31,3 +31,7 @@
   align-items: center;
   gap: 8px;
 }
+
+.pokt-app-plan-details .upgrade-button {
+  width: 100%;
+}

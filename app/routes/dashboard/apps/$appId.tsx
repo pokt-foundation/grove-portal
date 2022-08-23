@@ -1,5 +1,6 @@
 import { LoaderFunction, MetaFunction, json } from "@remix-run/node"
-import { Outlet, useCatch, useLoaderData } from "@remix-run/react"
+import { Outlet, useCatch, useLoaderData, useSearchParams } from "@remix-run/react"
+import { useEffect, useState } from "react"
 import invariant from "tiny-invariant"
 import AdEconomicsForDevs, {
   links as AdEconomicsForDevsLinks,
@@ -17,6 +18,7 @@ import FeedbackCard, {
   links as FeedbackCardLinks,
 } from "~/components/application/FeedbackCard"
 import Grid from "~/components/shared/Grid"
+import Modal, { links as ModalLinks } from "~/components/shared/Modal"
 import Nav, { links as NavLinks } from "~/components/shared/Nav"
 import { useTranslate } from "~/context/TranslateContext"
 import { initPortalClient } from "~/models/portal/portal.server"
@@ -33,6 +35,7 @@ export const links = () => {
     ...AdEconomicsForDevsLinks(),
     ...FeedbackCardLinks(),
     ...AppRemoveModalLinks(),
+    ...ModalLinks(),
   ]
 }
 
@@ -100,6 +103,10 @@ export const loader: LoaderFunction = async ({ request, params, context }) => {
 export default function AppIdLayout() {
   const { t } = useTranslate()
   const { endpoint } = useLoaderData() as AppIdLoaderData
+  const [searchParams] = useSearchParams()
+  const [showSuccessModal, setShowSuccessModel] = useState<boolean>(false)
+  const [showErrorModal, setShowErrorModel] = useState<boolean>(false)
+
   const routes = [
     {
       to: "/dashboard/apps",
@@ -125,45 +132,76 @@ export default function AppIdLayout() {
     },
   ]
 
+  useEffect(() => {
+    const success = searchParams.get("success")
+    if (!success) return
+    if (success === "true") {
+      setShowSuccessModel(true)
+    }
+    if (success === "false") {
+      setShowErrorModel(true)
+    }
+  }, [searchParams])
+
   return (
-    <Grid gutter={32}>
-      {endpoint && (
-        <Grid.Col xs={12}>
-          <div>
-            <h1>{endpoint.name}</h1>
-            <Nav routes={routes} />
-          </div>
-        </Grid.Col>
-      )}
-      <Grid.Col md={8}>
-        <Outlet />
-      </Grid.Col>
-      <Grid.Col md={4}>
+    <>
+      <Grid gutter={32}>
         {endpoint && (
-          <>
-            <section>
-              <AppKeysCard
-                id={endpoint.id}
-                publicKey={endpoint.apps[0]?.publicKey}
-                secret={endpoint.gatewaySettings.secretKey ?? ""}
-              />
-            </section>
-            <section>
-              <AppAddressCard apps={endpoint.apps} />
-            </section>
-            <section>
-              <AdEconomicsForDevs />
-            </section>
-            <section>
-              <FeedbackCard />
-            </section>
-            <section>
-              <AppRemoveModal appId={endpoint.id} />
-            </section>
-          </>
+          <Grid.Col xs={12}>
+            <div>
+              <h1>{endpoint.name}</h1>
+              <Nav routes={routes} />
+            </div>
+          </Grid.Col>
         )}
-      </Grid.Col>
-    </Grid>
+        <Grid.Col md={8}>
+          <Outlet />
+        </Grid.Col>
+        <Grid.Col md={4}>
+          {endpoint && (
+            <>
+              <section>
+                <AppKeysCard
+                  id={endpoint.id}
+                  publicKey={endpoint.apps[0]?.publicKey}
+                  secret={endpoint.gatewaySettings.secretKey ?? ""}
+                />
+              </section>
+              <section>
+                <AppAddressCard apps={endpoint.apps} />
+              </section>
+              <section>
+                <AdEconomicsForDevs />
+              </section>
+              <section>
+                <FeedbackCard />
+              </section>
+              <section>
+                <AppRemoveModal appId={endpoint.id} />
+              </section>
+            </>
+          )}
+        </Grid.Col>
+      </Grid>
+      <Modal
+        opened={showSuccessModal}
+        title="Success"
+        onClose={() => setShowSuccessModel(false)}
+      >
+        <div>
+          <p>Test</p>
+        </div>
+      </Modal>
+      <Modal
+        opened={showErrorModal}
+        title="Error"
+        onClose={() => setShowErrorModel(false)}
+      >
+        <div>
+          <p>Test</p>
+        </div>
+      </Modal>
+    </>
   )
 }
 

@@ -12,6 +12,7 @@ import { getRelays, RelayMetric } from "~/models/relaymeter.server"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { dayjs } from "~/utils/dayjs"
 import { getPoktId, requireUser } from "~/utils/session.server"
+import { getRequiredClientEnvVar } from "~/utils/environment"
 
 export const links = () => {
   return [...TableLinks(), ...CardLinks(), ...UsageCardLinks()]
@@ -24,6 +25,7 @@ export const meta: MetaFunction = () => {
 }
 
 export type AppsLoaderData = {
+  userId: string
   dailyNetworkRelaysPerWeek: RelayMetric[]
 }
 
@@ -49,6 +51,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   return json<AppsLoaderData>(
     {
+      userId,
       dailyNetworkRelaysPerWeek,
     },
     {
@@ -64,7 +67,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 export const Apps = () => {
   const allAppsRoute = useMatchesRoute("routes/dashboard/apps")
   const { endpoints } = allAppsRoute?.data as AllAppsLoaderData
-  const { dailyNetworkRelaysPerWeek } = useLoaderData() as AppsLoaderData
+  const { userId, dailyNetworkRelaysPerWeek } = useLoaderData() as AppsLoaderData
 
   useEffect(() => {
     trackEvent(AmplitudeEvents.AllAppsView)
@@ -92,7 +95,9 @@ export const Apps = () => {
             }))}
             label="Applications"
             paginate={{
-              perPage: 10,
+              perPage: getRequiredClientEnvVar("GODMODE_ACCOUNTS")?.includes(userId)
+                ? 10
+                : 5,
             }}
           />
         ) : (

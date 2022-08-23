@@ -1,6 +1,6 @@
 import { ActionFunction, redirect, json, LoaderFunction } from "@remix-run/node"
 import invariant from "tiny-invariant"
-import { stripe, Stripe } from "~/models/stripe.server"
+import { stripe, Stripe } from "~/models/stripe/stripe.server"
 import { authenticator } from "~/utils/auth.server"
 import { getErrorMessage } from "~/utils/catchError"
 import { getRequiredServerEnvVar } from "~/utils/environment"

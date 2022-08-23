@@ -2,10 +2,11 @@ import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/shared/Card"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 
-/* c8 ignore next */
+/* c8 ignore start */
 export const links = () => {
   return [...CardLinks(), ...TextInputLinks(), { rel: "stylesheet", href: styles }]
 }
+/* c8 ignore stop */
 
 interface AppKeysCardProps {
   id: string

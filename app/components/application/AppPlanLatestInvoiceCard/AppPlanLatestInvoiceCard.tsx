@@ -7,14 +7,15 @@ import CardList, {
 } from "~/components/shared/CardList"
 import Group from "~/components/shared/Group"
 import { useTranslate } from "~/context/TranslateContext"
-import { RelayMetric } from "~/models/relaymeter.server"
-import { Stripe } from "~/models/stripe.server"
+import { RelayMetric } from "~/models/relaymeter/relaymeter.server"
+import { Stripe } from "~/models/stripe/stripe.server"
 import { dayjs } from "~/utils/dayjs"
 
-/* c8 ignore next */
+/* c8 ignore start */
 export const links = () => {
   return [...CardLinks(), ...CardListLinks(), { rel: "stylesheet", href: styles }]
 }
+/* c8 ignore stop */
 
 interface PlanLatestInvoiceCardProps {
   invoice: Stripe.Invoice

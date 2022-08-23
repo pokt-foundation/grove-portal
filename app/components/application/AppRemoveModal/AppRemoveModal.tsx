@@ -5,10 +5,11 @@ import styles from "./styles.css"
 import Button from "~/components/shared/Button"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 
-/* c8 ignore next */
+/* c8 ignore start */
 export const links = () => {
   return [{ rel: "stylesheet", href: styles }]
 }
+/* c8 ignore stop */
 
 interface AppRemoveModalProps {
   appId: string

@@ -1,30 +1,21 @@
 import { json, LoaderFunction, MetaFunction, redirect } from "@remix-run/node"
-import { Form, useLoaderData } from "@remix-run/react"
+import { useLoaderData } from "@remix-run/react"
 import { useEffect } from "react"
 import invariant from "tiny-invariant"
-import AppPlanLatestInvoiceCard, {
-  links as AppPlanLatestInvoiceCardLinks,
-} from "~/components/application/AppPlanLatestInvoiceCard"
-import AppPlanOverviewCard, {
-  links as AppPlanOverviewCardLinks,
-} from "~/components/application/AppPlanOverviewCard"
-import Button from "~/components/shared/Button"
-import Card, { links as CardLinks } from "~/components/shared/Card"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { ProcessedEndpoint } from "~/models/portal/sdk"
-import { getRelays, RelayMetric } from "~/models/relaymeter.server"
-import { getCustomer, Stripe, stripe } from "~/models/stripe.server"
+import { getRelays, RelayMetric } from "~/models/relaymeter/relaymeter.server"
+import { getCustomer, Stripe, stripe } from "~/models/stripe/stripe.server"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { getErrorMessage } from "~/utils/catchError"
 import { dayjs } from "~/utils/dayjs"
 import { getPoktId, requireUser } from "~/utils/session.server"
+import PlanView, {
+  links as PlanViewLinks,
+} from "~/views/dashboard/apps/appId/plan/planView"
 
 export const links = () => {
-  return [
-    ...CardLinks(),
-    ...AppPlanLatestInvoiceCardLinks(),
-    ...AppPlanOverviewCardLinks(),
-  ]
+  return [...PlanViewLinks()]
 }
 
 export const meta: MetaFunction = () => {
@@ -33,7 +24,7 @@ export const meta: MetaFunction = () => {
   }
 }
 
-type AppPlanLoaderData =
+export type AppPlanLoaderData =
   | {
       error: false
       subscription: Stripe.Subscription
@@ -128,38 +119,7 @@ export const AppPlanDetails = () => {
     trackEvent(AmplitudeEvents.AppPlanDetailsView)
   }, [])
 
-  if (data.error) {
-    return (
-      <Card>
-        <div className="pokt-card-header">
-          <h3>Stripe Error</h3>
-        </div>
-        <p>
-          We are sorry but there appears to be an issue with out connection to stripe. You
-          can try managing your account directly in Stripe's subscription portal.
-        </p>
-        <Form action="/api/stripe/portal-session" method="post">
-          <Button type="submit" variant="outline">
-            Manage Plan in Stripe
-          </Button>
-        </Form>
-      </Card>
-    )
-  }
-
-  return (
-    <>
-      <AppPlanOverviewCard
-        subscription={data.subscription}
-        usageRecords={data.usageRecords}
-      />
-      <AppPlanLatestInvoiceCard
-        invoice={data.invoice}
-        relaysLatestInvoice={data.relaysLatestInvoice}
-        usageRecords={data.usageRecords}
-      />
-    </>
-  )
+  return <PlanView {...data} />
 }
 
 export default AppPlanDetails

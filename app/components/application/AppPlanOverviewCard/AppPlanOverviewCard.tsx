@@ -30,19 +30,19 @@ export default function AppPlanLatestInvoiceCard({
 
   const listItems: CardListItem[] = [
     {
-      label: "Subscription",
+      label: t.AppPlanOverviewCard.subscription,
       value: subscription.id,
     },
     {
-      label: "Status",
+      label: t.AppPlanOverviewCard.status,
       value: subscription.status,
     },
     {
-      label: "Total Relays on this Billing Period",
+      label: t.AppPlanOverviewCard.relays,
       value: usageRecords.data[0].total_usage,
     },
     {
-      label: "Start Date",
+      label: t.AppPlanOverviewCard.date,
       value: dayjs.unix(Number(subscription.start_date)).toString(),
     },
   ]
@@ -51,14 +51,14 @@ export default function AppPlanLatestInvoiceCard({
     <div className="pokt-app-plan-overview">
       <Card>
         <div className="pokt-card-header">
-          <h3>Application Plan</h3>
+          <h3>{t.AppPlanOverviewCard.title}</h3>
         </div>
         <div>
           <CardList items={listItems} />
           <Group mt="xl" position="right">
             <Form action="/api/stripe/portal-session" method="post">
               <Button type="submit" variant="outline">
-                Manage Plan in Stripe
+                {t.AppPlanOverviewCard.managePlan}
               </Button>
             </Form>
           </Group>

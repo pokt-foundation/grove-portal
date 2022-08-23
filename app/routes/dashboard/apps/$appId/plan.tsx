@@ -9,6 +9,7 @@ import { getCustomer, Stripe, stripe } from "~/models/stripe/stripe.server"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { getErrorMessage } from "~/utils/catchError"
 import { dayjs } from "~/utils/dayjs"
+import { getRequiredServerEnvVar } from "~/utils/environment"
 import { getPoktId, requireUser } from "~/utils/session.server"
 import PlanView, {
   links as PlanViewLinks,
@@ -40,6 +41,9 @@ export type AppPlanLoaderData =
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   invariant(params.appId, "app id not found")
+  if (getRequiredServerEnvVar("FLAG_STRIPE_PAYMENT") === "false") {
+    return redirect(`/dashboard/apps/${params.appId}`)
+  }
   const user = await requireUser(request)
   const userId = await getPoktId(user.profile.id)
   const portal = initPortalClient(user.accessToken)

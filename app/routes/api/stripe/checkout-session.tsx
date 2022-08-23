@@ -14,8 +14,9 @@ export const loader: LoaderFunction = async ({ request }) => {
   const id = url.searchParams.get("app-id")
   const name = url.searchParams.get("app-name")
 
-  console.log({ id })
-  console.log({ name })
+  if (getRequiredServerEnvVar("FLAG_STRIPE_PAYMENT") === "false") {
+    return redirect(`/dashboard/apps/${id}`)
+  }
 
   try {
     // get pokemon relay price

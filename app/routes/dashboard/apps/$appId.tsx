@@ -19,6 +19,7 @@ import FeedbackCard, {
 } from "~/components/application/FeedbackCard"
 import Grid from "~/components/shared/Grid"
 import Nav, { links as NavLinks } from "~/components/shared/Nav"
+import { useFeatureFlags } from "~/context/FeatureFlagContext"
 import { useTranslate } from "~/context/TranslateContext"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { PayPlanType, ProcessedEndpoint } from "~/models/portal/sdk"
@@ -116,6 +117,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
 export default function AppIdLayout() {
   const { t } = useTranslate()
+  const { flags } = useFeatureFlags()
   const { endpoint } = useLoaderData() as AppIdLoaderData
   const [routes, setRoutes] = useState([
     {
@@ -144,6 +146,7 @@ export default function AppIdLayout() {
 
   useEffect(() => {
     if (
+      flags.STRIPE_PAYMENT === "true" &&
       endpoint.appLimits.planType === PayPlanType.PayAsYouGoV0 &&
       !routes.filter((route) => route.to === "plan")[0]
     ) {
@@ -155,7 +158,7 @@ export default function AppIdLayout() {
         },
       ])
     }
-  }, [endpoint, t, routes])
+  }, [endpoint, t, routes, flags.STRIPE_PAYMENT])
 
   return (
     <Grid gutter={32}>

@@ -32,27 +32,27 @@ export default function AppPlanLatestInvoiceCard({
 
   const listItems: CardListItem[] = [
     {
-      label: "Invoice",
+      label: t.AppPlanLatestInvoiceCard.invoice,
       value: invoice.id,
     },
     {
-      label: "Status",
+      label: t.AppPlanLatestInvoiceCard.status,
       value: invoice.paid ? "Paid" : "Open",
     },
     {
-      label: "Relays Billed",
+      label: t.AppPlanLatestInvoiceCard.relaysBilled,
       value: usageRecords.data[0].total_usage,
     },
     {
-      label: "Relays Used",
+      label: t.AppPlanLatestInvoiceCard.relaysUsed,
       value: relaysLatestInvoice.Count.Total,
     },
     {
-      label: "Period Start",
+      label: t.AppPlanLatestInvoiceCard.dateStart,
       value: dayjs.unix(Number(invoice.period_start)).toString(),
     },
     {
-      label: "Period End",
+      label: t.AppPlanLatestInvoiceCard.dateEnd,
       value: dayjs.unix(Number(invoice.period_end)).toString(),
     },
   ]
@@ -61,7 +61,7 @@ export default function AppPlanLatestInvoiceCard({
     <div className="pokt-app-plan-latest-invoice">
       <Card>
         <div className="pokt-card-header">
-          <h3>Latest Invoice</h3>
+          <h3>{t.AppPlanLatestInvoiceCard.title}</h3>
         </div>
         <CardList items={listItems} />
         <Group mt="xl" position="right">
@@ -71,7 +71,7 @@ export default function AppPlanLatestInvoiceCard({
             rel="noreferrer"
             target="_blank"
           >
-            View in Stripe
+            {t.AppPlanLatestInvoiceCard.view}
           </Button>
           <Button
             component="a"
@@ -79,7 +79,7 @@ export default function AppPlanLatestInvoiceCard({
             rel="noreferrer"
             target="_blank"
           >
-            Download
+            {t.AppPlanLatestInvoiceCard.download}
           </Button>
         </Group>
       </Card>

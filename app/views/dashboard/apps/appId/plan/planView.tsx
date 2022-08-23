@@ -7,6 +7,7 @@ import AppPlanOverviewCard, {
 } from "~/components/application/AppPlanOverviewCard"
 import Button from "~/components/shared/Button"
 import Card, { links as CardLinks } from "~/components/shared/Card"
+import { useTranslate } from "~/context/TranslateContext"
 import { AppPlanLoaderData } from "~/routes/dashboard/apps/$appId/plan"
 
 /* c8 ignore start */
@@ -20,19 +21,18 @@ export const links = () => {
 /* c8 ignore stop */
 
 export const PlanView = (data: AppPlanLoaderData) => {
+  const { t } = useTranslate()
+
   if (data.error) {
     return (
       <Card>
         <div className="pokt-card-header">
-          <h3>Stripe Error</h3>
+          <h3>{t.PlanView.title}</h3>
         </div>
-        <p>
-          We are sorry but there appears to be an issue with out connection to stripe. You
-          can try managing your subscription directly in Stripe's portal.
-        </p>
+        <p>{t.PlanView.description}</p>
         <Form action="/api/stripe/portal-session" method="post">
           <Button type="submit" variant="outline">
-            Manage Plan in Stripe
+            {t.PlanView.button}
           </Button>
         </Form>
       </Card>

@@ -124,6 +124,25 @@ interface TranslationData {
       }
     }
   }
+  AppPlanOverviewCard: {
+    title: string
+    subscription: string
+    status: string
+    relays: string
+    date: string
+    managePlan: string
+  }
+  AppPlanLatestInvoiceCard: {
+    title: string
+    invoice: string
+    status: string
+    relaysBilled: string
+    relaysUsed: string
+    dateStart: string
+    dateEnd: string
+    download: string
+    view: string
+  }
   AppOverLimitCard: {
     title: string
     subtitle: string
@@ -137,6 +156,11 @@ interface TranslationData {
   footer: {
     termsOfUse: string
     privacyPolicy: string
+  }
+  PlanView: {
+    title: string
+    description: string
+    button: string
   }
 }
 

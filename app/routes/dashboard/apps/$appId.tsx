@@ -24,6 +24,7 @@ import { useTranslate } from "~/context/TranslateContext"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { ProcessedEndpoint } from "~/models/portal/sdk"
 import { getRelays, RelayMetric } from "~/models/relaymeter.server"
+import { stripe, Stripe } from "~/models/stripe.server"
 import { dayjs } from "~/utils/dayjs"
 import { requireUser } from "~/utils/session.server"
 
@@ -52,7 +53,7 @@ export type AppIdLoaderData = {
   dailyNetworkRelaysPerWeek: RelayMetric[]
 }
 
-export const loader: LoaderFunction = async ({ request, params, context }) => {
+export const loader: LoaderFunction = async ({ request, params }) => {
   invariant(params.appId, "app id not found")
   const user = await requireUser(request)
   const portal = initPortalClient(user.accessToken)
@@ -185,20 +186,28 @@ export default function AppIdLayout() {
       </Grid>
       <Modal
         opened={showSuccessModal}
-        title="Success"
+        title="Congratulations!"
         onClose={() => setShowSuccessModel(false)}
       >
         <div>
-          <p>Test</p>
+          <p>
+            You have successfully set up a pay as you go subscription. You now have access
+            to 50+ chains and unlimited relays. We can't wait to see what you build with
+            it!
+          </p>
         </div>
       </Modal>
       <Modal
         opened={showErrorModal}
-        title="Error"
+        title="Subscription Error"
         onClose={() => setShowErrorModel(false)}
       >
         <div>
-          <p>Test</p>
+          <p>
+            We are sorry but something went wrong when setting up your pay as you go
+            subscription. Please try again. If you are still having trouble reach out and
+            we would be happy to help get you sorted.
+          </p>
         </div>
       </Modal>
     </>

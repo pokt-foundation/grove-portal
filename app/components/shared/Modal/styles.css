@@ -2,3 +2,7 @@
   color: var(--color-white-main);
   background-color: var(--color-black-main);
 }
+
+.pokt-modal .mantine-Modal-title {
+  font-weight: 700;
+}

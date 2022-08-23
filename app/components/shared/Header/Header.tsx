@@ -1,4 +1,5 @@
 import { useViewportSize } from "@mantine/hooks"
+import { Button } from "@pokt-foundation/pocket-blocks"
 import { IconPerson } from "@pokt-foundation/ui"
 import { Item, Separator } from "@radix-ui/react-dropdown-menu"
 import { Form, Link } from "@remix-run/react"
@@ -9,7 +10,7 @@ import { Auth0Profile } from "remix-auth-auth0"
 import Dropdown, { links as DropdownLinks } from "../Dropdown"
 import HamburgerMenu, { links as HamburgerMenuLinks } from "../HamburgerMenu"
 import styles from "./styles.css"
-import Button from "~/components/shared/Button"
+// import { Button } from "@mantine/core"
 
 /* c8 ignore start */
 export const links = () => {

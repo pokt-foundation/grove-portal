@@ -2,42 +2,6 @@
   margin-bottom: 32px;
 }
 
-.radio-card-grid {
-  padding: 24px 0 36px 0;
-  align-items: stretch;
-}
-
-.radio-card {
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  border: 2px solid var(--color-white-main);
-  height: 100%;
-  align-content: baseline;
-  border-radius: 8px;
-}
-
-.radio-card label {
-  font-size: 21px;
-}
-
-.radio-card.active {
-  border-color: var(--color-primary-main);
-}
-
-.radio-card p {
-  color: var(--color-white-main);
-}
-
-div.mantine-Radio-radioWrapper {
-  width: 100%;
-}
-
-label.mantine-Radio-label {
-  color: var(--color-white-main);
-}
-
 .create-application button[type="submit"] {
   float: right;
   width: 378px;
@@ -52,8 +16,4 @@ label.mantine-Radio-label {
 
 .create-application .termsOfUseText a {
   color: var(--color-primary-main);
-}
-
-.plan-data-overview.title {
-  font-size: 24px;
 }

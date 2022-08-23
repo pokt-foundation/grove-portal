@@ -13,6 +13,9 @@ import invariant from "tiny-invariant"
 import AppPlansOverview, {
   links as AppPlansOverviewLinks,
 } from "~/components/application/AppPlansOverview"
+import AppRadioCards, {
+  links as AppRadioCardsLinks,
+} from "~/components/application/AppRadioCards"
 // import ChainWithImage, {
 //   AppEndpointProps,
 //   links as ChainWithImageLinks,
@@ -44,6 +47,7 @@ export const links = () => {
     //...SelectLinks(),
     //...ChainWithImageLinks(),
     ...AppPlansOverviewLinks(),
+    ...AppRadioCardsLinks(),
     { rel: "stylesheet", href: styles },
   ]
 }
@@ -196,32 +200,11 @@ export default function CreateApp() {
             placeholder="Select Chain"
           /> 
           */}
-          {/* TO DO componentize radio-cards */}
-          <Grid align="center" className="radio-card-grid">
-            {tiers.map((tier) => (
-              <Grid.Col key={tier.name} sm={4} xs={12}>
-                <div
-                  className={clsx(
-                    "radio-card",
-                    tier.value === radioSelectedValue ? "active" : null,
-                  )}
-                  onClick={() =>
-                    tier.active === "true" && setRadioSelectedValue(tier.value)
-                  }
-                >
-                  <Radio
-                    readOnly
-                    checked={tier.value === radioSelectedValue}
-                    disabled={tier.active != "true"}
-                    label={tier.name}
-                    value={tier.name}
-                  />
-                  <p>{tier.priceText}</p>
-                  <p>{tier.cardDescription}</p>
-                </div>
-              </Grid.Col>
-            ))}
-          </Grid>
+          <AppRadioCards
+            currentRadio={radioSelectedValue}
+            setRadio={setRadioSelectedValue}
+            radioData={tiers}
+          />
           <Button
             disabled={transition.state === "submitting"}
             name="app-subscription"

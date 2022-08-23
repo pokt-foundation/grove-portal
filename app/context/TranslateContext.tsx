@@ -137,6 +137,48 @@ interface TranslationData {
     termsOfUse: string
     privacyPolicy: string
   }
+  AppPlansOverview: {
+    planDetailsTitles: {
+      pricing: string
+      relayLimit: string
+      chainAccess: string
+      appsLimit: string
+      overviewHeader: string
+      overviewDescription: string
+    }
+    planDetails: {
+      paid: {
+        title: string
+        description: string
+        description2: string
+        pricing: string
+        relayLimit: string
+        appsLimit: string
+        moreApps: string
+        chainAccess: string
+      }
+      free: {
+        title: string
+        description: string
+        description2: string
+        pricing: string
+        relayLimit: string
+        appsLimit: string
+        moreApps: string
+        chainAccess: string
+      }
+      enterprise: {
+        title: string
+        description: string
+        description2: string
+        pricing: string
+        relayLimit: string
+        appsLimit: string
+        moreApps: string
+        chainAccess: string
+      }
+    }
+  }
 }
 
 export type Language = typeof languages[number]

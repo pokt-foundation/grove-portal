@@ -10,11 +10,13 @@ import { Form, useLoaderData, useActionData, useTransition } from "@remix-run/re
 import clsx from "clsx"
 import { forwardRef, useState } from "react"
 import invariant from "tiny-invariant"
-import AppPlansOverview from "~/components/application/AppPlansOverview"
-import ChainWithImage, {
-  AppEndpointProps,
-  links as ChainWithImageLinks,
-} from "~/components/application/ChainWithImage"
+import AppPlansOverview, {
+  links as AppPlansOverviewLinks,
+} from "~/components/application/AppPlansOverview"
+// import ChainWithImage, {
+//   AppEndpointProps,
+//   links as ChainWithImageLinks,
+// } from "~/components/application/ChainWithImage"
 import Button from "~/components/shared/Button"
 import Card, { links as CardLinks } from "~/components/shared/Card"
 // import Select, { links as SelectLinks } from "~/components/shared/Select"
@@ -25,7 +27,7 @@ import { Stripe, stripe } from "~/models/stripe.server"
 import styles from "~/styles/dashboard.apps.create.css"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { getErrorMessage } from "~/utils/catchError"
-import { CHAIN_ID_PREFIXES } from "~/utils/chainUtils"
+// import { CHAIN_ID_PREFIXES } from "~/utils/chainUtils"
 import { getRequiredServerEnvVar } from "~/utils/environment"
 import { requireUser } from "~/utils/session.server"
 
@@ -40,7 +42,8 @@ export const links = () => {
     ...CardLinks(),
     ...TextInputLinks(),
     //...SelectLinks(),
-    ...ChainWithImageLinks(),
+    //...ChainWithImageLinks(),
+    ...AppPlansOverviewLinks(),
     { rel: "stylesheet", href: styles },
   ]
 }
@@ -121,20 +124,20 @@ export const action: ActionFunction = async ({ request }) => {
   }
 }
 
-const SelectItem = forwardRef<HTMLDivElement, AppEndpointProps>(
-  ({ chain, label, ...others }: AppEndpointProps, ref) => (
-    <div ref={ref} {...others}>
-      <ChainWithImage chain={chain} label={label} />
-    </div>
-  ),
-)
+// const SelectItem = forwardRef<HTMLDivElement, AppEndpointProps>(
+//   ({ chain, label, ...others }: AppEndpointProps, ref) => (
+//     <div ref={ref} {...others}>
+//       <ChainWithImage chain={chain} label={label} />
+//     </div>
+//   ),
+// )
 
 export default function CreateApp() {
-  const chains = Array.from(CHAIN_ID_PREFIXES.entries()).map(([id, { name }]) => ({
-    chain: name,
-    label: name,
-    value: id,
-  }))
+  // const chains = Array.from(CHAIN_ID_PREFIXES.entries()).map(([id, { name }]) => ({
+  //   chain: name,
+  //   label: name,
+  //   value: id,
+  // }))
   const { flags } = useFeatureFlags()
   const { price } = useLoaderData() as LoaderData
   const transition = useTransition()

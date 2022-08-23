@@ -194,6 +194,52 @@ const schema = {
     termsOfUse: "Site Terms of Use -fr",
     privacyPolicy: "Privacy Policy -fr",
   },
+  AppPlansOverview: {
+    planDetailsTitles: {
+      pricing: "Pricing -fr",
+      relayLimit: "Relay Limit -fr",
+      chainAccess: "Chain Access -fr",
+      appsLimit: "Apps Limit -fr",
+      overviewHeader: "Flexible plans that grow with your app -fr",
+      overviewDescription:
+        "Scalable plans because your needs change as yous app grows. All plans access to Pocket Network multichain infrastructure with our chain! -fr",
+    },
+    planDetails: {
+      paid: {
+        title: "Pay As You Go -fr",
+        description:
+          "250k free relays per day, per app. Beyond that, pay only for what you use. The counter resets every 24h but you’ll only get billed monthly. Even better, after 24 months of paid relays, you’ll receive POKT to stake for continued service. No more payments. -fr",
+        description2: "No more sunk costs. Just fast, reliable infrastructure. -fr",
+        pricing: "Pay per relay + 250K Free Relays -fr",
+        relayLimit: "No limit -fr",
+        appsLimit: "Up to 2 Applicaitions -fr",
+        moreApps: "Need more apps? Contact us -fr",
+        chainAccess: "No limit -fr",
+      },
+      free: {
+        title: "Always Free -fr",
+        description:
+          "Access to reliable, censor resistant infrastructure. Free up to 250k relays per day. -fr",
+        description2: "",
+        pricing: "$0.00 -fr",
+        relayLimit: "250k per app per day -fr",
+        appsLimit: "Up to 2 Applicaitions -fr",
+        moreApps: "Need more apps? Contact us -fr",
+        chainAccess: "No limit -fr",
+      },
+      enterprise: {
+        title: "Enterprise -fr",
+        description:
+          "Relays, applications, and pricing, all custom tailored to fit your specific needs. -fr",
+        description2: "No more sunk costs. Just fast, reliable infrastructure. -fr",
+        pricing: "based on your needs -fr",
+        relayLimit: "No limit -fr",
+        appsLimit: "based on your needs -fr",
+        moreApps: "",
+        chainAccess: "No limit -fr",
+      },
+    },
+  },
 }
 
 export default schema

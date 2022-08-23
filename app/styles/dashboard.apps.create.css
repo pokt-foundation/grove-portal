@@ -57,14 +57,3 @@ label.mantine-Radio-label {
 .plan-data-overview.title {
   font-size: 24px;
 }
-
-.plan-data.title {
-  color: var(--color-secondary-main);
-  font-size: 21px;
-}
-
-.plan-data-highlights {
-  color: var(--color-secondary-main);
-  font-size: 21px;
-  margin-top: 0;
-}

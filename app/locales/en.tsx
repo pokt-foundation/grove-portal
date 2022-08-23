@@ -249,6 +249,52 @@ const schema = {
     termsOfUse: "Site Terms of Use",
     privacyPolicy: "Privacy Policy",
   },
+  AppPlansOverview: {
+    planDetailsTitles: {
+      pricing: "Pricing",
+      relayLimit: "Relay Limit",
+      chainAccess: "Chain Access",
+      appsLimit: "Apps Limit",
+      overviewHeader: "Flexible plans that grow with your app",
+      overviewDescription:
+        "Scalable plans because your needs change as yous app grows. All plans access to Pocket Network multichain infrastructure with our chain!",
+    },
+    planDetails: {
+      paid: {
+        title: "Pay As You Go",
+        description:
+          "250k free relays per day, per app. Beyond that, pay only for what you use. The counter resets every 24h but you’ll only get billed monthly. Even better, after 24 months of paid relays, you’ll receive POKT to stake for continued service. No more payments.",
+        description2: "No more sunk costs. Just fast, reliable infrastructure.",
+        pricing: "Pay per relay + 250K Free Relays",
+        relayLimit: "No limit",
+        appsLimit: "Up to 2 Applicaitions",
+        moreApps: "Need more apps? Contact us",
+        chainAccess: "No limit",
+      },
+      free: {
+        title: "Always Free",
+        description:
+          "Access to reliable, censor resistant infrastructure. Free up to 250k relays per day.",
+        description2: "",
+        pricing: "$0.00",
+        relayLimit: "250k per app per day",
+        appsLimit: "Up to 2 Applicaitions",
+        moreApps: "Need more apps? Contact us",
+        chainAccess: "No limit",
+      },
+      enterprise: {
+        title: "Enterprise",
+        description:
+          "Relays, applications, and pricing, all custom tailored to fit your specific needs.",
+        description2: "No more sunk costs. Just fast, reliable infrastructure.",
+        pricing: "based on your needs",
+        relayLimit: "No limit",
+        appsLimit: "based on your needs",
+        moreApps: "",
+        chainAccess: "No limit",
+      },
+    },
+  },
 }
 
 export default schema

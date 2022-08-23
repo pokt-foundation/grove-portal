@@ -268,7 +268,6 @@ const schema = {
         pricing: "Pay per relay + 250K Free Relays",
         relayLimit: "No limit",
         appsLimit: "Up to 2 Applicaitions",
-        moreApps: "Need more apps? Contact us",
         chainAccess: "No limit",
       },
       free: {
@@ -279,18 +278,6 @@ const schema = {
         pricing: "$0.00",
         relayLimit: "250k per app per day",
         appsLimit: "Up to 2 Applicaitions",
-        moreApps: "Need more apps? Contact us",
-        chainAccess: "No limit",
-      },
-      enterprise: {
-        title: "Enterprise",
-        description:
-          "Relays, applications, and pricing, all custom tailored to fit your specific needs.",
-        description2: "No more sunk costs. Just fast, reliable infrastructure.",
-        pricing: "based on your needs",
-        relayLimit: "No limit",
-        appsLimit: "based on your needs",
-        moreApps: "",
         chainAccess: "No limit",
       },
     },

@@ -13,7 +13,6 @@ describe("<AppPlansOverview />", () => {
     const pricing = /\$0.00/i
     const relayLimit = /250k per app per day/i
     const appsLimit = /Up to 2 Applicaitions/i
-    const moreApps = /Need more apps? Contact us/i
     const chainAccess = /No limit/i
 
     render(<AppPlansOverview planType={freePlan} />)
@@ -22,7 +21,6 @@ describe("<AppPlansOverview />", () => {
     expect(screen.getByText(pricing)).toBeInTheDocument()
     expect(screen.getByText(relayLimit)).toBeInTheDocument()
     expect(screen.getByText(appsLimit)).toBeInTheDocument()
-    // expect(screen.getByText(moreApps)).toBeInTheDocument()
     expect(screen.getByText(chainAccess)).toBeInTheDocument()
   })
   it("renders paid plan information", () => {
@@ -33,7 +31,6 @@ describe("<AppPlansOverview />", () => {
     const pricing = /Pay per relay \+ 250K Free Relays/i
     const relayLimit = /No limit/i
     const appsLimit = /Up to 2 Applicaitions/i
-    const moreApps = /Need more apps? Contact us/i
     const chainAccess = /No limit/i
 
     render(<AppPlansOverview planType={paidPlan} />)
@@ -43,7 +40,6 @@ describe("<AppPlansOverview />", () => {
     expect(screen.getByText(pricing)).toBeInTheDocument()
     expect(screen.getAllByText(relayLimit)[0]).toBeInTheDocument()
     expect(screen.getByText(appsLimit)).toBeInTheDocument()
-    // expect(screen.getByText(moreApps)).toBeInTheDocument()
     expect(screen.getAllByText(chainAccess)[1]).toBeInTheDocument()
   })
   it("renders plan information titles", () => {

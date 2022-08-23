@@ -167,14 +167,6 @@ export default function CreateApp() {
       cardDescription:
         "250k free relays per day, per app. Beyond that, pay only for what you use.",
     },
-    {
-      name: "Enterprise",
-      value: "enterprise",
-      active: flags.ENTERPRISE,
-      price: 0,
-      priceText: "custom fit",
-      cardDescription: "Custom solution for large enterprises.",
-    },
   ]
 
   return (

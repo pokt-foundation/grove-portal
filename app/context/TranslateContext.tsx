@@ -154,7 +154,6 @@ interface TranslationData {
         pricing: string
         relayLimit: string
         appsLimit: string
-        moreApps: string
         chainAccess: string
       }
       free: {
@@ -164,17 +163,6 @@ interface TranslationData {
         pricing: string
         relayLimit: string
         appsLimit: string
-        moreApps: string
-        chainAccess: string
-      }
-      enterprise: {
-        title: string
-        description: string
-        description2: string
-        pricing: string
-        relayLimit: string
-        appsLimit: string
-        moreApps: string
         chainAccess: string
       }
     }

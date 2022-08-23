@@ -14,6 +14,19 @@
   border-radius: 8px;
 }
 
+.radio-card .flexRow {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.radio-card > .mantine-Text-root {
+  margin-top: 24px;
+}
+
 .radio-card label {
   font-size: 21px;
 }
@@ -24,10 +37,6 @@
 
 .radio-card p {
   color: var(--color-white-main);
-}
-
-div.mantine-Radio-radioWrapper {
-  width: 100%;
 }
 
 label.mantine-Radio-label {

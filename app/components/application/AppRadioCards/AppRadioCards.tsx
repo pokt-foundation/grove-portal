@@ -43,14 +43,16 @@ export default function AppRadioCards({
               )}
               onClick={() => radio.active === "true" && setRadio(radio.value)}
             >
-              <Radio
-                readOnly
-                checked={radio.value === currentRadio}
-                disabled={radio.active != "true"}
-                label={radio.name}
-                value={radio.name}
-              />
-              <Text>{radio.priceText}</Text>
+              <div className="flexRow">
+                <Radio
+                  readOnly
+                  checked={radio.value === currentRadio}
+                  disabled={radio.active != "true"}
+                  label={radio.name}
+                  value={radio.name}
+                />
+                <Text>{radio.priceText}</Text>
+              </div>
               <Text>{radio.cardDescription}</Text>
             </div>
           </Grid.Col>

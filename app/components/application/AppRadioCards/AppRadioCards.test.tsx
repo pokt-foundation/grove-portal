@@ -31,7 +31,7 @@ const setRadio = vi.fn()
 describe("<AppRadioCards />", () => {
   it("renders radio cards appropriately", () => {
     render(
-      <AppRadioCards currentRadio={freePlan} setRadio={setRadio} radioData={tiers} />,
+      <AppRadioCards currentRadio={freePlan} radioData={tiers} setRadio={setRadio} />,
     )
     expect(screen.getAllByRole("radio")).toHaveLength(2)
     expect(screen.getByRole("radio", { name: tiers[0].name })).toBeInTheDocument()
@@ -46,7 +46,7 @@ describe("<AppRadioCards />", () => {
   })
   it("correctly checks radio cards based on props passed in", () => {
     render(
-      <AppRadioCards currentRadio={paidPlan} setRadio={setRadio} radioData={tiers} />,
+      <AppRadioCards currentRadio={paidPlan} radioData={tiers} setRadio={setRadio} />,
     )
     expect(screen.getAllByRole("radio")).toHaveLength(2)
     expect(screen.getByRole("radio", { name: tiers[0].name })).toBeInTheDocument()

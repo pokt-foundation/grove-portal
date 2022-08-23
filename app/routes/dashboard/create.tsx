@@ -202,8 +202,8 @@ export default function CreateApp() {
           */}
           <AppRadioCards
             currentRadio={radioSelectedValue}
-            setRadio={setRadioSelectedValue}
             radioData={tiers}
+            setRadio={setRadioSelectedValue}
           />
           <Button
             disabled={transition.state === "submitting"}

@@ -1,8 +1,8 @@
 import { Text, Radio } from "@mantine/core"
+import clsx from "clsx"
 import styles from "./styles.css"
 import Grid from "~/components/shared/Grid"
 import { useTranslate } from "~/context/TranslateContext"
-import clsx from "clsx"
 
 /* c8 ignore next */
 export const links = () => {

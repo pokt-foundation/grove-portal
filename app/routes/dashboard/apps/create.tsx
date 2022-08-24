@@ -19,6 +19,7 @@ import Select, { links as SelectLinks } from "~/components/shared/Select"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { useFeatureFlags } from "~/context/FeatureFlagContext"
 import { initPortalClient } from "~/models/portal/portal.server"
+import { PayPlanType } from "~/models/portal/sdk"
 import { Stripe, stripe } from "~/models/stripe/stripe.server"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { getErrorMessage } from "~/utils/catchError"
@@ -87,8 +88,16 @@ export const action: ActionFunction = async ({ request }) => {
   invariant(chain && typeof chain === "string", "app name not found")
 
   try {
+    const planType = (planString: string): PayPlanType => {
+      if (planString === "paid") {
+        return PayPlanType.PayAsYouGoV0
+      }
+      return PayPlanType.FreetierV0
+    }
+
     const { createNewEndpoint } = await portal.createEndpoint({
       name,
+      payPlanType: planType(subscription),
     })
 
     if (!createNewEndpoint) {

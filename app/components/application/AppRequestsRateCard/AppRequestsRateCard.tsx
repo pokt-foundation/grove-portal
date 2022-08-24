@@ -11,10 +11,11 @@ import Grid from "~/components/shared/Grid"
 import { useTranslate } from "~/context/TranslateContext"
 import { RelayMetric } from "~/models/relaymeter/relaymeter.server"
 
-/* c8 ignore next */
+/* c8 ignore start */
 export const links = () => {
   return [...CardLinks(), ...CardListLinks(), { rel: "stylesheet", href: styles }]
 }
+/* c8 ignore stop */
 
 interface RequestsRateCardProps {
   previousRelays: RelayMetric["Count"]

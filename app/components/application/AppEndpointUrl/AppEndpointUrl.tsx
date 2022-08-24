@@ -4,10 +4,11 @@ import TextInput, { links as TextInputLinks } from "~/components/shared/TextInpu
 import { InputProps } from "~/components/shared/TextInput"
 import { prefixFromChainId } from "~/utils/chainUtils"
 
-/* c8 ignore next */
+/* c8 ignore start */
 export const links = () => {
   return [{ rel: "stylesheet", href: styles }, ...TextInputLinks()]
 }
+/* c8 ignore stop */
 
 type AppEndpointUrlProp = InputProps & {
   chainId: string

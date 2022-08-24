@@ -4,9 +4,11 @@ import styles from "./styles.css"
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import { useTranslate } from "~/context/TranslateContext"
 
+/* c8 ignore start */
 export const links = () => {
   return [...CardLinks(), { rel: "stylesheet", href: styles }]
 }
+/* c8 ignore stop */
 
 interface TableProps<T> {
   data: T[]

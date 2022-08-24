@@ -1,22 +1,16 @@
 import { json, LoaderFunction, MetaFunction } from "@remix-run/node"
-import { Link, useLoaderData } from "@remix-run/react"
+import { useLoaderData } from "@remix-run/react"
 import { useEffect } from "react"
 import { AllAppsLoaderData } from "../apps"
-import UsageChartCard, {
-  links as UsageCardLinks,
-} from "~/components/application/UsageChartCard"
-import Card, { links as CardLinks } from "~/components/shared/Card"
-import Table, { links as TableLinks } from "~/components/shared/Table"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { getRelays, RelayMetric } from "~/models/relaymeter/relaymeter.server"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { dayjs } from "~/utils/dayjs"
 import { getPoktId, requireUser } from "~/utils/session.server"
-import { getPlanName } from "~/utils/utils"
-import { AppsView } from "~/views/dashboard/apps/index/appsView"
+import AppsView, { links as AppsViewLinks } from "~/views/dashboard/apps/index/appsView"
 
 export const links = () => {
-  return [...TableLinks(), ...CardLinks(), ...UsageCardLinks()]
+  return [...AppsViewLinks()]
 }
 
 export const meta: MetaFunction = () => {

@@ -1,10 +1,11 @@
 import styles from "./styles.css"
 import { getImageForChain } from "~/utils/known-chains/known-chains"
 
-/* c8 ignore next */
+/* c8 ignore start */
 export const links = () => {
   return [{ rel: "stylesheet", href: styles }]
 }
+/* c8 ignore stop */
 
 export interface AppEndpointProps {
   chain: string

@@ -9,3 +9,5 @@ export const relayMetric: RelayMetric = {
   From: "2022-08-22T00:00:00Z",
   To: "2022-08-23T00:00:00Z",
 }
+
+export const relayMetricPerWeek: RelayMetric[] = Array(7).fill(relayMetric)

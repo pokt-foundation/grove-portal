@@ -1,5 +1,5 @@
 import { ActionFunction, json } from "@remix-run/node"
-import { Stripe, stripe } from "~/models/stripe.server"
+import { Stripe, stripe } from "~/models/stripe/stripe.server"
 import { getErrorMessage } from "~/utils/catchError"
 import { getRequiredServerEnvVar } from "~/utils/environment"
 

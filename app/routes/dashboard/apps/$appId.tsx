@@ -1,44 +1,17 @@
 import { LoaderFunction, MetaFunction, json } from "@remix-run/node"
-import { Outlet, useCatch, useLoaderData, useSearchParams } from "@remix-run/react"
-import { useEffect, useState } from "react"
+import { useCatch, useLoaderData, useSearchParams } from "@remix-run/react"
 import invariant from "tiny-invariant"
-import AdEconomicsForDevs, {
-  links as AdEconomicsForDevsLinks,
-} from "~/components/application/AdEconomicsForDevs"
-import AppAddressCard, {
-  links as AppAddressCardLinks,
-} from "~/components/application/AppAddressCard"
-import AppKeysCard, {
-  links as AppKeysCardLinks,
-} from "~/components/application/AppKeysCard"
-import AppRemoveModal, {
-  links as AppRemoveModalLinks,
-} from "~/components/application/AppRemoveModal"
-import FeedbackCard, {
-  links as FeedbackCardLinks,
-} from "~/components/application/FeedbackCard"
-import Grid from "~/components/shared/Grid"
-import Modal, { links as ModalLinks } from "~/components/shared/Modal"
-import Nav, { links as NavLinks } from "~/components/shared/Nav"
-import { useTranslate } from "~/context/TranslateContext"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { ProcessedEndpoint } from "~/models/portal/sdk"
-import { getRelays, RelayMetric } from "~/models/relaymeter.server"
-import { stripe, Stripe } from "~/models/stripe.server"
+import { PayPlanType, ProcessedEndpoint } from "~/models/portal/sdk"
+import { getRelays, RelayMetric } from "~/models/relaymeter/relaymeter.server"
 import { dayjs } from "~/utils/dayjs"
 import { requireUser } from "~/utils/session.server"
-import AppIdLayoutView from "~/views/dashboard/apps/appId/layout/appIdLayoutView"
+import AppIdLayoutView, {
+  links as AppIdLayoutViewLinks,
+} from "~/views/dashboard/apps/appId/layout/appIdLayoutView"
 
 export const links = () => {
-  return [
-    ...NavLinks(),
-    ...AppKeysCardLinks(),
-    ...AppAddressCardLinks(),
-    ...AdEconomicsForDevsLinks(),
-    ...FeedbackCardLinks(),
-    ...AppRemoveModalLinks(),
-    ...ModalLinks(),
-  ]
+  return [...AppIdLayoutViewLinks()]
 }
 
 export const meta: MetaFunction = () => {
@@ -55,9 +28,25 @@ export type AppIdLoaderData = {
 }
 
 export const loader: LoaderFunction = async ({ request, params }) => {
+  const url = new URL(request.url)
+  const searchParams = url.searchParams
+
   invariant(params.appId, "app id not found")
+
   const user = await requireUser(request)
   const portal = initPortalClient(user.accessToken)
+
+  if (searchParams.get("success") === "true") {
+    try {
+      await portal.updateEndpoint({
+        input: {
+          id: params.appId,
+          payPlanType: PayPlanType.PayAsYouGoV0,
+        },
+      })
+    } catch (e) {}
+  }
+
   const { endpoint } = await portal.endpoint({
     endpointID: params.appId,
   })

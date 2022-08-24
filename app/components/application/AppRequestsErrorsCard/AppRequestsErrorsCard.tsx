@@ -10,10 +10,11 @@ import Tooltip from "~/components/shared/Tooltip"
 import { useTranslate } from "~/context/TranslateContext"
 import { EndpointRpcError } from "~/models/portal.server"
 
-/* c8 ignore next */
+/* c8 ignore start */
 export const links = () => {
   return [...TableLinks(), ...CopyTextIconLinks(), { rel: "stylesheet", href: styles }]
 }
+/* c8 ignore stop */
 
 interface RequestsErrorsCardProps {
   errorMetrics: EndpointRpcError[]

@@ -12,7 +12,7 @@ import { useUser } from "~/context/UserContext"
 import { ProcessedEndpoint } from "~/models/portal/sdk"
 import { ChainMetadata, prefixFromChainId } from "~/utils/chainUtils"
 
-/* c8 ignore next */
+/* c8 ignore start */
 export const links = () => {
   return [
     ...CardLinks(),
@@ -22,6 +22,7 @@ export const links = () => {
     { rel: "stylesheet", href: styles },
   ]
 }
+/* c8 ignore stop */
 
 interface AppEndpointProps {
   app: ProcessedEndpoint

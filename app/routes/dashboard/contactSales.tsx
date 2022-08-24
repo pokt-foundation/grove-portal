@@ -1,10 +1,11 @@
 import { Grid, Title } from "@mantine/core"
-import { ActionFunction, MetaFunction } from "@remix-run/node"
-import { Form } from "@remix-run/react"
+import { ActionFunction, json, MetaFunction } from "@remix-run/node"
+import { Form, useActionData } from "@remix-run/react"
 import Button, { links as ButtonLinks } from "~/components/shared/Button"
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import styles from "~/styles/dashboard.apps.contactSales.css"
+import { getRequiredClientEnvVar } from "~/utils/environment"
 
 export const meta: MetaFunction = () => {
   return {
@@ -33,6 +34,34 @@ export const action: ActionFunction = async ({ request }) => {
   const protocolChains = formData.get("protocol-chains")
   const relays = formData.get("relays")
   const tellUsMore = formData.get("tell-us-more")
+
+  try {
+    const a = await fetch(
+      getRequiredClientEnvVar("GOOGLE_SHEETS_CONTACT_SALES_API_URL"),
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          first_name: firstName,
+          last_name: lastName,
+          email,
+          company,
+          chain_of_interest: protocolChains,
+          relay_needs: relays,
+          more_info: tellUsMore,
+        }),
+      },
+    )
+
+    return a
+  } catch (e) {
+    return json({
+      error: true,
+      data: e,
+    })
+  }
 }
 
 const formFields: Array<{
@@ -89,6 +118,9 @@ const formFields: Array<{
 ]
 
 export default function ContactSales() {
+  const actioData = useActionData()
+  console.log("ACTION DATA: ", actioData)
+
   return (
     <section>
       <Title order={1}>We have Enterprise solutions for your needs</Title>

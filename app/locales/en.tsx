@@ -1,6 +1,7 @@
 const schema = {
   common: {
     submit: "submit",
+    StopSubscription: "Stop Subscription",
   },
   search: {
     label: "Search",
@@ -189,6 +190,7 @@ const schema = {
       requests: "Requests",
       security: "Security",
       notifications: "Notifications",
+      plan: "Plan Details",
     },
   },
   AppRequestsByOriginCard: {
@@ -231,6 +233,25 @@ const schema = {
         help: "Maxium number of request this application can send during a single day.",
       },
     },
+  },
+  AppPlanOverviewCard: {
+    title: "Application Plan",
+    subscription: "Subscription",
+    status: "Status",
+    relays: "Total Relays on this Billing Period",
+    date: "Start Date",
+    managePlan: "Manage Plan in Stripe",
+  },
+  AppPlanLatestInvoiceCard: {
+    title: "Latest Invoice",
+    invoice: "Invoice",
+    status: "Status",
+    relaysBilled: "Relays Billed",
+    relaysUsed: "Relays Used",
+    dateStart: "Period Start",
+    dateEnd: "Period End",
+    download: "Download",
+    view: "View in Stripe",
   },
   AppOverLimitCard: {
     title: "Session Limit Reached",
@@ -281,6 +302,12 @@ const schema = {
         chainAccess: "No limit",
       },
     },
+  },
+  PlanView: {
+    title: "Stripe Error",
+    description:
+      "We are sorry but there appears to be an issue with out connection to stripe. You can try managing your subscription directly in Stripe's portal.",
+    button: "Manage Plan in Stripe",
   },
 }
 

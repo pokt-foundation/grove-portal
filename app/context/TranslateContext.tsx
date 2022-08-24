@@ -12,6 +12,7 @@ const translate: Translate = {
 interface TranslationData {
   common: {
     submit: string
+    StopSubscription: string
   }
   search: {
     label: string
@@ -80,6 +81,7 @@ interface TranslationData {
       requests: string
       security: string
       notifications: string
+      plan: string
     }
   }
   AppRequestsByOriginCard: {
@@ -122,6 +124,25 @@ interface TranslationData {
         help: string
       }
     }
+  }
+  AppPlanOverviewCard: {
+    title: string
+    subscription: string
+    status: string
+    relays: string
+    date: string
+    managePlan: string
+  }
+  AppPlanLatestInvoiceCard: {
+    title: string
+    invoice: string
+    status: string
+    relaysBilled: string
+    relaysUsed: string
+    dateStart: string
+    dateEnd: string
+    download: string
+    view: string
   }
   AppOverLimitCard: {
     title: string
@@ -166,6 +187,11 @@ interface TranslationData {
         chainAccess: string
       }
     }
+  }
+  PlanView: {
+    title: string
+    description: string
+    button: string
   }
 }
 

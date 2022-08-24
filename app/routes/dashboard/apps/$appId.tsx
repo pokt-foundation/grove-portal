@@ -1,5 +1,6 @@
 import { LoaderFunction, MetaFunction, json } from "@remix-run/node"
 import { Outlet, useCatch, useLoaderData } from "@remix-run/react"
+import { useEffect, useState } from "react"
 import invariant from "tiny-invariant"
 import AdEconomicsForDevs, {
   links as AdEconomicsForDevsLinks,
@@ -18,10 +19,11 @@ import FeedbackCard, {
 } from "~/components/application/FeedbackCard"
 import Grid from "~/components/shared/Grid"
 import Nav, { links as NavLinks } from "~/components/shared/Nav"
+import { useFeatureFlags } from "~/context/FeatureFlagContext"
 import { useTranslate } from "~/context/TranslateContext"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { ProcessedEndpoint } from "~/models/portal/sdk"
-import { getRelays, RelayMetric } from "~/models/relaymeter.server"
+import { PayPlanType, ProcessedEndpoint } from "~/models/portal/sdk"
+import { getRelays, RelayMetric } from "~/models/relaymeter/relaymeter.server"
 import { dayjs } from "~/utils/dayjs"
 import { requireUser } from "~/utils/session.server"
 
@@ -49,10 +51,26 @@ export type AppIdLoaderData = {
   dailyNetworkRelaysPerWeek: RelayMetric[]
 }
 
-export const loader: LoaderFunction = async ({ request, params, context }) => {
+export const loader: LoaderFunction = async ({ request, params }) => {
+  const url = new URL(request.url)
+  const searchParams = url.searchParams
+
   invariant(params.appId, "app id not found")
+
   const user = await requireUser(request)
   const portal = initPortalClient(user.accessToken)
+
+  if (searchParams.get("success") === "true") {
+    try {
+      await portal.updateEndpoint({
+        input: {
+          id: params.appId,
+          payPlanType: PayPlanType.PayAsYouGoV0,
+        },
+      })
+    } catch (e) {}
+  }
+
   const { endpoint } = await portal.endpoint({
     endpointID: params.appId,
   })
@@ -99,8 +117,9 @@ export const loader: LoaderFunction = async ({ request, params, context }) => {
 
 export default function AppIdLayout() {
   const { t } = useTranslate()
+  const { flags } = useFeatureFlags()
   const { endpoint } = useLoaderData() as AppIdLoaderData
-  const routes = [
+  const [routes, setRoutes] = useState([
     {
       to: "/dashboard/apps",
       icon: () => <span>{"<"}</span>,
@@ -123,7 +142,23 @@ export default function AppIdLayout() {
       to: "notifications",
       label: t.appId.routes.notifications,
     },
-  ]
+  ])
+
+  useEffect(() => {
+    if (
+      flags.STRIPE_PAYMENT === "true" &&
+      endpoint.appLimits.planType === PayPlanType.PayAsYouGoV0 &&
+      !routes.filter((route) => route.to === "plan")[0]
+    ) {
+      setRoutes((curr) => [
+        ...curr,
+        {
+          to: "plan",
+          label: t.appId.routes.plan,
+        },
+      ])
+    }
+  }, [endpoint, t, routes, flags.STRIPE_PAYMENT])
 
   return (
     <Grid gutter={32}>

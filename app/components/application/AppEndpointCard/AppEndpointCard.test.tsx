@@ -2,7 +2,7 @@ import { expect } from "vitest"
 import AppEndpointCard from "./AppEndpointCard"
 import { render, screen } from "test/helpers"
 import { IUserContext, UserContext } from "~/context/UserContext"
-import { AppStatus, ProcessedEndpoint, PayPlanType } from "~/models/portal/sdk"
+import { AppStatus, PayPlanType, ProcessedEndpoint } from "~/models/portal/sdk"
 import { ChainMetadata, prefixFromChainId } from "~/utils/chainUtils"
 
 let app: ProcessedEndpoint
@@ -13,7 +13,7 @@ beforeEach(() => {
   //reset defaults before each test
   app = {
     appLimits: {
-      dailyLimit: 100,
+      dailyLimit: 250000,
       planType: PayPlanType.FreetierV0,
       publicKey: "abc",
     },

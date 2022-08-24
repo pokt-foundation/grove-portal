@@ -8,7 +8,7 @@ import UsageChartCard, {
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import Table, { links as TableLinks } from "~/components/shared/Table"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
-import { getRelays, RelayMetric } from "~/models/relaymeter.server"
+import { getRelays, RelayMetric } from "~/models/relaymeter/relaymeter.server"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { dayjs } from "~/utils/dayjs"
 import { getPoktId, requireUser } from "~/utils/session.server"

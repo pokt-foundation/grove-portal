@@ -15,10 +15,11 @@ import { commify } from "~/utils/formattingUtils"
 
 // const SESSIONS_PER_DAY = 24
 
-/* c8 ignore next */
+/* c8 ignore start */
 export const links = () => {
   return [...CardLinks(), ...CardListLinks(), { rel: "stylesheet", href: styles }]
 }
+/* c8 ignore stop */
 
 interface UsageCurrentCardProps {
   maxDailyRelays: number

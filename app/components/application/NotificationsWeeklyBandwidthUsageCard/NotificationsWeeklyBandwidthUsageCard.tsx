@@ -10,7 +10,7 @@ import { useUsageColor } from "~/utils/applicationUtils"
 import { formatNumberToSICompact } from "~/utils/formattingUtils"
 import { FREE_TIER_MAX_RELAYS } from "~/utils/pocketUtils"
 
-/* c8 ignore next */
+/* c8 ignore start */
 export const links: LinksFunction = () => [
   ...CardLinks(),
   {
@@ -18,6 +18,7 @@ export const links: LinksFunction = () => [
     href: styles,
   },
 ]
+/* c8 ignore stop */
 
 export default function NotificationsWeeklyBandwidthUsageCard() {
   const appIdRoute = useMatchesRoute("routes/dashboard/apps/$appId")

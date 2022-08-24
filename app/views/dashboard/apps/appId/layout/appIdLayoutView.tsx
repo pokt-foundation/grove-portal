@@ -18,8 +18,9 @@ import FeedbackCard, {
 import Grid from "~/components/shared/Grid"
 import Modal, { links as ModalLinks } from "~/components/shared/Modal"
 import Nav, { links as NavLinks } from "~/components/shared/Nav"
+import { useFeatureFlags } from "~/context/FeatureFlagContext"
 import { useTranslate } from "~/context/TranslateContext"
-import { ProcessedEndpoint } from "~/models/portal/sdk"
+import { PayPlanType, ProcessedEndpoint } from "~/models/portal/sdk"
 
 /* c8 ignore start */
 export const links = () => {
@@ -45,10 +46,10 @@ export default function AppIdLayoutView({
   searchParams,
 }: AppIdLayoutViewProps) {
   const { t } = useTranslate()
+  const { flags } = useFeatureFlags()
   const [showSuccessModal, setShowSuccessModel] = useState<boolean>(false)
   const [showErrorModal, setShowErrorModel] = useState<boolean>(false)
-
-  const routes = [
+  const [routes, setRoutes] = useState([
     {
       to: "/dashboard/apps",
       icon: () => <span>{"<"}</span>,
@@ -71,7 +72,7 @@ export default function AppIdLayoutView({
       to: "notifications",
       label: t.appId.routes.notifications,
     },
-  ]
+  ])
 
   useEffect(() => {
     const success = searchParams.get("success")
@@ -83,6 +84,23 @@ export default function AppIdLayoutView({
       setShowErrorModel(true)
     }
   }, [searchParams])
+
+  useEffect(() => {
+    if (
+      flags.STRIPE_PAYMENT === "true" &&
+      endpoint &&
+      endpoint.appLimits.planType === PayPlanType.PayAsYouGoV0 &&
+      !routes.filter((route) => route.to === "plan")[0]
+    ) {
+      setRoutes((curr) => [
+        ...curr,
+        {
+          to: "plan",
+          label: t.appId.routes.plan,
+        },
+      ])
+    }
+  }, [endpoint, t, routes, flags.STRIPE_PAYMENT])
 
   return (
     <>

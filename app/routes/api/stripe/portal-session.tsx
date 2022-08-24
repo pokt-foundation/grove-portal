@@ -6,7 +6,11 @@ export const action: ActionFunction = async ({ request }) => {
   const user = await requireUser(request)
   const userId = getPoktId(user?.profile.id)
   const url = new URL(request.url)
-  const returnUrl = `${url.origin}/dashboard`
+  const defaultReturnPath = "/dashboard"
+  const formData = await request.formData()
+  const returnPathParam = formData.get("return-path") as string | null
+  const returnPath = returnPathParam ?? defaultReturnPath
+  const returnUrl = `${url.origin}${returnPath}`
 
   const customer = await getCustomer(user.profile.emails[0].value, userId)
 

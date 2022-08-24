@@ -137,17 +137,17 @@ export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) 
           {!user && (
             <>
               <Form action="/api/auth/auth0" method="post">
-                <Button size="small" type="submit" kind="outline">
+                <Button kind="outline" size="small" type="submit">
                   Login
                 </Button>
               </Form>
               <Form action="/api/auth/auth0" method="post">
                 <Button
-                  size="small"
+                  kind="outline"
                   name="signup"
+                  size="small"
                   type="submit"
                   value="true"
-                  kind="outline"
                 >
                   Sign Up
                 </Button>

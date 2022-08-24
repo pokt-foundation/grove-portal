@@ -1,7 +1,7 @@
 import { Text, Title } from "@mantine/core"
+import { Button } from "@pokt-foundation/pocket-blocks"
 import { LinksFunction } from "@remix-run/node"
 import { Form } from "@remix-run/react"
-import { Button } from "@pokt-foundation/pocket-blocks"
 import Container from "~/components/shared/Container"
 import Grid from "~/components/shared/Grid"
 import styles from "~/styles/validate.css"

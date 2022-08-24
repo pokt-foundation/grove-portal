@@ -1,4 +1,4 @@
-import { Select as MantineSelect, SelectProps } from "@mantine/core"
+import { Modal as MantineModal, ModalProps } from "@mantine/core"
 import clsx from "clsx"
 import styles from "./styles.css"
 
@@ -8,14 +8,14 @@ export const links = () => {
 }
 /* c8 ignore stop */
 
-export default function Select({ ...props }: SelectProps) {
+export default function Modal({ ...props }: ModalProps) {
   return (
-    <MantineSelect
+    <MantineModal
+      centered={true}
       className={clsx({
-        "pokt-select": true,
+        "pokt-modal": true,
       })}
       size={props.size ?? "md"}
-      variant={props.variant ?? "unstyled"}
       withinPortal={false}
       {...props}
     />

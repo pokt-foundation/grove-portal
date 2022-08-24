@@ -1,13 +1,14 @@
-import { Group, Modal, Text } from "@mantine/core"
+import { Group, Text } from "@mantine/core"
 import { Form } from "@remix-run/react"
 import { useState } from "react"
 import styles from "./styles.css"
 import Button from "~/components/shared/Button"
+import Modal, { links as ModalLinks } from "~/components/shared/Modal"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 
 /* c8 ignore start */
 export const links = () => {
-  return [{ rel: "stylesheet", href: styles }]
+  return [...ModalLinks(), { rel: "stylesheet", href: styles }]
 }
 /* c8 ignore stop */
 

@@ -124,7 +124,7 @@ export const ContactSalesView = (data: ContactSalesActionData) => {
                   {component === "input" && (
                     <>
                       <label className="label" htmlFor={name}>
-                        {label}
+                        {label} {required && <span className="required-field">*</span>}
                       </label>
                       <TextInput
                         className="input"
@@ -138,7 +138,7 @@ export const ContactSalesView = (data: ContactSalesActionData) => {
                   {component === "textarea" && (
                     <>
                       <label className="label" htmlFor={name}>
-                        {label}
+                        {label} {required && <span className="required-field">*</span>}
                       </label>
                       <textarea
                         className="textarea"

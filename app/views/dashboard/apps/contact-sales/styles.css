@@ -22,6 +22,10 @@
   margin-bottom: 8px;
 }
 
+.label .required-field {
+  color: var(--color-secondary-main);
+}
+
 .input {
   border: 1px solid var(--color-white-light);
   border-radius: 4px;

@@ -4,6 +4,7 @@ import styles from "./styles.css"
 import Button from "~/components/shared/Button"
 import { PayPlanType } from "~/models/portal/sdk"
 import { isFreePlan } from "~/utils/utils"
+import { useTranslate } from "~/context/TranslateContext"
 
 /* c8 ignore next */
 export const links = () => {
@@ -16,6 +17,7 @@ interface StopRemoveAppProps {
 }
 
 export default function StopRemoveApp({ endpointId, planType }: StopRemoveAppProps) {
+  const { t } = useTranslate()
   const stripe = "/api/stripe/portal-session"
   return (
     <>
@@ -24,11 +26,12 @@ export default function StopRemoveApp({ endpointId, planType }: StopRemoveAppPro
       ) : (
         <Button fullWidth component={Link} to={stripe} variant="subtle">
           <img
+            aria-hidden
             alt="Remove Application"
             className="pokt-app-remove-delete-icon"
             src="/delete.svg"
           />{" "}
-          Stop Subscription
+          {t.common.StopSubscription}
         </Button>
       )}
     </>

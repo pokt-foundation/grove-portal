@@ -2,9 +2,9 @@ import { Link } from "@remix-run/react"
 import AppRemoveModal from "../AppRemoveModal"
 import styles from "./styles.css"
 import Button from "~/components/shared/Button"
+import { useTranslate } from "~/context/TranslateContext"
 import { PayPlanType } from "~/models/portal/sdk"
 import { isFreePlan } from "~/utils/utils"
-import { useTranslate } from "~/context/TranslateContext"
 
 /* c8 ignore next */
 export const links = () => {

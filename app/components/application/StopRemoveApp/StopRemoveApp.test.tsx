@@ -1,8 +1,8 @@
 import { expect } from "vitest"
 import StopRemoveApp from "./StopRemoveApp"
 import { render, screen } from "test/helpers"
-import { PayPlanType } from "~/models/portal/sdk"
 import schema from "~/locales/en"
+import { PayPlanType } from "~/models/portal/sdk"
 
 describe("<StopRemoveApp />", () => {
   it("renders Stop Subscription button for paid plantype", () => {

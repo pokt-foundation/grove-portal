@@ -33,5 +33,5 @@ export function isFreePlan(planType: string) {
   } else if (planType === "free") {
     return true
   }
-  return false
+  return true
 }

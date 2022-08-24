@@ -102,6 +102,7 @@ export const loader: LoaderFunction = async ({ request, params, context }) => {
 export default function AppIdLayout() {
   const { t } = useTranslate()
   const { endpoint } = useLoaderData() as AppIdLoaderData
+  console.log(endpoint)
 
   const stripe = "/api/stripe/portal-session"
   const routes = [

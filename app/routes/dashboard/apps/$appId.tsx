@@ -27,6 +27,7 @@ import { getRelays, RelayMetric } from "~/models/relaymeter.server"
 import { stripe, Stripe } from "~/models/stripe.server"
 import { dayjs } from "~/utils/dayjs"
 import { requireUser } from "~/utils/session.server"
+import AppIdLayoutView from "~/views/dashboard/apps/appId/layout/appIdLayoutView"
 
 export const links = () => {
   return [
@@ -102,116 +103,10 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 }
 
 export default function AppIdLayout() {
-  const { t } = useTranslate()
   const { endpoint } = useLoaderData() as AppIdLoaderData
   const [searchParams] = useSearchParams()
-  const [showSuccessModal, setShowSuccessModel] = useState<boolean>(false)
-  const [showErrorModal, setShowErrorModel] = useState<boolean>(false)
 
-  const routes = [
-    {
-      to: "/dashboard/apps",
-      icon: () => <span>{"<"}</span>,
-      end: true,
-    },
-    {
-      to: "",
-      label: t.appId.routes.overview,
-      end: true,
-    },
-    {
-      to: "requests",
-      label: t.appId.routes.requests,
-    },
-    {
-      to: "security",
-      label: t.appId.routes.security,
-    },
-    {
-      to: "notifications",
-      label: t.appId.routes.notifications,
-    },
-  ]
-
-  useEffect(() => {
-    const success = searchParams.get("success")
-    if (!success) return
-    if (success === "true") {
-      setShowSuccessModel(true)
-    }
-    if (success === "false") {
-      setShowErrorModel(true)
-    }
-  }, [searchParams])
-
-  return (
-    <>
-      <Grid gutter={32}>
-        {endpoint && (
-          <Grid.Col xs={12}>
-            <div>
-              <h1>{endpoint.name}</h1>
-              <Nav routes={routes} />
-            </div>
-          </Grid.Col>
-        )}
-        <Grid.Col md={8}>
-          <Outlet />
-        </Grid.Col>
-        <Grid.Col md={4}>
-          {endpoint && (
-            <>
-              <section>
-                <AppKeysCard
-                  id={endpoint.id}
-                  publicKey={endpoint.apps[0]?.publicKey}
-                  secret={endpoint.gatewaySettings.secretKey ?? ""}
-                />
-              </section>
-              <section>
-                <AppAddressCard apps={endpoint.apps} />
-              </section>
-              <section>
-                <AdEconomicsForDevs />
-              </section>
-              <section>
-                <FeedbackCard />
-              </section>
-              <section>
-                <AppRemoveModal appId={endpoint.id} />
-              </section>
-            </>
-          )}
-        </Grid.Col>
-      </Grid>
-      <Modal
-        opened={showSuccessModal}
-        title="Congratulations!"
-        onClose={() => setShowSuccessModel(false)}
-      >
-        <div>
-          <p>
-            You have successfully set up a pay as you go subscription. You now have access
-            to 50+ chains and unlimited relays. We can't wait to see what you build with
-            it!
-          </p>
-        </div>
-      </Modal>
-      <Modal
-        opened={showErrorModal}
-        title="Subscription Error"
-        onClose={() => setShowErrorModel(false)}
-      >
-        <div>
-          <p>
-            We are sorry but something went wrong when setting up your pay as you go
-            subscription. Please try again. If you are still having trouble reach out and
-            we would be happy to help get you sorted.
-          </p>
-        </div>
-      </Modal>
-    </>
-  )
+  return <AppIdLayoutView endpoint={endpoint} searchParams={searchParams} />
 }
 
 export const CatchBoundary = () => {

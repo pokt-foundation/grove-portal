@@ -9,7 +9,7 @@ export const links = () => {
 
 interface AppKeysCardProps {
   id: string
-  secret?: string
+  secret?: string | null
   publicKey?: string
 }
 

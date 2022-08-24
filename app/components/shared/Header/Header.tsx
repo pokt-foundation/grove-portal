@@ -10,6 +10,7 @@ import HamburgerMenu, { links as HamburgerMenuLinks } from "../HamburgerMenu"
 import styles from "./styles.css"
 import Button from "~/components/shared/Button"
 
+/* c8 ignore start */
 export const links = () => {
   return [
     ...DropdownLinks(),
@@ -17,6 +18,7 @@ export const links = () => {
     ...HamburgerMenuLinks(),
   ]
 }
+/* c8 ignore stop */
 
 type Route = {
   id: string

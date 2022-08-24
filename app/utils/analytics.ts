@@ -17,6 +17,7 @@ export const AmplitudeEvents = {
   SecurityDetailsView: "SECURITY_DETAILS_VIEW",
   NotificationDetailsView: "NOTIFICATION_DETAILS_VIEW",
   AppDetailsView: "APP_DETAILS_VIEW",
+  AppPlanDetailsView: "APP_PLAN_DETAILS_VIEW",
   NotificationSettingsChange: "NOTIFICATION_SETTINGS_CHANGE",
   SecuritySettingsUpdate: "SECURITY_SETTINGS_UPDATE",
 }

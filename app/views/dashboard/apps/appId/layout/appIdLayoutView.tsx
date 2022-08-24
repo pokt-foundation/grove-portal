@@ -87,15 +87,15 @@ export default function AppIdLayoutView({
   return (
     <>
       <Grid gutter={32}>
-        {endpoint && (
-          <Grid.Col xs={12}>
-            <div>
-              <h1>{endpoint.name}</h1>
-              <Nav routes={routes} />
-            </div>
-          </Grid.Col>
-        )}
         <Grid.Col md={8}>
+          {endpoint && (
+            <Grid.Col xs={12}>
+              <div>
+                <h1 style={{ marginTop: 0 }}>{endpoint.name}</h1>
+                <Nav routes={routes} />
+              </div>
+            </Grid.Col>
+          )}
           <Outlet />
         </Grid.Col>
         <Grid.Col md={4}>

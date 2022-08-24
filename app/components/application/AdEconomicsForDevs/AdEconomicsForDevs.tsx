@@ -2,7 +2,7 @@ import { useTheme } from "@pokt-foundation/ui"
 import Advertisement, {
   links as AdvertisementLinks,
 } from "~/components/shared/Advertisement"
-import Button from "~/components/shared/Button"
+import { Button } from "@pokt-foundation/pocket-blocks"
 
 /* c8 ignore start */
 export const links = () => {

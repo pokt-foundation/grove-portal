@@ -9,7 +9,7 @@ specifiers:
   '@mantine/core': ^4.2.2
   '@mantine/hooks': ^4.2.2
   '@mantine/ssr': ^4.2.2
-  '@pokt-foundation/pocket-blocks': ^1.0.5
+  '@pokt-foundation/pocket-blocks': ^1.0.7
   '@pokt-foundation/pocketjs-isomorphic-provider': ^1.0.0
   '@pokt-foundation/pocketjs-types': ^1.0.1
   '@pokt-foundation/portal-types': ^0.0.1
@@ -77,7 +77,11 @@ dependencies:
   '@mantine/core': 4.2.2_hv66cfvk4bbamngiq7t5luc63y
   '@mantine/hooks': 4.2.2_react@17.0.2
   '@mantine/ssr': 4.2.2_wsn53pslsboo2rytzocxzsur7i
+<<<<<<< HEAD
   '@pokt-foundation/pocket-blocks': 1.0.8_hltgxp4hh4yoqymcmggjl25e64
+=======
+  '@pokt-foundation/pocket-blocks': 1.0.7_nktkq2kmmljjprowudbxkqmx2q
+>>>>>>> 2b3d3ac (build button changes)
   '@pokt-foundation/pocketjs-isomorphic-provider': 1.0.0
   '@pokt-foundation/ui': 0.3.9_zxhai4qal7ezfht52cx4u672cu
   '@radix-ui/react-dropdown-menu': 0.1.6_wsn53pslsboo2rytzocxzsur7i
@@ -2110,9 +2114,16 @@ packages:
       webcrypto-core: 1.7.5
     dev: true
 
+<<<<<<< HEAD
   /@pokt-foundation/pocket-blocks/1.0.8_hltgxp4hh4yoqymcmggjl25e64:
     resolution: {integrity: sha512-BSv7XGzANwVOzrPMC6w2ZBAms0KYRKjvXuaYc8A+xGSnwp7OvGVEQKkUgoMZ/ysz80D/eufMybDDULMB2k5wvg==}
+=======
+  /@pokt-foundation/pocket-blocks/1.0.7_nktkq2kmmljjprowudbxkqmx2q:
+    resolution: {integrity: sha512-sB4/bYlOGeG6hFPJtLe559XwuYjxo0uXOE8zJapq8Qm4Xo4+kuCR/FxrNXAItiSGdQpGao+vSjbVdKiRmb23eQ==}
+>>>>>>> 2b3d3ac (build button changes)
     peerDependencies:
+      '@mantine/core': ^4.x
+      '@mantine/hooks': ^4.x
       react: ^16.8.0 || 17.x
       react-dom: ^16.8.0 || 17.x
     dependencies:
@@ -2131,7 +2142,6 @@ packages:
       react-docgen-typescript: 2.2.2_typescript@4.6.4
       react-dom: 17.0.2_react@17.0.2
     transitivePeerDependencies:
-      - '@babel/core'
       - '@types/react'
       - typescript
     dev: false

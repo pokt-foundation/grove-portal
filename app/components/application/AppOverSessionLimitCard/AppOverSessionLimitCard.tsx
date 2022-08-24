@@ -3,7 +3,7 @@ import { IconInfo } from "@pokt-foundation/ui"
 import { Link } from "@remix-run/react"
 import React from "react"
 import styles from "./styles.css"
-import Button from "~/components/shared/Button"
+import { Button } from "@pokt-foundation/pocket-blocks"
 import { Card, links as CardLinks } from "~/components/shared/Card"
 import { useTranslate } from "~/context/TranslateContext"
 

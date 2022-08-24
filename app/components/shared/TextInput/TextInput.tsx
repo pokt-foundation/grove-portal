@@ -1,7 +1,7 @@
 import { TextInput as MantineTextInput, TextInputProps } from "@mantine/core"
 import { IconTrashcan } from "@pokt-foundation/ui"
 import clsx from "clsx"
-import Button from "../Button"
+import { Button } from "@pokt-foundation/pocket-blocks"
 import styles from "./styles.css"
 import CopyTextIcon, {
   links as CopyTextIconLinks,

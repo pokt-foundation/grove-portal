@@ -10,7 +10,7 @@ import AppEndpointUrl, {
 import ChainsDropdown, {
   links as ChainsDropdownLinks,
 } from "~/components/application/ChainsDropdown/ChainsDropdown"
-import Button from "~/components/shared/Button"
+import { Button } from "@pokt-foundation/pocket-blocks"
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import Switch, { links as SwitchLinks } from "~/components/shared/Switch"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"

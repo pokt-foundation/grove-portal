@@ -7,7 +7,7 @@ import AdEconomicsForDevs, {
 import FeedbackCard, {
   links as FeedbackCardLinks,
 } from "~/components/application/FeedbackCard"
-import Button, { links as ButtonLinks } from "~/components/shared/Button"
+import Button from "@pokt-foundation/pocket-blocks"
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import CardList, {
   CardListItem,

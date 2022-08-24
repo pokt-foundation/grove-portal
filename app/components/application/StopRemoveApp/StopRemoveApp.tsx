@@ -1,8 +1,8 @@
 import { Link } from "@remix-run/react"
-import Button from "~/components/shared/Button"
-import { isFreePlan } from "~/utils/utils"
 import AppRemoveModal from "../AppRemoveModal"
 import styles from "./styles.css"
+import Button from "~/components/shared/Button"
+import { isFreePlan } from "~/utils/utils"
 
 /* c8 ignore next */
 export const links = () => {

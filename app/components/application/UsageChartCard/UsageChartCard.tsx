@@ -2,7 +2,7 @@ import { LineChart, useTheme } from "@pokt-foundation/ui"
 import { formatDailyRelaysForGraphing } from "./formatDailyRelaysForGraphing"
 import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/shared/Card"
-import { RelayMetric } from "~/models/relaymeter.server"
+import { RelayMetric } from "~/models/relaymeter/relaymeter.server"
 
 /* c8 ignore next */
 export const links = () => {

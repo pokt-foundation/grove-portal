@@ -1,3 +1,5 @@
+import { PayPlanType } from "~/models/portal/sdk"
+
 export function log(...messages: unknown[]): void {
   if (process.env.NODE_ENV !== "production") {
     console.log(messages)
@@ -25,4 +27,18 @@ export function shorten(string: string, characters = 4): string {
     return string
   }
   return string.slice(0, characters) + "…"
+}
+
+export const getPlanName = (planType: PayPlanType) => {
+  switch (planType) {
+    case PayPlanType.FreetierV0: {
+      return "Always Free"
+    }
+    case PayPlanType.PayAsYouGoV0: {
+      return "Paid"
+    }
+    default: {
+      return "Legacy"
+    }
+  }
 }

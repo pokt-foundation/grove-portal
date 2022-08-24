@@ -8,10 +8,12 @@ import UsageChartCard, {
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import Table, { links as TableLinks } from "~/components/shared/Table"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
-import { getRelays, RelayMetric } from "~/models/relaymeter.server"
+import { getRelays, RelayMetric } from "~/models/relaymeter/relaymeter.server"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { dayjs } from "~/utils/dayjs"
 import { getPoktId, requireUser } from "~/utils/session.server"
+import { getPlanName } from "~/utils/utils"
+import { AppsView } from "~/views/dashboard/apps/index/appsView"
 
 export const links = () => {
   return [...TableLinks(), ...CardLinks(), ...UsageCardLinks()]
@@ -25,6 +27,7 @@ export const meta: MetaFunction = () => {
 
 export type AppsLoaderData = {
   dailyNetworkRelaysPerWeek: RelayMetric[]
+  userId: string
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -50,6 +53,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   return json<AppsLoaderData>(
     {
       dailyNetworkRelaysPerWeek,
+      userId,
     },
     {
       headers: {
@@ -64,51 +68,18 @@ export const loader: LoaderFunction = async ({ request }) => {
 export const Apps = () => {
   const allAppsRoute = useMatchesRoute("routes/dashboard/apps")
   const { endpoints } = allAppsRoute?.data as AllAppsLoaderData
-  const { dailyNetworkRelaysPerWeek } = useLoaderData() as AppsLoaderData
+  const { dailyNetworkRelaysPerWeek, userId } = useLoaderData() as AppsLoaderData
 
   useEffect(() => {
     trackEvent(AmplitudeEvents.AllAppsView)
   }, [])
 
   return (
-    <>
-      <section>
-        {endpoints && endpoints.length > 0 ? (
-          <Table
-            search
-            columns={["App", "Chain", "Status", ""]}
-            data={endpoints.map((app) => ({
-              id: app.id,
-              app: {
-                value: app.name,
-                element: <Link to={app.id}>{app.name}</Link>,
-              },
-              chain: app.chain,
-              status: app.status,
-              action: {
-                value: "",
-                element: <Link to={app.id}>...</Link>,
-              },
-            }))}
-            label="Applications"
-            paginate={{
-              perPage: 10,
-            }}
-          />
-        ) : (
-          <Card>
-            <div className="pokt-card-header">
-              <h3>Applications</h3>
-            </div>
-          </Card>
-        )}
-      </section>
-      {dailyNetworkRelaysPerWeek && (
-        <section>
-          <UsageChartCard relays={dailyNetworkRelaysPerWeek} />
-        </section>
-      )}
-    </>
+    <AppsView
+      dailyNetworkRelaysPerWeek={dailyNetworkRelaysPerWeek}
+      endpoints={endpoints}
+      userId={userId}
+    />
   )
 }
 

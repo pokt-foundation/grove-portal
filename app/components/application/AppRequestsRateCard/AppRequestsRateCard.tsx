@@ -9,7 +9,7 @@ import CardList, {
 } from "~/components/shared/CardList"
 import Grid from "~/components/shared/Grid"
 import { useTranslate } from "~/context/TranslateContext"
-import { RelayMetric } from "~/models/relaymeter.server"
+import { RelayMetric } from "~/models/relaymeter/relaymeter.server"
 
 /* c8 ignore next */
 export const links = () => {

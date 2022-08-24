@@ -21,7 +21,7 @@ import Nav, { links as NavLinks } from "~/components/shared/Nav"
 import { useTranslate } from "~/context/TranslateContext"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { ProcessedEndpoint } from "~/models/portal/sdk"
-import { getRelays, RelayMetric } from "~/models/relaymeter.server"
+import { getRelays, RelayMetric } from "~/models/relaymeter/relaymeter.server"
 import { dayjs } from "~/utils/dayjs"
 import { requireUser } from "~/utils/session.server"
 

@@ -26,7 +26,7 @@ export const meta: MetaFunction = () => {
 }
 
 export type AppsLoaderData = {
-  dailyNetworkRelaysPerWeek: RelayMetric[]
+  dailyNetworkRelaysPerWeek: RelayMetric[] | null
   userId: string
 }
 
@@ -34,21 +34,25 @@ export const loader: LoaderFunction = async ({ request }) => {
   const user = await requireUser(request)
   const userId = getPoktId(user.profile.id)
 
-  const dailyNetworkRelaysPerWeek = await Promise.all(
-    [0, 1, 2, 3, 4, 5, 6].map(async (num) => {
-      const day = dayjs()
-        .utc()
-        .hour(0)
-        .minute(0)
-        .second(0)
-        .millisecond(0)
-        .subtract(num, "day")
-        .format()
+  let dailyNetworkRelaysPerWeek: RelayMetric[] | null = null
 
-      // api auto adjusts to/from to begining and end of each day so putting the same time here gives us back one full day
-      return await getRelays("users", day, day, userId)
-    }),
-  )
+  try {
+    dailyNetworkRelaysPerWeek = await Promise.all(
+      [0, 1, 2, 3, 4, 5, 6].map(async (num) => {
+        const day = dayjs()
+          .utc()
+          .hour(0)
+          .minute(0)
+          .second(0)
+          .millisecond(0)
+          .subtract(num, "day")
+          .format()
+
+        // api auto adjusts to/from to begining and end of each day so putting the same time here gives us back one full day
+        return await getRelays("users", day, day, userId)
+      }),
+    )
+  } catch (e) {}
 
   return json<AppsLoaderData>(
     {

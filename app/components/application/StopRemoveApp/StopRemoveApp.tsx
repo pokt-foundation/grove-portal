@@ -2,6 +2,7 @@ import { Link } from "@remix-run/react"
 import AppRemoveModal from "../AppRemoveModal"
 import styles from "./styles.css"
 import Button from "~/components/shared/Button"
+import { PayPlanType } from "~/models/portal/sdk"
 import { isFreePlan } from "~/utils/utils"
 
 /* c8 ignore next */
@@ -11,11 +12,11 @@ export const links = () => {
 
 interface StopRemoveAppProps {
   endpointId: string
-  planType: string
+  planType: PayPlanType
 }
 
 export default function StopRemoveApp({ endpointId, planType }: StopRemoveAppProps) {
-  const stripe = ""
+  const stripe = "/api/stripe/portal-session"
   return (
     <>
       {isFreePlan(planType) ? (

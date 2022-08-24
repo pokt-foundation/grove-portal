@@ -102,6 +102,7 @@ export default function AppIdLayoutView({
     }
   }, [endpoint, t, routes, flags.STRIPE_PAYMENT])
 
+  console.log(endpoint)
   return (
     <>
       <Grid gutter={32}>

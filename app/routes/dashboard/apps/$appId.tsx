@@ -1,41 +1,17 @@
 import { LoaderFunction, MetaFunction, json } from "@remix-run/node"
-import { Link, Outlet, useCatch, useLoaderData } from "@remix-run/react"
+import { useCatch, useLoaderData, useSearchParams } from "@remix-run/react"
 import invariant from "tiny-invariant"
-import AdEconomicsForDevs, {
-  links as AdEconomicsForDevsLinks,
-} from "~/components/application/AdEconomicsForDevs"
-import AppAddressCard, {
-  links as AppAddressCardLinks,
-} from "~/components/application/AppAddressCard"
-import AppKeysCard, {
-  links as AppKeysCardLinks,
-} from "~/components/application/AppKeysCard"
-import AppRemoveModal, {
-  links as AppRemoveModalLinks,
-} from "~/components/application/AppRemoveModal"
-import FeedbackCard, {
-  links as FeedbackCardLinks,
-} from "~/components/application/FeedbackCard"
-import Button from "~/components/shared/Button"
-import Grid from "~/components/shared/Grid"
-import Nav, { links as NavLinks } from "~/components/shared/Nav"
-import { useTranslate } from "~/context/TranslateContext"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { ProcessedEndpoint } from "~/models/portal/sdk"
-import { getRelays, RelayMetric } from "~/models/relaymeter.server"
+import { PayPlanType, ProcessedEndpoint } from "~/models/portal/sdk"
+import { getRelays, RelayMetric } from "~/models/relaymeter/relaymeter.server"
 import { dayjs } from "~/utils/dayjs"
 import { requireUser } from "~/utils/session.server"
-import { isFreePlan } from "~/utils/utils"
+import AppIdLayoutView, {
+  links as AppIdLayoutViewLinks,
+} from "~/views/dashboard/apps/appId/layout/appIdLayoutView"
 
 export const links = () => {
-  return [
-    ...NavLinks(),
-    ...AppKeysCardLinks(),
-    ...AppAddressCardLinks(),
-    ...AdEconomicsForDevsLinks(),
-    ...FeedbackCardLinks(),
-    ...AppRemoveModalLinks(),
-  ]
+  return [...AppIdLayoutViewLinks()]
 }
 
 export const meta: MetaFunction = () => {
@@ -51,10 +27,26 @@ export type AppIdLoaderData = {
   dailyNetworkRelaysPerWeek: RelayMetric[]
 }
 
-export const loader: LoaderFunction = async ({ request, params, context }) => {
+export const loader: LoaderFunction = async ({ request, params }) => {
+  const url = new URL(request.url)
+  const searchParams = url.searchParams
+
   invariant(params.appId, "app id not found")
+
   const user = await requireUser(request)
   const portal = initPortalClient(user.accessToken)
+
+  if (searchParams.get("success") === "true") {
+    try {
+      await portal.updateEndpoint({
+        input: {
+          id: params.appId,
+          payPlanType: PayPlanType.PayAsYouGoV0,
+        },
+      })
+    } catch (e) {}
+  }
+
   const { endpoint } = await portal.endpoint({
     endpointID: params.appId,
   })
@@ -100,87 +92,10 @@ export const loader: LoaderFunction = async ({ request, params, context }) => {
 }
 
 export default function AppIdLayout() {
-  const { t } = useTranslate()
   const { endpoint } = useLoaderData() as AppIdLoaderData
-  console.log(endpoint)
+  const [searchParams] = useSearchParams()
 
-  const stripe = "/api/stripe/portal-session"
-  const routes = [
-    {
-      to: "/dashboard/apps",
-      icon: () => <span>{"<"}</span>,
-      end: true,
-    },
-    {
-      to: "",
-      label: t.appId.routes.overview,
-      end: true,
-    },
-    {
-      to: "requests",
-      label: t.appId.routes.requests,
-    },
-    {
-      to: "security",
-      label: t.appId.routes.security,
-    },
-    {
-      to: "notifications",
-      label: t.appId.routes.notifications,
-    },
-  ]
-
-  return (
-    <Grid gutter={32}>
-      {endpoint && (
-        <Grid.Col xs={12}>
-          <div>
-            <h1>{endpoint.name}</h1>
-            <Nav routes={routes} />
-          </div>
-        </Grid.Col>
-      )}
-      <Grid.Col md={8}>
-        <Outlet />
-      </Grid.Col>
-      <Grid.Col md={4}>
-        {endpoint && (
-          <>
-            <section>
-              <AppKeysCard
-                id={endpoint.id}
-                publicKey={endpoint.apps[0]?.publicKey}
-                secret={endpoint.gatewaySettings.secretKey ?? ""}
-              />
-            </section>
-            <section>
-              <AppAddressCard apps={endpoint.apps} />
-            </section>
-            <section>
-              <AdEconomicsForDevs />
-            </section>
-            <section>
-              <FeedbackCard />
-            </section>
-            <section>
-              {isFreePlan(endpoint.appLimits.planType) ? (
-                <AppRemoveModal appId={endpoint.id} />
-              ) : (
-                <Button fullWidth component={Link} to={stripe} variant="subtle">
-                  <img
-                    alt="Remove Application"
-                    className="pokt-app-remove-delete-icon"
-                    src="/delete.svg"
-                  />{" "}
-                  Stop Subscription
-                </Button>
-              )}
-            </section>
-          </>
-        )}
-      </Grid.Col>
-    </Grid>
-  )
+  return <AppIdLayoutView endpoint={endpoint} searchParams={searchParams} />
 }
 
 export const CatchBoundary = () => {

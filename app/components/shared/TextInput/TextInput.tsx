@@ -7,9 +7,11 @@ import CopyTextIcon, {
   links as CopyTextIconLinks,
 } from "~/components/shared/CopyTextIcon"
 
+/* c8 ignore start */
 export const links = () => {
   return [...CopyTextIconLinks(), { rel: "stylesheet", href: styles }]
 }
+/* c8 ignore stop */
 
 export type InputProps = TextInputProps & {
   copy?: boolean

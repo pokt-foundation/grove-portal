@@ -9,7 +9,7 @@ import Dropdown, {
 import TextInput from "~/components/shared/TextInput"
 import { CHAIN_ID_PREFIXES } from "~/utils/chainUtils"
 
-/* c8 ignore next */
+/* c8 ignore start */
 export const links = () => {
   return [
     ...DropdownLinks(),
@@ -17,6 +17,7 @@ export const links = () => {
     { rel: "stylesheet", href: styles },
   ]
 }
+/* c8 ignore stop */
 
 interface AppEndpointProps {
   defaultText: string

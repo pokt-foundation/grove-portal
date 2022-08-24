@@ -4,10 +4,11 @@ import TextInput, { links as TextInputLinks } from "~/components/shared/TextInpu
 import { useTranslate } from "~/context/TranslateContext"
 import { ProcessedEndpoint } from "~/models/portal/sdk"
 
-/* c8 ignore next */
+/* c8 ignore start */
 export const links = () => {
   return [...CardLinks(), ...TextInputLinks(), { rel: "stylesheet", href: styles }]
 }
+/* c8 ignore stop */
 
 interface AppAddressCardProps {
   apps: ProcessedEndpoint["apps"]

@@ -3,9 +3,11 @@ import AnimatedLogo, {
   links as AnimatedLogoLinks,
 } from "~/components/shared/AnimatedLogo"
 
+/* c8 ignore start */
 export const links = () => {
   return [{ rel: "stylesheet", href: styles }, ...AnimatedLogoLinks()]
 }
+/* c8 ignore stop */
 
 type LoaderProps = {
   label?: string

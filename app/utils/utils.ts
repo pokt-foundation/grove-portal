@@ -29,6 +29,13 @@ export function shorten(string: string, characters = 4): string {
   return string.slice(0, characters) + "…"
 }
 
+export function isFreePlan(planType: PayPlanType) {
+  if (planType !== PayPlanType.FreetierV0) {
+    return false
+  }
+  return true
+}
+
 export const getPlanName = (planType: PayPlanType) => {
   switch (planType) {
     case PayPlanType.FreetierV0: {

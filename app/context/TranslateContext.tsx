@@ -12,6 +12,7 @@ const translate: Translate = {
 interface TranslationData {
   common: {
     submit: string
+    StopSubscription: string
   }
   search: {
     label: string

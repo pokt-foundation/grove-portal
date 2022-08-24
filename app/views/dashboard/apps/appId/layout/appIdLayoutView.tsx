@@ -15,6 +15,7 @@ import AppRemoveModal, {
 import FeedbackCard, {
   links as FeedbackCardLinks,
 } from "~/components/application/FeedbackCard"
+import StopRemoveApp from "~/components/application/StopRemoveApp"
 import Grid from "~/components/shared/Grid"
 import Modal, { links as ModalLinks } from "~/components/shared/Modal"
 import Nav, { links as NavLinks } from "~/components/shared/Nav"
@@ -136,7 +137,10 @@ export default function AppIdLayoutView({
                 <FeedbackCard />
               </section>
               <section>
-                <AppRemoveModal appId={endpoint.id} />
+                <StopRemoveApp
+                  endpointId={endpoint.id}
+                  planType={endpoint.appLimits.planType}
+                />
               </section>
             </>
           )}

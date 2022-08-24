@@ -1,6 +1,7 @@
 const schema = {
   common: {
     submit: "submit",
+    StopSubscription: "Stop Subscription",
   },
   search: {
     label: "Search",

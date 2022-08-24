@@ -6,10 +6,11 @@ import Card, { links as CardLinks } from "~/components/shared/Card"
 import { useTranslate } from "~/context/TranslateContext"
 import { FeedbackActionResponse } from "~/routes/api/feedbackform"
 
-/* c8 ignore next */
+/* c8 ignore start */
 export const links = () => {
   return [...CardLinks(), { rel: "stylesheet", href: styles }]
 }
+/* c8 ignore stop */
 
 export default function FeedbackBox({ className }: { className?: string }) {
   const fetcher = useFetcher<FeedbackActionResponse>()

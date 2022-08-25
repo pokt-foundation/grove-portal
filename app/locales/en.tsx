@@ -1,3 +1,5 @@
+import { PayPlanType } from "~/models/portal/sdk"
+
 const schema = {
   common: {
     submit: "submit",
@@ -281,7 +283,7 @@ const schema = {
         "Scalable plans because your needs change as yous app grows. All plans access to Pocket Network multichain infrastructure with our chain!",
     },
     planDetails: {
-      paid: {
+      [PayPlanType.PayAsYouGoV0]: {
         title: "Pay As You Go",
         description:
           "250k free relays per day, per app. Beyond that, pay only for what you use. The counter resets every 24h but you’ll only get billed monthly. Even better, after 24 months of paid relays, you’ll receive POKT to stake for continued service. No more payments.",
@@ -291,7 +293,17 @@ const schema = {
         appsLimit: "Up to 2 Applicaitions",
         chainAccess: "No limit",
       },
-      free: {
+      [PayPlanType.FreetierV0]: {
+        title: "Always Free",
+        description:
+          "Access to reliable, censor resistant infrastructure. Free up to 250k relays per day.",
+        description2: "",
+        pricing: "$0.00",
+        relayLimit: "250k per app per day",
+        appsLimit: "Up to 2 Applicaitions",
+        chainAccess: "No limit",
+      },
+      [PayPlanType.TestPlanV0]: {
         title: "Always Free",
         description:
           "Access to reliable, censor resistant infrastructure. Free up to 250k relays per day.",

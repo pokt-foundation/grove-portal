@@ -1,19 +1,20 @@
 import { expect } from "vitest"
 import AppPlansOverview from "./AppPlansOverview"
 import { render, screen } from "test/helpers"
+import schema from "~/locales/en"
+import { PayPlanType } from "~/models/portal/sdk"
 
-const freePlan = "free"
-const paidPlan = "paid"
+const freePlan = PayPlanType.FreetierV0
+const paidPlan = PayPlanType.PayAsYouGoV0
 
 describe("<AppPlansOverview />", () => {
   it("renders free plan information", () => {
-    const planTitle = /Always Free/i
-    const description =
-      /Access to reliable, censor resistant infrastructure. Free up to 250k relays per day./i
-    const pricing = /\$0.00/i
-    const relayLimit = /250k per app per day/i
-    const appsLimit = /Up to 2 Applicaitions/i
-    const chainAccess = /No limit/i
+    const planTitle = schema.AppPlansOverview.planDetails.FREETIER_V0.title
+    const description = schema.AppPlansOverview.planDetails.FREETIER_V0.description
+    const pricing = schema.AppPlansOverview.planDetails.FREETIER_V0.pricing
+    const relayLimit = schema.AppPlansOverview.planDetails.FREETIER_V0.relayLimit
+    const appsLimit = schema.AppPlansOverview.planDetails.FREETIER_V0.appsLimit
+    const chainAccess = schema.AppPlansOverview.planDetails.FREETIER_V0.chainAccess
 
     render(<AppPlansOverview planType={freePlan} />)
     expect(screen.getByText(planTitle)).toBeInTheDocument()
@@ -24,14 +25,13 @@ describe("<AppPlansOverview />", () => {
     expect(screen.getByText(chainAccess)).toBeInTheDocument()
   })
   it("renders paid plan information", () => {
-    const planTitle = /Pay As You Go/i
-    const description =
-      /250k free relays per day, per app. Beyond that, pay only for what you use. The counter resets every 24h but you’ll only get billed monthly. Even better, after 24 months of paid relays, you’ll receive POKT to stake for continued service. No more payments./i
-    const description2 = /No more sunk costs. Just fast, reliable infrastructure./i
-    const pricing = /Pay per relay \+ 250K Free Relays/i
-    const relayLimit = /No limit/i
-    const appsLimit = /Up to 2 Applicaitions/i
-    const chainAccess = /No limit/i
+    const planTitle = schema.AppPlansOverview.planDetails.PAY_AS_YOU_GO_V0.title
+    const description = schema.AppPlansOverview.planDetails.PAY_AS_YOU_GO_V0.description
+    const description2 = schema.AppPlansOverview.planDetails.PAY_AS_YOU_GO_V0.description2
+    const pricing = schema.AppPlansOverview.planDetails.PAY_AS_YOU_GO_V0.pricing
+    const relayLimit = schema.AppPlansOverview.planDetails.PAY_AS_YOU_GO_V0.relayLimit
+    const appsLimit = schema.AppPlansOverview.planDetails.PAY_AS_YOU_GO_V0.appsLimit
+    const chainAccess = schema.AppPlansOverview.planDetails.PAY_AS_YOU_GO_V0.chainAccess
 
     render(<AppPlansOverview planType={paidPlan} />)
     expect(screen.getByText(planTitle)).toBeInTheDocument()
@@ -43,11 +43,11 @@ describe("<AppPlansOverview />", () => {
     expect(screen.getAllByText(chainAccess)[1]).toBeInTheDocument()
   })
   it("renders plan information titles", () => {
-    const pricing = /Pricing/i
-    const relayLimit = /Relay Limit/i
-    const chainAccess = /Chain Access/i
-    const appsLimit = /Apps Limit/i
-    const cardTitle = /Flexible plans that grow with your app/i
+    const pricing = schema.AppPlansOverview.planDetailsTitles.pricing
+    const relayLimit = schema.AppPlansOverview.planDetailsTitles.relayLimit
+    const chainAccess = schema.AppPlansOverview.planDetailsTitles.chainAccess
+    const appsLimit = schema.AppPlansOverview.planDetailsTitles.appsLimit
+    const cardTitle = schema.AppPlansOverview.planDetailsTitles.overviewHeader
 
     render(<AppPlansOverview planType={freePlan} />)
     expect(screen.getByText(cardTitle)).toBeInTheDocument()

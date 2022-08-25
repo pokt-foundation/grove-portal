@@ -25,6 +25,7 @@ import Card, { links as CardLinks } from "~/components/shared/Card"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { useFeatureFlags } from "~/context/FeatureFlagContext"
 import { initPortalClient } from "~/models/portal/portal.server"
+import { PayPlanType } from "~/models/portal/sdk"
 import { Stripe, stripe } from "~/models/stripe/stripe.server"
 import styles from "~/styles/dashboard.apps.create.css"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
@@ -145,12 +146,12 @@ export default function CreateApp() {
   const { price } = useLoaderData() as LoaderData
   const transition = useTransition()
   const action = useActionData() as ActionData
-  const [radioSelectedValue, setRadioSelectedValue] = useState("free")
+  const [radioSelectedValue, setRadioSelectedValue] = useState(PayPlanType.FreetierV0)
 
   const tiers = [
     {
       name: "Always Free",
-      value: "free",
+      value: PayPlanType.FreetierV0,
       active: "true",
       price: 0,
       priceText: "$0.00",
@@ -159,7 +160,7 @@ export default function CreateApp() {
     },
     {
       name: "Pay As You Go",
-      value: "paid",
+      value: PayPlanType.PayAsYouGoV0,
       active: flags.STRIPE_PAYMENT,
       price: price?.tiers![1].unit_amount_decimal || 0.0000123,
       priceText: "pay per relay",

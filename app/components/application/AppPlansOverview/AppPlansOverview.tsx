@@ -3,6 +3,7 @@ import ReactHtmlParser from "react-html-parser"
 import styles from "./styles.css"
 import Grid from "~/components/shared/Grid"
 import { useTranslate } from "~/context/TranslateContext"
+import { PayPlanType } from "~/models/portal/sdk"
 
 /* c8 ignore next */
 export const links = () => {
@@ -10,7 +11,7 @@ export const links = () => {
 }
 
 interface AppPlansOverviewProps {
-  planType: string
+  planType: PayPlanType
 }
 
 export default function AppPlansOverview({ planType }: AppPlansOverviewProps) {
@@ -28,26 +29,10 @@ export default function AppPlansOverview({ planType }: AppPlansOverviewProps) {
       </Box>
       <Box sx={{ textAlign: "left" }}>
         <Title className="plan-data title" mb={16} mt={32} order={3}>
-          {
-            AppPlansOverview.planDetails[
-              planType as keyof typeof AppPlansOverview.planDetails
-            ].title
-          }
+          {AppPlansOverview.planDetails[planType].title}
         </Title>
-        <Text mb={32}>
-          {
-            AppPlansOverview.planDetails[
-              planType as keyof typeof AppPlansOverview.planDetails
-            ].description
-          }
-        </Text>
-        <Text mb={32}>
-          {
-            AppPlansOverview.planDetails[
-              planType as keyof typeof AppPlansOverview.planDetails
-            ].description2
-          }
-        </Text>
+        <Text mb={32}>{AppPlansOverview.planDetails[planType].description}</Text>
+        <Text mb={32}>{AppPlansOverview.planDetails[planType].description2}</Text>
       </Box>
       <Grid>
         <Grid.Col sm={3} xs={12}>
@@ -55,48 +40,26 @@ export default function AppPlansOverview({ planType }: AppPlansOverviewProps) {
             {AppPlansOverview.planDetailsTitles.pricing}
           </Title>
           <Text mb={32}>
-            {ReactHtmlParser(
-              AppPlansOverview.planDetails[
-                planType as keyof typeof AppPlansOverview.planDetails
-              ].pricing,
-            )}
+            {ReactHtmlParser(AppPlansOverview.planDetails[planType].pricing)}
           </Text>
         </Grid.Col>
         <Grid.Col sm={3} xs={12}>
           <Title className="plan-data-highlights" mb={16} mt={32} order={4}>
             {AppPlansOverview.planDetailsTitles.relayLimit}
           </Title>
-          <Text mb={32}>
-            {
-              AppPlansOverview.planDetails[
-                planType as keyof typeof AppPlansOverview.planDetails
-              ].relayLimit
-            }
-          </Text>
+          <Text mb={32}>{AppPlansOverview.planDetails[planType].relayLimit}</Text>
         </Grid.Col>
         <Grid.Col sm={3} xs={12}>
           <Title className="plan-data-highlights" mb={16} mt={32} order={4}>
             {AppPlansOverview.planDetailsTitles.chainAccess}
           </Title>
-          <Text mb={32}>
-            {
-              AppPlansOverview.planDetails[
-                planType as keyof typeof AppPlansOverview.planDetails
-              ].chainAccess
-            }
-          </Text>
+          <Text mb={32}>{AppPlansOverview.planDetails[planType].chainAccess}</Text>
         </Grid.Col>
         <Grid.Col sm={3} xs={12}>
           <Title className="plan-data-highlights" mb={16} mt={32} order={4}>
             {AppPlansOverview.planDetailsTitles.appsLimit}
           </Title>
-          <Text mb={32}>
-            {
-              AppPlansOverview.planDetails[
-                planType as keyof typeof AppPlansOverview.planDetails
-              ].appsLimit
-            }
-          </Text>
+          <Text mb={32}>{AppPlansOverview.planDetails[planType].appsLimit}</Text>
         </Grid.Col>
       </Grid>
     </>

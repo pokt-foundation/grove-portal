@@ -2,6 +2,7 @@ import React, { useContext, useMemo } from "react"
 import { useUser } from "./UserContext"
 import en from "~/locales/en"
 import fr from "~/locales/fr"
+import { PayPlanType } from "~/models/portal/sdk"
 
 const languages = ["en", "fr"] as const
 const translate: Translate = {
@@ -168,7 +169,7 @@ interface TranslationData {
       overviewDescription: string
     }
     planDetails: {
-      paid: {
+      [PayPlanType.PayAsYouGoV0]: {
         title: string
         description: string
         description2: string
@@ -177,7 +178,16 @@ interface TranslationData {
         appsLimit: string
         chainAccess: string
       }
-      free: {
+      [PayPlanType.FreetierV0]: {
+        title: string
+        description: string
+        description2: string
+        pricing: string
+        relayLimit: string
+        appsLimit: string
+        chainAccess: string
+      }
+      [PayPlanType.TestPlanV0]: {
         title: string
         description: string
         description2: string

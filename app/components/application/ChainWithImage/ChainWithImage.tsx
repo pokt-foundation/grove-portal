@@ -8,15 +8,18 @@ export const links = () => {
 /* c8 ignore stop */
 
 export interface AppEndpointProps {
-  chain: string
+  chain: string | undefined | null
   label?: string
 }
 
-export default function ChainWithImage({ chain, label = chain }: AppEndpointProps) {
+export default function ChainWithImage({ chain, label }: AppEndpointProps) {
+  if (!chain) return <></>
+
+  const labelText = label ?? chain
   return (
     <span className="pokt-chain-with-image">
       {getImageForChain(chain) && <img alt={chain} src={getImageForChain(chain)} />}
-      <p>{label}</p>
+      <p>{labelText}</p>
     </span>
   )
 }

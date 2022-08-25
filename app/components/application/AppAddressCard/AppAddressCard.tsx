@@ -24,7 +24,7 @@ export default function AppAddressCard({ apps }: AppAddressCardProps) {
       <Card>
         <div className="flexContainer">
           <h3>{appAddressCard.heading}</h3>
-          {apps.length > 0 && <p>{apps.length}</p>}
+          {apps && apps.length > 0 && <p>{apps.length}</p>}
         </div>
         {apps && apps.length > 0 ? (
           apps.map((item) =>

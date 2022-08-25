@@ -5,45 +5,11 @@ query endpoints {
       planType
       publicKey
     }
-    apps {
-      address
-      appId
-      publicKey
-      unstakingTime
-      stakedTokens
-      status
-      jailed
-    }
-    chain
     createdAt
-    freeTier
-    gatewaySettings {
-      secretKey
-      secretKeyRequired
-      whitelistBlockchains
-      whitelistContracts {
-        blockchainId
-        contracts
-      }
-      whitelistMethods {
-        blockchainId
-        methods
-      }
-      whitelistOrigins
-      whitelistUserAgents
-    }
     gigastake
     id
     name
-    notificationSettings {
-      full
-      half
-      quarter
-      signedUp
-      threeQuarters
-    }
     status
-    stake
     updatedAt
     userId
   }
@@ -59,15 +25,15 @@ query endpoint($endpointID: ID!) {
     apps {
       address
       appId
+      chain
       publicKey
+      stake
       unstakingTime
       stakedTokens
       status
       jailed
     }
-    chain
     createdAt
-    freeTier
     gatewaySettings {
       secretKey
       secretKeyRequired
@@ -94,7 +60,6 @@ query endpoint($endpointID: ID!) {
       threeQuarters
     }
     status
-    stake
     updatedAt
     userId
   }

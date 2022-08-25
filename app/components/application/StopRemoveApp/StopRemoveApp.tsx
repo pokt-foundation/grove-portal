@@ -1,5 +1,5 @@
 import { Link } from "@remix-run/react"
-import AppRemoveModal from "../AppRemoveModal"
+import AppRemoveModal, { links as AppRemoveModalLinks } from "../AppRemoveModal"
 import styles from "./styles.css"
 import Button from "~/components/shared/Button"
 import { useTranslate } from "~/context/TranslateContext"
@@ -8,7 +8,7 @@ import { isFreePlan } from "~/utils/utils"
 
 /* c8 ignore next */
 export const links = () => {
-  return [{ rel: "stylesheet", href: styles }]
+  return [...AppRemoveModalLinks(), { rel: "stylesheet", href: styles }]
 }
 
 interface StopRemoveAppProps {

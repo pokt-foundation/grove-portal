@@ -158,6 +158,13 @@ interface TranslationData {
     termsOfUse: string
     privacyPolicy: string
   }
+  AppPlanDetails: {
+    relayLimit: string
+    relaysPerDay: string
+    currentPlan: string
+    currentPlanToolTip: string
+    upgrade: string
+  }
   PlanView: {
     title: string
     description: string

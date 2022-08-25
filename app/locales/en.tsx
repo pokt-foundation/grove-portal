@@ -1,6 +1,7 @@
 const schema = {
   common: {
     submit: "submit",
+    StopSubscription: "Stop Subscription",
   },
   search: {
     label: "Search",
@@ -268,6 +269,13 @@ const schema = {
   footer: {
     termsOfUse: "Site Terms of Use",
     privacyPolicy: "Privacy Policy",
+  },
+  AppPlanDetails: {
+    relayLimit: "Relays Limit",
+    relaysPerDay: "relays per day",
+    currentPlan: "Current Plan",
+    currentPlanToolTip: "This is the current plan for this specific application.",
+    upgrade: "Upgrade",
   },
   PlanView: {
     title: "Stripe Error",

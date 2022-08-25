@@ -1,4 +1,4 @@
-import { Form } from "@remix-run/react"
+import { Form, useLocation } from "@remix-run/react"
 import AppPlanLatestInvoiceCard, {
   links as AppPlanLatestInvoiceCardLinks,
 } from "~/components/application/AppPlanLatestInvoiceCard"
@@ -22,6 +22,7 @@ export const links = () => {
 
 export const PlanView = (data: AppPlanLoaderData) => {
   const { t } = useTranslate()
+  const location = useLocation()
 
   if (data.error) {
     return (
@@ -31,6 +32,7 @@ export const PlanView = (data: AppPlanLoaderData) => {
         </div>
         <p>{t.PlanView.description}</p>
         <Form action="/api/stripe/portal-session" method="post">
+          <input hidden name="return-path" value={location.pathname} />
           <Button type="submit" variant="outline">
             {t.PlanView.button}
           </Button>

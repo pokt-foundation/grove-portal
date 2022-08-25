@@ -12,6 +12,7 @@ const translate: Translate = {
 interface TranslationData {
   common: {
     submit: string
+    StopSubscription: string
   }
   search: {
     label: string
@@ -156,6 +157,13 @@ interface TranslationData {
   footer: {
     termsOfUse: string
     privacyPolicy: string
+  }
+  AppPlanDetails: {
+    relayLimit: string
+    relaysPerDay: string
+    currentPlan: string
+    currentPlanToolTip: string
+    upgrade: string
   }
   PlanView: {
     title: string

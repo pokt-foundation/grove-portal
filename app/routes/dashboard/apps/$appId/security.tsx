@@ -15,6 +15,7 @@ import Card, { links as CardLinks } from "~/components/shared/Card"
 import Switch, { links as SwitchLinks } from "~/components/shared/Switch"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
+import { Maybe, WhitelistContract, WhitelistMethod } from "~/models/portal/sdk"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { CHAIN_ID_PREFIXES } from "~/utils/chainUtils"
 
@@ -60,26 +61,27 @@ export default function AppSecurity() {
     endpoint: { gatewaySettings },
   } = appIDRoute?.data as AppIdLoaderData
 
-  const formatData = (
-    data: { blockchainId: string; [key: string]: string[] | string }[],
+  type FormatData = {
+    id: string
+    inputValue: string
+  }
+
+  const formatData = <T extends WhitelistContract | WhitelistMethod>(
+    data: Maybe<T>[],
+    key: keyof T,
   ) => {
-    let formattedData = []
-    if (data[0]?.contracts || data[0]?.methods) {
-      let key = data[0]?.contracts ? "contracts" : "methods"
-      for (let i = 0; i < data.length; i += 1) {
-        if (data[i][key].length > 1) {
-          for (let j = 0; j < data[i][key].length; j += 1) {
-            formattedData.push({
-              id: data[i].blockchainId,
-              inputValue: data[i][key][j],
-            })
-          }
-        } else {
-          formattedData.push({ id: data[i].blockchainId, inputValue: data[i][key][0] })
-        }
+    return data.reduce((prev: FormatData[], curr) => {
+      if (!curr) {
+        return prev
       }
-    }
-    return formattedData
+      const subArray = (curr[key] as unknown as string[]).reduce(
+        (subPrev: FormatData[], subCurr) => {
+          return [...subPrev, { id: curr.blockchainId, inputValue: subCurr }]
+        },
+        [],
+      )
+      return [...prev, ...subArray]
+    }, [])
   }
 
   const [secretKeyRequired, setSecretKeyRequired] = useState<boolean>(
@@ -101,13 +103,13 @@ export default function AppSecurity() {
   const [whitelistContractsDropdown, setWhitelistContractsDropdown] = useState<string>("")
   const [whitelistContracts, setWhitelistContracts] = useState<
     Array<{ id: string; inputValue: string }>
-  >(formatData(gatewaySettings?.whitelistContracts || []))
+  >(formatData<WhitelistContract>(gatewaySettings?.whitelistContracts, "contracts"))
   const [whitelistContractsError, setWhitelistContractsError] = useState<boolean>(false)
   const [whitelistMethodsInput, setWhitelistMethodsInput] = useState<string>("")
   const [whitelistMethodsDropdown, setWhitelistMethodsDropdown] = useState<string>("")
   const [whitelistMethods, setWhitelistMethods] = useState<
     Array<{ id: string; inputValue: string }>
-  >(formatData(gatewaySettings.whitelistMethods || []))
+  >(formatData<WhitelistMethod>(gatewaySettings.whitelistMethods, "methods"))
   const [whitelistMethodsError, setWhitelistMethodsError] = useState<boolean>(false)
 
   const removeFromArray = (item: string, arr: string[]) => arr.filter((i) => i !== item)

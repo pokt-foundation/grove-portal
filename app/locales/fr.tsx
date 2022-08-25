@@ -232,11 +232,41 @@ const schema = {
     title: "We have Enterprise solutions for your needs -fr",
     description:
       "Give us some basic information of your request and our solutions team will reach out soon to find the best way of service your application. -fr",
-    submitting: "Submitting -fr",
-    submit: "Submit -fr",
     formSubmitted: "Form Submitted -fr",
     done: "Done -fr",
     formSubmissionFailed: "Form Submission Failed -fr",
+  },
+  ContactSalesForm: {
+    submitting: "Submitting -fr",
+    submit: "Submit -fr",
+    firstName: {
+      label: "First Name -fr",
+      placeholder: "Enter your name -fr",
+    },
+    lastName: {
+      label: "Last Name -fr",
+      placeholder: "Enter your last name -fr",
+    },
+    email: {
+      label: "Email -fr",
+      placeholder: "Enter your email -fr",
+    },
+    company: {
+      label: "Company -fr",
+      placeholder: "Enter a company name -fr",
+    },
+    chains: {
+      label: "Protocol/Chains of interest -fr",
+      placeholder: "I'm interested in chain... -fr",
+    },
+    relays: {
+      label: "Relay Needs -fr",
+      placeholder: "How many daily relays your application request -fr",
+    },
+    tellUsMore: {
+      label: "Tell us more about what you are building -fr",
+      placeholder: "I'm building a Chain... -fr",
+    },
   },
 }
 

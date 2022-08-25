@@ -22,10 +22,7 @@ export const links = () => {
 export default function ContactSalesForm() {
   const { t } = useTranslate()
   const formRef = useRef<HTMLFormElement>(null)
-  let { state: transitionState, submission: transitionSubmission } = useTransition()
-  let isAdding =
-    transitionState === "submitting" &&
-    transitionSubmission?.formData.get("_action") === "create"
+  let transition = useTransition()
 
   const formFields: Array<{
     label: string
@@ -37,67 +34,67 @@ export default function ContactSalesForm() {
     required: boolean
   }> = [
     {
-      label: "First Name",
+      label: t.ContactSalesForm.firstName.label,
       name: "first-name",
-      placeholder: "Enter your name",
+      placeholder: t.ContactSalesForm.firstName.placeholder,
       size: 6,
       component: "input",
       required: true,
     },
     {
-      label: "Last Name",
+      label: t.ContactSalesForm.lastName.label,
       name: "last-name",
-      placeholder: "Enter your last name",
+      placeholder: t.ContactSalesForm.lastName.placeholder,
       size: 6,
       component: "input",
       required: true,
     },
     {
-      label: "Email",
+      label: t.ContactSalesForm.email.label,
       name: "email",
-      placeholder: "Enter your email",
+      placeholder: t.ContactSalesForm.email.placeholder,
       component: "input",
       type: "email",
       required: true,
     },
     {
-      label: "Company",
+      label: t.ContactSalesForm.company.label,
       name: "company",
-      placeholder: "Enter a company name",
+      placeholder: t.ContactSalesForm.company.placeholder,
       component: "input",
       required: false,
     },
     {
-      label: "Protocol/Chains of interest",
+      label: t.ContactSalesForm.chains.label,
       name: "protocol-chains",
-      placeholder: "I'm interested in Chain...",
+      placeholder: t.ContactSalesForm.chains.placeholder,
       component: "textarea",
       required: true,
     },
     {
-      label: "Relay Needs",
+      label: t.ContactSalesForm.relays.label,
       name: "relays",
-      placeholder: "How many daily relays your application request",
+      placeholder: t.ContactSalesForm.relays.placeholder,
       component: "input",
       type: "number",
       required: true,
     },
     {
-      label: "Tell us more about what you are building",
+      label: t.ContactSalesForm.tellUsMore.label,
       name: "tell-us-more",
-      placeholder: "I'm building a Chain...",
+      placeholder: t.ContactSalesForm.tellUsMore.placeholder,
       component: "textarea",
       required: false,
     },
   ]
 
   useEffect(() => {
-    if (!isAdding) formRef.current?.reset()
-  }, [isAdding])
+    if (transition.type === "actionSubmission") formRef.current?.reset()
+  }, [transition.type])
 
   return (
     <Card>
-      <Form ref={formRef} method="post">
+      <Form ref={formRef} replace method="post">
         <Grid>
           {formFields.map(
             ({ component, label, name, placeholder, size, type = "text", required }) => (
@@ -137,13 +134,13 @@ export default function ContactSalesForm() {
         <div className="button-container">
           <Button
             className="pokt-button button"
-            disabled={transitionState === "loading" || transitionState === "submitting"}
+            disabled={transition.state === "loading" || transition.state === "submitting"}
             type="submit"
             variant="filled"
           >
-            {transitionState === "loading" || transitionState === "submitting"
-              ? t.ContactSalesView.submitting
-              : t.ContactSalesView.submit}
+            {transition.state === "loading" || transition.state === "submitting"
+              ? t.ContactSalesForm.submitting
+              : t.ContactSalesForm.submit}
           </Button>
         </div>
       </Form>

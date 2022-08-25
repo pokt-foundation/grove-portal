@@ -24,7 +24,6 @@ export const links = () => {
 export const ContactSalesView = (data: ContactSalesActionData) => {
   const { t } = useTranslate()
   const { result = "error", error = null } = data
-
   const [successModalOpened, setSuccessModalOpened] = useState<boolean>(false)
   const [failedModalOpened, setFailedModalOpened] = useState<boolean>(false)
 
@@ -37,7 +36,7 @@ export const ContactSalesView = (data: ContactSalesActionData) => {
     <section>
       <Title order={1}>{t.ContactSalesView.title}</Title>
       <p>{t.ContactSalesView.description}</p>
-      <ContactSalesForm />
+      <ContactSalesForm  />
       <Modal opened={successModalOpened} onClose={() => setSuccessModalOpened(false)}>
         <div className="contact-modal-container">
           <img alt="Success" src="/checkmarkWithCircle.svg" />

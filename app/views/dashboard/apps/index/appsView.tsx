@@ -4,7 +4,7 @@ import UsageChartCard, {
 } from "~/components/application/UsageChartCard"
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import Table, { links as TableLinks } from "~/components/shared/Table"
-import { ProcessedEndpoint } from "~/models/portal/sdk"
+import { EndpointsQuery, ProcessedEndpoint } from "~/models/portal/sdk"
 import { RelayMetric } from "~/models/relaymeter/relaymeter.server"
 import { dayjs } from "~/utils/dayjs"
 import { getRequiredClientEnvVar } from "~/utils/environment"
@@ -18,7 +18,7 @@ export const links = () => {
 
 type AppsViewProps = {
   userId: string
-  endpoints: ProcessedEndpoint[] | null
+  endpoints: EndpointsQuery["endpoints"] | null
   dailyNetworkRelaysPerWeek: RelayMetric[] | null
 }
 
@@ -34,7 +34,7 @@ export const AppsView = ({
           <Table
             search
             columns={["App", "Created", "Plan", ""]}
-            data={endpoints.map((app) => ({
+            data={(endpoints as unknown as ProcessedEndpoint[]).map((app) => ({
               id: app.id,
               app: {
                 value: app.name,

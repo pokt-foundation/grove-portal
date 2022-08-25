@@ -2,7 +2,7 @@ import { LoaderFunction, MetaFunction, json } from "@remix-run/node"
 import { useCatch, useLoaderData, useSearchParams } from "@remix-run/react"
 import invariant from "tiny-invariant"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { PayPlanType, ProcessedEndpoint } from "~/models/portal/sdk"
+import { EndpointQuery, PayPlanType, ProcessedEndpoint } from "~/models/portal/sdk"
 import { getRelays, RelayMetric } from "~/models/relaymeter/relaymeter.server"
 import { dayjs } from "~/utils/dayjs"
 import { requireUser } from "~/utils/session.server"
@@ -21,7 +21,7 @@ export const meta: MetaFunction = () => {
 }
 
 export type AppIdLoaderData = {
-  endpoint: ProcessedEndpoint
+  endpoint: EndpointQuery["endpoint"]
   relaysToday: RelayMetric
   relaysYesterday: RelayMetric
   dailyNetworkRelaysPerWeek: RelayMetric[]

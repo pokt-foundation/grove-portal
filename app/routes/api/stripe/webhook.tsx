@@ -52,6 +52,7 @@ export const action: ActionFunction = async ({ request }) => {
           const subscription = await stripe.subscriptions.update(
             sessionCompleted.subscription,
             {
+              description: `${sessionCompleted.metadata?.endpoint_name}: ${sessionCompleted.metadata?.endpoint_id}`,
               metadata: sessionCompleted.metadata,
             },
           )

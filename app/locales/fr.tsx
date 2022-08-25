@@ -248,6 +248,13 @@ const schema = {
       },
     },
   },
+  AppPlanDetails: {
+    relayLimit: "Relays Limit -fr",
+    relaysPerDay: "relays per day -fr",
+    currentPlan: "Current Plan -fr",
+    currentPlanToolTip: "This is the current plan for this specific application. -fr",
+    upgrade: "Upgrade -fr",
+  },
   PlanView: {
     title: "Stripe Error -fr",
     description:

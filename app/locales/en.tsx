@@ -303,6 +303,13 @@ const schema = {
       },
     },
   },
+  AppPlanDetails: {
+    relayLimit: "Relays Limit",
+    relaysPerDay: "relays per day",
+    currentPlan: "Current Plan",
+    currentPlanToolTip: "This is the current plan for this specific application.",
+    upgrade: "Upgrade",
+  },
   PlanView: {
     title: "Stripe Error",
     description:

@@ -283,6 +283,16 @@ const schema = {
       "We are sorry but there appears to be an issue with out connection to stripe. You can try managing your subscription directly in Stripe's portal.",
     button: "Manage Plan in Stripe",
   },
+  ContactSalesView: {
+    title: "We have Enterprise solutions for your needs",
+    description:
+      "Give us some basic information of your request and our solutions team will reach out soon to find the best way of service your application.",
+    submitting: "Submitting",
+    submit: "Submit",
+    formSubmitted: "Form Submitted",
+    done: "Done",
+    formSubmissionFailed: "Form Submission Failed",
+  },
 }
 
 export default schema

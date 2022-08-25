@@ -1,0 +1,57 @@
+.textarea {
+  width: 100%;
+  padding: 0.5rem 1.25rem;
+  font-size: 0.75rem;
+  min-height: calc(5 * 16px);
+  color: var(--color-white-light);
+  background: transparent;
+  border-radius: 4px;
+  border: 1px solid var(--color-white-main);
+  resize: vertical;
+}
+
+.textarea::-webkit-resizer {
+  background: url("/resizer.svg");
+}
+
+.label {
+  display: inline-block;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--color-white-light);
+  margin-bottom: 8px;
+}
+
+.label .required-field {
+  color: var(--color-secondary-main);
+}
+
+.input {
+  border: 1px solid var(--color-white-light);
+  border-radius: 4px;
+  width: 100%;
+}
+
+.input input {
+  color: var(--color-white-light);
+  padding: 0.5rem 1.25rem;
+}
+
+.input input::placeholder,
+.textarea::placeholder {
+  color: var(--color-disabled);
+  font-size: 1rem;
+  font-weight: 400;
+  margin: 1rem;
+}
+
+.button-container {
+  display: flex;
+  justify-content: end;
+}
+
+.button {
+  margin-top: 2rem;
+  width: 214px;
+  color: var(--color-black-dark);
+}

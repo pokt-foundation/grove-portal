@@ -1,5 +1,7 @@
 import { ActionFunction, json, MetaFunction } from "@remix-run/node"
-import { useActionData } from "@remix-run/react"
+import { useActionData, useCatch } from "@remix-run/react"
+import { useEffect } from "react"
+import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 import ContactSalesView, {
   links as ContactSalesViewLinks,
@@ -72,5 +74,32 @@ export const action: ActionFunction = async ({ request }) => {
 
 export default function ContactSales() {
   const actionData = useActionData()
+
+  useEffect(() => {
+    trackEvent(AmplitudeEvents.ContactSalesView)
+  }, [])
+
   return <ContactSalesView {...actionData} />
+}
+
+export const CatchBoundary = () => {
+  const caught = useCatch()
+  if (caught.status === 404) {
+    return (
+      <div className="error-container">
+        <h1>Contact Sales Catch Error</h1>
+        <p>{caught.statusText}</p>
+      </div>
+    )
+  }
+  throw new Error(`Unexpected caught response with status: ${caught.status}`)
+}
+
+export const ErrorBoundary = ({ error }: { error: Error }) => {
+  return (
+    <div className="error-container">
+      <h1>Contact Sales Error</h1>
+      <p>{error.message}</p>
+    </div>
+  )
 }

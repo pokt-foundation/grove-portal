@@ -170,6 +170,15 @@ interface TranslationData {
     description: string
     button: string
   }
+  ContactSalesView: {
+    title: string
+    description: string
+    submitting: string
+    submit: string
+    formSubmitted: string
+    done: string
+    formSubmissionFailed: string
+  }
 }
 
 export type Language = typeof languages[number]

@@ -4,10 +4,11 @@ import Advertisement, {
 } from "~/components/shared/Advertisement"
 import Button from "~/components/shared/Button"
 
-/* c8 ignore next */
+/* c8 ignore start */
 export const links = () => {
   return [...AdvertisementLinks()]
 }
+/* c8 ignore stop */
 
 export default function AdEconomicsForDevs() {
   const theme = useTheme()

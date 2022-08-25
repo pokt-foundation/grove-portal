@@ -1,11 +1,13 @@
 import { expect } from "vitest"
 import AppPlanDetails from "./AppPlanDetails"
 import { render, screen } from "test/helpers"
+import { PayPlanType } from "~/models/portal/sdk"
+import { getPlanName } from "~/utils/utils"
 
 const dailyLimit = 123
 const unlimited = 0
-const paidPlan = "paid"
-const freePlan = "free"
+const paidPlan = PayPlanType.PayAsYouGoV0
+const freePlan = PayPlanType.FreetierV0
 const id = "111222"
 const name = "myApp"
 
@@ -16,7 +18,7 @@ describe("<AppPlanDetails />", () => {
     )
     const relayLimit = "Relays Limit"
     const currentPlan = "Current Plan"
-    const paid = /paid/i
+    const paid = getPlanName(paidPlan)
     const dailyLimitText = /Unlimited/i
     expect(screen.getByText(paid)).toBeInTheDocument()
     expect(screen.getByText(dailyLimitText)).toBeInTheDocument()
@@ -28,7 +30,7 @@ describe("<AppPlanDetails />", () => {
     render(
       <AppPlanDetails dailyLimit={unlimited} id={id} name={name} planType={paidPlan} />,
     )
-    const paid = /paid/i
+    const paid = getPlanName(paidPlan)
     const dailyLimitText = /Unlimited/i
     expect(screen.getByText(paid)).toBeInTheDocument()
     expect(screen.getByText(dailyLimitText)).toBeInTheDocument()
@@ -39,7 +41,7 @@ describe("<AppPlanDetails />", () => {
     )
     const relayLimit = "Relays Limit"
     const currentPlan = "Current Plan"
-    const free = /free/i
+    const free = getPlanName(freePlan)
     const dailyLimitText = /123/i
     expect(screen.getByText(free)).toBeInTheDocument()
     expect(screen.getByText(relayLimit)).toBeInTheDocument()

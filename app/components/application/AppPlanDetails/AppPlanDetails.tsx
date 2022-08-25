@@ -5,7 +5,8 @@ import Button from "~/components/shared/Button"
 import { Card, links as CardLinks } from "~/components/shared/Card"
 import HelpTooltip from "~/components/shared/HelpTooltip"
 import { useTranslate } from "~/context/TranslateContext"
-import { isFreePlan } from "~/utils/utils"
+import { PayPlanType } from "~/models/portal/sdk"
+import { getPlanName, isFreePlan } from "~/utils/utils"
 
 /* c8 ignore next */
 export const links = () => {
@@ -13,7 +14,7 @@ export const links = () => {
 }
 
 interface AppPlanDetailsProps {
-  planType: string
+  planType: PayPlanType
   dailyLimit: number
   id: string
   name: string
@@ -45,7 +46,7 @@ export default function AppPlanDetails({
             <HelpTooltip label={t.AppPlanDetails.currentPlanToolTip} />
           </Title>
           <div>
-            <Text className="centerGap">{planType || "Free"}</Text>
+            <Text className="centerGap">{getPlanName(planType)}</Text>
           </div>
         </div>
         {isFreePlan(planType) && (

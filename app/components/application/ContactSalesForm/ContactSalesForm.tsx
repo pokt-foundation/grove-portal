@@ -7,6 +7,7 @@ import Card, { links as CardLinks } from "~/components/shared/Card"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { useTranslate } from "~/context/TranslateContext"
 
+/* c8 ignore start */
 export const links = () => {
   return [
     ...CardLinks(),
@@ -18,6 +19,7 @@ export const links = () => {
     },
   ]
 }
+/* c8 ignore stop */
 
 export default function ContactSalesForm() {
   const { t } = useTranslate()
@@ -94,7 +96,7 @@ export default function ContactSalesForm() {
 
   return (
     <Card>
-      <Form ref={formRef} replace method="post">
+      <Form ref={formRef} method="post">
         <Grid>
           {formFields.map(
             ({ component, label, name, placeholder, size, type = "text", required }) => (

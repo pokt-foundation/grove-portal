@@ -9,6 +9,7 @@ import Modal, { links as ModalLinks } from "~/components/shared/Modal"
 import { useTranslate } from "~/context/TranslateContext"
 import { ContactSalesActionData } from "~/routes/dashboard/contact-sales"
 
+/* c8 ignore start */
 export const links = () => {
   return [
     ...ButtonLinks(),
@@ -20,6 +21,7 @@ export const links = () => {
     },
   ]
 }
+/* c8 ignore stop */
 
 export const ContactSalesView = (data: ContactSalesActionData) => {
   const { t } = useTranslate()
@@ -36,7 +38,7 @@ export const ContactSalesView = (data: ContactSalesActionData) => {
     <section>
       <Title order={1}>{t.ContactSalesView.title}</Title>
       <p>{t.ContactSalesView.description}</p>
-      <ContactSalesForm  />
+      <ContactSalesForm />
       <Modal opened={successModalOpened} onClose={() => setSuccessModalOpened(false)}>
         <div className="contact-modal-container">
           <img alt="Success" src="/checkmarkWithCircle.svg" />

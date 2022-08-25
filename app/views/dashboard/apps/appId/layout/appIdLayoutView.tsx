@@ -9,19 +9,18 @@ import AppAddressCard, {
 import AppKeysCard, {
   links as AppKeysCardLinks,
 } from "~/components/application/AppKeysCard"
-import AppRemoveModal, {
-  links as AppRemoveModalLinks,
-} from "~/components/application/AppRemoveModal"
 import FeedbackCard, {
   links as FeedbackCardLinks,
 } from "~/components/application/FeedbackCard"
-import StopRemoveApp from "~/components/application/StopRemoveApp"
+import StopRemoveApp, {
+  links as StopRemoveAppLinks,
+} from "~/components/application/StopRemoveApp"
 import Grid from "~/components/shared/Grid"
 import Modal, { links as ModalLinks } from "~/components/shared/Modal"
 import Nav, { links as NavLinks } from "~/components/shared/Nav"
 import { useFeatureFlags } from "~/context/FeatureFlagContext"
 import { useTranslate } from "~/context/TranslateContext"
-import { PayPlanType, ProcessedEndpoint } from "~/models/portal/sdk"
+import { EndpointQuery, PayPlanType } from "~/models/portal/sdk"
 
 /* c8 ignore start */
 export const links = () => {
@@ -31,14 +30,14 @@ export const links = () => {
     ...AppAddressCardLinks(),
     ...AdEconomicsForDevsLinks(),
     ...FeedbackCardLinks(),
-    ...AppRemoveModalLinks(),
+    ...StopRemoveAppLinks(),
     ...ModalLinks(),
   ]
 }
 /* c8 ignore stop */
 
 type AppIdLayoutViewProps = {
-  endpoint: ProcessedEndpoint | null
+  endpoint: EndpointQuery["endpoint"] | null
   searchParams: URLSearchParams
 }
 
@@ -123,7 +122,7 @@ export default function AppIdLayoutView({
               <section>
                 <AppKeysCard
                   id={endpoint.id}
-                  publicKey={endpoint.apps[0]?.publicKey}
+                  publicKey={endpoint.apps ? endpoint.apps[0]?.publicKey : ""}
                   secret={endpoint.gatewaySettings.secretKey}
                 />
               </section>

@@ -223,7 +223,7 @@ export default function Index() {
                 data={blockchains.map((chain) => ({
                   id: chain.id,
                   network: {
-                    value: chain.description,
+                    value: `${chain.description}`,
                     element: <ChainWithImage chain={chain.description} />,
                   },
                   chainId: chain.id,

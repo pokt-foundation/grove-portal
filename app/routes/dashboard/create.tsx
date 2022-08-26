@@ -7,7 +7,7 @@ import {
   redirect,
 } from "@remix-run/node"
 import { Form, useLoaderData, useActionData, useTransition } from "@remix-run/react"
-import { forwardRef, useState } from "react"
+import { forwardRef, useRef, useState } from "react"
 import invariant from "tiny-invariant"
 import AppPlansOverview, {
   links as AppPlansOverviewLinks,
@@ -129,6 +129,7 @@ export default function CreateApp() {
   const transition = useTransition()
   const action = useActionData() as ActionData
   const [radioSelectedValue, setRadioSelectedValue] = useState(PayPlanType.FreetierV0)
+  const [name, setName] = useState("")
 
   const tiers = [
     {
@@ -158,14 +159,20 @@ export default function CreateApp() {
           <h3>Create New App</h3>
         </div>
         <Form method="post">
-          <TextInput label="Name" name="app-name" placeholder="New App Name" />
+          <TextInput
+            label="Name"
+            name="app-name"
+            placeholder="New App Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
           <AppRadioCards
             currentRadio={radioSelectedValue}
             radioData={tiers}
             setRadio={setRadioSelectedValue}
           />
           <Button
-            disabled={transition.state === "submitting"}
+            disabled={transition.state === "submitting" || name === ""}
             type="submit"
             variant="filled"
             onClick={() => {

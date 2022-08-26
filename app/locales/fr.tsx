@@ -1,6 +1,9 @@
+import { PayPlanType } from "~/models/portal/sdk"
+
 const schema = {
   common: {
     submit: "submit -fr",
+    StopSubscription: "Stop Subscription -fr",
   },
   search: {
     label: "Search -fr",
@@ -213,6 +216,56 @@ const schema = {
   footer: {
     termsOfUse: "Site Terms of Use -fr",
     privacyPolicy: "Privacy Policy -fr",
+  },
+  AppPlansOverview: {
+    planDetailsTitles: {
+      pricing: "Pricing -fr",
+      relayLimit: "Relay Limit -fr",
+      chainAccess: "Chain Access -fr",
+      appsLimit: "Apps Limit -fr",
+      overviewHeader: "Flexible plans that grow with your app -fr",
+      overviewDescription:
+        "Scalable plans because your needs change as yous app grows. All plans access to Pocket Network multichain infrastructure with our chain! -fr",
+    },
+    planDetails: {
+      [PayPlanType.PayAsYouGoV0]: {
+        title: "Pay As You Go -fr",
+        description:
+          "250k free relays per day, per app. Beyond that, pay only for what you use. The counter resets every 24h but you’ll only get billed monthly. Even better, after 24 months of paid relays, you’ll receive POKT to stake for continued service. No more payments. -fr",
+        description2: "No more sunk costs. Just fast, reliable infrastructure. -fr",
+        pricing: "Pay per relay + 250K Free Relays -fr",
+        relayLimit: "No limit -fr",
+        appsLimit: "Up to 2 Applicaitions -fr",
+        chainAccess: "No limit -fr",
+      },
+      [PayPlanType.FreetierV0]: {
+        title: "Always Free -fr",
+        description:
+          "Access to reliable, censor resistant infrastructure. Free up to 250k relays per day. -fr",
+        description2: "",
+        pricing: "$0.00 -fr",
+        relayLimit: "250k per app per day -fr",
+        appsLimit: "Up to 2 Applicaitions -fr",
+        chainAccess: "No limit -fr",
+      },
+      [PayPlanType.TestPlanV0]: {
+        title: "Always Free -fr",
+        description:
+          "Access to reliable, censor resistant infrastructure. Free up to 250k relays per day. -fr",
+        description2: "",
+        pricing: "$0.00 -fr",
+        relayLimit: "250k per app per day -fr",
+        appsLimit: "Up to 2 Applicaitions -fr",
+        chainAccess: "No limit -fr",
+      },
+    },
+  },
+  AppPlanDetails: {
+    relayLimit: "Relays Limit -fr",
+    relaysPerDay: "relays per day -fr",
+    currentPlan: "Current Plan -fr",
+    currentPlanToolTip: "This is the current plan for this specific application. -fr",
+    upgrade: "Upgrade -fr",
   },
   PlanView: {
     title: "Stripe Error -fr",

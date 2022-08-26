@@ -1,4 +1,4 @@
-import { Form } from "@remix-run/react"
+import { Form, useLocation } from "@remix-run/react"
 import styles from "./styles.css"
 import Button from "~/components/shared/Button"
 import { Card, links as CardLinks } from "~/components/shared/Card"
@@ -27,6 +27,7 @@ export default function AppPlanLatestInvoiceCard({
   usageRecords,
 }: PlanLatestInvoiceCardProps) {
   const { t } = useTranslate()
+  const location = useLocation()
 
   const listItems: CardListItem[] = [
     {
@@ -57,6 +58,7 @@ export default function AppPlanLatestInvoiceCard({
           <CardList items={listItems} />
           <Group mt="xl" position="right">
             <Form action="/api/stripe/portal-session" method="post">
+              <input hidden name="return-path" value={location.pathname} />
               <Button type="submit" variant="outline">
                 {t.AppPlanOverviewCard.managePlan}
               </Button>

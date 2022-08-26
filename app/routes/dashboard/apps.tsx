@@ -16,7 +16,7 @@ import CardList, {
 import Loader, { links as LoaderLinks } from "~/components/shared/Loader"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { ProcessedEndpoint } from "~/models/portal/sdk"
+import { EndpointsQuery, ProcessedEndpoint } from "~/models/portal/sdk"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 import { MAX_USER_APPS } from "~/utils/pocketUtils"
 import { getPoktId, requireUser } from "~/utils/session.server"
@@ -33,7 +33,7 @@ export const links = () => {
 }
 
 export type AllAppsLoaderData = {
-  endpoints: ProcessedEndpoint[] | null
+  endpoints: EndpointsQuery["endpoints"] | null
   userId: string
 }
 
@@ -43,15 +43,10 @@ export const loader: LoaderFunction = async ({ request }) => {
   const endpointsResponse = await portal.endpoints().catch((e) => {
     console.log(e)
   })
-  const endpoints = endpointsResponse
-    ? (endpointsResponse.endpoints.filter(
-        (endpoint) => endpoint !== null,
-      ) as ProcessedEndpoint[])
-    : null
 
   return json<AllAppsLoaderData>(
     {
-      endpoints,
+      endpoints: endpointsResponse ? endpointsResponse.endpoints : null,
       userId: getPoktId(user.profile.id),
     },
     {
@@ -98,7 +93,7 @@ export const Apps = () => {
             {(!endpoints ||
               endpoints.length < MAX_USER_APPS ||
               getRequiredClientEnvVar("GODMODE_ACCOUNTS")?.includes(userId)) && (
-              <Button fullWidth component={Link} mt={32} to="create">
+              <Button fullWidth component={Link} mt={32} to="/dashboard/create">
                 Create New Application
               </Button>
             )}

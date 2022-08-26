@@ -37,13 +37,13 @@ html {
 body {
   display: flex;
   flex-direction: column;
-  width: 100vw;
   min-height: 100vh;
   overflow-x: hidden;
   overflow-y: auto;
   font-family: "Manrope";
   background-color: var(--color-black-dark);
   color: var(--color-white-main);
+  width: 100vw;
 }
 
 main {

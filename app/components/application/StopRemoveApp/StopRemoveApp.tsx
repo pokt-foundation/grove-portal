@@ -1,4 +1,4 @@
-import { Link } from "@remix-run/react"
+import { Form, Link } from "@remix-run/react"
 import AppRemoveModal, { links as AppRemoveModalLinks } from "../AppRemoveModal"
 import styles from "./styles.css"
 import Button from "~/components/shared/Button"
@@ -22,15 +22,17 @@ export default function StopRemoveApp({ endpointId, planType }: StopRemoveAppPro
   return (
     <>
       {isPaidPlan(planType) ? (
-        <Button fullWidth component={Link} to={stripe} variant="subtle">
-          <img
-            aria-hidden
-            alt="Remove Application"
-            className="pokt-app-remove-delete-icon"
-            src="/delete.svg"
-          />{" "}
-          {t.common.StopSubscription}
-        </Button>
+        <Form action={stripe} method="post">
+          <Button fullWidth type="submit" variant="subtle">
+            <img
+              aria-hidden
+              alt="Stop Subscription"
+              className="pokt-app-remove-delete-icon"
+              src="/delete.svg"
+            />{" "}
+            {t.common.StopSubscription}
+          </Button>
+        </Form>
       ) : (
         <AppRemoveModal appId={endpointId} />
       )}

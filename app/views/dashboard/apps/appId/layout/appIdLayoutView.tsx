@@ -9,6 +9,9 @@ import AppAddressCard, {
 import AppKeysCard, {
   links as AppKeysCardLinks,
 } from "~/components/application/AppKeysCard"
+import AppPlanDetails, {
+  links as AppPlanDetailsLinks,
+} from "~/components/application/AppPlanDetails"
 import FeedbackCard, {
   links as FeedbackCardLinks,
 } from "~/components/application/FeedbackCard"
@@ -32,6 +35,7 @@ export const links = () => {
     ...FeedbackCardLinks(),
     ...StopRemoveAppLinks(),
     ...ModalLinks(),
+    ...AppPlanDetailsLinks(),
   ]
 }
 /* c8 ignore stop */
@@ -119,6 +123,14 @@ export default function AppIdLayoutView({
         <Grid.Col md={4}>
           {endpoint && (
             <>
+              <section>
+                <AppPlanDetails
+                  dailyLimit={endpoint.appLimits.dailyLimit}
+                  id={endpoint.id}
+                  name={endpoint.name}
+                  planType={endpoint.appLimits.planType}
+                />
+              </section>
               <section>
                 <AppKeysCard
                   id={endpoint.id}

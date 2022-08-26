@@ -21,7 +21,7 @@ export default function AppEndpointCard({ appId }: AppRemoveModalProps) {
 
   return (
     <div className="pokt-app-remove">
-      <Button fullWidth variant="subtle" onClick={() => setOpened(true)}>
+      <Button fullWidth variant="outline" onClick={() => setOpened(true)}>
         <img
           aria-hidden
           alt="Remove Application"

@@ -7,7 +7,7 @@ import AdEconomicsForDevs, {
 import FeedbackCard, {
   links as FeedbackCardLinks,
 } from "~/components/application/FeedbackCard"
-import Button from "@pokt-foundation/pocket-blocks"
+import { Button } from "@pokt-foundation/pocket-blocks"
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import CardList, {
   CardListItem,
@@ -23,7 +23,6 @@ import { getPoktId, requireUser } from "~/utils/session.server"
 
 export const links = () => {
   return [
-    ...ButtonLinks(),
     ...CardLinks(),
     ...CardListLinks(),
     ...FeedbackCardLinks(),

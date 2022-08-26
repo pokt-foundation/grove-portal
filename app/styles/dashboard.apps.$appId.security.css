@@ -73,8 +73,6 @@
 
 .security button[type="submit"] {
   float: right;
-  width: 160px;
-  color: var(--color-black-dark);
 }
 
 .security .pokt-text {

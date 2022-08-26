@@ -1,5 +1,5 @@
-import styles from "./styles.css"
 import { Button } from "@pokt-foundation/pocket-blocks"
+import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/shared/Card"
 import CardList, {
   CardListItem,

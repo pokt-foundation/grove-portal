@@ -45,9 +45,9 @@ export default function TextInput({
       />
       {hasDelete && (
         <Button
-          variant="outline"
-          color="blue"
           className="pokt-text-delete"
+          color="blue"
+          variant="outline"
           onClick={handleRemove}
         >
           <IconTrashcan />

@@ -21,7 +21,6 @@ import AppRadioCards, {
 // } from "~/components/application/ChainWithImage"
 import Button from "~/components/shared/Button"
 import Card, { links as CardLinks } from "~/components/shared/Card"
-// import Select, { links as SelectLinks } from "~/components/shared/Select"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { useFeatureFlags } from "~/context/FeatureFlagContext"
 import { initPortalClient } from "~/models/portal/portal.server"
@@ -30,7 +29,6 @@ import { Stripe, stripe } from "~/models/stripe/stripe.server"
 import styles from "~/styles/dashboard.apps.create.css"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { getErrorMessage } from "~/utils/catchError"
-// import { CHAIN_ID_PREFIXES } from "~/utils/chainUtils"
 import { getRequiredServerEnvVar } from "~/utils/environment"
 import { requireUser } from "~/utils/session.server"
 
@@ -44,8 +42,6 @@ export const links = () => {
   return [
     ...CardLinks(),
     ...TextInputLinks(),
-    //...SelectLinks(),
-    //...ChainWithImageLinks(),
     ...AppPlansOverviewLinks(),
     ...AppRadioCardsLinks(),
     { rel: "stylesheet", href: styles },
@@ -93,18 +89,17 @@ export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData()
   const subscription = formData.get("app-subscription")
   const name = formData.get("app-name")
-  const chain = formData.get("app-chain")
 
   invariant(
     subscription && typeof subscription === "string",
     "app subscription not found",
   )
   invariant(name && typeof name === "string", "app name not found")
-  invariant(chain && typeof chain === "string", "app name not found")
 
   try {
     const { createNewEndpoint } = await portal.createEndpoint({
       name,
+      payPlanType: subscription as PayPlanType,
     })
 
     if (!createNewEndpoint) {
@@ -128,20 +123,7 @@ export const action: ActionFunction = async ({ request }) => {
   }
 }
 
-// const SelectItem = forwardRef<HTMLDivElement, AppEndpointProps>(
-//   ({ chain, label, ...others }: AppEndpointProps, ref) => (
-//     <div ref={ref} {...others}>
-//       <ChainWithImage chain={chain} label={label} />
-//     </div>
-//   ),
-// )
-
 export default function CreateApp() {
-  // const chains = Array.from(CHAIN_ID_PREFIXES.entries()).map(([id, { name }]) => ({
-  //   chain: name,
-  //   label: name,
-  //   value: id,
-  // }))
   const { flags } = useFeatureFlags()
   const { price } = useLoaderData() as LoaderData
   const transition = useTransition()
@@ -177,21 +159,6 @@ export default function CreateApp() {
         </div>
         <Form method="post">
           <TextInput label="Name" name="app-name" placeholder="New App Name" />
-          {/* // removing for now as it functionally serves almost no purpose
-            <Select
-            searchable
-            data={chains}
-            filter={(value, item) =>
-              item.chain.toLowerCase().includes(value.toLowerCase().trim()) ||
-              item.value.toLowerCase().includes(value.toLowerCase().trim())
-            }
-            itemComponent={SelectItem}
-            label="Chain"
-            name="app-chain"
-            nothingFound="No options"
-            placeholder="Select Chain"
-          /> 
-          */}
           <AppRadioCards
             currentRadio={radioSelectedValue}
             radioData={tiers}
@@ -199,7 +166,6 @@ export default function CreateApp() {
           />
           <Button
             disabled={transition.state === "submitting"}
-            name="app-subscription"
             type="submit"
             variant="filled"
             onClick={() => {

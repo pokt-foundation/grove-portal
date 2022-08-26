@@ -41,11 +41,11 @@ export default function AppRadioCards({
           >
             <div className="flexRow">
               <Radio
-                readOnly
                 checked={radio.value === currentRadio}
                 disabled={radio.active != "true"}
                 label={radio.name}
-                value={radio.name}
+                name="app-subscription"
+                value={radio.value}
               />
               <Text>{radio.priceText}</Text>
             </div>

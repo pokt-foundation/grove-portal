@@ -76,6 +76,14 @@ interface TranslationData {
     clickOpen: string
     clickClose: string
   }
+  dashboard: {
+    routes: {
+      network: string
+      apps: string
+      docs: string
+      discord: string
+    }
+  }
   appId: {
     routes: {
       overview: string

@@ -95,57 +95,69 @@ export default function ContactSalesForm() {
   }, [transition.type])
 
   return (
-    <Card>
-      <Form ref={formRef} method="post">
-        <Grid>
-          {formFields.map(
-            ({ component, label, name, placeholder, size, type = "text", required }) => (
-              <Grid.Col key={name} xl={size ?? 12}>
-                {component === "input" && (
-                  <>
-                    <label className="label" htmlFor={name}>
-                      {label} {required && <span className="required-field">*</span>}
-                    </label>
-                    <TextInput
-                      className="input"
-                      name={name}
-                      placeholder={placeholder}
-                      required={required}
-                      type={type}
-                    />
-                  </>
-                )}
-                {component === "textarea" && (
-                  <>
-                    <label className="label" htmlFor={name}>
-                      {label} {required && <span className="required-field">*</span>}
-                    </label>
-                    <textarea
-                      className="textarea"
-                      name={name}
-                      placeholder={placeholder}
-                      required={required}
-                    />
-                  </>
-                )}
-              </Grid.Col>
-            ),
-          )}
-        </Grid>
+    <div className="contact-sales-form-container">
+      <Card>
+        <Form ref={formRef} method="post">
+          <Grid>
+            {formFields.map(
+              ({
+                component,
+                label,
+                name,
+                placeholder,
+                size,
+                type = "text",
+                required,
+              }) => (
+                <Grid.Col key={name} className="contact-sales-form-grid-col" md={size ?? 12}>
+                  {component === "input" && (
+                    <>
+                      <label className="label" htmlFor={name}>
+                        {label} {required && <span className="required-field">*</span>}
+                      </label>
+                      <TextInput
+                        className="input"
+                        name={name}
+                        placeholder={placeholder}
+                        required={required}
+                        type={type}
+                      />
+                    </>
+                  )}
+                  {component === "textarea" && (
+                    <>
+                      <label className="label" htmlFor={name}>
+                        {label} {required && <span className="required-field">*</span>}
+                      </label>
+                      <textarea
+                        className="textarea"
+                        name={name}
+                        placeholder={placeholder}
+                        required={required}
+                      />
+                    </>
+                  )}
+                </Grid.Col>
+              ),
+            )}
+          </Grid>
 
-        <div className="button-container">
-          <Button
-            className="pokt-button button"
-            disabled={transition.state === "loading" || transition.state === "submitting"}
-            type="submit"
-            variant="filled"
-          >
-            {transition.state === "loading" || transition.state === "submitting"
-              ? t.ContactSalesForm.submitting
-              : t.ContactSalesForm.submit}
-          </Button>
-        </div>
-      </Form>
-    </Card>
+          <div className="button-container">
+            <Button
+              className="pokt-button button"
+              disabled={
+                transition.state === "loading" || transition.state === "submitting"
+              }
+              type="submit"
+              variant="filled"
+            >
+              {transition.state === "loading" || transition.state === "submitting"
+                ? t.ContactSalesForm.submitting
+                : t.ContactSalesForm.submit}
+            </Button>
+          </div>
+        </Form>
+      </Card>
+    </div>
   )
 }

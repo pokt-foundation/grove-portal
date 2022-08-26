@@ -26,7 +26,7 @@ export type ContactSalesActionData =
       error?: any
     }
   | {
-      error: boolean
+      error: true
       data: any
       result: Result
     }

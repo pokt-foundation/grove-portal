@@ -109,7 +109,11 @@ export default function ContactSalesForm() {
                 type = "text",
                 required,
               }) => (
-                <Grid.Col key={name} className="contact-sales-form-grid-col" md={size ?? 12}>
+                <Grid.Col
+                  key={name}
+                  className="contact-sales-form-grid-col"
+                  md={size ?? 12}
+                >
                   {component === "input" && (
                     <>
                       <label className="label" htmlFor={name}>

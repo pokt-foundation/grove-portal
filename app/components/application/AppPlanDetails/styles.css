@@ -7,7 +7,7 @@
 }
 
 .pokt-app-plan-details .flexRow:first-child {
-  margin-bottom: 32px;
+  margin-bottom: 16px;
 }
 
 .pokt-app-plan-details .flexRow div {
@@ -24,6 +24,7 @@
 
 .pokt-app-plan-details h3 {
   font-size: 18px;
+  margin: 0;
 }
 
 .pokt-app-plan-details .centerGap {

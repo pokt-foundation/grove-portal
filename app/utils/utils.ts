@@ -42,7 +42,7 @@ export const getPlanName = (planType: PayPlanType) => {
       return "Always Free"
     }
     case PayPlanType.PayAsYouGoV0: {
-      return "Paid"
+      return "Pay As You Go"
     }
     default: {
       return "Legacy"

@@ -20,6 +20,7 @@ export const AmplitudeEvents = {
   AppPlanDetailsView: "APP_PLAN_DETAILS_VIEW",
   NotificationSettingsChange: "NOTIFICATION_SETTINGS_CHANGE",
   SecuritySettingsUpdate: "SECURITY_SETTINGS_UPDATE",
+  ContactSalesView: "CONTACT_SALES_VIEW",
 }
 
 function splitUser(user: { id: string }) {

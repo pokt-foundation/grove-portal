@@ -1,0 +1,11 @@
+.button {
+  margin-top: 2rem;
+  width: 214px;
+  color: var(--color-black-dark);
+}
+
+.contact-modal-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

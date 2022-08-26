@@ -2,6 +2,10 @@ import React, { useContext, useMemo } from "react"
 import { useUser } from "./UserContext"
 import en from "~/locales/en"
 import fr from "~/locales/fr"
+import {
+  ContactSalesForm,
+  ContactSalesView,
+} from "~/locales/types/ContactSalesLocaleTypes"
 import { PayPlanType } from "~/models/portal/sdk"
 
 const languages = ["en", "fr"] as const
@@ -210,6 +214,8 @@ interface TranslationData {
     description: string
     button: string
   }
+  ContactSalesView: ContactSalesView
+  ContactSalesForm: ContactSalesForm
 }
 
 export type Language = typeof languages[number]

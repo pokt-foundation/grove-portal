@@ -328,6 +328,46 @@ const schema = {
       "We are sorry but there appears to be an issue with out connection to stripe. You can try managing your subscription directly in Stripe's portal.",
     button: "Manage Plan in Stripe",
   },
+  ContactSalesView: {
+    title: "We have Enterprise solutions for your needs",
+    description:
+      "Give us some basic information of your request and our solutions team will reach out soon to find the best way of service your application.",
+    formSubmitted: "Form Submitted",
+    done: "Done",
+    formSubmissionFailed: "Form Submission Failed",
+  },
+  ContactSalesForm: {
+    submitting: "Submitting",
+    submit: "Submit",
+    firstName: {
+      label: "First Name",
+      placeholder: "Enter your name",
+    },
+    lastName: {
+      label: "Last Name",
+      placeholder: "Enter your last name",
+    },
+    email: {
+      label: "Email",
+      placeholder: "Enter your email",
+    },
+    company: {
+      label: "Company",
+      placeholder: "Enter a company name",
+    },
+    chains: {
+      label: "Protocol/Chains of interest",
+      placeholder: "I'm interested in chain...",
+    },
+    relays: {
+      label: "Relay Needs",
+      placeholder: "How many daily relays your application request",
+    },
+    tellUsMore: {
+      label: "Tell us more about what you are building",
+      placeholder: "I'm building a Chain...",
+    },
+  },
 }
 
 export default schema

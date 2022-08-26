@@ -4,7 +4,7 @@ import styles from "./styles.css"
 import Button from "~/components/shared/Button"
 import { useTranslate } from "~/context/TranslateContext"
 import { PayPlanType } from "~/models/portal/sdk"
-import { isFreePlan } from "~/utils/utils"
+import { isPaidPlan } from "~/utils/utils"
 
 /* c8 ignore next */
 export const links = () => {
@@ -21,9 +21,7 @@ export default function StopRemoveApp({ endpointId, planType }: StopRemoveAppPro
   const stripe = "/api/stripe/portal-session"
   return (
     <>
-      {isFreePlan(planType) ? (
-        <AppRemoveModal appId={endpointId} />
-      ) : (
+      {isPaidPlan(planType) ? (
         <Button fullWidth component={Link} to={stripe} variant="subtle">
           <img
             aria-hidden
@@ -33,6 +31,8 @@ export default function StopRemoveApp({ endpointId, planType }: StopRemoveAppPro
           />{" "}
           {t.common.StopSubscription}
         </Button>
+      ) : (
+        <AppRemoveModal appId={endpointId} />
       )}
     </>
   )

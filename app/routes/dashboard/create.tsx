@@ -7,7 +7,7 @@ import {
   redirect,
 } from "@remix-run/node"
 import { Form, useLoaderData, useActionData, useTransition } from "@remix-run/react"
-import { forwardRef, useState } from "react"
+import { useState } from "react"
 import invariant from "tiny-invariant"
 import AppPlansOverview, {
   links as AppPlansOverviewLinks,
@@ -15,10 +15,6 @@ import AppPlansOverview, {
 import AppRadioCards, {
   links as AppRadioCardsLinks,
 } from "~/components/application/AppRadioCards"
-// import ChainWithImage, {
-//   AppEndpointProps,
-//   links as ChainWithImageLinks,
-// } from "~/components/application/ChainWithImage"
 import Button from "~/components/shared/Button"
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
@@ -31,6 +27,7 @@ import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { getErrorMessage } from "~/utils/catchError"
 import { getRequiredServerEnvVar } from "~/utils/environment"
 import { requireUser } from "~/utils/session.server"
+import { getPlanName } from "~/utils/utils"
 
 export const meta: MetaFunction = () => {
   return {
@@ -129,10 +126,11 @@ export default function CreateApp() {
   const transition = useTransition()
   const action = useActionData() as ActionData
   const [radioSelectedValue, setRadioSelectedValue] = useState(PayPlanType.FreetierV0)
+  const [name, setName] = useState("")
 
   const tiers = [
     {
-      name: "Always Free",
+      name: getPlanName(PayPlanType.FreetierV0),
       value: PayPlanType.FreetierV0,
       active: "true",
       price: 0,
@@ -141,7 +139,7 @@ export default function CreateApp() {
         "Access to reliable, censor resistant infrastructure. Free up to 250k relays per day.",
     },
     {
-      name: "Pay As You Go",
+      name: getPlanName(PayPlanType.PayAsYouGoV0),
       value: PayPlanType.PayAsYouGoV0,
       active: flags.STRIPE_PAYMENT,
       price: price?.tiers![1].unit_amount_decimal || 0.0000123,
@@ -158,14 +156,20 @@ export default function CreateApp() {
           <h3>Create New App</h3>
         </div>
         <Form method="post">
-          <TextInput label="Name" name="app-name" placeholder="New App Name" />
+          <TextInput
+            label="Name"
+            name="app-name"
+            placeholder="New App Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
           <AppRadioCards
             currentRadio={radioSelectedValue}
             radioData={tiers}
             setRadio={setRadioSelectedValue}
           />
           <Button
-            disabled={transition.state === "submitting"}
+            disabled={transition.state === "submitting" || name === ""}
             type="submit"
             variant="filled"
             onClick={() => {

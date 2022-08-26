@@ -103,7 +103,7 @@ export const action: ActionFunction = async ({ request }) => {
       throw new Error("portal api could not create new endpoint")
     }
 
-    if (subscription === "paid") {
+    if (subscription === PayPlanType.PayAsYouGoV0) {
       formData.append("app-id", createNewEndpoint.id)
 
       // setting to any because of a TS nnown error: https://github.com/microsoft/TypeScript/issues/19806

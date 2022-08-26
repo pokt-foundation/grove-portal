@@ -36,6 +36,20 @@ export function isFreePlan(planType: PayPlanType) {
   return true
 }
 
+export function isPaidPlan(planType: PayPlanType) {
+  if (planType !== PayPlanType.PayAsYouGoV0) {
+    return false
+  }
+  return true
+}
+
+export function isLegacyPlan(planType: PayPlanType) {
+  if (planType !== PayPlanType.PayAsYouGoV0 && planType !== PayPlanType.FreetierV0) {
+    return false
+  }
+  return true
+}
+
 export const getPlanName = (planType: PayPlanType) => {
   switch (planType) {
     case PayPlanType.FreetierV0: {

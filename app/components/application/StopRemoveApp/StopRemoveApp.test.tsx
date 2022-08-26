@@ -12,7 +12,7 @@ describe("<StopRemoveApp />", () => {
     render(<StopRemoveApp endpointId={"123"} planType={PayPlanType.PayAsYouGoV0} />)
 
     expect(screen.getByText(stopSubscription)).toBeInTheDocument()
-    expect(screen.getByRole("link", { name: stopSubscription })).toBeInTheDocument()
+    expect(screen.getByRole("button", { name: stopSubscription })).toBeInTheDocument()
     expect(
       screen.queryByRole("button", { name: removeApplication }),
     ).not.toBeInTheDocument()
@@ -22,6 +22,8 @@ describe("<StopRemoveApp />", () => {
 
     expect(screen.getByText(removeApplication)).toBeInTheDocument()
     expect(screen.getByRole("button", { name: removeApplication })).toBeInTheDocument()
-    expect(screen.queryByRole("link", { name: stopSubscription })).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole("button", { name: stopSubscription }),
+    ).not.toBeInTheDocument()
   })
 })

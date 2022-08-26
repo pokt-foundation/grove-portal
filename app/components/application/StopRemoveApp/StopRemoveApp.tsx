@@ -1,10 +1,10 @@
-import { Link } from "@remix-run/react"
+import { Form, Link } from "@remix-run/react"
 import AppRemoveModal, { links as AppRemoveModalLinks } from "../AppRemoveModal"
 import styles from "./styles.css"
 import Button from "~/components/shared/Button"
 import { useTranslate } from "~/context/TranslateContext"
 import { PayPlanType } from "~/models/portal/sdk"
-import { isFreePlan } from "~/utils/utils"
+import { isPaidPlan } from "~/utils/utils"
 
 /* c8 ignore next */
 export const links = () => {
@@ -21,18 +21,20 @@ export default function StopRemoveApp({ endpointId, planType }: StopRemoveAppPro
   const stripe = "/api/stripe/portal-session"
   return (
     <>
-      {isFreePlan(planType) ? (
-        <AppRemoveModal appId={endpointId} />
+      {isPaidPlan(planType) ? (
+        <Form action={stripe} method="post">
+          <Button fullWidth type="submit" variant="subtle">
+            <img
+              aria-hidden
+              alt="Stop Subscription"
+              className="pokt-app-remove-delete-icon"
+              src="/delete.svg"
+            />{" "}
+            {t.common.StopSubscription}
+          </Button>
+        </Form>
       ) : (
-        <Button fullWidth component={Link} to={stripe} variant="subtle">
-          <img
-            aria-hidden
-            alt="Remove Application"
-            className="pokt-app-remove-delete-icon"
-            src="/delete.svg"
-          />{" "}
-          {t.common.StopSubscription}
-        </Button>
+        <AppRemoveModal appId={endpointId} />
       )}
     </>
   )

@@ -6,6 +6,7 @@ import {
   ContactSalesForm,
   ContactSalesView,
 } from "~/locales/types/ContactSalesLocaleTypes"
+import { PayPlanType } from "~/models/portal/sdk"
 
 const languages = ["en", "fr"] as const
 const translate: Translate = {
@@ -161,6 +162,45 @@ interface TranslationData {
   footer: {
     termsOfUse: string
     privacyPolicy: string
+  }
+  AppPlansOverview: {
+    planDetailsTitles: {
+      pricing: string
+      relayLimit: string
+      chainAccess: string
+      appsLimit: string
+      overviewHeader: string
+      overviewDescription: string
+    }
+    planDetails: {
+      [PayPlanType.PayAsYouGoV0]: {
+        title: string
+        description: string
+        description2: string
+        pricing: string
+        relayLimit: string
+        appsLimit: string
+        chainAccess: string
+      }
+      [PayPlanType.FreetierV0]: {
+        title: string
+        description: string
+        description2: string
+        pricing: string
+        relayLimit: string
+        appsLimit: string
+        chainAccess: string
+      }
+      [PayPlanType.TestPlanV0]: {
+        title: string
+        description: string
+        description2: string
+        pricing: string
+        relayLimit: string
+        appsLimit: string
+        chainAccess: string
+      }
+    }
   }
   AppPlanDetails: {
     relayLimit: string

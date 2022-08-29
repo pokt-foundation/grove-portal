@@ -74,12 +74,44 @@ export default function CalculateYourPricing({ price }: CalculateYourPriceProps)
         How is this calculated?
       </Button>
 
-      <Modal
-        opened={open}
-        title="How is this price calculated"
-        onClose={() => setOpen(false)}
-      >
-        <div></div>
+      <Modal opened={open} size={600} onClose={() => setOpen(false)}>
+        <div className="calculate-your-pricing-modal">
+          <h3>How is this price calculated</h3>
+          <p>
+            This formula is how Pocket portal calculates and charge you app relyas montly.
+            If you want to learn more see our{" "}
+            <a href="https://docs.pokt.network/home/">documentation</a>.
+          </p>
+          <p className="calculate-your-pricing-formula">
+            <span>
+              (Total daily relays <span className="symbol">-</span> &nbsp;
+            </span>
+            <span className="column">
+              <span>free relays) &nbsp;</span>
+              <span className="calculate-your-pricing-formula-value">
+                {FREE_TIER_MAX_RELAYS.toLocaleString("en-US")}
+              </span>
+            </span>
+            <span className="symbol">x&nbsp;</span>
+            <span className="column">
+              <span>price per relay</span>
+              <span className="calculate-your-pricing-formula-value">${price}</span>
+            </span>
+            <span>
+              {" "}
+              <span className="symbol">&nbsp; =</span> Cost per day
+            </span>
+          </p>
+          <p>
+            The sum of each cost per day ={" "}
+            <span className="calculate-your-pricing-conclusion">Monthly fee</span>
+          </p>
+          <div className="calculate-your-pricing-modal-footer">
+            <Button variant="filled" onClick={() => setOpen(false)}>
+              Done
+            </Button>
+          </div>
+        </div>
       </Modal>
     </section>
   )

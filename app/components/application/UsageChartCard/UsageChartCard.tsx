@@ -1,10 +1,10 @@
 import { LineChart, useTheme } from "@pokt-foundation/ui"
+import clsx from "clsx"
 import { useMemo } from "react"
 import { formatDailyRelaysForGraphing } from "./formatDailyRelaysForGraphing"
 import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/shared/Card"
 import { RelayMetric } from "~/models/relaymeter/relaymeter.server"
-import clsx from "clsx"
 
 /* c8 ignore start */
 export const links = () => {
@@ -16,12 +16,14 @@ interface NetworkChardCardProps {
   relays: RelayMetric[]
   title?: string
   detail?: string
+  emptyLabel?: string
 }
 
 export default function UsageChartCard({
   relays,
   title = "Relay Count",
   detail = "last 7 Days",
+  emptyLabel,
 }: NetworkChardCardProps) {
   const theme = useTheme()
 
@@ -42,9 +44,9 @@ export default function UsageChartCard({
           <p>{detail}</p>
         </div>
         <div className="pokt-chart-wrapper">
-          {!hasRelays && (
+          {!hasRelays && emptyLabel && (
             <div className="pokt-chart-overlay">
-              <p>Your applications do not have relay data yet.</p>
+              <p>{emptyLabel}</p>
             </div>
           )}
           <LineChart

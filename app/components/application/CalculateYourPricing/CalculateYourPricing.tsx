@@ -25,7 +25,7 @@ interface CalculateYourPriceProps {
 }
 
 export default function CalculateYourPricing({ price }: CalculateYourPriceProps) {
-  const [relays, setRelays] = useState<number>(1)
+  const [relays, setRelays] = useState<number>(0)
   const [open, setOpen] = useState<boolean>(false)
 
   let totalMonthly
@@ -56,11 +56,23 @@ export default function CalculateYourPricing({ price }: CalculateYourPriceProps)
             <span className="calculate-your-pricing-placeholder">AVG Relays per Day</span>
           }
           rightSectionWidth={160}
-          value={relays}
+          value={relays.toLocaleString("en-US")}
           onChange={({ target: { value } }) => {
-            if (isNaN(Number(value)) || Number(value) === Infinity || value.length > 20)
+            if (!value.length) {
+              setRelays(0)
               return
-            setRelays(Number(value))
+            }
+
+            const valueWithoutCommas = parseFloat(value.replace(/,/g, ""))
+            if (
+              isNaN(valueWithoutCommas) ||
+              Number(value) === Infinity ||
+              value.length > 20
+            ) {
+              return
+            }
+
+            setRelays(valueWithoutCommas)
           }}
         />
 

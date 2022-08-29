@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import styles from "./styles.css"
 import Button, { links as ButtonLinks } from "~/components/shared/Button"
 import Modal, { links as ModalLinks } from "~/components/shared/Modal"
@@ -8,6 +8,7 @@ import { FREE_TIER_MAX_RELAYS } from "~/utils/pocketUtils"
 // 365 / 12
 const DAYS_IN_EACH_MONTH = 30.41
 
+/* c8 ignore start */
 export const links = () => {
   return [
     ...TextInputLinks(),
@@ -19,6 +20,7 @@ export const links = () => {
     },
   ]
 }
+/* c8 ignore stop */
 
 interface CalculateYourPriceProps {
   price: number
@@ -28,16 +30,17 @@ export default function CalculateYourPricing({ price }: CalculateYourPriceProps)
   const [relays, setRelays] = useState<number>(0)
   const [open, setOpen] = useState<boolean>(false)
 
-  let totalMonthly
-  if (relays > FREE_TIER_MAX_RELAYS) {
-    totalMonthly = (
-      (relays - FREE_TIER_MAX_RELAYS) *
-      price *
-      DAYS_IN_EACH_MONTH
-    ).toLocaleString("en-US", { maximumFractionDigits: 2 })
-  } else {
-    totalMonthly = 0
-  }
+  const totalMonthly = useMemo(() => {
+    if (relays > FREE_TIER_MAX_RELAYS) {
+      return (
+        (relays - FREE_TIER_MAX_RELAYS) *
+        price *
+        DAYS_IN_EACH_MONTH
+      ).toLocaleString("en-US", { maximumFractionDigits: 2 })
+    } else {
+      return 0
+    }
+  }, [price, relays])
 
   return (
     <section className="calculate-your-pricing-container">

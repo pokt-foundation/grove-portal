@@ -28,11 +28,13 @@ export default function CalculateYourPricing({ price }: CalculateYourPriceProps)
   const [relays, setRelays] = useState<number>(1)
   const [open, setOpen] = useState<boolean>(false)
 
-  let totalMonthly = 0
+  let totalMonthly
   if (relays > FREE_TIER_MAX_RELAYS) {
-    totalMonthly = Number(
-      ((relays - FREE_TIER_MAX_RELAYS) * price * DAYS_IN_EACH_MONTH).toFixed(2),
-    )
+    totalMonthly = (
+      (relays - FREE_TIER_MAX_RELAYS) *
+      price *
+      DAYS_IN_EACH_MONTH
+    ).toLocaleString("en-US", { maximumFractionDigits: 2 })
   } else {
     totalMonthly = 0
   }
@@ -55,7 +57,11 @@ export default function CalculateYourPricing({ price }: CalculateYourPriceProps)
           }
           rightSectionWidth={160}
           value={relays}
-          onChange={({ target: { value } }) => setRelays(Number(value))}
+          onChange={({ target: { value } }) => {
+            if (isNaN(Number(value)) || Number(value) === Infinity || value.length > 20)
+              return
+            setRelays(Number(value))
+          }}
         />
 
         <div className="calculate-your-pricing-footer">

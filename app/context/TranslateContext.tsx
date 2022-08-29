@@ -2,6 +2,7 @@ import React, { useContext, useMemo } from "react"
 import { useUser } from "./UserContext"
 import en from "~/locales/en"
 import fr from "~/locales/fr"
+import { CalculateYourPricing } from "~/locales/types/CalculateYourPricing"
 import {
   ContactSalesForm,
   ContactSalesView,
@@ -216,6 +217,7 @@ interface TranslationData {
   }
   ContactSalesView: ContactSalesView
   ContactSalesForm: ContactSalesForm
+  CalculateYourPricing: CalculateYourPricing
 }
 
 export type Language = typeof languages[number]

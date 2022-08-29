@@ -3,6 +3,7 @@ import styles from "./styles.css"
 import Button, { links as ButtonLinks } from "~/components/shared/Button"
 import Modal, { links as ModalLinks } from "~/components/shared/Modal"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
+import { useTranslate } from "~/context/TranslateContext"
 import { FREE_TIER_MAX_RELAYS } from "~/utils/pocketUtils"
 
 // 365 / 12
@@ -27,6 +28,7 @@ interface CalculateYourPriceProps {
 }
 
 export default function CalculateYourPricing({ price }: CalculateYourPriceProps) {
+  const { t } = useTranslate()
   const [relays, setRelays] = useState<number>(0)
   const [open, setOpen] = useState<boolean>(false)
 
@@ -45,18 +47,14 @@ export default function CalculateYourPricing({ price }: CalculateYourPriceProps)
   return (
     <section className="calculate-your-pricing-container">
       <div className="calculate-your-pricing-card">
-        <h3>Calculate your pricing</h3>
-        <p>
-          Use the calculator below to give you an estimate of what your monthly bill could
-          look like.
-        </p>
-        <p>
-          Enter the number of relays you think your app might consume in a day. Don’t
-          exclude the free relays. We will do the math for you.
-        </p>
+        <h3>{t.CalculateYourPricing.title}</h3>
+        <p>{t.CalculateYourPricing.firstDescription}</p>
+        <p>{t.CalculateYourPricing.secondDescription}</p>
         <TextInput
           rightSection={
-            <span className="calculate-your-pricing-placeholder">AVG Relays per Day</span>
+            <span className="calculate-your-pricing-placeholder">
+              {t.CalculateYourPricing.avgRelaysPerDay}
+            </span>
           }
           rightSectionWidth={160}
           value={relays.toLocaleString("en-US")}
@@ -81,55 +79,60 @@ export default function CalculateYourPricing({ price }: CalculateYourPriceProps)
 
         <div className="calculate-your-pricing-footer">
           <div>
-            <h4>Price per Relay</h4>
+            <h4>{t.CalculateYourPricing.pricePerRelay}</h4>
             <p>${price}</p>
           </div>
           <div className="divider" />
           <div>
-            <h4>Total Monthly Estimated Price</h4>
+            <h4>{t.CalculateYourPricing.totalMonthlyPrice}</h4>
             <p>${totalMonthly}</p>
           </div>
         </div>
       </div>
       <Button className="calculate-your-pricing-question" onClick={() => setOpen(true)}>
-        How is this calculated?
+        {t.CalculateYourPricing.howIsThisCalculated}
       </Button>
 
       <Modal opened={open} size={600} onClose={() => setOpen(false)}>
         <div className="calculate-your-pricing-modal">
-          <h3>How is this price calculated</h3>
+          <h3>{t.CalculateYourPricing.modalTitle}</h3>
           <p>
-            This formula is how Pocket portal calculates and charge you app relyas montly.
-            If you want to learn more see our{" "}
-            <a href="https://docs.pokt.network/home/">documentation</a>.
+            {t.CalculateYourPricing.modalDescription}{" "}
+            <a href="https://docs.pokt.network/home/">
+              {t.CalculateYourPricing.secondModalDescription}
+            </a>
+            .
           </p>
           <p className="calculate-your-pricing-formula">
             <span>
-              (Total daily relays <span className="symbol">-</span> &nbsp;
+              ({t.CalculateYourPricing.totalDailyRelays} <span className="symbol">-</span>{" "}
+              &nbsp;
             </span>
             <span className="column">
-              <span>free relays) &nbsp;</span>
+              <span>{t.CalculateYourPricing.freeRelays}) &nbsp;</span>
               <span className="calculate-your-pricing-formula-value">
                 {FREE_TIER_MAX_RELAYS.toLocaleString("en-US")}
               </span>
             </span>
             <span className="symbol">x&nbsp;</span>
             <span className="column">
-              <span>price per relay</span>
+              <span>{t.CalculateYourPricing.pricePerRelay}</span>
               <span className="calculate-your-pricing-formula-value">${price}</span>
             </span>
             <span>
               {" "}
-              <span className="symbol">&nbsp; =</span> Cost per day
+              <span className="symbol">&nbsp; =</span> {t.CalculateYourPricing.costPerDay}
             </span>
           </p>
           <p>
-            The sum of each cost per day ={" "}
-            <span className="calculate-your-pricing-conclusion">Monthly fee</span>
+            {t.CalculateYourPricing.sumPerDay} ={" "}
+            <span className="calculate-your-pricing-conclusion">
+              {t.CalculateYourPricing.monthlyFee}
+            </span>
           </p>
           <div className="calculate-your-pricing-modal-footer">
             <Button variant="filled" onClick={() => setOpen(false)}>
-              Done
+              {t.CalculateYourPricing.done}
             </Button>
           </div>
         </div>

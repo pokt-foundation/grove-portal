@@ -1,2 +1,18 @@
-.pokt-network-chart {
+.pokt-chart-wrapper {
+  position: relative;
+}
+.pokt-chart-overlay {
+  position: absolute;
+  width: 90%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 16px 32px;
+  color: var(--color-disabled);
+  border-radius: 16px;
+  text-align: center;
+}
+
+.pokt-chart-relays.empty text {
+  fill: var(--color-disabled);
 }

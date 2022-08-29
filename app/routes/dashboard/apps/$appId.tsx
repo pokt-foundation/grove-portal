@@ -53,7 +53,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   invariant(endpoint, "app id not found")
 
   const dailyNetworkRelaysPerWeek = await Promise.all(
-    [0, 1, 2, 3, 4, 5, 6].map(async (num) => {
+    [1, 2, 3, 4, 5, 6, 7].map(async (num) => {
       const day = dayjs()
         .utc()
         .hour(0)

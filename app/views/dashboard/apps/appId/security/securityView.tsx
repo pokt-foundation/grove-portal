@@ -13,8 +13,13 @@ import Card, { links as CardLinks } from "~/components/shared/Card"
 import Switch, { links as SwitchLinks } from "~/components/shared/Switch"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { useTranslate } from "~/context/TranslateContext"
-import { Maybe, WhitelistContract, WhitelistMethod } from "~/models/portal/sdk"
-import { EndpointQuery } from "~/models/portal/sdk"
+import {
+  BlockchainsQuery,
+  Maybe,
+  WhitelistContract,
+  WhitelistMethod,
+} from "~/models/portal/sdk"
+import { Blockchain, EndpointQuery } from "~/models/portal/sdk"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { CHAIN_ID_PREFIXES } from "~/utils/chainUtils"
 
@@ -34,9 +39,10 @@ export const links = () => {
 type SecurityViewProps = {
   endpoint: EndpointQuery["endpoint"]
   appId: string | undefined
+  blockchains: BlockchainsQuery["blockchains"]
 }
 
-export const SecurityView = ({ endpoint, appId }: SecurityViewProps) => {
+export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps) => {
   type FormatData = {
     id: string
     inputValue: string
@@ -134,6 +140,7 @@ export const SecurityView = ({ endpoint, appId }: SecurityViewProps) => {
             <h3>{t.security.headings.approvedChains}</h3>
             <ChainsDropdown
               aria-label={t.security.chainsDropdownAria}
+              blockchains={blockchains}
               defaultText={t.security.defaultSelectChainText}
               handleChainClick={(val) => {
                 setWhitelistBlockchains(addIfMissing(val, whitelistBlockchains))
@@ -142,20 +149,25 @@ export const SecurityView = ({ endpoint, appId }: SecurityViewProps) => {
               selectedChains={[""]}
             />
           </div>
-          {whitelistBlockchains.map((item: string) => (
-            <React.Fragment key={item}>
-              <AppEndpointUrl
-                key={item}
-                chainId={item}
-                handleRemove={() => {
-                  setWhitelistBlockchains((current) => removeFromArray(item, current))
-                }}
-                hasDelete={true}
-                value={appId ?? ""}
-              />
-              <input name="whitelistBlockchains" type="hidden" value={item} />
-            </React.Fragment>
-          ))}
+          {whitelistBlockchains.map((item: string) => {
+            const blockchain: Blockchain | undefined | null = blockchains.find(
+              (c) => c?.id === item,
+            )
+            return (
+              <React.Fragment key={item}>
+                <AppEndpointUrl
+                  key={item}
+                  chain={blockchain}
+                  handleRemove={() => {
+                    setWhitelistBlockchains((current) => removeFromArray(item, current))
+                  }}
+                  hasDelete={true}
+                  value={appId ?? ""}
+                />
+                <input name="whitelistBlockchains" type="hidden" value={item} />
+              </React.Fragment>
+            )
+          })}
         </Card>
         <Card>
           <div className="pokt-card-header">
@@ -254,6 +266,7 @@ export const SecurityView = ({ endpoint, appId }: SecurityViewProps) => {
           </div>
           <div className="flexGrowRow">
             <ChainsDropdown
+              blockchains={blockchains}
               defaultText={
                 whitelistContractsDropdown !== ""
                   ? getChainName(whitelistContractsDropdown)
@@ -301,28 +314,33 @@ export const SecurityView = ({ endpoint, appId }: SecurityViewProps) => {
             </div>
           )}
           <div>
-            {whitelistContracts.map((item) => (
-              <div key={`${item.id} ${item.inputValue}`} className="list">
-                <AppEndpointUrl
-                  copy
-                  hasDelete
-                  readOnly
-                  chainId={item.id}
-                  handleRemove={() => {
-                    setWhitelistContracts((current) =>
-                      removeFromArrayByValue(item.inputValue, "inputValue", current),
-                    )
-                  }}
-                  value={item.inputValue}
-                />
-                <input name="whitelistContractsChains" type="hidden" value={item.id} />
-                <input
-                  name="whitelistContractsValues"
-                  type="hidden"
-                  value={item.inputValue}
-                />
-              </div>
-            ))}
+            {whitelistContracts.map((item) => {
+              const blockchain: Blockchain | undefined | null = blockchains.find(
+                (c) => c?.id === item.id,
+              )
+              return (
+                <div key={`${item.id} ${item.inputValue}`} className="list">
+                  <AppEndpointUrl
+                    copy
+                    hasDelete
+                    readOnly
+                    chain={blockchain}
+                    handleRemove={() => {
+                      setWhitelistContracts((current) =>
+                        removeFromArrayByValue(item.inputValue, "inputValue", current),
+                      )
+                    }}
+                    value={item.inputValue}
+                  />
+                  <input name="whitelistContractsChains" type="hidden" value={item.id} />
+                  <input
+                    name="whitelistContractsValues"
+                    type="hidden"
+                    value={item.inputValue}
+                  />
+                </div>
+              )
+            })}
           </div>
         </Card>
         <Card>
@@ -331,6 +349,7 @@ export const SecurityView = ({ endpoint, appId }: SecurityViewProps) => {
           </div>
           <div className="flexGrowRow">
             <ChainsDropdown
+              blockchains={blockchains}
               defaultText={
                 whitelistMethodsDropdown !== ""
                   ? getChainName(whitelistMethodsDropdown)
@@ -377,28 +396,33 @@ export const SecurityView = ({ endpoint, appId }: SecurityViewProps) => {
             </div>
           )}
           <div>
-            {whitelistMethods.map((item) => (
-              <div key={`${item.id} ${item.inputValue}`} className="list">
-                <AppEndpointUrl
-                  copy
-                  hasDelete
-                  readOnly
-                  chainId={item.id}
-                  handleRemove={() => {
-                    setWhitelistMethods((current) =>
-                      removeFromArrayByValue(item.inputValue, "inputValue", current),
-                    )
-                  }}
-                  value={item.inputValue}
-                />
-                <input name="whitelistMethodsChains" type="hidden" value={item.id} />
-                <input
-                  name="whitelistMethodsValues"
-                  type="hidden"
-                  value={item.inputValue}
-                />
-              </div>
-            ))}
+            {whitelistMethods.map((item) => {
+              const blockchain: Blockchain | undefined | null = blockchains.find(
+                (c) => c?.id === item.id,
+              )
+              return (
+                <div key={`${item.id} ${item.inputValue}`} className="list">
+                  <AppEndpointUrl
+                    copy
+                    hasDelete
+                    readOnly
+                    chain={blockchain}
+                    handleRemove={() => {
+                      setWhitelistMethods((current) =>
+                        removeFromArrayByValue(item.inputValue, "inputValue", current),
+                      )
+                    }}
+                    value={item.inputValue}
+                  />
+                  <input name="whitelistMethodsChains" type="hidden" value={item.id} />
+                  <input
+                    name="whitelistMethodsValues"
+                    type="hidden"
+                    value={item.inputValue}
+                  />
+                </div>
+              )
+            })}
           </div>
         </Card>
         <Button

@@ -1,7 +1,7 @@
+import { Button } from "@pokt-foundation/pocket-blocks"
 import { Form, Link } from "@remix-run/react"
 import AppRemoveModal, { links as AppRemoveModalLinks } from "../AppRemoveModal"
 import styles from "./styles.css"
-import Button from "~/components/shared/Button"
 import { useTranslate } from "~/context/TranslateContext"
 import { PayPlanType } from "~/models/portal/sdk"
 import { isPaidPlan } from "~/utils/utils"

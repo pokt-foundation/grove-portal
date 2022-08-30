@@ -1,4 +1,5 @@
 import { Text } from "@mantine/core"
+import { Button } from "@pokt-foundation/pocket-blocks"
 import {
   ActionFunction,
   json,
@@ -15,7 +16,6 @@ import AppPlansOverview, {
 import AppRadioCards, {
   links as AppRadioCardsLinks,
 } from "~/components/application/AppRadioCards"
-import Button from "~/components/shared/Button"
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { useFeatureFlags } from "~/context/FeatureFlagContext"

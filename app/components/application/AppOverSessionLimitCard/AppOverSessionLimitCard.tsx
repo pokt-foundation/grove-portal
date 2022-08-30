@@ -1,16 +1,17 @@
 import { Avatar } from "@mantine/core"
+import { Button } from "@pokt-foundation/pocket-blocks"
 import { IconInfo } from "@pokt-foundation/ui"
 import { Link } from "@remix-run/react"
 import React from "react"
 import styles from "./styles.css"
-import Button from "~/components/shared/Button"
 import { Card, links as CardLinks } from "~/components/shared/Card"
 import { useTranslate } from "~/context/TranslateContext"
 
-/* c8 ignore next */
+/* c8 ignore start */
 export const links = () => {
   return [...CardLinks(), { rel: "stylesheet", href: styles }]
 }
+/* c8 ignore stop */
 
 interface OverLimitCardProps {
   exceedsSessionRelays?: boolean

@@ -1,5 +1,5 @@
 // import { format } from "d3-format"
-import { RelayMetric } from "~/models/relaymeter.server"
+import { RelayMetric } from "~/models/relaymeter/relaymeter.server"
 import { dayjs } from "~/utils/dayjs"
 import { formatNumberToSICompact } from "~/utils/formattingUtils"
 import { norm } from "~/utils/mathUtils"

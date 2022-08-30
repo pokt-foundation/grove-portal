@@ -2,6 +2,11 @@ import React, { useContext, useMemo } from "react"
 import { useUser } from "./UserContext"
 import en from "~/locales/en"
 import fr from "~/locales/fr"
+import {
+  ContactSalesForm,
+  ContactSalesView,
+} from "~/locales/types/ContactSalesLocaleTypes"
+import { PayPlanType } from "~/models/portal/sdk"
 
 const languages = ["en", "fr"] as const
 const translate: Translate = {
@@ -12,6 +17,7 @@ const translate: Translate = {
 interface TranslationData {
   common: {
     submit: string
+    StopSubscription: string
   }
   search: {
     label: string
@@ -80,6 +86,7 @@ interface TranslationData {
       requests: string
       security: string
       notifications: string
+      plan: string
     }
   }
   AppRequestsByOriginCard: {
@@ -123,6 +130,25 @@ interface TranslationData {
       }
     }
   }
+  AppPlanOverviewCard: {
+    title: string
+    subscription: string
+    status: string
+    relays: string
+    date: string
+    managePlan: string
+  }
+  AppPlanLatestInvoiceCard: {
+    title: string
+    invoice: string
+    status: string
+    relaysBilled: string
+    relaysUsed: string
+    dateStart: string
+    dateEnd: string
+    download: string
+    view: string
+  }
   AppOverLimitCard: {
     title: string
     subtitle: string
@@ -137,6 +163,59 @@ interface TranslationData {
     termsOfUse: string
     privacyPolicy: string
   }
+  AppPlansOverview: {
+    planDetailsTitles: {
+      pricing: string
+      relayLimit: string
+      chainAccess: string
+      appsLimit: string
+      overviewHeader: string
+      overviewDescription: string
+    }
+    planDetails: {
+      [PayPlanType.PayAsYouGoV0]: {
+        title: string
+        description: string
+        description2: string
+        pricing: string
+        relayLimit: string
+        appsLimit: string
+        chainAccess: string
+      }
+      [PayPlanType.FreetierV0]: {
+        title: string
+        description: string
+        description2: string
+        pricing: string
+        relayLimit: string
+        appsLimit: string
+        chainAccess: string
+      }
+      [PayPlanType.TestPlanV0]: {
+        title: string
+        description: string
+        description2: string
+        pricing: string
+        relayLimit: string
+        appsLimit: string
+        chainAccess: string
+      }
+    }
+  }
+  AppPlanDetails: {
+    relayLimit: string
+    relaysPerDay: string
+    currentPlan: string
+    currentPlanToolTip: string
+    upgrade: string
+  }
+  PlanView: {
+    title: string
+    description: string
+    button: string
+  }
+  ContactSalesView: ContactSalesView
+  ContactSalesForm: ContactSalesForm
 }
 
 export type Language = typeof languages[number]

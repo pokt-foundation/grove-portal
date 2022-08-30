@@ -1,5 +1,5 @@
 import { ActionFunction, json } from "@remix-run/node"
-import { Stripe, stripe } from "~/models/stripe.server"
+import { Stripe, stripe } from "~/models/stripe/stripe.server"
 import { getErrorMessage } from "~/utils/catchError"
 import { getRequiredServerEnvVar } from "~/utils/environment"
 
@@ -49,7 +49,15 @@ export const action: ActionFunction = async ({ request }) => {
           sessionCompleted.subscription &&
           typeof sessionCompleted.subscription === "string"
         ) {
-          await stripe.subscriptions.update(sessionCompleted.subscription, {
+          const subscription = await stripe.subscriptions.update(
+            sessionCompleted.subscription,
+            {
+              description: `${sessionCompleted.metadata?.endpoint_name}: ${sessionCompleted.metadata?.endpoint_id}`,
+              metadata: sessionCompleted.metadata,
+            },
+          )
+          // there is only ever 1 subscription item in our subscriptions so just grabbing it here
+          await stripe.subscriptionItems.update(subscription.items.data[0].id, {
             metadata: sessionCompleted.metadata,
           })
         }

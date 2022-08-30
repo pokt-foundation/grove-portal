@@ -13,6 +13,7 @@
   --color-white-dark: #d9d9d9;
   --color-success: #03e200;
   --color-error: #e61c0e;
+  --color-disabled: #898d92;
   --zindex-none: -1;
   --zindex-base: 1;
   --zindex-nav: 100;
@@ -37,13 +38,13 @@ html {
 body {
   display: flex;
   flex-direction: column;
-  width: 100vw;
   min-height: 100vh;
   overflow-x: hidden;
   overflow-y: auto;
   font-family: "Manrope";
   background-color: var(--color-black-dark);
   color: var(--color-white-main);
+  width: 100vw;
 }
 
 main {

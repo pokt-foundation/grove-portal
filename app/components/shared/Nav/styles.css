@@ -1,5 +1,6 @@
 .pokt-nav {
   margin-left: 16px;
+  overflow-x: auto;
 }
 
 .pokt-nav ul {

@@ -1,23 +1,22 @@
 import { ActionFunction, redirect, json } from "@remix-run/node"
-import invariant from "tiny-invariant"
-import { stripe } from "~/models/stripe.server"
-import { authenticator } from "~/utils/auth.server"
-// import { getPoktId } from "~/utils/session.server"
+import { getCustomer, stripe } from "~/models/stripe/stripe.server"
+import { getPoktId, requireUser } from "~/utils/session.server"
 
 export const action: ActionFunction = async ({ request }) => {
-  const user = await authenticator.isAuthenticated(request)
+  const user = await requireUser(request)
+  const userId = getPoktId(user?.profile.id)
   const url = new URL(request.url)
-  const returnUrl = `${url.origin}/dashboard`
+  const defaultReturnPath = "/dashboard"
+  const formData = await request.formData()
+  const returnPathParam = formData.get("return-path") as string | null
+  const returnPath = returnPathParam ?? defaultReturnPath
+  const returnUrl = `${url.origin}${returnPath}`
 
-  invariant(user, "user must be logged in")
-
-  const customer = await stripe.customers.list({
-    email: user.profile.emails[0].value,
-  })
+  const customer = await getCustomer(user.profile.emails[0].value, userId)
 
   if (customer) {
     const portalSession = await stripe.billingPortal.sessions.create({
-      customer: customer.data[0].id,
+      customer: customer.id,
       return_url: returnUrl,
     })
     if (portalSession.url) {

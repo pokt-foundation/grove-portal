@@ -1,6 +1,9 @@
+import { PayPlanType } from "~/models/portal/sdk"
+
 const schema = {
   common: {
     submit: "submit",
+    StopSubscription: "Stop Subscription",
   },
   search: {
     label: "Search",
@@ -189,6 +192,7 @@ const schema = {
       requests: "Requests",
       security: "Security",
       notifications: "Notifications",
+      plan: "Plan Details",
     },
   },
   AppRequestsByOriginCard: {
@@ -232,6 +236,25 @@ const schema = {
       },
     },
   },
+  AppPlanOverviewCard: {
+    title: "Application Plan",
+    subscription: "Subscription",
+    status: "Status",
+    relays: "Total Relays on this Billing Period",
+    date: "Start Date",
+    managePlan: "Manage Plan in Stripe",
+  },
+  AppPlanLatestInvoiceCard: {
+    title: "Latest Invoice",
+    invoice: "Invoice",
+    status: "Status",
+    relaysBilled: "Relays Billed",
+    relaysUsed: "Relays Used",
+    dateStart: "Period Start",
+    dateEnd: "Period End",
+    download: "Download",
+    view: "View in Stripe",
+  },
   AppOverLimitCard: {
     title: "Session Limit Reached",
     subtitle: "It's time to up your stake, your app is over the session limit",
@@ -248,6 +271,102 @@ const schema = {
   footer: {
     termsOfUse: "Site Terms of Use",
     privacyPolicy: "Privacy Policy",
+  },
+  AppPlansOverview: {
+    planDetailsTitles: {
+      pricing: "Pricing",
+      relayLimit: "Relay Limit",
+      chainAccess: "Chain Access",
+      appsLimit: "Apps Limit",
+      overviewHeader: "Flexible plans that grow with your app",
+      overviewDescription:
+        "Scalable plans because your needs change as yous app grows. All plans access to Pocket Network multichain infrastructure with our chain!",
+    },
+    planDetails: {
+      [PayPlanType.PayAsYouGoV0]: {
+        title: "Pay As You Go",
+        description:
+          "250k free relays per day, per app. Beyond that, pay only for what you use. The counter resets every 24h but you’ll only get billed monthly. Even better, after 24 months of paid relays, you’ll receive POKT to stake for continued service. No more payments.",
+        description2: "No more sunk costs. Just fast, reliable infrastructure.",
+        pricing: "Pay per relay + 250K Free Relays",
+        relayLimit: "No limit",
+        appsLimit: "Up to 2 Applicaitions",
+        chainAccess: "No limit",
+      },
+      [PayPlanType.FreetierV0]: {
+        title: "Always Free",
+        description:
+          "Access to reliable, censor resistant infrastructure. Free up to 250k relays per day.",
+        description2: "",
+        pricing: "$0.00",
+        relayLimit: "250k per app per day",
+        appsLimit: "Up to 2 Applicaitions",
+        chainAccess: "No limit",
+      },
+      [PayPlanType.TestPlanV0]: {
+        title: "Always Free",
+        description:
+          "Access to reliable, censor resistant infrastructure. Free up to 250k relays per day.",
+        description2: "",
+        pricing: "$0.00",
+        relayLimit: "250k per app per day",
+        appsLimit: "Up to 2 Applicaitions",
+        chainAccess: "No limit",
+      },
+    },
+  },
+  AppPlanDetails: {
+    relayLimit: "Relays Limit",
+    relaysPerDay: "relays per day",
+    currentPlan: "Current Plan",
+    currentPlanToolTip: "This is the current plan for this specific application.",
+    upgrade: "Upgrade",
+  },
+  PlanView: {
+    title: "Stripe Error",
+    description:
+      "We are sorry but there appears to be an issue with out connection to stripe. You can try managing your subscription directly in Stripe's portal.",
+    button: "Manage Plan in Stripe",
+  },
+  ContactSalesView: {
+    title: "We have Enterprise solutions for your needs",
+    description:
+      "Give us some basic information of your request and our solutions team will reach out soon to find the best way of service your application.",
+    formSubmitted: "Form Submitted",
+    done: "Done",
+    formSubmissionFailed: "Form Submission Failed",
+  },
+  ContactSalesForm: {
+    submitting: "Submitting",
+    submit: "Submit",
+    firstName: {
+      label: "First Name",
+      placeholder: "Enter your name",
+    },
+    lastName: {
+      label: "Last Name",
+      placeholder: "Enter your last name",
+    },
+    email: {
+      label: "Email",
+      placeholder: "Enter your email",
+    },
+    company: {
+      label: "Company",
+      placeholder: "Enter a company name",
+    },
+    chains: {
+      label: "Protocol/Chains of interest",
+      placeholder: "I'm interested in chain...",
+    },
+    relays: {
+      label: "Relay Needs",
+      placeholder: "How many daily relays your application request",
+    },
+    tellUsMore: {
+      label: "Tell us more about what you are building",
+      placeholder: "I'm building a Chain...",
+    },
   },
 }
 

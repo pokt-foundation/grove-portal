@@ -1,15 +1,18 @@
 import { useViewportSize } from "@mantine/hooks"
+import { Button } from "@pokt-foundation/pocket-blocks"
 import { IconPerson } from "@pokt-foundation/ui"
 import { Item, Separator } from "@radix-ui/react-dropdown-menu"
 import { Form, Link } from "@remix-run/react"
 import clsx from "clsx"
 import { useEffect, useMemo, useRef, useState } from "react"
+import React from "react"
 import { Auth0Profile } from "remix-auth-auth0"
 import Dropdown, { links as DropdownLinks } from "../Dropdown"
 import HamburgerMenu, { links as HamburgerMenuLinks } from "../HamburgerMenu"
 import styles from "./styles.css"
-import Button from "~/components/shared/Button"
+// import { Button } from "@mantine/core"
 
+/* c8 ignore start */
 export const links = () => {
   return [
     ...DropdownLinks(),
@@ -17,6 +20,7 @@ export const links = () => {
     ...HamburgerMenuLinks(),
   ]
 }
+/* c8 ignore stop */
 
 type Route = {
   id: string
@@ -32,7 +36,6 @@ export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) 
   const [isActive, setIsActive] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const logoutFormRef = useRef<HTMLFormElement>(null)
-  const billingFormRef = useRef<HTMLFormElement>(null)
   const { width } = useViewportSize()
 
   useEffect(() => {
@@ -53,24 +56,6 @@ export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) 
       {
         id: "user",
         el: () => <Link to="/dashboard/profile">User Profile</Link>,
-      },
-      {
-        id: "billing",
-        el: () => (
-          <Button
-            leftIcon={<img alt="logout" src="/logout.svg" />}
-            variant="outline"
-            onClick={() => {
-              if (billingFormRef.current) {
-                billingFormRef.current.dispatchEvent(
-                  new Event("submit", { cancelable: true, bubbles: true }),
-                )
-              }
-            }}
-          >
-            Manage Billing
-          </Button>
-        ),
       },
       {
         id: "logout",
@@ -147,26 +132,23 @@ export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) 
               value="true"
             />
           </Form>
-          <Form ref={billingFormRef} action="/api/stripe/portal-session" method="post">
-            <input
-              readOnly
-              aria-label="hidden"
-              name="billing"
-              type="hidden"
-              value="true"
-            />
-          </Form>
 
           <UserMenuDropdown routes={routes} user={user} />
           {!user && (
             <>
               <Form action="/api/auth/auth0" method="post">
-                <Button type="submit" variant="outline">
+                <Button color="blue" type="submit" variant="outline">
                   Login
                 </Button>
               </Form>
               <Form action="/api/auth/auth0" method="post">
-                <Button name="signup" type="submit" value="true" variant="outline">
+                <Button
+                  color="blue"
+                  name="signup"
+                  type="submit"
+                  value="true"
+                  variant="outline"
+                >
                   Sign Up
                 </Button>
               </Form>
@@ -200,12 +182,12 @@ function UserMenuDropdown({ user, routes }: UserMenuDropdownProps) {
           {routes.map(({ el, id: routeID }, index) => {
             const El = el
             return (
-              <>
-                <Item key={routeID}>
+              <React.Fragment key={routeID}>
+                <Item>
                   <El />
                 </Item>
                 {index < routes.length - 1 && <Separator />}
-              </>
+              </React.Fragment>
             )
           })}
         </Dropdown>

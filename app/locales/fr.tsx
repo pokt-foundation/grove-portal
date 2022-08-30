@@ -1,6 +1,9 @@
+import { PayPlanType } from "~/models/portal/sdk"
+
 const schema = {
   common: {
     submit: "submit -fr",
+    StopSubscription: "Stop Subscription -fr",
   },
   search: {
     label: "Search -fr",
@@ -134,6 +137,7 @@ const schema = {
       requests: "Requests -fr",
       security: "Security -fr",
       notifications: "Notifications -fr",
+      plan: "Plan Details -fr",
     },
   },
   AppRequestsByOriginCard: {
@@ -177,6 +181,25 @@ const schema = {
       },
     },
   },
+  AppPlanOverviewCard: {
+    title: "Application Plan -fr",
+    subscription: "Subscription -fr",
+    status: "Status -fr",
+    relays: "Total Relays on this Billing Period -fr",
+    date: "Start Date -fr",
+    managePlan: "Manage Plan in Stripe -fr",
+  },
+  AppPlanLatestInvoiceCard: {
+    title: "Latest Invoice -fr",
+    invoice: "Invoice -fr",
+    status: "Status -fr",
+    relaysBilled: "Relays Billed -fr",
+    relaysUsed: "Relays Used -fr",
+    dateStart: "Period Start -fr",
+    dateEnd: "Period End -fr",
+    download: "Download -fr",
+    view: "View in Stripe -fr",
+  },
   AppOverLimitCard: {
     title: "Session Limit Reached -fr",
     subtitle: "It's time to up your stake, your app is over the session limit -fr",
@@ -193,6 +216,102 @@ const schema = {
   footer: {
     termsOfUse: "Site Terms of Use -fr",
     privacyPolicy: "Privacy Policy -fr",
+  },
+  AppPlansOverview: {
+    planDetailsTitles: {
+      pricing: "Pricing -fr",
+      relayLimit: "Relay Limit -fr",
+      chainAccess: "Chain Access -fr",
+      appsLimit: "Apps Limit -fr",
+      overviewHeader: "Flexible plans that grow with your app -fr",
+      overviewDescription:
+        "Scalable plans because your needs change as yous app grows. All plans access to Pocket Network multichain infrastructure with our chain! -fr",
+    },
+    planDetails: {
+      [PayPlanType.PayAsYouGoV0]: {
+        title: "Pay As You Go -fr",
+        description:
+          "250k free relays per day, per app. Beyond that, pay only for what you use. The counter resets every 24h but you’ll only get billed monthly. Even better, after 24 months of paid relays, you’ll receive POKT to stake for continued service. No more payments. -fr",
+        description2: "No more sunk costs. Just fast, reliable infrastructure. -fr",
+        pricing: "Pay per relay + 250K Free Relays -fr",
+        relayLimit: "No limit -fr",
+        appsLimit: "Up to 2 Applicaitions -fr",
+        chainAccess: "No limit -fr",
+      },
+      [PayPlanType.FreetierV0]: {
+        title: "Always Free -fr",
+        description:
+          "Access to reliable, censor resistant infrastructure. Free up to 250k relays per day. -fr",
+        description2: "",
+        pricing: "$0.00 -fr",
+        relayLimit: "250k per app per day -fr",
+        appsLimit: "Up to 2 Applicaitions -fr",
+        chainAccess: "No limit -fr",
+      },
+      [PayPlanType.TestPlanV0]: {
+        title: "Always Free -fr",
+        description:
+          "Access to reliable, censor resistant infrastructure. Free up to 250k relays per day. -fr",
+        description2: "",
+        pricing: "$0.00 -fr",
+        relayLimit: "250k per app per day -fr",
+        appsLimit: "Up to 2 Applicaitions -fr",
+        chainAccess: "No limit -fr",
+      },
+    },
+  },
+  AppPlanDetails: {
+    relayLimit: "Relays Limit -fr",
+    relaysPerDay: "relays per day -fr",
+    currentPlan: "Current Plan -fr",
+    currentPlanToolTip: "This is the current plan for this specific application. -fr",
+    upgrade: "Upgrade -fr",
+  },
+  PlanView: {
+    title: "Stripe Error -fr",
+    description:
+      "We are sorry but there appears to be an issue with out connection to stripe. You can try managing your subscription directly in Stripe's portal. -fr",
+    button: "Manage Plan in Stripe -fr",
+  },
+  ContactSalesView: {
+    title: "We have Enterprise solutions for your needs -fr",
+    description:
+      "Give us some basic information of your request and our solutions team will reach out soon to find the best way of service your application. -fr",
+    formSubmitted: "Form Submitted -fr",
+    done: "Done -fr",
+    formSubmissionFailed: "Form Submission Failed -fr",
+  },
+  ContactSalesForm: {
+    submitting: "Submitting -fr",
+    submit: "Submit -fr",
+    firstName: {
+      label: "First Name -fr",
+      placeholder: "Enter your name -fr",
+    },
+    lastName: {
+      label: "Last Name -fr",
+      placeholder: "Enter your last name -fr",
+    },
+    email: {
+      label: "Email -fr",
+      placeholder: "Enter your email -fr",
+    },
+    company: {
+      label: "Company -fr",
+      placeholder: "Enter a company name -fr",
+    },
+    chains: {
+      label: "Protocol/Chains of interest -fr",
+      placeholder: "I'm interested in chain... -fr",
+    },
+    relays: {
+      label: "Relay Needs -fr",
+      placeholder: "How many daily relays your application request -fr",
+    },
+    tellUsMore: {
+      label: "Tell us more about what you are building -fr",
+      placeholder: "I'm building a Chain... -fr",
+    },
   },
 }
 

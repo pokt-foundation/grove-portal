@@ -7,10 +7,11 @@ import CardList, {
 } from "~/components/shared/CardList"
 import { LatestBlockType } from "~/routes/dashboard/index"
 
-/* c8 ignore next */
+/* c8 ignore start */
 export const links = () => {
   return [...CardLinks(), ...CardListLinks(), { rel: "stylesheet", href: styles }]
 }
+/* c8 ignore stop */
 
 interface LatestBlockProps {
   latestBlock: LatestBlockType

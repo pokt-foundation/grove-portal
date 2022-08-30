@@ -1,6 +1,6 @@
 import { ActionFunction, redirect, json, LoaderFunction } from "@remix-run/node"
 import invariant from "tiny-invariant"
-import { stripe, Stripe } from "~/models/stripe.server"
+import { stripe, Stripe } from "~/models/stripe/stripe.server"
 import { authenticator } from "~/utils/auth.server"
 import { getErrorMessage } from "~/utils/catchError"
 import { getRequiredServerEnvVar } from "~/utils/environment"
@@ -15,8 +15,9 @@ export const loader: LoaderFunction = async ({ request }) => {
   const name = url.searchParams.get("app-name")
   const referral = url.searchParams.get("referral-id")
 
-  console.log({ id })
-  console.log({ name })
+  if (getRequiredServerEnvVar("FLAG_STRIPE_PAYMENT") === "false") {
+    return redirect(`/dashboard/apps/${id}`)
+  }
 
   try {
     // get pokemon relay price

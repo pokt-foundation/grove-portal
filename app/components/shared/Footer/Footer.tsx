@@ -2,9 +2,11 @@ import styles from "./styles.css"
 import { Grid } from "~/components/shared/Grid"
 import { useTranslate } from "~/context/TranslateContext"
 
+/* c8 ignore start */
 export const links = () => {
   return [{ rel: "stylesheet", href: styles }]
 }
+/* c8 ignore stop */
 
 export const Footer = () => {
   const {

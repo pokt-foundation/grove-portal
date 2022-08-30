@@ -4,6 +4,7 @@ const schema = {
   common: {
     submit: "submit -fr",
     StopSubscription: "Stop Subscription -fr",
+    save: "save -fr",
   },
   search: {
     label: "Search -fr",
@@ -130,6 +131,14 @@ const schema = {
     heartImageAlt: "heart image -fr",
     clickOpen: "Click to open feedback box -fr",
     clickClose: "Click to close feedback box -fr",
+  },
+  dashboard: {
+    routes: {
+      network: "Network -fr",
+      apps: "Apps -fr",
+      docs: "Docs -fr",
+      discord: "Discord -fr",
+    },
   },
   appId: {
     routes: {
@@ -333,6 +342,31 @@ const schema = {
     done: "Done -fr",
     sumPerDay: "The sum of each cost per day -fr",
     monthlyFee: "Monthly fee -fr",
+  },
+  security: {
+    headings: {
+      secretKey: "Private Secret Key Required -fr",
+      approvedChains: "Approved Chains -fr",
+      userAgents: "Whitelist User-Agents -fr",
+      origins: "Whitelist Origins -fr",
+      contracts: "Whitelist Contracts -fr",
+      methods: "Whitelist Methods -fr",
+    },
+    secretSwitchAria: "Private key required -fr",
+    userAgentPlaceholder: "Type user agent here -fr",
+    userAgentAria: "Add user agents to white list -fr",
+    defaultSelectChainText: "Select Chain -fr",
+    chainsDropdownAria: "Select a chain to add to white list -fr",
+    OriginPlaceholder: "Type origin here -fr",
+    OriginAria: "Add origins to white list -fr",
+    contractAria: "Add contract selections to white list -fr",
+    contractError:
+      "You must select a chain and have a value to add to methods whitelist. -fr",
+    methodAria: "Add method selections to white list -fr",
+    methodError:
+      "You must select a chain and have a value to add to methods whitelist. -fr",
+    secretKeyText:
+      "To maximize the security of your application, you should activate the private secret key for all requests and enable the use of whitelist user agents and origins. -fr",
   },
 }
 

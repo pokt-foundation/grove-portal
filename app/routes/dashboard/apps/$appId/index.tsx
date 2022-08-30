@@ -58,7 +58,7 @@ export const Application = () => {
       {exceedsMaxRelays && <AppOverLimitCard exceedsMaxRelays={exceedsMaxRelays} />}
       {appIdData.endpoint && (
         <section>
-          <AppEndpointCard app={appIdData.endpoint} />
+          <AppEndpointCard app={appIdData.endpoint} blockchains={appIdData.blockchains} />
         </section>
       )}
       <Grid gutter={32}>
@@ -91,7 +91,10 @@ export const Application = () => {
       )} */}
       {appIdData.dailyNetworkRelaysPerWeek && (
         <section>
-          <UsageChartCard relays={appIdData.dailyNetworkRelaysPerWeek} />
+          <UsageChartCard
+            emptyLabel="Your application does not have relay data yet."
+            relays={appIdData.dailyNetworkRelaysPerWeek}
+          />
         </section>
       )}
     </>

@@ -1,8 +1,8 @@
 import { Group, Text } from "@mantine/core"
+import { Button } from "@pokt-foundation/pocket-blocks"
 import { Form } from "@remix-run/react"
 import { useState } from "react"
 import styles from "./styles.css"
-import Button from "~/components/shared/Button"
 import Modal, { links as ModalLinks } from "~/components/shared/Modal"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 
@@ -21,7 +21,7 @@ export default function AppEndpointCard({ appId }: AppRemoveModalProps) {
 
   return (
     <div className="pokt-app-remove">
-      <Button fullWidth variant="subtle" onClick={() => setOpened(true)}>
+      <Button fullWidth variant="outline" onClick={() => setOpened(true)}>
         <img
           aria-hidden
           alt="Remove Application"

@@ -11,7 +11,9 @@ import {
   ScrollRestoration,
   useCatch,
   useLoaderData,
+  useSearchParams,
 } from "@remix-run/react"
+import { useEffect } from "react"
 import { FeatureFlagsContextProvider } from "./context/FeatureFlagContext"
 import { TranslateContextProvider, useTranslate } from "./context/TranslateContext"
 import { UserContextProvider } from "./context/UserContext"
@@ -70,6 +72,14 @@ const WithProviders: React.FC = ({ children }) => {
 
 const Document = ({ children, title }: { children: React.ReactNode; title?: string }) => {
   const { language } = useTranslate()
+  const [params] = useSearchParams()
+
+  useEffect(() => {
+    const referral = params.get("rid")
+    if (referral) {
+      window.localStorage.setItem("rid", referral)
+    }
+  }, [params])
 
   return (
     <html lang={language}>

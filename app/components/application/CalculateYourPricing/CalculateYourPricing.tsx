@@ -1,6 +1,6 @@
+import { Button } from "@pokt-foundation/pocket-blocks"
 import { useMemo, useState } from "react"
 import styles from "./styles.css"
-import Button, { links as ButtonLinks } from "~/components/shared/Button"
 import Modal, { links as ModalLinks } from "~/components/shared/Modal"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { useTranslate } from "~/context/TranslateContext"
@@ -13,7 +13,6 @@ const DAYS_IN_EACH_MONTH = 30.41
 export const links = () => {
   return [
     ...TextInputLinks(),
-    ...ButtonLinks(),
     ...ModalLinks(),
     {
       rel: "stylesheet",

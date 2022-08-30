@@ -1,4 +1,5 @@
 import { useViewportSize } from "@mantine/hooks"
+import { Button } from "@pokt-foundation/pocket-blocks"
 import { IconPerson } from "@pokt-foundation/ui"
 import { Item, Separator } from "@radix-ui/react-dropdown-menu"
 import { Form, Link } from "@remix-run/react"
@@ -9,7 +10,7 @@ import { Auth0Profile } from "remix-auth-auth0"
 import Dropdown, { links as DropdownLinks } from "../Dropdown"
 import HamburgerMenu, { links as HamburgerMenuLinks } from "../HamburgerMenu"
 import styles from "./styles.css"
-import Button from "~/components/shared/Button"
+// import { Button } from "@mantine/core"
 
 /* c8 ignore start */
 export const links = () => {
@@ -136,12 +137,18 @@ export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) 
           {!user && (
             <>
               <Form action="/api/auth/auth0" method="post">
-                <Button type="submit" variant="outline">
+                <Button color="blue" type="submit" variant="outline">
                   Login
                 </Button>
               </Form>
               <Form action="/api/auth/auth0" method="post">
-                <Button name="signup" type="submit" value="true" variant="outline">
+                <Button
+                  color="blue"
+                  name="signup"
+                  type="submit"
+                  value="true"
+                  variant="outline"
+                >
                   Sign Up
                 </Button>
               </Form>

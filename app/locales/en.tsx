@@ -4,6 +4,7 @@ const schema = {
   common: {
     submit: "submit",
     StopSubscription: "Stop Subscription",
+    save: "save",
   },
   search: {
     label: "Search",
@@ -367,6 +368,30 @@ const schema = {
       label: "Tell us more about what you are building",
       placeholder: "I'm building a Chain...",
     },
+  },
+  security: {
+    headings: {
+      secretKey: "Private Secret Key Required",
+      approvedChains: "Approved Chains",
+      userAgents: "Whitelist User-Agents",
+      origins: "Whitelist Origins",
+      contracts: "Whitelist Contracts",
+      methods: "Whitelist Methods",
+    },
+    secretSwitchAria: "Private key required",
+    userAgentPlaceholder: "Type user agent here",
+    userAgentAria: "Add user agents to white list",
+    defaultSelectChainText: "Select Chain",
+    chainsDropdownAria: "Select a chain to add to white list",
+    OriginPlaceholder: "Type origin here",
+    OriginAria: "Add origins to white list",
+    contractAria: "Add contract selections to white list",
+    contractError:
+      "You must select a chain and have a value to add to methods whitelist.",
+    methodAria: "Add method selections to white list",
+    methodError: "You must select a chain and have a value to add to methods whitelist.",
+    secretKeyText:
+      "To maximize the security of your application, you should activate the private secret key for all requests and enable the use of whitelist user agents and origins.",
   },
 }
 

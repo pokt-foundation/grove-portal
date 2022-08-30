@@ -1,0 +1,110 @@
+.security form {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+}
+
+.security div.card {
+  background: rgb(25, 36, 48);
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.security div.flexRow {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+}
+
+.security div.flexGrowRow {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  flex-grow: 1;
+  margin-top: 2rem;
+  gap: 16px;
+}
+
+.security input.grow {
+  flex-grow: 1;
+}
+
+.security p.growInline {
+  display: inline-block;
+  flex-grow: 1;
+}
+
+.security .add {
+  width: 40px;
+  border: 1px solid var(--color-primary-main);
+  background-color: transparent;
+  color: var(--color-white-main);
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+.security .flexGrowRow .pokt-chains-dropdown {
+  padding: 0;
+}
+
+.security .flexGrowRow .pokt-dropdown-trigger {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.security button.trash {
+  background-color: transparent;
+  color: var(--color-secondary-main);
+  border: 1px solid var(--color-secondary-main);
+  outline: none;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+.security .userInputs {
+  margin-bottom: 0;
+  padding: 8px;
+  color: var(--color-white-main);
+  background-color: var(--color-black-dark);
+  border: 1px solid var(--color-black-light);
+  border-radius: 4px;
+  font-size: 0.75rem;
+}
+
+.security .pokt-text-input input {
+  max-height: 36px;
+}
+
+.security button[type="submit"] {
+  align-self: end;
+  width: 160px;
+  color: var(--color-black-dark);
+}
+
+.security .pokt-text {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.security .list:first-child {
+  margin-top: 24px;
+}
+
+.security .list {
+  margin-top: 8px;
+}
+
+.security .submit:hover {
+  background-color: rgb(182, 216, 74);
+  box-shadow: rgb(182 216 74 / 50%) 0px 0px 20px;
+}
+
+.security .errorText {
+  color: var(--color-error);
+}
+
+.security .errorBorder {
+  border-color: var(--color-error);
+}

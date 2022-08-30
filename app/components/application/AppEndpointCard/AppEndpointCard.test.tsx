@@ -2,7 +2,7 @@ import { expect } from "vitest"
 import AppEndpointCard from "./AppEndpointCard"
 import { render, screen } from "test/helpers"
 import { IUserContext, UserContext } from "~/context/UserContext"
-import { endpoint } from "~/models/portal/portal.data"
+import { endpoint, blockchains } from "~/models/portal/portal.data"
 import { ProcessedEndpoint } from "~/models/portal/sdk"
 import { ChainMetadata, prefixFromChainId } from "~/utils/chainUtils"
 
@@ -34,7 +34,7 @@ describe("<AppEndpointCard />", () => {
   it("loads card", () => {
     render(
       <UserContext.Provider value={userValue}>
-        <AppEndpointCard app={endpoint} />
+        <AppEndpointCard app={endpoint} blockchains={blockchains} />
       </UserContext.Provider>,
     )
     const header = screen.getByRole("heading")
@@ -43,20 +43,20 @@ describe("<AppEndpointCard />", () => {
   it("loads chain with image if gigastake is false", () => {
     render(
       <UserContext.Provider value={userValue}>
-        <AppEndpointCard app={endpoint} />
+        <AppEndpointCard app={endpoint} blockchains={blockchains} />
       </UserContext.Provider>,
     )
 
     const chain = endpoint.apps ? endpoint.apps[0].chain : "0021"
-    const { name } = chain ? (prefixFromChainId(chain) as ChainMetadata) : { name: "" }
-    const image = screen.getAllByRole("img", { name: name })
+    const name = blockchains.find((c) => c.id === chain)?.description
+    const image = screen.getAllByRole("img", { name: String(name) })
     expect(image[0]).toBeInTheDocument()
   })
   it("loads add chain button if gigastake is true", () => {
     endpoint.gigastake = true
     render(
       <UserContext.Provider value={userValue}>
-        <AppEndpointCard app={endpoint} />
+        <AppEndpointCard app={endpoint} blockchains={blockchains} />
       </UserContext.Provider>,
     )
 

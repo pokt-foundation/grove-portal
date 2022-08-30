@@ -8,7 +8,7 @@ import {
   redirect,
 } from "@remix-run/node"
 import { Form, useLoaderData, useActionData, useTransition } from "@remix-run/react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import invariant from "tiny-invariant"
 import AppPlansOverview, {
   links as AppPlansOverviewLinks,
@@ -127,6 +127,15 @@ export default function CreateApp() {
   const action = useActionData() as ActionData
   const [radioSelectedValue, setRadioSelectedValue] = useState(PayPlanType.FreetierV0)
   const [name, setName] = useState("")
+  const [referral, setReferral] = useState("")
+
+  useEffect(() => {
+    const rid = window.localStorage.getItem("rid")
+
+    if (rid) {
+      setReferral(rid)
+    }
+  }, [])
 
   const tiers = [
     {
@@ -156,6 +165,7 @@ export default function CreateApp() {
           <h3>Create New App</h3>
         </div>
         <Form method="post">
+          <input hidden name="referral-id" type="text" value={referral} />
           <TextInput
             label="Name"
             name="app-name"

@@ -1,5 +1,4 @@
-import { Text, Title } from "@mantine/core"
-import { Button } from "@pokt-foundation/pocket-blocks"
+import { Button, Text, Title } from "@pokt-foundation/pocket-blocks"
 import { Link } from "@remix-run/react"
 import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/shared/Card"

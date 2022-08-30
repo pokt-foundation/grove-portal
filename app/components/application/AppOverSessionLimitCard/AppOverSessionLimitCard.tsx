@@ -1,5 +1,4 @@
-import { Avatar } from "@mantine/core"
-import { Button } from "@pokt-foundation/pocket-blocks"
+import { Avatar, Button } from "@pokt-foundation/pocket-blocks"
 import { IconInfo } from "@pokt-foundation/ui"
 import { Link } from "@remix-run/react"
 import React from "react"

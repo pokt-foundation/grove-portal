@@ -1,4 +1,4 @@
-import { Text, Radio } from "@mantine/core"
+import { Text, Radio } from "@pokt-foundation/pocket-blocks"
 import clsx from "clsx"
 import styles from "./styles.css"
 import Grid from "~/components/shared/Grid"

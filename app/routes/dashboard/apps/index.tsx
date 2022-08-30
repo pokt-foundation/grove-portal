@@ -3,7 +3,11 @@ import { useLoaderData } from "@remix-run/react"
 import { useEffect } from "react"
 import { AllAppsLoaderData } from "../apps"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
-import { getRelays, RelayMetric } from "~/models/relaymeter/relaymeter.server"
+import {
+  getRelays,
+  getRelaysPerWeek,
+  RelayMetric,
+} from "~/models/relaymeter/relaymeter.server"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { dayjs } from "~/utils/dayjs"
 import { getPoktId, requireUser } from "~/utils/session.server"
@@ -31,21 +35,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   let dailyNetworkRelaysPerWeek: RelayMetric[] | null = null
 
   try {
-    dailyNetworkRelaysPerWeek = await Promise.all(
-      [1, 2, 3, 4, 5, 6, 7].map(async (num) => {
-        const day = dayjs()
-          .utc()
-          .hour(0)
-          .minute(0)
-          .second(0)
-          .millisecond(0)
-          .subtract(num, "day")
-          .format()
-
-        // api auto adjusts to/from to begining and end of each day so putting the same time here gives us back one full day
-        return await getRelays("users", day, day, userId)
-      }),
-    )
+    dailyNetworkRelaysPerWeek = await getRelaysPerWeek("users", userId)
   } catch (e) {}
 
   return json<AppsLoaderData>(

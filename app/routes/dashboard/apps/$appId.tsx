@@ -3,7 +3,11 @@ import { useCatch, useLoaderData, useSearchParams } from "@remix-run/react"
 import invariant from "tiny-invariant"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { EndpointQuery, PayPlanType, ProcessedEndpoint } from "~/models/portal/sdk"
-import { getRelays, RelayMetric } from "~/models/relaymeter/relaymeter.server"
+import {
+  getRelays,
+  getRelaysPerWeek,
+  RelayMetric,
+} from "~/models/relaymeter/relaymeter.server"
 import { dayjs } from "~/utils/dayjs"
 import { requireUser } from "~/utils/session.server"
 import AppIdLayoutView, {
@@ -52,21 +56,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   })
   invariant(endpoint, "app id not found")
 
-  const dailyNetworkRelaysPerWeek = await Promise.all(
-    [1, 2, 3, 4, 5, 6, 7].map(async (num) => {
-      const day = dayjs()
-        .utc()
-        .hour(0)
-        .minute(0)
-        .second(0)
-        .millisecond(0)
-        .subtract(num, "day")
-        .format()
-
-      // api auto adjusts to/from to begining and end of each day so putting the same time here gives us back one full day
-      return await getRelays("endpoints", day, day, endpoint.id)
-    }),
-  )
+  const dailyNetworkRelaysPerWeek = await getRelaysPerWeek("endpoints", endpoint.id)
 
   // api auto adjusts to/from to begining and end of each day so putting the same time here gives us back one full day
   const today = dayjs().utc().format()

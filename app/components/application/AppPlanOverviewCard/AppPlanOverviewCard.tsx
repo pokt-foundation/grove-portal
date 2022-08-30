@@ -1,6 +1,6 @@
+import { Button } from "@pokt-foundation/pocket-blocks"
 import { Form, useLocation } from "@remix-run/react"
 import styles from "./styles.css"
-import Button from "~/components/shared/Button"
 import { Card, links as CardLinks } from "~/components/shared/Card"
 import CardList, {
   CardListItem,

@@ -1,7 +1,7 @@
+import { Button } from "@pokt-foundation/pocket-blocks"
 import { IconQuestion } from "@pokt-foundation/ui"
 import { useEffect, useState } from "react"
 import styles from "./styles.css"
-import Button from "~/components/shared/Button"
 import Tooltip, { TooltipProps } from "~/components/shared/Tooltip"
 
 /* c8 ignore start */

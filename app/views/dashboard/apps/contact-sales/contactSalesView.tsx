@@ -1,10 +1,10 @@
 import { Title } from "@mantine/core"
+import { Button } from "@pokt-foundation/pocket-blocks"
 import { useEffect, useState } from "react"
 import styles from "./styles.css"
 import ContactSalesForm, {
   links as ContactSalesFormLinks,
 } from "~/components/application/ContactSalesForm"
-import Button, { links as ButtonLinks } from "~/components/shared/Button"
 import Modal, { links as ModalLinks } from "~/components/shared/Modal"
 import { useTranslate } from "~/context/TranslateContext"
 import { ContactSalesActionData } from "~/routes/dashboard/contact-sales"
@@ -12,7 +12,6 @@ import { ContactSalesActionData } from "~/routes/dashboard/contact-sales"
 /* c8 ignore start */
 export const links = () => {
   return [
-    ...ButtonLinks(),
     ...ModalLinks(),
     ...ContactSalesFormLinks(),
     {

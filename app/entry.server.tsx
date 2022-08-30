@@ -1,4 +1,5 @@
 import { injectStylesIntoStaticMarkup } from "@mantine/ssr"
+import { getCssText } from "@pokt-foundation/pocket-blocks"
 import type { EntryContext } from "@remix-run/node"
 import { RemixServer } from "@remix-run/react"
 import { renderToString } from "react-dom/server"
@@ -12,7 +13,10 @@ export default function handleRequest(
   responseHeaders: Headers,
   remixContext: EntryContext,
 ) {
-  const markup = renderToString(<RemixServer context={remixContext} url={request.url} />)
+  const markup = renderToString(
+    <RemixServer context={remixContext} url={request.url} />,
+  ).replace(/<\/head>/, `<style id="stitches">${getCssText()}</style></head>`)
+
   const html = `<!DOCTYPE html>${injectStylesIntoStaticMarkup(markup)}`
 
   responseHeaders.set("Content-Type", "text/html")

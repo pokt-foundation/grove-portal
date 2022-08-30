@@ -1,8 +1,8 @@
 import { Grid } from "@mantine/core"
+import { Button } from "@pokt-foundation/pocket-blocks"
 import { Form, useTransition } from "@remix-run/react"
 import { useEffect, useRef } from "react"
 import styles from "./styles.css"
-import Button, { links as ButtonLinks } from "~/components/shared/Button"
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { useTranslate } from "~/context/TranslateContext"
@@ -12,7 +12,6 @@ export const links = () => {
   return [
     ...CardLinks(),
     ...TextInputLinks(),
-    ...ButtonLinks(),
     {
       rel: "stylesheet",
       href: styles,

@@ -1,8 +1,8 @@
 import { Text } from "@mantine/core"
+import { Button } from "@pokt-foundation/pocket-blocks"
 import { LinksFunction } from "@remix-run/node"
 import { Form, useTransition } from "@remix-run/react"
 import styles from "./styles.css"
-import Button from "~/components/shared/Button"
 import Card from "~/components/shared/Card"
 import Switch, { links as SwitchLinks } from "~/components/shared/Switch"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
@@ -111,7 +111,6 @@ export default function NotificationsAlertForm() {
               className="pokt-network-notifications-submit-btn"
               disabled={state === "loading" || state === "submitting"}
               type="submit"
-              variant="filled"
               onClick={() => {
                 trackEvent(AmplitudeEvents.NotificationSettingsChange)
               }}

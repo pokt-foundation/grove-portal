@@ -1,6 +1,6 @@
 import { Text } from "@mantine/core"
 import { Button } from "@pokt-foundation/pocket-blocks"
-import { useFetcher, useParams } from "@remix-run/react"
+import { useFetcher } from "@remix-run/react"
 import React, { useState } from "react"
 import styles from "./styles.css"
 import AppEndpointUrl, {

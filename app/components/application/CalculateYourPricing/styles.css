@@ -37,10 +37,12 @@
   color: var(--color-primary-main);
   border: none;
   padding: 0;
+  background: transparent;
 }
 
 .calculate-your-pricing-container .calculate-your-pricing-question:hover {
   background: transparent;
+  border: none;
 }
 
 .calculate-your-pricing-container .calculate-your-pricing-modal a {

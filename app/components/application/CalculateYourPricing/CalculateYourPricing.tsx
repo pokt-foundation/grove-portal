@@ -1,5 +1,5 @@
 import { Button } from "@pokt-foundation/pocket-blocks"
-import { useMemo, useState } from "react"
+import React, { useMemo, useState } from "react"
 import styles from "./styles.css"
 import Modal, { links as ModalLinks } from "~/components/shared/Modal"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
@@ -43,6 +43,22 @@ export default function CalculateYourPricing({ price }: CalculateYourPriceProps)
     }
   }, [price, relays])
 
+  const handlePricingChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const {
+      target: { value },
+    } = e
+    if (!value.length) {
+      setRelays(0)
+      return
+    }
+
+    const valueWithoutCommas = parseFloat(value.replace(/,/g, ""))
+    if (isNaN(valueWithoutCommas) || Number(value) === Infinity || value.length > 20) {
+      return
+    }
+    setRelays(valueWithoutCommas)
+  }
+
   return (
     <section className="calculate-your-pricing-container">
       <div className="calculate-your-pricing-card">
@@ -57,23 +73,7 @@ export default function CalculateYourPricing({ price }: CalculateYourPriceProps)
           }
           rightSectionWidth={160}
           value={relays.toLocaleString("en-US")}
-          onChange={({ target: { value } }) => {
-            if (!value.length) {
-              setRelays(0)
-              return
-            }
-
-            const valueWithoutCommas = parseFloat(value.replace(/,/g, ""))
-            if (
-              isNaN(valueWithoutCommas) ||
-              Number(value) === Infinity ||
-              value.length > 20
-            ) {
-              return
-            }
-
-            setRelays(valueWithoutCommas)
-          }}
+          onChange={(e) => handlePricingChange(e)}
         />
 
         <div className="calculate-your-pricing-footer">

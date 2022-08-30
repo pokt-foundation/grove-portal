@@ -1,5 +1,4 @@
-import { Text } from "@mantine/core"
-import { Button } from "@pokt-foundation/pocket-blocks"
+import { Button, Text } from "@pokt-foundation/pocket-blocks"
 import {
   ActionFunction,
   json,

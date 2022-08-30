@@ -10,7 +10,6 @@ import { Auth0Profile } from "remix-auth-auth0"
 import Dropdown, { links as DropdownLinks } from "../Dropdown"
 import HamburgerMenu, { links as HamburgerMenuLinks } from "../HamburgerMenu"
 import styles from "./styles.css"
-// import { Button } from "@mantine/core"
 
 /* c8 ignore start */
 export const links = () => {

@@ -1,5 +1,4 @@
-import { Grid } from "@mantine/core"
-import { Space, Title } from "@pokt-foundation/pocket-blocks"
+import { Grid, Space, Title } from "@pokt-foundation/pocket-blocks"
 import { LoaderFunction, json } from "@remix-run/node"
 import { Link, Outlet } from "@remix-run/react"
 import { Auth0Profile } from "remix-auth-auth0"

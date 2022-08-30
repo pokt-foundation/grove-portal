@@ -1,5 +1,5 @@
+import { Grid } from "@pokt-foundation/pocket-blocks"
 import styles from "./styles.css"
-import { Grid } from "~/components/shared/Grid"
 import { useTranslate } from "~/context/TranslateContext"
 
 /* c8 ignore start */

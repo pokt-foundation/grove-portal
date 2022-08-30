@@ -1,5 +1,4 @@
-import { Grid } from "@mantine/core"
-import { Button } from "@pokt-foundation/pocket-blocks"
+import { Button, Grid } from "@pokt-foundation/pocket-blocks"
 import { Form, useTransition } from "@remix-run/react"
 import { useEffect, useRef } from "react"
 import styles from "./styles.css"

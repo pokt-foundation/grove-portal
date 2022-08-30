@@ -1,3 +1,4 @@
+import { Grid } from "@pokt-foundation/pocket-blocks"
 import { MetaFunction } from "@remix-run/node"
 // import AppLatencyCard, {
 //   links as AppLatencyCardLinks,
@@ -19,7 +20,6 @@ import AppUsageCurrentCard, {
 import UsageChartCard, {
   links as UsageChartCardLinks,
 } from "~/components/application/UsageChartCard"
-import Grid from "~/components/shared/Grid"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { FREE_TIER_MAX_RELAYS } from "~/utils/pocketUtils"

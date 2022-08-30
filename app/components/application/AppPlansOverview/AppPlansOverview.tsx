@@ -1,7 +1,6 @@
-import { Box, Title, Text } from "@mantine/core"
+import { Box, Title, Text, Grid } from "@pokt-foundation/pocket-blocks"
 import ReactHtmlParser from "react-html-parser"
 import styles from "./styles.css"
-import Grid from "~/components/shared/Grid"
 import { useTranslate } from "~/context/TranslateContext"
 import { PayPlanType } from "~/models/portal/sdk"
 

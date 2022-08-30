@@ -1,4 +1,4 @@
-import { Tooltip as MantineTooltip, TooltipProps } from "@mantine/core"
+import { Tooltip as MantineTooltip, TooltipProps } from "@pokt-foundation/pocket-blocks"
 
 export type { TooltipProps }
 

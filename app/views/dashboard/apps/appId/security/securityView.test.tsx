@@ -1,12 +1,12 @@
 import { expect } from "vitest"
+import schema from "../../../../../locales/en"
 import SecurityView from "./securityView"
 import { render, screen } from "test/helpers"
 import { endpoint } from "~/models/portal/portal.data"
-import schema from "../../../../../locales/en"
 
 describe("<SecurityView />", () => {
   it("renders", () => {
-    render(<SecurityView endpoint={endpoint} appId={"123123"} />)
+    render(<SecurityView appId={"123123"} endpoint={endpoint} />)
     expect(
       screen.getByRole("heading", { level: 3, name: schema.security.headings.secretKey }),
     ).toBeInTheDocument()

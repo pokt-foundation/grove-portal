@@ -50,8 +50,12 @@ export const Application = () => {
   }, [])
 
   const exceedsMaxRelays = useMemo(() => {
-    return appIdData.relaysToday.Count.Total >= FREE_TIER_MAX_RELAYS
-  }, [appIdData.relaysToday.Count.Total])
+    if (appIdData.endpoint.appLimits.dailyLimit === 0) {
+      return false
+    }
+
+    return appIdData.relaysToday.Count.Total >= appIdData.endpoint.appLimits.dailyLimit
+  }, [appIdData])
 
   return (
     <>
@@ -66,8 +70,7 @@ export const Application = () => {
           {appIdData.relaysToday.Count && (
             <section>
               <AppUsageCurrentCard
-                maxDailyRelays={FREE_TIER_MAX_RELAYS}
-                sessionRelays={0}
+                maxDailyRelays={appIdData.endpoint.appLimits.dailyLimit}
                 totalRelays={appIdData.relaysToday.Count.Total}
               />
             </section>

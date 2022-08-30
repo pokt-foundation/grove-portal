@@ -24,23 +24,15 @@ export const links = () => {
 interface UsageCurrentCardProps {
   maxDailyRelays: number
   totalRelays: UserLBTotalRelaysResponse["total_relays"]
-  sessionRelays: UserLBSessionRelaysResponse["session_relays"]
 }
 
 export default function AppUsageCurrentCard({
   maxDailyRelays,
   totalRelays,
-  sessionRelays,
 }: UsageCurrentCardProps) {
   const { t } = useTranslate()
 
   const listItems: CardListItem[] = [
-    {
-      label: t.AppUsageCurrentCard.list.sessionRelays.label,
-      value: commify(sessionRelays.toFixed(0)),
-      help: t.AppUsageCurrentCard.list.sessionRelays.help,
-      color: "secondary",
-    },
     {
       label: t.AppUsageCurrentCard.list.dailyRelays.label,
       value: commify(totalRelays.toFixed(0)),

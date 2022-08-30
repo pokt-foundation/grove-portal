@@ -22,11 +22,7 @@ export default function Index() {
 
   useEffect(() => {
     const expired = searchParams.get("expired")
-    if (expired === "true") {
-      setShowExpiredModal(true)
-    } else {
-      setShowExpiredModal(false)
-    }
+    setShowExpiredModal(expired === "true")
   }, [searchParams])
 
   return (

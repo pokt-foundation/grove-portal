@@ -1,4 +1,5 @@
 import { Grid } from "@mantine/core"
+import { Button } from "@pokt-foundation/pocket-blocks"
 import { json, LoaderFunction } from "@remix-run/node"
 import { Link, Outlet, useLoaderData, useTransition } from "@remix-run/react"
 import AdEconomicsForDevs, {
@@ -7,7 +8,6 @@ import AdEconomicsForDevs, {
 import FeedbackCard, {
   links as FeedbackCardLinks,
 } from "~/components/application/FeedbackCard"
-import Button, { links as ButtonLinks } from "~/components/shared/Button"
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import CardList, {
   CardListItem,
@@ -23,7 +23,6 @@ import { getPoktId, requireUser } from "~/utils/session.server"
 
 export const links = () => {
   return [
-    ...ButtonLinks(),
     ...CardLinks(),
     ...CardListLinks(),
     ...FeedbackCardLinks(),
@@ -44,19 +43,10 @@ export const loader: LoaderFunction = async ({ request }) => {
     console.log(e)
   })
 
-  return json<AllAppsLoaderData>(
-    {
-      endpoints: endpointsResponse ? endpointsResponse.endpoints : null,
-      userId: getPoktId(user.profile.id),
-    },
-    {
-      headers: {
-        "Cache-Control": `private, max-age=${
-          process.env.NODE_ENV === "production" ? "3600" : "60"
-        }`,
-      },
-    },
-  )
+  return json<AllAppsLoaderData>({
+    endpoints: endpointsResponse ? endpointsResponse.endpoints : null,
+    userId: getPoktId(user.profile.id),
+  })
 }
 
 export const Apps = () => {

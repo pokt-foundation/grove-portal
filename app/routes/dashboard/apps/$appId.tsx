@@ -2,7 +2,7 @@ import { LoaderFunction, MetaFunction, json } from "@remix-run/node"
 import { useCatch, useLoaderData, useSearchParams } from "@remix-run/react"
 import invariant from "tiny-invariant"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { EndpointQuery, PayPlanType, ProcessedEndpoint } from "~/models/portal/sdk"
+import { BlockchainsQuery, EndpointQuery, PayPlanType } from "~/models/portal/sdk"
 import {
   getRelays,
   getRelaysPerWeek,
@@ -25,6 +25,7 @@ export const meta: MetaFunction = () => {
 }
 
 export type AppIdLoaderData = {
+  blockchains: BlockchainsQuery["blockchains"]
   endpoint: EndpointQuery["endpoint"]
   relaysToday: RelayMetric
   relaysYesterday: RelayMetric
@@ -57,6 +58,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   invariant(endpoint, "app id not found")
 
   const dailyNetworkRelaysPerWeek = await getRelaysPerWeek("endpoints", endpoint.id)
+  const { blockchains } = await portal.blockchains()
 
   // api auto adjusts to/from to begining and end of each day so putting the same time here gives us back one full day
   const today = dayjs().utc().format()
@@ -66,6 +68,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
   return json<AppIdLoaderData>(
     {
+      blockchains,
       endpoint,
       dailyNetworkRelaysPerWeek,
       relaysToday,

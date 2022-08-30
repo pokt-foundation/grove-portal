@@ -1,4 +1,5 @@
 import { Text } from "@mantine/core"
+import { Button } from "@pokt-foundation/pocket-blocks"
 import { MetaFunction } from "@remix-run/node"
 import { useFetcher, useParams } from "@remix-run/react"
 import React, { useState, useEffect } from "react"
@@ -10,14 +11,17 @@ import AppEndpointUrl, {
 import ChainsDropdown, {
   links as ChainsDropdownLinks,
 } from "~/components/application/ChainsDropdown/ChainsDropdown"
-import Button from "~/components/shared/Button"
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import Switch, { links as SwitchLinks } from "~/components/shared/Switch"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
-import { Maybe, WhitelistContract, WhitelistMethod } from "~/models/portal/sdk"
+import {
+  Blockchain,
+  Maybe,
+  WhitelistContract,
+  WhitelistMethod,
+} from "~/models/portal/sdk"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
-import { CHAIN_ID_PREFIXES } from "~/utils/chainUtils"
 
 export const meta: MetaFunction = () => {
   return {
@@ -59,6 +63,7 @@ export default function AppSecurity() {
 
   const {
     endpoint: { gatewaySettings },
+    blockchains,
   } = appIDRoute?.data as AppIdLoaderData
 
   type FormatData = {
@@ -121,8 +126,8 @@ export default function AppSecurity() {
   }
 
   const getChainName = (key: string) => {
-    const value = CHAIN_ID_PREFIXES.get(key)
-    return value?.name || "Undefined"
+    const value = blockchains.filter((chain) => chain?.id === key)[0]
+    return value?.description || "Undefined"
   }
 
   const removeFromArrayByValue = (item: string, field: string, arr: any[]) => {
@@ -157,6 +162,7 @@ export default function AppSecurity() {
             <h3>Approved Chains</h3>
             <ChainsDropdown
               aria-label="Select a chain to add to white list"
+              blockchains={blockchains}
               defaultText="Select Chain"
               handleChainClick={(val) => {
                 setWhitelistBlockchains(addIfMissing(val, whitelistBlockchains))
@@ -165,20 +171,25 @@ export default function AppSecurity() {
               selectedChains={[""]}
             />
           </div>
-          {whitelistBlockchains.map((item: string) => (
-            <React.Fragment key={item}>
-              <AppEndpointUrl
-                key={item}
-                chainId={item}
-                handleRemove={() => {
-                  setWhitelistBlockchains((current) => removeFromArray(item, current))
-                }}
-                hasDelete={true}
-                value={params.appId ?? ""}
-              />
-              <input name="whitelistBlockchains" type="hidden" value={item} />
-            </React.Fragment>
-          ))}
+          {whitelistBlockchains.map((item: string) => {
+            const blockchain: Blockchain | undefined | null = blockchains.find(
+              (c) => c?.id === item,
+            )
+            return (
+              <React.Fragment key={item}>
+                <AppEndpointUrl
+                  key={item}
+                  chain={blockchain}
+                  handleRemove={() => {
+                    setWhitelistBlockchains((current) => removeFromArray(item, current))
+                  }}
+                  hasDelete={true}
+                  value={params.appId ?? ""}
+                />
+                <input name="whitelistBlockchains" type="hidden" value={item} />
+              </React.Fragment>
+            )
+          })}
         </Card>
         <Card>
           <div className="pokt-card-header">
@@ -277,6 +288,7 @@ export default function AppSecurity() {
           </div>
           <div className="flexGrowRow">
             <ChainsDropdown
+              blockchains={blockchains}
               defaultText={
                 whitelistContractsDropdown !== ""
                   ? getChainName(whitelistContractsDropdown)
@@ -326,28 +338,33 @@ export default function AppSecurity() {
             </div>
           )}
           <div>
-            {whitelistContracts.map((item) => (
-              <div key={`${item.id} ${item.inputValue}`} className="list">
-                <AppEndpointUrl
-                  copy
-                  hasDelete
-                  readOnly
-                  chainId={item.id}
-                  handleRemove={() => {
-                    setWhitelistContracts((current) =>
-                      removeFromArrayByValue(item.inputValue, "inputValue", current),
-                    )
-                  }}
-                  value={item.inputValue}
-                />
-                <input name="whitelistContractsChains" type="hidden" value={item.id} />
-                <input
-                  name="whitelistContractsValues"
-                  type="hidden"
-                  value={item.inputValue}
-                />
-              </div>
-            ))}
+            {whitelistContracts.map((item) => {
+              const blockchain: Blockchain | undefined | null = blockchains.find(
+                (c) => c?.id === item.id,
+              )
+              return (
+                <div key={`${item.id} ${item.inputValue}`} className="list">
+                  <AppEndpointUrl
+                    copy
+                    hasDelete
+                    readOnly
+                    chain={blockchain}
+                    handleRemove={() => {
+                      setWhitelistContracts((current) =>
+                        removeFromArrayByValue(item.inputValue, "inputValue", current),
+                      )
+                    }}
+                    value={item.inputValue}
+                  />
+                  <input name="whitelistContractsChains" type="hidden" value={item.id} />
+                  <input
+                    name="whitelistContractsValues"
+                    type="hidden"
+                    value={item.inputValue}
+                  />
+                </div>
+              )
+            })}
           </div>
         </Card>
         <Card>
@@ -356,6 +373,7 @@ export default function AppSecurity() {
           </div>
           <div className="flexGrowRow">
             <ChainsDropdown
+              blockchains={blockchains}
               defaultText={
                 whitelistMethodsDropdown !== ""
                   ? getChainName(whitelistMethodsDropdown)
@@ -404,28 +422,33 @@ export default function AppSecurity() {
             </div>
           )}
           <div>
-            {whitelistMethods.map((item) => (
-              <div key={`${item.id} ${item.inputValue}`} className="list">
-                <AppEndpointUrl
-                  copy
-                  hasDelete
-                  readOnly
-                  chainId={item.id}
-                  handleRemove={() => {
-                    setWhitelistMethods((current) =>
-                      removeFromArrayByValue(item.inputValue, "inputValue", current),
-                    )
-                  }}
-                  value={item.inputValue}
-                />
-                <input name="whitelistMethodsChains" type="hidden" value={item.id} />
-                <input
-                  name="whitelistMethodsValues"
-                  type="hidden"
-                  value={item.inputValue}
-                />
-              </div>
-            ))}
+            {whitelistMethods.map((item) => {
+              const blockchain: Blockchain | undefined | null = blockchains.find(
+                (c) => c?.id === item.id,
+              )
+              return (
+                <div key={`${item.id} ${item.inputValue}`} className="list">
+                  <AppEndpointUrl
+                    copy
+                    hasDelete
+                    readOnly
+                    chain={blockchain}
+                    handleRemove={() => {
+                      setWhitelistMethods((current) =>
+                        removeFromArrayByValue(item.inputValue, "inputValue", current),
+                      )
+                    }}
+                    value={item.inputValue}
+                  />
+                  <input name="whitelistMethodsChains" type="hidden" value={item.id} />
+                  <input
+                    name="whitelistMethodsValues"
+                    type="hidden"
+                    value={item.inputValue}
+                  />
+                </div>
+              )
+            })}
           </div>
         </Card>
         <Button

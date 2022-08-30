@@ -2,7 +2,7 @@ import styles from "./styles.css"
 import ChainWithImage from "~/components/application/ChainWithImage"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { InputProps } from "~/components/shared/TextInput"
-import { prefixFromChainId } from "~/utils/chainUtils"
+import { Blockchain } from "~/models/portal/sdk"
 
 /* c8 ignore start */
 export const links = () => {
@@ -11,26 +11,18 @@ export const links = () => {
 /* c8 ignore stop */
 
 type AppEndpointUrlProp = InputProps & {
-  chainId: string
+  chain: Blockchain | undefined | null
 }
 
-export default function AppEndpointUrl({ chainId, ...props }: AppEndpointUrlProp) {
-  if (!chainId) {
-    return <></>
-  }
-
-  const chain = prefixFromChainId(chainId)
-
+export default function AppEndpointUrl({ chain, ...props }: AppEndpointUrlProp) {
   if (!chain) {
     return <></>
   }
 
-  const { abbrv, name } = chain
-
   return (
     <div className="pokt-app-endpoint-url">
       <div className="pokt-app-endpoint-url-abbrv">
-        <ChainWithImage chain={name} label={abbrv} />
+        <ChainWithImage chain={chain.description} label={chain.ticker} />
       </div>
       <TextInput {...props} />
     </div>

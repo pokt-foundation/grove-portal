@@ -1,4 +1,5 @@
 import { Text } from "@mantine/core"
+import { Button } from "@pokt-foundation/pocket-blocks"
 import {
   ActionFunction,
   json,
@@ -7,7 +8,7 @@ import {
   redirect,
 } from "@remix-run/node"
 import { Form, useLoaderData, useActionData, useTransition } from "@remix-run/react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import invariant from "tiny-invariant"
 import AppPlansOverview, {
   links as AppPlansOverviewLinks,
@@ -15,7 +16,6 @@ import AppPlansOverview, {
 import AppRadioCards, {
   links as AppRadioCardsLinks,
 } from "~/components/application/AppRadioCards"
-import Button from "~/components/shared/Button"
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { useFeatureFlags } from "~/context/FeatureFlagContext"
@@ -127,6 +127,15 @@ export default function CreateApp() {
   const action = useActionData() as ActionData
   const [radioSelectedValue, setRadioSelectedValue] = useState(PayPlanType.FreetierV0)
   const [name, setName] = useState("")
+  const [referral, setReferral] = useState("")
+
+  useEffect(() => {
+    const rid = window.localStorage.getItem("rid")
+
+    if (rid) {
+      setReferral(rid)
+    }
+  }, [])
 
   const tiers = [
     {
@@ -156,6 +165,7 @@ export default function CreateApp() {
           <h3>Create New App</h3>
         </div>
         <Form method="post">
+          <input hidden name="referral-id" type="text" value={referral} />
           <TextInput
             label="Name"
             name="app-name"

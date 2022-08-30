@@ -1,36 +1,34 @@
 import { expect } from "vitest"
 import AppEndpointUrl from "./AppEndpointUrl"
 import { render, screen, userEvent } from "test/helpers"
-import { ChainMetadata, prefixFromChainId } from "~/utils/chainUtils"
+import { blockchains } from "~/models/portal/portal.data"
 
-let chainId = "0021"
-let { prefix, name } = prefixFromChainId(chainId) as ChainMetadata
+let chain = blockchains.find((c) => c.id === "0021")
 let appId = "1234567890"
-let inputValue = `https://${prefix}.gateway.pokt.network/v1/lb/${appId}`
+let inputValue = `https://${chain?.blockchain}.gateway.pokt.network/v1/lb/${appId}`
 let gigastake = false
 const handleRemove = vitest.fn()
 
 beforeEach(() => {
   // reset defaults before each test
-  chainId = "0021"
-  ;({ prefix, name } = prefixFromChainId(chainId) as ChainMetadata)
+  chain = blockchains.find((c) => c.id === "0021")
   appId = "1234567890"
-  inputValue = `https://${prefix}.gateway.pokt.network/v1/lb/${appId}`
+  inputValue = `https://${chain?.blockchain}.gateway.pokt.network/v1/lb/${appId}`
   gigastake = false
 })
 
 describe("<AppEndpointUrl />", () => {
   it("renders nothing if chainId is unknown", () => {
-    chainId = "0000"
+    chain = blockchains.find((c) => c.id === "0000")
     render(
       <AppEndpointUrl
-        chainId={chainId}
+        chain={chain}
         handleRemove={handleRemove}
         hasDelete={gigastake}
         value={inputValue}
       />,
     )
-    const image = screen.queryByRole("img", { name: name })
+    const image = screen.queryByRole("img")
     const input = screen.queryByRole("textbox")
     const button = screen.queryByRole("button")
 
@@ -41,38 +39,41 @@ describe("<AppEndpointUrl />", () => {
   it("loads url with chain image", () => {
     render(
       <AppEndpointUrl
-        chainId={chainId}
+        chain={chain}
         handleRemove={handleRemove}
         hasDelete={gigastake}
         value={inputValue}
       />,
     )
-    const image = screen.getByRole("img", { name: name })
+    const image = screen.getByRole("img", { name: String(chain?.description) })
     const input = screen.getByRole("textbox")
     const button = screen.queryByRole("button")
 
     expect(image).toBeInTheDocument()
-    expect(input).toHaveValue(`https://${prefix}.gateway.pokt.network/v1/lb/${appId}`)
+    expect(input).toHaveValue(
+      `https://${chain?.blockchain}.gateway.pokt.network/v1/lb/${appId}`,
+    )
     expect(button).not.toBeInTheDocument()
   })
   it("handles different chains", () => {
-    chainId = "0003"
-    ;({ prefix, name } = prefixFromChainId(chainId) as ChainMetadata)
-    inputValue = `https://${prefix}.gateway.pokt.network/v1/lb/${appId}`
+    chain = blockchains[2]
+    inputValue = `https://${chain.blockchain}.gateway.pokt.network/v1/lb/${appId}`
     render(
       <AppEndpointUrl
-        chainId={chainId}
+        chain={chain}
         handleRemove={handleRemove}
         hasDelete={gigastake}
         value={inputValue}
       />,
     )
-    const image = screen.getByRole("img", { name: name })
+    const image = screen.getByRole("img", { name: String(chain.description) })
     const input = screen.getByRole("textbox")
     const button = screen.queryByRole("button")
 
     expect(image).toBeInTheDocument()
-    expect(input).toHaveValue(`https://${prefix}.gateway.pokt.network/v1/lb/${appId}`)
+    expect(input).toHaveValue(
+      `https://${chain.blockchain}.gateway.pokt.network/v1/lb/${appId}`,
+    )
     expect(button).not.toBeInTheDocument()
   })
   it("allows user to delete if gigastake is true", async () => {
@@ -80,7 +81,7 @@ describe("<AppEndpointUrl />", () => {
     gigastake = true
     render(
       <AppEndpointUrl
-        chainId={chainId}
+        chain={chain}
         handleRemove={handleRemove}
         hasDelete={gigastake}
         value={inputValue}

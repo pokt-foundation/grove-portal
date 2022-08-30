@@ -58,7 +58,7 @@ export const Application = () => {
       {exceedsMaxRelays && <AppOverLimitCard exceedsMaxRelays={exceedsMaxRelays} />}
       {appIdData.endpoint && (
         <section>
-          <AppEndpointCard app={appIdData.endpoint} />
+          <AppEndpointCard app={appIdData.endpoint} blockchains={appIdData.blockchains} />
         </section>
       )}
       <Grid gutter={32}>

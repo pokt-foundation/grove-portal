@@ -13,13 +13,13 @@ import {
   useLoaderData,
   useSearchParams,
 } from "@remix-run/react"
+import { useEffect } from "react"
 import { FeatureFlagsContextProvider } from "./context/FeatureFlagContext"
 import { TranslateContextProvider, useTranslate } from "./context/TranslateContext"
 import { UserContextProvider } from "./context/UserContext"
 import { getClientEnv } from "./utils/environment.server"
 import normalizeStyles from "~/styles/normalize.css"
 import rootStyles from "~/styles/root.css"
-import { useEffect } from "react"
 
 export const links: LinksFunction = () => {
   return [

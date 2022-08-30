@@ -131,6 +131,14 @@ const schema = {
     clickOpen: "Click to open feedback box -fr",
     clickClose: "Click to close feedback box -fr",
   },
+  dashboard: {
+    routes: {
+      network: "Network -fr",
+      apps: "Apps -fr",
+      docs: "Docs -fr",
+      discord: "Discord -fr",
+    },
+  },
   appId: {
     routes: {
       overview: "Overview -fr",

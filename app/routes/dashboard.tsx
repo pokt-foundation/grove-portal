@@ -45,18 +45,24 @@ export default function Dashboard() {
   const routes = [
     {
       to: "/dashboard",
-      label: t.terms.network,
+      label: t.dashboard.routes.network,
       icon: IconNetwork,
       end: true,
     },
     {
       to: "/dashboard/apps",
-      label: t.terms.apps,
+      label: t.dashboard.routes.apps,
       icon: IconApp,
     },
     {
-      to: "/dashboard/support",
-      label: t.terms.support,
+      to: "https://docs.pokt.network",
+      external: true,
+      label: t.dashboard.routes.docs,
+    },
+    {
+      to: "https://discord.gg/pokt",
+      external: true,
+      label: t.dashboard.routes.discord,
     },
   ]
   return (

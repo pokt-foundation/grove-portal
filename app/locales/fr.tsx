@@ -322,6 +322,27 @@ const schema = {
       placeholder: "I'm building a Chain... -fr",
     },
   },
+  CalculateYourPricing: {
+    title: "Calculate your pricing -fr",
+    firstDescription:
+      "Use the calculator below to give you an estimate of what your monthly bill could look like. -fr",
+    secondDescription:
+      "Enter the number of relays you think your app might consume in a day. Don’t exclude the free relays. We will do the math for you. -fr",
+    avgRelaysPerDay: "AVG Relays per Day -fr",
+    pricePerRelay: "Price per Relay -fr",
+    totalMonthlyPrice: "Total Monthly Estimated Price -fr",
+    howIsThisCalculated: "How is this calculated? -fr",
+    modalTitle: "How is this price calculated -fr",
+    modalDescription:
+      "This formula is how Pocket portal calculates and charge you app relyas montly. If you want to learn more see our -fr",
+    secondModalDescription: "documentation -fr",
+    totalDailyRelays: "Total daily relays -fr",
+    freeRelays: "free relays -fr",
+    costPerDay: "Cost per day -fr",
+    done: "Done -fr",
+    sumPerDay: "The sum of each cost per day -fr",
+    monthlyFee: "Monthly fee -fr",
+  },
   security: {
     headings: {
       secretKey: "Private Secret Key Required -fr",

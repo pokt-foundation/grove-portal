@@ -15,6 +15,9 @@ import AppPlansOverview, {
 import AppRadioCards, {
   links as AppRadioCardsLinks,
 } from "~/components/application/AppRadioCards"
+import CalculateYourPricing, {
+  links as CalculateYourPricingLinks,
+} from "~/components/application/CalculateYourPricing/CalculateYourPricing"
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { useFeatureFlags } from "~/context/FeatureFlagContext"
@@ -40,6 +43,7 @@ export const links = () => {
     ...TextInputLinks(),
     ...AppPlansOverviewLinks(),
     ...AppRadioCardsLinks(),
+    ...CalculateYourPricingLinks(),
     { rel: "stylesheet", href: styles },
   ]
 }
@@ -200,10 +204,9 @@ export default function CreateApp() {
           </Text>
         </Form>
         <AppPlansOverview planType={radioSelectedValue} />
-
-        {/* TO DO add in calculator component
-        <Calculator />
-              */}
+        <CalculateYourPricing
+          price={Number(price?.tiers![1].unit_amount_decimal) || 0.0000123}
+        />
       </Card>
 
       {action && (

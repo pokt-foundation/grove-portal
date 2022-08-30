@@ -1,0 +1,7 @@
+.pokt-appid-layout-view .pokt-nav {
+  margin-left: 0;
+}
+
+.pokt-appid-layout-view .pokt-icon {
+  fill: var(--color-white-main);
+}

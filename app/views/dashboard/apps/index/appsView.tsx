@@ -1,4 +1,6 @@
+import { CaretRight } from "@pokt-foundation/pocket-blocks"
 import { Link } from "@remix-run/react"
+import styles from "./styles.css"
 import UsageChartCard, {
   links as UsageCardLinks,
 } from "~/components/application/UsageChartCard"
@@ -12,7 +14,12 @@ import { getPlanName } from "~/utils/utils"
 
 /* c8 ignore start */
 export const links = () => {
-  return [...TableLinks(), ...CardLinks(), ...UsageCardLinks()]
+  return [
+    ...TableLinks(),
+    ...CardLinks(),
+    ...UsageCardLinks(),
+    { rel: "stylesheet", href: styles },
+  ]
 }
 /* c8 ignore stop */
 
@@ -28,7 +35,7 @@ export const AppsView = ({
   userId,
 }: AppsViewProps) => {
   return (
-    <>
+    <div className="pokt-apps-view">
       <section>
         {endpoints && endpoints.length > 0 ? (
           <Table
@@ -44,7 +51,11 @@ export const AppsView = ({
               plan: getPlanName(app.appLimits.planType),
               action: {
                 value: "",
-                element: <Link to={app.id}>{`>`}</Link>,
+                element: (
+                  <Link to={app.id}>
+                    <CaretRight className="pokt-icon" />
+                  </Link>
+                ),
               },
             }))}
             label="Applications"
@@ -69,7 +80,7 @@ export const AppsView = ({
           <UsageChartCard relays={dailyNetworkRelaysPerWeek} />
         </section>
       )}
-    </>
+    </div>
   )
 }
 

@@ -33,9 +33,9 @@ import { initPortalClient } from "~/models/portal/portal.server"
 import { Blockchain } from "~/models/portal/sdk"
 import { getRelays, RelayMetric } from "~/models/relaymeter/relaymeter.server"
 import styles from "~/styles/dashboard.index.css"
+import { getServiceLevelByChain } from "~/utils/chainUtils"
 import { dayjs } from "~/utils/dayjs"
 import { requireUser } from "~/utils/session.server"
-import { getServiceLevelByChain } from "~/utils/chainUtils"
 
 export const links = () => {
   return [

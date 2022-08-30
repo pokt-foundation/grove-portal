@@ -49,11 +49,6 @@
   padding: 0;
 }
 
-.security .flexGrowRow .pokt-dropdown-trigger {
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-}
-
 .security button.trash {
   background-color: transparent;
   color: var(--color-secondary-main);

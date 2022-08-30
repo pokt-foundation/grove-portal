@@ -1,4 +1,5 @@
-import { Group, Table as MantineTable, Pagination, TextInput } from "@mantine/core"
+import { Group, TextInput } from "@mantine/core"
+import { Pagination, Table as PoktTable } from "@pokt-foundation/pocket-blocks"
 import { useMemo, useState } from "react"
 import styles from "./styles.css"
 import Card, { links as CardLinks } from "~/components/shared/Card"
@@ -117,7 +118,7 @@ export const Table = <T extends IdObj>({
           </Group>
         )}
         <div className="pokt-table-overflow">
-          <MantineTable>
+          <PoktTable>
             <thead>
               <tr>
                 {columns.map((key) => (
@@ -151,7 +152,7 @@ export const Table = <T extends IdObj>({
                   </tr>
                 ))}
             </tbody>
-          </MantineTable>
+          </PoktTable>
         </div>
         {paginate && (
           <Group align="center" className="pokt-table-paginate" position="apart">

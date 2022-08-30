@@ -1,4 +1,5 @@
 import { Text } from "@mantine/core"
+import { Button } from "@pokt-foundation/pocket-blocks"
 import { useFetcher, useParams } from "@remix-run/react"
 import React, { useState } from "react"
 import styles from "./styles.css"
@@ -8,7 +9,6 @@ import AppEndpointUrl, {
 import ChainsDropdown, {
   links as ChainsDropdownLinks,
 } from "~/components/application/ChainsDropdown/ChainsDropdown"
-import Button from "~/components/shared/Button"
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import Switch, { links as SwitchLinks } from "~/components/shared/Switch"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"

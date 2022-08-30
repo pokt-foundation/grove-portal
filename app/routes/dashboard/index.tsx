@@ -31,7 +31,11 @@ import { initIndexerClient } from "~/models/indexer/indexer.server"
 import { Block, Order } from "~/models/indexer/sdk"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { Blockchain } from "~/models/portal/sdk"
-import { getRelays, RelayMetric } from "~/models/relaymeter/relaymeter.server"
+import {
+  getRelays,
+  getRelaysPerWeek,
+  RelayMetric,
+} from "~/models/relaymeter/relaymeter.server"
 import styles from "~/styles/dashboard.index.css"
 import { dayjs } from "~/utils/dayjs"
 import { requireUser } from "~/utils/session.server"
@@ -109,21 +113,7 @@ export const loader: LoaderFunction = async ({ request }) => {
       total_txs: Number(queryTransactionsByHeight?.totalCount),
     } as LatestBlockType
   }
-  const dailyNetworkRelaysPerWeek = await Promise.all(
-    [0, 1, 2, 3, 4, 5, 6].map(async (num) => {
-      const day = dayjs()
-        .utc()
-        .hour(0)
-        .minute(0)
-        .second(0)
-        .millisecond(0)
-        .subtract(num, "day")
-        .format()
-
-      // api auto adjusts to/from to begining and end of each day so putting the same time here gives us back one full day
-      return await getRelays("network", day, day)
-    }),
-  )
+  const dailyNetworkRelaysPerWeek = await getRelaysPerWeek("network")
 
   // api auto adjusts to/from to begining and end of each day so putting the same time here gives us back one full day
   const today = dayjs().utc().hour(0).minute(0).second(0).millisecond(0).format()

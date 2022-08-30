@@ -66,7 +66,10 @@ export const AppsView = ({
       </section>
       {dailyNetworkRelaysPerWeek && (
         <section>
-          <UsageChartCard relays={dailyNetworkRelaysPerWeek} />
+          <UsageChartCard
+            emptyLabel="Your applications do not have relay data yet."
+            relays={dailyNetworkRelaysPerWeek}
+          />
         </section>
       )}
     </>

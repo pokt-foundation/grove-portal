@@ -1,4 +1,4 @@
-import { Outlet } from "@remix-run/react"
+import { Outlet, useFetcher } from "@remix-run/react"
 import { useEffect, useState } from "react"
 import AdEconomicsForDevs, {
   links as AdEconomicsForDevsLinks,
@@ -80,11 +80,12 @@ export default function AppIdLayoutView({
 
   useEffect(() => {
     const success = searchParams.get("success")
+    const cancelError = searchParams.get("cancelError")
     if (!success) return
     if (success === "true") {
       setShowSuccessModel(true)
     }
-    if (success === "false") {
+    if (success === "false" || cancelError === "true") {
       setShowErrorModel(true)
     }
   }, [searchParams])
@@ -103,6 +104,14 @@ export default function AppIdLayoutView({
           label: t.appId.routes.plan,
         },
       ])
+    }
+    if (
+      flags.STRIPE_PAYMENT === "true" &&
+      endpoint &&
+      endpoint.appLimits.planType === PayPlanType.FreetierV0 &&
+      routes.filter((route) => route.to === "plan")[0]
+    ) {
+      setRoutes((curr) => [...curr.filter((route) => route.to !== "plan")])
     }
   }, [endpoint, t, routes, flags.STRIPE_PAYMENT])
 

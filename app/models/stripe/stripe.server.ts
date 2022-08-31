@@ -15,9 +15,31 @@ export const getCustomer = async (
     email: email,
   })
 
-  const customer = potentialCustomers.data.filter(
+  const customer = potentialCustomers.data.find(
     (cust) => cust.metadata.user_id === userId,
-  )[0]
+  )
 
   return customer
+}
+
+export const getSubscription = async (
+  email: string,
+  endpointId: string,
+  userId: string,
+): Promise<Stripe.Subscription | undefined> => {
+  const customer = await getCustomer(email, userId)
+
+  if (!customer) {
+    return undefined
+  }
+
+  const subscriptions = await stripe.subscriptions.list({
+    customer: customer.id,
+  })
+
+  const subscription = subscriptions.data.find(
+    (sub) => sub.metadata.endpoint_id && sub.metadata.endpoint_id === endpointId,
+  )
+
+  return subscription
 }

@@ -1,10 +1,10 @@
+import { Group } from "@pokt-foundation/pocket-blocks"
 import { IconClock } from "@pokt-foundation/ui"
 import { useMemo } from "react"
 import styles from "./styles.css"
 import CopyTextIcon, {
   links as CopyTextIconLinks,
 } from "~/components/shared/CopyTextIcon"
-import Group from "~/components/shared/Group"
 import Table, { links as TableLinks } from "~/components/shared/Table"
 import Tooltip from "~/components/shared/Tooltip"
 import { useTranslate } from "~/context/TranslateContext"

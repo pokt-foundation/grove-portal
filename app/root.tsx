@@ -1,6 +1,6 @@
 // import initializeSentry from "~/utils/sentry"
 // import initializeAnalytics from "~/utils/analytics"
-import { Alert, Center } from "@mantine/core"
+import { Alert, Center } from "@pokt-foundation/pocket-blocks"
 import { LinksFunction, LoaderFunction, MetaFunction, json } from "@remix-run/node"
 import {
   Links,

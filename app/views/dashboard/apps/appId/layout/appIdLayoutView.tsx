@@ -1,4 +1,4 @@
-import { CaretLeft } from "@pokt-foundation/pocket-blocks"
+import { CaretLeft, Grid } from "@pokt-foundation/pocket-blocks"
 import { Outlet } from "@remix-run/react"
 import { useEffect, useState } from "react"
 import styles from "./styles.css"
@@ -20,7 +20,6 @@ import FeedbackCard, {
 import StopRemoveApp, {
   links as StopRemoveAppLinks,
 } from "~/components/application/StopRemoveApp"
-import Grid from "~/components/shared/Grid"
 import Modal, { links as ModalLinks } from "~/components/shared/Modal"
 import Nav, { links as NavLinks } from "~/components/shared/Nav"
 import { useFeatureFlags } from "~/context/FeatureFlagContext"

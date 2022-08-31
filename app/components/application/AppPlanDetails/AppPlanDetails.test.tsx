@@ -96,7 +96,20 @@ describe("<AppPlanDetails />", () => {
     const buttonText = /Upgrade/i
     expect(screen.getByText(buttonText)).toBeInTheDocument()
     expect(screen.getByRole("button")).toBeInTheDocument()
-    expect(screen.getByRole("button")).toBeInTheDocument()
     expect(screen.getByRole("link")).toBeInTheDocument()
+  })
+  it("renders renew button if subscription has cancel_at_period_end", () => {
+    subscription.cancel_at_period_end = true
+    render(
+      <AppPlanDetails
+        dailyLimit={dailyLimit}
+        id={id}
+        name={name}
+        planType={freePlan}
+        subscription={subscription}
+      />,
+    )
+    const buttonText = /renew/i
+    expect(screen.getByText(buttonText)).toBeInTheDocument()
   })
 })

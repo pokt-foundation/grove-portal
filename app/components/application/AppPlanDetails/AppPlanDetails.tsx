@@ -1,11 +1,11 @@
-import { Text, Title } from "@mantine/core"
-import { Button } from "@pokt-foundation/pocket-blocks"
-import { Link } from "@remix-run/react"
+import { Button, Text, Title, Loader } from "@pokt-foundation/pocket-blocks"
+import { Link, useFetcher } from "@remix-run/react"
 import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/shared/Card"
 import HelpTooltip from "~/components/shared/HelpTooltip"
 import { useTranslate } from "~/context/TranslateContext"
 import { PayPlanType } from "~/models/portal/sdk"
+import { Stripe } from "~/models/stripe/stripe.server"
 import { getPlanName, isFreePlan } from "~/utils/utils"
 
 /* c8 ignore next */
@@ -18,6 +18,7 @@ interface AppPlanDetailsProps {
   dailyLimit: number
   id: string
   name: string
+  subscription: Stripe.Subscription | undefined
 }
 
 export default function AppPlanDetails({
@@ -25,8 +26,10 @@ export default function AppPlanDetails({
   dailyLimit,
   id,
   name,
+  subscription,
 }: AppPlanDetailsProps) {
   const { t } = useTranslate()
+  const subscriptionFetcher = useFetcher()
   const stripe = `/api/stripe/checkout-session?app-id=${id}&app-name=${name}`
   return (
     <div className="pokt-app-plan-details">
@@ -49,7 +52,7 @@ export default function AppPlanDetails({
             <Text className="centerGap">{getPlanName(planType)}</Text>
           </div>
         </div>
-        {isFreePlan(planType) && (
+        {!subscription && isFreePlan(planType) && (
           <Button
             className="upgrade-button pokt-button"
             component={Link}
@@ -58,6 +61,23 @@ export default function AppPlanDetails({
           >
             {t.AppPlanDetails.upgrade}
           </Button>
+        )}
+        {subscription && subscription.cancel_at_period_end && (
+          <subscriptionFetcher.Form action="/api/stripe/subscription" method="post">
+            <input hidden name="app-id" value={id} />
+            <input hidden name="subscription-renew" value="true" />
+            <Button
+              fullWidth
+              className="upgrade-button pokt-button"
+              type="submit"
+              variant="outline"
+            >
+              {t.AppPlanDetails.renew}
+              {/* {subscriptionFetcher.state === "submitting" && (
+                <Loader className="pokt-loader" />
+              )} */}
+            </Button>
+          </subscriptionFetcher.Form>
         )}
       </Card>
     </div>

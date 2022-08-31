@@ -1,5 +1,4 @@
-import { Text } from "@mantine/core"
-import { Button } from "@pokt-foundation/pocket-blocks"
+import { Button, Text } from "@pokt-foundation/pocket-blocks"
 import {
   ActionFunction,
   json,
@@ -8,7 +7,7 @@ import {
   redirect,
 } from "@remix-run/node"
 import { Form, useLoaderData, useActionData, useTransition } from "@remix-run/react"
-import { useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import invariant from "tiny-invariant"
 import AppPlansOverview, {
   links as AppPlansOverviewLinks,
@@ -16,6 +15,9 @@ import AppPlansOverview, {
 import AppRadioCards, {
   links as AppRadioCardsLinks,
 } from "~/components/application/AppRadioCards"
+import CalculateYourPricing, {
+  links as CalculateYourPricingLinks,
+} from "~/components/application/CalculateYourPricing/CalculateYourPricing"
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { useFeatureFlags } from "~/context/FeatureFlagContext"
@@ -41,6 +43,7 @@ export const links = () => {
     ...TextInputLinks(),
     ...AppPlansOverviewLinks(),
     ...AppRadioCardsLinks(),
+    ...CalculateYourPricingLinks(),
     { rel: "stylesheet", href: styles },
   ]
 }
@@ -53,13 +56,9 @@ export const loader: LoaderFunction = async ({ request }) => {
   await requireUser(request)
 
   const priceID = getRequiredServerEnvVar("STRIPE_PRICE_ID")
-  const price = await stripe.prices
-    .retrieve(priceID, {
-      expand: ["tiers"],
-    })
-    .catch((error) => {
-      console.log(error)
-    })
+  const price = await stripe.prices.retrieve(priceID).catch((error) => {
+    console.log(error)
+  })
 
   return json<LoaderData>(
     {
@@ -127,6 +126,20 @@ export default function CreateApp() {
   const action = useActionData() as ActionData
   const [radioSelectedValue, setRadioSelectedValue] = useState(PayPlanType.FreetierV0)
   const [name, setName] = useState("")
+  const [referral, setReferral] = useState("")
+
+  useEffect(() => {
+    const rid = window.localStorage.getItem("rid")
+
+    if (rid) {
+      setReferral(rid)
+    }
+  }, [])
+
+  const priceValue = useMemo(() => {
+    // divide by 100 because stripe sends the value as a decimal
+    return Number(price?.unit_amount_decimal) / 100 || 0.00000958685
+  }, [price])
 
   const tiers = [
     {
@@ -142,7 +155,7 @@ export default function CreateApp() {
       name: getPlanName(PayPlanType.PayAsYouGoV0),
       value: PayPlanType.PayAsYouGoV0,
       active: flags.STRIPE_PAYMENT,
-      price: price?.tiers![1].unit_amount_decimal || 0.0000123,
+      price: priceValue,
       priceText: "pay per relay",
       cardDescription:
         "250k free relays per day, per app. Beyond that, pay only for what you use.",
@@ -156,6 +169,7 @@ export default function CreateApp() {
           <h3>Create New App</h3>
         </div>
         <Form method="post">
+          <input hidden name="referral-id" type="text" value={referral} />
           <TextInput
             label="Name"
             name="app-name"
@@ -191,10 +205,7 @@ export default function CreateApp() {
           </Text>
         </Form>
         <AppPlansOverview planType={radioSelectedValue} />
-
-        {/* TO DO add in calculator component
-        <Calculator />
-              */}
+        <CalculateYourPricing price={priceValue} />
       </Card>
 
       {action && (

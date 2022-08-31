@@ -1,17 +1,22 @@
-import { LoaderFunction, MetaFunction, json } from "@remix-run/node"
-import { useCatch, useLoaderData, useSearchParams } from "@remix-run/react"
+import { LoaderFunction, MetaFunction, json, ActionFunction } from "@remix-run/node"
+import { useActionData, useCatch, useLoaderData, useSearchParams } from "@remix-run/react"
 import invariant from "tiny-invariant"
 import { initPortalClient } from "~/models/portal/portal.server"
+import { BlockchainsQuery, EndpointQuery, PayPlanType } from "~/models/portal/sdk"
 import {
-  Blockchain,
-  BlockchainsQuery,
-  EndpointQuery,
-  PayPlanType,
-  ProcessedEndpoint,
-} from "~/models/portal/sdk"
-import { getRelays, RelayMetric } from "~/models/relaymeter/relaymeter.server"
+  getRelays,
+  getRelaysPerWeek,
+  RelayMetric,
+} from "~/models/relaymeter/relaymeter.server"
+import {
+  getCustomer,
+  getSubscription,
+  Stripe,
+  stripe,
+} from "~/models/stripe/stripe.server"
+import { getErrorMessage } from "~/utils/catchError"
 import { dayjs } from "~/utils/dayjs"
-import { requireUser } from "~/utils/session.server"
+import { getPoktId, requireUser } from "~/utils/session.server"
 import AppIdLayoutView, {
   links as AppIdLayoutViewLinks,
 } from "~/views/dashboard/apps/appId/layout/appIdLayoutView"
@@ -32,6 +37,7 @@ export type AppIdLoaderData = {
   relaysToday: RelayMetric
   relaysYesterday: RelayMetric
   dailyNetworkRelaysPerWeek: RelayMetric[]
+  subscription: Stripe.Subscription | undefined
 }
 
 export const loader: LoaderFunction = async ({ request, params }) => {
@@ -41,6 +47,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   invariant(params.appId, "app id not found")
 
   const user = await requireUser(request)
+  const userId = await getPoktId(user.profile.id)
   const portal = initPortalClient(user.accessToken)
 
   if (searchParams.get("success") === "true") {
@@ -59,23 +66,14 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   })
   invariant(endpoint, "app id not found")
 
-  const { blockchains } = await portal.blockchains()
-
-  const dailyNetworkRelaysPerWeek = await Promise.all(
-    [0, 1, 2, 3, 4, 5, 6].map(async (num) => {
-      const day = dayjs()
-        .utc()
-        .hour(0)
-        .minute(0)
-        .second(0)
-        .millisecond(0)
-        .subtract(num, "day")
-        .format()
-
-      // api auto adjusts to/from to begining and end of each day so putting the same time here gives us back one full day
-      return await getRelays("endpoints", day, day, endpoint.id)
-    }),
+  const subscription = await getSubscription(
+    user.profile.emails[0].value,
+    endpoint.id,
+    userId,
   )
+
+  const dailyNetworkRelaysPerWeek = await getRelaysPerWeek("endpoints", endpoint.id)
+  const { blockchains } = await portal.blockchains()
 
   // api auto adjusts to/from to begining and end of each day so putting the same time here gives us back one full day
   const today = dayjs().utc().format()
@@ -83,29 +81,27 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   const relaysToday = await getRelays("endpoints", today, today, endpoint.id)
   const relaysYesterday = await getRelays("endpoints", yesterday, yesterday, endpoint.id)
 
-  return json<AppIdLoaderData>(
-    {
-      blockchains,
-      endpoint,
-      dailyNetworkRelaysPerWeek,
-      relaysToday,
-      relaysYesterday,
-    },
-    {
-      headers: {
-        "Cache-Control": `private, max-age=${
-          process.env.NODE_ENV === "production" ? "3600" : "60"
-        }`,
-      },
-    },
-  )
+  return json<AppIdLoaderData>({
+    blockchains,
+    endpoint,
+    dailyNetworkRelaysPerWeek,
+    relaysToday,
+    relaysYesterday,
+    subscription,
+  })
 }
 
 export default function AppIdLayout() {
-  const { endpoint } = useLoaderData() as AppIdLoaderData
+  const { endpoint, subscription } = useLoaderData() as AppIdLoaderData
   const [searchParams] = useSearchParams()
 
-  return <AppIdLayoutView endpoint={endpoint} searchParams={searchParams} />
+  return (
+    <AppIdLayoutView
+      endpoint={endpoint}
+      searchParams={searchParams}
+      subscription={subscription}
+    />
+  )
 }
 
 export const CatchBoundary = () => {

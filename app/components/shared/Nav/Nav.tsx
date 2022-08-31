@@ -31,7 +31,7 @@ export const Nav = ({ routes }: NavProps) => {
           return (
             <li key={route.to}>
               {route.external ? (
-                <a className="nav-link" href={route.to}>
+                <a className="nav-link" href={route.to} rel="noreferrer" target="_blank">
                   {route.label}
                 </a>
               ) : (

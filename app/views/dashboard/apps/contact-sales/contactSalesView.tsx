@@ -1,5 +1,4 @@
-import { Title } from "@mantine/core"
-import { Button } from "@pokt-foundation/pocket-blocks"
+import { Button, Title } from "@pokt-foundation/pocket-blocks"
 import { useEffect, useState } from "react"
 import styles from "./styles.css"
 import ContactSalesForm, {

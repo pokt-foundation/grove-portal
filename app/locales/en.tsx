@@ -4,6 +4,9 @@ const schema = {
   common: {
     submit: "submit",
     StopSubscription: "Stop Subscription",
+    save: "save",
+    close: "Close",
+    goBack: "go back",
   },
   search: {
     label: "Search",
@@ -186,6 +189,14 @@ const schema = {
     clickOpen: "Click to open feedback box",
     clickClose: "Click to close feedback box",
   },
+  dashboard: {
+    routes: {
+      network: "Network",
+      apps: "Apps",
+      docs: "Docs",
+      discord: "Discord",
+    },
+  },
   appId: {
     routes: {
       overview: "Overview",
@@ -321,6 +332,7 @@ const schema = {
     currentPlan: "Current Plan",
     currentPlanToolTip: "This is the current plan for this specific application.",
     upgrade: "Upgrade",
+    renew: "Renew Subscription",
   },
   PlanView: {
     title: "Stripe Error",
@@ -367,6 +379,60 @@ const schema = {
       label: "Tell us more about what you are building",
       placeholder: "I'm building a Chain...",
     },
+  },
+  CalculateYourPricing: {
+    title: "Calculate your pricing",
+    firstDescription:
+      "Use the calculator below to give you an estimate of what your monthly bill could look like.",
+    secondDescription:
+      "Enter the number of relays you think your app might consume in a day. Don’t exclude the free relays. We will do the math for you.",
+    avgRelaysPerDay: "AVG Relays per Day",
+    pricePerRelay: "Price per Relay",
+    totalMonthlyPrice: "Total Monthly Estimated Price",
+    howIsThisCalculated: "How is this calculated?",
+    modalTitle: "How is this price calculated",
+    modalDescription:
+      "This formula is how Pocket portal calculates and charge you app relyas montly. If you want to learn more see our",
+    secondModalDescription: "documentation",
+    totalDailyRelays: "Total daily relays",
+    freeRelays: "free relays",
+    costPerDay: "Cost per day",
+    done: "Done",
+    sumPerDay: "The sum of each cost per day",
+    monthlyFee: "Monthly fee",
+  },
+  security: {
+    headings: {
+      secretKey: "Private Secret Key Required",
+      approvedChains: "Approved Chains",
+      userAgents: "Whitelist User-Agents",
+      origins: "Whitelist Origins",
+      contracts: "Whitelist Contracts",
+      methods: "Whitelist Methods",
+    },
+    secretSwitchAria: "Private key required",
+    userAgentPlaceholder: "Type user agent here",
+    userAgentAria: "Add user agents to white list",
+    defaultSelectChainText: "Select Chain",
+    chainsDropdownAria: "Select a chain to add to white list",
+    OriginPlaceholder: "Type origin here",
+    OriginAria: "Add origins to white list",
+    contractAria: "Add contract selections to white list",
+    contractError:
+      "You must select a chain and have a value to add to methods whitelist.",
+    methodAria: "Add method selections to white list",
+    methodError: "You must select a chain and have a value to add to methods whitelist.",
+    secretKeyText:
+      "To maximize the security of your application, you should activate the private secret key for all requests and enable the use of whitelist user agents and origins.",
+  },
+  stopRemoveApp: {
+    stopSubscriptionTitle: "Cancel subscription",
+    removeApp: "Remove Application",
+    removeAppTitle: "You're about to remove this application!",
+    planDowngrade:
+      "Your plan will be canceled, but is still available until the end of your billing period.",
+    planRenew: "If you change your mind, you can renew your subscription.",
+    appId: "App ID:",
   },
 }
 

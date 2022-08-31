@@ -1,4 +1,5 @@
 import { fetch } from "@remix-run/node"
+import { dayjs } from "~/utils/dayjs"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 
 export type RelayMetric = {
@@ -48,4 +49,26 @@ const addTotalToResponse = (body: RelayMetric) => {
       Total: body.Count.Success + body.Count.Failure,
     },
   }
+}
+
+export const getRelaysPerWeek = async (
+  type: RelayType = "network",
+  id?: string,
+): Promise<RelayMetric[]> => {
+  const relays = await Promise.all(
+    [1, 2, 3, 4, 5, 6, 7].map(async (num) => {
+      const day = dayjs()
+        .utc()
+        .hour(0)
+        .minute(0)
+        .second(0)
+        .millisecond(0)
+        .subtract(num, "day")
+        .format()
+
+      // api auto adjusts to/from to begining and end of each day so putting the same time here gives us back one full day
+      return await getRelays(type, day, day, id)
+    }),
+  )
+  return relays
 }

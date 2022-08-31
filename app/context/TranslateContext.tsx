@@ -2,10 +2,13 @@ import React, { useContext, useMemo } from "react"
 import { useUser } from "./UserContext"
 import en from "~/locales/en"
 import fr from "~/locales/fr"
+import { CalculateYourPricing } from "~/locales/types/CalculateYourPricing"
 import {
   ContactSalesForm,
   ContactSalesView,
 } from "~/locales/types/ContactSalesLocaleTypes"
+import { SecurityPageViewTypes } from "~/locales/types/SecurityPageTypes"
+import { StopRemoveApp } from "~/locales/types/StopRemoveApp"
 import { PayPlanType } from "~/models/portal/sdk"
 
 const languages = ["en", "fr"] as const
@@ -18,6 +21,9 @@ interface TranslationData {
   common: {
     submit: string
     StopSubscription: string
+    save: string
+    close: string
+    goBack: string
   }
   search: {
     label: string
@@ -79,6 +85,14 @@ interface TranslationData {
     heartImageAlt: string
     clickOpen: string
     clickClose: string
+  }
+  dashboard: {
+    routes: {
+      network: string
+      apps: string
+      docs: string
+      discord: string
+    }
   }
   appId: {
     routes: {
@@ -208,6 +222,7 @@ interface TranslationData {
     currentPlan: string
     currentPlanToolTip: string
     upgrade: string
+    renew: string
   }
   PlanView: {
     title: string
@@ -216,6 +231,9 @@ interface TranslationData {
   }
   ContactSalesView: ContactSalesView
   ContactSalesForm: ContactSalesForm
+  CalculateYourPricing: CalculateYourPricing
+  security: SecurityPageViewTypes
+  stopRemoveApp: StopRemoveApp
 }
 
 export type Language = typeof languages[number]

@@ -1,5 +1,4 @@
-import { Text } from "@mantine/core"
-import { Button } from "@pokt-foundation/pocket-blocks"
+import { Button, Text } from "@pokt-foundation/pocket-blocks"
 import { LinksFunction } from "@remix-run/node"
 import { Form, useTransition } from "@remix-run/react"
 import styles from "./styles.css"

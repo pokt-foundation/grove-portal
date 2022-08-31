@@ -4,6 +4,9 @@ const schema = {
   common: {
     submit: "submit -fr",
     StopSubscription: "Stop Subscription -fr",
+    save: "save -fr",
+    close: "close -fr",
+    goBack: "go back -fr",
   },
   search: {
     label: "Search -fr",
@@ -130,6 +133,14 @@ const schema = {
     heartImageAlt: "heart image -fr",
     clickOpen: "Click to open feedback box -fr",
     clickClose: "Click to close feedback box -fr",
+  },
+  dashboard: {
+    routes: {
+      network: "Network -fr",
+      apps: "Apps -fr",
+      docs: "Docs -fr",
+      discord: "Discord -fr",
+    },
   },
   appId: {
     routes: {
@@ -266,6 +277,7 @@ const schema = {
     currentPlan: "Current Plan -fr",
     currentPlanToolTip: "This is the current plan for this specific application. -fr",
     upgrade: "Upgrade -fr",
+    renew: "Renew Subscription -fr",
   },
   PlanView: {
     title: "Stripe Error -fr",
@@ -312,6 +324,61 @@ const schema = {
       label: "Tell us more about what you are building -fr",
       placeholder: "I'm building a Chain... -fr",
     },
+  },
+  CalculateYourPricing: {
+    title: "Calculate your pricing -fr",
+    firstDescription:
+      "Use the calculator below to give you an estimate of what your monthly bill could look like. -fr",
+    secondDescription:
+      "Enter the number of relays you think your app might consume in a day. Don’t exclude the free relays. We will do the math for you. -fr",
+    avgRelaysPerDay: "AVG Relays per Day -fr",
+    pricePerRelay: "Price per Relay -fr",
+    totalMonthlyPrice: "Total Monthly Estimated Price -fr",
+    howIsThisCalculated: "How is this calculated? -fr",
+    modalTitle: "How is this price calculated -fr",
+    modalDescription:
+      "This formula is how Pocket portal calculates and charge you app relyas montly. If you want to learn more see our -fr",
+    secondModalDescription: "documentation -fr",
+    totalDailyRelays: "Total daily relays -fr",
+    freeRelays: "free relays -fr",
+    costPerDay: "Cost per day -fr",
+    done: "Done -fr",
+    sumPerDay: "The sum of each cost per day -fr",
+    monthlyFee: "Monthly fee -fr",
+  },
+  security: {
+    headings: {
+      secretKey: "Private Secret Key Required -fr",
+      approvedChains: "Approved Chains -fr",
+      userAgents: "Whitelist User-Agents -fr",
+      origins: "Whitelist Origins -fr",
+      contracts: "Whitelist Contracts -fr",
+      methods: "Whitelist Methods -fr",
+    },
+    secretSwitchAria: "Private key required -fr",
+    userAgentPlaceholder: "Type user agent here -fr",
+    userAgentAria: "Add user agents to white list -fr",
+    defaultSelectChainText: "Select Chain -fr",
+    chainsDropdownAria: "Select a chain to add to white list -fr",
+    OriginPlaceholder: "Type origin here -fr",
+    OriginAria: "Add origins to white list -fr",
+    contractAria: "Add contract selections to white list -fr",
+    contractError:
+      "You must select a chain and have a value to add to methods whitelist. -fr",
+    methodAria: "Add method selections to white list -fr",
+    methodError:
+      "You must select a chain and have a value to add to methods whitelist. -fr",
+    secretKeyText:
+      "To maximize the security of your application, you should activate the private secret key for all requests and enable the use of whitelist user agents and origins. -fr",
+  },
+  stopRemoveApp: {
+    stopSubscriptionTitle: "This will stop your subscription! -fr",
+    removeApp: "Remove Application -fr",
+    removeAppTitle: "You're about to remove this application! -fr",
+    planDowngrade:
+      "Your plan will be canceled, but is still available until the end of your billing period. -fr",
+    appId: "App ID: -fr",
+    planRenew: "If you change your mind, you can renew your subscription. -fr",
   },
 }
 

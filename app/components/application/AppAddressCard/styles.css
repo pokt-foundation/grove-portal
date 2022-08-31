@@ -15,6 +15,22 @@
   margin-bottom: 0;
 }
 
-.pokt-app-addresses .pokt-text:not(:last-child) {
+.pokt-app-addresses .pokt-text {
   margin-bottom: 16px;
+}
+
+.pokt-app-addresses.no-hidden-apps .pokt-text:last-child {
+  margin-bottom: 0;
+}
+
+.pokt-app-addresses .pokt-button {
+  border-color: var(--color-secondary-main);
+}
+
+.pokt-app-addresses .pokt-button:hover {
+  border-color: var(--color-secondary-dark);
+}
+
+.pokt-app-addresses .pokt-icon {
+  fill: var(--color-white-main);
 }

@@ -1,4 +1,4 @@
-import { SimpleGrid } from "@mantine/core"
+import { SimpleGrid } from "@pokt-foundation/pocket-blocks"
 import type { LinksFunction } from "@remix-run/node"
 import { useMemo } from "react"
 import CircleGraphWithGradient from "../CircleGraphWithGradient"

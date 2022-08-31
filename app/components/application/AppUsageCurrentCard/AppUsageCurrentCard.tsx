@@ -1,3 +1,4 @@
+import { Grid } from "@pokt-foundation/pocket-blocks"
 import {
   UserLBSessionRelaysResponse,
   UserLBTotalRelaysResponse,
@@ -9,7 +10,6 @@ import CardList, {
   CardListItem,
   links as CardListLinks,
 } from "~/components/shared/CardList"
-import Grid from "~/components/shared/Grid"
 import { useTranslate } from "~/context/TranslateContext"
 import { commify } from "~/utils/formattingUtils"
 

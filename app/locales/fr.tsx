@@ -275,6 +275,7 @@ const schema = {
     currentPlan: "Current Plan -fr",
     currentPlanToolTip: "This is the current plan for this specific application. -fr",
     upgrade: "Upgrade -fr",
+    renew: "Renew Subscription -fr",
   },
   PlanView: {
     title: "Stripe Error -fr",

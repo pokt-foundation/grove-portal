@@ -1,14 +1,14 @@
 import { Button } from "@pokt-foundation/pocket-blocks"
-import { Form, Link, useFetcher } from "@remix-run/react"
+import { Form, Link, useFetcher, useLocation } from "@remix-run/react"
 import { useEffect, useState } from "react"
 import AppRemoveModal, { links as AppRemoveModalLinks } from "../AppRemoveModal"
 import styles from "./styles.css"
 import Modal from "~/components/shared/Modal"
 import { useTranslate } from "~/context/TranslateContext"
-import { PayPlanType } from "~/models/portal/sdk"
-import { isPaidPlan } from "~/utils/utils"
-import { StripeDeleteActionData } from "~/routes/api/stripe/cancel"
 import { endpoint } from "~/models/portal/portal.data"
+import { PayPlanType } from "~/models/portal/sdk"
+import { StripeDeleteActionData } from "~/routes/api/stripe/subscription"
+import { isPaidPlan } from "~/utils/utils"
 
 /* c8 ignore next */
 export const links = () => {
@@ -23,14 +23,21 @@ interface StopRemoveAppProps {
 export default function StopRemoveApp({ endpointId, planType }: StopRemoveAppProps) {
   const { t } = useTranslate()
   const [showStopModal, setShowStopModal] = useState(false)
-  const deleteFetcher = useFetcher()
+  const subscriptionFetcher = useFetcher()
+  // const location = useLocation()
 
   useEffect(() => {
-    const data = deleteFetcher.data as StripeDeleteActionData
-    if (data && !data.error) {
+    const data = subscriptionFetcher.data as StripeDeleteActionData
+    if (data && !data.error && subscriptionFetcher.state === "idle") {
       setShowStopModal(false)
     }
-  }, [deleteFetcher])
+  }, [endpointId, subscriptionFetcher])
+
+  // useEffect(() => {
+  //   if (location.pathname === "api/stripe/subscription") {
+  //     setShowStopModal(false)
+  //   }
+  // }, [location])
 
   return (
     <>
@@ -56,7 +63,7 @@ export default function StopRemoveApp({ endpointId, planType }: StopRemoveAppPro
                 billing period.
               </p>
               <p>If you change your mind, you can renew your subscription.</p>
-              <Form action="/api/stripe/cancel" method="post">
+              <subscriptionFetcher.Form action="/api/stripe/subscription" method="post">
                 <input hidden name="app-id" value={endpointId} />
                 <Button fullWidth type="submit" variant="outline">
                   <img
@@ -67,7 +74,7 @@ export default function StopRemoveApp({ endpointId, planType }: StopRemoveAppPro
                   />{" "}
                   {t.common.StopSubscription}
                 </Button>
-              </Form>
+              </subscriptionFetcher.Form>
               <Button variant="outline" onClick={() => setShowStopModal(false)}>
                 Cancel
               </Button>

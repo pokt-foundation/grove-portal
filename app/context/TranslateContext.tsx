@@ -219,6 +219,7 @@ interface TranslationData {
     currentPlan: string
     currentPlanToolTip: string
     upgrade: string
+    renew: string
   }
   PlanView: {
     title: string

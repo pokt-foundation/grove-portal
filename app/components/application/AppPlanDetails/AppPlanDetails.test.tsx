@@ -2,6 +2,7 @@ import { expect } from "vitest"
 import AppPlanDetails from "./AppPlanDetails"
 import { render, screen } from "test/helpers"
 import { PayPlanType } from "~/models/portal/sdk"
+import { subscription } from "~/models/stripe/stripe.data"
 import { getPlanName } from "~/utils/utils"
 
 const dailyLimit = 123
@@ -14,7 +15,13 @@ const name = "myApp"
 describe("<AppPlanDetails />", () => {
   it("renders application with paid plan", () => {
     render(
-      <AppPlanDetails dailyLimit={unlimited} id={id} name={name} planType={paidPlan} />,
+      <AppPlanDetails
+        dailyLimit={unlimited}
+        id={id}
+        name={name}
+        planType={paidPlan}
+        subscription={subscription}
+      />,
     )
     const relayLimit = "Relays Limit"
     const currentPlan = "Current Plan"
@@ -28,7 +35,13 @@ describe("<AppPlanDetails />", () => {
   })
   it("renders unlimited relays with paid plan", () => {
     render(
-      <AppPlanDetails dailyLimit={unlimited} id={id} name={name} planType={paidPlan} />,
+      <AppPlanDetails
+        dailyLimit={unlimited}
+        id={id}
+        name={name}
+        planType={paidPlan}
+        subscription={subscription}
+      />,
     )
     const paid = getPlanName(paidPlan)
     const dailyLimitText = /Unlimited/i
@@ -37,7 +50,13 @@ describe("<AppPlanDetails />", () => {
   })
   it("renders application with free plan", () => {
     render(
-      <AppPlanDetails dailyLimit={dailyLimit} id={id} name={name} planType={freePlan} />,
+      <AppPlanDetails
+        dailyLimit={dailyLimit}
+        id={id}
+        name={name}
+        planType={freePlan}
+        subscription={subscription}
+      />,
     )
     const relayLimit = "Relays Limit"
     const currentPlan = "Current Plan"
@@ -51,7 +70,13 @@ describe("<AppPlanDetails />", () => {
   })
   it("does NOT render upgrade button with paid plan", () => {
     render(
-      <AppPlanDetails dailyLimit={dailyLimit} id={id} name={name} planType={paidPlan} />,
+      <AppPlanDetails
+        dailyLimit={dailyLimit}
+        id={id}
+        name={name}
+        planType={paidPlan}
+        subscription={subscription}
+      />,
     )
     const buttonText = /Upgrade/i
     expect(screen.queryByText(buttonText)).not.toBeInTheDocument()
@@ -60,7 +85,13 @@ describe("<AppPlanDetails />", () => {
   })
   it("renders upgrade button with free plan", () => {
     render(
-      <AppPlanDetails dailyLimit={dailyLimit} id={id} name={name} planType={freePlan} />,
+      <AppPlanDetails
+        dailyLimit={dailyLimit}
+        id={id}
+        name={name}
+        planType={freePlan}
+        subscription={undefined}
+      />,
     )
     const buttonText = /Upgrade/i
     expect(screen.getByText(buttonText)).toBeInTheDocument()

@@ -1,7 +1,7 @@
 import { ActionFunction, json, redirect } from "@remix-run/node"
 import invariant from "tiny-invariant"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { PayPlanType, UpdateEndpointMutation } from "~/models/portal/sdk"
+import { PayPlanType } from "~/models/portal/sdk"
 import { getSubscription, stripe, Stripe } from "~/models/stripe/stripe.server"
 import { getErrorMessage } from "~/utils/catchError"
 import { getPoktId, requireUser } from "~/utils/session.server"
@@ -22,6 +22,8 @@ export const action: ActionFunction = async ({ request }) => {
   const portal = initPortalClient(user.accessToken)
   const formData = await request.formData()
   const appId = formData.get("app-id")
+  const renew = formData.get("subscription-renew")
+  const action = renew !== "true"
 
   try {
     invariant(appId, "app id not found")
@@ -35,15 +37,19 @@ export const action: ActionFunction = async ({ request }) => {
     )
 
     if (subscription) {
-      const cancel = await stripe.subscriptions.update(subscription.id, {
-        cancel_at_period_end: true,
+      const updatedSubscription = await stripe.subscriptions.update(subscription.id, {
+        cancel_at_period_end: action,
       })
-      if (cancel) {
+      if (updatedSubscription) {
         await portal.updateEndpoint({
           input: {
             id: appId as string,
-            payPlanType: PayPlanType.FreetierV0,
+            payPlanType: action ? PayPlanType.FreetierV0 : PayPlanType.PayAsYouGoV0,
           },
+        })
+        return json({
+          error: false,
+          subscription: updatedSubscription,
         })
         return redirect(`/dashboard/apps/${appId}`)
       }
@@ -51,6 +57,10 @@ export const action: ActionFunction = async ({ request }) => {
 
     throw new Error("no subscription")
   } catch (error) {
+    return json({
+      error: true,
+      message: getErrorMessage(error),
+    })
     return redirect(
       `/dashboard/apps/${appId}?cancelError=true&cancelMessage=${getErrorMessage(error)}`,
     )

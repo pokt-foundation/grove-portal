@@ -7,7 +7,7 @@ import {
   redirect,
 } from "@remix-run/node"
 import { Form, useLoaderData, useActionData, useTransition } from "@remix-run/react"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import invariant from "tiny-invariant"
 import AppPlansOverview, {
   links as AppPlansOverviewLinks,
@@ -56,14 +56,11 @@ export const loader: LoaderFunction = async ({ request }) => {
   await requireUser(request)
 
   const priceID = getRequiredServerEnvVar("STRIPE_PRICE_ID")
-  const price = await stripe.prices
-    .retrieve(priceID, {
-      expand: ["tiers"],
-    })
-    .catch((error) => {
-      console.log(error)
-    })
+  const price = await stripe.prices.retrieve(priceID).catch((error) => {
+    console.log(error)
+  })
 
+  console.log(price)
   return json<LoaderData>(
     {
       price: price,
@@ -140,6 +137,11 @@ export default function CreateApp() {
     }
   }, [])
 
+  const priceValue = useMemo(() => {
+    // divide by 100 because stripe sends the value as a decimal
+    return Number(price?.unit_amount_decimal) / 100 || 0.00000123
+  }, [price])
+
   const tiers = [
     {
       name: getPlanName(PayPlanType.FreetierV0),
@@ -154,7 +156,7 @@ export default function CreateApp() {
       name: getPlanName(PayPlanType.PayAsYouGoV0),
       value: PayPlanType.PayAsYouGoV0,
       active: flags.STRIPE_PAYMENT,
-      price: price?.tiers![1].unit_amount_decimal || 0.0000123,
+      price: priceValue,
       priceText: "pay per relay",
       cardDescription:
         "250k free relays per day, per app. Beyond that, pay only for what you use.",
@@ -204,9 +206,7 @@ export default function CreateApp() {
           </Text>
         </Form>
         <AppPlansOverview planType={radioSelectedValue} />
-        <CalculateYourPricing
-          price={Number(price?.tiers![1].unit_amount_decimal) || 0.0000123}
-        />
+        <CalculateYourPricing price={priceValue} />
       </Card>
 
       {action && (

@@ -8,6 +8,7 @@ import {
   ContactSalesView,
 } from "~/locales/types/ContactSalesLocaleTypes"
 import { SecurityPageViewTypes } from "~/locales/types/SecurityPageTypes"
+import { StopRemoveApp } from "~/locales/types/StopRemoveApp"
 import { PayPlanType } from "~/models/portal/sdk"
 
 const languages = ["en", "fr"] as const
@@ -21,6 +22,7 @@ interface TranslationData {
     submit: string
     StopSubscription: string
     save: string
+    cancel: string
   }
   search: {
     label: string
@@ -230,6 +232,7 @@ interface TranslationData {
   ContactSalesForm: ContactSalesForm
   CalculateYourPricing: CalculateYourPricing
   security: SecurityPageViewTypes
+  stopRemoveApp: StopRemoveApp
 }
 
 export type Language = typeof languages[number]

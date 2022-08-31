@@ -5,6 +5,7 @@ const schema = {
     submit: "submit",
     StopSubscription: "Stop Subscription",
     save: "save",
+    cancel: "cancel",
   },
   search: {
     label: "Search",
@@ -422,6 +423,15 @@ const schema = {
     methodError: "You must select a chain and have a value to add to methods whitelist.",
     secretKeyText:
       "To maximize the security of your application, you should activate the private secret key for all requests and enable the use of whitelist user agents and origins.",
+  },
+  stopRemoveApp: {
+    stopSubscriptionTitle: "Cancel subscription",
+    removeApp: "Remove Application",
+    removeAppTitle: "You're about to remove this application!",
+    planDowngrade:
+      "Your plan will be canceled, but is still available until the end of your billing period.",
+    planRenew: "If you change your mind, you can renew your subscription.",
+    appId: "App ID:",
   },
 }
 

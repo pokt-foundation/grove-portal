@@ -1,15 +1,15 @@
+import { Group } from "@mantine/core"
+import { Button, Text } from "@pokt-foundation/pocket-blocks"
 import { Form, Link, useFetcher, useLocation } from "@remix-run/react"
 import { useEffect, useState } from "react"
+import styles from "./styles.css"
+import Modal, { links as ModalLinks } from "~/components/shared/Modal"
 import { useTranslate } from "~/context/TranslateContext"
 import { endpoint } from "~/models/portal/portal.data"
 import { PayPlanType } from "~/models/portal/sdk"
 import { StripeDeleteActionData } from "~/routes/api/stripe/subscription"
-import { isPaidPlan } from "~/utils/utils"
-import { Group } from "@mantine/core"
-import { Button, Text } from "@pokt-foundation/pocket-blocks"
-import styles from "./styles.css"
-import Modal, { links as ModalLinks } from "~/components/shared/Modal"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
+import { isPaidPlan } from "~/utils/utils"
 
 /* c8 ignore next */
 export const links = () => {

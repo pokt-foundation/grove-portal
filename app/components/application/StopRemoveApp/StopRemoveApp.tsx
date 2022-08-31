@@ -64,7 +64,7 @@ export default function StopRemoveApp({ appId, planType }: StopRemoveAppProps) {
               <p>{t.stopRemoveApp.planRenew}</p>
               <Group align="center" className="buttonGroup" position="apart">
                 <Button variant="outline" onClick={() => setShowStopModal(false)}>
-                  {t.common.close}
+                  {t.common.goBack}
                 </Button>
                 <subscriptionFetcher.Form action="/api/stripe/subscription" method="post">
                   <input hidden name="app-id" value={appId} />
@@ -104,7 +104,7 @@ export default function StopRemoveApp({ appId, planType }: StopRemoveAppProps) {
             </div>
             <Group align="center" className="buttonGroup" position="apart">
               <Button variant="outline" onClick={() => setRemoveAppOpened(false)}>
-                {t.common.close}
+                {t.common.goBack}
               </Button>
               <Form action={`/dashboard/apps/${appId}/remove`} method="post">
                 <Button

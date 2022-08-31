@@ -6,6 +6,7 @@ const schema = {
     StopSubscription: "Stop Subscription",
     save: "save",
     close: "Close",
+    goBack: "go back",
   },
   search: {
     label: "Search",

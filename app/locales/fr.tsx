@@ -6,6 +6,7 @@ const schema = {
     StopSubscription: "Stop Subscription -fr",
     save: "save -fr",
     close: "close -fr",
+    goBack: "go back -fr",
   },
   search: {
     label: "Search -fr",

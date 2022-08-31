@@ -101,7 +101,7 @@ export default function AppIdLayoutView({
       !routes.filter((route) => route.to === "plan")[0]
     ) {
       setRoutes((curr) => [
-        ...curr,
+        ...curr.filter((c) => c.to !== "notifications"),
         {
           to: "plan",
           label: t.appId.routes.plan,

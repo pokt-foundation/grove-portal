@@ -66,7 +66,7 @@ export default function AppAddressCard({ apps }: AppAddressCardProps) {
                     showAllApps ? "Collapse Applications" : "Expand Applications"
                   }
                   className="pokt-button"
-                  size="small"
+                  size="sm"
                   variant="outline"
                   onClick={() => setShowAllApps((c) => !c)}
                 >

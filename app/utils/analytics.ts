@@ -11,6 +11,7 @@ export const AmplitudeEvents = {
   SupportView: "SUPPORT_VIEW",
   EndpointCreation: "ENDPOINT_CREATION",
   EndpointRemoval: "ENDPOINT_REMOVAL",
+  StopSubscription: "STOP_SUBCSCRIPTION",
   LandingView: "LANDING_VIEW",
   DashboardView: "DASHBOARD_VIEW",
   RequestDetailsView: "REQUEST_DETAILS_VIEW",

@@ -22,7 +22,7 @@ interface TranslationData {
     submit: string
     StopSubscription: string
     save: string
-    cancel: string
+    close: string
   }
   search: {
     label: string

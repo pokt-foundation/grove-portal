@@ -5,7 +5,7 @@ const schema = {
     submit: "submit",
     StopSubscription: "Stop Subscription",
     save: "save",
-    cancel: "cancel",
+    close: "Close",
   },
   search: {
     label: "Search",

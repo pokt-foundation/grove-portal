@@ -5,7 +5,7 @@ const schema = {
     submit: "submit -fr",
     StopSubscription: "Stop Subscription -fr",
     save: "save -fr",
-    cancel: "cancel -fr",
+    close: "close -fr",
   },
   search: {
     label: "Search -fr",

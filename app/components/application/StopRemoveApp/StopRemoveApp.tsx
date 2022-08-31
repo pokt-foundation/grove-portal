@@ -64,17 +64,16 @@ export default function StopRemoveApp({ appId, planType }: StopRemoveAppProps) {
               <p>{t.stopRemoveApp.planRenew}</p>
               <Group align="center" className="buttonGroup" position="apart">
                 <Button variant="outline" onClick={() => setShowStopModal(false)}>
-                  {t.common.cancel}
+                  {t.common.close}
                 </Button>
                 <subscriptionFetcher.Form action="/api/stripe/subscription" method="post">
                   <input hidden name="app-id" value={appId} />
-                  <Button fullWidth type="submit" variant="outline">
-                    <img
-                      aria-hidden
-                      alt={t.common.StopSubscription}
-                      className="pokt-app-remove-delete-icon"
-                      src="/delete.svg"
-                    />{" "}
+                  <Button
+                    type="submit"
+                    onClick={() => {
+                      trackEvent(AmplitudeEvents.StopSubscription)
+                    }}
+                  >
                     {t.common.StopSubscription}
                   </Button>
                 </subscriptionFetcher.Form>
@@ -105,7 +104,7 @@ export default function StopRemoveApp({ appId, planType }: StopRemoveAppProps) {
             </div>
             <Group align="center" className="buttonGroup" position="apart">
               <Button variant="outline" onClick={() => setRemoveAppOpened(false)}>
-                {t.common.cancel}
+                {t.common.close}
               </Button>
               <Form action={`/dashboard/apps/${appId}/remove`} method="post">
                 <Button

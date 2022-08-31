@@ -290,6 +290,8 @@ const schema = {
     description:
       "Give us some basic information of your request and our solutions team will reach out soon to find the best way of service your application. -fr",
     formSubmitted: "Form Submitted -fr",
+    formSubmittedDescription:
+      "Your form has been successfully submitted. We will be in touch! -fr",
     done: "Done -fr",
     formSubmissionFailed: "Form Submission Failed -fr",
   },

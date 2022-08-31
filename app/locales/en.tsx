@@ -343,8 +343,10 @@ const schema = {
   ContactSalesView: {
     title: "We have Enterprise solutions for your needs",
     description:
-      "Give us some basic information of your request and our solutions team will reach out soon to find the best way of service your application.",
+      "Give us some basic information and our solutions team will reach out soon.",
     formSubmitted: "Form Submitted",
+    formSubmittedDescription:
+      "Your form has been successfully submitted. We will be in touch!",
     done: "Done",
     formSubmissionFailed: "Form Submission Failed",
   },
@@ -369,15 +371,15 @@ const schema = {
     },
     chains: {
       label: "Protocol/Chains of interest",
-      placeholder: "I'm interested in chain...",
+      placeholder: "I'm interested in...",
     },
     relays: {
-      label: "Relay Needs",
-      placeholder: "How many daily relays your application request",
+      label: "Daily Relay Needs",
+      placeholder: "Approximately how many daily relays does your app need?",
     },
     tellUsMore: {
       label: "Tell us more about what you are building",
-      placeholder: "I'm building a Chain...",
+      placeholder: "I'm building...",
     },
   },
   CalculateYourPricing: {

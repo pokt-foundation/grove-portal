@@ -19,6 +19,7 @@ export type ContactSalesView = {
   title: string
   description: string
   formSubmitted: string
+  formSubmittedDescription: string
   done: string
   formSubmissionFailed: string
 }

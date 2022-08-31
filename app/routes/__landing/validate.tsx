@@ -15,7 +15,7 @@ export default function ValidateEmail() {
       <Container>
         <Grid align="center">
           <Grid.Col sm={7} xs={12}>
-            <Title order={1}>Account Verification Pending</Title>
+            <Title order={1}>Email Verification Sent</Title>
             <Text>
               We sent you an email with a link to verify your account. Please complete
               this action to proceed with login.

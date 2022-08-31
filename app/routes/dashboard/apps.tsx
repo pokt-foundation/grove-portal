@@ -1,4 +1,4 @@
-import { Grid } from "@mantine/core"
+import { Grid } from "@pokt-foundation/pocket-blocks"
 import { Button } from "@pokt-foundation/pocket-blocks"
 import { json, LoaderFunction } from "@remix-run/node"
 import { Link, Outlet, useLoaderData, useTransition } from "@remix-run/react"

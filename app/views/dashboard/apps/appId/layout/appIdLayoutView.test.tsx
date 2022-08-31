@@ -3,6 +3,7 @@ import AppIdLayoutView from "./appIdLayoutView"
 import { render, screen, userEvent } from "test/helpers"
 import { endpoint } from "~/models/portal/portal.data"
 import { PayPlanType } from "~/models/portal/sdk"
+import { subscription } from "~/models/stripe/stripe.data"
 
 describe("<AppIdLayoutView />", () => {
   it("renders error modal when search param 'success = false'", () => {
@@ -10,6 +11,7 @@ describe("<AppIdLayoutView />", () => {
       <AppIdLayoutView
         endpoint={endpoint}
         searchParams={new URLSearchParams({ success: "false" })}
+        subscription={subscription}
       />,
     )
 
@@ -22,13 +24,20 @@ describe("<AppIdLayoutView />", () => {
       <AppIdLayoutView
         endpoint={endpoint}
         searchParams={new URLSearchParams({ success: "true" })}
+        subscription={subscription}
       />,
     )
 
     expect(screen.getByRole("dialog", { name: /congratulations/i })).toBeInTheDocument()
   })
   it("renders layout without endpoint and without search params", () => {
-    render(<AppIdLayoutView endpoint={null} searchParams={new URLSearchParams()} />)
+    render(
+      <AppIdLayoutView
+        endpoint={null}
+        searchParams={new URLSearchParams()}
+        subscription={subscription}
+      />,
+    )
 
     expect(
       screen.queryByRole("dialog", { name: /congratulations/i }),
@@ -45,7 +54,13 @@ describe("<AppIdLayoutView />", () => {
     ).not.toBeInTheDocument()
   })
   it("renders layout with endpoint and without search params", () => {
-    render(<AppIdLayoutView endpoint={endpoint} searchParams={new URLSearchParams()} />)
+    render(
+      <AppIdLayoutView
+        endpoint={endpoint}
+        searchParams={new URLSearchParams()}
+        subscription={subscription}
+      />,
+    )
 
     expect(
       screen.queryByRole("dialog", { name: /congratulations/i }),
@@ -62,7 +77,13 @@ describe("<AppIdLayoutView />", () => {
     ).toBeInTheDocument()
   })
   it("renders nav routes when planType is paid", () => {
-    render(<AppIdLayoutView endpoint={endpoint} searchParams={new URLSearchParams()} />)
+    render(
+      <AppIdLayoutView
+        endpoint={endpoint}
+        searchParams={new URLSearchParams()}
+        subscription={subscription}
+      />,
+    )
 
     expect(screen.getByRole("link", { name: /overview/i })).toBeInTheDocument()
     expect(screen.getByRole("link", { name: /requests/i })).toBeInTheDocument()
@@ -72,7 +93,13 @@ describe("<AppIdLayoutView />", () => {
   })
   it("renders nav routes when planType is free", () => {
     endpoint.appLimits.planType = PayPlanType.FreetierV0
-    render(<AppIdLayoutView endpoint={endpoint} searchParams={new URLSearchParams()} />)
+    render(
+      <AppIdLayoutView
+        endpoint={endpoint}
+        searchParams={new URLSearchParams()}
+        subscription={subscription}
+      />,
+    )
 
     expect(screen.getByRole("link", { name: /overview/i })).toBeInTheDocument()
     expect(screen.getByRole("link", { name: /requests/i })).toBeInTheDocument()

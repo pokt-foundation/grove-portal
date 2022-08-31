@@ -9,7 +9,7 @@ const removeApplication = "Remove Application"
 
 describe("<StopRemoveApp />", () => {
   it("renders Stop Subscription button for paid plantype", () => {
-    render(<StopRemoveApp endpointId={"123"} planType={PayPlanType.PayAsYouGoV0} />)
+    render(<StopRemoveApp appId={"123"} planType={PayPlanType.PayAsYouGoV0} />)
 
     expect(screen.getByText(stopSubscription)).toBeInTheDocument()
     expect(screen.getByRole("button", { name: stopSubscription })).toBeInTheDocument()
@@ -18,7 +18,7 @@ describe("<StopRemoveApp />", () => {
     ).not.toBeInTheDocument()
   })
   it("renders remove application for free tier plantype", () => {
-    render(<StopRemoveApp endpointId={"123"} planType={PayPlanType.FreetierV0} />)
+    render(<StopRemoveApp appId={"123"} planType={PayPlanType.FreetierV0} />)
 
     expect(screen.getByText(removeApplication)).toBeInTheDocument()
     expect(screen.getByRole("button", { name: removeApplication })).toBeInTheDocument()

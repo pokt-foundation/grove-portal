@@ -1,4 +1,4 @@
-import { Grid } from "@mantine/core"
+import { Grid } from "@pokt-foundation/pocket-blocks"
 import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/shared/Card"
 import { RelayMetric } from "~/models/relaymeter/relaymeter.server"

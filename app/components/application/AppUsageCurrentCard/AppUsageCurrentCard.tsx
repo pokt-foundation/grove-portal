@@ -1,3 +1,4 @@
+import { Grid } from "@pokt-foundation/pocket-blocks"
 import {
   UserLBSessionRelaysResponse,
   UserLBTotalRelaysResponse,
@@ -9,7 +10,6 @@ import CardList, {
   CardListItem,
   links as CardListLinks,
 } from "~/components/shared/CardList"
-import Grid from "~/components/shared/Grid"
 import { useTranslate } from "~/context/TranslateContext"
 import { commify } from "~/utils/formattingUtils"
 
@@ -24,23 +24,15 @@ export const links = () => {
 interface UsageCurrentCardProps {
   maxDailyRelays: number
   totalRelays: UserLBTotalRelaysResponse["total_relays"]
-  sessionRelays: UserLBSessionRelaysResponse["session_relays"]
 }
 
 export default function AppUsageCurrentCard({
   maxDailyRelays,
   totalRelays,
-  sessionRelays,
 }: UsageCurrentCardProps) {
   const { t } = useTranslate()
 
   const listItems: CardListItem[] = [
-    {
-      label: t.AppUsageCurrentCard.list.sessionRelays.label,
-      value: commify(sessionRelays.toFixed(0)),
-      help: t.AppUsageCurrentCard.list.sessionRelays.help,
-      color: "secondary",
-    },
     {
       label: t.AppUsageCurrentCard.list.dailyRelays.label,
       value: commify(totalRelays.toFixed(0)),

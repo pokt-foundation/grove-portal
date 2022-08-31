@@ -37,3 +37,7 @@
   width: 100%;
   margin-top: 16px;
 }
+
+.pokt-app-plan-details .pokt-loader {
+  fill: var(--color-white-main);
+}

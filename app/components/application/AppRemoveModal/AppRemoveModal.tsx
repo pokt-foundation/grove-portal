@@ -1,5 +1,4 @@
-import { Group } from "@mantine/core"
-import { Button, Text } from "@pokt-foundation/pocket-blocks"
+import { Button, Text, Group } from "@pokt-foundation/pocket-blocks"
 import { Form } from "@remix-run/react"
 import { useState } from "react"
 import styles from "./styles.css"
@@ -49,7 +48,7 @@ export default function AppEndpointCard({ appId }: AppRemoveModalProps) {
               Remove Application
             </Button>
           </Form>
-          <Button variant="subtle" onClick={() => setOpened(false)}>
+          <Button variant="outline" onClick={() => setOpened(false)}>
             Cancel
           </Button>
         </Group>

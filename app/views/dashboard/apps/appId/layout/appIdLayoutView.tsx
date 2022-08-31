@@ -1,6 +1,7 @@
-import { Grid } from "@pokt-foundation/pocket-blocks"
+import { CaretLeft, Grid } from "@pokt-foundation/pocket-blocks"
 import { Outlet } from "@remix-run/react"
 import { useEffect, useState } from "react"
+import styles from "./styles.css"
 import AdEconomicsForDevs, {
   links as AdEconomicsForDevsLinks,
 } from "~/components/application/AdEconomicsForDevs"
@@ -37,6 +38,7 @@ export const links = () => {
     ...StopRemoveAppLinks(),
     ...ModalLinks(),
     ...AppPlanDetailsLinks(),
+    { rel: "stylesheet", href: styles },
   ]
 }
 /* c8 ignore stop */
@@ -59,7 +61,11 @@ export default function AppIdLayoutView({
   const [routes, setRoutes] = useState([
     {
       to: "/dashboard/apps",
-      icon: () => <span>{"<"}</span>,
+      icon: () => (
+        <span>
+          <CaretLeft className="pokt-icon" />
+        </span>
+      ),
       end: true,
     },
     {
@@ -119,7 +125,7 @@ export default function AppIdLayoutView({
   }, [endpoint, t, routes, flags.STRIPE_PAYMENT])
 
   return (
-    <>
+    <div className="pokt-appid-layout-view">
       <Grid gutter={32}>
         <Grid.Col md={8}>
           {endpoint && (
@@ -196,6 +202,6 @@ export default function AppIdLayoutView({
           </p>
         </div>
       </Modal>
-    </>
+    </div>
   )
 }

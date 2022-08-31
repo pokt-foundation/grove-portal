@@ -1,4 +1,4 @@
-import { Outlet } from "@remix-run/react"
+import { Outlet, useFetcher } from "@remix-run/react"
 import { useEffect, useState } from "react"
 import AdEconomicsForDevs, {
   links as AdEconomicsForDevsLinks,
@@ -24,6 +24,7 @@ import Nav, { links as NavLinks } from "~/components/shared/Nav"
 import { useFeatureFlags } from "~/context/FeatureFlagContext"
 import { useTranslate } from "~/context/TranslateContext"
 import { EndpointQuery, PayPlanType } from "~/models/portal/sdk"
+import { Stripe } from "~/models/stripe/stripe.server"
 
 /* c8 ignore start */
 export const links = () => {
@@ -43,11 +44,13 @@ export const links = () => {
 type AppIdLayoutViewProps = {
   endpoint: EndpointQuery["endpoint"] | null
   searchParams: URLSearchParams
+  subscription: Stripe.Subscription | undefined
 }
 
 export default function AppIdLayoutView({
   endpoint,
   searchParams,
+  subscription,
 }: AppIdLayoutViewProps) {
   const { t } = useTranslate()
   const { flags } = useFeatureFlags()
@@ -80,11 +83,12 @@ export default function AppIdLayoutView({
 
   useEffect(() => {
     const success = searchParams.get("success")
+    const cancelError = searchParams.get("cancelError")
     if (!success) return
     if (success === "true") {
       setShowSuccessModel(true)
     }
-    if (success === "false") {
+    if (success === "false" || cancelError === "true") {
       setShowErrorModel(true)
     }
   }, [searchParams])
@@ -103,6 +107,14 @@ export default function AppIdLayoutView({
           label: t.appId.routes.plan,
         },
       ])
+    }
+    if (
+      flags.STRIPE_PAYMENT === "true" &&
+      endpoint &&
+      endpoint.appLimits.planType === PayPlanType.FreetierV0 &&
+      routes.filter((route) => route.to === "plan")[0]
+    ) {
+      setRoutes((curr) => [...curr.filter((route) => route.to !== "plan")])
     }
   }, [endpoint, t, routes, flags.STRIPE_PAYMENT])
 
@@ -129,6 +141,7 @@ export default function AppIdLayoutView({
                   id={endpoint.id}
                   name={endpoint.name}
                   planType={endpoint.appLimits.planType}
+                  subscription={subscription}
                 />
               </section>
               <section>
@@ -149,7 +162,7 @@ export default function AppIdLayoutView({
               </section>
               <section>
                 <StopRemoveApp
-                  endpointId={endpoint.id}
+                  appId={endpoint.id}
                   planType={endpoint.appLimits.planType}
                 />
               </section>

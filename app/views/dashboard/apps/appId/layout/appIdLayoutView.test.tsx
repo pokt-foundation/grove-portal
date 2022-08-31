@@ -2,6 +2,7 @@ import { expect } from "vitest"
 import AppIdLayoutView from "./appIdLayoutView"
 import { render, screen, userEvent } from "test/helpers"
 import { endpoint } from "~/models/portal/portal.data"
+import { subscription } from "~/models/stripe/stripe.data"
 
 describe("<AppIdLayoutView />", () => {
   it("renders error modal when search param 'success = false'", () => {
@@ -9,6 +10,7 @@ describe("<AppIdLayoutView />", () => {
       <AppIdLayoutView
         endpoint={endpoint}
         searchParams={new URLSearchParams({ success: "false" })}
+        subscription={subscription}
       />,
     )
 
@@ -21,13 +23,20 @@ describe("<AppIdLayoutView />", () => {
       <AppIdLayoutView
         endpoint={endpoint}
         searchParams={new URLSearchParams({ success: "true" })}
+        subscription={subscription}
       />,
     )
 
     expect(screen.getByRole("dialog", { name: /congratulations/i })).toBeInTheDocument()
   })
   it("renders layout without endpoint and without search params", () => {
-    render(<AppIdLayoutView endpoint={null} searchParams={new URLSearchParams()} />)
+    render(
+      <AppIdLayoutView
+        endpoint={null}
+        searchParams={new URLSearchParams()}
+        subscription={subscription}
+      />,
+    )
 
     expect(
       screen.queryByRole("dialog", { name: /congratulations/i }),
@@ -44,7 +53,13 @@ describe("<AppIdLayoutView />", () => {
     ).not.toBeInTheDocument()
   })
   it("renders layout with endpoint and without search params", () => {
-    render(<AppIdLayoutView endpoint={endpoint} searchParams={new URLSearchParams()} />)
+    render(
+      <AppIdLayoutView
+        endpoint={endpoint}
+        searchParams={new URLSearchParams()}
+        subscription={subscription}
+      />,
+    )
 
     expect(
       screen.queryByRole("dialog", { name: /congratulations/i }),

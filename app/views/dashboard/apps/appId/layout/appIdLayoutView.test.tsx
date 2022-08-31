@@ -2,6 +2,7 @@ import { expect } from "vitest"
 import AppIdLayoutView from "./appIdLayoutView"
 import { render, screen, userEvent } from "test/helpers"
 import { endpoint } from "~/models/portal/portal.data"
+import { PayPlanType } from "~/models/portal/sdk"
 
 describe("<AppIdLayoutView />", () => {
   it("renders error modal when search param 'success = false'", () => {
@@ -59,5 +60,24 @@ describe("<AppIdLayoutView />", () => {
     expect(
       screen.getByRole("heading", { name: /pokt app addresses/i }),
     ).toBeInTheDocument()
+  })
+  it("renders nav routes when planType is paid", () => {
+    render(<AppIdLayoutView endpoint={endpoint} searchParams={new URLSearchParams()} />)
+
+    expect(screen.getByRole("link", { name: /overview/i })).toBeInTheDocument()
+    expect(screen.getByRole("link", { name: /requests/i })).toBeInTheDocument()
+    expect(screen.getByRole("link", { name: /security/i })).toBeInTheDocument()
+    expect(screen.getByRole("link", { name: /plan details/i })).toBeInTheDocument()
+    expect(screen.queryByRole("link", { name: /notifications/i })).not.toBeInTheDocument()
+  })
+  it("renders nav routes when planType is free", () => {
+    endpoint.appLimits.planType = PayPlanType.FreetierV0
+    render(<AppIdLayoutView endpoint={endpoint} searchParams={new URLSearchParams()} />)
+
+    expect(screen.getByRole("link", { name: /overview/i })).toBeInTheDocument()
+    expect(screen.getByRole("link", { name: /requests/i })).toBeInTheDocument()
+    expect(screen.getByRole("link", { name: /security/i })).toBeInTheDocument()
+    expect(screen.getByRole("link", { name: /notifications/i })).toBeInTheDocument()
+    expect(screen.queryByRole("link", { name: /plan details/i })).not.toBeInTheDocument()
   })
 })

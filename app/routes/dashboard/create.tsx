@@ -60,7 +60,6 @@ export const loader: LoaderFunction = async ({ request }) => {
     console.log(error)
   })
 
-  console.log(price)
   return json<LoaderData>(
     {
       price: price,
@@ -139,7 +138,7 @@ export default function CreateApp() {
 
   const priceValue = useMemo(() => {
     // divide by 100 because stripe sends the value as a decimal
-    return Number(price?.unit_amount_decimal) / 100 || 0.00000123
+    return Number(price?.unit_amount_decimal) / 100 || 0.00000958685
   }, [price])
 
   const tiers = [

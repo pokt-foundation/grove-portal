@@ -17,8 +17,8 @@ export default function CopyTextIcon({ text }: CopyTextIconProps) {
 
   return (
     <span
-      className="pokt-copy-text"
       aria-label="Click to copy"
+      className="pokt-copy-text"
       tabIndex={0}
       onClick={() => clipboard.copy(text)}
     >

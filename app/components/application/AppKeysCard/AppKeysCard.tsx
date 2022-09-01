@@ -1,7 +1,7 @@
+import { useState } from "react"
 import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/shared/Card"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
-import { useState } from "react"
 
 /* c8 ignore start */
 export const links = () => {
@@ -27,9 +27,9 @@ export default function AppKeysCard({ id, secret, publicKey }: AppKeysCardProps)
           <TextInput
             copy
             readOnly
+            label="Secret Key"
             revealed={secretHidden}
             setRevealed={setSecretHidden}
-            label="Secret Key"
             type={secretHidden ? "password" : "text"}
             value={secret}
           />
@@ -38,9 +38,9 @@ export default function AppKeysCard({ id, secret, publicKey }: AppKeysCardProps)
           <TextInput
             copy
             readOnly
+            label="Public Key"
             revealed={publicKeyHidden}
             setRevealed={setPublicKeyHidden}
-            label="Public Key"
             type={publicKeyHidden ? "password" : "text"}
             value={publicKey}
           />

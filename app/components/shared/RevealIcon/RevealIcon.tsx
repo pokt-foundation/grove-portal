@@ -15,12 +15,12 @@ type RevealIconProps = {
 export default function RevealIcon({ revealed, setRevealed }: RevealIconProps) {
   return (
     <span
-      aria-label="Click to show value"
+      aria-label={`Click to ${revealed ? "show" : "hide"} value`}
       className="pokt-reveal"
       tabIndex={0}
       onClick={() => setRevealed(!revealed)}
     >
-      {revealed ? <IconEyeOn /> : <IconEyeOff />}
+      {revealed ? <IconEyeOff /> : <IconEyeOn />}
     </span>
   )
 }

@@ -1,5 +1,5 @@
-import { useFetcher } from "@remix-run/react"
 import { Container } from "@pokt-foundation/pocket-blocks"
+import { useFetcher } from "@remix-run/react"
 import { useFeatureFlags } from "~/context/FeatureFlagContext"
 
 export default function FeatureFlags() {

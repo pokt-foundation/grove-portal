@@ -1,5 +1,5 @@
-import { LinksFunction } from "@remix-run/node"
 import { Container } from "@pokt-foundation/pocket-blocks"
+import { LinksFunction } from "@remix-run/node"
 import { useTranslate } from "~/context/TranslateContext"
 import styles from "~/styles/landing.css"
 

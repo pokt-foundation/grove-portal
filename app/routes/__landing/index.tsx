@@ -3,7 +3,7 @@ import { LinksFunction } from "@remix-run/node"
 import { Form, useLocation, useSearchParams } from "@remix-run/react"
 import { useEffect, useState } from "react"
 import { CallOutBox, links as CallOutBoxLinks } from "../../components/shared/CallOutBox"
-import { Container } from "~/components/shared/Container"
+import { Container } from "@pokt-foundation/pocket-blocks"
 import Modal, { links as ModalLinks } from "~/components/shared/Modal"
 import { useTranslate } from "~/context/TranslateContext"
 import styles from "~/styles/landing.css"
@@ -27,7 +27,7 @@ export default function Index() {
 
   return (
     <>
-      <Container>
+      <Container size="lg">
         <Grid grow>
           <Grid.Col sm={5}>
             <h2>{landing.title}</h2>

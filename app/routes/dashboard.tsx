@@ -3,7 +3,7 @@ import { Outlet, useCatch, useLoaderData, useTransition } from "@remix-run/react
 import { useEffect } from "react"
 import { Auth0Profile } from "remix-auth-auth0"
 import analyticsInit, { AmplitudeEvents, trackEvent } from "../utils/analytics"
-import Container, { links as ContainerLinks } from "~/components/shared/Container"
+import { Container } from "@pokt-foundation/pocket-blocks"
 import Footer, { links as FooterLinks } from "~/components/shared/Footer"
 import Header, { links as HeaderLinks } from "~/components/shared/Header"
 import { IconApp, IconNetwork } from "~/components/shared/Icons"
@@ -17,7 +17,6 @@ export const links: LinksFunction = () => {
     ...HeaderLinks(),
     ...FooterLinks(),
     ...NavLinks(),
-    ...ContainerLinks(),
     // ...LoaderLinks(),
   ]
 }
@@ -71,7 +70,7 @@ export default function Dashboard() {
         <Nav routes={routes} />
       </Header>
       <main>
-        <Container>
+        <Container size="lg">
           {/* {state === "loading" && <Loader />} */}
           <Outlet />
         </Container>

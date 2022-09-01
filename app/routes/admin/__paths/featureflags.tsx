@@ -1,5 +1,5 @@
 import { useFetcher } from "@remix-run/react"
-import Container from "~/components/shared/Container"
+import { Container } from "@pokt-foundation/pocket-blocks"
 import { useFeatureFlags } from "~/context/FeatureFlagContext"
 
 export default function FeatureFlags() {
@@ -7,7 +7,7 @@ export default function FeatureFlags() {
   const { flags } = useFeatureFlags()
 
   return (
-    <Container>
+    <Container size="lg">
       <fetcher.Form action="/api/featureflags" method="post">
         {Object.entries(flags).map(([key, value]) => (
           <fieldset key={key}>

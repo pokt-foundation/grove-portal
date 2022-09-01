@@ -1,5 +1,5 @@
 import { LinksFunction } from "@remix-run/node"
-import { Container } from "~/components/shared/Container"
+import { Container } from "@pokt-foundation/pocket-blocks"
 import { useTranslate } from "~/context/TranslateContext"
 import styles from "~/styles/landing.css"
 
@@ -14,7 +14,7 @@ export default function FAQs() {
 
   return (
     <>
-      <Container>
+      <Container size="lg">
         <div className="container__content">
           <h1 className="center faqTitle">
             {faq.title}

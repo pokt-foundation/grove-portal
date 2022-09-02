@@ -61,7 +61,6 @@ describe("<AppKeysCard />", () => {
     const user = userEvent.setup()
     const showText = /Click to show value/i
     const hideText = /Click to hide value/i
-    const secretKey = /Secret key/i
     expect(screen.getAllByLabelText(showText)).toHaveLength(2)
     expect(screen.queryByLabelText(hideText)).not.toBeInTheDocument()
 

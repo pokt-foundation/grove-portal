@@ -19,8 +19,8 @@ import {
   getLBErrorMetrics,
   getLBOriginClassification,
 } from "~/models/portal.server"
-import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import styles from "~/styles/dashboard.apps.$appId.requests.css"
+import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 
 export const meta: MetaFunction = () => {
   return {

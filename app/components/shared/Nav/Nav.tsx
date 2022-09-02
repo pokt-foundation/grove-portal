@@ -29,7 +29,7 @@ type Route = {
 }
 
 export const Nav = ({ routes, dropdown = false, appId }: NavProps) => {
-  const [isMobile, setIsMobile] = useState<boolean>(false)
+  const [isMobile, setIsMobile] = useState<boolean | null>(null)
   const [value, setValue] = useState<string | null>(null)
   const { width } = useViewportSize()
 
@@ -64,7 +64,7 @@ export const Nav = ({ routes, dropdown = false, appId }: NavProps) => {
 
   return (
     <nav className={clsx("pokt-nav", isMobile && dropdown && "mobile")}>
-      {dropdown && isMobile ? (
+      {dropdown && isMobile && (
         <div className="navigation-dropdown">
           <Select
             aria-label="Application navigation"
@@ -76,7 +76,8 @@ export const Nav = ({ routes, dropdown = false, appId }: NavProps) => {
             }}
           />
         </div>
-      ) : (
+      )}
+      {!dropdown && !isMobile && (
         <ul>
           {routes.map((route) => {
             const Icon = route.icon

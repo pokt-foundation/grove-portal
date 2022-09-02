@@ -17,3 +17,8 @@
   background-color: #c5ec4b;
   color: #000000;
 }
+@media screen and (max-width: 640px) {
+  .pokt-network-app-notifications form {
+    margin-bottom: 32px;
+  }
+}

@@ -20,6 +20,7 @@ import {
   getLBOriginClassification,
 } from "~/models/portal.server"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
+import styles from "~/styles/dashboard.apps.$appId.requests.css"
 
 export const meta: MetaFunction = () => {
   return {
@@ -32,6 +33,10 @@ export const links = () => {
     ...AppRequestsRateCardLinks(),
     ...AppRequestsByOriginCardLinks(),
     ...AppRequestsErrorsCardLinks(),
+    {
+      rel: "stylesheet",
+      href: styles,
+    },
   ]
 }
 

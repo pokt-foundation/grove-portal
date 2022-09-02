@@ -2,4 +2,8 @@
   div.mantine-Col-root section:last-of-type .pokt-card {
     margin-bottom: 0;
   }
+
+  div.mantine-Col-root section .pokt-app-requests-rate .pokt-card {
+    margin-bottom: 32px;
+  }
 }

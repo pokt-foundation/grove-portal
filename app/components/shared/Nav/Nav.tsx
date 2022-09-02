@@ -35,12 +35,10 @@ export const Nav = ({ routes, dropdown = false, appId }: NavProps) => {
 
   const reformatRoute = (routes: Route[]) => {
     let routeTable = []
-    console.log(routes)
     for (let i = 0; i < routes.length; i += 1) {
       let label = routes[i].label !== undefined ? routes[i].label : "Back to all apps"
       routeTable.push({ value: routes[i].to, label: label })
     }
-    console.log(routeTable)
     return routeTable
   }
 
@@ -69,10 +67,10 @@ export const Nav = ({ routes, dropdown = false, appId }: NavProps) => {
       {dropdown && isMobile ? (
         <div className="navigation-dropdown">
           <Select
-            className="pokt-nav-dropdown"
             aria-label="Application navigation"
-            placeholder="Navigate to..."
+            className="pokt-nav-dropdown"
             data={reformatRoute(routes)}
+            placeholder="Navigate to..."
             onChange={(value) => {
               setValue(value)
             }}

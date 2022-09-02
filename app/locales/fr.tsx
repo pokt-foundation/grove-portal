@@ -7,6 +7,7 @@ const schema = {
     save: "save -fr",
     close: "close -fr",
     goBack: "go back -fr",
+    cancel: "Cancel -fr",
   },
   search: {
     label: "Search -fr",
@@ -377,6 +378,8 @@ const schema = {
     stopSubscriptionTitle: "This will stop your subscription! -fr",
     removeApp: "Remove Application -fr",
     removeAppTitle: "You're about to remove this application! -fr",
+    removeAppDescription:
+      "If you delete this application, the data will no longer be accessible in the portal. Historical will be available in the explorer. -fr",
     planDowngrade:
       "Your plan will be canceled, but is still available until the end of your billing period. -fr",
     appId: "App ID: -fr",

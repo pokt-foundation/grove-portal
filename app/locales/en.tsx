@@ -7,6 +7,7 @@ const schema = {
     save: "save",
     close: "Close",
     goBack: "go back",
+    cancel: "Cancel",
   },
   search: {
     label: "Search",
@@ -150,9 +151,9 @@ const schema = {
     ],
     callOutBoxText: [
       {
-        title: "One click Endpoints",
-        smallText: "For any network with 1M daily relays free",
-        blueText: "10+",
+        title: "One click endpoints",
+        smallText: "For any supported network",
+        blueText: "35+",
         description: "Networks",
       },
       {
@@ -162,15 +163,15 @@ const schema = {
         description: "Nodes",
       },
       {
-        title: "Monitor your Infra",
-        smallText: "Tracking and managing your app across any chain",
+        title: "Monitor your infra",
+        smallText: "Managing your app across any chain",
         blueText: "6B+",
         description: "Weekly relays",
       },
     ],
     title: "Your gateway to Web3 done right.",
     subtitle:
-      "Deploy within minutes to decentralized infrastructure that can service dozens of chains. The Portal acts as your one-stop-shop to manage, make changes, and monitor your application's connection to blockchain data.",
+      "Deploy within minutes to decentralized infrastructure that can service dozens of chains. The Portal acts as your one-stop-shop to manage, and monitor your application's connection to blockchain data.",
     welcomeText: "Welcome to Web3 done the right way.",
     getStarted: "Get Started",
     connect: "Connect to these networks.",
@@ -219,11 +220,11 @@ const schema = {
     list: {
       successDelta: {
         label: "Success Delta",
-        help: "Percentage of success among the total request attempted to perform by the application on the last 24h.",
+        help: "Percentage of success among the total requests attempted by the application during a 24hr period.",
       },
       errorRate: {
         label: "Error Rate",
-        help: "Percentage of error among the total request attempted to perform by the application.",
+        help: "Percentage of errors among the total request attempted by the application during a 24hr period.",
       },
       totalRequests: {
         label: "Total Requests",
@@ -239,11 +240,11 @@ const schema = {
       },
       dailyRelays: {
         label: "Daily Relays",
-        help: "Total number of request sent during the current day.",
+        help: "Total number of requests sent during the current 24hr period.",
       },
       maxRelays: {
         label: "Max Relays",
-        help: "Maxium number of request this application can send during a single day.",
+        help: "Maximum number of requests this application can send during a 24hr period.",
       },
     },
   },
@@ -327,7 +328,7 @@ const schema = {
     },
   },
   AppPlanDetails: {
-    relayLimit: "Relays Limit",
+    relayLimit: "Relay Limit",
     relaysPerDay: "relays per day",
     currentPlan: "Current Plan",
     currentPlanToolTip: "This is the current plan for this specific application.",
@@ -413,8 +414,8 @@ const schema = {
       methods: "Whitelist Methods",
     },
     secretSwitchAria: "Private key required",
-    userAgentPlaceholder: "Type user agent here",
-    userAgentAria: "Add user agents to white list",
+    userAgentPlaceholder: "Type user-agent here",
+    userAgentAria: "Add user-agents to white list",
     defaultSelectChainText: "Select Chain",
     chainsDropdownAria: "Select a chain to add to white list",
     OriginPlaceholder: "Type origin here",
@@ -425,15 +426,18 @@ const schema = {
     methodAria: "Add method selections to white list",
     methodError: "You must select a chain and have a value to add to methods whitelist.",
     secretKeyText:
-      "To maximize the security of your application, you should activate the private secret key for all requests and enable the use of whitelist user agents and origins.",
+      "To maximize the security of your application, you should activate the private secret key for all requests and enable the use of whitelisted user-agents and origins.",
   },
   stopRemoveApp: {
-    stopSubscriptionTitle: "Cancel subscription",
-    removeApp: "Remove Application",
-    removeAppTitle: "You're about to remove this application!",
+    stopSubscriptionTitle: "Stop Subscription",
+    removeApp: "Delete Application",
+    removeAppTitle: "Do you want to delete this application?",
+    removeAppDescription:
+      "If you delete this application, the data will no longer be accessible in the portal. Historical will be available in the explorer.",
     planDowngrade:
-      "Your plan will be canceled, but is still available until the end of your billing period.",
-    planRenew: "If you change your mind, you can renew your subscription.",
+      "Your plan will be changed to 'Always Free' effective immediatly, and you will be invoiced at the end of your billing period.",
+    planRenew:
+      "If you change your mind, you can renew your subscription until the end of your billing period.",
     appId: "App ID:",
   },
 }

@@ -84,7 +84,7 @@ export default function Index() {
         onClose={() => setShowExpiredModal(false)}
       >
         <div>
-          <p>Your user session has expired, please try logging in again.</p>
+          <p>Your user session has expired. Please try logging in again.</p>
         </div>
       </Modal>
     </>

@@ -69,6 +69,7 @@ export const AppsView = ({
           <UsageChartCard
             emptyLabel="Your applications do not have relay data yet."
             relays={dailyNetworkRelaysPerWeek}
+            title="Total User Relay Counts"
           />
         </section>
       )}

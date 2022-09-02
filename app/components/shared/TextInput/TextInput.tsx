@@ -6,28 +6,49 @@ import styles from "./styles.css"
 import CopyTextIcon, {
   links as CopyTextIconLinks,
 } from "~/components/shared/CopyTextIcon"
+import RevealIcon, { links as RevealIconLinks } from "~/components/shared/RevealIcon"
 
 /* c8 ignore start */
 export const links = () => {
-  return [...CopyTextIconLinks(), { rel: "stylesheet", href: styles }]
+  return [
+    ...CopyTextIconLinks(),
+    ...RevealIconLinks(),
+    { rel: "stylesheet", href: styles },
+  ]
 }
 /* c8 ignore stop */
 
 export type InputProps = TextInputProps & {
   copy?: boolean
+  revealed?: boolean
   hasDelete?: boolean
   handleRemove?: () => void
+  setRevealed?: Function
 }
 
 export default function TextInput({
   copy = false,
+  revealed = false,
   hasDelete = false,
   handleRemove = () => {},
+  setRevealed,
   ...props
 }: InputProps) {
   let rightSection = props.rightSection
 
-  if (!rightSection && copy) {
+  if (!rightSection && copy && setRevealed) {
+    // hidden and copy icons
+    rightSection = (
+      <>
+        <RevealIcon revealed={revealed} setRevealed={setRevealed} />
+        <CopyTextIcon text={String(props.value)} />
+      </>
+    )
+  } else if (!rightSection && !copy && setRevealed) {
+    // only revealed icon
+    rightSection = <RevealIcon revealed={revealed} setRevealed={setRevealed} />
+  } else if (!rightSection && copy && !setRevealed) {
+    // only copy icon
     rightSection = <CopyTextIcon text={String(props.value)} />
   }
 

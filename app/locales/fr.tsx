@@ -1,4 +1,5 @@
 import { PayPlanType } from "~/models/portal/sdk"
+import { FREE_TIER_MAX_RELAYS } from "~/utils/pocketUtils"
 
 const schema = {
   common: {
@@ -38,40 +39,63 @@ const schema = {
     subtitle: "FAQ",
     faqs: [
       {
-        question: "What is the Pocket Portal?",
+        question: "What is the Pocket Portal -fr?",
         answer:
-          "The Pocket Portal is a dashboard for creating and monitoring blockchain infrastructure endpoint(s) powered by Pocket Network's decentralized full-node network.",
+          'The Pocket Portal is a browser-based interface where developers can create ("mint") a Pocket endpoint for use in their applications, utilizing a generous free tier of relays and scaling up as needed. Portal users can also monitor network performance.',
       },
       {
-        question: "How can this be free?",
-        answer:
-          "The Pocket Network provides bandwidth to decentralized applications that stake POKT. For the Pocket Portal's free tier, the Pocket Network Foundation has pre-staked POKT on behalf of anyone who signs up for up to 1M relays per day.",
+        question: "Which blockchains can I connect to? -fr",
+        answer: (
+          <>
+            The Pocket Portal currently supports creating an endpoint for dozens of
+            chains, including Ethereum, Harmony, Binance Smart Chain, Avalanche, Fuse, and{" "}
+            <a href="https://docs.pokt.network/supported-blockchains/">many more</a>.
+          </>
+        ),
       },
       {
-        question: "How long can I use the free option?",
-        answer:
-          "Currently, the Foundation is operating with \"good faith\" guidelines, meaning that as long as you are actually using the service as intended, you can use the free tier for as long as you'd like. If we notice there is little to no traffic coming through those endpoints, we will reach out directly to see if we can support you. It's important to note there is a finite supply of POKT available for the free tier subsidies, so our goal is to allocate this to developers who truly want to use and improve the service and grow their user base. If you are not using the service, and remain unresponsive to our support outreach, we reserve the right to withdraw the endpoint in order to reallocate it to another development team.",
+        question: "How can this be free? -fr",
+        answer: `The Pocket Network provides bandwidth to decentralized applications that stake POKT. For the Pocket Portal's free tier, the Pocket Network Foundation has staked POKT on behalf of anyone who signs up to the Portal for up to ${FREE_TIER_MAX_RELAYS.toLocaleString(
+          "en-US",
+        )} relays per day.`,
       },
       {
-        question: "What happens if I go over my daily relay limit?",
+        question: "How many endpoints can I create? -fr",
         answer:
-          "The Pocket Portal has overflow protection in case an app accidentally goes over its daily relay limit. All surplus relays are served by our backup infrastructure, ensuring no service interruptions. This is only a temporary measure so you should reach out to our team if you need more relays.",
+          "The Pocket Portal currently allows a user to create blockchain-specific endpoints for any chain served via the Portal. These endpoints can each be monitored as a single Application allowing for cross-chain analytics.",
       },
       {
-        question: "Which blockchains can I connect to?",
+        question: "What’s the difference between an Application and an Endpoint? -fr",
         answer:
-          "The Pocket Portal currently supports creating an endpoint for 10+ chains, including Ethereum, xDAI, Binance Smart Chain, Avalanche, Fuse, and more. You can find the full list here. If you would like to discuss or help decide which networks to include next, join us in Discord.",
+          "The Portal organizes relay traffic through Applications, which are collections of relay traffic. An Application can consist of one or more endpoints, which are URLs that can receive RPC requests to a blockchain. A Portal account can contain multiple Applications, which can in turn contain multiple endpoints.",
       },
       {
-        question:
-          "What blockchains are available to connect to? Which are planned to come next?",
-        answer:
-          'The Pocket Portal currently supports creating an endpoint for 10+ chains, including Ethereum, Binance Smart Chain, Avalanche, Polygon, Fuse, and more. You can find the full list here. In that list, you will see a section titled "Integrating New Relay Chains," which is where you can find the networks that are confirmed to be whitelisted next. If you would like to discuss or help decide which networks are not already on that list to include next, we recommend you chat with us in discord and cement your perspective by creating a Pocket forum proposal.',
+        question: "How long can I use the free option? -fr",
+        answer: `Currently, the Foundation is operating with "good faith" guidelines, meaning that as long as you are actually using the service as intended, you can use the free tier for as long as you'd like. Our goal is to allocate this to developers who truly want to use and improve the service and grow their user base, so if you are not using the service, we reserve the right to withdraw the endpoint in order to reallocate it to another development team.`,
       },
       {
-        question: "How many endpoints can I create?",
-        answer:
-          "The Pocket Portal currently allows any user to create up to 4 endpoints. Each endpoint can be used to serve 1 blockchain. Each endpoint grants up to 1 million free relays per day. If you need more relays or want to stake your own POKT, join us in Discord and let us know.",
+        question: "What happens if I go over my daily relay limit? -fr",
+        answer: (
+          <>
+            The Pocket Portal has overflow protection in case an app accidentally goes
+            over its daily relay limit. All surplus relays are served by our backup
+            infrastructure, ensuring no service interruptions. This is only a temporary
+            measure so you should{" "}
+            <a href="https://discord.gg/pokt">reach out to our team</a> if you need more
+            relays.
+          </>
+        ),
+      },
+      {
+        question: "How can I get [blockchain] added to the Portal? -fr",
+        answer: (
+          <>
+            Pocket Network is expandable, and is continually adding support for new
+            chains. Community members can advocate for chains to be considered by{" "}
+            <a href="https://discord.gg/pokt">reaching out on Discord</a> and posting a
+            suggestion to our team.
+          </>
+        ),
       },
     ],
   },

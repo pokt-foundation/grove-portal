@@ -1,5 +1,9 @@
+import { Select } from "@mantine/core"
+import { useViewportSize } from "@mantine/hooks"
+import { redirect } from "@remix-run/node"
 import { NavLink } from "@remix-run/react"
-import React from "react"
+import clsx from "clsx"
+import React, { useEffect, useState } from "react"
 import styles from "./styles.css"
 // import { useTranslate } from "~/context/TranslateContext"
 // import { IconApp, IconNetwork } from "~/components/shared/Icons"
@@ -12,6 +16,8 @@ export const links = () => {
 
 type NavProps = {
   routes: Route[]
+  dropdown?: boolean
+  appId?: string
 }
 
 type Route = {
@@ -22,35 +28,89 @@ type Route = {
   external?: boolean
 }
 
-export const Nav = ({ routes }: NavProps) => {
+export const Nav = ({ routes, dropdown = false, appId }: NavProps) => {
+  const [isMobile, setIsMobile] = useState<boolean>(false)
+  const [value, setValue] = useState<string | null>(null)
+  const { width } = useViewportSize()
+
+  const reformatRoute = (routes: Route[]) => {
+    let routeTable = []
+    console.log(routes)
+    for (let i = 0; i < routes.length; i += 1) {
+      let label = routes[i].label !== undefined ? routes[i].label : "Back to all apps"
+      routeTable.push({ value: routes[i].to, label: label })
+    }
+    console.log(routeTable)
+    return routeTable
+  }
+
+  useEffect(() => {
+    if (width >= 640) {
+      setIsMobile(false)
+    } else {
+      setIsMobile(true)
+    }
+  }, [width])
+
+  useEffect(() => {
+    if (value !== null) {
+      if (value === "") {
+        window.location.href = `/dashboard/apps/${appId}`
+      } else if (value === "/dashboard/apps") {
+        window.location.href = value
+      } else {
+        window.location.href = `/dashboard/apps/${appId}/${value}`
+      }
+    }
+  }, [value])
+
   return (
-    <nav className="pokt-nav">
-      <ul>
-        {routes.map((route) => {
-          const Icon = route.icon
-          return (
-            <li key={route.to}>
-              {route.external ? (
-                <a className="nav-link" href={route.to} rel="noreferrer" target="_blank">
-                  {route.label}
-                </a>
-              ) : (
-                <NavLink
-                  className={({ isActive }) =>
-                    `nav-link ${isActive ? "nav-link-active" : ""}`
-                  }
-                  end={route.end}
-                  to={route.to}
-                >
-                  {/* @ts-ignore eslint-disable-next-line */}
-                  {route.icon && <Icon />}
-                  {route.label && <span>{route.label}</span>}
-                </NavLink>
-              )}
-            </li>
-          )
-        })}
-      </ul>
+    <nav className={clsx("pokt-nav", isMobile && dropdown && "mobile")}>
+      {dropdown && isMobile ? (
+        <div className="navigation-dropdown">
+          <Select
+            className="pokt-nav-dropdown"
+            aria-label="Application navigation"
+            placeholder="Navigate to..."
+            data={reformatRoute(routes)}
+            onChange={(value) => {
+              setValue(value)
+            }}
+          />
+        </div>
+      ) : (
+        <ul>
+          {routes.map((route) => {
+            const Icon = route.icon
+            return (
+              <li key={route.to}>
+                {route.external ? (
+                  <a
+                    className="nav-link"
+                    href={route.to}
+                    rel="noreferrer"
+                    target="_blank"
+                  >
+                    {route.label}
+                  </a>
+                ) : (
+                  <NavLink
+                    className={({ isActive }) =>
+                      `nav-link ${isActive ? "nav-link-active" : ""}`
+                    }
+                    end={route.end}
+                    to={route.to}
+                  >
+                    {/* @ts-ignore eslint-disable-next-line */}
+                    {route.icon && <Icon />}
+                    {route.label && <span>{route.label}</span>}
+                  </NavLink>
+                )}
+              </li>
+            )
+          })}
+        </ul>
+      )}
     </nav>
   )
 }

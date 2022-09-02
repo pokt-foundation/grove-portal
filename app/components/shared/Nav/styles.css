@@ -36,3 +36,16 @@
   width: 18px;
   height: 21px;
 }
+
+.pokt-nav.mobile {
+  margin-left: 0;
+}
+
+.pokt-nav-dropdown > div > div > input {
+  background-color: var(--color-black-main);
+  color: var(--color-white-main);
+  border-color: var(--color-white-main);
+}
+.pokt-nav-dropdown > div > div svg {
+  color: var(--color-white-main) !important;
+}

@@ -1,0 +1,11 @@
+@media screen and (max-width: 640px) {
+  div.mantine-Col-root section:last-of-type .pokt-card {
+    margin-bottom: 0;
+  }
+  div.mantine-Col-root .pokt-network-summary .pokt-card {
+    margin-bottom: 0;
+  }
+  div.mantine-Col-root:last-of-type .pokt-network-summary .pokt-card {
+    margin-bottom: 32px;
+  }
+}

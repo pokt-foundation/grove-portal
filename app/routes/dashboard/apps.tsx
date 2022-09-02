@@ -20,6 +20,7 @@ import { EndpointsQuery, ProcessedEndpoint } from "~/models/portal/sdk"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 import { MAX_USER_APPS } from "~/utils/pocketUtils"
 import { getPoktId, requireUser } from "~/utils/session.server"
+import styles from "~/styles/dashboard.apps.css"
 
 export const links = () => {
   return [
@@ -28,6 +29,7 @@ export const links = () => {
     ...FeedbackCardLinks(),
     ...AdEconomicsForDevsLinks(),
     ...LoaderLinks(),
+    { rel: "stylesheet", href: styles },
   ]
 }
 

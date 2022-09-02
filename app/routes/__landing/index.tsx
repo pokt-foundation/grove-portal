@@ -29,7 +29,7 @@ export default function Index() {
     <>
       <Container>
         <Grid grow>
-          <Grid.Col sm={5}>
+          <Grid.Col sm={12} lg={5}>
             <h2>{landing.title}</h2>
             <p className="text">{landing.subtitle}</p>
             <p className="text"></p>
@@ -39,8 +39,9 @@ export default function Index() {
               </button>
             </Form>
           </Grid.Col>
+          <Grid.Col lg={2} md={0} />
 
-          <Grid.Col offset={2} sm={5}>
+          <Grid.Col sm={12} lg={5}>
             {landing.callOutBoxText.map((item) => {
               return (
                 <CallOutBox

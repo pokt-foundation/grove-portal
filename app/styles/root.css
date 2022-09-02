@@ -44,7 +44,7 @@ body {
   font-family: "Manrope";
   background-color: var(--color-black-dark);
   color: var(--color-white-main);
-  width: 100vw;
+  width: 100%;
 }
 
 main {

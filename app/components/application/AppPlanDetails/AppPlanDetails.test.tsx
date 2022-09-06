@@ -1,6 +1,7 @@
 import { expect } from "vitest"
 import AppPlanDetails from "./AppPlanDetails"
 import { render, screen } from "test/helpers"
+import schema from "~/locales/en"
 import { PayPlanType } from "~/models/portal/sdk"
 import { subscription } from "~/models/stripe/stripe.data"
 import { getPlanName } from "~/utils/utils"
@@ -23,14 +24,12 @@ describe("<AppPlanDetails />", () => {
         subscription={subscription}
       />,
     )
-    const relayLimit = "Relays Limit"
-    const currentPlan = "Current Plan"
     const paid = getPlanName(paidPlan)
     const dailyLimitText = /Unlimited/i
     expect(screen.getByText(paid)).toBeInTheDocument()
     expect(screen.getByText(dailyLimitText)).toBeInTheDocument()
-    expect(screen.getByText(relayLimit)).toBeInTheDocument()
-    expect(screen.getByText(currentPlan)).toBeInTheDocument()
+    expect(screen.getByText(schema.AppPlanDetails.relayLimit)).toBeInTheDocument()
+    expect(screen.getByText(schema.AppPlanDetails.currentPlan)).toBeInTheDocument()
     expect(screen.getAllByRole("heading", { level: 3 })).toHaveLength(2)
   })
   it("renders unlimited relays with paid plan", () => {
@@ -58,13 +57,11 @@ describe("<AppPlanDetails />", () => {
         subscription={subscription}
       />,
     )
-    const relayLimit = "Relays Limit"
-    const currentPlan = "Current Plan"
     const free = getPlanName(freePlan)
     const dailyLimitText = /123/i
     expect(screen.getByText(free)).toBeInTheDocument()
-    expect(screen.getByText(relayLimit)).toBeInTheDocument()
-    expect(screen.getByText(currentPlan)).toBeInTheDocument()
+    expect(screen.getByText(schema.AppPlanDetails.relayLimit)).toBeInTheDocument()
+    expect(screen.getByText(schema.AppPlanDetails.currentPlan)).toBeInTheDocument()
     expect(screen.getByText(dailyLimitText)).toBeInTheDocument()
     expect(screen.getAllByRole("heading", { level: 3 })).toHaveLength(2)
   })

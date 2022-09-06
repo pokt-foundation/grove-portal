@@ -7,6 +7,7 @@ const schema = {
     save: "save -fr",
     close: "close -fr",
     goBack: "go back -fr",
+    cancel: "Cancel -fr",
   },
   search: {
     label: "Search -fr",
@@ -290,6 +291,8 @@ const schema = {
     description:
       "Give us some basic information of your request and our solutions team will reach out soon to find the best way of service your application. -fr",
     formSubmitted: "Form Submitted -fr",
+    formSubmittedDescription:
+      "Your form has been successfully submitted. We will be in touch! -fr",
     done: "Done -fr",
     formSubmissionFailed: "Form Submission Failed -fr",
   },
@@ -375,6 +378,8 @@ const schema = {
     stopSubscriptionTitle: "This will stop your subscription! -fr",
     removeApp: "Remove Application -fr",
     removeAppTitle: "You're about to remove this application! -fr",
+    removeAppDescription:
+      "If you delete this application, the data will no longer be accessible in the portal. Historical will be available in the explorer. -fr",
     planDowngrade:
       "Your plan will be canceled, but is still available until the end of your billing period. -fr",
     appId: "App ID: -fr",

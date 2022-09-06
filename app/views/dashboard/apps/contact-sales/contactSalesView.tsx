@@ -1,4 +1,4 @@
-import { Button, Title } from "@pokt-foundation/pocket-blocks"
+import { Button, Title, Text } from "@pokt-foundation/pocket-blocks"
 import { useEffect, useState } from "react"
 import styles from "./styles.css"
 import ContactSalesForm, {
@@ -41,6 +41,7 @@ export const ContactSalesView = (data: ContactSalesActionData) => {
         <div className="contact-modal-container">
           <img alt="Success" src="/checkmarkWithCircle.svg" />
           <Title order={2}>{t.ContactSalesView.formSubmitted}</Title>
+          <Text>{t.ContactSalesView.formSubmittedDescription}</Text>
           <Button
             className="pokt-button button"
             type="button"

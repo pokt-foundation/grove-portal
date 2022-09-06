@@ -53,11 +53,11 @@ export const loader: LoaderFunction = async ({ request, params, context }) => {
     })
 
     const publicKeys = endpoint.apps?.map((app) => app.publicKey)
-    if (publicKeys) {
-      errorMetrics = await getErrorMetrics(publicKeys)
+    if (!publicKeys) {
+      throw new Error("no public keys")
     }
-    throw new Error("no public keys")
 
+    errorMetrics = await getErrorMetrics(publicKeys)
     // const originResponse = await getLBOriginClassification(params.appId, request)
     // originClassification = originResponse.origin_classification
   } catch (error) {}

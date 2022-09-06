@@ -2,6 +2,7 @@ import type { ActionFunction, LinksFunction } from "@remix-run/node"
 import { useActionData, useCatch } from "@remix-run/react"
 import { useEffect } from "react"
 import { Auth0Profile } from "remix-auth-auth0"
+import invariant from "tiny-invariant"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { getRequiredServerEnvVar } from "~/utils/environment"
@@ -14,6 +15,7 @@ export const links: LinksFunction = () => [...ProfileViewLinks()]
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData()
   const email = formData.get("email")
+  invariant(email, "user email not found")
 
   try {
     const res = await fetch(

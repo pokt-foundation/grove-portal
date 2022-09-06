@@ -7,23 +7,27 @@ import styles from "./styles.css"
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import Modal, { links as ModalLinks } from "~/components/shared/Modal"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
-import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 
 const SUCCESSFUL_CHANGE_PASSWORD_MSG =
   "We've just sent you an email to reset your password."
 
+/* c8 ignore start */
 export const links: LinksFunction = () => [
   ...CardLinks(),
   ...TextInputLinks(),
   ...ModalLinks(),
   { rel: "stylesheet", href: styles },
 ]
+/* c8 ignore stop */
 
-export const ProfileView = () => {
+
+type ProfileViewProps = {
+  profile: Auth0Profile
+}
+
+export const ProfileView = ({ profile }: ProfileViewProps) => {
   const actionData = useActionData()
-  const dashboardRoute = useMatchesRoute("routes/dashboard")
-  const dashboardData = dashboardRoute?.data.user as Auth0Profile
-  const { nickname = "", email = "" } = dashboardData._json
+  const { nickname = "", email = "" } = profile._json
   const [open, setOpen] = useState<boolean>(false)
 
   useEffect(() => {

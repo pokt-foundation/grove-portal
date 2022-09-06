@@ -1,6 +1,8 @@
 import type { ActionFunction, LinksFunction } from "@remix-run/node"
 import { useCatch } from "@remix-run/react"
 import { useEffect } from "react"
+import { Auth0Profile } from "remix-auth-auth0"
+import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { getRequiredServerEnvVar } from "~/utils/environment"
 import ProfileView, {
@@ -34,11 +36,14 @@ export const action: ActionFunction = async ({ request }) => {
 }
 
 export default function Profile() {
+  const dashboardRoute = useMatchesRoute("routes/dashboard")
+  const dashboardData = dashboardRoute?.data?.user as Auth0Profile
+
   useEffect(() => {
     trackEvent(AmplitudeEvents.ProfileView)
   }, [])
 
-  return <ProfileView />
+  return <ProfileView profile={dashboardData} />
 }
 
 export const CatchBoundary = () => {

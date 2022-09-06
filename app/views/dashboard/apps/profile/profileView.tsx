@@ -1,6 +1,6 @@
 import { Button } from "@pokt-foundation/pocket-blocks"
 import { LinksFunction } from "@remix-run/node"
-import { Form, useActionData } from "@remix-run/react"
+import { Form } from "@remix-run/react"
 import { useEffect, useState } from "react"
 import { Auth0Profile } from "remix-auth-auth0"
 import styles from "./styles.css"
@@ -8,7 +8,7 @@ import Card, { links as CardLinks } from "~/components/shared/Card"
 import Modal, { links as ModalLinks } from "~/components/shared/Modal"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 
-const SUCCESSFUL_CHANGE_PASSWORD_MSG =
+export const SUCCESSFUL_CHANGE_PASSWORD_MSG =
   "We've just sent you an email to reset your password."
 
 /* c8 ignore start */
@@ -20,15 +20,16 @@ export const links: LinksFunction = () => [
 ]
 /* c8 ignore stop */
 
-
 type ProfileViewProps = {
   profile: Auth0Profile
+  actionData?: string
 }
 
-export const ProfileView = ({ profile }: ProfileViewProps) => {
-  const actionData = useActionData()
+export const ProfileView = ({ profile, actionData }: ProfileViewProps) => {
   const { nickname = "", email = "" } = profile._json
   const [open, setOpen] = useState<boolean>(false)
+
+  const closeModal = () => setOpen(false)
 
   useEffect(() => {
     if (actionData === SUCCESSFUL_CHANGE_PASSWORD_MSG) setOpen(true)
@@ -57,10 +58,13 @@ export const ProfileView = ({ profile }: ProfileViewProps) => {
           </Form>
         </div>
       </Card>
-      <Modal opened={open} onClose={() => setOpen(false)}>
+      <Modal opened={open} onClose={() => closeModal()}>
         <div>
           <h2>Check your email</h2>
           <p>{actionData}</p>
+          <Button variant="filled" onClick={() => closeModal()}>
+            Done
+          </Button>
         </div>
       </Modal>
     </section>

@@ -76,8 +76,17 @@ dependencies:
   '@amplitude/analytics-browser': 0.3.1
   '@mantine/core': 4.2.2_3d7de116aae0420634c887e7d5d05ede
   '@mantine/hooks': 4.2.2_react@17.0.2
+<<<<<<< HEAD
   '@mantine/ssr': 4.2.2_b49bddbe4b905ced4713cb857cca91fa
   '@pokt-foundation/pocket-blocks': 1.0.21_54c81b000b809fde6c9ed572a897b965
+=======
+  '@mantine/ssr': 4.2.2_wsn53pslsboo2rytzocxzsur7i
+<<<<<<< HEAD
+  '@pokt-foundation/pocket-blocks': 1.0.21_nktkq2kmmljjprowudbxkqmx2q
+=======
+  '@pokt-foundation/pocket-blocks': 1.0.19_hltgxp4hh4yoqymcmggjl25e64
+>>>>>>> 12f1e7c (fixes)
+>>>>>>> d39ebcc (fixes)
   '@pokt-foundation/pocketjs-isomorphic-provider': 1.0.0
   '@pokt-foundation/ui': 0.3.9_cdce0472005fc9929e7dd0afca7bfa15
   '@radix-ui/react-dropdown-menu': 0.1.6_b49bddbe4b905ced4713cb857cca91fa
@@ -2108,8 +2117,24 @@ packages:
       webcrypto-core: 1.7.5
     dev: true
 
+<<<<<<< HEAD
   /@pokt-foundation/pocket-blocks/1.0.21_54c81b000b809fde6c9ed572a897b965:
     resolution: {integrity: sha512-ccTvFyZax0Ed9TBlUgUdjbnScw4fHaJORFpfaMTnTtqVYux3/c87TdBBsYxC1ruNROqFyL0SEFJyNFkSUh3/4g==}
+=======
+<<<<<<< HEAD
+  /@pokt-foundation/pocket-blocks/1.0.21_nktkq2kmmljjprowudbxkqmx2q:
+    resolution: {integrity: sha512-ccTvFyZax0Ed9TBlUgUdjbnScw4fHaJORFpfaMTnTtqVYux3/c87TdBBsYxC1ruNROqFyL0SEFJyNFkSUh3/4g==}
+    peerDependencies:
+      '@mantine/core': ^4.x
+      '@mantine/hooks': ^4.x
+=======
+  /@pokt-foundation/pocket-blocks/1.0.19_hltgxp4hh4yoqymcmggjl25e64:
+    resolution: {integrity: sha512-PXq9HnTqzRdlomGWr9RQpQ7SgCKERsK0YymNcsbjbXEmIM6Ujs6n3eIBxSsNW1ktZX0ezPGQzxOwyL3pHVyq2A==}
+    peerDependencies:
+>>>>>>> 12f1e7c (fixes)
+      react: ^16.8 || ^17.0
+      react-dom: ^16.8 || ^17.0
+>>>>>>> d39ebcc (fixes)
     dependencies:
       '@mantine/core': 4.2.2_3d7de116aae0420634c887e7d5d05ede
       '@mantine/hooks': 4.2.2_react@17.0.2

@@ -10,9 +10,6 @@ import ChainWithImage, {
 import FeedbackCard, {
   links as FeedbackCardLinks,
 } from "~/components/application/FeedbackCard"
-// import NetworkLatestBlockCard, {
-//   links as NetworkLatestBlockCardLinks,
-// } from "~/components/application/NetworkLatestBlockCard"
 import NetworkPoktScanLatestBlockCard, {
   links as NetworkPoktScanLatestBlockCardLinks,
 } from "~/components/application/NetworkPoktScanLatestBlockCard"
@@ -30,7 +27,6 @@ import UsageChartCard, {
 } from "~/components/application/UsageChartCard"
 import Loader, { links as LoaderLinks } from "~/components/shared/Loader"
 import Table, { links as TableLinks } from "~/components/shared/Table"
-// import { initIndexerClient } from "~/models/indexer/indexer.server"
 import { Block, Order } from "~/models/indexer/sdk"
 import { initPoktScanClient } from "~/models/poktscan/poktscan.server"
 import { GetHighestBlockQuery } from "~/models/poktscan/sdk"
@@ -80,7 +76,6 @@ export type LatestBlockType = Block & {
 
 type LoaderData = {
   blockchains: Blockchain[] | null
-  // latestBlock: LatestBlockType | null
   dailyNetworkRelaysPerWeek: RelayMetric[]
   dailyNetworkRelays: RelayMetric
   weeklyNetworkRelays: RelayMetric
@@ -94,32 +89,6 @@ export const loader: LoaderFunction = async ({ request }) => {
   const blockchainResponse = await portal.blockchains().catch((e) => {
     console.log(e)
   })
-
-  // const indexer = initIndexerClient()
-  // const { queryBlocks } = await indexer.queryBlocks({
-  //   page: 1,
-  //   perPage: 1,
-  //   order: Order.Desc,
-  // })
-  // let latestBlock = null
-
-  // if (queryBlocks?.blocks) {
-  //   latestBlock = queryBlocks.blocks[0]
-  //   const height = Number(latestBlock?.height)
-  //   const { queryAccounts } = await indexer.queryAccounts({ height: height })
-  //   const { queryApps } = await indexer.queryApps({ height: height })
-  //   const { queryNodes } = await indexer.queryNodes({ height: height })
-  //   const { queryTransactionsByHeight } = await indexer.queryTransactionsByHeight({
-  //     height: height,
-  //   })
-  //   latestBlock = {
-  //     ...latestBlock,
-  //     total_accounts: Number(queryAccounts?.totalCount),
-  //     total_apps: Number(queryApps?.totalCount),
-  //     total_nodes: Number(queryNodes?.totalCount),
-  //     total_txs: Number(queryTransactionsByHeight?.totalCount),
-  //   } as LatestBlockType
-  // }
 
   const poktscan = initPoktScanClient()
   const poktscanLatestBlock = await poktscan.getHighestBlock()
@@ -241,11 +210,6 @@ export default function Index() {
             <h3>Network Success Rate</h3>
             <NetworkSuccessRateCard relays={weeklyNetworkRelays} />
           </section>
-          {/* {latestBlock && (
-            <section>
-              <NetworkLatestBlockCard latestBlock={latestBlock} />
-            </section>
-          )} */}
           {poktscanLatestBlock && (
             <section>
               <NetworkPoktScanLatestBlockCard latestBlock={poktscanLatestBlock} />

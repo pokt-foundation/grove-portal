@@ -14,10 +14,10 @@ import AppRequestsRateCard, {
   links as AppRequestsRateCardLinks,
 } from "~/components/application/AppRequestsRateCard"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
-import styles from "~/styles/dashboard.apps.$appId.requests.css"
 import { ErrorMetric, getErrorMetrics } from "~/models/errormetrics/errormetrics.server"
 import { getLBOriginClassification } from "~/models/portal.server"
 import { initPortalClient } from "~/models/portal/portal.server"
+import styles from "~/styles/dashboard.apps.$appId.requests.css"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { requireUser } from "~/utils/session.server"
 

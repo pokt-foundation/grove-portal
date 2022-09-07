@@ -64,7 +64,7 @@ export const Nav = ({ routes, dropdown = false, appId }: NavProps) => {
 
   return (
     <nav className={clsx("pokt-nav", isMobile && dropdown && "mobile")}>
-      {isMobile && (
+      {dropdown && isMobile && (
         <div className="navigation-dropdown">
           <Select
             aria-label="Application navigation"
@@ -77,7 +77,7 @@ export const Nav = ({ routes, dropdown = false, appId }: NavProps) => {
           />
         </div>
       )}
-      {isMobile === false && (
+      {(!isMobile || !dropdown) && (
         <ul>
           {routes.map((route) => {
             const Icon = route.icon

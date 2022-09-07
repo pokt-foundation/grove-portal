@@ -59,18 +59,6 @@ export default function LatestBlock({ latestBlock }: LatestBlockProps) {
       label: "Txs",
       value: `${latestBlock.highestBlock?.item?.total_txs}`,
     },
-    // {
-    //   label: "Apps",
-    //   value: latestBlock.highestBlock?.item?.total_apps,
-    // },
-    // {
-    //   label: "Nodes",
-    //   value: latestBlock.highestBlock?.item?.total_nodes,
-    // },
-    // {
-    //   label: "Accounts",
-    //   value: latestBlock.highestBlock?.item?.total_accounts,
-    // },
     {
       label: "Produced in",
       value: `${latestBlock.highestBlock?.item?.took.toFixed(2)} min`,

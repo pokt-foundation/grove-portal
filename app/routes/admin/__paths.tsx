@@ -1,8 +1,7 @@
-import { Grid, Space, Title } from "@mantine/core"
+import { Grid, Space, Title, Container } from "@pokt-foundation/pocket-blocks"
 import { LoaderFunction, json } from "@remix-run/node"
 import { Link, Outlet } from "@remix-run/react"
 import { Auth0Profile } from "remix-auth-auth0"
-import Container from "~/components/shared/Container"
 import { requireAdmin } from "~/utils/session.server"
 
 type LoaderData = {
@@ -17,7 +16,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export default function Admin() {
   return (
-    <Container>
+    <Container size="lg">
       <Space h={60} />
       <Grid>
         <Grid.Col sm={4}>

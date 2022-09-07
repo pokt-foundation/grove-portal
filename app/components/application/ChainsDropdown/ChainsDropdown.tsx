@@ -7,8 +7,9 @@ import Dropdown, {
   DropdownMenu,
 } from "~/components/shared/Dropdown"
 import TextInput from "~/components/shared/TextInput"
-import { CHAIN_ID_PREFIXES } from "~/utils/chainUtils"
+import { BlockchainsQuery } from "~/models/portal/sdk"
 
+/* c8 ignore start */
 export const links = () => {
   return [
     ...DropdownLinks(),
@@ -16,8 +17,10 @@ export const links = () => {
     { rel: "stylesheet", href: styles },
   ]
 }
+/* c8 ignore stop */
 
 interface AppEndpointProps {
+  blockchains: BlockchainsQuery["blockchains"]
   defaultText: string
   selectedChains: string[]
   icon?: boolean
@@ -25,13 +28,14 @@ interface AppEndpointProps {
 }
 
 export default function ChainsDropdown({
+  blockchains,
   defaultText,
   icon = false,
   selectedChains,
   handleChainClick,
 }: AppEndpointProps) {
-  const allChains = Array.from(CHAIN_ID_PREFIXES.entries()).filter(
-    ([id]) => !selectedChains.includes(id),
+  const allChains = blockchains.filter(
+    (chain) => chain && !selectedChains.includes(chain.id),
   )
   const [query, setQuery] = useState("")
 
@@ -51,20 +55,22 @@ export default function ChainsDropdown({
         <TextInput placeholder="Search Chains" value={query} onChange={handleSearch} />
         {allChains &&
           allChains
-            .filter(([_, row]) =>
-              Object.values(row)
-                .join()
-                .toLowerCase()
-                .trim()
-                .includes(query.toLowerCase().trim()),
+            .filter(
+              (row) =>
+                row &&
+                Object.values(row)
+                  .join()
+                  .toLowerCase()
+                  .trim()
+                  .includes(query.toLowerCase().trim()),
             )
-            .map(([id, { name }]) => (
+            .map((chain) => (
               <DropdownMenu.Item
-                key={id}
+                key={chain?.id}
                 className="pokt-chains-dropdown-chain"
-                onClick={() => handleChainClick(id)}
+                onClick={() => handleChainClick(`${chain?.id}`)}
               >
-                <ChainWithImage chain={name} />
+                <ChainWithImage chain={chain?.description} />
               </DropdownMenu.Item>
             ))}
       </Dropdown>

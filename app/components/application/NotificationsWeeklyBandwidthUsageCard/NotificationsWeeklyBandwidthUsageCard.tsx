@@ -1,4 +1,4 @@
-import { SimpleGrid } from "@mantine/core"
+import { SimpleGrid } from "@pokt-foundation/pocket-blocks"
 import type { LinksFunction } from "@remix-run/node"
 import { useMemo } from "react"
 import CircleGraphWithGradient from "../CircleGraphWithGradient"
@@ -10,6 +10,7 @@ import { useUsageColor } from "~/utils/applicationUtils"
 import { formatNumberToSICompact } from "~/utils/formattingUtils"
 import { FREE_TIER_MAX_RELAYS } from "~/utils/pocketUtils"
 
+/* c8 ignore start */
 export const links: LinksFunction = () => [
   ...CardLinks(),
   {
@@ -17,6 +18,7 @@ export const links: LinksFunction = () => [
     href: styles,
   },
 ]
+/* c8 ignore stop */
 
 export default function NotificationsWeeklyBandwidthUsageCard() {
   const appIdRoute = useMatchesRoute("routes/dashboard/apps/$appId")

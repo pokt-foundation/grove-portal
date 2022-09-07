@@ -1,6 +1,14 @@
+import { PayPlanType } from "~/models/portal/sdk"
+import { FREE_TIER_MAX_RELAYS } from "~/utils/pocketUtils"
+
 const schema = {
   common: {
     submit: "submit",
+    StopSubscription: "Stop Subscription",
+    save: "save",
+    close: "Close",
+    goBack: "go back",
+    cancel: "Cancel",
   },
   search: {
     label: "Search",
@@ -17,6 +25,7 @@ const schema = {
     nodes: "nodes",
     network: "network",
     networks: "networks",
+    rentToOwn: "rent to own",
     support: "support",
     transaction: "transaction",
     transactions: "transactions",
@@ -33,30 +42,44 @@ const schema = {
       {
         question: "What is the Pocket Portal?",
         answer:
-          "The Pocket Portal is a dashboard for creating and monitoring blockchain infrastructure endpoint(s) powered by Pocket Network's decentralized full-node network.",
+          'The Pocket Portal is a browser-based interface where developers can create ("mint") a Pocket endpoint for use in their applications, utilizing a generous free tier of relays and scaling up as needed. Portal users can also monitor network performance.',
+      },
+      {
+        question: "Which blockchains can I connect to?",
+        answer: (
+          <>
+            The Pocket Portal currently supports creating an endpoint for dozens of
+            chains, including Ethereum, Harmony, Binance Smart Chain, Avalanche, Fuse, and{" "}
+            <a
+              href="https://docs.pokt.network/supported-blockchains/"
+              rel="noreferrer"
+              target="_blank"
+            >
+              many more
+            </a>
+            .
+          </>
+        ),
       },
       {
         question: "How can this be free?",
+        answer: `The Pocket Network provides bandwidth to decentralized applications that stake POKT. For the Pocket Portal's free tier, the Pocket Network Foundation has staked POKT on behalf of anyone who signs up to the Portal for up to ${FREE_TIER_MAX_RELAYS.toLocaleString(
+          "en-US",
+        )} relays per day.`,
+      },
+      {
+        question: "How many endpoints can I create?",
         answer:
-          "The Pocket Network provides bandwidth to decentralized applications that stake POKT. For the Pocket Portal's free tier, the Pocket Network Foundation has pre-staked POKT on behalf of anyone who signs up for up to 1M relays per day.",
+          "The Pocket Portal currently allows a user to create blockchain-specific endpoints for any chain served via the Portal. These endpoints can each be monitored as a single Application allowing for cross-chain analytics.",
+      },
+      {
+        question: "What’s the difference between an Application and an Endpoint?",
+        answer:
+          "The Portal organizes relay traffic through Applications, which are collections of relay traffic. An Application can consist of one or more endpoints, which are URLs that can receive RPC requests to a blockchain. A Portal account can contain multiple Applications, which can in turn contain multiple endpoints.",
       },
       {
         question: "How long can I use the free option?",
-        answer: (
-          <>
-            Currently, the Foundation is operating with "good faith" guidelines, meaning
-            that as long as you are actually using the service as intended, you can use
-            the free tier for as long as you'd like. If we notice there is little to no
-            traffic coming through those endpoints, we will reach out directly to see if
-            we can support you. It's important to note there is a finite supply of POKT
-            available for the free tier subsidies, so our goal is to allocate this to
-            developers who truly want to use and improve the service and grow their user
-            base. If you are not using the service, and remain unresponsive to{" "}
-            <a href="mailto:portal@gmail.com?subject=Support">our support outreach</a>, we
-            reserve the right to withdraw the endpoint in order to reallocate it to
-            another development team.
-          </>
-        ),
+        answer: `Currently, the Foundation is operating with "good faith" guidelines, meaning that as long as you are actually using the service as intended, you can use the free tier for as long as you'd like. Our goal is to allocate this to developers who truly want to use and improve the service and grow their user base, so if you are not using the service, we reserve the right to withdraw the endpoint in order to reallocate it to another development team.`,
       },
       {
         question: "What happens if I go over my daily relay limit?",
@@ -66,58 +89,23 @@ const schema = {
             over its daily relay limit. All surplus relays are served by our backup
             infrastructure, ensuring no service interruptions. This is only a temporary
             measure so you should{" "}
-            <a href="https://discord.com/invite/uYs6Esum3r">reach out to our team</a> if
-            you need more relays.
+            <a href="https://discord.gg/pokt" rel="noreferrer" target="_blank">
+              reach out to our team
+            </a>{" "}
+            if you need more relays.
           </>
         ),
       },
       {
-        question: "Which blockchains can I connect to?",
+        question: "How can I get [blockchain] added to the Portal?",
         answer: (
           <>
-            The Pocket Portal currently supports creating an endpoint for 10+ chains,
-            including Ethereum, xDAI, Binance Smart Chain, Avalanche, Fuse, and more. You
-            can find the{" "}
-            <a href="https://docs.pokt.network/home/resources/references/supported-blockchains">
-              full list here
-            </a>
-            . If you would like to discuss or help decide which networks to include next,{" "}
-            <a href="https://discord.com/invite/uYs6Esum3r">join us in Discord</a>.
-          </>
-        ),
-      },
-      {
-        question:
-          "What blockchains are available to connect to? Which are planned to come next?",
-        answer: (
-          <>
-            The Pocket Portal currently supports creating an endpoint for 10+ chains,
-            including Ethereum, Binance Smart Chain, Avalanche, Polygon, Fuse, and more.
-            You can find the{" "}
-            <a href="https://docs.pokt.network/home/resources/references/supported-blockchains">
-              the full list here
-            </a>
-            . In that list, you will see a section titled "Integrating New Relay Chains,"
-            which is where you can find the networks that are confirmed to be whitelisted
-            next. If you would like to discuss or help decide which networks are not
-            already on that list to include next, we recommend you chat with us in discord
-            and cement your perspective by creating a{" "}
-            <a href="https://forum.pokt.network/t/pip-6-2-settlers-of-new-chains/1027">
-              Pocket forum proposal
-            </a>
-            .
-          </>
-        ),
-      },
-      {
-        question: "How many endpoints can I create?",
-        answer: (
-          <>
-            The Pocket Portal currently allows any user to create up to 4 endpoints. Each
-            endpoint can be used to serve 1 blockchain. Each endpoint grants up to 1
-            million free relays per day. If you need more relays or want to stake your own
-            POKT, <a href="https://discord.com/invite/uYs6Esum3r">join us in Discord</a>{" "}
-            and let us know.
+            Pocket Network is expandable, and is continually adding support for new
+            chains. Community members can advocate for chains to be considered by{" "}
+            <a href="https://discord.gg/pokt" rel="noreferrer" target="_blank">
+              reaching out on Discord
+            </a>{" "}
+            and posting a suggestion to our team.
           </>
         ),
       },
@@ -143,9 +131,9 @@ const schema = {
     ],
     callOutBoxText: [
       {
-        title: "One click Endpoints",
-        smallText: "For any network with 1M daily relays free",
-        blueText: "10+",
+        title: "One click endpoints",
+        smallText: "For any supported network",
+        blueText: "35+",
         description: "Networks",
       },
       {
@@ -155,15 +143,15 @@ const schema = {
         description: "Nodes",
       },
       {
-        title: "Monitor your Infra",
-        smallText: "Tracking and managing your app across any chain",
+        title: "Monitor your infra",
+        smallText: "Managing your app across any chain",
         blueText: "6B+",
         description: "Weekly relays",
       },
     ],
     title: "Your gateway to Web3 done right.",
     subtitle:
-      "Deploy within minutes to decentralized infrastructure that can service dozens of chains. The Portal acts as your one-stop-shop to manage, make changes, and monitor your application's connection to blockchain data.",
+      "Deploy within minutes to decentralized infrastructure that can service dozens of chains. The Portal acts as your one-stop-shop to manage, and monitor your application's connection to blockchain data.",
     welcomeText: "Welcome to Web3 done the right way.",
     getStarted: "Get Started",
     connect: "Connect to these networks.",
@@ -182,12 +170,21 @@ const schema = {
     clickOpen: "Click to open feedback box",
     clickClose: "Click to close feedback box",
   },
+  dashboard: {
+    routes: {
+      network: "Network",
+      apps: "Apps",
+      docs: "Docs",
+      discord: "Discord",
+    },
+  },
   appId: {
     routes: {
       overview: "Overview",
       requests: "Requests",
       security: "Security",
       notifications: "Notifications",
+      plan: "Plan Details",
     },
   },
   AppRequestsByOriginCard: {
@@ -203,11 +200,11 @@ const schema = {
     list: {
       successDelta: {
         label: "Success Delta",
-        help: "Percentage of success among the total request attempted to perform by the application on the last 24h.",
+        help: "Percentage of success among the total requests attempted by the application during a 24hr period.",
       },
       errorRate: {
         label: "Error Rate",
-        help: "Percentage of error among the total request attempted to perform by the application.",
+        help: "Percentage of errors among the total request attempted by the application during a 24hr period.",
       },
       totalRequests: {
         label: "Total Requests",
@@ -223,13 +220,32 @@ const schema = {
       },
       dailyRelays: {
         label: "Daily Relays",
-        help: "Total number of request sent during the current day.",
+        help: "Total number of requests sent during the current 24hr period.",
       },
       maxRelays: {
         label: "Max Relays",
-        help: "Maxium number of request this application can send during a single day.",
+        help: "Maximum number of requests this application can send during a 24hr period.",
       },
     },
+  },
+  AppPlanOverviewCard: {
+    title: "Application Plan",
+    subscription: "Subscription",
+    status: "Status",
+    relays: "Total Relays on this Billing Period",
+    date: "Start Date",
+    managePlan: "Manage Plan in Stripe",
+  },
+  AppPlanLatestInvoiceCard: {
+    title: "Latest Invoice",
+    invoice: "Invoice",
+    status: "Status",
+    relaysBilled: "Relays Billed",
+    relaysUsed: "Relays Used",
+    dateStart: "Period Start",
+    dateEnd: "Period End",
+    download: "Download",
+    view: "View in Stripe",
   },
   AppOverLimitCard: {
     title: "Session Limit Reached",
@@ -247,6 +263,162 @@ const schema = {
   footer: {
     termsOfUse: "Site Terms of Use",
     privacyPolicy: "Privacy Policy",
+  },
+  AppPlansOverview: {
+    planDetailsTitles: {
+      pricing: "Pricing",
+      relayLimit: "Relay Limit",
+      chainAccess: "Chain Access",
+      appsLimit: "Apps Limit",
+      overviewHeader: "Flexible plans that grow with your app",
+      overviewDescription:
+        "Scalable plans because your needs change as yous app grows. All plans access to Pocket Network multichain infrastructure with our chain!",
+    },
+    planDetails: {
+      [PayPlanType.PayAsYouGoV0]: {
+        title: "Pay As You Go",
+        description:
+          "250k free relays per day, per app. Beyond that, pay only for what you use. The counter resets every 24h but you’ll only get billed monthly. Even better, after 24 months of paid relays, you’ll receive POKT to stake for continued service. No more payments.",
+        description2: "No more sunk costs. Just fast, reliable infrastructure.",
+        pricing: "Pay per relay + 250K Free Relays",
+        relayLimit: "No limit",
+        appsLimit: "Up to 2 Applicaitions",
+        chainAccess: "No limit",
+      },
+      [PayPlanType.FreetierV0]: {
+        title: "Always Free",
+        description:
+          "Access to reliable, censor resistant infrastructure. Free up to 250k relays per day.",
+        description2: "",
+        pricing: "$0.00",
+        relayLimit: "250k per app per day",
+        appsLimit: "Up to 2 Applicaitions",
+        chainAccess: "No limit",
+      },
+      [PayPlanType.TestPlanV0]: {
+        title: "Always Free",
+        description:
+          "Access to reliable, censor resistant infrastructure. Free up to 250k relays per day.",
+        description2: "",
+        pricing: "$0.00",
+        relayLimit: "250k per app per day",
+        appsLimit: "Up to 2 Applicaitions",
+        chainAccess: "No limit",
+      },
+    },
+  },
+  AppPlanDetails: {
+    relayLimit: "Relay Limit",
+    relaysPerDay: "relays per day",
+    currentPlan: "Current Plan",
+    currentPlanToolTip: "This is the current plan for this specific application.",
+    upgrade: "Upgrade",
+    renew: "Renew Subscription",
+  },
+  PlanView: {
+    title: "Stripe Error",
+    description:
+      "We are sorry but there appears to be an issue with out connection to stripe. You can try managing your subscription directly in Stripe's portal.",
+    button: "Manage Plan in Stripe",
+  },
+  ContactSalesView: {
+    title: "We have Enterprise solutions for your needs",
+    description:
+      "Give us some basic information and our solutions team will reach out soon.",
+    formSubmitted: "Form Submitted",
+    formSubmittedDescription:
+      "Your form has been successfully submitted. We will be in touch!",
+    done: "Done",
+    formSubmissionFailed: "Form Submission Failed",
+  },
+  ContactSalesForm: {
+    submitting: "Submitting",
+    submit: "Submit",
+    firstName: {
+      label: "First Name",
+      placeholder: "Enter your name",
+    },
+    lastName: {
+      label: "Last Name",
+      placeholder: "Enter your last name",
+    },
+    email: {
+      label: "Email",
+      placeholder: "Enter your email",
+    },
+    company: {
+      label: "Company",
+      placeholder: "Enter a company name",
+    },
+    chains: {
+      label: "Protocol/Chains of interest",
+      placeholder: "I'm interested in...",
+    },
+    relays: {
+      label: "Daily Relay Needs",
+      placeholder: "Approximately how many daily relays does your app need?",
+    },
+    tellUsMore: {
+      label: "Tell us more about what you are building",
+      placeholder: "I'm building...",
+    },
+  },
+  CalculateYourPricing: {
+    title: "Calculate your pricing",
+    firstDescription:
+      "Use the calculator below to give you an estimate of what your monthly bill could look like.",
+    secondDescription:
+      "Enter the number of relays you think your app might consume in a day. Don’t exclude the free relays. We will do the math for you.",
+    avgRelaysPerDay: "AVG Relays per Day",
+    pricePerRelay: "Price per Relay",
+    totalMonthlyPrice: "Total Monthly Estimated Price",
+    howIsThisCalculated: "How is this calculated?",
+    modalTitle: "How is this price calculated",
+    modalDescription:
+      "This formula is how Pocket portal calculates and charge you app relyas montly. If you want to learn more see our",
+    secondModalDescription: "documentation",
+    totalDailyRelays: "Total daily relays",
+    freeRelays: "free relays",
+    costPerDay: "Cost per day",
+    done: "Done",
+    sumPerDay: "The sum of each cost per day",
+    monthlyFee: "Monthly fee",
+  },
+  security: {
+    headings: {
+      secretKey: "Private Secret Key Required",
+      approvedChains: "Approved Chains",
+      userAgents: "Whitelist User-Agents",
+      origins: "Whitelist Origins",
+      contracts: "Whitelist Contracts",
+      methods: "Whitelist Methods",
+    },
+    secretSwitchAria: "Private key required",
+    userAgentPlaceholder: "Type user-agent here",
+    userAgentAria: "Add user-agents to white list",
+    defaultSelectChainText: "Select Chain",
+    chainsDropdownAria: "Select a chain to add to white list",
+    OriginPlaceholder: "Type origin here",
+    OriginAria: "Add origins to white list",
+    contractAria: "Add contract selections to white list",
+    contractError:
+      "You must select a chain and have a value to add to methods whitelist.",
+    methodAria: "Add method selections to white list",
+    methodError: "You must select a chain and have a value to add to methods whitelist.",
+    secretKeyText:
+      "To maximize the security of your application, you should activate the private secret key for all requests and enable the use of whitelisted user-agents and origins.",
+  },
+  stopRemoveApp: {
+    stopSubscriptionTitle: "Stop Subscription",
+    removeApp: "Delete Application",
+    removeAppTitle: "Do you want to delete this application?",
+    removeAppDescription:
+      "If you delete this application, the data will no longer be accessible in the portal. Historical will be available in the explorer.",
+    planDowngrade:
+      "Your plan will be changed to 'Always Free' effective immediatly, and you will be invoiced at the end of your billing period.",
+    planRenew:
+      "If you change your mind, you can renew your subscription until the end of your billing period.",
+    appId: "App ID:",
   },
 }
 

@@ -1,13 +1,13 @@
+import { Container } from "@pokt-foundation/pocket-blocks"
 import { LinksFunction, LoaderFunction, json } from "@remix-run/node"
 import { Outlet, useCatch, useLoaderData, useTransition } from "@remix-run/react"
 import { useEffect } from "react"
 import { Auth0Profile } from "remix-auth-auth0"
 import analyticsInit, { AmplitudeEvents, trackEvent } from "../utils/analytics"
-import Container, { links as ContainerLinks } from "~/components/shared/Container"
 import Footer, { links as FooterLinks } from "~/components/shared/Footer"
 import Header, { links as HeaderLinks } from "~/components/shared/Header"
 import { IconApp, IconNetwork } from "~/components/shared/Icons"
-import Loader, { links as LoaderLinks } from "~/components/shared/Loader"
+// import Loader, { links as LoaderLinks } from "~/components/shared/Loader"
 import Nav, { links as NavLinks } from "~/components/shared/Nav"
 import { useTranslate } from "~/context/TranslateContext"
 import { requireUserProfile } from "~/utils/session.server"
@@ -17,8 +17,7 @@ export const links: LinksFunction = () => {
     ...HeaderLinks(),
     ...FooterLinks(),
     ...NavLinks(),
-    ...ContainerLinks(),
-    ...LoaderLinks(),
+    // ...LoaderLinks(),
   ]
 }
 
@@ -35,7 +34,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 export default function Dashboard() {
   const { user } = useLoaderData() as LoaderData
   const { t } = useTranslate()
-  const { state } = useTransition()
+  // const { state } = useTransition()
 
   useEffect(() => {
     analyticsInit(user)
@@ -45,18 +44,24 @@ export default function Dashboard() {
   const routes = [
     {
       to: "/dashboard",
-      label: t.terms.network,
+      label: t.dashboard.routes.network,
       icon: IconNetwork,
       end: true,
     },
     {
       to: "/dashboard/apps",
-      label: t.terms.apps,
+      label: t.dashboard.routes.apps,
       icon: IconApp,
     },
     {
-      to: "/dashboard/support",
-      label: t.terms.support,
+      to: "https://docs.pokt.network",
+      external: true,
+      label: t.dashboard.routes.docs,
+    },
+    {
+      to: "https://discord.gg/pokt",
+      external: true,
+      label: t.dashboard.routes.discord,
     },
   ]
   return (
@@ -65,7 +70,7 @@ export default function Dashboard() {
         <Nav routes={routes} />
       </Header>
       <main>
-        <Container>
+        <Container size="lg">
           {/* {state === "loading" && <Loader />} */}
           <Outlet />
         </Container>

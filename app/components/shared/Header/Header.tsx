@@ -1,15 +1,17 @@
 import { useViewportSize } from "@mantine/hooks"
+import { Button } from "@pokt-foundation/pocket-blocks"
 import { IconPerson } from "@pokt-foundation/ui"
 import { Item, Separator } from "@radix-ui/react-dropdown-menu"
 import { Form, Link } from "@remix-run/react"
 import clsx from "clsx"
 import { useEffect, useMemo, useRef, useState } from "react"
+import React from "react"
 import { Auth0Profile } from "remix-auth-auth0"
 import Dropdown, { links as DropdownLinks } from "../Dropdown"
 import HamburgerMenu, { links as HamburgerMenuLinks } from "../HamburgerMenu"
 import styles from "./styles.css"
-import Button from "~/components/shared/Button"
 
+/* c8 ignore start */
 export const links = () => {
   return [
     ...DropdownLinks(),
@@ -17,6 +19,7 @@ export const links = () => {
     ...HamburgerMenuLinks(),
   ]
 }
+/* c8 ignore stop */
 
 type Route = {
   id: string
@@ -133,12 +136,18 @@ export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) 
           {!user && (
             <>
               <Form action="/api/auth/auth0" method="post">
-                <Button type="submit" variant="outline">
+                <Button color="blue" type="submit" variant="outline">
                   Login
                 </Button>
               </Form>
               <Form action="/api/auth/auth0" method="post">
-                <Button name="signup" type="submit" value="true" variant="outline">
+                <Button
+                  color="blue"
+                  name="signup"
+                  type="submit"
+                  value="true"
+                  variant="outline"
+                >
                   Sign Up
                 </Button>
               </Form>
@@ -172,12 +181,12 @@ function UserMenuDropdown({ user, routes }: UserMenuDropdownProps) {
           {routes.map(({ el, id: routeID }, index) => {
             const El = el
             return (
-              <>
-                <Item key={routeID}>
+              <React.Fragment key={routeID}>
+                <Item>
                   <El />
                 </Item>
                 {index < routes.length - 1 && <Separator />}
-              </>
+              </React.Fragment>
             )
           })}
         </Dropdown>

@@ -11,14 +11,17 @@ export const AmplitudeEvents = {
   SupportView: "SUPPORT_VIEW",
   EndpointCreation: "ENDPOINT_CREATION",
   EndpointRemoval: "ENDPOINT_REMOVAL",
+  StopSubscription: "STOP_SUBSCRIPTION",
   LandingView: "LANDING_VIEW",
   DashboardView: "DASHBOARD_VIEW",
   RequestDetailsView: "REQUEST_DETAILS_VIEW",
   SecurityDetailsView: "SECURITY_DETAILS_VIEW",
   NotificationDetailsView: "NOTIFICATION_DETAILS_VIEW",
   AppDetailsView: "APP_DETAILS_VIEW",
+  AppPlanDetailsView: "APP_PLAN_DETAILS_VIEW",
   NotificationSettingsChange: "NOTIFICATION_SETTINGS_CHANGE",
   SecuritySettingsUpdate: "SECURITY_SETTINGS_UPDATE",
+  ContactSalesView: "CONTACT_SALES_VIEW",
 }
 
 function splitUser(user: { id: string }) {

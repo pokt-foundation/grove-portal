@@ -1,69 +1,72 @@
-import { IconPerson } from "@pokt-foundation/ui"
-import type { LinksFunction } from "@remix-run/node"
+import type { ActionFunction, LinksFunction } from "@remix-run/node"
+import { useActionData, useCatch } from "@remix-run/react"
 import { useEffect } from "react"
-import type { Auth0Profile } from "remix-auth-auth0"
-import Card, { links as CardLinks } from "~/components/shared/Card"
-import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
+import { Auth0Profile } from "remix-auth-auth0"
+import invariant from "tiny-invariant"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
-import styles from "~/styles/dashboard.profile.css"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
+import { getRequiredServerEnvVar } from "~/utils/environment"
+import ProfileView, {
+  links as ProfileViewLinks,
+} from "~/views/dashboard/apps/profile/profileView"
 
-export const links: LinksFunction = () => [
-  ...CardLinks(),
-  ...TextInputLinks(),
-  { rel: "stylesheet", href: styles },
-]
+export const links: LinksFunction = () => [...ProfileViewLinks()]
+
+export const action: ActionFunction = async ({ request }) => {
+  const formData = await request.formData()
+  const email = formData.get("email")
+  invariant(email, "user email not found")
+
+  try {
+    const res = await fetch(
+      `https://${getRequiredServerEnvVar("AUTH0_DOMAIN")}/dbconnections/change_password`,
+      {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          client_id: getRequiredServerEnvVar("AUTH0_CLIENT_ID"),
+          email,
+          connection: getRequiredServerEnvVar("AUTH0_CONNECTION"),
+        }),
+      },
+    )
+
+    return res
+  } catch (e) {
+    return e
+  }
+}
 
 export default function Profile() {
   const dashboardRoute = useMatchesRoute("routes/dashboard")
-  const dashboardData = dashboardRoute?.data.user as Auth0Profile
-  const { email_verified: emailVerified = false, nickname = "" } = dashboardData._json
+  const dashboardData = dashboardRoute?.data?.user as Auth0Profile
+  const actionData = useActionData()
 
   useEffect(() => {
     trackEvent(AmplitudeEvents.ProfileView)
   }, [])
 
+  return <ProfileView actionData={actionData} profile={dashboardData} />
+}
+
+export const CatchBoundary = () => {
+  const caught = useCatch()
+  if (caught.status === 404) {
+    return (
+      <div className="error-container">
+        <h1>Profile Catch Error</h1>
+        <p>{caught.statusText}</p>
+      </div>
+    )
+  }
+  throw new Error(`Unexpected caught response with status: ${caught.status}`)
+}
+
+export const ErrorBoundary = ({ error }: { error: Error }) => {
   return (
-    <section className="pokt-network-user-profile">
-      <h3>User Profile</h3>
-      <Card>
-        <img
-          alt="user profile"
-          className="pokt-network-user-profile-img"
-          src={dashboardData.photos[0].value}
-        />
-        <TextInput
-          readOnly
-          label={
-            <>
-              <img alt="email" src={"/mail.svg"} />
-              Email Address
-            </>
-          }
-          value={dashboardData.emails[0].value}
-        />
-        <TextInput
-          readOnly
-          label={
-            <>
-              <IconPerson />
-              Nickname
-            </>
-          }
-          value={nickname}
-        />
-        <TextInput
-          readOnly
-          label="Email Verified"
-          rightSection={
-            <img
-              alt={emailVerified ? "Verified" : "Not verified"}
-              src={emailVerified ? "/checkmark.svg" : "/cross.svg"}
-            />
-          }
-          value={emailVerified ? "Verified" : "Not verified"}
-        />
-      </Card>
-    </section>
+    <div className="error-container">
+      <h1>Profile Error</h1>
+      <p>{error.message}</p>
+    </div>
   )
 }

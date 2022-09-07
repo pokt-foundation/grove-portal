@@ -5,3 +5,7 @@
   white-space: nowrap;
   margin: 0;
 }
+
+.pokt-table-empty p {
+  color: var(--color-disabled);
+}

@@ -1,0 +1,88 @@
+.calculate-your-pricing-card {
+  border: 1px solid #32404f;
+  border-radius: 10px;
+  padding: 24px;
+  margin-bottom: 36px;
+}
+
+.calculate-your-pricing-container .calculate-your-pricing-placeholder {
+  color: var(--color-disabled);
+}
+
+.calculate-your-pricing-container .calculate-your-pricing-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.calculate-your-pricing-container .calculate-your-pricing-footer h4 {
+  color: var(--color-white-light);
+}
+
+.calculate-your-pricing-container .calculate-your-pricing-footer p {
+  color: var(--color-white-light);
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.calculate-your-pricing-container .calculate-your-pricing-footer div.divider {
+  width: 56px;
+  height: 0px;
+  background: var(--color-primary-main);
+  border: 1px solid var(--color-primary-main);
+  transform: rotate(-90deg);
+}
+
+.calculate-your-pricing-container .calculate-your-pricing-question {
+  color: var(--color-primary-main);
+  border: none;
+  padding: 0;
+  background: transparent;
+}
+
+.calculate-your-pricing-container .calculate-your-pricing-question:hover {
+  background: transparent;
+  border: none;
+}
+
+.calculate-your-pricing-container .calculate-your-pricing-modal a {
+  color: var(--color-primary-main);
+}
+
+.calculate-your-pricing-container .calculate-your-pricing-modal h3 {
+  color: var(--color-secondary-main);
+}
+
+.calculate-your-pricing-modal-footer {
+  display: flex;
+  justify-content: center;
+}
+
+.calculate-your-pricing-modal-footer button {
+  color: var(--color-black-dark);
+  width: 220px;
+  margin: 24px 0 40px 0;
+}
+
+.calculate-your-pricing-formula {
+  display: flex;
+}
+
+.calculate-your-pricing-formula span.column {
+  display: flex;
+  flex-direction: column;
+}
+
+.calculate-your-pricing-formula-value {
+  color: var(--color-disabled);
+  font-size: 12px;
+  margin-top: 8px;
+}
+
+.calculate-your-pricing-formula .symbol {
+  color: var(--color-secondary-main);
+}
+
+.calculate-your-pricing-conclusion {
+  font-weight: 700;
+}

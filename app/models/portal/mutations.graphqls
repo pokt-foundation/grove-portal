@@ -1,5 +1,5 @@
-mutation createEndpoint($input: CreateNewEndpointInput!) {
-  createNewEndpoint(input: $input) {
+mutation createEndpoint($name: String!, $payPlanType: PayPlanType) {
+  createNewEndpoint(name: $name, payPlanType: $payPlanType) {
     id
   }
 }

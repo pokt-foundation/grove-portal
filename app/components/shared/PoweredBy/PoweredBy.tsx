@@ -1,9 +1,11 @@
 import { Link } from "@remix-run/react"
 import styles from "./styles.css"
 
+/* c8 ignore start */
 export const links = () => {
   return [{ rel: "stylesheet", href: styles }]
 }
+/* c8 ignore stop */
 
 type PoweredByProps = {
   to: string

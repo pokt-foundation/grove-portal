@@ -2,6 +2,14 @@ import React, { useContext, useMemo } from "react"
 import { useUser } from "./UserContext"
 import en from "~/locales/en"
 import fr from "~/locales/fr"
+import { CalculateYourPricing } from "~/locales/types/CalculateYourPricing"
+import {
+  ContactSalesForm,
+  ContactSalesView,
+} from "~/locales/types/ContactSalesLocaleTypes"
+import { SecurityPageViewTypes } from "~/locales/types/SecurityPageTypes"
+import { StopRemoveApp } from "~/locales/types/StopRemoveApp"
+import { PayPlanType } from "~/models/portal/sdk"
 
 const languages = ["en", "fr"] as const
 const translate: Translate = {
@@ -12,6 +20,11 @@ const translate: Translate = {
 interface TranslationData {
   common: {
     submit: string
+    StopSubscription: string
+    save: string
+    close: string
+    goBack: string
+    cancel: string
   }
   search: {
     label: string
@@ -28,6 +41,7 @@ interface TranslationData {
     nodes: string
     network: string
     networks: string
+    rentToOwn: string
     support: string
     transaction: string
     transactions: string
@@ -73,12 +87,21 @@ interface TranslationData {
     clickOpen: string
     clickClose: string
   }
+  dashboard: {
+    routes: {
+      network: string
+      apps: string
+      docs: string
+      discord: string
+    }
+  }
   appId: {
     routes: {
       overview: string
       requests: string
       security: string
       notifications: string
+      plan: string
     }
   }
   AppRequestsByOriginCard: {
@@ -122,6 +145,25 @@ interface TranslationData {
       }
     }
   }
+  AppPlanOverviewCard: {
+    title: string
+    subscription: string
+    status: string
+    relays: string
+    date: string
+    managePlan: string
+  }
+  AppPlanLatestInvoiceCard: {
+    title: string
+    invoice: string
+    status: string
+    relaysBilled: string
+    relaysUsed: string
+    dateStart: string
+    dateEnd: string
+    download: string
+    view: string
+  }
   AppOverLimitCard: {
     title: string
     subtitle: string
@@ -136,6 +178,63 @@ interface TranslationData {
     termsOfUse: string
     privacyPolicy: string
   }
+  AppPlansOverview: {
+    planDetailsTitles: {
+      pricing: string
+      relayLimit: string
+      chainAccess: string
+      appsLimit: string
+      overviewHeader: string
+      overviewDescription: string
+    }
+    planDetails: {
+      [PayPlanType.PayAsYouGoV0]: {
+        title: string
+        description: string
+        description2: string
+        pricing: string
+        relayLimit: string
+        appsLimit: string
+        chainAccess: string
+      }
+      [PayPlanType.FreetierV0]: {
+        title: string
+        description: string
+        description2: string
+        pricing: string
+        relayLimit: string
+        appsLimit: string
+        chainAccess: string
+      }
+      [PayPlanType.TestPlanV0]: {
+        title: string
+        description: string
+        description2: string
+        pricing: string
+        relayLimit: string
+        appsLimit: string
+        chainAccess: string
+      }
+    }
+  }
+  AppPlanDetails: {
+    relayLimit: string
+    relaysPerDay: string
+    currentPlan: string
+    currentPlanToolTip: string
+    upgrade: string
+    renew: string
+  }
+  PlanView: {
+    title: string
+    description: string
+    button: string
+  }
+  ContactSalesView: ContactSalesView
+  ContactSalesForm: ContactSalesForm
+  CalculateYourPricing: CalculateYourPricing
+  security: SecurityPageViewTypes
+  stopRemoveApp: StopRemoveApp
 }
 
 export type Language = typeof languages[number]

@@ -21,6 +21,8 @@ process.env.AUTH0_CLIENT_SECRET = "mock"
 process.env.AUTH0_DOMAIN = "mock"
 process.env.AUTH0_AUDIENCE = "mock"
 process.env.AUTH0_SCOPE = "mock"
+process.env.VERCEL_URL = "localhost:3001"
+process.env.GODMODE_ACCOUNTS = "god"
 
 installGlobals()
 global.ENV = getClientEnv()

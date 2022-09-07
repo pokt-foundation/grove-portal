@@ -1,11 +1,13 @@
+import { Grid } from "@pokt-foundation/pocket-blocks"
 import HelpTooltip, { links as HelpTooltipLinks } from "../HelpTooltip"
 import styles from "./styles.css"
-import Grid from "~/components/shared/Grid"
 import List from "~/components/shared/List"
 
+/* c8 ignore start */
 export const links = () => {
   return [...HelpTooltipLinks(), { rel: "stylesheet", href: styles }]
 }
+/* c8 ignore stop */
 
 type CardListProps = {
   items: CardListItem[]

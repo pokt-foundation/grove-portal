@@ -2,7 +2,7 @@ export const MAX_USER_APPS = 2
 export const SESSIONS_PER_DAY = 24
 
 // const FREE_TIER_TOKENS = 3120000000
-export const FREE_TIER_MAX_RELAYS = 1000000
+export const FREE_TIER_MAX_RELAYS = 250_000
 
 /**
  * Shorten a Pocket address, `charsLength` allows to change the number of

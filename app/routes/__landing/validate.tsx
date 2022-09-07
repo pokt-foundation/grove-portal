@@ -1,9 +1,6 @@
-import { Text, Title } from "@mantine/core"
+import { Container, Grid, Button, Text, Title } from "@pokt-foundation/pocket-blocks"
 import { LinksFunction } from "@remix-run/node"
 import { Form } from "@remix-run/react"
-import Button from "~/components/shared/Button"
-import Container from "~/components/shared/Container"
-import Grid from "~/components/shared/Grid"
 import styles from "~/styles/validate.css"
 
 export const links: LinksFunction = () => {
@@ -13,10 +10,10 @@ export const links: LinksFunction = () => {
 export default function ValidateEmail() {
   return (
     <div className="pokt-validate">
-      <Container>
+      <Container size="lg">
         <Grid align="center">
           <Grid.Col sm={7} xs={12}>
-            <Title order={1}>Account Verification Pending</Title>
+            <Title order={1}>Email Verification Sent</Title>
             <Text>
               We sent you an email with a link to verify your account. Please complete
               this action to proceed with login.

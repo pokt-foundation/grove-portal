@@ -2,6 +2,7 @@ import { expect } from "vitest"
 import AppEndpointCard from "./AppEndpointCard"
 import { render, screen } from "test/helpers"
 import { IUserContext, UserContext } from "~/context/UserContext"
+import { endpoint, blockchains } from "~/models/portal/portal.data"
 import { ProcessedEndpoint } from "~/models/portal/sdk"
 import { ChainMetadata, prefixFromChainId } from "~/utils/chainUtils"
 
@@ -11,32 +12,7 @@ let userValue: IUserContext
 
 beforeEach(() => {
   //reset defaults before each test
-  app = {
-    id: "605238bf6b986eea7cf36d5e",
-    chain: "0003",
-    gigastake: false,
-    freeTier: true,
-    apps: [],
-    gatewaySettings: {
-      secretKey: "12434",
-      secretKeyRequired: false,
-      whitelistBlockchains: [],
-      whitelistContracts: [],
-      whitelistMethods: [],
-      whitelistOrigins: [],
-      whitelistUserAgents: [],
-    },
-    name: "",
-    notificationSettings: {
-      full: true,
-      half: true,
-      quarter: true,
-      signedUp: true,
-      threeQuarters: true,
-    },
-    status: "IN_SERVICE",
-    userId: "60ec71e6980d0b0034b3f2f3",
-  }
+  const chain = endpoint.apps ? endpoint.apps[0].chain : "0021"
   userValue = {
     submit: vitest.fn(),
     load: vitest.fn(),
@@ -47,7 +23,7 @@ beforeEach(() => {
       preferences: {
         language: "en",
         endpoints: {
-          [app.id as string]: [app.chain],
+          [endpoint.id as string]: [chain ?? "0021"],
         },
       },
     },
@@ -58,7 +34,7 @@ describe("<AppEndpointCard />", () => {
   it("loads card", () => {
     render(
       <UserContext.Provider value={userValue}>
-        <AppEndpointCard app={app} />
+        <AppEndpointCard app={endpoint} blockchains={blockchains} />
       </UserContext.Provider>,
     )
     const header = screen.getByRole("heading")
@@ -67,19 +43,20 @@ describe("<AppEndpointCard />", () => {
   it("loads chain with image if gigastake is false", () => {
     render(
       <UserContext.Provider value={userValue}>
-        <AppEndpointCard app={app} />
+        <AppEndpointCard app={endpoint} blockchains={blockchains} />
       </UserContext.Provider>,
     )
 
-    const { name } = prefixFromChainId(app.chain) as ChainMetadata
-    const image = screen.getAllByRole("img", { name: name })
+    const chain = endpoint.apps ? endpoint.apps[0].chain : "0021"
+    const name = blockchains.find((c) => c.id === chain)?.description
+    const image = screen.getAllByRole("img", { name: String(name) })
     expect(image[0]).toBeInTheDocument()
   })
   it("loads add chain button if gigastake is true", () => {
-    app.gigastake = true
+    endpoint.gigastake = true
     render(
       <UserContext.Provider value={userValue}>
-        <AppEndpointCard app={app} />
+        <AppEndpointCard app={endpoint} blockchains={blockchains} />
       </UserContext.Provider>,
     )
 

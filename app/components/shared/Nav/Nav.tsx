@@ -4,9 +4,11 @@ import styles from "./styles.css"
 // import { useTranslate } from "~/context/TranslateContext"
 // import { IconApp, IconNetwork } from "~/components/shared/Icons"
 
+/* c8 ignore start */
 export const links = () => {
   return [{ rel: "stylesheet", href: styles }]
 }
+/* c8 ignore stop */
 
 type NavProps = {
   routes: Route[]
@@ -29,7 +31,7 @@ export const Nav = ({ routes }: NavProps) => {
           return (
             <li key={route.to}>
               {route.external ? (
-                <a className="nav-link" href={route.to}>
+                <a className="nav-link" href={route.to} rel="noreferrer" target="_blank">
                   {route.label}
                 </a>
               ) : (

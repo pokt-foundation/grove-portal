@@ -4,9 +4,11 @@ import styles from "./styles.css"
 import Table, { links as TableLinks } from "~/components/shared/Table"
 import { useTranslate } from "~/context/TranslateContext"
 
+/* c8 ignore start */
 export const links = () => {
   return [...TableLinks(), { rel: "stylesheet", href: styles }]
 }
+/* c8 ignore stop */
 
 interface RequestsByOriginCardProps {
   usagePerOrigin: UserLBOriginBucket[]

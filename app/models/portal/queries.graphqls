@@ -1,69 +1,43 @@
 query endpoints {
   endpoints {
-    id
-    userId
-    name
-    status
-    apps {
-      address
-      appId
+    appLimits {
+      dailyLimit
+      planType
       publicKey
-      unstakingTime
-      maxRelays
-      stakedTokens
-      status
-      jailed
-    }
-    chain
-    freeTier
-    gigastake
-    gatewaySettings {
-      secretKey
-      secretKeyRequired
-      whitelistOrigins
-      whitelistUserAgents
-    }
-    notificationSettings {
-      signedUp
-      quarter
-      half
-      threeQuarters
-      full
-    }
-    stakeRelayStatus {
-      stake
-      relays
     }
     createdAt
+    gigastake
+    id
+    name
+    status
     updatedAt
+    userId
   }
 }
 
 query endpoint($endpointID: ID!) {
   endpoint(endpointID: $endpointID) {
-    id
-    userId
-    name
-    status
+    appLimits {
+      dailyLimit
+      planType
+      publicKey
+    }
     apps {
       address
       appId
+      chain
       publicKey
+      stake
       unstakingTime
-      maxRelays
       stakedTokens
       status
       jailed
     }
-    chain
-    freeTier
-    gigastake
+    createdAt
     gatewaySettings {
       secretKey
       secretKeyRequired
       whitelistBlockchains
-      whitelistOrigins
-      whitelistUserAgents
       whitelistContracts {
         blockchainId
         contracts
@@ -72,20 +46,22 @@ query endpoint($endpointID: ID!) {
         blockchainId
         methods
       }
+      whitelistOrigins
+      whitelistUserAgents
     }
+    gigastake
+    id
+    name
     notificationSettings {
-      signedUp
-      quarter
-      half
-      threeQuarters
       full
+      half
+      quarter
+      signedUp
+      threeQuarters
     }
-    stakeRelayStatus {
-      stake
-      relays
-    }
-    createdAt
+    status
     updatedAt
+    userId
   }
 }
 

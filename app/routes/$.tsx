@@ -1,4 +1,4 @@
-import { Alert, Center } from "@mantine/core"
+import { Alert, Center } from "@pokt-foundation/pocket-blocks"
 import { LoaderFunction } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
 

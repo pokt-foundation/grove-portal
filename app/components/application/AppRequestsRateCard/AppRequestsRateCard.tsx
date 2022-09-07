@@ -1,3 +1,4 @@
+import { Grid } from "@pokt-foundation/pocket-blocks"
 import { CircleGraph } from "@pokt-foundation/ui"
 import { IconDown, IconUp } from "@pokt-foundation/ui"
 import { useMemo } from "react"
@@ -7,13 +8,14 @@ import CardList, {
   CardListItem,
   links as CardListLinks,
 } from "~/components/shared/CardList"
-import Grid from "~/components/shared/Grid"
 import { useTranslate } from "~/context/TranslateContext"
-import { RelayMetric } from "~/models/relaymeter.server"
+import { RelayMetric } from "~/models/relaymeter/relaymeter.server"
 
+/* c8 ignore start */
 export const links = () => {
   return [...CardLinks(), ...CardListLinks(), { rel: "stylesheet", href: styles }]
 }
+/* c8 ignore stop */
 
 interface RequestsRateCardProps {
   previousRelays: RelayMetric["Count"]

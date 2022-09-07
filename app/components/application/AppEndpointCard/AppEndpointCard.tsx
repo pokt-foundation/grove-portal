@@ -9,10 +9,10 @@ import ChainWithImage, {
 } from "~/components/application/ChainWithImage"
 import { Card, links as CardLinks } from "~/components/shared/Card"
 import { useUser } from "~/context/UserContext"
-import { ProcessedEndpoint } from "~/models/portal/sdk"
+import { Blockchain, BlockchainsQuery, EndpointQuery } from "~/models/portal/sdk"
 import { ChainMetadata, prefixFromChainId } from "~/utils/chainUtils"
 
-/* c8 ignore next */
+/* c8 ignore start */
 export const links = () => {
   return [
     ...CardLinks(),
@@ -22,12 +22,14 @@ export const links = () => {
     { rel: "stylesheet", href: styles },
   ]
 }
+/* c8 ignore stop */
 
 interface AppEndpointProps {
-  app: ProcessedEndpoint
+  app: EndpointQuery["endpoint"]
+  blockchains: BlockchainsQuery["blockchains"]
 }
 
-export default function AppEndpointCard({ app }: AppEndpointProps) {
+export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) {
   const user = useUser()
   const chains = useMemo(
     () =>
@@ -38,21 +40,24 @@ export default function AppEndpointCard({ app }: AppEndpointProps) {
   )
   const { name: chainDescription } = useMemo(() => {
     if (chains) {
-      return app.chain ? (prefixFromChainId(chains[0]) as ChainMetadata) : { name: "" }
+      let c = app.apps ? app.apps[0].chain : null
+      return c ? (prefixFromChainId(chains[0]) as ChainMetadata) : { name: "" }
     }
     return { name: "" }
-  }, [chains, app.chain])
+  }, [chains, app])
 
   useEffect(() => {
     const storedChains = user.data?.preferences?.endpoints
       ? user.data?.preferences?.endpoints[app.id]
       : null
 
+    let c = app.apps ? app.apps[0].chain : null
+
     if (user.type === "done" && !storedChains) {
       user.submit(
         {
           endpoints: JSON.stringify({
-            [app.id]: app.chain ? [app.chain] : ["0021"],
+            [app.id]: c ? [c] : ["0021"],
           }),
         },
         {
@@ -112,6 +117,7 @@ export default function AppEndpointCard({ app }: AppEndpointProps) {
           <div>
             {app.gigastake ? (
               <ChainsDropdown
+                blockchains={blockchains}
                 defaultText="Add New"
                 handleChainClick={handleAddToStoredChains}
                 icon={true}
@@ -129,12 +135,14 @@ export default function AppEndpointCard({ app }: AppEndpointProps) {
         </div>
         {chains &&
           chains.map((chain: string) => {
-            const { prefix } = prefixFromChainId(chain) ?? { prefix: "" }
-            const endpoint = `https://${prefix}.gateway.pokt.network/v1/lb/${app.id}`
+            const blockchain: Blockchain | undefined | null = blockchains.find(
+              (c) => c?.id === chain,
+            )
+            const endpoint = `https://${blockchain?.blockchain}.gateway.pokt.network/v1/lb/${app.id}`
             return (
               <AppEndpointUrl
                 key={chain}
-                chainId={chain}
+                chain={blockchain}
                 handleRemove={() => handleRemoveFromStoredChains(chain)}
                 hasDelete={app.gigastake}
                 value={endpoint}

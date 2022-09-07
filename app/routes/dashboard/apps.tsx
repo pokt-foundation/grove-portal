@@ -1,76 +1,62 @@
-import { Grid } from "@mantine/core"
+import { Button, Grid } from "@pokt-foundation/pocket-blocks"
 import { json, LoaderFunction } from "@remix-run/node"
-import { Link, Outlet, useLoaderData } from "@remix-run/react"
+import { Link, Outlet, useLoaderData, useTransition } from "@remix-run/react"
 import AdEconomicsForDevs, {
   links as AdEconomicsForDevsLinks,
 } from "~/components/application/AdEconomicsForDevs"
 import FeedbackCard, {
   links as FeedbackCardLinks,
 } from "~/components/application/FeedbackCard"
-import Button, { links as ButtonLinks } from "~/components/shared/Button"
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import CardList, {
   CardListItem,
   links as CardListLinks,
 } from "~/components/shared/CardList"
+import Loader, { links as LoaderLinks } from "~/components/shared/Loader"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { ProcessedEndpoint } from "~/models/portal/sdk"
+import { EndpointsQuery, ProcessedEndpoint } from "~/models/portal/sdk"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 import { MAX_USER_APPS } from "~/utils/pocketUtils"
-import { getUserId, requireUser } from "~/utils/session.server"
+import { getPoktId, requireUser } from "~/utils/session.server"
 
 export const links = () => {
   return [
-    ...ButtonLinks(),
     ...CardLinks(),
     ...CardListLinks(),
     ...FeedbackCardLinks(),
     ...AdEconomicsForDevsLinks(),
+    ...LoaderLinks(),
   ]
 }
 
 export type AllAppsLoaderData = {
-  endpoints: ProcessedEndpoint[] | null
+  endpoints: EndpointsQuery["endpoints"] | null
   userId: string
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
   const user = await requireUser(request)
-  const userId = await getUserId(request)
   const portal = initPortalClient(user.accessToken)
   const endpointsResponse = await portal.endpoints().catch((e) => {
     console.log(e)
   })
-  const endpoints = endpointsResponse
-    ? (endpointsResponse.endpoints.filter(
-        (endpoint) => endpoint !== null,
-      ) as ProcessedEndpoint[])
-    : null
 
-  return json<AllAppsLoaderData>(
-    {
-      endpoints,
-      userId,
-    },
-    {
-      headers: {
-        "Cache-Control": `private, max-age=${
-          process.env.NODE_ENV === "production" ? "3600" : "60"
-        }`,
-      },
-    },
-  )
+  return json<AllAppsLoaderData>({
+    endpoints: endpointsResponse ? endpointsResponse.endpoints : null,
+    userId: getPoktId(user.profile.id),
+  })
 }
 
 export const Apps = () => {
   const { endpoints, userId } = useLoaderData() as AllAppsLoaderData
   const appIdRoute = useMatchesRoute("routes/dashboard/apps/$appId")
+  const { state } = useTransition()
 
   const userAppsStatus: CardListItem[] = [
     {
       label: "Current Apps",
-      value: Number(endpoints?.length),
+      value: Number(endpoints?.length) || 0,
     },
     {
       label: "Max Apps",
@@ -84,23 +70,23 @@ export const Apps = () => {
     return (
       <Grid gutter={32}>
         <Grid.Col md={8}>
+          {state === "loading" && <Loader />}
           <Outlet />
         </Grid.Col>
         <Grid.Col md={4}>
-          {endpoints && (
-            <Card>
-              <div className="pokt-card-header">
-                <h3>Account</h3>
-              </div>
-              <CardList items={userAppsStatus} />
-              {(endpoints.length < MAX_USER_APPS ||
-                getRequiredClientEnvVar("GODMODE_ACCOUNTS")?.includes(userId)) && (
-                <Button fullWidth component={Link} mt={32} to="create">
-                  Create New Application
-                </Button>
-              )}
-            </Card>
-          )}
+          <Card>
+            <div className="pokt-card-header">
+              <h3>Account</h3>
+            </div>
+            <CardList items={userAppsStatus} />
+            {(!endpoints ||
+              endpoints.length < MAX_USER_APPS ||
+              getRequiredClientEnvVar("GODMODE_ACCOUNTS")?.includes(userId)) && (
+              <Button fullWidth component={Link} mt={32} to="/dashboard/create">
+                Create New Application
+              </Button>
+            )}
+          </Card>
           <section>
             <AdEconomicsForDevs />
           </section>

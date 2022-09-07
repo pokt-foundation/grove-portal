@@ -1,6 +1,6 @@
-import { Grid } from "@mantine/core"
+import { Grid } from "@pokt-foundation/pocket-blocks"
 import { LoaderFunction, json, MetaFunction } from "@remix-run/node"
-import { useLoaderData } from "@remix-run/react"
+import { useLoaderData, useTransition } from "@remix-run/react"
 import AdEconomicsForDevs, {
   links as AdEconomicsForDevsLinks,
 } from "~/components/application/AdEconomicsForDevs"
@@ -10,9 +10,9 @@ import ChainWithImage, {
 import FeedbackCard, {
   links as FeedbackCardLinks,
 } from "~/components/application/FeedbackCard"
-import NetworkLatestBlockCard, {
-  links as NetworkLatestBlockCardLinks,
-} from "~/components/application/NetworkLatestBlockCard"
+import NetworkPoktScanLatestBlockCard, {
+  links as NetworkPoktScanLatestBlockCardLinks,
+} from "~/components/application/NetworkPoktScanLatestBlockCard"
 import NetworkRelayPerformanceCard, {
   links as NetworkRelayPerformanceCardLinks,
 } from "~/components/application/NetworkRelayPerformanceCard"
@@ -25,12 +25,18 @@ import NetworkSummaryCard, {
 import UsageChartCard, {
   links as UsageChartCardLinks,
 } from "~/components/application/UsageChartCard"
+import Loader, { links as LoaderLinks } from "~/components/shared/Loader"
 import Table, { links as TableLinks } from "~/components/shared/Table"
-import { initIndexerClient } from "~/models/indexer/indexer.server"
 import { Block, Order } from "~/models/indexer/sdk"
+import { initPoktScanClient } from "~/models/poktscan/poktscan.server"
+import { GetHighestBlockQuery } from "~/models/poktscan/sdk"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { Blockchain } from "~/models/portal/sdk"
-import { getNetworkRelays, RelayMetric } from "~/models/relaymeter.server"
+import {
+  getRelays,
+  getRelaysPerWeek,
+  RelayMetric,
+} from "~/models/relaymeter/relaymeter.server"
 import styles from "~/styles/dashboard.index.css"
 import { getServiceLevelByChain } from "~/utils/chainUtils"
 import { dayjs } from "~/utils/dayjs"
@@ -39,7 +45,8 @@ import { requireUser } from "~/utils/session.server"
 export const links = () => {
   return [
     ...NetworkSummaryCardLinks(),
-    ...NetworkLatestBlockCardLinks(),
+    ...NetworkPoktScanLatestBlockCardLinks(),
+    // ...NetworkLatestBlockCardLinks(),
     ...NetworkSuccessRateCardLinks(),
     ...NetworkRelayPerformanceCardLinks(),
     ...UsageChartCardLinks(),
@@ -47,6 +54,7 @@ export const links = () => {
     ...TableLinks(),
     ...ChainWithImageLinks(),
     ...FeedbackCardLinks(),
+    ...LoaderLinks(),
     { rel: "stylesheet", href: styles },
   ]
 }
@@ -68,11 +76,11 @@ export type LatestBlockType = Block & {
 
 type LoaderData = {
   blockchains: Blockchain[] | null
-  latestBlock: LatestBlockType | null
   dailyNetworkRelaysPerWeek: RelayMetric[]
   dailyNetworkRelays: RelayMetric
   weeklyNetworkRelays: RelayMetric
   monthlyNetworkRelays: RelayMetric
+  poktscanLatestBlock: GetHighestBlockQuery
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -82,49 +90,20 @@ export const loader: LoaderFunction = async ({ request }) => {
     console.log(e)
   })
 
-  const indexer = initIndexerClient()
-  const { queryBlocks } = await indexer.queryBlocks({
-    page: 1,
-    perPage: 1,
-    order: Order.Desc,
-  })
-  let latestBlock = null
+  const poktscan = initPoktScanClient()
+  const poktscanLatestBlock = await poktscan.getHighestBlock()
 
-  if (queryBlocks?.blocks) {
-    latestBlock = queryBlocks.blocks[0]
-    const height = Number(latestBlock?.height)
-    const { queryAccounts } = await indexer.queryAccounts({ height: height })
-    const { queryApps } = await indexer.queryApps({ height: height })
-    const { queryNodes } = await indexer.queryNodes({ height: height })
-    const { queryTransactionsByHeight } = await indexer.queryTransactionsByHeight({
-      height: height,
-    })
-    latestBlock = {
-      ...latestBlock,
-      total_accounts: Number(queryAccounts?.totalCount),
-      total_apps: Number(queryApps?.totalCount),
-      total_nodes: Number(queryNodes?.totalCount),
-      total_txs: Number(queryTransactionsByHeight?.totalCount),
-    } as LatestBlockType
-  }
-  const dailyNetworkRelaysPerWeek = await Promise.all(
-    [0, 1, 2, 3, 4, 5, 6].map(async (num) => {
-      const day = dayjs()
-        .utc()
-        .hour(0)
-        .minute(0)
-        .second(0)
-        .millisecond(0)
-        .subtract(num, "day")
-        .format()
-
-      // api auto adjusts to/from to begining and end of each day so putting the same time here gives us back one full day
-      return await getNetworkRelays(day, day)
-    }),
-  )
-
+  const dailyNetworkRelaysPerWeek = await getRelaysPerWeek("network")
   // api auto adjusts to/from to begining and end of each day so putting the same time here gives us back one full day
   const today = dayjs().utc().hour(0).minute(0).second(0).millisecond(0).format()
+  const week = dayjs()
+    .utc()
+    .hour(0)
+    .minute(0)
+    .second(0)
+    .millisecond(0)
+    .subtract(6, "day")
+    .format()
   const month = dayjs()
     .utc()
     .hour(0)
@@ -133,9 +112,9 @@ export const loader: LoaderFunction = async ({ request }) => {
     .millisecond(0)
     .subtract(1, "month")
     .format()
-  const dailyNetworkRelays = await getNetworkRelays(today, today)
-  const weeklyNetworkRelays = await getNetworkRelays()
-  const monthlyNetworkRelays = await getNetworkRelays(month, today)
+  const dailyNetworkRelays = await getRelays("network", today, today)
+  const weeklyNetworkRelays = await getRelays("network", week, today)
+  const monthlyNetworkRelays = await getRelays("network", month, today)
 
   return json<LoaderData>(
     {
@@ -144,11 +123,12 @@ export const loader: LoaderFunction = async ({ request }) => {
             (chain) => chain !== null,
           ) as Blockchain[])
         : null,
-      latestBlock,
+      // latestBlock,
       dailyNetworkRelaysPerWeek,
       dailyNetworkRelays,
       weeklyNetworkRelays,
       monthlyNetworkRelays,
+      poktscanLatestBlock,
     },
     {
       headers: {
@@ -167,85 +147,90 @@ export default function Index() {
     dailyNetworkRelays,
     monthlyNetworkRelays,
     weeklyNetworkRelays,
-    latestBlock,
+    // latestBlock,
+    poktscanLatestBlock,
   } = useLoaderData() as LoaderData
+  const { state } = useTransition()
   return (
-    <Grid gutter={32}>
-      <Grid.Col md={8}>
-        <section>
-          <h3>Network Summary</h3>
-          <Grid gutter={32}>
-            <Grid.Col sm={4}>
-              <NetworkSummaryCard
-                imgSrc="/networkSummaryNodes.png"
-                subtitle="7000+"
-                title="Nodes Staked"
-              />
-            </Grid.Col>
-            <Grid.Col sm={4}>
-              <NetworkSummaryCard
-                imgSrc="/networkSummaryApps.png"
-                subtitle="2000+"
-                title="Apps Staked"
-              />
-            </Grid.Col>
-            <Grid.Col sm={4}>
-              <NetworkSummaryCard
-                imgSrc="/networkSummaryNetworks.png"
-                subtitle={String(blockchains ? blockchains.length : 0)}
-                title="Networks"
-              />
-            </Grid.Col>
-          </Grid>
-        </section>
-        <section>
-          <UsageChartCard relays={dailyNetworkRelaysPerWeek} />
-        </section>
-        {blockchains && (
+    <>
+      {state === "loading" && <Loader />}
+      <Grid gutter={32}>
+        <Grid.Col md={8}>
           <section>
-            <Table
-              paginate
-              search
-              columns={["Network", "ID", "Status"]}
-              data={blockchains.map((chain) => ({
-                id: chain.id,
-                network: {
-                  value: chain.description,
-                  element: <ChainWithImage chain={chain.description} />,
-                },
-                chainId: chain.id,
-                status: getServiceLevelByChain(chain.id),
-              }))}
-              label="Available Networks"
+            <h3>Network Summary</h3>
+            <Grid gutter={32}>
+              <Grid.Col sm={4}>
+                <NetworkSummaryCard
+                  imgSrc="/networkSummaryNodes.png"
+                  subtitle="7000+"
+                  title="Nodes Staked"
+                />
+              </Grid.Col>
+              <Grid.Col sm={4}>
+                <NetworkSummaryCard
+                  imgSrc="/networkSummaryApps.png"
+                  subtitle="2000+"
+                  title="Apps Staked"
+                />
+              </Grid.Col>
+              <Grid.Col sm={4}>
+                <NetworkSummaryCard
+                  imgSrc="/networkSummaryNetworks.png"
+                  subtitle={String(blockchains ? blockchains.length : 0)}
+                  title="Networks"
+                />
+              </Grid.Col>
+            </Grid>
+          </section>
+          <section>
+            <UsageChartCard relays={dailyNetworkRelaysPerWeek} />
+          </section>
+          {blockchains && (
+            <section>
+              <Table
+                paginate
+                search
+                columns={["Network", "ID", "Status"]}
+                data={blockchains.map((chain) => ({
+                  id: chain.id,
+                  network: {
+                    value: `${chain.description}`,
+                    element: <ChainWithImage chain={chain.description} />,
+                  },
+                  chainId: chain.id,
+                  status: getServiceLevelByChain(chain.id),
+                }))}
+                label="Available Networks"
+              />
+            </section>
+          )}
+        </Grid.Col>
+        <Grid.Col md={4}>
+          <section>
+            <h3>Network Success Rate</h3>
+            <NetworkSuccessRateCard relays={weeklyNetworkRelays} />
+          </section>
+          {poktscanLatestBlock && (
+            <section>
+              <NetworkPoktScanLatestBlockCard latestBlock={poktscanLatestBlock} />
+            </section>
+          )}
+          <section>
+            <NetworkRelayPerformanceCard
+              month={monthlyNetworkRelays}
+              today={dailyNetworkRelays}
+              week={weeklyNetworkRelays}
             />
           </section>
-        )}
-      </Grid.Col>
-      <Grid.Col md={4}>
-        <section>
-          <h3>Network Success Rate</h3>
-          <NetworkSuccessRateCard relays={weeklyNetworkRelays} />
-        </section>
-        {latestBlock && (
           <section>
-            <NetworkLatestBlockCard latestBlock={latestBlock} />
+            <AdEconomicsForDevs />
           </section>
-        )}
-        <section>
-          <NetworkRelayPerformanceCard
-            month={monthlyNetworkRelays}
-            today={dailyNetworkRelays}
-            week={weeklyNetworkRelays}
-          />
-        </section>
-        <section>
-          <AdEconomicsForDevs />
-        </section>
-        <section>
-          <FeedbackCard />
-        </section>
-      </Grid.Col>
-    </Grid>
+          <section>
+            <FeedbackCard />
+          </section>
+        </Grid.Col>
+      </Grid>
+    </>
   )
 }
 

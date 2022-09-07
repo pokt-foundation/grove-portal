@@ -1,12 +1,15 @@
-import { Group, Table as MantineTable, Pagination, TextInput } from "@mantine/core"
+import { TextInput } from "@mantine/core"
+import { Group, Table as MantineTable, Pagination } from "@pokt-foundation/pocket-blocks"
 import { useMemo, useState } from "react"
 import styles from "./styles.css"
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import { useTranslate } from "~/context/TranslateContext"
 
+/* c8 ignore start */
 export const links = () => {
   return [...CardLinks(), { rel: "stylesheet", href: styles }]
 }
+/* c8 ignore stop */
 
 interface TableProps<T> {
   data: T[]

@@ -1,39 +1,28 @@
-import { LoaderFunction, MetaFunction, json } from "@remix-run/node"
-import { Outlet, useCatch, useLoaderData } from "@remix-run/react"
+import { LoaderFunction, MetaFunction, json, ActionFunction } from "@remix-run/node"
+import { useActionData, useCatch, useLoaderData, useSearchParams } from "@remix-run/react"
 import invariant from "tiny-invariant"
-import AdEconomicsForDevs, {
-  links as AdEconomicsForDevsLinks,
-} from "~/components/application/AdEconomicsForDevs"
-import AppAddressCard, {
-  links as AppAddressCardLinks,
-} from "~/components/application/AppAddressCard"
-import AppKeysCard, {
-  links as AppKeysCardLinks,
-} from "~/components/application/AppKeysCard"
-import AppRemoveModal, {
-  links as AppRemoveModalLinks,
-} from "~/components/application/AppRemoveModal"
-import FeedbackCard, {
-  links as FeedbackCardLinks,
-} from "~/components/application/FeedbackCard"
-import Grid from "~/components/shared/Grid"
-import Nav, { links as NavLinks } from "~/components/shared/Nav"
-import { useTranslate } from "~/context/TranslateContext"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { ProcessedEndpoint } from "~/models/portal/sdk"
-import { getAppRelays, RelayMetric } from "~/models/relaymeter.server"
+import { BlockchainsQuery, EndpointQuery, PayPlanType } from "~/models/portal/sdk"
+import {
+  getRelays,
+  getRelaysPerWeek,
+  RelayMetric,
+} from "~/models/relaymeter/relaymeter.server"
+import {
+  getCustomer,
+  getSubscription,
+  Stripe,
+  stripe,
+} from "~/models/stripe/stripe.server"
+import { getErrorMessage } from "~/utils/catchError"
 import { dayjs } from "~/utils/dayjs"
-import { requireUser } from "~/utils/session.server"
+import { getPoktId, requireUser } from "~/utils/session.server"
+import AppIdLayoutView, {
+  links as AppIdLayoutViewLinks,
+} from "~/views/dashboard/apps/appId/layout/appIdLayoutView"
 
 export const links = () => {
-  return [
-    ...NavLinks(),
-    ...AppKeysCardLinks(),
-    ...AppAddressCardLinks(),
-    ...AdEconomicsForDevsLinks(),
-    ...FeedbackCardLinks(),
-    ...AppRemoveModalLinks(),
-  ]
+  return [...AppIdLayoutViewLinks()]
 }
 
 export const meta: MetaFunction = () => {
@@ -43,127 +32,75 @@ export const meta: MetaFunction = () => {
 }
 
 export type AppIdLoaderData = {
-  endpoint: ProcessedEndpoint
+  blockchains: BlockchainsQuery["blockchains"]
+  endpoint: EndpointQuery["endpoint"]
   relaysToday: RelayMetric
   relaysYesterday: RelayMetric
   dailyNetworkRelaysPerWeek: RelayMetric[]
+  subscription: Stripe.Subscription | undefined
 }
 
-export const loader: LoaderFunction = async ({ request, params, context }) => {
+export const loader: LoaderFunction = async ({ request, params }) => {
+  const url = new URL(request.url)
+  const searchParams = url.searchParams
+
   invariant(params.appId, "app id not found")
+
   const user = await requireUser(request)
+  const userId = await getPoktId(user.profile.id)
   const portal = initPortalClient(user.accessToken)
+
+  if (searchParams.get("success") === "true") {
+    try {
+      await portal.updateEndpoint({
+        input: {
+          id: params.appId,
+          payPlanType: PayPlanType.PayAsYouGoV0,
+        },
+      })
+    } catch (e) {}
+  }
+
   const { endpoint } = await portal.endpoint({
     endpointID: params.appId,
   })
   invariant(endpoint, "app id not found")
 
-  const dailyNetworkRelaysPerWeek = await Promise.all(
-    [0, 1, 2, 3, 4, 5, 6].map(async (num) => {
-      const day = dayjs()
-        .utc()
-        .hour(0)
-        .minute(0)
-        .second(0)
-        .millisecond(0)
-        .subtract(num, "day")
-        .format()
-
-      // api auto adjusts to/from to begining and end of each day so putting the same time here gives us back one full day
-      return await getAppRelays(endpoint.id, day, day)
-    }),
+  const subscription = await getSubscription(
+    user.profile.emails[0].value,
+    endpoint.id,
+    userId,
   )
+
+  const dailyNetworkRelaysPerWeek = await getRelaysPerWeek("endpoints", endpoint.id)
+  const { blockchains } = await portal.blockchains()
 
   // api auto adjusts to/from to begining and end of each day so putting the same time here gives us back one full day
   const today = dayjs().utc().format()
   const yesterday = dayjs().utc().subtract(1, "day").format()
-  const relaysToday = await getAppRelays(endpoint.id, today, today)
-  const relaysYesterday = await getAppRelays(endpoint.id, yesterday, yesterday)
+  const relaysToday = await getRelays("endpoints", today, today, endpoint.id)
+  const relaysYesterday = await getRelays("endpoints", yesterday, yesterday, endpoint.id)
 
-  return json<AppIdLoaderData>(
-    {
-      endpoint,
-      dailyNetworkRelaysPerWeek,
-      relaysToday,
-      relaysYesterday,
-    },
-    {
-      headers: {
-        "Cache-Control": `private, max-age=${
-          process.env.NODE_ENV === "production" ? "3600" : "60"
-        }`,
-      },
-    },
-  )
+  return json<AppIdLoaderData>({
+    blockchains,
+    endpoint,
+    dailyNetworkRelaysPerWeek,
+    relaysToday,
+    relaysYesterday,
+    subscription,
+  })
 }
 
 export default function AppIdLayout() {
-  const { t } = useTranslate()
-  const { endpoint } = useLoaderData() as AppIdLoaderData
-  const routes = [
-    {
-      to: "/dashboard/apps",
-      icon: () => <span>{"<"}</span>,
-      end: true,
-    },
-    {
-      to: "",
-      label: t.appId.routes.overview,
-      end: true,
-    },
-    {
-      to: "requests",
-      label: t.appId.routes.requests,
-    },
-    {
-      to: "security",
-      label: t.appId.routes.security,
-    },
-    {
-      to: "notifications",
-      label: t.appId.routes.notifications,
-    },
-  ]
+  const { endpoint, subscription } = useLoaderData() as AppIdLoaderData
+  const [searchParams] = useSearchParams()
 
   return (
-    <Grid gutter={32}>
-      {endpoint && (
-        <Grid.Col xs={12}>
-          <div>
-            <h1>{endpoint.name}</h1>
-            <Nav routes={routes} />
-          </div>
-        </Grid.Col>
-      )}
-      <Grid.Col md={8}>
-        <Outlet />
-      </Grid.Col>
-      <Grid.Col md={4}>
-        {endpoint && (
-          <>
-            <section>
-              <AppKeysCard
-                id={endpoint.id}
-                publicKey={endpoint.apps[0]?.publicKey}
-                secret={endpoint.gatewaySettings.secretKey ?? ""}
-              />
-            </section>
-            <section>
-              <AppAddressCard apps={endpoint.apps} />
-            </section>
-            <section>
-              <AdEconomicsForDevs />
-            </section>
-            <section>
-              <FeedbackCard />
-            </section>
-            <section>
-              <AppRemoveModal appId={endpoint.id} />
-            </section>
-          </>
-        )}
-      </Grid.Col>
-    </Grid>
+    <AppIdLayoutView
+      endpoint={endpoint}
+      searchParams={searchParams}
+      subscription={subscription}
+    />
   )
 }
 

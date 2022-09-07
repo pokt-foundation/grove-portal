@@ -1,3 +1,4 @@
+import { Grid } from "@pokt-foundation/pocket-blocks"
 import { MetaFunction } from "@remix-run/node"
 // import AppLatencyCard, {
 //   links as AppLatencyCardLinks,
@@ -19,7 +20,6 @@ import AppUsageCurrentCard, {
 import UsageChartCard, {
   links as UsageChartCardLinks,
 } from "~/components/application/UsageChartCard"
-import Grid from "~/components/shared/Grid"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { FREE_TIER_MAX_RELAYS } from "~/utils/pocketUtils"
@@ -50,15 +50,19 @@ export const Application = () => {
   }, [])
 
   const exceedsMaxRelays = useMemo(() => {
-    return appIdData.relaysToday.Count.Total >= FREE_TIER_MAX_RELAYS
-  }, [appIdData.relaysToday.Count.Total])
+    if (appIdData.endpoint.appLimits.dailyLimit === 0) {
+      return false
+    }
+
+    return appIdData.relaysToday.Count.Total >= appIdData.endpoint.appLimits.dailyLimit
+  }, [appIdData])
 
   return (
     <>
       {exceedsMaxRelays && <AppOverLimitCard exceedsMaxRelays={exceedsMaxRelays} />}
       {appIdData.endpoint && (
         <section>
-          <AppEndpointCard app={appIdData.endpoint} />
+          <AppEndpointCard app={appIdData.endpoint} blockchains={appIdData.blockchains} />
         </section>
       )}
       <Grid gutter={32}>
@@ -66,8 +70,7 @@ export const Application = () => {
           {appIdData.relaysToday.Count && (
             <section>
               <AppUsageCurrentCard
-                maxDailyRelays={FREE_TIER_MAX_RELAYS}
-                sessionRelays={0}
+                maxDailyRelays={appIdData.endpoint.appLimits.dailyLimit}
                 totalRelays={appIdData.relaysToday.Count.Total}
               />
             </section>
@@ -91,7 +94,10 @@ export const Application = () => {
       )} */}
       {appIdData.dailyNetworkRelaysPerWeek && (
         <section>
-          <UsageChartCard relays={appIdData.dailyNetworkRelaysPerWeek} />
+          <UsageChartCard
+            emptyLabel="Your application does not have relay data yet."
+            relays={appIdData.dailyNetworkRelaysPerWeek}
+          />
         </section>
       )}
     </>

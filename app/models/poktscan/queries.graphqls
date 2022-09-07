@@ -1,13 +1,4 @@
 query getRelaysAndPoktPerformance {
-  getRelaysPerformance {
-    max_relays
-    max_pokt
-    thirty_day_relays_avg
-    thirty_day_pokt_avg
-    today_relays
-    today_pokt
-    __typename
-  }
   highestBlock {
     item {
       height

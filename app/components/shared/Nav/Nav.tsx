@@ -30,7 +30,7 @@ type Route = {
 
 export const Nav = ({ routes, dropdown = false, appId }: NavProps) => {
   const [isMobile, setIsMobile] = useState<boolean | null>(null)
-  const [value, setValue] = useState<string | null>(null)
+  const [mobilePageSelect, setMobilePageSelect] = useState<string | null>(null)
   const { width } = useViewportSize()
 
   const reformatRoute = (routes: Route[]) => {
@@ -51,16 +51,16 @@ export const Nav = ({ routes, dropdown = false, appId }: NavProps) => {
   }, [width])
 
   useEffect(() => {
-    if (value !== null) {
-      if (value === "") {
+    if (mobilePageSelect !== null) {
+      if (mobilePageSelect === "") {
         window.location.href = `/dashboard/apps/${appId}`
-      } else if (value === "/dashboard/apps") {
-        window.location.href = value
+      } else if (mobilePageSelect === "/dashboard/apps") {
+        window.location.href = mobilePageSelect
       } else {
-        window.location.href = `/dashboard/apps/${appId}/${value}`
+        window.location.href = `/dashboard/apps/${appId}/${mobilePageSelect}`
       }
     }
-  }, [value])
+  }, [mobilePageSelect])
 
   return (
     <nav className={clsx("pokt-nav", isMobile && dropdown && "mobile")}>
@@ -72,7 +72,7 @@ export const Nav = ({ routes, dropdown = false, appId }: NavProps) => {
             data={reformatRoute(routes)}
             placeholder="Navigate to..."
             onChange={(value) => {
-              setValue(value)
+              setMobilePageSelect(value)
             }}
           />
         </div>

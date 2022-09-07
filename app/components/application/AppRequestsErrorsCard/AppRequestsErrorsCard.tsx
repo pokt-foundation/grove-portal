@@ -1,4 +1,4 @@
-import { Group, Table as PoktTable } from "@pokt-foundation/pocket-blocks"
+import { Group, Tooltip, Table as PoktTable } from "@pokt-foundation/pocket-blocks"
 import { IconClock } from "@pokt-foundation/ui"
 import { useMemo } from "react"
 import styles from "./styles.css"
@@ -7,7 +7,6 @@ import CopyTextIcon, {
   links as CopyTextIconLinks,
 } from "~/components/shared/CopyTextIcon"
 import Table, { links as TableLinks } from "~/components/shared/Table"
-import Tooltip from "~/components/shared/Tooltip"
 import { useTranslate } from "~/context/TranslateContext"
 import { ErrorMetric } from "~/models/errormetrics/errormetrics.server"
 

@@ -1,4 +1,4 @@
-import { Button, Text } from "@pokt-foundation/pocket-blocks"
+import { Button, Text, Switch } from "@pokt-foundation/pocket-blocks"
 import { useFetcher } from "@remix-run/react"
 import React, { useState } from "react"
 import styles from "./styles.css"
@@ -9,7 +9,6 @@ import ChainsDropdown, {
   links as ChainsDropdownLinks,
 } from "~/components/application/ChainsDropdown/ChainsDropdown"
 import Card, { links as CardLinks } from "~/components/shared/Card"
-import Switch, { links as SwitchLinks } from "~/components/shared/Switch"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { useTranslate } from "~/context/TranslateContext"
 import {
@@ -25,7 +24,6 @@ import { CHAIN_ID_PREFIXES } from "~/utils/chainUtils"
 /* c8 ignore start */
 export const links = () => {
   return [
-    ...SwitchLinks(),
     ...CardLinks(),
     ...TextInputLinks(),
     ...ChainsDropdownLinks(),

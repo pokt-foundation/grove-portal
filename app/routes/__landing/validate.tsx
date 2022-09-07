@@ -1,8 +1,6 @@
-import { Button, Text, Title } from "@pokt-foundation/pocket-blocks"
-import { Grid } from "@pokt-foundation/pocket-blocks"
+import { Container, Grid, Button, Text, Title } from "@pokt-foundation/pocket-blocks"
 import { LinksFunction } from "@remix-run/node"
 import { Form } from "@remix-run/react"
-import Container from "~/components/shared/Container"
 import styles from "~/styles/validate.css"
 
 export const links: LinksFunction = () => {
@@ -12,7 +10,7 @@ export const links: LinksFunction = () => {
 export default function ValidateEmail() {
   return (
     <div className="pokt-validate">
-      <Container>
+      <Container size="lg">
         <Grid align="center">
           <Grid.Col sm={7} xs={12}>
             <Title order={1}>Email Verification Sent</Title>

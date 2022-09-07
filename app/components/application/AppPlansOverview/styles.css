@@ -4,11 +4,22 @@
 
 .plan-data.title {
   color: var(--color-secondary-main);
-  font-size: 21px;
 }
 
 .plan-data-highlights {
   color: var(--color-secondary-main);
-  font-size: 21px;
   margin-top: 0;
+}
+
+.enterprise-solutions-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #5f6569;
+  border-radius: var(--radii-md);
+  padding: 20px;
+}
+
+.enterprise-solutions-box__title {
+  color: var(--color-white-main);
 }

@@ -1,4 +1,5 @@
 import { PayPlanType } from "~/models/portal/sdk"
+import { FREE_TIER_MAX_RELAYS } from "~/utils/pocketUtils"
 
 const schema = {
   common: {
@@ -7,6 +8,7 @@ const schema = {
     save: "save",
     close: "Close",
     goBack: "go back",
+    cancel: "Cancel",
   },
   search: {
     label: "Search",
@@ -40,30 +42,44 @@ const schema = {
       {
         question: "What is the Pocket Portal?",
         answer:
-          "The Pocket Portal is a dashboard for creating and monitoring blockchain infrastructure endpoint(s) powered by Pocket Network's decentralized full-node network.",
+          'The Pocket Portal is a browser-based interface where developers can create ("mint") a Pocket endpoint for use in their applications, utilizing a generous free tier of relays and scaling up as needed. Portal users can also monitor network performance.',
+      },
+      {
+        question: "Which blockchains can I connect to?",
+        answer: (
+          <>
+            The Pocket Portal currently supports creating an endpoint for dozens of
+            chains, including Ethereum, Harmony, Binance Smart Chain, Avalanche, Fuse, and{" "}
+            <a
+              href="https://docs.pokt.network/supported-blockchains/"
+              rel="noreferrer"
+              target="_blank"
+            >
+              many more
+            </a>
+            .
+          </>
+        ),
       },
       {
         question: "How can this be free?",
+        answer: `The Pocket Network provides bandwidth to decentralized applications that stake POKT. For the Pocket Portal's free tier, the Pocket Network Foundation has staked POKT on behalf of anyone who signs up to the Portal for up to ${FREE_TIER_MAX_RELAYS.toLocaleString(
+          "en-US",
+        )} relays per day.`,
+      },
+      {
+        question: "How many endpoints can I create?",
         answer:
-          "The Pocket Network provides bandwidth to decentralized applications that stake POKT. For the Pocket Portal's free tier, the Pocket Network Foundation has pre-staked POKT on behalf of anyone who signs up for up to 1M relays per day.",
+          "The Pocket Portal currently allows a user to create blockchain-specific endpoints for any chain served via the Portal. These endpoints can each be monitored as a single Application allowing for cross-chain analytics.",
+      },
+      {
+        question: "What’s the difference between an Application and an Endpoint?",
+        answer:
+          "The Portal organizes relay traffic through Applications, which are collections of relay traffic. An Application can consist of one or more endpoints, which are URLs that can receive RPC requests to a blockchain. A Portal account can contain multiple Applications, which can in turn contain multiple endpoints.",
       },
       {
         question: "How long can I use the free option?",
-        answer: (
-          <>
-            Currently, the Foundation is operating with "good faith" guidelines, meaning
-            that as long as you are actually using the service as intended, you can use
-            the free tier for as long as you'd like. If we notice there is little to no
-            traffic coming through those endpoints, we will reach out directly to see if
-            we can support you. It's important to note there is a finite supply of POKT
-            available for the free tier subsidies, so our goal is to allocate this to
-            developers who truly want to use and improve the service and grow their user
-            base. If you are not using the service, and remain unresponsive to{" "}
-            <a href="mailto:portal@gmail.com?subject=Support">our support outreach</a>, we
-            reserve the right to withdraw the endpoint in order to reallocate it to
-            another development team.
-          </>
-        ),
+        answer: `Currently, the Foundation is operating with "good faith" guidelines, meaning that as long as you are actually using the service as intended, you can use the free tier for as long as you'd like. Our goal is to allocate this to developers who truly want to use and improve the service and grow their user base, so if you are not using the service, we reserve the right to withdraw the endpoint in order to reallocate it to another development team.`,
       },
       {
         question: "What happens if I go over my daily relay limit?",
@@ -73,58 +89,23 @@ const schema = {
             over its daily relay limit. All surplus relays are served by our backup
             infrastructure, ensuring no service interruptions. This is only a temporary
             measure so you should{" "}
-            <a href="https://discord.com/invite/uYs6Esum3r">reach out to our team</a> if
-            you need more relays.
+            <a href="https://discord.gg/pokt" rel="noreferrer" target="_blank">
+              reach out to our team
+            </a>{" "}
+            if you need more relays.
           </>
         ),
       },
       {
-        question: "Which blockchains can I connect to?",
+        question: "How can I get [blockchain] added to the Portal?",
         answer: (
           <>
-            The Pocket Portal currently supports creating an endpoint for 10+ chains,
-            including Ethereum, xDAI, Binance Smart Chain, Avalanche, Fuse, and more. You
-            can find the{" "}
-            <a href="https://docs.pokt.network/home/resources/references/supported-blockchains">
-              full list here
-            </a>
-            . If you would like to discuss or help decide which networks to include next,{" "}
-            <a href="https://discord.com/invite/uYs6Esum3r">join us in Discord</a>.
-          </>
-        ),
-      },
-      {
-        question:
-          "What blockchains are available to connect to? Which are planned to come next?",
-        answer: (
-          <>
-            The Pocket Portal currently supports creating an endpoint for 10+ chains,
-            including Ethereum, Binance Smart Chain, Avalanche, Polygon, Fuse, and more.
-            You can find the{" "}
-            <a href="https://docs.pokt.network/home/resources/references/supported-blockchains">
-              the full list here
-            </a>
-            . In that list, you will see a section titled "Integrating New Relay Chains,"
-            which is where you can find the networks that are confirmed to be whitelisted
-            next. If you would like to discuss or help decide which networks are not
-            already on that list to include next, we recommend you chat with us in discord
-            and cement your perspective by creating a{" "}
-            <a href="https://forum.pokt.network/t/pip-6-2-settlers-of-new-chains/1027">
-              Pocket forum proposal
-            </a>
-            .
-          </>
-        ),
-      },
-      {
-        question: "How many endpoints can I create?",
-        answer: (
-          <>
-            The Pocket Portal currently allows any user to create up to 4 endpoints. Each
-            endpoint can be used to serve 1 blockchain. Each endpoint grants up to 1
-            million free relays per day. If you need more relays or want to stake your own
-            POKT, <a href="https://discord.com/invite/uYs6Esum3r">join us in Discord</a>{" "}
-            and let us know.
+            Pocket Network is expandable, and is continually adding support for new
+            chains. Community members can advocate for chains to be considered by{" "}
+            <a href="https://discord.gg/pokt" rel="noreferrer" target="_blank">
+              reaching out on Discord
+            </a>{" "}
+            and posting a suggestion to our team.
           </>
         ),
       },
@@ -150,9 +131,9 @@ const schema = {
     ],
     callOutBoxText: [
       {
-        title: "One click Endpoints",
-        smallText: "For any network with 1M daily relays free",
-        blueText: "10+",
+        title: "One click endpoints",
+        smallText: "For any supported network",
+        blueText: "35+",
         description: "Networks",
       },
       {
@@ -162,15 +143,15 @@ const schema = {
         description: "Nodes",
       },
       {
-        title: "Monitor your Infra",
-        smallText: "Tracking and managing your app across any chain",
+        title: "Monitor your infra",
+        smallText: "Managing your app across any chain",
         blueText: "6B+",
         description: "Weekly relays",
       },
     ],
     title: "Your gateway to Web3 done right.",
     subtitle:
-      "Deploy within minutes to decentralized infrastructure that can service dozens of chains. The Portal acts as your one-stop-shop to manage, make changes, and monitor your application's connection to blockchain data.",
+      "Deploy within minutes to decentralized infrastructure that can service dozens of chains. The Portal acts as your one-stop-shop to manage, and monitor your application's connection to blockchain data.",
     welcomeText: "Welcome to Web3 done the right way.",
     getStarted: "Get Started",
     connect: "Connect to these networks.",
@@ -219,11 +200,11 @@ const schema = {
     list: {
       successDelta: {
         label: "Success Delta",
-        help: "Percentage of success among the total request attempted to perform by the application on the last 24h.",
+        help: "Percentage of success among the total requests attempted by the application during a 24hr period.",
       },
       errorRate: {
         label: "Error Rate",
-        help: "Percentage of error among the total request attempted to perform by the application.",
+        help: "Percentage of errors among the total request attempted by the application during a 24hr period.",
       },
       totalRequests: {
         label: "Total Requests",
@@ -239,11 +220,11 @@ const schema = {
       },
       dailyRelays: {
         label: "Daily Relays",
-        help: "Total number of request sent during the current day.",
+        help: "Total number of requests sent during the current 24hr period.",
       },
       maxRelays: {
         label: "Max Relays",
-        help: "Maxium number of request this application can send during a single day.",
+        help: "Maximum number of requests this application can send during a 24hr period.",
       },
     },
   },
@@ -327,7 +308,7 @@ const schema = {
     },
   },
   AppPlanDetails: {
-    relayLimit: "Relays Limit",
+    relayLimit: "Relay Limit",
     relaysPerDay: "relays per day",
     currentPlan: "Current Plan",
     currentPlanToolTip: "This is the current plan for this specific application.",
@@ -343,8 +324,10 @@ const schema = {
   ContactSalesView: {
     title: "We have Enterprise solutions for your needs",
     description:
-      "Give us some basic information of your request and our solutions team will reach out soon to find the best way of service your application.",
+      "Give us some basic information and our solutions team will reach out soon.",
     formSubmitted: "Form Submitted",
+    formSubmittedDescription:
+      "Your form has been successfully submitted. We will be in touch!",
     done: "Done",
     formSubmissionFailed: "Form Submission Failed",
   },
@@ -369,15 +352,15 @@ const schema = {
     },
     chains: {
       label: "Protocol/Chains of interest",
-      placeholder: "I'm interested in chain...",
+      placeholder: "I'm interested in...",
     },
     relays: {
-      label: "Relay Needs",
-      placeholder: "How many daily relays your application request",
+      label: "Daily Relay Needs",
+      placeholder: "Approximately how many daily relays does your app need?",
     },
     tellUsMore: {
       label: "Tell us more about what you are building",
-      placeholder: "I'm building a Chain...",
+      placeholder: "I'm building...",
     },
   },
   CalculateYourPricing: {
@@ -411,8 +394,8 @@ const schema = {
       methods: "Whitelist Methods",
     },
     secretSwitchAria: "Private key required",
-    userAgentPlaceholder: "Type user agent here",
-    userAgentAria: "Add user agents to white list",
+    userAgentPlaceholder: "Type user-agent here",
+    userAgentAria: "Add user-agents to white list",
     defaultSelectChainText: "Select Chain",
     chainsDropdownAria: "Select a chain to add to white list",
     OriginPlaceholder: "Type origin here",
@@ -423,15 +406,18 @@ const schema = {
     methodAria: "Add method selections to white list",
     methodError: "You must select a chain and have a value to add to methods whitelist.",
     secretKeyText:
-      "To maximize the security of your application, you should activate the private secret key for all requests and enable the use of whitelist user agents and origins.",
+      "To maximize the security of your application, you should activate the private secret key for all requests and enable the use of whitelisted user-agents and origins.",
   },
   stopRemoveApp: {
-    stopSubscriptionTitle: "Cancel subscription",
-    removeApp: "Remove Application",
-    removeAppTitle: "You're about to remove this application!",
+    stopSubscriptionTitle: "Stop Subscription",
+    removeApp: "Delete Application",
+    removeAppTitle: "Do you want to delete this application?",
+    removeAppDescription:
+      "If you delete this application, the data will no longer be accessible in the portal. Historical will be available in the explorer.",
     planDowngrade:
-      "Your plan will be canceled, but is still available until the end of your billing period.",
-    planRenew: "If you change your mind, you can renew your subscription.",
+      "Your plan will be changed to 'Always Free' effective immediatly, and you will be invoiced at the end of your billing period.",
+    planRenew:
+      "If you change your mind, you can renew your subscription until the end of your billing period.",
     appId: "App ID:",
   },
 }

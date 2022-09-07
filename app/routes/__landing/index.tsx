@@ -1,9 +1,9 @@
+import { Grid } from "@pokt-foundation/pocket-blocks"
 import { LinksFunction } from "@remix-run/node"
 import { Form, useLocation, useSearchParams } from "@remix-run/react"
 import { useEffect, useState } from "react"
 import { CallOutBox, links as CallOutBoxLinks } from "../../components/shared/CallOutBox"
 import { Container } from "~/components/shared/Container"
-import { Grid } from "~/components/shared/Grid"
 import Modal, { links as ModalLinks } from "~/components/shared/Modal"
 import { useTranslate } from "~/context/TranslateContext"
 import styles from "~/styles/landing.css"
@@ -85,7 +85,7 @@ export default function Index() {
         onClose={() => setShowExpiredModal(false)}
       >
         <div>
-          <p>Your user session has expired, please try logging in again.</p>
+          <p>Your user session has expired. Please try logging in again.</p>
         </div>
       </Modal>
     </>

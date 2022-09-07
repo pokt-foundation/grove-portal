@@ -14,13 +14,12 @@ import AppRequestsRateCard, {
   links as AppRequestsRateCardLinks,
 } from "~/components/application/AppRequestsRateCard"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
-import {
-  EndpointRpcError,
-  getLBErrorMetrics,
-  getLBOriginClassification,
-} from "~/models/portal.server"
 import styles from "~/styles/dashboard.apps.$appId.requests.css"
+import { ErrorMetric, getErrorMetrics } from "~/models/errormetrics/errormetrics.server"
+import { getLBOriginClassification } from "~/models/portal.server"
+import { initPortalClient } from "~/models/portal/portal.server"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
+import { requireUser } from "~/utils/session.server"
 
 export const meta: MetaFunction = () => {
   return {
@@ -42,23 +41,31 @@ export const links = () => {
 
 export type AppIdRequestsLoaderData = {
   originClassification: UserLBOriginBucket[] | null
-  errorMetrics: EndpointRpcError[] | null
+  errorMetrics: ErrorMetric[] | null
 }
 
 export const loader: LoaderFunction = async ({ request, params, context }) => {
   invariant(params.appId, "app id not found")
+  const user = await requireUser(request)
+  const portal = initPortalClient(user.accessToken)
 
   let originClassification = null
   let errorMetrics = null
 
   try {
-    const originResponse = await getLBOriginClassification(params.appId, request)
-    originClassification = originResponse.origin_classification
-    errorMetrics = await getLBErrorMetrics(params.appId, request)
-  } catch (error) {}
+    const { endpoint } = await portal.endpoint({
+      endpointID: params.appId,
+    })
 
-  // const originClassification = await getLBOriginClassification(params.appId, request)
-  // const errorMetrics = await getLBErrorMetrics(params.appId, request)
+    const publicKeys = endpoint.apps?.map((app) => app.publicKey)
+    if (!publicKeys) {
+      throw new Error("no public keys")
+    }
+
+    errorMetrics = await getErrorMetrics(publicKeys)
+    // const originResponse = await getLBOriginClassification(params.appId, request)
+    // originClassification = originResponse.origin_classification
+  } catch (error) {}
 
   return json<AppIdRequestsLoaderData>(
     {
@@ -103,18 +110,9 @@ export default function AppIdRequests() {
           />
         </section>
       )}
-      {errorMetrics && (
-        <section>
-          <AppRequestsErrorsCard errorMetrics={errorMetrics} />
-        </section>
-      )}
+      <section>
+        <AppRequestsErrorsCard errorMetrics={errorMetrics} />
+      </section>
     </>
   )
 }
-
-// export default function AppIdRequests() {
-//   useEffect(() => {
-//     trackEvent(AmplitudeEvents.RequestDetailsView)
-//   }, [])
-//   return <></>
-// }

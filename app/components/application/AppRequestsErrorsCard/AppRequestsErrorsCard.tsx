@@ -1,28 +1,37 @@
+import { Group, Table as PoktTable } from "@pokt-foundation/pocket-blocks"
 import { IconClock } from "@pokt-foundation/ui"
 import { useMemo } from "react"
 import styles from "./styles.css"
+import Card, { links as CardLinks } from "~/components/shared/Card"
 import CopyTextIcon, {
   links as CopyTextIconLinks,
 } from "~/components/shared/CopyTextIcon"
-import Group from "~/components/shared/Group"
 import Table, { links as TableLinks } from "~/components/shared/Table"
 import Tooltip from "~/components/shared/Tooltip"
 import { useTranslate } from "~/context/TranslateContext"
-import { EndpointRpcError } from "~/models/portal.server"
+import { ErrorMetric } from "~/models/errormetrics/errormetrics.server"
 
 /* c8 ignore start */
 export const links = () => {
-  return [...TableLinks(), ...CopyTextIconLinks(), { rel: "stylesheet", href: styles }]
+  return [
+    ...TableLinks(),
+    ...CopyTextIconLinks(),
+    ...CardLinks(),
+    { rel: "stylesheet", href: styles },
+  ]
 }
 /* c8 ignore stop */
 
 interface RequestsErrorsCardProps {
-  errorMetrics: EndpointRpcError[]
+  errorMetrics: ErrorMetric[] | null
 }
 
 export default function AppRequestsErrorsCard({ errorMetrics }: RequestsErrorsCardProps) {
   const { t } = useTranslate()
   const tableData = useMemo(() => {
+    if (!errorMetrics) {
+      return null
+    }
     return errorMetrics
       .map((error, index) => {
         const date = new Date(error.timestamp)
@@ -72,15 +81,37 @@ export default function AppRequestsErrorsCard({ errorMetrics }: RequestsErrorsCa
 
   return (
     <div className="pokt-app-requests-by-origin">
-      <Table
-        search
-        columns={t.AppRequestsErrorsCard.columns}
-        data={tableData}
-        label={t.AppRequestsErrorsCard.label}
-        paginate={{
-          perPage: 10,
-        }}
-      />
+      {tableData ? (
+        <Table
+          search
+          columns={t.AppRequestsErrorsCard.columns}
+          data={tableData}
+          label={t.AppRequestsErrorsCard.label}
+          paginate={{
+            perPage: 5,
+          }}
+        />
+      ) : (
+        <div className="pokt-table pokt-table-empty">
+          <Card>
+            <div className="pokt-card-header">
+              <h3>{t.AppRequestsErrorsCard.label}</h3>
+            </div>
+            <div className="pokt-table-overflow">
+              <PoktTable>
+                <thead>
+                  <tr>
+                    {t.AppRequestsErrorsCard.columns.map((key) => (
+                      <th key={key as string}>{key}</th>
+                    ))}
+                  </tr>
+                </thead>
+              </PoktTable>
+              <p>Your application does not have relay data yet.</p>
+            </div>
+          </Card>
+        </div>
+      )}
     </div>
   )
 }

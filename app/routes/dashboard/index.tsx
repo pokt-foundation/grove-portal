@@ -1,4 +1,4 @@
-import { Grid } from "@mantine/core"
+import { Grid } from "@pokt-foundation/pocket-blocks"
 import { LoaderFunction, json, MetaFunction } from "@remix-run/node"
 import { useLoaderData, useTransition } from "@remix-run/react"
 import AdEconomicsForDevs, {

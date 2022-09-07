@@ -1,7 +1,7 @@
 import userEvent from "@testing-library/user-event"
 import { expect } from "vitest"
 import CalculateYourPricing from "./CalculateYourPricing"
-import { render, screen, waitFor, fireEvent } from "test/helpers"
+import { render, screen, waitFor } from "test/helpers"
 
 const price = 0.000779472213
 

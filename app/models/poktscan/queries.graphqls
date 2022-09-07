@@ -1,4 +1,4 @@
-query getRelaysAndPoktPerformance {
+query getHighestBlock {
   highestBlock {
     item {
       height

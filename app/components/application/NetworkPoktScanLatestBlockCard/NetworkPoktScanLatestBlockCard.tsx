@@ -6,7 +6,7 @@ import CardList, {
   links as CardListLinks,
 } from "~/components/shared/CardList"
 import PoweredBy, { links as PoweredByLinks } from "~/components/shared/PoweredBy"
-import { GetRelaysAndPoktPerformanceQuery } from "~/models/poktscan/sdk"
+import { GetHighestBlockQuery } from "~/models/poktscan/sdk"
 
 /* c8 ignore start */
 export const links = () => {
@@ -20,7 +20,7 @@ export const links = () => {
 /* c8 ignore stop */
 
 interface LatestBlockProps {
-  latestBlock: GetRelaysAndPoktPerformanceQuery
+  latestBlock: GetHighestBlockQuery
 }
 
 function appendZeroToTime(time: string) {

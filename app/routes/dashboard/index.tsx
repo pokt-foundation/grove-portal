@@ -30,10 +30,10 @@ import UsageChartCard, {
 } from "~/components/application/UsageChartCard"
 import Loader, { links as LoaderLinks } from "~/components/shared/Loader"
 import Table, { links as TableLinks } from "~/components/shared/Table"
-import { initIndexerClient } from "~/models/indexer/indexer.server"
+// import { initIndexerClient } from "~/models/indexer/indexer.server"
 import { Block, Order } from "~/models/indexer/sdk"
 import { initPoktScanClient } from "~/models/poktscan/poktscan.server"
-import { GetRelaysAndPoktPerformanceQuery } from "~/models/poktscan/sdk"
+import { GetHighestBlockQuery } from "~/models/poktscan/sdk"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { Blockchain } from "~/models/portal/sdk"
 import {
@@ -85,7 +85,7 @@ type LoaderData = {
   dailyNetworkRelays: RelayMetric
   weeklyNetworkRelays: RelayMetric
   monthlyNetworkRelays: RelayMetric
-  poktscanLatestBlock: GetRelaysAndPoktPerformanceQuery
+  poktscanLatestBlock: GetHighestBlockQuery
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -122,7 +122,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   // }
 
   const poktscan = initPoktScanClient()
-  const poktscanLatestBlock = await poktscan.getRelaysAndPoktPerformance()
+  const poktscanLatestBlock = await poktscan.getHighestBlock()
 
   const dailyNetworkRelaysPerWeek = await getRelaysPerWeek("network")
   // api auto adjusts to/from to begining and end of each day so putting the same time here gives us back one full day

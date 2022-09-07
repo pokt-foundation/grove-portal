@@ -29,9 +29,9 @@ type Route = {
 }
 
 export const Nav = ({ routes, dropdown = false, appId }: NavProps) => {
-  const [isMobile, setIsMobile] = useState<boolean | null>(null)
   const [mobilePageSelect, setMobilePageSelect] = useState<string | null>(null)
   const { width } = useViewportSize()
+  const isMobile = width < 640
 
   const reformatRoute = (routes: Route[]) => {
     let routeTable = []
@@ -41,14 +41,6 @@ export const Nav = ({ routes, dropdown = false, appId }: NavProps) => {
     }
     return routeTable
   }
-
-  useEffect(() => {
-    if (width >= 640) {
-      setIsMobile(false)
-    } else {
-      setIsMobile(true)
-    }
-  }, [width])
 
   useEffect(() => {
     if (mobilePageSelect !== null) {
@@ -77,7 +69,7 @@ export const Nav = ({ routes, dropdown = false, appId }: NavProps) => {
           />
         </div>
       )}
-      {isMobile === false && (
+      {!isMobile && (
         <ul>
           {routes.map((route) => {
             const Icon = route.icon
@@ -110,7 +102,6 @@ export const Nav = ({ routes, dropdown = false, appId }: NavProps) => {
           })}
         </ul>
       )}
-      {isMobile === null && <div className="nav-space"></div>}
     </nav>
   )
 }

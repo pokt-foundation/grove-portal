@@ -49,8 +49,3 @@
 .pokt-nav-dropdown > div > div svg {
   color: var(--color-white-main) !important;
 }
-
-.pokt-nav .nav-space {
-  min-height: 40px;
-  max-height: 40px;
-}

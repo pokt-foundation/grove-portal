@@ -33,18 +33,9 @@ type HeaderProps = {
 
 export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) => {
   const [isActive, setIsActive] = useState(false)
-  const [isMobile, setIsMobile] = useState(false)
   const logoutFormRef = useRef<HTMLFormElement>(null)
   const { width } = useViewportSize()
-
-  useEffect(() => {
-    if (width >= 640) {
-      setIsMobile(false)
-      setIsActive(false)
-    } else {
-      setIsMobile(true)
-    }
-  }, [width])
+  const isMobile = width < 640
 
   const routes: Route[] = useMemo(() => {
     const userRoutes = [

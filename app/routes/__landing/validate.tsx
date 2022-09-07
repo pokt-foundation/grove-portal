@@ -13,7 +13,7 @@ export default function ValidateEmail() {
     <div className="pokt-validate">
       <Container mt={72} size="lg">
         <Grid grow align="center" gutter="lg" justify="center">
-          <Grid.Col sm={7} xs={12} className="pokt-validate__content">
+          <Grid.Col className="pokt-validate__content" sm={7} xs={12}>
             <Box className="pokt-validate__title">
               <Title css={{ fontWeight: "$regular" }} order={1}>
                 Email Verification{" "}
@@ -36,14 +36,14 @@ export default function ValidateEmail() {
 
             <Box className="pokt-validate__button">
               <Form action="/api/auth/auth0" method="post">
-                <Button type="submit" size="md">
+                <Button size="md" type="submit">
                   Login
                 </Button>
               </Form>
             </Box>
           </Grid.Col>
 
-          <Grid.Col sm={5} xs={12} className="pokt-validate__logo">
+          <Grid.Col className="pokt-validate__logo" sm={5} xs={12}>
             <img alt="Pocket Network Portal icon" src="/portal_logo.svg" />
           </Grid.Col>
         </Grid>

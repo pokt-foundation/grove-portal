@@ -4,6 +4,8 @@ import Advertisement, {
   links as AdvertisementLinks,
 } from "~/components/shared/Advertisement"
 
+const ECONOMICS_URL = "https://docs.pokt.network/learn/economics/apps/"
+
 /* c8 ignore start */
 export const links = () => {
   return [...AdvertisementLinks()]
@@ -15,11 +17,7 @@ export default function AdEconomicsForDevs() {
   return (
     <Advertisement
       action={
-        <Button
-          className="pokt-ad-action"
-          component="a"
-          href="https://medium.com/pocket-network/pocket-economics-for-app-developers-487a6ce290c2"
-        >
+        <Button className="pokt-ad-action" component="a" href={ECONOMICS_URL}>
           Read More
         </Button>
       }

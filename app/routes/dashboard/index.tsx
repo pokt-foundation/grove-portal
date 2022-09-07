@@ -10,9 +10,9 @@ import ChainWithImage, {
 import FeedbackCard, {
   links as FeedbackCardLinks,
 } from "~/components/application/FeedbackCard"
-import NetworkLatestBlockCard, {
-  links as NetworkLatestBlockCardLinks,
-} from "~/components/application/NetworkLatestBlockCard"
+import NetworkPoktScanLatestBlockCard, {
+  links as NetworkPoktScanLatestBlockCardLinks,
+} from "~/components/application/NetworkPoktScanLatestBlockCard"
 import NetworkRelayPerformanceCard, {
   links as NetworkRelayPerformanceCardLinks,
 } from "~/components/application/NetworkRelayPerformanceCard"
@@ -27,8 +27,9 @@ import UsageChartCard, {
 } from "~/components/application/UsageChartCard"
 import Loader, { links as LoaderLinks } from "~/components/shared/Loader"
 import Table, { links as TableLinks } from "~/components/shared/Table"
-import { initIndexerClient } from "~/models/indexer/indexer.server"
 import { Block, Order } from "~/models/indexer/sdk"
+import { initPoktScanClient } from "~/models/poktscan/poktscan.server"
+import { GetHighestBlockQuery } from "~/models/poktscan/sdk"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { Blockchain } from "~/models/portal/sdk"
 import {
@@ -44,7 +45,8 @@ import { requireUser } from "~/utils/session.server"
 export const links = () => {
   return [
     ...NetworkSummaryCardLinks(),
-    ...NetworkLatestBlockCardLinks(),
+    ...NetworkPoktScanLatestBlockCardLinks(),
+    // ...NetworkLatestBlockCardLinks(),
     ...NetworkSuccessRateCardLinks(),
     ...NetworkRelayPerformanceCardLinks(),
     ...UsageChartCardLinks(),
@@ -74,11 +76,11 @@ export type LatestBlockType = Block & {
 
 type LoaderData = {
   blockchains: Blockchain[] | null
-  latestBlock: LatestBlockType | null
   dailyNetworkRelaysPerWeek: RelayMetric[]
   dailyNetworkRelays: RelayMetric
   weeklyNetworkRelays: RelayMetric
   monthlyNetworkRelays: RelayMetric
+  poktscanLatestBlock: GetHighestBlockQuery
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -88,33 +90,10 @@ export const loader: LoaderFunction = async ({ request }) => {
     console.log(e)
   })
 
-  const indexer = initIndexerClient()
-  const { queryBlocks } = await indexer.queryBlocks({
-    page: 1,
-    perPage: 1,
-    order: Order.Desc,
-  })
-  let latestBlock = null
+  const poktscan = initPoktScanClient()
+  const poktscanLatestBlock = await poktscan.getHighestBlock()
 
-  if (queryBlocks?.blocks) {
-    latestBlock = queryBlocks.blocks[0]
-    const height = Number(latestBlock?.height)
-    const { queryAccounts } = await indexer.queryAccounts({ height: height })
-    const { queryApps } = await indexer.queryApps({ height: height })
-    const { queryNodes } = await indexer.queryNodes({ height: height })
-    const { queryTransactionsByHeight } = await indexer.queryTransactionsByHeight({
-      height: height,
-    })
-    latestBlock = {
-      ...latestBlock,
-      total_accounts: Number(queryAccounts?.totalCount),
-      total_apps: Number(queryApps?.totalCount),
-      total_nodes: Number(queryNodes?.totalCount),
-      total_txs: Number(queryTransactionsByHeight?.totalCount),
-    } as LatestBlockType
-  }
   const dailyNetworkRelaysPerWeek = await getRelaysPerWeek("network")
-
   // api auto adjusts to/from to begining and end of each day so putting the same time here gives us back one full day
   const today = dayjs().utc().hour(0).minute(0).second(0).millisecond(0).format()
   const week = dayjs()
@@ -144,11 +123,12 @@ export const loader: LoaderFunction = async ({ request }) => {
             (chain) => chain !== null,
           ) as Blockchain[])
         : null,
-      latestBlock,
+      // latestBlock,
       dailyNetworkRelaysPerWeek,
       dailyNetworkRelays,
       weeklyNetworkRelays,
       monthlyNetworkRelays,
+      poktscanLatestBlock,
     },
     {
       headers: {
@@ -167,7 +147,8 @@ export default function Index() {
     dailyNetworkRelays,
     monthlyNetworkRelays,
     weeklyNetworkRelays,
-    latestBlock,
+    // latestBlock,
+    poktscanLatestBlock,
   } = useLoaderData() as LoaderData
   const { state } = useTransition()
   return (
@@ -229,9 +210,9 @@ export default function Index() {
             <h3>Network Success Rate</h3>
             <NetworkSuccessRateCard relays={weeklyNetworkRelays} />
           </section>
-          {latestBlock && (
+          {poktscanLatestBlock && (
             <section>
-              <NetworkLatestBlockCard latestBlock={latestBlock} />
+              <NetworkPoktScanLatestBlockCard latestBlock={poktscanLatestBlock} />
             </section>
           )}
           <section>

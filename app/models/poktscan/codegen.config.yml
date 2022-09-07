@@ -1,0 +1,12 @@
+schema:
+  - ${POKT_SCAN_API_URL}:
+      headers:
+        Authorization: "${POKT_SCAN_API_TOKEN}"
+documents: "./app/models/poktscan/*.graphqls"
+generates:
+  ./app/models/poktscan/sdk.ts:
+    overwrite: true
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-graphql-request"

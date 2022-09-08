@@ -6,8 +6,8 @@ import HelpTooltip from "~/components/shared/HelpTooltip"
 import { useTranslate } from "~/context/TranslateContext"
 import { PayPlanType } from "~/models/portal/sdk"
 import { Stripe } from "~/models/stripe/stripe.server"
-import { getPlanName, isFreePlan } from "~/utils/utils"
 import { commify } from "~/utils/formattingUtils"
+import { getPlanName, isFreePlan } from "~/utils/utils"
 
 /* c8 ignore next */
 export const links = () => {

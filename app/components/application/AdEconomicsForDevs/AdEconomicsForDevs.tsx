@@ -17,7 +17,13 @@ export default function AdEconomicsForDevs() {
   return (
     <Advertisement
       action={
-        <Button className="pokt-ad-action" component="a" href={ECONOMICS_URL}>
+        <Button
+          className="pokt-ad-action"
+          component="a"
+          href={ECONOMICS_URL}
+          rel="noreferrer"
+          target="_blank"
+        >
           Read More
         </Button>
       }

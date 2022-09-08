@@ -185,7 +185,7 @@ interface TranslationData {
       chainAccess: string
       appsLimit: string
       overviewHeader: string
-      overviewDescription: string
+      enterpriseSolutions: string
     }
     planDetails: {
       [PayPlanType.PayAsYouGoV0]: {
@@ -214,6 +214,10 @@ interface TranslationData {
         relayLimit: string
         appsLimit: string
         chainAccess: string
+      }
+      enterpriseSolutions: {
+        description: string
+        contactUS: string
       }
     }
   }

@@ -260,8 +260,7 @@ const schema = {
       chainAccess: "Chain Access -fr",
       appsLimit: "Apps Limit -fr",
       overviewHeader: "Flexible plans that grow with your app -fr",
-      overviewDescription:
-        "Scalable plans because your needs change as yous app grows. All plans access to Pocket Network multichain infrastructure with our chain! -fr",
+      enterpriseSolutions: "We have Enterprise Solutions for you -fr",
     },
     planDetails: {
       [PayPlanType.PayAsYouGoV0]: {
@@ -293,6 +292,10 @@ const schema = {
         relayLimit: "250k per app per day -fr",
         appsLimit: "Up to 2 Applicaitions -fr",
         chainAccess: "No limit -fr",
+      },
+      enterpriseSolutions: {
+        description: "Custom plans for large scale apps. -fr",
+        contactUS: "Contact Us -fr",
       },
     },
   },

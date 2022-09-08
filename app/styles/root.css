@@ -18,6 +18,8 @@
   --zindex-base: 1;
   --zindex-nav: 100;
   --zindex-overlay: 200;
+
+  --radii-md: 12px;
 }
 
 a {

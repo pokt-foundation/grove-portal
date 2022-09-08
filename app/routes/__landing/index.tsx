@@ -1,4 +1,4 @@
-import { Grid } from "@pokt-foundation/pocket-blocks"
+import { Grid, Link } from "@pokt-foundation/pocket-blocks"
 import { Container } from "@pokt-foundation/pocket-blocks"
 import { LinksFunction } from "@remix-run/node"
 import { Form, useLocation, useSearchParams } from "@remix-run/react"
@@ -56,11 +56,14 @@ export default function Index() {
           <Grid.Col>
             <p className="text">
               {landing.connect}{" "}
-              <Form action="/api/auth/auth0" className="inline-form" method="post">
-                <button className="link" name="signup" type="submit" value="true">
-                  {landing.whosNext}
-                </button>
-              </Form>
+              <a
+                className="link"
+                href="https://app.dework.xyz/i/4Hc9nkCtWs5Vgbx6pddZNl"
+                rel="noreferrer"
+                target="_blank"
+              >
+                {landing.whosNext}
+              </a>
             </p>
           </Grid.Col>
           <div className="logo-box">

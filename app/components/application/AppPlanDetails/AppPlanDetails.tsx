@@ -7,6 +7,7 @@ import { useTranslate } from "~/context/TranslateContext"
 import { PayPlanType } from "~/models/portal/sdk"
 import { Stripe } from "~/models/stripe/stripe.server"
 import { getPlanName, isFreePlan } from "~/utils/utils"
+import { commify } from "~/utils/formattingUtils"
 
 /* c8 ignore next */
 export const links = () => {
@@ -39,7 +40,7 @@ export default function AppPlanDetails({
             {t.AppPlanDetails.relayLimit}
           </Title>
           <div>
-            <Text>{dailyLimit !== 0 ? dailyLimit : "Unlimited"}</Text>
+            <Text>{dailyLimit !== 0 ? commify(dailyLimit) : "Unlimited"}</Text>
             <Text className="smallText">{t.AppPlanDetails.relaysPerDay}</Text>
           </div>
         </div>

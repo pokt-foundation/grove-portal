@@ -1,0 +1,16 @@
+query getHighestBlock {
+  highestBlock {
+    item {
+      height
+      time
+      producer
+      took
+      total_nodes
+      total_apps
+      total_accounts
+      total_txs
+      total_relays_completed
+    }
+    validatorThreshold
+  }
+}

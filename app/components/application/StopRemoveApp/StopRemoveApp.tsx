@@ -1,5 +1,4 @@
-import { Group } from "@mantine/core"
-import { Button, Text } from "@pokt-foundation/pocket-blocks"
+import { Button, Group, Text } from "@pokt-foundation/pocket-blocks"
 import { Form, Link, useFetcher, useLocation } from "@remix-run/react"
 import { useEffect, useState } from "react"
 import styles from "./styles.css"
@@ -7,6 +6,7 @@ import Modal, { links as ModalLinks } from "~/components/shared/Modal"
 import { useTranslate } from "~/context/TranslateContext"
 import { endpoint } from "~/models/portal/portal.data"
 import { PayPlanType } from "~/models/portal/sdk"
+import { Stripe } from "~/models/stripe/stripe.server"
 import { StripeDeleteActionData } from "~/routes/api/stripe/subscription"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { isPaidPlan } from "~/utils/utils"
@@ -19,9 +19,14 @@ export const links = () => {
 interface StopRemoveAppProps {
   appId: string
   planType: PayPlanType
+  subscription?: Stripe.Subscription
 }
 
-export default function StopRemoveApp({ appId, planType }: StopRemoveAppProps) {
+export default function StopRemoveApp({
+  appId,
+  planType,
+  subscription,
+}: StopRemoveAppProps) {
   const { t } = useTranslate()
   const [showStopModal, setShowStopModal] = useState(false)
   const [removeAppOpened, setRemoveAppOpened] = useState(false)
@@ -43,7 +48,7 @@ export default function StopRemoveApp({ appId, planType }: StopRemoveAppProps) {
 
   return (
     <>
-      {isPaidPlan(planType) ? (
+      {isPaidPlan(planType) && subscription ? (
         <>
           <Button fullWidth variant="outline" onClick={() => setShowStopModal(true)}>
             <img

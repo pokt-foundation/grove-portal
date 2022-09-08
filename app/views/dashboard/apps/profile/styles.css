@@ -21,3 +21,19 @@
 .pokt-network-user-profile input:focus {
   border: 1px solid var(--color-white-light);
 }
+
+.pokt-network-user-profile .change-password-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pokt-network-user-profile .change-password-container button {
+  border-color: var(--color-white-light);
+  height: 48px;
+  width: 220px;
+}
+
+.pokt-network-user-profile .change-password-container h3 {
+  margin: 0;
+}

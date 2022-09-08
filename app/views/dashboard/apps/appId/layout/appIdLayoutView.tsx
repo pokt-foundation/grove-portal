@@ -102,6 +102,7 @@ export default function AppIdLayoutView({
   useEffect(() => {
     if (
       flags.STRIPE_PAYMENT === "true" &&
+      subscription &&
       endpoint &&
       endpoint.appLimits.planType === PayPlanType.PayAsYouGoV0 &&
       !routes.filter((route) => route.to === "plan")[0]
@@ -122,7 +123,7 @@ export default function AppIdLayoutView({
     ) {
       setRoutes((curr) => [...curr.filter((route) => route.to !== "plan")])
     }
-  }, [endpoint, t, routes, flags.STRIPE_PAYMENT])
+  }, [endpoint, t, routes, flags.STRIPE_PAYMENT, subscription])
 
   return (
     <div className="pokt-appid-layout-view">
@@ -170,6 +171,7 @@ export default function AppIdLayoutView({
                 <StopRemoveApp
                   appId={endpoint.id}
                   planType={endpoint.appLimits.planType}
+                  subscription={subscription}
                 />
               </section>
             </>

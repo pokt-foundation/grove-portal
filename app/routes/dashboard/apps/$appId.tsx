@@ -1,4 +1,10 @@
-import { LoaderFunction, MetaFunction, json, ActionFunction } from "@remix-run/node"
+import {
+  LoaderFunction,
+  MetaFunction,
+  json,
+  ActionFunction,
+  redirect,
+} from "@remix-run/node"
 import { useActionData, useCatch, useLoaderData, useSearchParams } from "@remix-run/react"
 import invariant from "tiny-invariant"
 import { initPortalClient } from "~/models/portal/portal.server"
@@ -61,9 +67,21 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     } catch (e) {}
   }
 
-  const { endpoint } = await portal.endpoint({
-    endpointID: params.appId,
-  })
+  let endpointError = false
+
+  const endpointRes = await portal
+    .endpoint({
+      endpointID: params.appId,
+    })
+    .catch((error) => {
+      endpointError = true
+    })
+
+  if (endpointError) {
+    return redirect("/dashboard/apps")
+  }
+
+  const endpoint = endpointRes?.endpoint
   invariant(endpoint, "app id not found")
 
   const subscription = await getSubscription(

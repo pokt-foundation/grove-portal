@@ -1,3 +1,4 @@
+import { Link } from "@remix-run/react"
 import { PayPlanType } from "~/models/portal/sdk"
 import { FREE_TIER_MAX_RELAYS } from "~/utils/pocketUtils"
 
@@ -406,11 +407,34 @@ const schema = {
     removeApp: "Remove Application -fr",
     removeAppTitle: "You're about to remove this application! -fr",
     removeAppDescription:
-      "If you delete this application, the data will no longer be accessible in the portal. Historical will be available in the explorer. -fr",
+      "If you delete this application, the data will no longer be accessible in the portal. Historical data will be available in the explorer. -fr",
     planDowngrade:
       "Your plan will be canceled, but is still available until the end of your billing period. -fr",
     appId: "App ID: -fr",
+    name: "Name: -fr",
     planRenew: "If you change your mind, you can renew your subscription. -fr",
+  },
+  LegacyBannerCard: {
+    title: "Free Tier is about to change -fr",
+    body: [
+      "On September 21st our unlimited free tier plan is coming to an end. All Free-tier applications will be rate limited at 250K relays per day. -fr",
+      "As an early customer, we've got you covered. You will be grandfathered into a legacy free tier plan for a limited time which will grant your app uniterupted service. -fr",
+      <>
+        Please view our
+        <Link className="pokt-link" to="/faq">
+          {" "}
+          FAQs{" "}
+        </Link>
+        for more information and
+        <Link className="pokt-link" to="/dashboard/contact-sales">
+          {" "}
+          contact us{" "}
+        </Link>
+        with any questions. -fr
+      </>,
+    ],
+    showButtonText: "Minimize -fr",
+    hideButtonText: "Learn More -fr",
   },
 }
 

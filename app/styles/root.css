@@ -60,3 +60,9 @@ h3 {
   margin-top: 0;
   margin-bottom: 24px;
 }
+
+.pokt-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}

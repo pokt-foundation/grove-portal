@@ -26,9 +26,7 @@ export default function AppRadioCards({
   setRadio,
   currentRadio,
 }: AppRadioCardsProps) {
-  const {
-    t: { AppPlansOverview },
-  } = useTranslate()
+  const { t } = useTranslate()
 
   return (
     <Grid align="center" className="radio-card-grid">
@@ -50,7 +48,9 @@ export default function AppRadioCards({
                 name="app-subscription"
                 value={radio.value}
               />
-              <Text>{radio.priceText}</Text>
+              <Text>
+                {radio.active === "true" ? radio.priceText : t.common.unavailable}
+              </Text>
             </div>
             <Text>{radio.cardDescription}</Text>
           </div>

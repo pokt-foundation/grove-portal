@@ -25,6 +25,7 @@ interface TranslationData {
     close: string
     goBack: string
     cancel: string
+    unavailable: string
   }
   search: {
     label: string

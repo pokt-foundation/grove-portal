@@ -124,7 +124,9 @@ export default function CreateApp() {
   const { price } = useLoaderData() as LoaderData
   const transition = useTransition()
   const action = useActionData() as ActionData
-  const [radioSelectedValue, setRadioSelectedValue] = useState(PayPlanType.FreetierV0)
+  const [radioSelectedValue, setRadioSelectedValue] = useState(
+    flags.STRIPE_PAYMENT ? PayPlanType.PayAsYouGoV0 : PayPlanType.FreetierV0,
+  )
   const [name, setName] = useState("")
   const [referral, setReferral] = useState("")
 

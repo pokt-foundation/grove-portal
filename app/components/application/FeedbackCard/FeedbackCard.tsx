@@ -33,8 +33,8 @@ export default function FeedbackBox({ className }: { className?: string }) {
             </div>
           </div>
           <a
-            className="discord-icon"
             aria-label="Click to share feedback with the Pokt Team in discord"
+            className="discord-icon"
             href="https://discord.gg/pokt"
           >
             <IconDiscord />

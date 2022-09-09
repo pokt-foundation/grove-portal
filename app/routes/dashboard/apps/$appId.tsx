@@ -1,5 +1,11 @@
 import { LoaderFunction, MetaFunction, json, ActionFunction } from "@remix-run/node"
-import { useActionData, useCatch, useLoaderData, useSearchParams } from "@remix-run/react"
+import {
+  useActionData,
+  useCatch,
+  useFetcher,
+  useLoaderData,
+  useSearchParams,
+} from "@remix-run/react"
 import invariant from "tiny-invariant"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { BlockchainsQuery, EndpointQuery, PayPlanType } from "~/models/portal/sdk"
@@ -94,12 +100,14 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 export default function AppIdLayout() {
   const { endpoint, subscription } = useLoaderData() as AppIdLoaderData
   const [searchParams] = useSearchParams()
+  const updatePlanFetcher = useFetcher()
 
   return (
     <AppIdLayoutView
       endpoint={endpoint}
       searchParams={searchParams}
       subscription={subscription}
+      updatePlanFetcher={updatePlanFetcher}
     />
   )
 }

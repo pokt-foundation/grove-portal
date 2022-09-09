@@ -1,5 +1,5 @@
 import { CaretLeft, Grid } from "@pokt-foundation/pocket-blocks"
-import { Outlet } from "@remix-run/react"
+import { Outlet, useFetcher } from "@remix-run/react"
 import { useEffect, useState } from "react"
 import styles from "./styles.css"
 import AdEconomicsForDevs, {
@@ -47,12 +47,14 @@ type AppIdLayoutViewProps = {
   endpoint: EndpointQuery["endpoint"] | null
   searchParams: URLSearchParams
   subscription: Stripe.Subscription | undefined
+  updatePlanFetcher: ReturnType<typeof useFetcher>
 }
 
 export default function AppIdLayoutView({
   endpoint,
   searchParams,
   subscription,
+  updatePlanFetcher,
 }: AppIdLayoutViewProps) {
   const { t } = useTranslate()
   const { flags } = useFeatureFlags()
@@ -92,12 +94,33 @@ export default function AppIdLayoutView({
     const cancelError = searchParams.get("cancelError")
     if (!success) return
     if (success === "true") {
+      const path = window.location.pathname
+      window.history.replaceState({}, document.title, path)
+
+      // update plan type to paid on success
+      if (
+        endpoint &&
+        updatePlanFetcher.state !== "submitting" &&
+        updatePlanFetcher.state !== "loading"
+      ) {
+        updatePlanFetcher.submit(
+          {
+            id: endpoint.id,
+            type: PayPlanType.PayAsYouGoV0,
+          },
+          {
+            action: "/api/updatePlan",
+            method: "post",
+          },
+        )
+      }
       setShowSuccessModel(true)
     }
+
     if (success === "false" || cancelError === "true") {
       setShowErrorModel(true)
     }
-  }, [searchParams])
+  }, [searchParams, endpoint, updatePlanFetcher])
 
   useEffect(() => {
     if (
@@ -124,6 +147,27 @@ export default function AppIdLayoutView({
       setRoutes((curr) => [...curr.filter((route) => route.to !== "plan")])
     }
   }, [endpoint, t, routes, flags.STRIPE_PAYMENT, subscription])
+
+  useEffect(() => {
+    // update plan type to free if plan is paid and there subscription is canceled
+    if (
+      endpoint?.appLimits.planType === PayPlanType.PayAsYouGoV0 &&
+      (!subscription || subscription.cancel_at_period_end) &&
+      updatePlanFetcher.state !== "submitting" &&
+      updatePlanFetcher.state !== "loading"
+    ) {
+      updatePlanFetcher.submit(
+        {
+          id: endpoint.id,
+          type: PayPlanType.FreetierV0,
+        },
+        {
+          action: "/api/updatePlan",
+          method: "post",
+        },
+      )
+    }
+  }, [endpoint, subscription, updatePlanFetcher])
 
   return (
     <div className="pokt-appid-layout-view">

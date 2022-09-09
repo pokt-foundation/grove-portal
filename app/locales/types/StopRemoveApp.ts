@@ -5,5 +5,6 @@ export type StopRemoveApp = {
   removeAppTitle: string
   removeAppDescription: string
   appId: string
+  name: string
   planRenew: string
 }

@@ -417,12 +417,13 @@ const schema = {
     removeApp: "Delete Application",
     removeAppTitle: "Do you want to delete this application?",
     removeAppDescription:
-      "If you delete this application, the data will no longer be accessible in the portal. Historical will be available in the explorer.",
+      "If you delete this application, the data will no longer be accessible in the portal. Historical data will be available in the explorer.",
     planDowngrade:
       "Your plan will be changed to 'Always Free' effective immediatly, and you will be invoiced at the end of your billing period.",
     planRenew:
       "If you change your mind, you can renew your subscription until the end of your billing period.",
     appId: "App ID:",
+    name: "Name:",
   },
   LegacyBannerCard: {
     title: "Free Tier is about to change",

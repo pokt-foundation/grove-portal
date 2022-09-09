@@ -1,5 +1,5 @@
 import { json, LoaderFunction, MetaFunction } from "@remix-run/node"
-import { useLoaderData } from "@remix-run/react"
+import { useLoaderData, useSearchParams } from "@remix-run/react"
 import { useEffect } from "react"
 import { AllAppsLoaderData } from "../apps"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
@@ -57,6 +57,7 @@ export const Apps = () => {
   const allAppsRoute = useMatchesRoute("routes/dashboard/apps")
   const { endpoints } = allAppsRoute?.data as AllAppsLoaderData
   const { dailyNetworkRelaysPerWeek, userId } = useLoaderData() as AppsLoaderData
+  const [searchParams] = useSearchParams()
 
   useEffect(() => {
     trackEvent(AmplitudeEvents.AllAppsView)
@@ -66,6 +67,7 @@ export const Apps = () => {
     <AppsView
       dailyNetworkRelaysPerWeek={dailyNetworkRelaysPerWeek}
       endpoints={endpoints}
+      searchParams={searchParams}
       userId={userId}
     />
   )

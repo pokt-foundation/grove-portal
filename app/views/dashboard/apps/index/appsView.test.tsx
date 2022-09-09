@@ -13,6 +13,7 @@ describe("<AppsView />", () => {
       <AppsView
         dailyNetworkRelaysPerWeek={relayMetricPerWeek}
         endpoints={null}
+        searchParams={new URLSearchParams({ error: "false" })}
         userId={userId}
       />,
     )
@@ -26,6 +27,7 @@ describe("<AppsView />", () => {
       <AppsView
         dailyNetworkRelaysPerWeek={relayMetricPerWeek}
         endpoints={endpoints}
+        searchParams={new URLSearchParams({ error: "false" })}
         userId={userId}
       />,
     )
@@ -39,11 +41,28 @@ describe("<AppsView />", () => {
       <AppsView
         dailyNetworkRelaysPerWeek={relayMetricPerWeek}
         endpoints={endpoints}
+        searchParams={new URLSearchParams({ error: "false" })}
         userId={userIdGod}
       />,
     )
 
     expect(screen.getByRole("heading", { name: /applications/i })).toBeInTheDocument()
     expect(screen.getByRole("button", { name: /1/i })).toBeInTheDocument()
+  })
+  it("renders error modal", () => {
+    render(
+      <AppsView
+        dailyNetworkRelaysPerWeek={relayMetricPerWeek}
+        endpoints={endpoints}
+        searchParams={new URLSearchParams({ error: "true" })}
+        userId={userIdGod}
+      />,
+    )
+
+    expect(
+      screen.getByRole("dialog", {
+        name: /these are not the droids you are looking for./i,
+      }),
+    ).toBeInTheDocument()
   })
 })

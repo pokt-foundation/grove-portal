@@ -68,6 +68,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   }
 
   let endpointError = false
+  let endpointErrorMessage = ""
 
   const endpointRes = await portal
     .endpoint({
@@ -75,10 +76,11 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     })
     .catch((error) => {
       endpointError = true
+      endpointErrorMessage = getErrorMessage(error.response.errors[0].message)
     })
 
   if (endpointError) {
-    return redirect("/dashboard/apps")
+    return redirect(`/dashboard/apps?error=true&message=${endpointErrorMessage}`)
   }
 
   const endpoint = endpointRes?.endpoint

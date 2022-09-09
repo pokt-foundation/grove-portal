@@ -1,9 +1,9 @@
 import { Text, Radio, Grid } from "@pokt-foundation/pocket-blocks"
 import clsx from "clsx"
 import styles from "./styles.css"
+import { useFeatureFlags } from "~/context/FeatureFlagContext"
 import { useTranslate } from "~/context/TranslateContext"
 import { PayPlanType } from "~/models/portal/sdk"
-import { useFeatureFlags } from "~/context/FeatureFlagContext"
 
 /* c8 ignore next */
 export const links = () => {

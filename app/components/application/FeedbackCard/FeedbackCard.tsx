@@ -1,10 +1,11 @@
-import { IconDown, IconUp } from "@pokt-foundation/ui"
-import { useFetcher } from "@remix-run/react"
-import { useEffect, useState } from "react"
+// import { IconDown, IconUp } from "@pokt-foundation/ui"
+// import { useFetcher } from "@remix-run/react"
+// import { useEffect, useState } from "react"
 import styles from "./styles.css"
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import { useTranslate } from "~/context/TranslateContext"
-import { FeedbackActionResponse } from "~/routes/api/feedbackform"
+// import { FeedbackActionResponse } from "~/routes/api/feedbackform"
+import IconDiscord from "~/components/shared/Icons/IconDiscord"
 
 /* c8 ignore start */
 export const links = () => {
@@ -13,30 +14,30 @@ export const links = () => {
 /* c8 ignore stop */
 
 export default function FeedbackBox({ className }: { className?: string }) {
-  const fetcher = useFetcher<FeedbackActionResponse>()
-  const [open, setOpen] = useState(false)
-  const [submitted, setSubmitted] = useState(false)
-  const [location, setLocation] = useState("Unknown Portal Page")
-  const [pageTitle, setPageTitle] = useState("Unknown page Title")
+  // const fetcher = useFetcher<FeedbackActionResponse>()
+  // const [open, setOpen] = useState(false)
+  // const [submitted, setSubmitted] = useState(false)
+  // const [location, setLocation] = useState("Unknown Portal Page")
+  // const [pageTitle, setPageTitle] = useState("Unknown page Title")
   const {
     t: { common, feedback },
   } = useTranslate()
 
-  useEffect(() => {
-    setLocation(window?.location?.href)
-    setPageTitle(document?.title)
-  }, [])
+  // useEffect(() => {
+  //   setLocation(window?.location?.href)
+  //   setPageTitle(document?.title)
+  // }, [])
 
-  useEffect(() => {
-    if (fetcher.state === "submitting") {
-      setSubmitted(true)
-    }
-  }, [fetcher.state])
+  // useEffect(() => {
+  //   if (fetcher.state === "submitting") {
+  //     setSubmitted(true)
+  //   }
+  // }, [fetcher.state])
 
   return (
     <Card>
       <div className="feedback box">
-        {submitted && fetcher.type === "done" && !fetcher.data.error ? (
+        {/* {submitted && fetcher.type === "done" && !fetcher.data.error ? (
           <div className="top">
             <div className="row">
               <div className="spaceholder">
@@ -62,24 +63,27 @@ export default function FeedbackBox({ className }: { className?: string }) {
               x
             </button>
           </div>
-        ) : (
-          <>
-            <div className="top">
-              <div className="row">
-                <div className="spaceholder">
-                  <img
-                    alt={feedback.feedbackShareAltText}
-                    aria-hidden="true"
-                    className="image"
-                    src="/share-feedback.svg"
-                  />
-                </div>
-                <div>
-                  <h3 className="title">{feedback.feedbackTitle}</h3>
-                  <p className="bodytext">{feedback.feedbackSubText}</p>
-                </div>
+        ) : ( */}
+        <>
+          <div className="top">
+            <div className="row">
+              <div className="spaceholder">
+                <img
+                  alt={feedback.feedbackShareAltText}
+                  aria-hidden="true"
+                  className="image"
+                  src="/share-feedback.svg"
+                />
               </div>
-              <button
+              <div>
+                <h3 className="title">{feedback.feedbackTitle}</h3>
+                <p className="bodytext">{feedback.feedbackSubText}</p>
+              </div>
+            </div>
+            <a className="discord-icon" href="https://discord.gg/pokt">
+              <IconDiscord />
+            </a>
+            {/* <button
                 aria-label={open ? feedback.clickClose : feedback.clickOpen}
                 className="openclosebutton"
                 title={open ? feedback.clickClose : feedback.clickOpen}
@@ -88,10 +92,10 @@ export default function FeedbackBox({ className }: { className?: string }) {
                 }}
               >
                 {open ? <IconUp /> : <IconDown />}
-              </button>
-            </div>
+              </button> */}
+          </div>
 
-            <div className={`animatedBox ${open}`}>
+          {/* <div className={`animatedBox ${open}`}>
               <fetcher.Form action="/api/feedbackform" className="form" method="post">
                 <textarea
                   aria-errormessage="error"
@@ -134,9 +138,9 @@ export default function FeedbackBox({ className }: { className?: string }) {
                   {common.submit}
                 </button>
               </fetcher.Form>
-            </div>
-          </>
-        )}
+            </div> */}
+        </>
+        {/* )} */}
       </div>
     </Card>
   )

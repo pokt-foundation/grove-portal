@@ -3,6 +3,13 @@
   align-items: stretch;
 }
 
+.radio-card-grid > .order-first {
+  order: 0;
+}
+.radio-card-grid > :not(.order-first) {
+  order: 1;
+}
+
 .radio-card {
   padding: 24px;
   display: flex;

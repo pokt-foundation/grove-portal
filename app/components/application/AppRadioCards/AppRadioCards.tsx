@@ -1,7 +1,9 @@
 import { Text, Radio, Grid } from "@pokt-foundation/pocket-blocks"
 import clsx from "clsx"
 import styles from "./styles.css"
+import { useFeatureFlags } from "~/context/FeatureFlagContext"
 import { useTranslate } from "~/context/TranslateContext"
+import { PayPlanType } from "~/models/portal/sdk"
 
 /* c8 ignore next */
 export const links = () => {
@@ -27,16 +29,25 @@ export default function AppRadioCards({
   currentRadio,
 }: AppRadioCardsProps) {
   const { t } = useTranslate()
+  const { flags } = useFeatureFlags()
 
   return (
     <Grid align="center" className="radio-card-grid">
       {radioData.map((radio) => (
-        <Grid.Col key={radio.name} sm={12 / radioData.length} xs={12}>
+        <Grid.Col
+          key={radio.name}
+          className={clsx({
+            "order-first":
+              flags.STRIPE_PAYMENT && radio.value === PayPlanType.PayAsYouGoV0,
+          })}
+          sm={12 / radioData.length}
+          xs={12}
+        >
           <div
             className={clsx(
               "radio-card",
               radio.value === currentRadio ? "active" : null,
-              radio.active === "false" ? "disabled" : null,
+              { disabled: radio.active === "false" },
             )}
             onClick={() => radio.active === "true" && setRadio(radio.value)}
           >

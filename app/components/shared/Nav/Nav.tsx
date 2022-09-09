@@ -1,5 +1,7 @@
+import { Select } from "@mantine/core"
 import { NavLink } from "@remix-run/react"
-import React from "react"
+import clsx from "clsx"
+import React, { useEffect, useState } from "react"
 import styles from "./styles.css"
 // import { useTranslate } from "~/context/TranslateContext"
 // import { IconApp, IconNetwork } from "~/components/shared/Icons"
@@ -12,6 +14,8 @@ export const links = () => {
 
 type NavProps = {
   routes: Route[]
+  dropdown?: boolean
+  appId?: string
 }
 
 type Route = {
@@ -22,10 +26,46 @@ type Route = {
   external?: boolean
 }
 
-export const Nav = ({ routes }: NavProps) => {
+export const Nav = ({ routes, dropdown = false, appId }: NavProps) => {
+  const [mobilePageSelect, setMobilePageSelect] = useState<string | null>(null)
+
+  const reformatRoute = (routes: Route[]) => {
+    let routeTable = []
+    for (let i = 0; i < routes.length; i += 1) {
+      let label = routes[i].label !== undefined ? routes[i].label : "Back to all apps"
+      routeTable.push({ value: routes[i].to, label: label })
+    }
+    return routeTable
+  }
+
+  useEffect(() => {
+    if (mobilePageSelect !== null) {
+      if (mobilePageSelect === "") {
+        window.location.href = `/dashboard/apps/${appId}`
+      } else if (mobilePageSelect === "/dashboard/apps") {
+        window.location.href = mobilePageSelect
+      } else {
+        window.location.href = `/dashboard/apps/${appId}/${mobilePageSelect}`
+      }
+    }
+  }, [mobilePageSelect])
+
   return (
-    <nav className="pokt-nav">
-      <ul>
+    <nav className={clsx("pokt-nav", dropdown && "mobile")}>
+      {dropdown && (
+        <div className="mobile-navigation-dropdown">
+          <Select
+            aria-label="Application navigation"
+            className="pokt-nav-dropdown"
+            data={reformatRoute(routes)}
+            placeholder="Navigate to..."
+            onChange={(value) => {
+              setMobilePageSelect(value)
+            }}
+          />
+        </div>
+      )}
+      <ul className="menu">
         {routes.map((route) => {
           const Icon = route.icon
           return (

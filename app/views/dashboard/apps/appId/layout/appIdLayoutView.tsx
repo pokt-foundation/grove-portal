@@ -139,7 +139,7 @@ export default function AppIdLayoutView({
             <Grid.Col xs={12}>
               <div>
                 <h1 style={{ marginTop: 0 }}>{endpoint.name}</h1>
-                <Nav routes={routes} />
+                <Nav dropdown appId={endpoint.id} routes={routes} />
               </div>
             </Grid.Col>
           )}

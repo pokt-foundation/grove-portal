@@ -36,3 +36,34 @@
   width: 18px;
   height: 21px;
 }
+
+.pokt-nav.mobile {
+  margin-left: 0;
+}
+
+.pokt-nav-dropdown > div > div > input {
+  background-color: var(--color-black-main);
+  color: var(--color-white-main);
+  border-color: var(--color-white-main);
+}
+.pokt-nav-dropdown > div > div svg {
+  color: var(--color-white-main) !important;
+}
+
+.pokt-nav .nav-space {
+  min-height: 40px;
+  max-height: 40px;
+}
+
+.pokt-nav.mobile .mobile-navigation-dropdown {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .pokt-nav.mobile .mobile-navigation-dropdown {
+    display: block;
+  }
+  .pokt-nav.mobile .menu {
+    display: none;
+  }
+}

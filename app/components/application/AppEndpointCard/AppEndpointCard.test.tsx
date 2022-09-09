@@ -22,6 +22,7 @@ beforeEach(() => {
       profile: undefined,
       preferences: {
         language: "en",
+        showExpandedLegacyBanner: true,
         endpoints: {
           [endpoint.id as string]: [chain ?? "0021"],
         },

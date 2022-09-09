@@ -1,7 +1,8 @@
 import { useFetcher } from "@remix-run/react"
 import { vi, expect } from "vitest"
 import AppIdLayoutView from "./appIdLayoutView"
-import { render, screen } from "test/helpers"
+import { render, screen, userEvent } from "test/helpers"
+import t from "~/locales/en"
 import { endpoint } from "~/models/portal/portal.data"
 import { PayPlanType } from "~/models/portal/sdk"
 import { subscription } from "~/models/stripe/stripe.data"
@@ -12,6 +13,9 @@ const updatePlanFetcherMock = {
 } as unknown as ReturnType<typeof useFetcher>
 
 describe("<AppIdLayoutView />", () => {
+  beforeEach(() => {
+    vi.resetModules()
+  })
   it("renders error modal when search param 'success = false'", () => {
     render(
       <AppIdLayoutView
@@ -118,5 +122,69 @@ describe("<AppIdLayoutView />", () => {
     expect(screen.getByRole("link", { name: /security/i })).toBeInTheDocument()
     expect(screen.getByRole("link", { name: /notifications/i })).toBeInTheDocument()
     expect(screen.queryByRole("link", { name: /plan details/i })).not.toBeInTheDocument()
+  })
+  it("hides legacy banner when planType is free", () => {
+    endpoint.appLimits.planType = PayPlanType.FreetierV0
+    render(
+      <AppIdLayoutView
+        endpoint={endpoint}
+        searchParams={new URLSearchParams()}
+        subscription={subscription}
+        updatePlanFetcher={updatePlanFetcherMock}
+      />,
+    )
+
+    expect(
+      screen.queryByRole("heading", { name: t.LegacyBannerCard.title }),
+    ).not.toBeInTheDocument()
+  })
+  it("hides legacy banner when planType is paid", () => {
+    endpoint.appLimits.planType = PayPlanType.PayAsYouGoV0
+    render(
+      <AppIdLayoutView
+        endpoint={endpoint}
+        searchParams={new URLSearchParams()}
+        subscription={subscription}
+        updatePlanFetcher={updatePlanFetcherMock}
+      />,
+    )
+
+    expect(
+      screen.queryByRole("heading", { name: t.LegacyBannerCard.title }),
+    ).not.toBeInTheDocument()
+  })
+  it("shows legacy banner when planType is neither paid or free (legacy)", () => {
+    // @ts-ignore next
+    endpoint.appLimits.planType = ""
+    render(
+      <AppIdLayoutView
+        endpoint={endpoint}
+        searchParams={new URLSearchParams()}
+        subscription={subscription}
+        updatePlanFetcher={updatePlanFetcherMock}
+      />,
+    )
+
+    expect(
+      screen.getByRole("heading", { name: t.LegacyBannerCard.title }),
+    ).toBeInTheDocument()
+  })
+  it("hides legacy banner when FF is turned off and planType is neither paid or free (legacy)", () => {
+    // @ts-ignore next
+    endpoint.appLimits.planType = ""
+    ENV.FLAG_LEGACY_MESSAGING = "false"
+
+    render(
+      <AppIdLayoutView
+        endpoint={endpoint}
+        searchParams={new URLSearchParams()}
+        subscription={subscription}
+        updatePlanFetcher={updatePlanFetcherMock}
+      />,
+    )
+
+    expect(
+      screen.queryByRole("heading", { name: t.LegacyBannerCard.title }),
+    ).not.toBeInTheDocument()
   })
 })

@@ -43,15 +43,19 @@ export const PlanView = (data: AppPlanLoaderData) => {
 
   return (
     <>
-      <AppPlanOverviewCard
-        subscription={data.subscription}
-        usageRecords={data.usageRecords}
-      />
-      <AppPlanLatestInvoiceCard
-        invoice={data.invoice}
-        relaysLatestInvoice={data.relaysLatestInvoice}
-        usageRecords={data.usageRecords}
-      />
+      <section>
+        <AppPlanOverviewCard
+          subscription={data.subscription}
+          usageRecords={data.usageRecords}
+        />
+      </section>
+      <section>
+        <AppPlanLatestInvoiceCard
+          invoice={data.invoice}
+          relaysLatestInvoice={data.relaysLatestInvoice}
+          usageRecords={data.usageRecords}
+        />
+      </section>
     </>
   )
 }

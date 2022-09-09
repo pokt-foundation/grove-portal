@@ -12,7 +12,8 @@ describe("<StopRemoveApp />", () => {
   it("renders Stop Subscription button for paid plantype", () => {
     render(
       <StopRemoveApp
-        appId={"123"}
+        appId="123"
+        name="Hello World"
         planType={PayPlanType.PayAsYouGoV0}
         subscription={subscription}
       />,
@@ -29,7 +30,8 @@ describe("<StopRemoveApp />", () => {
   it("renders remove application for free tier plantype", () => {
     render(
       <StopRemoveApp
-        appId={"123"}
+        appId="123"
+        name="Hello World"
         planType={PayPlanType.FreetierV0}
         subscription={subscription}
       />,

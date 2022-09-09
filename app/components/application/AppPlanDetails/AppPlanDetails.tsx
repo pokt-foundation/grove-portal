@@ -58,11 +58,9 @@ export default function AppPlanDetails({
         </div>
         {!subscription && isFreePlan(planType) && (
           <Button
-            className={clsx(
-              "upgrade-button",
-              "pokt-button",
-              flags.STRIPE_PAYMENT === "false" ? "disabled" : null,
-            )}
+            className={clsx("upgrade-button", "pokt-button", {
+              disabled: flags.STRIPE_PAYMENT === "false",
+            })}
             component={Link}
             disabled={flags.STRIPE_PAYMENT === "false"}
             to={stripe}

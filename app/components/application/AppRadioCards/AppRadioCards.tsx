@@ -35,13 +35,17 @@ export default function AppRadioCards({
       {radioData.map((radio) => (
         <Grid.Col key={radio.name} sm={12 / radioData.length} xs={12}>
           <div
-            className={clsx("radio-card", radio.value === currentRadio ? "active" : null)}
+            className={clsx(
+              "radio-card",
+              radio.value === currentRadio ? "active" : null,
+              radio.active === "false" ? "disabled" : null,
+            )}
             onClick={() => radio.active === "true" && setRadio(radio.value)}
           >
             <div className="flexRow">
               <Radio
                 checked={radio.value === currentRadio}
-                disabled={radio.active != "true"}
+                disabled={radio.active !== "true"}
                 label={radio.name}
                 name="app-subscription"
                 value={radio.value}

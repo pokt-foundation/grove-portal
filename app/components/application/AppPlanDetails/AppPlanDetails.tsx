@@ -7,6 +7,8 @@ import { useTranslate } from "~/context/TranslateContext"
 import { PayPlanType } from "~/models/portal/sdk"
 import { Stripe } from "~/models/stripe/stripe.server"
 import { getPlanName, isFreePlan } from "~/utils/utils"
+import { useFeatureFlags } from "~/context/FeatureFlagContext"
+import clsx from "clsx"
 
 /* c8 ignore next */
 export const links = () => {
@@ -28,6 +30,7 @@ export default function AppPlanDetails({
   name,
   subscription,
 }: AppPlanDetailsProps) {
+  const { flags } = useFeatureFlags()
   const { t } = useTranslate()
   const subscriptionFetcher = useFetcher()
   const stripe = `/api/stripe/checkout-session?app-id=${id}&app-name=${name}`
@@ -54,10 +57,15 @@ export default function AppPlanDetails({
         </div>
         {!subscription && isFreePlan(planType) && (
           <Button
-            className="upgrade-button pokt-button"
+            className={clsx(
+              "upgrade-button",
+              "pokt-button",
+              flags.STRIPE_PAYMENT === "false" ? "disabled" : null,
+            )}
             component={Link}
             to={stripe}
             variant="outline"
+            disabled={flags.STRIPE_PAYMENT === "false" ? true : false}
           >
             {t.AppPlanDetails.upgrade}
           </Button>
@@ -71,6 +79,7 @@ export default function AppPlanDetails({
               className="upgrade-button pokt-button"
               type="submit"
               variant="outline"
+              disabled={flags.STRIPE_PAYMENT === "false" ? true : false}
             >
               {t.AppPlanDetails.renew}
               {/* {subscriptionFetcher.state === "submitting" && (

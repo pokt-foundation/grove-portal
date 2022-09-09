@@ -98,3 +98,9 @@
 .animatedBox.true {
   max-height: 5000px;
 }
+
+.feedback a.discord-icon {
+  display: flex;
+  align-items: center;
+  justify-items: center;
+}

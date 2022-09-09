@@ -18,7 +18,7 @@
   --zindex-base: 1;
   --zindex-nav: 100;
   --zindex-overlay: 200;
-  --sm-breakpoint: 768px;
+  --radii-md: 12px;
 }
 
 a {

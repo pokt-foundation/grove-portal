@@ -51,7 +51,6 @@ export const action: ActionFunction = async ({ request }) => {
           error: false,
           subscription: updatedSubscription,
         })
-        return redirect(`/dashboard/apps/${appId}`)
       }
     }
 
@@ -61,8 +60,5 @@ export const action: ActionFunction = async ({ request }) => {
       error: true,
       message: getErrorMessage(error),
     })
-    return redirect(
-      `/dashboard/apps/${appId}?cancelError=true&cancelMessage=${getErrorMessage(error)}`,
-    )
   }
 }

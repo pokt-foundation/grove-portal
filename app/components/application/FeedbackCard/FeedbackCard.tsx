@@ -3,9 +3,9 @@
 // import { useEffect, useState } from "react"
 import styles from "./styles.css"
 import Card, { links as CardLinks } from "~/components/shared/Card"
+import IconDiscord from "~/components/shared/Icons/IconDiscord"
 import { useTranslate } from "~/context/TranslateContext"
 // import { FeedbackActionResponse } from "~/routes/api/feedbackform"
-import IconDiscord from "~/components/shared/Icons/IconDiscord"
 
 /* c8 ignore start */
 export const links = () => {

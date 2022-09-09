@@ -54,3 +54,16 @@
   min-height: 40px;
   max-height: 40px;
 }
+
+.pokt-nav.mobile .mobile-navigation-dropdown {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .pokt-nav.mobile .mobile-navigation-dropdown {
+    display: block;
+  }
+  .pokt-nav.mobile .menu {
+    display: none;
+  }
+}

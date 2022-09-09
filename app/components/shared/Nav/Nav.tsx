@@ -1,6 +1,4 @@
 import { Select } from "@mantine/core"
-import { useViewportSize } from "@mantine/hooks"
-import { redirect } from "@remix-run/node"
 import { NavLink } from "@remix-run/react"
 import clsx from "clsx"
 import React, { useEffect, useState } from "react"
@@ -29,9 +27,7 @@ type Route = {
 }
 
 export const Nav = ({ routes, dropdown = false, appId }: NavProps) => {
-  const [isMobile, setIsMobile] = useState<boolean | null>(null)
   const [mobilePageSelect, setMobilePageSelect] = useState<string | null>(null)
-  const { width } = useViewportSize()
 
   const reformatRoute = (routes: Route[]) => {
     let routeTable = []
@@ -41,14 +37,6 @@ export const Nav = ({ routes, dropdown = false, appId }: NavProps) => {
     }
     return routeTable
   }
-
-  useEffect(() => {
-    if (width >= 640) {
-      setIsMobile(false)
-    } else {
-      setIsMobile(true)
-    }
-  }, [width])
 
   useEffect(() => {
     if (mobilePageSelect !== null) {
@@ -63,9 +51,9 @@ export const Nav = ({ routes, dropdown = false, appId }: NavProps) => {
   }, [mobilePageSelect])
 
   return (
-    <nav className={clsx("pokt-nav", isMobile && dropdown && "mobile")}>
-      {dropdown && isMobile && (
-        <div className="navigation-dropdown">
+    <nav className={clsx("pokt-nav", dropdown && "mobile")}>
+      {dropdown && (
+        <div className="mobile-navigation-dropdown">
           <Select
             aria-label="Application navigation"
             className="pokt-nav-dropdown"
@@ -77,40 +65,32 @@ export const Nav = ({ routes, dropdown = false, appId }: NavProps) => {
           />
         </div>
       )}
-      {(!isMobile || !dropdown) && (
-        <ul>
-          {routes.map((route) => {
-            const Icon = route.icon
-            return (
-              <li key={route.to}>
-                {route.external ? (
-                  <a
-                    className="nav-link"
-                    href={route.to}
-                    rel="noreferrer"
-                    target="_blank"
-                  >
-                    {route.label}
-                  </a>
-                ) : (
-                  <NavLink
-                    className={({ isActive }) =>
-                      `nav-link ${isActive ? "nav-link-active" : ""}`
-                    }
-                    end={route.end}
-                    to={route.to}
-                  >
-                    {/* @ts-ignore eslint-disable-next-line */}
-                    {route.icon && <Icon />}
-                    {route.label && <span>{route.label}</span>}
-                  </NavLink>
-                )}
-              </li>
-            )
-          })}
-        </ul>
-      )}
-      {isMobile === null && <div className="nav-space"></div>}
+      <ul className="menu">
+        {routes.map((route) => {
+          const Icon = route.icon
+          return (
+            <li key={route.to}>
+              {route.external ? (
+                <a className="nav-link" href={route.to} rel="noreferrer" target="_blank">
+                  {route.label}
+                </a>
+              ) : (
+                <NavLink
+                  className={({ isActive }) =>
+                    `nav-link ${isActive ? "nav-link-active" : ""}`
+                  }
+                  end={route.end}
+                  to={route.to}
+                >
+                  {/* @ts-ignore eslint-disable-next-line */}
+                  {route.icon && <Icon />}
+                  {route.label && <span>{route.label}</span>}
+                </NavLink>
+              )}
+            </li>
+          )
+        })}
+      </ul>
     </nav>
   )
 }

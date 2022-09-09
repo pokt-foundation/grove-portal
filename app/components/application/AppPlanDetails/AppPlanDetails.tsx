@@ -1,14 +1,14 @@
 import { Button, Text, Title, Loader } from "@pokt-foundation/pocket-blocks"
 import { Link, useFetcher } from "@remix-run/react"
+import clsx from "clsx"
 import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/shared/Card"
 import HelpTooltip from "~/components/shared/HelpTooltip"
+import { useFeatureFlags } from "~/context/FeatureFlagContext"
 import { useTranslate } from "~/context/TranslateContext"
 import { PayPlanType } from "~/models/portal/sdk"
 import { Stripe } from "~/models/stripe/stripe.server"
 import { getPlanName, isFreePlan } from "~/utils/utils"
-import { useFeatureFlags } from "~/context/FeatureFlagContext"
-import clsx from "clsx"
 
 /* c8 ignore next */
 export const links = () => {
@@ -63,9 +63,9 @@ export default function AppPlanDetails({
               flags.STRIPE_PAYMENT === "false" ? "disabled" : null,
             )}
             component={Link}
+            disabled={flags.STRIPE_PAYMENT === "false"}
             to={stripe}
             variant="outline"
-            disabled={flags.STRIPE_PAYMENT === "false" ? true : false}
           >
             {t.AppPlanDetails.upgrade}
           </Button>
@@ -77,9 +77,9 @@ export default function AppPlanDetails({
             <Button
               fullWidth
               className="upgrade-button pokt-button"
+              disabled={flags.STRIPE_PAYMENT === "false"}
               type="submit"
               variant="outline"
-              disabled={flags.STRIPE_PAYMENT === "false" ? true : false}
             >
               {t.AppPlanDetails.renew}
               {/* {subscriptionFetcher.state === "submitting" && (

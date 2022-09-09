@@ -17,6 +17,9 @@ import AppPlanDetails, {
 import FeedbackCard, {
   links as FeedbackCardLinks,
 } from "~/components/application/FeedbackCard"
+import LegacyBannerCard, {
+  links as LegacyBannerCardLinks,
+} from "~/components/application/LegacyBannerCard"
 import StopRemoveApp, {
   links as StopRemoveAppLinks,
 } from "~/components/application/StopRemoveApp"
@@ -26,6 +29,8 @@ import { useFeatureFlags } from "~/context/FeatureFlagContext"
 import { useTranslate } from "~/context/TranslateContext"
 import { EndpointQuery, PayPlanType } from "~/models/portal/sdk"
 import { Stripe } from "~/models/stripe/stripe.server"
+import { getRequiredClientEnvVar } from "~/utils/environment"
+import { getPlanName } from "~/utils/utils"
 
 /* c8 ignore start */
 export const links = () => {
@@ -38,6 +43,7 @@ export const links = () => {
     ...StopRemoveAppLinks(),
     ...ModalLinks(),
     ...AppPlanDetailsLinks(),
+    ...LegacyBannerCardLinks(),
     { rel: "stylesheet", href: styles },
   ]
 }
@@ -133,10 +139,15 @@ export default function AppIdLayoutView({
             <Grid.Col xs={12}>
               <div>
                 <h1 style={{ marginTop: 0 }}>{endpoint.name}</h1>
-                <Nav routes={routes} />
+                <Nav dropdown appId={endpoint.id} routes={routes} />
               </div>
             </Grid.Col>
           )}
+          {endpoint &&
+            getPlanName(endpoint.appLimits.planType) === "Legacy" &&
+            getRequiredClientEnvVar("FLAG_LEGACY_MESSAGING") === "true" && (
+              <LegacyBannerCard />
+            )}
           <Outlet />
         </Grid.Col>
         <Grid.Col md={4}>
@@ -170,6 +181,7 @@ export default function AppIdLayoutView({
               <section>
                 <StopRemoveApp
                   appId={endpoint.id}
+                  name={endpoint.name}
                   planType={endpoint.appLimits.planType}
                   subscription={subscription}
                 />

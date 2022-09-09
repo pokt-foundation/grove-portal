@@ -34,6 +34,11 @@ export const action: ActionFunction = async ({ request }) => {
     cookie.language = bodyParams.get("language") as Language
   }
 
+  if (bodyParams.get("showExpandedLegacyBanner")) {
+    cookie.showExpandedLegacyBanner =
+      bodyParams.get("showExpandedLegacyBanner") === "true"
+  }
+
   if (bodyParams.get("endpoints")) {
     cookie.endpoints = {
       ...cookie.endpoints,

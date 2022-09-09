@@ -26,6 +26,7 @@
 .pokt-header-actions {
   flex-grow: 1;
 }
+
 .pokt-header-actions.mobile {
   display: none;
 }
@@ -42,7 +43,7 @@
 .pokt-aside-menu {
   position: absolute;
   width: 300px;
-  top: 84px;
+  top: 88px;
   bottom: 0;
   right: -300px;
   padding: 16px;
@@ -51,6 +52,7 @@
   transition: right ease-in-out 0.3s;
   z-index: calc(var(--zindex-nav) + 1);
 }
+
 .pokt-aside-menu.open {
   right: 0px;
 }
@@ -73,4 +75,14 @@
 .pokt-aside-menu .pokt-header-nav nav ul .nav-link {
   display: block;
 }
+
 /* END: MOBILE DRAWER MENU */
+
+@media (min-width: 640px) {
+  .pokt-header-actions.mobile {
+    display: flex;
+  }
+  .pokt-aside-menu {
+    display: none;
+  }
+}

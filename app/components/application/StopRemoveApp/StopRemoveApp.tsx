@@ -18,12 +18,14 @@ export const links = () => {
 
 interface StopRemoveAppProps {
   appId: string
+  name: string
   planType: PayPlanType
   subscription?: Stripe.Subscription
 }
 
 export default function StopRemoveApp({
   appId,
+  name,
   planType,
   subscription,
 }: StopRemoveAppProps) {
@@ -105,7 +107,16 @@ export default function StopRemoveApp({
             <div>
               <Text>{t.stopRemoveApp.removeAppDescription}</Text>
               <Text mt={8}>
-                {t.stopRemoveApp.appId} {appId}
+                {t.stopRemoveApp.name}{" "}
+                <Text component="span" weight="bold">
+                  {name}
+                </Text>
+              </Text>
+              <Text mt={8}>
+                {t.stopRemoveApp.appId}{" "}
+                <Text component="span" weight="bold">
+                  {appId}
+                </Text>
               </Text>
             </div>
             <Group align="center" className="buttonGroup" position="apart">

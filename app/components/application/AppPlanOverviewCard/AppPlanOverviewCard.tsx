@@ -57,7 +57,7 @@ export default function AppPlanLatestInvoiceCard({
           <CardList items={listItems} />
           <Group mt="xl" position="right">
             <Form action="/api/stripe/portal-session" method="post">
-              <input hidden name="return-path" value={location.pathname} />
+              <input hidden defaultValue={location.pathname} name="return-path" />
               <Button type="submit" variant="outline">
                 {t.AppPlanOverviewCard.managePlan}
               </Button>

@@ -7,6 +7,7 @@ import {
   ContactSalesForm,
   ContactSalesView,
 } from "~/locales/types/ContactSalesLocaleTypes"
+import { LegacyBannerCard } from "~/locales/types/LegacyBannerCard"
 import { SecurityPageViewTypes } from "~/locales/types/SecurityPageTypes"
 import { StopRemoveApp } from "~/locales/types/StopRemoveApp"
 import { PayPlanType } from "~/models/portal/sdk"
@@ -240,6 +241,7 @@ interface TranslationData {
   CalculateYourPricing: CalculateYourPricing
   security: SecurityPageViewTypes
   stopRemoveApp: StopRemoveApp
+  LegacyBannerCard: LegacyBannerCard
 }
 
 export type Language = typeof languages[number]

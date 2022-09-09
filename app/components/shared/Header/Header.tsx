@@ -1,10 +1,9 @@
-import { useViewportSize } from "@mantine/hooks"
 import { Button } from "@pokt-foundation/pocket-blocks"
 import { IconPerson } from "@pokt-foundation/ui"
 import { Item, Separator } from "@radix-ui/react-dropdown-menu"
 import { Form, Link } from "@remix-run/react"
 import clsx from "clsx"
-import { useEffect, useMemo, useRef, useState } from "react"
+import { useMemo, useRef, useState } from "react"
 import React from "react"
 import { Auth0Profile } from "remix-auth-auth0"
 import Dropdown, { links as DropdownLinks } from "../Dropdown"
@@ -33,18 +32,7 @@ type HeaderProps = {
 
 export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) => {
   const [isActive, setIsActive] = useState(false)
-  const [isMobile, setIsMobile] = useState(false)
   const logoutFormRef = useRef<HTMLFormElement>(null)
-  const { width } = useViewportSize()
-
-  useEffect(() => {
-    if (width >= 640) {
-      setIsMobile(false)
-      setIsActive(false)
-    } else {
-      setIsMobile(true)
-    }
-  }, [width])
 
   const routes: Route[] = useMemo(() => {
     const userRoutes = [
@@ -108,16 +96,12 @@ export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) 
             ></img>
           </Link>
         </div>
-        <HamburgerMenu
-          isActive={isActive}
-          isVisible={isMobile}
-          onClick={() => setIsActive(!isActive)}
-        />
+        <HamburgerMenu isActive={isActive} onClick={() => setIsActive(!isActive)} />
         <div
           className={clsx({
             "pokt-header-actions": true,
             "pokt-header-flex": true,
-            mobile: isMobile,
+            mobile: true,
             open: isActive,
           })}
         >

@@ -150,3 +150,12 @@ p.text {
   width: 100%;
   margin-bottom: 1.5rem;
 }
+
+@media screen and (max-width: 640px) {
+  .button {
+    margin: 0 auto;
+  }
+  .logo-box {
+    justify-content: space-around;
+  }
+}

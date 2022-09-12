@@ -49,3 +49,20 @@ p.smallText {
   margin: 0;
   text-align: center;
 }
+
+@media screen and (max-width: 640px) {
+  .callOutBox {
+    flex-direction: column;
+  }
+  .callOutBox div:first-child {
+    order: 2;
+  }
+  .callOutBox div:last-child {
+    order: 1;
+    margin: 0;
+  }
+  .callOutBox div h3,
+  .callOutBox div p.smallText {
+    text-align: center;
+  }
+}

@@ -18,7 +18,6 @@
   --zindex-base: 1;
   --zindex-nav: 100;
   --zindex-overlay: 200;
-
   --radii-md: 12px;
 }
 
@@ -46,7 +45,7 @@ body {
   font-family: "Manrope";
   background-color: var(--color-black-dark);
   color: var(--color-white-main);
-  width: 100vw;
+  width: 100%;
 }
 
 main {

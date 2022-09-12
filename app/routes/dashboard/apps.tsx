@@ -16,6 +16,7 @@ import Loader, { links as LoaderLinks } from "~/components/shared/Loader"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { EndpointsQuery, ProcessedEndpoint } from "~/models/portal/sdk"
+import styles from "~/styles/dashboard.apps.css"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 import { MAX_USER_APPS } from "~/utils/pocketUtils"
 import { getPoktId, requireUser } from "~/utils/session.server"
@@ -27,6 +28,7 @@ export const links = () => {
     ...FeedbackCardLinks(),
     ...AdEconomicsForDevsLinks(),
     ...LoaderLinks(),
+    { rel: "stylesheet", href: styles },
   ]
 }
 

@@ -1,7 +1,7 @@
 import { IconCopy, IconPlus } from "@pokt-foundation/ui"
+import clsx from "clsx"
 import styles from "./styles.css"
 import { useClipboard } from "~/hooks/useClipboard"
-import clsx from "clsx"
 
 /* c8 ignore start */
 export const links = () => {

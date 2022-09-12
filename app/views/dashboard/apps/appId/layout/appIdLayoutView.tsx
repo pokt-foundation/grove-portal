@@ -225,6 +225,7 @@ export default function AppIdLayoutView({
               <section>
                 <StopRemoveApp
                   appId={endpoint.id}
+                  apps={endpoint.apps}
                   name={endpoint.name}
                   planType={endpoint.appLimits.planType}
                   subscription={subscription}

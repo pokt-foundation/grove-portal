@@ -410,7 +410,7 @@ const schema = {
       "If you delete this application, the data will no longer be accessible in the portal. Historical data will be available in the explorer. -fr",
     planDowngrade:
       "Your plan will be canceled, but is still available until the end of your billing period. -fr",
-    appId: "App ID: -fr",
+    appAddress: "App Address: -fr",
     name: "Name: -fr",
     planRenew: "If you change your mind, you can renew your subscription. -fr",
   },

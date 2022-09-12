@@ -1,3 +1,7 @@
 .pokt-app-keys .pokt-text-input:not(:last-child) {
   margin-bottom: 16px;
 }
+
+.pokt-app-keys .iconPadding input {
+  padding-right: 62px;
+}

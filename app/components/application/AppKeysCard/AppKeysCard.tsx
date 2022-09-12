@@ -43,6 +43,7 @@ export default function AppKeysCard({ id, secret, publicKey }: AppKeysCardProps)
             setRevealed={setPublicKeyHidden}
             type={publicKeyHidden ? "password" : "text"}
             value={publicKey}
+            iconPadding
           />
         )}
       </Card>

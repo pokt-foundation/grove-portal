@@ -9,3 +9,7 @@
   width: 20px;
   height: 20px;
 }
+
+.pokt-copy-text.copyIconColor {
+  color: var(--color-white-main);
+}

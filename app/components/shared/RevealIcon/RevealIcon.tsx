@@ -20,7 +20,7 @@ export default function RevealIcon({ revealed, setRevealed }: RevealIconProps) {
       tabIndex={0}
       onClick={() => setRevealed(!revealed)}
     >
-      {revealed ? <IconEyeOff /> : <IconEyeOn />}
+      {revealed ? <IconEyeOn /> : <IconEyeOff />}
     </span>
   )
 }

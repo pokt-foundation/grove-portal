@@ -22,6 +22,7 @@ export type InputProps = TextInputProps & {
   copy?: boolean
   revealed?: boolean
   hasDelete?: boolean
+  iconPadding?: boolean
   handleRemove?: () => void
   setRevealed?: Function
 }
@@ -30,6 +31,7 @@ export default function TextInput({
   copy = false,
   revealed = false,
   hasDelete = false,
+  iconPadding = false,
   handleRemove = () => {},
   setRevealed,
   ...props
@@ -58,6 +60,7 @@ export default function TextInput({
         className={clsx({
           "pokt-text-input": true,
           "right-section": props.rightSection,
+          iconPadding: iconPadding,
         })}
         rightSection={rightSection}
         size={props.size ?? "md"}

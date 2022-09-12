@@ -37,6 +37,7 @@ export default function AppKeysCard({ id, secret, publicKey }: AppKeysCardProps)
         {publicKey && (
           <TextInput
             copy
+            iconPadding
             readOnly
             label="Public Key"
             revealed={publicKeyHidden}

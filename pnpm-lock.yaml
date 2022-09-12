@@ -9,7 +9,7 @@ specifiers:
   '@mantine/core': ^4.2.2
   '@mantine/hooks': ^4.2.2
   '@mantine/ssr': ^4.2.2
-  '@pokt-foundation/pocket-blocks': 1.0.15
+  '@pokt-foundation/pocket-blocks': 1.0.21
   '@pokt-foundation/pocketjs-isomorphic-provider': ^1.0.0
   '@pokt-foundation/pocketjs-types': ^1.0.1
   '@pokt-foundation/portal-types': ^0.0.1
@@ -77,7 +77,7 @@ dependencies:
   '@mantine/core': 4.2.2_hv66cfvk4bbamngiq7t5luc63y
   '@mantine/hooks': 4.2.2_react@17.0.2
   '@mantine/ssr': 4.2.2_wsn53pslsboo2rytzocxzsur7i
-  '@pokt-foundation/pocket-blocks': 1.0.15_6rqnjtki76dqtxzzg6lfgjmywq
+  '@pokt-foundation/pocket-blocks': 1.0.21_nktkq2kmmljjprowudbxkqmx2q
   '@pokt-foundation/pocketjs-isomorphic-provider': 1.0.0
   '@pokt-foundation/ui': 0.3.9_zxhai4qal7ezfht52cx4u672cu
   '@radix-ui/react-dropdown-menu': 0.1.6_wsn53pslsboo2rytzocxzsur7i
@@ -2110,12 +2110,13 @@ packages:
       webcrypto-core: 1.7.5
     dev: true
 
-  /@pokt-foundation/pocket-blocks/1.0.15_6rqnjtki76dqtxzzg6lfgjmywq:
-    resolution: {integrity: sha512-Vpi7mnXLcrWGUnqvPW3Fk9gu5FcP3iiT2sGoN4wYD+PakYEksATpi/1f6gFtVCEC6I5hl5fgtWjVFGNpZsFLkQ==}
+  /@pokt-foundation/pocket-blocks/1.0.21_nktkq2kmmljjprowudbxkqmx2q:
+    resolution: {integrity: sha512-ccTvFyZax0Ed9TBlUgUdjbnScw4fHaJORFpfaMTnTtqVYux3/c87TdBBsYxC1ruNROqFyL0SEFJyNFkSUh3/4g==}
     peerDependencies:
       '@mantine/core': ^4.x
-      react: ^16.8.0 || 17.x
-      react-dom: ^16.8.0 || 17.x
+      '@mantine/hooks': ^4.x
+      react: ^16.8 || ^17.0
+      react-dom: ^16.8 || ^17.0
     dependencies:
       '@mantine/core': 4.2.2_hv66cfvk4bbamngiq7t5luc63y
       '@mantine/hooks': 4.2.2_react@17.0.2
@@ -2124,6 +2125,7 @@ packages:
       '@radix-ui/react-radio-group': 0.1.5_react@17.0.2
       '@radix-ui/react-switch': 0.1.5_react@17.0.2
       '@radix-ui/react-tooltip': 0.1.7_sfoxds7t5ydpegc3knd667wn6m
+      '@stitches/core': 1.2.8
       '@stitches/react': 1.2.8_react@17.0.2
       clsx: 1.2.1
       format-string-by-pattern: 1.2.2
@@ -2970,6 +2972,10 @@ packages:
     resolution: {integrity: sha512-t09vSN3MdfsyCHoFcTRCH/iUtG7OJ0CsjzB8cjAmKc/va/kIgeDI/TxsigdncE/4be734m0cvIYwNaV4i2XqAw==}
     engines: {node: '>=10'}
     dev: true
+
+  /@stitches/core/1.2.8:
+    resolution: {integrity: sha512-Gfkvwk9o9kE9r9XNBmJRfV8zONvXThnm1tcuojL04Uy5uRyqg93DC83lDebl0rocZCfKSjUv+fWYtMQmEDJldg==}
+    dev: false
 
   /@stitches/react/1.2.8_react@17.0.2:
     resolution: {integrity: sha512-9g9dWI4gsSVe8bNLlb+lMkBYsnIKCZTmvqvDG+Avnn69XfmHZKiaMrx7cgTaddq7aTPPmXiTsbFcUy0xgI4+wA==}

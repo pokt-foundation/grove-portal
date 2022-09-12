@@ -1,4 +1,4 @@
-import { IconPlus } from "@pokt-foundation/ui"
+import { IconPlus } from "@pokt-foundation/pocket-blocks"
 import React, { SyntheticEvent, useState } from "react"
 import ChainWithImage, { links as ChainWithImageLinks } from "../ChainWithImage"
 import styles from "./styles.css"
@@ -48,7 +48,8 @@ export default function ChainsDropdown({
       <Dropdown
         label={
           <>
-            {defaultText || "Add New"} {icon && <IconPlus />}
+            {defaultText || "Add New"}{" "}
+            {icon && <IconPlus fill="var(--color-white-light)" />}
           </>
         }
       >

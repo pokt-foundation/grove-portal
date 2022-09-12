@@ -1,4 +1,4 @@
-import { Button, Text, Title, Loader } from "@pokt-foundation/pocket-blocks"
+import { Button, Text, Title } from "@pokt-foundation/pocket-blocks"
 import { Link, useFetcher } from "@remix-run/react"
 import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/shared/Card"

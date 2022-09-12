@@ -1,4 +1,4 @@
-import { CaretRight } from "@pokt-foundation/pocket-blocks"
+import { IconCaretRight } from "@pokt-foundation/pocket-blocks"
 import { Link } from "@remix-run/react"
 import { useEffect, useState } from "react"
 import styles from "./styles.css"
@@ -69,7 +69,7 @@ export const AppsView = ({
                 value: "",
                 element: (
                   <Link to={app.id}>
-                    <CaretRight className="pokt-icon" />
+                    <IconCaretRight className="pokt-icon" />
                   </Link>
                 ),
               },

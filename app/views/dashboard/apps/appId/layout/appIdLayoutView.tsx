@@ -1,4 +1,4 @@
-import { CaretLeft, Grid } from "@pokt-foundation/pocket-blocks"
+import { IconCaretLeft, Grid } from "@pokt-foundation/pocket-blocks"
 import { Outlet, useFetcher } from "@remix-run/react"
 import { useEffect, useState } from "react"
 import styles from "./styles.css"
@@ -71,7 +71,7 @@ export default function AppIdLayoutView({
       to: "/dashboard/apps",
       icon: () => (
         <span>
-          <CaretLeft className="pokt-icon" />
+          <IconCaretLeft className="pokt-icon" />
         </span>
       ),
       end: true,

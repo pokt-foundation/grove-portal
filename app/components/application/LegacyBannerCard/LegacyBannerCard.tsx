@@ -1,4 +1,4 @@
-import { Button, Collapse, Text, Info } from "@pokt-foundation/pocket-blocks"
+import { Button, Collapse, Text, IconInfo } from "@pokt-foundation/pocket-blocks"
 import clsx from "clsx"
 import { useMemo } from "react"
 import styles from "./styles.css"
@@ -37,7 +37,7 @@ export default function LegacyBannerCard() {
       <Card>
         <div className="pokt-card-header">
           <div className="pokt-group">
-            <Info fill="var(--color-secondary-light)" />
+            <IconInfo fill="var(--color-secondary-light)" />
             <h3>{t.LegacyBannerCard.title}</h3>
           </div>
           <Button variant="subtle" onClick={() => handleExpand()}>

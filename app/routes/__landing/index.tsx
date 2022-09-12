@@ -1,5 +1,4 @@
-import { Grid, Link } from "@pokt-foundation/pocket-blocks"
-import { Container } from "@pokt-foundation/pocket-blocks"
+import { Container, Grid } from "@pokt-foundation/pocket-blocks"
 import { LinksFunction } from "@remix-run/node"
 import { Form, useLocation, useSearchParams } from "@remix-run/react"
 import { useEffect, useState } from "react"

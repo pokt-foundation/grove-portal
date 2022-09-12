@@ -44,7 +44,7 @@ export function isPaidPlan(planType: PayPlanType) {
 }
 
 export function isLegacyPlan(planType: PayPlanType) {
-  if (planType !== PayPlanType.PayAsYouGoV0 && planType !== PayPlanType.FreetierV0) {
+  if (planType === PayPlanType.PayAsYouGoV0 || planType === PayPlanType.FreetierV0) {
     return false
   }
   return true

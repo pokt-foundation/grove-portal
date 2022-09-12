@@ -305,7 +305,7 @@ const schema = {
     relaysPerDay: "relays per day -fr",
     currentPlan: "Current Plan -fr",
     currentPlanToolTip: "This is the current plan for this specific application. -fr",
-    upgrade: "Upgrade -fr",
+    upgrade: "Upgrade to Pay As You Go -fr",
     renew: "Renew Subscription -fr",
   },
   PlanView: {

@@ -1,5 +1,9 @@
-import { Group, Tooltip, Table as PoktTable } from "@pokt-foundation/pocket-blocks"
-import { IconClock } from "@pokt-foundation/ui"
+import {
+  Group,
+  Tooltip,
+  Table as PoktTable,
+  IconClock,
+} from "@pokt-foundation/pocket-blocks"
 import { useMemo } from "react"
 import styles from "./styles.css"
 import Card, { links as CardLinks } from "~/components/shared/Card"

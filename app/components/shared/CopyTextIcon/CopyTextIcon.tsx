@@ -1,4 +1,4 @@
-import { IconCopy, IconPlus } from "@pokt-foundation/ui"
+import { IconCopy, IconPlus } from "@pokt-foundation/pocket-blocks"
 import clsx from "clsx"
 import styles from "./styles.css"
 import { useClipboard } from "~/hooks/useClipboard"
@@ -23,7 +23,11 @@ export default function CopyTextIcon({ text }: CopyTextIconProps) {
       tabIndex={0}
       onClick={() => clipboard.copy(text)}
     >
-      {clipboard.copied ? <IconPlus /> : <IconCopy />}
+      {clipboard.copied ? (
+        <IconPlus fill="var(--color-secondary-main)" />
+      ) : (
+        <IconCopy fill="var(--color-secondary-main)" />
+      )}
     </span>
   )
 }

@@ -1,5 +1,5 @@
-import { Button } from "@pokt-foundation/pocket-blocks"
-import { IconPerson } from "@pokt-foundation/ui"
+import { useViewportSize } from "@mantine/hooks"
+import { Button, IconUser } from "@pokt-foundation/pocket-blocks"
 import { Item, Separator } from "@radix-ui/react-dropdown-menu"
 import { Form, Link, useLocation } from "@remix-run/react"
 import clsx from "clsx"
@@ -166,7 +166,7 @@ function UserMenuDropdown({ user, routes }: UserMenuDropdownProps) {
   return (
     <>
       {user && (
-        <Dropdown label={<IconPerson />}>
+        <Dropdown label={<IconUser fill="var(--color-white-light)" />}>
           {routes.map(({ el, id: routeID }, index) => {
             const El = el
             return (

@@ -1,6 +1,7 @@
 import { expect } from "vitest"
 import AppAddressCard from "./AppAddressCard"
 import { fireEvent, render, screen } from "test/helpers"
+import schema from "~/locales/en"
 import { ProcessedEndpoint } from "~/models/portal/sdk"
 
 let apps: ProcessedEndpoint["apps"] = [
@@ -18,7 +19,7 @@ describe("<AppAddressCard />", () => {
   })
   it("renders heading", () => {
     render(<AppAddressCard apps={apps} />)
-    const heading = "POKT App Addresses"
+    const heading = schema.appAddressCard.heading
     expect(screen.getByText(heading)).toBeInTheDocument()
   })
   it("renders number of Apps", () => {
@@ -44,7 +45,7 @@ describe("<AppAddressCard />", () => {
   })
   it("renders Errortext when no apps found", () => {
     render(<AppAddressCard apps={[]} />)
-    const errorText = "No apps found."
+    const errorText = schema.appAddressCard.error
     expect(screen.getByText(errorText)).toBeInTheDocument()
   })
 })

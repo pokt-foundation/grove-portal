@@ -277,7 +277,7 @@ const schema = {
       [PayPlanType.FreetierV0]: {
         title: "Always Free -fr",
         description:
-          "Access to reliable, censor resistant infrastructure. Free up to 250k relays per day. -fr",
+          "Access to reliable, fast infrastructure. Free up to 250k relays per day. -fr",
         description2: "",
         pricing: "$0.00 -fr",
         relayLimit: "250k per app per day -fr",
@@ -287,7 +287,7 @@ const schema = {
       [PayPlanType.TestPlanV0]: {
         title: "Always Free -fr",
         description:
-          "Access to reliable, censor resistant infrastructure. Free up to 250k relays per day. -fr",
+          "Access to reliable, fast infrastructure. Free up to 250k relays per day. -fr",
         description2: "",
         pricing: "$0.00 -fr",
         relayLimit: "250k per app per day -fr",

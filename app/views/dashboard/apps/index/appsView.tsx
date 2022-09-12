@@ -1,10 +1,12 @@
 import { CaretRight } from "@pokt-foundation/pocket-blocks"
 import { Link } from "@remix-run/react"
+import { useEffect, useState } from "react"
 import styles from "./styles.css"
 import UsageChartCard, {
   links as UsageCardLinks,
 } from "~/components/application/UsageChartCard"
 import Card, { links as CardLinks } from "~/components/shared/Card"
+import Modal, { links as ModalLinks } from "~/components/shared/Modal"
 import Table, { links as TableLinks } from "~/components/shared/Table"
 import { EndpointsQuery, ProcessedEndpoint } from "~/models/portal/sdk"
 import { RelayMetric } from "~/models/relaymeter/relaymeter.server"
@@ -18,6 +20,7 @@ export const links = () => {
     ...TableLinks(),
     ...CardLinks(),
     ...UsageCardLinks(),
+    ...ModalLinks(),
     { rel: "stylesheet", href: styles },
   ]
 }
@@ -27,13 +30,26 @@ type AppsViewProps = {
   userId: string
   endpoints: EndpointsQuery["endpoints"] | null
   dailyNetworkRelaysPerWeek: RelayMetric[] | null
+  searchParams: URLSearchParams
 }
 
 export const AppsView = ({
   endpoints,
   dailyNetworkRelaysPerWeek,
+  searchParams,
   userId,
 }: AppsViewProps) => {
+  const [showErrorModal, setShowErrorModal] = useState(false)
+
+  useEffect(() => {
+    const error = searchParams.get("error")
+    if (error === "true") {
+      const path = window.location.pathname
+      window.history.replaceState({}, document.title, path)
+      setShowErrorModal(true)
+    }
+  }, [searchParams])
+
   return (
     <div className="pokt-apps-view">
       <section>
@@ -84,6 +100,15 @@ export const AppsView = ({
           />
         </section>
       )}
+      <Modal
+        opened={showErrorModal}
+        title="These are not the droids you are looking for."
+        onClose={() => setShowErrorModal(false)}
+      >
+        <div>
+          <p>Sorry, you do not have access to this appplication.</p>
+        </div>
+      </Modal>
     </div>
   )
 }

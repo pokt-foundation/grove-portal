@@ -2,9 +2,9 @@ import { expect } from "vitest"
 import StopRemoveApp from "./StopRemoveApp"
 import { render, screen } from "test/helpers"
 import schema from "~/locales/en"
+import { endpoint } from "~/models/portal/portal.data"
 import { PayPlanType } from "~/models/portal/sdk"
 import { subscription } from "~/models/stripe/stripe.data"
-import { endpoint } from "~/models/portal/portal.data"
 
 const stopSubscription = schema.common.StopSubscription
 const removeApplication = "Remove Application"
@@ -13,8 +13,8 @@ describe("<StopRemoveApp />", () => {
   it("renders Stop Subscription button for paid plantype", () => {
     render(
       <StopRemoveApp
-        apps={endpoint.apps}
         appId="123"
+        apps={endpoint.apps}
         name="Hello World"
         planType={PayPlanType.PayAsYouGoV0}
         subscription={subscription}
@@ -32,8 +32,8 @@ describe("<StopRemoveApp />", () => {
   it("renders remove application for free tier plantype", () => {
     render(
       <StopRemoveApp
-        apps={endpoint.apps}
         appId="123"
+        apps={endpoint.apps}
         name="Hello World"
         planType={PayPlanType.FreetierV0}
         subscription={subscription}

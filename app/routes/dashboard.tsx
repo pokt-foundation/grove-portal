@@ -11,6 +11,7 @@ import { IconApp, IconNetwork } from "~/components/shared/Icons"
 import Nav, { links as NavLinks } from "~/components/shared/Nav"
 import { useTranslate } from "~/context/TranslateContext"
 import { requireUserProfile } from "~/utils/session.server"
+import styles from "~/styles/dashboard.css"
 
 export const links: LinksFunction = () => {
   return [
@@ -18,6 +19,7 @@ export const links: LinksFunction = () => {
     ...FooterLinks(),
     ...NavLinks(),
     // ...LoaderLinks(),
+    { rel: "stylesheet", href: styles },
   ]
 }
 
@@ -70,7 +72,7 @@ export default function Dashboard() {
         <Nav routes={routes} />
       </Header>
       <main>
-        <Container size="lg">
+        <Container size="lg" className="container">
           {/* {state === "loading" && <Loader />} */}
           <Outlet />
         </Container>

@@ -6,9 +6,9 @@ import { Auth0Profile } from "remix-auth-auth0"
 import { Footer, links as FooterLinks } from "~/components/shared/Footer"
 import { Header, links as HeaderLinks } from "~/components/shared/Header"
 import { Nav, links as NavLinks } from "~/components/shared/Nav"
+import styles from "~/styles/__landing.css"
 import analyticsInit, { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { getUserProfile } from "~/utils/session.server"
-import styles from "~/styles/__landing.css"
 
 export const links: LinksFunction = () => {
   return [
@@ -78,7 +78,7 @@ export default function LandingLayout() {
         <Nav routes={routes} />
       </Header>
       <main>
-        <Container size="lg" className="container">
+        <Container className="container" size="lg">
           <Outlet />
         </Container>
       </main>

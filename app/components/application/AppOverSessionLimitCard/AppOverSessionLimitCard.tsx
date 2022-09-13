@@ -38,7 +38,7 @@ export default function AppOverLimitCard({
               {t.AppOverLimitCard.body.map((text) => (
                 <p key={text}>{text}</p>
               ))}
-              <Button component={Link} to="mailto:sales@pokt.network">
+              <Button component="a" href="mailto:sales@pokt.network">
                 {t.AppOverLimitCard.link}
               </Button>
             </div>

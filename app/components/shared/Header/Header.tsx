@@ -85,7 +85,7 @@ export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) 
   }, [user])
 
   useEffect(() => {
-    setIsActive(!isActive)
+    setIsActive(false)
   }, [location.pathname])
 
   return (

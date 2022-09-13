@@ -7,7 +7,7 @@ import { useTranslate } from "~/context/TranslateContext"
 import { PayPlanType } from "~/models/portal/sdk"
 import { Stripe } from "~/models/stripe/stripe.server"
 import { commify } from "~/utils/formattingUtils"
-import { getPlanName, isFreePlan } from "~/utils/utils"
+import { getPlanName, isFreePlan, isLegacyPlan } from "~/utils/utils"
 
 /* c8 ignore next */
 export const links = () => {
@@ -53,7 +53,7 @@ export default function AppPlanDetails({
             <Text className="centerGap">{getPlanName(planType)}</Text>
           </div>
         </div>
-        {!subscription && isFreePlan(planType) && (
+        {!subscription && (isFreePlan(planType) || isLegacyPlan(planType)) && (
           <Button
             className="upgrade-button pokt-button"
             component={Link}

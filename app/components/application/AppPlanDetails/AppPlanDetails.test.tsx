@@ -95,6 +95,23 @@ describe("<AppPlanDetails />", () => {
     expect(screen.getByRole("button")).toBeInTheDocument()
     expect(screen.getByRole("link")).toBeInTheDocument()
   })
+  it("renders upgrade button with legacy plan", () => {
+    render(
+      <AppPlanDetails
+        dailyLimit={dailyLimit}
+        id={id}
+        name={name}
+        // @ts-ignore next
+        planType={""}
+        subscription={undefined}
+      />,
+    )
+
+    const buttonText = /Upgrade/i
+    expect(screen.getByText(buttonText)).toBeInTheDocument()
+    expect(screen.getByRole("button")).toBeInTheDocument()
+    expect(screen.getByRole("link")).toBeInTheDocument()
+  })
   it("renders renew button if subscription has cancel_at_period_end", () => {
     subscription.cancel_at_period_end = true
     render(

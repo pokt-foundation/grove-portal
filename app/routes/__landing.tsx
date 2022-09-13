@@ -1,3 +1,4 @@
+import { Container } from "@pokt-foundation/pocket-blocks"
 import { LinksFunction, LoaderFunction, MetaFunction, json } from "@remix-run/node"
 import { Outlet, useLoaderData } from "@remix-run/react"
 import { useMemo, useEffect } from "react"
@@ -5,11 +6,17 @@ import { Auth0Profile } from "remix-auth-auth0"
 import { Footer, links as FooterLinks } from "~/components/shared/Footer"
 import { Header, links as HeaderLinks } from "~/components/shared/Header"
 import { Nav, links as NavLinks } from "~/components/shared/Nav"
+import styles from "~/styles/__landing.css"
 import analyticsInit, { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { getUserProfile } from "~/utils/session.server"
 
 export const links: LinksFunction = () => {
-  return [...HeaderLinks(), ...FooterLinks(), ...NavLinks()]
+  return [
+    ...HeaderLinks(),
+    ...FooterLinks(),
+    ...NavLinks(),
+    { rel: "stylesheet", href: styles },
+  ]
 }
 
 export const meta: MetaFunction = () => {
@@ -71,7 +78,9 @@ export default function LandingLayout() {
         <Nav routes={routes} />
       </Header>
       <main>
-        <Outlet />
+        <Container className="container" size="lg">
+          <Outlet />
+        </Container>
       </main>
       <Footer />
     </>

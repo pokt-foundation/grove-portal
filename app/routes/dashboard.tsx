@@ -10,6 +10,7 @@ import { IconApp, IconNetwork } from "~/components/shared/Icons"
 // import Loader, { links as LoaderLinks } from "~/components/shared/Loader"
 import Nav, { links as NavLinks } from "~/components/shared/Nav"
 import { useTranslate } from "~/context/TranslateContext"
+import styles from "~/styles/dashboard.css"
 import { requireUserProfile } from "~/utils/session.server"
 
 export const links: LinksFunction = () => {
@@ -18,6 +19,7 @@ export const links: LinksFunction = () => {
     ...FooterLinks(),
     ...NavLinks(),
     // ...LoaderLinks(),
+    { rel: "stylesheet", href: styles },
   ]
 }
 
@@ -70,7 +72,7 @@ export default function Dashboard() {
         <Nav routes={routes} />
       </Header>
       <main>
-        <Container size="lg">
+        <Container className="container" size="lg">
           {/* {state === "loading" && <Loader />} */}
           <Outlet />
         </Container>

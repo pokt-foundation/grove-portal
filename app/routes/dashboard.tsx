@@ -1,4 +1,8 @@
-import { Container } from "@pokt-foundation/pocket-blocks"
+import {
+  Container,
+  IconBookOpen,
+  IconCircleQuestion,
+} from "@pokt-foundation/pocket-blocks"
 import { LinksFunction, LoaderFunction, json } from "@remix-run/node"
 import { Outlet, useCatch, useLoaderData, useTransition } from "@remix-run/react"
 import { useEffect } from "react"
@@ -59,10 +63,12 @@ export default function Dashboard() {
       to: "https://docs.pokt.network",
       external: true,
       label: t.dashboard.routes.docs,
+      icon: IconBookOpen,
     },
     {
       to: "/faq",
       label: "FAQs",
+      icon: IconCircleQuestion,
     },
   ]
   return (

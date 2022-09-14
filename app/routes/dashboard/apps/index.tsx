@@ -10,7 +10,8 @@ import {
 } from "~/models/relaymeter/relaymeter.server"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { dayjs } from "~/utils/dayjs"
-import { getPoktId, requireUser } from "~/utils/session.server"
+import { getPoktId } from "~/utils/session"
+import { requireUser } from "~/utils/session.server"
 import AppsView, { links as AppsViewLinks } from "~/views/dashboard/apps/index/appsView"
 
 export const links = () => {

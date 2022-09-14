@@ -10,6 +10,7 @@ import jwt_decode from "jwt-decode"
 import { Auth0Profile } from "remix-auth-auth0"
 import { authenticator } from "./auth.server"
 import { getRequiredServerEnvVar } from "./environment"
+import { getPoktId, isPoktAdmin } from "./session"
 
 let cookie:
   | Cookie
@@ -60,12 +61,12 @@ export const requireUserProfile = async (
   return user.profile
 }
 
-export const requireAdmin = async (
+export const requirePoktAdmin = async (
   request: Request,
   defaultRedirect = "/",
 ): Promise<Auth0Profile> => {
   let user = await authenticator.isAuthenticated(request)
-  if (!user || !user.profile.emails[0].value.includes("@pokt.network")) {
+  if (!user || !isPoktAdmin(user.profile)) {
     throw redirect(defaultRedirect)
   }
   return user.profile
@@ -75,10 +76,6 @@ export const getUserId = async (request: Request) => {
   const user = await authenticator.isAuthenticated(request)
   if (!user) return undefined
   return getPoktId(user.profile.id)
-}
-
-export const getPoktId = (id: string) => {
-  return id.split("|")[1]
 }
 
 export const getUserProfile = async (request: Request) => {

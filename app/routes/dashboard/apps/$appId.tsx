@@ -11,7 +11,8 @@ import {
 import { getSubscription, Stripe } from "~/models/stripe/stripe.server"
 import { getErrorMessage } from "~/utils/catchError"
 import { dayjs } from "~/utils/dayjs"
-import { getPoktId, requireUser } from "~/utils/session.server"
+import { getPoktId } from "~/utils/session"
+import { requireUser } from "~/utils/session.server"
 import AppIdLayoutView, {
   links as AppIdLayoutViewLinks,
 } from "~/views/dashboard/apps/appId/layout/appIdLayoutView"

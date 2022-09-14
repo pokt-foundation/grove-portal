@@ -2,7 +2,7 @@ import { Grid, Space, Title, Container } from "@pokt-foundation/pocket-blocks"
 import { LoaderFunction, json } from "@remix-run/node"
 import { Link, Outlet } from "@remix-run/react"
 import { Auth0Profile } from "remix-auth-auth0"
-import { requireAdmin } from "~/utils/session.server"
+import { requirePoktAdmin } from "~/utils/session.server"
 
 type LoaderData = {
   admin: Awaited<Auth0Profile>
@@ -10,7 +10,7 @@ type LoaderData = {
 
 export const loader: LoaderFunction = async ({ request }) => {
   return json<LoaderData>({
-    admin: await requireAdmin(request),
+    admin: await requirePoktAdmin(request),
   })
 }
 

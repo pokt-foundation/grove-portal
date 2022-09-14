@@ -14,6 +14,7 @@ import {
 import { useEffect, useMemo } from "react"
 import { Auth0Profile } from "remix-auth-auth0"
 import { authenticator } from "./utils/auth.server"
+import { isPoktAdmin } from "./utils/session"
 import Footer, { links as FooterLinks } from "~/components/shared/Footer"
 import Header, { links as HeaderLinks } from "~/components/shared/Header"
 import { IconApp, IconNetwork } from "~/components/shared/Icons"
@@ -110,7 +111,8 @@ export default function App() {
   enum Protected {
     Public = 0,
     Private = 1,
-    Admin = 2,
+    PrivateAdmin = 2,
+    Admin = 3,
   }
 
   const routes = useMemo(() => {
@@ -173,7 +175,23 @@ export default function App() {
         protected: Protected.Admin,
       },
     ]
-    const protectedLevel = user ? Protected.Private : Protected.Public
+
+    let protectedLevel = Protected.Public
+
+    switch (user) {
+      case user:
+        // if (user && isPoktAdmin(user)) {
+        //   protectedLevel = Protected.Admin
+        // } else {
+        //   protectedLevel = Protected.Private
+        // }
+        protectedLevel = Protected.Private
+        break
+      default:
+        protectedLevel = Protected.Public
+        break
+    }
+
     return allRoutes.filter((r) => r.protected <= protectedLevel)
   }, [Protected, t, user])
 

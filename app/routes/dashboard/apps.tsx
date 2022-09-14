@@ -19,7 +19,8 @@ import { EndpointsQuery, ProcessedEndpoint } from "~/models/portal/sdk"
 import styles from "~/styles/dashboard.apps.css"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 import { MAX_USER_APPS } from "~/utils/pocketUtils"
-import { getPoktId, requireUser } from "~/utils/session.server"
+import { getPoktId } from "~/utils/session"
+import { requireUser } from "~/utils/session.server"
 
 export const links = () => {
   return [

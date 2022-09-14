@@ -1,7 +1,7 @@
 import { ActionFunction, LoaderFunction, json } from "@remix-run/node"
 import { FeatureFlags, defaultFeatureFlags } from "~/context/FeatureFlagContext"
 import { featureFlagsCookie } from "~/utils/cookies.server"
-import { requireAdmin } from "~/utils/session.server"
+import { requirePoktAdmin } from "~/utils/session.server"
 
 export interface FeatureFlagsLoaderActionData {
   POKT_FEATURE_FLAGS: FeatureFlags
@@ -24,7 +24,7 @@ export const action: ActionFunction = async ({ request }) => {
   const cookie: FeatureFlags =
     (await featureFlagsCookie.parse(cookieHeader)) || defaultFeatureFlags
 
-  await requireAdmin(request)
+  await requirePoktAdmin(request)
 
   if (bodyParams.has("MULTI_LANGUAGE")) {
     cookie.MULTI_LANGUAGE = bodyParams.get("MULTI_LANGUAGE") as string

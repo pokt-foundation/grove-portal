@@ -4,7 +4,8 @@ import { initPortalClient } from "~/models/portal/portal.server"
 import { PayPlanType } from "~/models/portal/sdk"
 import { getSubscription, stripe, Stripe } from "~/models/stripe/stripe.server"
 import { getErrorMessage } from "~/utils/catchError"
-import { getPoktId, requireUser } from "~/utils/session.server"
+import { getPoktId } from "~/utils/session"
+import { requireUser } from "~/utils/session.server"
 
 export type StripeDeleteActionData =
   | {

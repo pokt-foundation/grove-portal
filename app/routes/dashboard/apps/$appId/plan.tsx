@@ -10,7 +10,8 @@ import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { getErrorMessage } from "~/utils/catchError"
 import { dayjs } from "~/utils/dayjs"
 import { getRequiredServerEnvVar } from "~/utils/environment"
-import { getPoktId, requireUser } from "~/utils/session.server"
+import { getPoktId } from "~/utils/session"
+import { requireUser } from "~/utils/session.server"
 import PlanView, {
   links as PlanViewLinks,
 } from "~/views/dashboard/apps/appId/plan/planView"

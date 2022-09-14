@@ -12,6 +12,7 @@ jobs:
       - name: 👀 Env
         run: |
           echo "Git head ref: ${{ github.head_ref }}"
+          echo "Git base ref: ${{ github.base_ref }}"
           echo "Event name: ${{ github.event_name }}"
           echo "Git ref:    ${{ github.ref }}"
           echo "Git ref name:    ${{ github.ref_name }}"

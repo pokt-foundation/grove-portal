@@ -28,9 +28,7 @@ export default function AppRadioCards({
   setRadio,
   currentRadio,
 }: AppRadioCardsProps) {
-  const {
-    t: { AppPlansOverview },
-  } = useTranslate()
+  const { t } = useTranslate()
   const { flags } = useFeatureFlags()
 
   return (
@@ -46,18 +44,24 @@ export default function AppRadioCards({
           xs={12}
         >
           <div
-            className={clsx(["radio-card", { active: radio.value === currentRadio }])}
+            className={clsx(
+              "radio-card",
+              radio.value === currentRadio ? "active" : null,
+              { disabled: radio.active === "false" },
+            )}
             onClick={() => radio.active === "true" && setRadio(radio.value)}
           >
             <div className="flexRow">
               <Radio
                 checked={radio.value === currentRadio}
-                disabled={radio.active != "true"}
+                disabled={radio.active !== "true"}
                 label={radio.name}
                 name="app-subscription"
                 value={radio.value}
               />
-              <Text>{radio.priceText}</Text>
+              <Text>
+                {radio.active === "true" ? radio.priceText : t.common.unavailable}
+              </Text>
             </div>
             <Text>{radio.cardDescription}</Text>
           </div>

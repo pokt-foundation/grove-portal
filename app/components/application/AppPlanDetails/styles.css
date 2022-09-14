@@ -38,6 +38,17 @@
   margin-top: 16px;
 }
 
+.pokt-app-plan-details .upgrade-button.disabled {
+  color: var(--color-disabled);
+  border-color: var(--color-disabled);
+}
+
 .pokt-app-plan-details .pokt-loader {
   fill: var(--color-white-main);
+}
+
+.pokt-app-plan-details a[disabled] {
+  pointer-events: none;
+  cursor: default;
+  touch-action: none;
 }

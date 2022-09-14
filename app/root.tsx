@@ -127,7 +127,7 @@ export default function App() {
             protected: Protected.Private,
           },
           {
-            to: "/explorer/transactions",
+            to: "/explorer/blocks",
             label: "Blocks",
             protected: Protected.Private,
           },
@@ -136,19 +136,17 @@ export default function App() {
       {
         to: "/dashboard",
         label: "Dashboard",
-        icon: IconNetwork,
+        icon: IconApp,
         protected: Protected.Private,
         children: [
           {
             to: "/dashboard/apps",
             label: t.dashboard.routes.apps,
-            icon: IconApp,
             protected: Protected.Private,
           },
           {
             to: "/dashboard/nodes",
             label: "Nodes",
-            icon: IconNetwork,
             protected: Protected.Private,
           },
         ],

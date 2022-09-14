@@ -1,3 +1,5 @@
+import { Button } from "@pokt-foundation/pocket-blocks"
+import { Link } from "@remix-run/react"
 import { useMemo } from "react"
 import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/shared/Card"
@@ -5,7 +7,7 @@ import CardList, {
   CardListItem,
   links as CardListLinks,
 } from "~/components/shared/CardList"
-import { LatestBlockType } from "~/routes/dashboard/index"
+import { LatestBlockType } from "~/routes/explorer/index"
 
 /* c8 ignore start */
 export const links = () => {
@@ -82,6 +84,9 @@ export default function LatestBlock({ latestBlock }: LatestBlockProps) {
           <h3>Latest Block</h3>
         </div>
         <CardList items={rows} />
+        <Button component={Link} to="blocks">
+          View All
+        </Button>
       </Card>
     </div>
   )

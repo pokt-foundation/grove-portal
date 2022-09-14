@@ -1,23 +1,42 @@
 import { Grid } from "@pokt-foundation/pocket-blocks"
-import { LinksFunction } from "@remix-run/node"
-import { Form, useLocation, useSearchParams } from "@remix-run/react"
+import { json, LinksFunction, LoaderFunction } from "@remix-run/node"
+import { Form, useLoaderData, useLocation, useSearchParams } from "@remix-run/react"
 import { useEffect, useState } from "react"
-import { CallOutBox, links as CallOutBoxLinks } from "../../components/shared/CallOutBox"
+import { Auth0Profile } from "remix-auth-auth0"
+import { CallOutBox, links as CallOutBoxLinks } from "~/components/shared/CallOutBox"
 import Modal, { links as ModalLinks } from "~/components/shared/Modal"
 import { useTranslate } from "~/context/TranslateContext"
 import styles from "~/styles/landing.css"
+import analyticsInit, { AmplitudeEvents, trackEvent } from "~/utils/analytics"
+import { getUserProfile } from "~/utils/session.server"
 
 export const links: LinksFunction = () => {
   return [...CallOutBoxLinks(), ...ModalLinks(), { rel: "stylesheet", href: styles }]
 }
 
+type LoaderData = {
+  user: Awaited<Auth0Profile | undefined>
+}
+
+export const loader: LoaderFunction = async ({ request }) => {
+  return json<LoaderData>({
+    user: await getUserProfile(request),
+  })
+}
+
 export default function Index() {
+  const { user } = useLoaderData() as LoaderData
   const {
     t: { landing },
   } = useTranslate()
   const [searchParams] = useSearchParams()
   const location = useLocation()
   const [showExpiredModal, setShowExpiredModal] = useState(false)
+
+  useEffect(() => {
+    analyticsInit(user)
+    trackEvent(AmplitudeEvents.LandingView)
+  }, [user])
 
   useEffect(() => {
     const expired = searchParams.get("expired")

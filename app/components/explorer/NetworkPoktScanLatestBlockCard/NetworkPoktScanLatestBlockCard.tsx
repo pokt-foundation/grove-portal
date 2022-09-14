@@ -1,3 +1,5 @@
+import { Button } from "@pokt-foundation/pocket-blocks"
+import { Link } from "@remix-run/react"
 import { useMemo } from "react"
 import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/shared/Card"
@@ -77,6 +79,9 @@ export default function LatestBlock({ latestBlock }: LatestBlockProps) {
         </div>
         <CardList items={rows} />
         <PoweredBy alt="Poktscan" image="/poktscanLogo.png" to="https://poktscan.com/" />
+        <Button component={Link} to="blocks">
+          View All
+        </Button>
       </Card>
     </div>
   )

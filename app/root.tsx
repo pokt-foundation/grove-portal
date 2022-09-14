@@ -1,6 +1,4 @@
-// import initializeSentry from "~/utils/sentry"
-// import initializeAnalytics from "~/utils/analytics"
-import { Alert, Center } from "@pokt-foundation/pocket-blocks"
+import { Alert, Center, Container, Book } from "@pokt-foundation/pocket-blocks"
 import { LinksFunction, LoaderFunction, MetaFunction, json } from "@remix-run/node"
 import {
   Links,
@@ -13,13 +11,19 @@ import {
   useLoaderData,
   useSearchParams,
 } from "@remix-run/react"
-import { useEffect } from "react"
-import { FeatureFlagsContextProvider } from "./context/FeatureFlagContext"
-import { TranslateContextProvider, useTranslate } from "./context/TranslateContext"
-import { UserContextProvider } from "./context/UserContext"
-import { getClientEnv } from "./utils/environment.server"
+import { useEffect, useMemo } from "react"
+import { Auth0Profile } from "remix-auth-auth0"
+import { authenticator } from "./utils/auth.server"
+import Footer, { links as FooterLinks } from "~/components/shared/Footer"
+import Header, { links as HeaderLinks } from "~/components/shared/Header"
+import { IconApp, IconNetwork } from "~/components/shared/Icons"
+import Nav, { links as NavLinks } from "~/components/shared/Nav"
+import { FeatureFlagsContextProvider } from "~/context/FeatureFlagContext"
+import { TranslateContextProvider, useTranslate } from "~/context/TranslateContext"
+import { UserContextProvider } from "~/context/UserContext"
 import normalizeStyles from "~/styles/normalize.css"
 import rootStyles from "~/styles/root.css"
+import { getClientEnv } from "~/utils/environment.server"
 
 export const links: LinksFunction = () => {
   return [
@@ -32,6 +36,9 @@ export const links: LinksFunction = () => {
       rel: "stylesheet",
       href: "https://fonts.googleapis.com/css2?family=Manrope:wght@400;700&display=swap",
     },
+    ...FooterLinks(),
+    ...HeaderLinks(),
+    ...NavLinks(),
   ]
 }
 
@@ -44,20 +51,18 @@ export const meta: MetaFunction = () => ({
 
 export interface RootLoaderData {
   ENV: ReturnType<typeof getClientEnv>
+  user: Awaited<Auth0Profile | undefined>
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
+  const user = await authenticator.isAuthenticated(request)
+
   const data = {
     ENV: getClientEnv(),
+    user: user?.profile,
   }
 
-  return json<RootLoaderData>(data, {
-    headers: {
-      "Cache-Control": `private, max-age=${
-        process.env.NODE_ENV === "production" ? "3600" : "60"
-      }`,
-    },
-  })
+  return json<RootLoaderData>(data)
 }
 
 const WithProviders: React.FC = ({ children }) => {
@@ -99,17 +104,96 @@ const Document = ({ children, title }: { children: React.ReactNode; title?: stri
 }
 
 export default function App() {
-  const data = useLoaderData<RootLoaderData>()
-  // initializeAnalytics()
-  // initializeSentry()
+  const { ENV, user } = useLoaderData<RootLoaderData>()
+  const { t } = useTranslate()
+
+  enum Protected {
+    Public = 0,
+    Private = 1,
+    Admin = 2,
+  }
+
+  const routes = useMemo(() => {
+    const allRoutes = [
+      {
+        to: "/explorer",
+        label: "Explorer",
+        icon: IconNetwork,
+        protected: Protected.Private,
+        children: [
+          {
+            to: "/explorer/transactions",
+            label: "Transactions",
+            protected: Protected.Private,
+          },
+          {
+            to: "/explorer/transactions",
+            label: "Blocks",
+            protected: Protected.Private,
+          },
+        ],
+      },
+      {
+        to: "/dashboard",
+        label: "Dashboard",
+        icon: IconNetwork,
+        protected: Protected.Private,
+        children: [
+          {
+            to: "/dashboard/apps",
+            label: t.dashboard.routes.apps,
+            icon: IconApp,
+            protected: Protected.Private,
+          },
+          {
+            to: "/dashboard/nodes",
+            label: "Nodes",
+            icon: IconNetwork,
+            protected: Protected.Private,
+          },
+        ],
+      },
+      {
+        to: "/docs",
+        label: t.dashboard.routes.docs,
+        protected: Protected.Public,
+      },
+      {
+        to: "/faq",
+        label: "FAQs",
+        protected: Protected.Public,
+      },
+      {
+        to: "https://www.pokt.network/",
+        external: true,
+        label: "About Pocket",
+        protected: Protected.Public,
+      },
+      {
+        to: "/admin",
+        label: "Admin",
+        protected: Protected.Admin,
+      },
+    ]
+    const protectedLevel = user ? Protected.Private : Protected.Public
+    return allRoutes.filter((r) => r.protected <= protectedLevel)
+  }, [Protected, t, user])
 
   return (
     <WithProviders>
       <Document>
-        <Outlet />
+        <Header user={user}>
+          <Nav routes={routes} />
+        </Header>
+        <main>
+          <Container className="container" size="lg">
+            <Outlet />
+          </Container>
+        </main>
+        <Footer />
         <script
           dangerouslySetInnerHTML={{
-            __html: `window.ENV = ${JSON.stringify(data.ENV)};`,
+            __html: `window.ENV = ${JSON.stringify(ENV)};`,
           }}
         />
       </Document>

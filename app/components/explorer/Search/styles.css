@@ -1,0 +1,7 @@
+.pokt-explorer-search form {
+  width: 100%;
+}
+
+.pokt-explorer-search input {
+  border: 1px solid var(--color-white-main);
+}

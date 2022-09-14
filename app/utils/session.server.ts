@@ -83,5 +83,5 @@ export const getPoktId = (id: string) => {
 
 export const getUserProfile = async (request: Request) => {
   const user = await authenticator.isAuthenticated(request)
-  return user?.profile
+  return user?.profile ?? undefined
 }

@@ -1,4 +1,5 @@
-import { Select } from "@pokt-foundation/pocket-blocks"
+import { Menu } from "@mantine/core"
+import { Button, Select } from "@pokt-foundation/pocket-blocks"
 import { NavLink } from "@remix-run/react"
 import clsx from "clsx"
 import React, { useEffect, useState } from "react"
@@ -24,6 +25,7 @@ type Route = {
   icon?: React.ReactNode
   end?: boolean
   external?: boolean
+  children?: Route[]
 }
 
 export const Nav = ({ routes, dropdown = false, appId }: NavProps) => {
@@ -75,17 +77,37 @@ export const Nav = ({ routes, dropdown = false, appId }: NavProps) => {
                   {route.label}
                 </a>
               ) : (
-                <NavLink
-                  className={({ isActive }) =>
-                    `nav-link ${isActive ? "nav-link-active" : ""}`
-                  }
-                  end={route.end}
-                  to={route.to}
-                >
-                  {/* @ts-ignore eslint-disable-next-line */}
-                  {route.icon && <Icon />}
-                  {route.label && <span>{route.label}</span>}
-                </NavLink>
+                <>
+                  <NavLink
+                    className={({ isActive }) =>
+                      `nav-link ${isActive ? "nav-link-active" : ""}`
+                    }
+                    end={route.end}
+                    to={route.to}
+                  >
+                    {/* @ts-ignore eslint-disable-next-line */}
+                    {route.icon && <Icon />}
+                    {route.label && <span>{route.label}</span>}
+                  </NavLink>
+                  {route.children && (
+                    <Menu offset={20} shadow="md" trigger="hover">
+                      {route.children.map((childRoute) => (
+                        // eslint-disable-next-line react/jsx-key
+                        <Menu.Item icon={childRoute.icon && <childRoute.icon />}>
+                          <NavLink
+                            className={({ isActive }) =>
+                              `nav-link ${isActive ? "nav-link-active" : ""}`
+                            }
+                            end={childRoute.end}
+                            to={childRoute.to}
+                          >
+                            {childRoute.label && <span>{childRoute.label}</span>}
+                          </NavLink>
+                        </Menu.Item>
+                      ))}
+                    </Menu>
+                  )}
+                </>
               )}
             </li>
           )

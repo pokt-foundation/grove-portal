@@ -10,6 +10,12 @@
   display: block;
 }
 
+@media (min-width: 640px) {
+  .ham.visible {
+    display: none;
+  }
+}
+
 .ham-rotate.active {
   transform: rotate(45deg);
 }

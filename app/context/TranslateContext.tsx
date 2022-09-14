@@ -7,6 +7,7 @@ import {
   ContactSalesForm,
   ContactSalesView,
 } from "~/locales/types/ContactSalesLocaleTypes"
+import { LegacyBannerCard } from "~/locales/types/LegacyBannerCard"
 import { SecurityPageViewTypes } from "~/locales/types/SecurityPageTypes"
 import { StopRemoveApp } from "~/locales/types/StopRemoveApp"
 import { PayPlanType } from "~/models/portal/sdk"
@@ -25,6 +26,7 @@ interface TranslationData {
     close: string
     goBack: string
     cancel: string
+    unavailable: string
   }
   search: {
     label: string
@@ -185,7 +187,7 @@ interface TranslationData {
       chainAccess: string
       appsLimit: string
       overviewHeader: string
-      overviewDescription: string
+      enterpriseSolutions: string
     }
     planDetails: {
       [PayPlanType.PayAsYouGoV0]: {
@@ -215,6 +217,10 @@ interface TranslationData {
         appsLimit: string
         chainAccess: string
       }
+      enterpriseSolutions: {
+        description: string
+        contactUS: string
+      }
     }
   }
   AppPlanDetails: {
@@ -235,6 +241,7 @@ interface TranslationData {
   CalculateYourPricing: CalculateYourPricing
   security: SecurityPageViewTypes
   stopRemoveApp: StopRemoveApp
+  LegacyBannerCard: LegacyBannerCard
 }
 
 export type Language = typeof languages[number]

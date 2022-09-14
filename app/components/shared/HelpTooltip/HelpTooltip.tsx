@@ -1,5 +1,9 @@
-import { Button, Tooltip, TooltipProps } from "@pokt-foundation/pocket-blocks"
-import { IconQuestion } from "@pokt-foundation/ui"
+import {
+  Button,
+  Tooltip,
+  TooltipProps,
+  IconCircleQuestion,
+} from "@pokt-foundation/pocket-blocks"
 import { useEffect, useState } from "react"
 import styles from "./styles.css"
 
@@ -30,7 +34,7 @@ export default function HelpTooltip(props: Omit<TooltipProps, "children">) {
   return (
     <Tooltip {...props} className="pokt-help" opened={open}>
       <Button onClick={() => setOpen((o) => !o)}>
-        <IconQuestion />
+        <IconCircleQuestion />
       </Button>
     </Tooltip>
   )

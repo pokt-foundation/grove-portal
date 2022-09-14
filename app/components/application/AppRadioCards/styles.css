@@ -3,6 +3,13 @@
   align-items: stretch;
 }
 
+.radio-card-grid > .order-first {
+  order: 0;
+}
+.radio-card-grid > :not(.order-first) {
+  order: 1;
+}
+
 .radio-card {
   padding: 24px;
   display: flex;
@@ -23,6 +30,11 @@
   width: 100%;
 }
 
+.radio-card.disabled {
+  color: var(--color-disabled);
+  border-color: var(--color-disabled);
+}
+
 .radio-card > .mantine-Text-root {
   margin-top: 24px;
 }
@@ -41,4 +53,13 @@
 
 label.mantine-Radio-label {
   color: var(--color-white-main);
+}
+
+.radio-card.disabled input[type="radio"] {
+  background-color: var(--color-disabled);
+  border-color: var(--color-disabled);
+}
+
+.radio-card.disabled label {
+  color: var(--color-disabled);
 }

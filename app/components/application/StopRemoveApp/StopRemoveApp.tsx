@@ -6,6 +6,7 @@ import Modal, { links as ModalLinks } from "~/components/shared/Modal"
 import { useTranslate } from "~/context/TranslateContext"
 import { endpoint } from "~/models/portal/portal.data"
 import { PayPlanType } from "~/models/portal/sdk"
+import { ProcessedEndpoint } from "~/models/portal/sdk"
 import { Stripe } from "~/models/stripe/stripe.server"
 import { StripeDeleteActionData } from "~/routes/api/stripe/subscription"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
@@ -17,13 +18,17 @@ export const links = () => {
 }
 
 interface StopRemoveAppProps {
+  apps: ProcessedEndpoint["apps"]
   appId: string
+  name: string
   planType: PayPlanType
   subscription?: Stripe.Subscription
 }
 
 export default function StopRemoveApp({
+  apps,
   appId,
+  name,
   planType,
   subscription,
 }: StopRemoveAppProps) {
@@ -105,8 +110,19 @@ export default function StopRemoveApp({
             <div>
               <Text>{t.stopRemoveApp.removeAppDescription}</Text>
               <Text mt={8}>
-                {t.stopRemoveApp.appId} {appId}
+                {t.stopRemoveApp.name}{" "}
+                <Text component="span" weight="bold">
+                  {name}
+                </Text>
               </Text>
+              {apps && apps[0].appId && (
+                <Text mt={8}>
+                  {t.stopRemoveApp.appAddress}{" "}
+                  <Text component="span" weight="bold">
+                    {apps[0].appId}
+                  </Text>
+                </Text>
+              )}
             </div>
             <Group align="center" className="buttonGroup" position="apart">
               <Button variant="outline" onClick={() => setRemoveAppOpened(false)}>

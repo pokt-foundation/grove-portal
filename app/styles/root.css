@@ -18,6 +18,7 @@
   --zindex-base: 1;
   --zindex-nav: 100;
   --zindex-overlay: 200;
+  --radii-md: 12px;
 }
 
 a {
@@ -44,7 +45,7 @@ body {
   font-family: "Manrope";
   background-color: var(--color-black-dark);
   color: var(--color-white-main);
-  width: 100vw;
+  width: 100%;
 }
 
 main {
@@ -58,4 +59,10 @@ h3 {
   font-weight: bold;
   margin-top: 0;
   margin-bottom: 24px;
+}
+
+.pokt-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }

@@ -1,12 +1,15 @@
-import { Button, Text, Title, Loader } from "@pokt-foundation/pocket-blocks"
+import { Button, Text, Title } from "@pokt-foundation/pocket-blocks"
 import { Link, useFetcher } from "@remix-run/react"
+import clsx from "clsx"
 import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/shared/Card"
 import HelpTooltip from "~/components/shared/HelpTooltip"
+import { useFeatureFlags } from "~/context/FeatureFlagContext"
 import { useTranslate } from "~/context/TranslateContext"
 import { PayPlanType } from "~/models/portal/sdk"
 import { Stripe } from "~/models/stripe/stripe.server"
-import { getPlanName, isFreePlan } from "~/utils/utils"
+import { commify } from "~/utils/formattingUtils"
+import { getPlanName, isFreePlan, isLegacyPlan } from "~/utils/utils"
 
 /* c8 ignore next */
 export const links = () => {
@@ -28,6 +31,7 @@ export default function AppPlanDetails({
   name,
   subscription,
 }: AppPlanDetailsProps) {
+  const { flags } = useFeatureFlags()
   const { t } = useTranslate()
   const subscriptionFetcher = useFetcher()
   const stripe = `/api/stripe/checkout-session?app-id=${id}&app-name=${name}`
@@ -39,7 +43,7 @@ export default function AppPlanDetails({
             {t.AppPlanDetails.relayLimit}
           </Title>
           <div>
-            <Text>{dailyLimit !== 0 ? dailyLimit : "Unlimited"}</Text>
+            <Text>{dailyLimit !== 0 ? commify(dailyLimit) : "Unlimited"}</Text>
             <Text className="smallText">{t.AppPlanDetails.relaysPerDay}</Text>
           </div>
         </div>
@@ -52,10 +56,13 @@ export default function AppPlanDetails({
             <Text className="centerGap">{getPlanName(planType)}</Text>
           </div>
         </div>
-        {!subscription && isFreePlan(planType) && (
+        {!subscription && (isFreePlan(planType) || isLegacyPlan(planType)) && (
           <Button
-            className="upgrade-button pokt-button"
+            className={clsx("upgrade-button", "pokt-button", {
+              disabled: flags.STRIPE_PAYMENT === "false",
+            })}
             component={Link}
+            disabled={flags.STRIPE_PAYMENT === "false"}
             to={stripe}
             variant="outline"
           >
@@ -69,6 +76,7 @@ export default function AppPlanDetails({
             <Button
               fullWidth
               className="upgrade-button pokt-button"
+              disabled={flags.STRIPE_PAYMENT === "false"}
               type="submit"
               variant="outline"
             >

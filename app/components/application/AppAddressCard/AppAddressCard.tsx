@@ -1,7 +1,7 @@
 import {
   Button,
-  CaretDown,
-  CaretUp,
+  IconCaretDown,
+  IconCaretUp,
   Collapse,
   Divider,
 } from "@pokt-foundation/pocket-blocks"
@@ -71,9 +71,9 @@ export default function AppAddressCard({ apps }: AppAddressCardProps) {
                   onClick={() => setShowAllApps((c) => !c)}
                 >
                   {showAllApps ? (
-                    <CaretUp className="pokt-icon" />
+                    <IconCaretUp className="pokt-icon" />
                   ) : (
-                    <CaretDown className="pokt-icon" />
+                    <IconCaretDown className="pokt-icon" />
                   )}
                 </Button>
               }

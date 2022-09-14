@@ -56,6 +56,6 @@ describe("<AppPlansOverview />", () => {
     expect(screen.getByText(chainAccess)).toBeInTheDocument()
     expect(screen.getByText(appsLimit)).toBeInTheDocument()
     expect(screen.queryAllByRole("heading", { level: 3 })).toHaveLength(2)
-    expect(screen.queryAllByRole("heading", { level: 4 })).toHaveLength(4)
+    expect(screen.queryAllByRole("heading", { level: 5 })).toHaveLength(5)
   })
 })

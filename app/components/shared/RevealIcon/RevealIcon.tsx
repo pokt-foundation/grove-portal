@@ -1,4 +1,4 @@
-import { IconEyeOn, IconEyeOff } from "@pokt-foundation/ui"
+import { IconEyeOn, IconEyeOff } from "@pokt-foundation/pocket-blocks"
 import styles from "./styles.css"
 
 /* c8 ignore start */
@@ -20,7 +20,11 @@ export default function RevealIcon({ revealed, setRevealed }: RevealIconProps) {
       tabIndex={0}
       onClick={() => setRevealed(!revealed)}
     >
-      {revealed ? <IconEyeOff /> : <IconEyeOn />}
+      {revealed ? (
+        <IconEyeOn fill="var(--color-secondary-main)" />
+      ) : (
+        <IconEyeOff fill="var(--color-secondary-main)" />
+      )}
     </span>
   )
 }

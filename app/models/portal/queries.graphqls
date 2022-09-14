@@ -65,21 +65,18 @@ query endpoint($endpointID: ID!) {
   }
 }
 
-query blockchains {
-  blockchains {
+query blockchains($active: Boolean) {
+  blockchains(active: $active) {
     id
     ticker
     network
-    description
-    index
     blockchain
+    blockchainAliases
     active
+    description
     enforceResult
     chainIDCheck
-    syncCheck
-    syncAllowance
     logLimitBlocks
     path
-    blockchainAliases
   }
 }

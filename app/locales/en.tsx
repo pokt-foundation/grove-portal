@@ -1,3 +1,4 @@
+import { Link } from "@remix-run/react"
 import { PayPlanType } from "~/models/portal/sdk"
 import { FREE_TIER_MAX_RELAYS } from "~/utils/pocketUtils"
 
@@ -9,6 +10,7 @@ const schema = {
     close: "Close",
     goBack: "go back",
     cancel: "Cancel",
+    unavailable: "Currently unavailable",
   },
   search: {
     label: "Search",
@@ -257,7 +259,7 @@ const schema = {
     link: "Contact POKT Team",
   },
   appAddressCard: {
-    heading: "POKT App Addresses",
+    heading: "App Address",
     error: "No apps found.",
   },
   footer: {
@@ -271,8 +273,7 @@ const schema = {
       chainAccess: "Chain Access",
       appsLimit: "Apps Limit",
       overviewHeader: "Flexible plans that grow with your app",
-      overviewDescription:
-        "Scalable plans because your needs change as yous app grows. All plans access to Pocket Network multichain infrastructure with our chain!",
+      enterpriseSolutions: "We have Enterprise Solutions for you",
     },
     planDetails: {
       [PayPlanType.PayAsYouGoV0]: {
@@ -288,7 +289,7 @@ const schema = {
       [PayPlanType.FreetierV0]: {
         title: "Always Free",
         description:
-          "Access to reliable, censor resistant infrastructure. Free up to 250k relays per day.",
+          "Access to reliable, fast infrastructure. Free up to 250k relays per day.",
         description2: "",
         pricing: "$0.00",
         relayLimit: "250k per app per day",
@@ -298,12 +299,16 @@ const schema = {
       [PayPlanType.TestPlanV0]: {
         title: "Always Free",
         description:
-          "Access to reliable, censor resistant infrastructure. Free up to 250k relays per day.",
+          "Access to reliable, fast infrastructure. Free up to 250k relays per day.",
         description2: "",
         pricing: "$0.00",
         relayLimit: "250k per app per day",
         appsLimit: "Up to 2 Applicaitions",
         chainAccess: "No limit",
+      },
+      enterpriseSolutions: {
+        description: "Custom plans for large scale apps.",
+        contactUS: "Contact Us",
       },
     },
   },
@@ -312,7 +317,7 @@ const schema = {
     relaysPerDay: "relays per day",
     currentPlan: "Current Plan",
     currentPlanToolTip: "This is the current plan for this specific application.",
-    upgrade: "Upgrade",
+    upgrade: 'Upgrade to "Pay As You Go"',
     renew: "Renew Subscription",
   },
   PlanView: {
@@ -413,12 +418,35 @@ const schema = {
     removeApp: "Delete Application",
     removeAppTitle: "Do you want to delete this application?",
     removeAppDescription:
-      "If you delete this application, the data will no longer be accessible in the portal. Historical will be available in the explorer.",
+      "If you delete this application, the data will no longer be accessible in the portal. Historical data will be available in the explorer.",
     planDowngrade:
       "Your plan will be changed to 'Always Free' effective immediatly, and you will be invoiced at the end of your billing period.",
     planRenew:
       "If you change your mind, you can renew your subscription until the end of your billing period.",
-    appId: "App ID:",
+    appAddress: "App Address:",
+    name: "Name:",
+  },
+  LegacyBannerCard: {
+    title: "Free Tier is about to change",
+    body: [
+      "On September 21st our unlimited free tier plan is coming to an end. All Free-tier applications will be rate limited at 250K relays per day.",
+      "As an early customer, we've got you covered. You will be grandfathered into a legacy free tier plan for a limited time which will grant your app uniterupted service.",
+      <>
+        Please view our
+        <Link className="pokt-link" to="/faq">
+          {" "}
+          FAQs{" "}
+        </Link>
+        for more information and
+        <Link className="pokt-link" to="/dashboard/contact-sales">
+          {" "}
+          contact us{" "}
+        </Link>
+        with any questions.
+      </>,
+    ],
+    showButtonText: "Minimize",
+    hideButtonText: "Learn More",
   },
 }
 

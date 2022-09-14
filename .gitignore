@@ -1,5 +1,6 @@
 app/models/indexer/sdk.ts
 app/models/portal/sdk.ts
+app/models/poktscan/sdk.ts
 
 node_modules
 

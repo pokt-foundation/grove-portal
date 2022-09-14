@@ -6,6 +6,7 @@ import { UserLoaderActionData } from "~/routes/api/user"
 
 export const defaultUserPreference = {
   language: "en" as Language,
+  showExpandedLegacyBanner: true,
 }
 
 export const defaultUserData = {
@@ -30,11 +31,13 @@ export interface IUserContext {
 
 export interface UserPreferenceFormData {
   language: Language
+  showExpandedLegacyBanner: string //boolean
   endpoints?: string // stringified
 }
 
 export interface UserPreference {
   language: Language
+  showExpandedLegacyBanner: boolean
   endpoints?: {
     [key: UserLB["id"]]: string[]
   }

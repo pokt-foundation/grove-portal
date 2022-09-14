@@ -26,7 +26,7 @@ export default function CopyTextIcon({ text }: CopyTextIconProps) {
       {clipboard.copied ? (
         <IconPlus fill="var(--color-secondary-main)" />
       ) : (
-        <IconCopy fill="var(--color-secondary-main)" />
+        <IconCopy fill="var(--color-white-main)" />
       )}
     </span>
   )

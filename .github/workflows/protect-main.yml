@@ -9,13 +9,9 @@ jobs:
     name: 🥽 Protect
     runs-on: ubuntu-latest
     steps:
-      - name: 👀 Env
+      - name: 👀 IsStage?
         run: |
-          echo "Git: ${{ toJSON(github) }}"
-          echo "Git head ref: ${{ github.head_ref }}"
-          echo "Git base ref: ${{ github.base_ref }}"
-          echo "Event name: ${{ github.event_name }}"
-          echo "Git ref:    ${{ github.ref }}"
-          echo "Git ref name:    ${{ github.ref_name }}"
-          echo "GH actor:   ${{ github.actor }}"
-          echo "SHA:        ${{ github.sha }}"
+          if [[ "${{ github.head_ref }}" != "stage" ]]; then
+            echo "You must merge to main through stage"
+            exit 1
+          fi

@@ -11,6 +11,7 @@ jobs:
     steps:
       - name: 👀 Env
         run: |
+          echo "Git: ${{ toJSON(github) }}"
           echo "Git head ref: ${{ github.head_ref }}"
           echo "Git base ref: ${{ github.base_ref }}"
           echo "Event name: ${{ github.event_name }}"

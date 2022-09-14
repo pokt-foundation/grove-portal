@@ -1,5 +1,4 @@
-import { Avatar, Button } from "@pokt-foundation/pocket-blocks"
-import { IconInfo } from "@pokt-foundation/ui"
+import { IconInfo, Avatar, Button } from "@pokt-foundation/pocket-blocks"
 import { Link } from "@remix-run/react"
 import React from "react"
 import styles from "./styles.css"
@@ -31,7 +30,7 @@ export default function AppOverLimitCard({
             <div className="pokt-card-header">
               <h3>{t.AppOverLimitCard.title}</h3>
               <Avatar color="red" radius="xl" size="sm">
-                <IconInfo />
+                <IconInfo fill="#000" />
               </Avatar>
             </div>
             <div>
@@ -39,7 +38,7 @@ export default function AppOverLimitCard({
               {t.AppOverLimitCard.body.map((text) => (
                 <p key={text}>{text}</p>
               ))}
-              <Button component={Link} to="mailto:sales@pokt.network">
+              <Button component="a" href="mailto:sales@pokt.network">
                 {t.AppOverLimitCard.link}
               </Button>
             </div>

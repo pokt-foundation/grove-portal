@@ -1,6 +1,5 @@
 import { TextInput as MantineTextInput, TextInputProps } from "@mantine/core"
-import { Button } from "@pokt-foundation/pocket-blocks"
-import { IconTrashcan } from "@pokt-foundation/ui"
+import { Button, IconDeleteAlt } from "@pokt-foundation/pocket-blocks"
 import clsx from "clsx"
 import styles from "./styles.css"
 import CopyTextIcon, {
@@ -22,6 +21,7 @@ export type InputProps = TextInputProps & {
   copy?: boolean
   revealed?: boolean
   hasDelete?: boolean
+  iconPadding?: boolean
   handleRemove?: () => void
   setRevealed?: Function
 }
@@ -30,6 +30,7 @@ export default function TextInput({
   copy = false,
   revealed = false,
   hasDelete = false,
+  iconPadding = false,
   handleRemove = () => {},
   setRevealed,
   ...props
@@ -58,6 +59,7 @@ export default function TextInput({
         className={clsx({
           "pokt-text-input": true,
           "right-section": props.rightSection,
+          iconPadding: iconPadding,
         })}
         rightSection={rightSection}
         size={props.size ?? "md"}
@@ -71,7 +73,7 @@ export default function TextInput({
           variant="outline"
           onClick={handleRemove}
         >
-          <IconTrashcan />
+          <IconDeleteAlt fill="var(--color-white-light)" />
         </Button>
       )}
     </div>

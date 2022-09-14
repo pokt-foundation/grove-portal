@@ -1,9 +1,9 @@
-import { Button } from "@pokt-foundation/pocket-blocks"
-import { IconPerson } from "@pokt-foundation/ui"
+import { useViewportSize } from "@mantine/hooks"
+import { Button, IconUser } from "@pokt-foundation/pocket-blocks"
 import { Item, Separator } from "@radix-ui/react-dropdown-menu"
-import { Form, Link } from "@remix-run/react"
+import { Form, Link, useLocation } from "@remix-run/react"
 import clsx from "clsx"
-import { useMemo, useRef, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import React from "react"
 import { Auth0Profile } from "remix-auth-auth0"
 import Dropdown, { links as DropdownLinks } from "../Dropdown"
@@ -33,6 +33,7 @@ type HeaderProps = {
 export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) => {
   const [isActive, setIsActive] = useState(false)
   const logoutFormRef = useRef<HTMLFormElement>(null)
+  const location = useLocation()
 
   const routes: Route[] = useMemo(() => {
     const userRoutes = [
@@ -82,6 +83,10 @@ export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) 
     }
     return noUserRoutes
   }, [user])
+
+  useEffect(() => {
+    setIsActive(false)
+  }, [location.pathname])
 
   return (
     <>
@@ -161,7 +166,7 @@ function UserMenuDropdown({ user, routes }: UserMenuDropdownProps) {
   return (
     <>
       {user && (
-        <Dropdown label={<IconPerson />}>
+        <Dropdown label={<IconUser fill="var(--color-white-light)" />}>
           {routes.map(({ el, id: routeID }, index) => {
             const El = el
             return (

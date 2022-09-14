@@ -1,6 +1,5 @@
-import { Grid } from "@pokt-foundation/pocket-blocks"
+import { Grid, IconArrowDown, IconArrowUp } from "@pokt-foundation/pocket-blocks"
 import { CircleGraph } from "@pokt-foundation/ui"
-import { IconDown, IconUp } from "@pokt-foundation/ui"
 import { useMemo } from "react"
 import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/shared/Card"
@@ -60,7 +59,7 @@ export default function AppRequestsRateCard({
       value: `${Math.abs(successRateDelta as number)}%`,
       help: t.AppRequestsRateCard.list.successDelta.help,
       color: successRateDelta >= 0 ? "success" : "error",
-      icon: successRateDelta >= 0 ? IconUp : IconDown,
+      icon: successRateDelta >= 0 ? IconArrowUp : IconArrowDown,
     },
     {
       label: t.AppRequestsRateCard.list.errorRate.label,

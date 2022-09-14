@@ -1,4 +1,4 @@
-import { Select } from "@mantine/core"
+import { Select } from "@pokt-foundation/pocket-blocks"
 import { NavLink } from "@remix-run/react"
 import clsx from "clsx"
 import React, { useEffect, useState } from "react"

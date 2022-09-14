@@ -1,5 +1,5 @@
-import { LoaderFunction, MetaFunction, json, ActionFunction } from "@remix-run/node"
-import { useActionData, useCatch, useLoaderData, useSearchParams } from "@remix-run/react"
+import { LoaderFunction, MetaFunction, json, redirect } from "@remix-run/node"
+import { useCatch, useFetcher, useLoaderData, useSearchParams } from "@remix-run/react"
 import invariant from "tiny-invariant"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { BlockchainsQuery, EndpointQuery, PayPlanType } from "~/models/portal/sdk"
@@ -8,12 +8,7 @@ import {
   getRelaysPerWeek,
   RelayMetric,
 } from "~/models/relaymeter/relaymeter.server"
-import {
-  getCustomer,
-  getSubscription,
-  Stripe,
-  stripe,
-} from "~/models/stripe/stripe.server"
+import { getSubscription, Stripe } from "~/models/stripe/stripe.server"
 import { getErrorMessage } from "~/utils/catchError"
 import { dayjs } from "~/utils/dayjs"
 import { getPoktId, requireUser } from "~/utils/session.server"
@@ -61,9 +56,23 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     } catch (e) {}
   }
 
-  const { endpoint } = await portal.endpoint({
-    endpointID: params.appId,
-  })
+  let endpointError = false
+  let endpointErrorMessage = ""
+
+  const endpointRes = await portal
+    .endpoint({
+      endpointID: params.appId,
+    })
+    .catch((error) => {
+      endpointError = true
+      endpointErrorMessage = getErrorMessage(error.response.errors[0].message)
+    })
+
+  if (endpointError) {
+    return redirect(`/dashboard/apps?error=true&message=${endpointErrorMessage}`)
+  }
+
+  const endpoint = endpointRes?.endpoint
   invariant(endpoint, "app id not found")
 
   const subscription = await getSubscription(
@@ -94,12 +103,14 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 export default function AppIdLayout() {
   const { endpoint, subscription } = useLoaderData() as AppIdLoaderData
   const [searchParams] = useSearchParams()
+  const updatePlanFetcher = useFetcher()
 
   return (
     <AppIdLayoutView
       endpoint={endpoint}
       searchParams={searchParams}
       subscription={subscription}
+      updatePlanFetcher={updatePlanFetcher}
     />
   )
 }

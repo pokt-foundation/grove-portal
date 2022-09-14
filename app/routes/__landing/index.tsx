@@ -1,5 +1,4 @@
-import { Grid, Link } from "@pokt-foundation/pocket-blocks"
-import { Container } from "@pokt-foundation/pocket-blocks"
+import { Grid } from "@pokt-foundation/pocket-blocks"
 import { LinksFunction } from "@remix-run/node"
 import { Form, useLocation, useSearchParams } from "@remix-run/react"
 import { useEffect, useState } from "react"
@@ -27,60 +26,58 @@ export default function Index() {
 
   return (
     <>
-      <Container size="lg">
-        <Grid grow>
-          <Grid.Col lg={5} sm={12}>
-            <h2>{landing.title}</h2>
-            <p className="text">{landing.subtitle}</p>
-            <p className="text"></p>
-            <Form action="/api/auth/auth0" method="post">
-              <button className="button" name="login" type="submit" value="true">
-                {landing.getStarted}
-              </button>
-            </Form>
-          </Grid.Col>
-          <Grid.Col lg={2} md={0} />
+      <Grid grow>
+        <Grid.Col lg={5} sm={12}>
+          <h2>{landing.title}</h2>
+          <p className="text">{landing.subtitle}</p>
+          <p className="text"></p>
+          <Form action="/api/auth/auth0" method="post">
+            <button className="button" name="login" type="submit" value="true">
+              {landing.getStarted}
+            </button>
+          </Form>
+        </Grid.Col>
+        <Grid.Col lg={2} md={0} />
 
-          <Grid.Col lg={5} sm={12}>
-            {landing.callOutBoxText.map((item) => {
-              return (
-                <CallOutBox
-                  key={item.title}
-                  blueText={item.blueText}
-                  description={item.description}
-                  smallText={item.smallText}
-                  title={item.title}
-                />
-              )
-            })}
-          </Grid.Col>
-          <Grid.Col>
-            <p className="text">
-              {landing.connect}{" "}
-              <a
-                className="link"
-                href="https://app.dework.xyz/i/4Hc9nkCtWs5Vgbx6pddZNl"
-                rel="noreferrer"
-                target="_blank"
-              >
-                {landing.whosNext}
-              </a>
-            </p>
-          </Grid.Col>
-          <div className="logo-box">
-            {landing.chains.map((name) => {
-              return (
-                <img
-                  key={name}
-                  alt={`${name} logo`}
-                  className="landing-logos"
-                  src={`/landing-logos/${name}_logo.png`}
-                />
-              )
-            })}
-          </div>
-        </Grid>
-      </Container>
+        <Grid.Col lg={5} sm={12}>
+          {landing.callOutBoxText.map((item) => {
+            return (
+              <CallOutBox
+                key={item.title}
+                blueText={item.blueText}
+                description={item.description}
+                smallText={item.smallText}
+                title={item.title}
+              />
+            )
+          })}
+        </Grid.Col>
+        <Grid.Col>
+          <p className="text">
+            {landing.connect}{" "}
+            <a
+              className="link"
+              href="https://app.dework.xyz/i/4Hc9nkCtWs5Vgbx6pddZNl"
+              rel="noreferrer"
+              target="_blank"
+            >
+              {landing.whosNext}
+            </a>
+          </p>
+        </Grid.Col>
+        <div className="logo-box">
+          {landing.chains.map((name) => {
+            return (
+              <img
+                key={name}
+                alt={`${name} logo`}
+                className="landing-logos"
+                src={`/landing-logos/${name}_logo.png`}
+              />
+            )
+          })}
+        </div>
+      </Grid>
       <img alt="Subdued Pokt Logo" className="pokt-image" src="/landing-background.png" />
       <Modal
         opened={showExpiredModal}

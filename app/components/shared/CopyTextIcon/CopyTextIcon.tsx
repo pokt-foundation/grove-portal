@@ -1,4 +1,5 @@
-import { IconCopy, IconPlus } from "@pokt-foundation/ui"
+import { IconCopy, IconPlus } from "@pokt-foundation/pocket-blocks"
+import clsx from "clsx"
 import styles from "./styles.css"
 import { useClipboard } from "~/hooks/useClipboard"
 
@@ -13,16 +14,20 @@ type CopyTextIconProps = {
 }
 
 export default function CopyTextIcon({ text }: CopyTextIconProps) {
-  const clipboard = useClipboard({ timeout: 500 })
+  const clipboard = useClipboard({ timeout: 1500 })
 
   return (
     <span
       aria-label="Click to copy"
-      className="pokt-copy-text"
+      className={clsx("pokt-copy-text", { copyIconColor: clipboard.copied })}
       tabIndex={0}
       onClick={() => clipboard.copy(text)}
     >
-      {clipboard.copied ? <IconPlus /> : <IconCopy />}
+      {clipboard.copied ? (
+        <IconPlus fill="var(--color-secondary-main)" />
+      ) : (
+        <IconCopy fill="var(--color-secondary-main)" />
+      )}
     </span>
   )
 }

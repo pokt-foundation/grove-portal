@@ -248,7 +248,7 @@ const schema = {
     link: "Contact POKT Team -fr",
   },
   appAddressCard: {
-    heading: "POKT App Addresses -fr",
+    heading: "App Address -fr",
     error: "No apps found. -fr",
   },
   footer: {
@@ -278,7 +278,7 @@ const schema = {
       [PayPlanType.FreetierV0]: {
         title: "Always Free -fr",
         description:
-          "Access to reliable, censor resistant infrastructure. Free up to 250k relays per day. -fr",
+          "Access to reliable, fast infrastructure. Free up to 250k relays per day. -fr",
         description2: "",
         pricing: "$0.00 -fr",
         relayLimit: "250k per app per day -fr",
@@ -288,7 +288,7 @@ const schema = {
       [PayPlanType.TestPlanV0]: {
         title: "Always Free -fr",
         description:
-          "Access to reliable, censor resistant infrastructure. Free up to 250k relays per day. -fr",
+          "Access to reliable, fast infrastructure. Free up to 250k relays per day. -fr",
         description2: "",
         pricing: "$0.00 -fr",
         relayLimit: "250k per app per day -fr",
@@ -306,7 +306,7 @@ const schema = {
     relaysPerDay: "relays per day -fr",
     currentPlan: "Current Plan -fr",
     currentPlanToolTip: "This is the current plan for this specific application. -fr",
-    upgrade: "Upgrade -fr",
+    upgrade: "Upgrade to Pay As You Go -fr",
     renew: "Renew Subscription -fr",
   },
   PlanView: {
@@ -411,7 +411,7 @@ const schema = {
       "If you delete this application, the data will no longer be accessible in the portal. Historical data will be available in the explorer. -fr",
     planDowngrade:
       "Your plan will be canceled, but is still available until the end of your billing period. -fr",
-    appId: "App ID: -fr",
+    appAddress: "App Address: -fr",
     name: "Name: -fr",
     planRenew: "If you change your mind, you can renew your subscription. -fr",
   },

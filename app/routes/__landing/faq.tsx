@@ -1,4 +1,3 @@
-import { Container } from "@pokt-foundation/pocket-blocks"
 import { LinksFunction } from "@remix-run/node"
 import { useTranslate } from "~/context/TranslateContext"
 import styles from "~/styles/landing.css"
@@ -14,22 +13,20 @@ export default function FAQs() {
 
   return (
     <>
-      <Container size="lg">
-        <div className="container__content">
-          <h1 className="center faqTitle">
-            {faq.title}
-            <span className="blue block">{faq.subtitle}</span>
-          </h1>
-          {faq.faqs.map((item) => {
-            return (
-              <>
-                <h2 className="blue faqQuestion">{item.question}</h2>
-                <p className="faqAnswer">{item.answer}</p>
-              </>
-            )
-          })}
-        </div>
-      </Container>
+      <div className="container__content">
+        <h1 className="center faqTitle">
+          {faq.title}
+          <span className="blue block">{faq.subtitle}</span>
+        </h1>
+        {faq.faqs.map((item) => {
+          return (
+            <>
+              <h2 className="blue faqQuestion">{item.question}</h2>
+              <p className="faqAnswer">{item.answer}</p>
+            </>
+          )
+        })}
+      </div>
     </>
   )
 }

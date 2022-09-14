@@ -259,7 +259,7 @@ const schema = {
     link: "Contact POKT Team",
   },
   appAddressCard: {
-    heading: "POKT App Addresses",
+    heading: "App Address",
     error: "No apps found.",
   },
   footer: {
@@ -289,7 +289,7 @@ const schema = {
       [PayPlanType.FreetierV0]: {
         title: "Always Free",
         description:
-          "Access to reliable, censor resistant infrastructure. Free up to 250k relays per day.",
+          "Access to reliable, fast infrastructure. Free up to 250k relays per day.",
         description2: "",
         pricing: "$0.00",
         relayLimit: "250k per app per day",
@@ -299,7 +299,7 @@ const schema = {
       [PayPlanType.TestPlanV0]: {
         title: "Always Free",
         description:
-          "Access to reliable, censor resistant infrastructure. Free up to 250k relays per day.",
+          "Access to reliable, fast infrastructure. Free up to 250k relays per day.",
         description2: "",
         pricing: "$0.00",
         relayLimit: "250k per app per day",
@@ -317,7 +317,7 @@ const schema = {
     relaysPerDay: "relays per day",
     currentPlan: "Current Plan",
     currentPlanToolTip: "This is the current plan for this specific application.",
-    upgrade: "Upgrade",
+    upgrade: 'Upgrade to "Pay As You Go"',
     renew: "Renew Subscription",
   },
   PlanView: {
@@ -423,7 +423,7 @@ const schema = {
       "Your plan will be changed to 'Always Free' effective immediatly, and you will be invoiced at the end of your billing period.",
     planRenew:
       "If you change your mind, you can renew your subscription until the end of your billing period.",
-    appId: "App ID:",
+    appAddress: "App Address:",
     name: "Name:",
   },
   LegacyBannerCard: {

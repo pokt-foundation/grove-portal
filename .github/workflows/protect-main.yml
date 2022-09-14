@@ -1,0 +1,18 @@
+name: 🛡 Protect
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  protect:
+    name: 🥽 Protect
+    runs-on: ubuntu-latest
+    steps:
+      - name: 👀 Env
+        run: |
+          echo "Event name: ${{ github.event_name }}"
+          echo "Git ref:    ${{ github.ref }}"
+          echo "Git ref name:    ${{ github.ref_name }}"
+          echo "GH actor:   ${{ github.actor }}"
+          echo "SHA:        ${{ github.sha }}"

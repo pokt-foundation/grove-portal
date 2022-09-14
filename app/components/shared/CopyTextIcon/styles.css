@@ -10,6 +10,6 @@
   height: 20px;
 }
 
-.pokt-copy-text.copyIconColor {
-  color: var(--color-white-main);
+.pokt-copy-text.copyIconColor svg {
+  fill: var(--color-white-main);
 }

@@ -11,6 +11,7 @@ jobs:
     steps:
       - name: 👀 Env
         run: |
+          echo "Git: ${{ github }}"
           echo "Event name: ${{ github.event_name }}"
           echo "Git ref:    ${{ github.ref }}"
           echo "Git ref name:    ${{ github.ref_name }}"

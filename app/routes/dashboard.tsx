@@ -61,9 +61,8 @@ export default function Dashboard() {
       label: t.dashboard.routes.docs,
     },
     {
-      to: "https://discord.gg/pokt",
-      external: true,
-      label: t.dashboard.routes.discord,
+      to: "/faq",
+      label: "FAQs",
     },
   ]
   return (

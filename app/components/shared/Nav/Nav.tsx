@@ -50,6 +50,17 @@ export const Nav = ({ routes, dropdown = false, appId }: NavProps) => {
     }
   }, [mobilePageSelect])
 
+  const LinkLabel = ({ route }: { route: Route }) => {
+    const Icon = route.icon
+    return (
+      <>
+        {/* @ts-ignore eslint-disable-next-line */}
+        {route.icon && <Icon fill="var(--color-white-main)" width={22} />}
+        {route.label && <span>{route.label}</span>}
+      </>
+    )
+  }
+
   return (
     <nav className={clsx("pokt-nav", dropdown && "mobile")}>
       {dropdown && (
@@ -66,30 +77,25 @@ export const Nav = ({ routes, dropdown = false, appId }: NavProps) => {
         </div>
       )}
       <ul className="menu">
-        {routes.map((route) => {
-          const Icon = route.icon
-          return (
-            <li key={route.to}>
-              {route.external ? (
-                <a className="nav-link" href={route.to} rel="noreferrer" target="_blank">
-                  {route.label}
-                </a>
-              ) : (
-                <NavLink
-                  className={({ isActive }) =>
-                    `nav-link ${isActive ? "nav-link-active" : ""}`
-                  }
-                  end={route.end}
-                  to={route.to}
-                >
-                  {/* @ts-ignore eslint-disable-next-line */}
-                  {route.icon && <Icon />}
-                  {route.label && <span>{route.label}</span>}
-                </NavLink>
-              )}
-            </li>
-          )
-        })}
+        {routes.map((route) => (
+          <li key={route.to}>
+            {route.external ? (
+              <a className="nav-link" href={route.to} rel="noreferrer" target="_blank">
+                <LinkLabel route={route} />
+              </a>
+            ) : (
+              <NavLink
+                className={({ isActive }) =>
+                  `nav-link ${isActive ? "nav-link-active" : ""}`
+                }
+                end={route.end}
+                to={route.to}
+              >
+                <LinkLabel route={route} />
+              </NavLink>
+            )}
+          </li>
+        ))}
       </ul>
     </nav>
   )

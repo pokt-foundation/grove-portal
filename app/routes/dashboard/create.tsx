@@ -125,7 +125,7 @@ export default function CreateApp() {
   const transition = useTransition()
   const action = useActionData() as ActionData
   const [radioSelectedValue, setRadioSelectedValue] = useState(
-    flags.STRIPE_PAYMENT ? PayPlanType.PayAsYouGoV0 : PayPlanType.FreetierV0,
+    flags.STRIPE_PAYMENT === "true" ? PayPlanType.PayAsYouGoV0 : PayPlanType.FreetierV0,
   )
   const [name, setName] = useState("")
   const [referral, setReferral] = useState("")

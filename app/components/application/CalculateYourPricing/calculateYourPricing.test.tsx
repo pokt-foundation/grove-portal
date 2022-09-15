@@ -34,7 +34,7 @@ describe("<CalculateYourPricing />", () => {
 
     await waitFor(() => {
       expect(
-        screen.getByRole("heading", { name: /How is this price calculated/i }),
+        screen.getByRole("dialog", { name: /How is this price calculated/i }),
       ).toBeInTheDocument()
     })
 
@@ -42,7 +42,7 @@ describe("<CalculateYourPricing />", () => {
 
     await waitFor(() => {
       expect(
-        screen.queryByRole("heading", { name: /How is this price calculated/i }),
+        screen.queryByRole("dialog", { name: /How is this price calculated/i }),
       ).not.toBeInTheDocument()
     })
   })

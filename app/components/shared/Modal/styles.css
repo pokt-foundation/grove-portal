@@ -1,8 +1,29 @@
 .pokt-modal [role="dialog"] {
   color: var(--color-white-main);
   background-color: var(--color-black-main);
+  padding: 32px;
+  border-radius: 8px;
+}
+
+.pokt-modal .mantine-Modal-header {
+  margin-bottom: 24px;
 }
 
 .pokt-modal .mantine-Modal-title {
+  font-size: 18px;
   font-weight: 700;
+}
+
+.pokt-modal .mantine-Modal-header button {
+  color: var(--color-secondary-main);
+}
+
+.pokt-modal .mantine-Modal-header button:hover {
+  color: var(--color-white-main);
+  background-color: transparent;
+  border: 1px solid var(--color-white-main);
+}
+
+.pokt-modal .pokt-modal-cta {
+  margin-top: 40px;
 }

@@ -2,7 +2,7 @@ import { Button, Group, Text } from "@pokt-foundation/pocket-blocks"
 import { Form, Link, useFetcher, useLocation } from "@remix-run/react"
 import { useEffect, useState } from "react"
 import styles from "./styles.css"
-import Modal, { links as ModalLinks } from "~/components/shared/Modal"
+import Modal, { links as ModalLinks, ModalCTA } from "~/components/shared/Modal"
 import { useTranslate } from "~/context/TranslateContext"
 import { endpoint } from "~/models/portal/portal.data"
 import { PayPlanType } from "~/models/portal/sdk"
@@ -72,7 +72,7 @@ export default function StopRemoveApp({
             <div>
               <p>{t.stopRemoveApp.planDowngrade}</p>
               <p>{t.stopRemoveApp.planRenew}</p>
-              <Group align="center" className="buttonGroup" position="apart">
+              <ModalCTA>
                 <Button variant="outline" onClick={() => setShowStopModal(false)}>
                   {t.common.cancel}
                 </Button>
@@ -87,7 +87,7 @@ export default function StopRemoveApp({
                     {t.common.StopSubscription}
                   </Button>
                 </subscriptionFetcher.Form>
-              </Group>
+              </ModalCTA>
             </div>
           </Modal>
         </>
@@ -110,21 +110,16 @@ export default function StopRemoveApp({
             <div>
               <Text>{t.stopRemoveApp.removeAppDescription}</Text>
               <Text mt={8}>
-                {t.stopRemoveApp.name}{" "}
-                <Text component="span" weight="bold">
-                  {name}
-                </Text>
+                {t.stopRemoveApp.name} <Text component="span">{name}</Text>
               </Text>
               {apps && apps[0].appId && (
                 <Text mt={8}>
                   {t.stopRemoveApp.appAddress}{" "}
-                  <Text component="span" weight="bold">
-                    {apps[0].appId}
-                  </Text>
+                  <Text component="span">{apps[0].appId}</Text>
                 </Text>
               )}
             </div>
-            <Group align="center" className="buttonGroup" position="apart">
+            <ModalCTA>
               <Button variant="outline" onClick={() => setRemoveAppOpened(false)}>
                 {t.common.cancel}
               </Button>
@@ -138,7 +133,7 @@ export default function StopRemoveApp({
                   {t.stopRemoveApp.removeApp}
                 </Button>
               </Form>
-            </Group>
+            </ModalCTA>
           </Modal>
         </div>
       )}

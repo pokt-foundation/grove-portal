@@ -65,6 +65,11 @@ export default function Dashboard() {
       external: true,
       label: t.dashboard.routes.discord,
     },
+    {
+      to: "/contact-sales",
+      label: "Contact",
+      external: false,
+    },
   ]
   return (
     <>

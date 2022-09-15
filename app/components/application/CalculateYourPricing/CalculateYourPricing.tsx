@@ -94,7 +94,6 @@ export default function CalculateYourPricing({ price }: CalculateYourPriceProps)
 
       <Modal
         opened={open}
-        size={600}
         title={t.CalculateYourPricing.modalTitle}
         onClose={() => setOpen(false)}
       >

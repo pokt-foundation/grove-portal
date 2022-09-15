@@ -18,27 +18,15 @@ export function formatDailyRelaysForGraphing(relays: RelayMetric[] = []): {
     ({ From }) => DAYS[new Date(From.split("T")[0]).getUTCDay()],
   )
 
-  const findHighandLow = () => {
-    let high = 0
-    let low: number[] = []
-    sortRelaysByDate.map((item) => {
-      if (item.Count.Total >= high) {
-        high = item.Count.Total
-      }
-      if (low[0] === undefined) {
-        low[0] = item.Count.Total
-      } else if (item.Count.Total < low[0]) {
-        low[0] = item.Count.Total
-      } else if (item.Count.Total === 0) {
-        low.push(item.Count.Total)
-      }
-    })
-    return { high: high, low: low[0] }
-  }
+  const { high, low } = sortRelaysByDate.reduce(
+    ({ high: highest, low: lowest }, { Count }) => ({
+      high: Math.max(highest, Count.Total),
+      low: Math.min(lowest, Count.Total),
+    }),
+    { high: 0, low: relays[0].Count.Total },
+  )
 
-  const highest = findHighandLow().high
-  const lowest = findHighandLow().low
-  const diff = highest - lowest
+  const diff = high - low
   const quarter = diff * 0.25
   const half = diff * 0.5
   const threeQuarter = diff * 0.75
@@ -46,16 +34,16 @@ export function formatDailyRelaysForGraphing(relays: RelayMetric[] = []): {
   const lines = [
     {
       id: 1,
-      values: sortRelaysByDate.map(({ Count }) => norm(Count.Total, lowest, highest)),
+      values: sortRelaysByDate.map(({ Count }) => norm(Count.Total, low, high)),
     },
   ]
 
   const scales = [
-    { label: formatNumberToSICompact(Number(lowest.toFixed(0))) },
-    { label: formatNumberToSICompact(Number((lowest + quarter).toFixed(0))) },
-    { label: formatNumberToSICompact(Number((lowest + half).toFixed(0))) },
-    { label: formatNumberToSICompact(Number((lowest + threeQuarter).toFixed(0))) },
-    { label: formatNumberToSICompact(Number(highest.toFixed(0))) },
+    { label: formatNumberToSICompact(Number(low.toFixed(0))) },
+    { label: formatNumberToSICompact(Number((low + quarter).toFixed(0))) },
+    { label: formatNumberToSICompact(Number((low + half).toFixed(0))) },
+    { label: formatNumberToSICompact(Number((low + threeQuarter).toFixed(0))) },
+    { label: formatNumberToSICompact(Number(high.toFixed(0))) },
   ]
 
   return {

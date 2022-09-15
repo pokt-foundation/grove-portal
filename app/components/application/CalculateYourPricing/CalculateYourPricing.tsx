@@ -1,7 +1,7 @@
 import { Button } from "@pokt-foundation/pocket-blocks"
 import React, { useMemo, useState } from "react"
 import styles from "./styles.css"
-import Modal, { links as ModalLinks } from "~/components/shared/Modal"
+import Modal, { links as ModalLinks, ModalCTA } from "~/components/shared/Modal"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { useTranslate } from "~/context/TranslateContext"
 import { FREE_TIER_MAX_RELAYS } from "~/utils/pocketUtils"
@@ -92,9 +92,12 @@ export default function CalculateYourPricing({ price }: CalculateYourPriceProps)
         {t.CalculateYourPricing.howIsThisCalculated}
       </Button>
 
-      <Modal opened={open} size={600} onClose={() => setOpen(false)}>
+      <Modal
+        opened={open}
+        title={t.CalculateYourPricing.modalTitle}
+        onClose={() => setOpen(false)}
+      >
         <div className="calculate-your-pricing-modal">
-          <h3>{t.CalculateYourPricing.modalTitle}</h3>
           <p>
             {t.CalculateYourPricing.modalDescription}{" "}
             <a href="https://docs.pokt.network/home/">
@@ -129,11 +132,11 @@ export default function CalculateYourPricing({ price }: CalculateYourPriceProps)
               {t.CalculateYourPricing.monthlyFee}
             </span>
           </p>
-          <div className="calculate-your-pricing-modal-footer">
+          <ModalCTA>
             <Button variant="filled" onClick={() => setOpen(false)}>
               {t.CalculateYourPricing.done}
             </Button>
-          </div>
+          </ModalCTA>
         </div>
       </Modal>
     </section>

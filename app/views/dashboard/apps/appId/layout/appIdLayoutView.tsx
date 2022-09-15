@@ -1,4 +1,4 @@
-import { IconCaretLeft, Grid } from "@pokt-foundation/pocket-blocks"
+import { IconCaretLeft, Grid, Button } from "@pokt-foundation/pocket-blocks"
 import { Outlet, useFetcher } from "@remix-run/react"
 import { useEffect, useState } from "react"
 import styles from "./styles.css"
@@ -23,7 +23,7 @@ import LegacyBannerCard, {
 import StopRemoveApp, {
   links as StopRemoveAppLinks,
 } from "~/components/application/StopRemoveApp"
-import Modal, { links as ModalLinks } from "~/components/shared/Modal"
+import Modal, { links as ModalLinks, ModalCTA } from "~/components/shared/Modal"
 import Nav, { links as NavLinks } from "~/components/shared/Nav"
 import { useFeatureFlags } from "~/context/FeatureFlagContext"
 import { useTranslate } from "~/context/TranslateContext"
@@ -247,6 +247,9 @@ export default function AppIdLayoutView({
             it!
           </p>
         </div>
+        <ModalCTA>
+          <Button onClick={() => setShowSuccessModel(false)}>Continue To App</Button>
+        </ModalCTA>
       </Modal>
       <Modal
         opened={showErrorModal}
@@ -256,10 +259,14 @@ export default function AppIdLayoutView({
         <div>
           <p>
             We are sorry but something went wrong when setting up your pay as you go
-            subscription. Please try again. If you are still having trouble reach out and
-            we would be happy to help get you sorted.
+            subscription. Please try again by clicking the "Upgrade to 'Pay As You Go'"
+            button. If you are still having trouble reach out and we would be happy to
+            help get you sorted.
           </p>
         </div>
+        <ModalCTA>
+          <Button onClick={() => setShowErrorModel(false)}>Try Again</Button>
+        </ModalCTA>
       </Modal>
     </div>
   )

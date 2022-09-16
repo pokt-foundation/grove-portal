@@ -1,18 +1,14 @@
-import { IconPlus } from "@pokt-foundation/pocket-blocks"
+import { Box, IconPlus, Dropdown, Button } from "@pokt-foundation/pocket-blocks"
 import React, { SyntheticEvent, useState } from "react"
 import ChainWithImage, { links as ChainWithImageLinks } from "../ChainWithImage"
 import styles from "./styles.css"
-import Dropdown, {
-  links as DropdownLinks,
-  DropdownMenu,
-} from "~/components/shared/Dropdown"
-import TextInput from "~/components/shared/TextInput"
 import { BlockchainsQuery } from "~/models/portal/sdk"
+import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 
 /* c8 ignore start */
 export const links = () => {
   return [
-    ...DropdownLinks(),
+    ...TextInputLinks(),
     ...ChainWithImageLinks(),
     { rel: "stylesheet", href: styles },
   ]
@@ -46,35 +42,49 @@ export default function ChainsDropdown({
   return (
     <span className="pokt-chains-dropdown">
       <Dropdown
-        label={
+        content={
           <>
-            {defaultText || "Add New"}{" "}
-            {icon && <IconPlus fill="var(--color-white-light)" />}
+            <Box className="pokt-chains-dropdown-search">
+              <TextInput
+                placeholder="Search Chains"
+                value={query}
+                onChange={handleSearch}
+              />
+            </Box>
+
+            {allChains
+              .filter(
+                (row) =>
+                  row &&
+                  Object.values(row)
+                    .join()
+                    .toLowerCase()
+                    .trim()
+                    .includes(query.toLowerCase().trim()),
+              )
+              .map((chain) => (
+                <Box
+                  key={chain?.id}
+                  className="pokt-chains-dropdown-chain"
+                  onClick={() => handleChainClick(`${chain?.id}`)}
+                >
+                  <ChainWithImage chain={chain?.description} />
+                </Box>
+              ))}
           </>
         }
-      >
-        <TextInput placeholder="Search Chains" value={query} onChange={handleSearch} />
-        {allChains &&
-          allChains
-            .filter(
-              (row) =>
-                row &&
-                Object.values(row)
-                  .join()
-                  .toLowerCase()
-                  .trim()
-                  .includes(query.toLowerCase().trim()),
-            )
-            .map((chain) => (
-              <DropdownMenu.Item
-                key={chain?.id}
-                className="pokt-chains-dropdown-chain"
-                onClick={() => handleChainClick(`${chain?.id}`)}
-              >
-                <ChainWithImage chain={chain?.description} />
-              </DropdownMenu.Item>
-            ))}
-      </Dropdown>
+        options={[]}
+        trigger={
+          <Button
+            {...(icon && {
+              iconRight: <IconPlus fill="var(--color-white-light)" />,
+            })}
+            variant="outline"
+          >
+            {defaultText || "Add New"}{" "}
+          </Button>
+        }
+      />
     </span>
   )
 }

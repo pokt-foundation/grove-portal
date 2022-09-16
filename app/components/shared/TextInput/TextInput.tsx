@@ -1,5 +1,9 @@
-import { TextInput as MantineTextInput, TextInputProps } from "@mantine/core"
-import { Button, IconDeleteAlt } from "@pokt-foundation/pocket-blocks"
+import {
+  Button,
+  IconDeleteAlt,
+  TextInput as PocketTextInput,
+  TextInputProps,
+} from "@pokt-foundation/pocket-blocks"
 import clsx from "clsx"
 import styles from "./styles.css"
 import CopyTextIcon, {
@@ -55,7 +59,7 @@ export default function TextInput({
 
   return (
     <div className="pokt-text">
-      <MantineTextInput
+      <PocketTextInput
         className={clsx({
           "pokt-text-input": true,
           "right-section": props.rightSection,

@@ -18,8 +18,8 @@ export default function ChainWithImage({ chain, label }: AppEndpointProps) {
   const labelText = label ?? chain
   return (
     <span className="pokt-chain-with-image">
-      {getImageForChain(chain) && <img alt={chain} src={getImageForChain(chain)} />}
-      <p>{labelText}</p>
+      {getImageForChain(chain) && <img alt={chain} src={getImageForChain(chain)} />}{" "}
+      <span>{labelText}</span>
     </span>
   )
 }

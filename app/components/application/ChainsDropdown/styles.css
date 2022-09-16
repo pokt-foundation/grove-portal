@@ -8,7 +8,12 @@
   overflow: auto;
 }
 
+.pokt-chains-dropdown-search {
+  padding: 16px 8px;
+}
+
 .pokt-chains-dropdown-chain {
+  border-radius: 8px;
   padding: 16px;
   cursor: pointer;
 }

@@ -4,3 +4,7 @@
   height: 20px;
   vertical-align: middle;
 }
+
+.pokt-card .empty-apps-link {
+  color: var(--color-primary-main);
+}

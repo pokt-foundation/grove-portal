@@ -90,7 +90,7 @@ export const AppsView = ({
             </div>
             <Text>
               Get started by{" "}
-              <Link to="/dashboard/create" className="empty-apps-link">
+              <Link className="empty-apps-link" to="/dashboard/create">
                 creating your first application
               </Link>
               .

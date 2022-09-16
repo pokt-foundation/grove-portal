@@ -1,12 +1,12 @@
 import { ActionFunction, json, MetaFunction, redirect } from "@remix-run/node"
 import { useActionData, useCatch } from "@remix-run/react"
 import { useEffect } from "react"
+import styles from "~/styles/contact-sales.css"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 import ContactSalesView, {
   links as ContactSalesViewLinks,
 } from "~/views/dashboard/apps/contact-sales/contactSalesView"
-import styles from "~/styles/contact-sales.css"
 
 export const meta: MetaFunction = () => {
   return {

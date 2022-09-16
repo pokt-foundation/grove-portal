@@ -20,7 +20,7 @@ describe("landing page tests", () => {
     cy.findByRole("banner")
       .findByRole("navigation")
       .findByRole("link", { name: /docs/i })
-      .should("have.attr", "href", "https://docs.pokt.network/home/paths/app-developer")
+      .should("have.attr", "href", "https://docs.pokt.network")
 
     // should find FAQs link and take you to the FAQs page
     cy.findByRole("banner")

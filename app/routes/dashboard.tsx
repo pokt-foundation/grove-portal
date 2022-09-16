@@ -70,6 +70,11 @@ export default function Dashboard() {
       label: "FAQs",
       icon: IconCircleQuestion,
     },
+    {
+      to: "/contact-sales",
+      label: "Contact",
+      external: false,
+    },
   ]
   return (
     <>

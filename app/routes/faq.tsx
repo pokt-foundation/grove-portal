@@ -1,9 +1,8 @@
-import { ManyItems } from "@directus/sdk"
 import { json, LinksFunction, LoaderFunction } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
 import { useMemo } from "react"
 import { initCmsClient } from "~/models/cms/cms.server"
-import { Question } from "~/models/cms/types"
+import { getQuestionsQuery } from "~/models/cms/sdk"
 import { groupBy } from "~/utils/utils"
 import FaqsView, { links as FaqsViewLinks } from "~/views/faqs/faqsView"
 
@@ -12,14 +11,12 @@ export const links: LinksFunction = () => {
 }
 
 type LoaderData = {
-  questions: ManyItems<Question>
+  questions: getQuestionsQuery
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
   const cms = initCmsClient()
-  const questions = await (await cms)
-    .items("questions")
-    .readByQuery({ filter: { status: "published" } })
+  const questions = await cms.getQuestions({ filter: { status: { _eq: "published" } } })
 
   return json<LoaderData>({
     questions: questions,
@@ -30,11 +27,11 @@ export default function FAQs() {
   const { questions } = useLoaderData<LoaderData>()
 
   const categories = useMemo(() => {
-    if (questions.data) {
-      return groupBy(questions.data, "category")
+    if (questions) {
+      return groupBy(questions.questions, "category")
     }
     return null
-  }, [questions.data])
+  }, [questions])
 
   return <FaqsView categories={categories} />
 }

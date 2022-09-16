@@ -1,12 +1,16 @@
-import { Directus } from "@directus/sdk"
-import { Collections } from "./types"
+import { GraphQLClient } from "graphql-request"
+import { getSdk as getSdkGen } from "~/models/cms/sdk"
 import { getRequiredServerEnvVar } from "~/utils/environment"
 
-const directus = new Directus<Collections>(getRequiredServerEnvVar("CMS_API_URL"))
+function initCmsClient() {
+  const client = new GraphQLClient(getRequiredServerEnvVar("CMS_API_URL"), {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getRequiredServerEnvVar("CMS_API_TOKEN")}`,
+    },
+  })
 
-export async function initCmsClient() {
-  if (await directus.auth.token) return directus
-
-  await directus.auth.static(getRequiredServerEnvVar("CMS_API_TOKEN"))
-  return directus
+  return getSdkGen(client)
 }
+
+export { initCmsClient }

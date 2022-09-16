@@ -1,10 +1,10 @@
-import { Accordion, AccordionItem } from "@mantine/core"
+import { Accordion, AccordionItem, Chip, Group } from "@mantine/core"
 import { LinksFunction } from "@remix-run/node"
 import styles from "./styles.css"
 import Remark, { links as RemarkLinks } from "~/components/shared/Remark"
 import Text, { links as TextLinks } from "~/components/shared/Text"
 import { useTranslate } from "~/context/TranslateContext"
-import { Question } from "~/models/cms/types"
+import { questions } from "~/models/cms/sdk"
 
 /* c8 ignore start */
 export const links: LinksFunction = () => {
@@ -14,8 +14,8 @@ export const links: LinksFunction = () => {
 
 type FaqsViewProps = {
   categories: {
-    [key: string]: Question[]
-  }
+    [key: string]: questions[]
+  } | null
 }
 
 export default function FaqsView({ categories }: FaqsViewProps) {
@@ -36,14 +36,21 @@ export default function FaqsView({ categories }: FaqsViewProps) {
           <div key={key} className="faqs-category">
             <h2 className="faqs-category-title">{key.split("_")[1].replace("-", " ")}</h2>
             <Accordion className="faqs">
-              {(value as Question[]).map((item) => (
+              {(value as questions[]).map((item) => (
                 <AccordionItem
                   key={item.id}
                   className="faqs-item"
                   iconPosition="right"
                   label={item.question}
                 >
-                  <Remark>{item.answer}</Remark>
+                  {item.answer && <Remark>{item.answer}</Remark>}
+                  {item.tags && (
+                    <Group>
+                      {item.tags.map((tag) => (
+                        <Chip key={tag?.id}>{tag?.id}</Chip>
+                      ))}
+                    </Group>
+                  )}
                 </AccordionItem>
               ))}
             </Accordion>

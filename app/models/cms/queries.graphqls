@@ -1,0 +1,26 @@
+query getQuestions(
+  $filter: questions_filter
+  $limit: Int
+  $offset: Int
+  $page: Int
+  $search: String
+  $sort: [String]
+) {
+  questions(
+    filter: $filter
+    limit: $limit
+    offset: $offset
+    page: $page
+    search: $search
+    sort: $sort
+  ) {
+    answer
+    category
+    id
+    question
+    status
+    tags {
+      id
+    }
+  }
+}

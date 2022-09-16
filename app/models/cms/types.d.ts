@@ -1,9 +1,5 @@
 export type Collections = {
-  questions: Questions
-}
-
-export type Questions = {
-  data: Question[]
+  questions: Question
 }
 
 export type Question = {

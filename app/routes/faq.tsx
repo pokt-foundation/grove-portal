@@ -3,7 +3,7 @@ import { json, LinksFunction, LoaderFunction } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
 import { useMemo } from "react"
 import { initCmsClient } from "~/models/cms/cms.server"
-import { Questions } from "~/models/cms/types"
+import { Question } from "~/models/cms/types"
 import { groupBy } from "~/utils/utils"
 import FaqsView, { links as FaqsViewLinks } from "~/views/faqs/faqsView"
 
@@ -12,12 +12,14 @@ export const links: LinksFunction = () => {
 }
 
 type LoaderData = {
-  questions: ManyItems<Questions>
+  questions: ManyItems<Question>
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
   const cms = initCmsClient()
-  const questions = await (await cms).items("questions").readByQuery()
+  const questions = await (await cms)
+    .items("questions")
+    .readByQuery({ filter: { status: "published" } })
 
   return json<LoaderData>({
     questions: questions,

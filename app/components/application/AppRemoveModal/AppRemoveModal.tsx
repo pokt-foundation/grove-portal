@@ -2,7 +2,7 @@ import { Button, Text, Group } from "@pokt-foundation/pocket-blocks"
 import { Form } from "@remix-run/react"
 import { useState } from "react"
 import styles from "./styles.css"
-import Modal, { links as ModalLinks } from "~/components/shared/Modal"
+import Modal, { links as ModalLinks, ModalCTA } from "~/components/shared/Modal"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 
 /* c8 ignore start */
@@ -37,7 +37,7 @@ export default function AppEndpointCard({ appId }: AppRemoveModalProps) {
         <div>
           <Text>App ID: {appId}</Text>
         </div>
-        <Group align="center" position="apart">
+        <ModalCTA>
           <Form action={`/dashboard/apps/${appId}/remove`} method="post">
             <Button
               type="submit"
@@ -51,7 +51,7 @@ export default function AppEndpointCard({ appId }: AppRemoveModalProps) {
           <Button variant="outline" onClick={() => setOpened(false)}>
             Cancel
           </Button>
-        </Group>
+        </ModalCTA>
       </Modal>
     </div>
   )

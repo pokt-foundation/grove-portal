@@ -1,24 +1,23 @@
 import { ManyItems } from "@directus/sdk"
 import { json, LinksFunction, LoaderFunction } from "@remix-run/node"
-import { Link, useLoaderData } from "@remix-run/react"
-import Remark, { links as RemarkLinks } from "~/components/shared/Remark"
-import { useTranslate } from "~/context/TranslateContext"
+import { useLoaderData } from "@remix-run/react"
+import { useMemo } from "react"
 import { initCmsClient } from "~/models/cms/directus.server"
-import { Question } from "~/models/cms/types"
-import styles from "~/styles/landing.css"
+import { Questions } from "~/models/cms/types"
+import { groupBy } from "~/utils/utils"
+import FaqsView, { links as FaqsViewLinks } from "~/views/faqs/faqsView"
 
 export const links: LinksFunction = () => {
-  return [...RemarkLinks(), { rel: "stylesheet", href: styles }]
+  return [...FaqsViewLinks()]
 }
 
 type LoaderData = {
-  questions: ManyItems<Question>
+  questions: ManyItems<Questions>
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
   const cms = initCmsClient()
   const questions = await (await cms).items("questions").readByQuery()
-  console.log(questions)
 
   return json<LoaderData>({
     questions: questions,
@@ -26,30 +25,16 @@ export const loader: LoaderFunction = async ({ request }) => {
 }
 
 export default function FAQs() {
-  const {
-    t: { faq },
-  } = useTranslate()
   const { questions } = useLoaderData<LoaderData>()
 
-  return (
-    <>
-      <div className="container__content">
-        <h1 className="center faqTitle">
-          {faq.title}
-          <span className="blue block">{faq.subtitle}</span>
-        </h1>
-        {questions.data &&
-          questions.data.map((item) => {
-            return (
-              <>
-                <h2 className="blue faqQuestion">{item.question}</h2>
-                <Remark>{item.answer}</Remark>
-              </>
-            )
-          })}
-      </div>
-    </>
-  )
+  const categories = useMemo(() => {
+    if (questions.data) {
+      return groupBy(questions.data, "category")
+    }
+    return null
+  }, [questions.data])
+
+  return <FaqsView categories={categories} />
 }
 
 export const ErrorBoundary = ({ error }: { error: Error }) => {

@@ -1,0 +1,76 @@
+.pokt-faqs-view {
+  margin-top: 48px;
+  /* text-align: center; */
+}
+
+.pokt-faqs-view .faqs-title {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.pokt-faqs-view .color-secondary-main {
+  color: var(--color-secondary-main);
+}
+
+.pokt-faqs-view .faqs-category {
+  margin-bottom: 80px;
+}
+
+.pokt-faqs-view .faqs-category-title {
+  text-transform: capitalize;
+}
+
+.pokt-faqs-view .faqs-item {
+  padding: 32px;
+  border-bottom: 1px solid var(--color-disabled-dark);
+}
+
+.pokt-faqs-view .faqs-item:last-child {
+  border-bottom: none;
+}
+
+.pokt-faqs-view .faqs-item {
+  color: var(--color-white-main);
+}
+
+.pokt-faqs-view .faqs-item button {
+  padding: 16px;
+}
+
+.pokt-faqs-view .faqs-item button:hover {
+  background-color: transparent;
+}
+
+.pokt-faqs-view .faqs-item .mantine-Accordion-label {
+  font-size: 21px;
+  color: var(--color-white-dark);
+  transition: color ease-in-out 0.3s;
+}
+
+.pokt-faqs-view .faqs-item.mantine-Accordion-itemOpened .mantine-Accordion-label {
+  color: var(--color-white-main);
+}
+
+.pokt-faqs-view .faqs-item button:hover .mantine-Accordion-label {
+  color: var(--color-white-light);
+}
+
+.pokt-faqs-view .faqs-item .mantine-Accordion-icon {
+  color: var(--color-white-dark);
+  background-color: var(--color-black-light);
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+  transition: color ease-in-out 0.3s, background-color ease-in-out 0.3s;
+}
+
+.pokt-faqs-view .faqs-item.mantine-Accordion-itemOpened .mantine-Accordion-icon {
+  color: var(--color-white-main);
+  background-color: var(--color-disabled-dark);
+}
+
+.pokt-faqs-view .faqs-item button:hover .mantine-Accordion-icon {
+  color: var(--color-white-light);
+  background-color: var(--color-disabled-dark);
+}

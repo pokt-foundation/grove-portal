@@ -14,9 +14,13 @@ export const Remark = (props: RemarkProps) => {
       rehypeReactOptions={{
         components: {
           a: (props: any) => (
-            <Link className="pokt-remark-a" to={props.href}>
+            <a
+              className="pokt-remark-a"
+              target={props.href.includes("http") ? "_blank" : "_self"}
+              {...props}
+            >
               {props.children}
-            </Link>
+            </a>
           ),
         },
       }}

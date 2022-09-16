@@ -1,0 +1,17 @@
+name: 🛡 Protect
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  protect:
+    name: 🥽 Protect
+    runs-on: ubuntu-latest
+    steps:
+      - name: 👀 IsStage?
+        run: |
+          if [[ "${{ github.head_ref }}" != "stage" ]]; then
+            echo "You must merge to main through stage"
+            exit 1
+          fi

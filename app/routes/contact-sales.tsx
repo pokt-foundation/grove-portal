@@ -3,11 +3,11 @@ import { useActionData, useCatch } from "@remix-run/react"
 import { useEffect } from "react"
 import styles from "~/styles/contact-sales.css"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
+import { authenticator } from "~/utils/auth.server"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 import ContactSalesView, {
   links as ContactSalesViewLinks,
 } from "~/views/dashboard/apps/contact-sales/contactSalesView"
-import { authenticator } from "~/utils/auth.server"
 
 export const meta: MetaFunction = () => {
   return {
@@ -65,7 +65,7 @@ export const action: ActionFunction = async ({ request }) => {
     )
 
     await response.json()
-    if (!user) return redirect(user ? "/dashboard/apps" : "/")
+    return redirect(user ? "/dashboard/apps" : "/")
   } catch (e) {
     return json<ContactSalesActionData>({
       result: "error",

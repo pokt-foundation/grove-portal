@@ -44,13 +44,6 @@ export default function FaqsView({ categories }: FaqsViewProps) {
                   label={item.question}
                 >
                   {item.answer && <Remark>{item.answer}</Remark>}
-                  {item.tags && (
-                    <Group>
-                      {item.tags.map((tag) => (
-                        <Chip key={tag?.id}>{tag?.id}</Chip>
-                      ))}
-                    </Group>
-                  )}
                 </AccordionItem>
               ))}
             </Accordion>

@@ -19,8 +19,5 @@ query getQuestions(
     id
     question
     status
-    tags {
-      id
-    }
   }
 }

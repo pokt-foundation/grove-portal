@@ -7,6 +7,7 @@ import { getRequiredClientEnvVar } from "~/utils/environment"
 import ContactSalesView, {
   links as ContactSalesViewLinks,
 } from "~/views/dashboard/apps/contact-sales/contactSalesView"
+import { authenticator } from "~/utils/auth.server"
 
 export const meta: MetaFunction = () => {
   return {
@@ -33,6 +34,7 @@ export type ContactSalesActionData =
     }
 
 export const action: ActionFunction = async ({ request }) => {
+  const user = await authenticator.isAuthenticated(request)
   const formData = await request.formData()
   const firstName = formData.get("first-name")
   const lastName = formData.get("last-name")
@@ -63,7 +65,7 @@ export const action: ActionFunction = async ({ request }) => {
     )
 
     await response.json()
-    return redirect("/dashboard/apps")
+    if (!user) return redirect(user ? "/dashboard/apps" : "/")
   } catch (e) {
     return json<ContactSalesActionData>({
       result: "error",

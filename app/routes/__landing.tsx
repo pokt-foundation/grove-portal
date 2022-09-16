@@ -61,6 +61,11 @@ export default function LandingLayout() {
         external: true,
       },
       {
+        to: "/contact-sales",
+        label: "Contact",
+        external: false,
+      },
+      {
         to: "https://docs.pokt.network/home/paths/app-developer",
         label: "Docs",
         external: true,

@@ -37,6 +37,23 @@
   height: 21px;
 }
 
+.pokt-nav .nav-link svg {
+  transition: fill ease-in-out 0.3s;
+  fill: var(--color-white-main);
+}
+
+.pokt-nav .nav-link:hover svg {
+  fill: var(--color-white-dark);
+}
+
+.pokt-nav .nav-link.nav-link-active svg {
+  fill: var(--color-primary-main);
+}
+
+.pokt-nav .nav-link-active:hover svg {
+  fill: var(--color-primary-dark);
+}
+
 .pokt-nav.mobile {
   margin-left: 0;
 }

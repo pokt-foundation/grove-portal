@@ -242,9 +242,9 @@ export default function AppIdLayoutView({
       >
         <div>
           <p>
-            You have successfully set up a pay as you go subscription. You now have access
-            to 50+ chains and unlimited relays. We can't wait to see what you build with
-            it!
+            You have successfully set up a Pay As You Go subscription. You now have access
+            to dozens of chains and unlimited relays. We can't wait to see what you build
+            with it!
           </p>
         </div>
         <ModalCTA>

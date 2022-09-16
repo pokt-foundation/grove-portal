@@ -55,7 +55,7 @@ export const Nav = ({ routes, dropdown = false, appId }: NavProps) => {
     return (
       <>
         {/* @ts-ignore eslint-disable-next-line */}
-        {route.icon && <Icon fill="var(--color-white-main)" width={22} />}
+        {route.icon && <Icon width={22} />}
         {route.label && <span>{route.label}</span>}
       </>
     )

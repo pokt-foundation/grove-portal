@@ -6,7 +6,7 @@ import ContactSalesForm, {
 } from "~/components/application/ContactSalesForm"
 import Modal, { links as ModalLinks } from "~/components/shared/Modal"
 import { useTranslate } from "~/context/TranslateContext"
-import { ContactSalesActionData } from "~/routes/dashboard/contact-sales"
+import { ContactSalesActionData } from "~/routes/contact-sales"
 
 /* c8 ignore start */
 export const links = () => {

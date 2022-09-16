@@ -1,7 +1,9 @@
-import { ActionFunction, json, MetaFunction } from "@remix-run/node"
+import { ActionFunction, json, MetaFunction, redirect } from "@remix-run/node"
 import { useActionData, useCatch } from "@remix-run/react"
 import { useEffect } from "react"
+import styles from "~/styles/contact-sales.css"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
+import { authenticator } from "~/utils/auth.server"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 import ContactSalesView, {
   links as ContactSalesViewLinks,
@@ -14,7 +16,7 @@ export const meta: MetaFunction = () => {
 }
 
 export const links = () => {
-  return [...ContactSalesViewLinks()]
+  return [...ContactSalesViewLinks(), { rel: "stylesheet", href: styles }]
 }
 
 type Result = "success" | "error"
@@ -32,6 +34,7 @@ export type ContactSalesActionData =
     }
 
 export const action: ActionFunction = async ({ request }) => {
+  const user = await authenticator.isAuthenticated(request)
   const formData = await request.formData()
   const firstName = formData.get("first-name")
   const lastName = formData.get("last-name")
@@ -61,8 +64,8 @@ export const action: ActionFunction = async ({ request }) => {
       },
     )
 
-    const responseData: ContactSalesActionData = await response.json()
-    return json<ContactSalesActionData>(responseData)
+    await response.json()
+    return redirect(user ? "/dashboard/apps" : "/")
   } catch (e) {
     return json<ContactSalesActionData>({
       result: "error",

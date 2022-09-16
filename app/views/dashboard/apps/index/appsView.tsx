@@ -1,4 +1,4 @@
-import { IconCaretRight } from "@pokt-foundation/pocket-blocks"
+import { IconCaretRight, Title, Text } from "@pokt-foundation/pocket-blocks"
 import { Link } from "@remix-run/react"
 import { useEffect, useState } from "react"
 import styles from "./styles.css"
@@ -86,8 +86,15 @@ export const AppsView = ({
         ) : (
           <Card>
             <div className="pokt-card-header">
-              <h3>Applications</h3>
+              <Title order={3}>Applications</Title>
             </div>
+            <Text>
+              Get started by{" "}
+              <Link to="/dashboard/create" className="empty-apps-link">
+                creating your first application
+              </Link>
+              .
+            </Text>
           </Card>
         )}
       </section>

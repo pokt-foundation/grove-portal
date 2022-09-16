@@ -1,0 +1,6 @@
+query getQuestions {
+  collections_by_name(name: "questions") {
+    question
+    answer
+  }
+}

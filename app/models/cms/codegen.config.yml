@@ -1,0 +1,12 @@
+schema:
+  - ${CMS_API_URL}:
+      headers:
+        Authorization: "${CMS_API_TOKEN}"
+documents: "./app/models/cms/*.graphqls"
+generates:
+  ./app/models/cms/sdk.ts:
+    overwrite: true
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-graphql-request"

@@ -5,6 +5,7 @@ query getQuestions(
   $page: Int
   $search: String
   $sort: [String]
+  $language: String
 ) {
   questions(
     filter: $filter
@@ -14,10 +15,18 @@ query getQuestions(
     search: $search
     sort: $sort
   ) {
-    answer
-    category
     id
-    question
+    category {
+      id
+      translations(filter: { languages_code: { _eq: $language } }) {
+        name
+        display
+      }
+    }
     status
+    translations(filter: { languages_code: { _eq: $language } }) {
+      answer
+      question
+    }
   }
 }

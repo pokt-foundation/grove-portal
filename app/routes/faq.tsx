@@ -2,7 +2,7 @@ import { json, LinksFunction, LoaderFunction } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
 import { useMemo } from "react"
 import { initCmsClient } from "~/models/cms/cms.server"
-import { getQuestionsQuery } from "~/models/cms/sdk"
+import { getQuestionsQuery, questions as Questions } from "~/models/cms/sdk"
 import { groupBy } from "~/utils/utils"
 import FaqsView, { links as FaqsViewLinks } from "~/views/faqs/faqsView"
 
@@ -16,7 +16,10 @@ type LoaderData = {
 
 export const loader: LoaderFunction = async ({ request }) => {
   const cms = initCmsClient()
-  const questions = await cms.getQuestions({ filter: { status: { _eq: "published" } } })
+  const questions = await cms.getQuestions({
+    filter: { status: { _eq: "published" } },
+    language: "en-US",
+  })
 
   return json<LoaderData>({
     questions: questions,
@@ -27,8 +30,17 @@ export default function FAQs() {
   const { questions } = useLoaderData<LoaderData>()
 
   const categories = useMemo(() => {
-    if (questions) {
-      return groupBy(questions.questions, "category")
+    if (questions.questions) {
+      const newArr = questions.questions.reduce((prev: Questions[], curr) => {
+        return [
+          ...prev,
+          {
+            ...curr,
+            categoryName: curr.category?.translations![0]?.name ?? "",
+          },
+        ]
+      }, [])
+      return groupBy(newArr as unknown as any[], "categoryName")
     }
     return null
   }, [questions])

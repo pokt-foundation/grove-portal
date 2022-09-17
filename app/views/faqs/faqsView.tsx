@@ -32,23 +32,31 @@ export default function FaqsView({ categories }: FaqsViewProps) {
         </Text>
       </h1>
       {categories &&
-        Object.entries(categories).map(([key, value]) => (
-          <div key={key} className="faqs-category">
-            <h2 className="faqs-category-title">{key.split("_")[1].replace("-", " ")}</h2>
-            <Accordion className="faqs">
-              {(value as questions[]).map((item) => (
-                <AccordionItem
-                  key={item.id}
-                  className="faqs-item"
-                  iconPosition="right"
-                  label={item.question}
-                >
-                  {item.answer && <Remark>{item.answer}</Remark>}
-                </AccordionItem>
-              ))}
-            </Accordion>
-          </div>
-        ))}
+        Object.entries(categories).map(
+          ([key, value]: [key: string, value: questions[]]) => (
+            <div key={key} className="faqs-category">
+              <h2 className="faqs-category-title">
+                {value[0].category?.translations
+                  ? value[0].category?.translations[0]?.display
+                  : ""}
+              </h2>
+              <Accordion className="faqs">
+                {value.map((item) => (
+                  <AccordionItem
+                    key={item.id}
+                    className="faqs-item"
+                    iconPosition="right"
+                    label={item.translations ? item.translations[0]?.question : ""}
+                  >
+                    {item.translations && item.translations[0]?.answer && (
+                      <Remark>{item.translations[0].answer ?? ""}</Remark>
+                    )}
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </div>
+          ),
+        )}
     </div>
   )
 }

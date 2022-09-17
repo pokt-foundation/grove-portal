@@ -40,7 +40,7 @@ export default function FAQs() {
           },
         ]
       }, [])
-      return groupBy(newArr as unknown as any[], "categoryName")
+      return groupBy(newArr, "categoryName")
     }
     return null
   }, [questions])

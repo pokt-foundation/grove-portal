@@ -1,4 +1,5 @@
 import { Grid } from "@pokt-foundation/pocket-blocks"
+import { Link } from "@remix-run/react"
 import styles from "./styles.css"
 import { useTranslate } from "~/context/TranslateContext"
 
@@ -18,7 +19,7 @@ export const Footer = () => {
       <Grid align="center">
         <Grid.Col className="center">
           &copy; 2022 Pocket Network Inc.{" "}
-          <a href="https://www.pokt.network/site-terms-of-use">{footer.termsOfUse}</a> |{" "}
+          <Link to="/terms-and-conditions">{footer.termsOfUse}</Link> |{" "}
           <a href="https://www.pokt.network/privacy-policy">{footer.privacyPolicy}</a>
         </Grid.Col>
       </Grid>

@@ -6,7 +6,7 @@ const schema = {
   common: {
     submit: "submit",
     StopSubscription: "Stop Subscription",
-    save: "save",
+    save: "Save",
     close: "Close",
     goBack: "go back",
     cancel: "Cancel",

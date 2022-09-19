@@ -1,6 +1,7 @@
 import { expect } from "vitest"
 import ContactSalesView from "./contactSalesView"
 import { render, screen } from "test/helpers"
+import schema from "~/locales/en"
 
 describe("<ContactSalesView />", () => {
   it("renders", () => {
@@ -8,7 +9,7 @@ describe("<ContactSalesView />", () => {
 
     expect(
       screen.getByRole("heading", {
-        name: /We have Enterprise solutions for your needs/i,
+        name: schema.ContactSalesView.title,
       }),
     ).toBeInTheDocument()
   })

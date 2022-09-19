@@ -327,7 +327,7 @@ const schema = {
     button: "Manage Plan in Stripe",
   },
   ContactSalesView: {
-    title: "We have Enterprise solutions for your needs",
+    title: "We're ready to help",
     description:
       "Give us some basic information and our solutions team will reach out soon.",
     formSubmitted: "Form Submitted",

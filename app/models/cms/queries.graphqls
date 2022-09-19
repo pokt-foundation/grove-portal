@@ -30,3 +30,19 @@ query getQuestions(
     }
   }
 }
+
+query getLegal($language: String) {
+  legal_by_id(id: 1) {
+    category {
+      id
+      translations(filter: { languages_code: { _eq: $language } }) {
+        name
+        display
+      }
+    }
+    translations(filter: { languages_code: { _eq: $language } }) {
+      name
+      body
+    }
+  }
+}

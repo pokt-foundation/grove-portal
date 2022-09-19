@@ -1,34 +1,51 @@
-import { LinksFunction } from "@remix-run/node"
-import { useTranslate } from "~/context/TranslateContext"
-import styles from "~/styles/landing.css"
+import { json, LinksFunction, LoaderFunction } from "@remix-run/node"
+import { useLoaderData } from "@remix-run/react"
+import { useMemo } from "react"
+import { initCmsClient } from "~/models/cms/cms.server"
+import { getQuestionsQuery, questions as Questions } from "~/models/cms/sdk"
+import { groupBy } from "~/utils/utils"
+import FaqsView, { links as FaqsViewLinks } from "~/views/faqs/faqsView"
 
 export const links: LinksFunction = () => {
-  return [{ rel: "stylesheet", href: styles }]
+  return [...FaqsViewLinks()]
+}
+
+type LoaderData = {
+  questions: getQuestionsQuery
+}
+
+export const loader: LoaderFunction = async ({ request }) => {
+  const cms = initCmsClient()
+  const questions = await cms.getQuestions({
+    filter: { status: { _eq: "published" } },
+    language: "en-US",
+  })
+
+  return json<LoaderData>({
+    questions: questions,
+  })
 }
 
 export default function FAQs() {
-  const {
-    t: { faq },
-  } = useTranslate()
+  const { questions } = useLoaderData<LoaderData>()
 
-  return (
-    <>
-      <div className="container__content">
-        <h1 className="center faqTitle">
-          {faq.title}
-          <span className="blue block">{faq.subtitle}</span>
-        </h1>
-        {faq.faqs.map((item) => {
-          return (
-            <>
-              <h2 className="blue faqQuestion">{item.question}</h2>
-              <p className="faqAnswer">{item.answer}</p>
-            </>
-          )
-        })}
-      </div>
-    </>
-  )
+  const categories = useMemo(() => {
+    if (questions.questions) {
+      const newArr = questions.questions.reduce((prev: Questions[], curr) => {
+        return [
+          ...prev,
+          {
+            ...curr,
+            categoryName: curr.category?.translations![0]?.name ?? "",
+          },
+        ]
+      }, [])
+      return groupBy(newArr, "categoryName")
+    }
+    return null
+  }, [questions])
+
+  return <FaqsView categories={categories} />
 }
 
 export const ErrorBoundary = ({ error }: { error: Error }) => {

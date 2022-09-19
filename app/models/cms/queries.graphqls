@@ -1,0 +1,32 @@
+query getQuestions(
+  $filter: questions_filter
+  $limit: Int
+  $offset: Int
+  $page: Int
+  $search: String
+  $sort: [String]
+  $language: String
+) {
+  questions(
+    filter: $filter
+    limit: $limit
+    offset: $offset
+    page: $page
+    search: $search
+    sort: $sort
+  ) {
+    id
+    category {
+      id
+      translations(filter: { languages_code: { _eq: $language } }) {
+        name
+        display
+      }
+    }
+    status
+    translations(filter: { languages_code: { _eq: $language } }) {
+      answer
+      question
+    }
+  }
+}

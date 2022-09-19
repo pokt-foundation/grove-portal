@@ -39,7 +39,7 @@ const schema = {
   },
   faq: {
     title: "Pocket Portal",
-    subtitle: "FAQ",
+    subtitle: "FAQs",
     faqs: [
       {
         question: "What is the Pocket Portal -fr?",

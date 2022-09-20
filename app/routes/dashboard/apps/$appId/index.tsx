@@ -17,13 +17,13 @@ import AppRequestsRateCard, {
 import AppUsageCurrentCard, {
   links as AppUsageCurrentCardLinks,
 } from "~/components/application/AppUsageCurrentCard"
+import BannerCard, { links as BannerCardLinks } from "~/components/application/BannerCard"
 import UsageChartCard, {
   links as UsageChartCardLinks,
 } from "~/components/application/UsageChartCard"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { FREE_TIER_MAX_RELAYS } from "~/utils/pocketUtils"
-import BannerCard, { links as BannerCardLinks } from "~/components/application/BannerCard"
 
 export const links = () => {
   return [

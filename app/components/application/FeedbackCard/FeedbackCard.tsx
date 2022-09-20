@@ -36,6 +36,7 @@ export default function FeedbackBox({ className }: { className?: string }) {
             aria-label="Click to share feedback with the Pokt Team in discord"
             className="discord-icon"
             href="https://discord.gg/pokt"
+            rel="noreferrer" target="_blank"
           >
             <IconDiscord />
           </a>

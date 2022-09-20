@@ -52,6 +52,7 @@ export const links = () => {
 type AppIdLayoutViewProps = {
   endpoint: EndpointQuery["endpoint"] | null
   searchParams: URLSearchParams
+  setSearchParams: typeof URLSearchParams["arguments"]
   subscription: Stripe.Subscription | undefined
   updatePlanFetcher: ReturnType<typeof useFetcher>
 }
@@ -59,6 +60,7 @@ type AppIdLayoutViewProps = {
 export default function AppIdLayoutView({
   endpoint,
   searchParams,
+  setSearchParams,
   subscription,
   updatePlanFetcher,
 }: AppIdLayoutViewProps) {
@@ -98,11 +100,9 @@ export default function AppIdLayoutView({
   useEffect(() => {
     const success = searchParams.get("success")
     const cancelError = searchParams.get("cancelError")
+
     if (!success) return
     if (success === "true") {
-      const path = window.location.pathname
-      window.history.replaceState({}, document.title, path)
-
       // update plan type to paid on success
       if (
         endpoint &&
@@ -120,6 +120,7 @@ export default function AppIdLayoutView({
           },
         )
       }
+      setSearchParams({})
       setShowSuccessModel(true)
     }
 

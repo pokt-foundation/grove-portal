@@ -46,7 +46,7 @@ export const Nav = ({ user }: NavProps) => {
         {routes.map((route) => (
           <li key={route.to}>
             {/https?:\/\//.test(route.to) ? (
-              <a className="nav-link" href={route.to}>
+              <a className="nav-link" href={route.to} rel="noreferrer" target="_blank">
                 {route.label}
               </a>
             ) : (

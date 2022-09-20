@@ -1,0 +1,25 @@
+.pokt-banner .pokt-card {
+  transition: padding ease-in-out 0.3s;
+}
+
+.pokt-banner.informational .pokt-card {
+  border: 1px solid var(--color-secondary-light);
+}
+
+.pokt-banner.error .pokt-card {
+  border: 1px solid var(--color-error);
+}
+
+.pokt-banner.success .pokt-card {
+  border: 1px solid var(--color-success);
+}
+
+/* add warning color */
+.pokt-banner.warning .pokt-card {
+  border: 1px solid var(--color-error);
+}
+
+.pokt-banner button {
+  font-weight: normal;
+  color: var(--color-white-dark);
+}

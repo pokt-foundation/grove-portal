@@ -23,6 +23,7 @@ import UsageChartCard, {
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { FREE_TIER_MAX_RELAYS } from "~/utils/pocketUtils"
+import BannerCard, { links as BannerCardLinks } from "~/components/application/BannerCard"
 
 export const links = () => {
   return [
@@ -32,6 +33,7 @@ export const links = () => {
     ...AppRequestsRateCardLinks(),
     ...AppOverLimitCardLinks(),
     ...UsageChartCardLinks(),
+    ...BannerCardLinks(),
   ]
 }
 
@@ -56,6 +58,16 @@ export const Application = () => {
 
     return appIdData.relaysToday.Count.Total >= appIdData.endpoint.appLimits.dailyLimit
   }, [appIdData])
+
+  const allZeros = () => {
+    let relays = 0
+    relays += appIdData.relaysToday.Count.Total
+    relays += appIdData.relaysYesterday.Count.Total
+    for (let i = 0; i < appIdData.dailyNetworkRelaysPerWeek.length; i += 1) {
+      relays += appIdData.dailyNetworkRelaysPerWeek[i].Count.Total
+    }
+    return relays
+  }
 
   return (
     <>
@@ -99,6 +111,12 @@ export const Application = () => {
             relays={appIdData.dailyNetworkRelaysPerWeek}
           />
         </section>
+      )}
+      {allZeros() === 0 && (
+        <BannerCard
+          bannerType="error"
+          copy={{ title: "a title", body: "some body error text" }}
+        />
       )}
     </>
   )

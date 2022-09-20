@@ -52,7 +52,7 @@ export const links = () => {
 type AppIdLayoutViewProps = {
   endpoint: EndpointQuery["endpoint"] | null
   searchParams: URLSearchParams
-  setSearchParams?: typeof URLSearchParams["arguments"]
+  setSearchParams: typeof URLSearchParams["arguments"]
   subscription: Stripe.Subscription | undefined
   updatePlanFetcher: ReturnType<typeof useFetcher>
 }
@@ -66,7 +66,6 @@ export default function AppIdLayoutView({
 }: AppIdLayoutViewProps) {
   const { t } = useTranslate()
   const { flags } = useFeatureFlags()
-
   const [showSuccessModal, setShowSuccessModel] = useState<boolean>(false)
   const [showErrorModal, setShowErrorModel] = useState<boolean>(false)
   const [routes, setRoutes] = useState([
@@ -111,11 +110,17 @@ export default function AppIdLayoutView({
         updatePlanFetcher.state !== "loading"
       ) {
         updatePlanFetcher.submit(
-          { id: endpoint.id, type: PayPlanType.PayAsYouGoV0 },
-          { action: "/api/updatePlan", method: "post" },
+          {
+            id: endpoint.id,
+            type: PayPlanType.PayAsYouGoV0,
+          },
+          {
+            action: "/api/updatePlan",
+            method: "post",
+          },
         )
       }
-      if (setSearchParams) setSearchParams({})
+      setSearchParams({})
       setShowSuccessModel(true)
     }
 
@@ -231,7 +236,6 @@ export default function AppIdLayoutView({
           )}
         </Grid.Col>
       </Grid>
-
       <Modal
         opened={showSuccessModal}
         title="Congratulations!"
@@ -248,7 +252,6 @@ export default function AppIdLayoutView({
           <Button onClick={() => setShowSuccessModel(false)}>Continue To App</Button>
         </ModalCTA>
       </Modal>
-
       <Modal
         opened={showErrorModal}
         title="Subscription Error"

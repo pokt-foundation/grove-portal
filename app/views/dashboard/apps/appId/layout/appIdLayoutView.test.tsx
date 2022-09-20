@@ -12,6 +12,8 @@ const updatePlanFetcherMock = {
   submit: vi.fn(() => ({ error: false })),
 } as unknown as ReturnType<typeof useFetcher>
 
+const setSearchParams = vi.fn()
+
 describe("<AppIdLayoutView />", () => {
   beforeEach(() => {
     vi.resetModules()
@@ -21,6 +23,7 @@ describe("<AppIdLayoutView />", () => {
       <AppIdLayoutView
         endpoint={endpoint}
         searchParams={new URLSearchParams({ success: "false" })}
+        setSearchParams={setSearchParams}
         subscription={subscription}
         updatePlanFetcher={updatePlanFetcherMock}
       />,
@@ -35,6 +38,7 @@ describe("<AppIdLayoutView />", () => {
       <AppIdLayoutView
         endpoint={endpoint}
         searchParams={new URLSearchParams({ success: "true" })}
+        setSearchParams={setSearchParams}
         subscription={subscription}
         updatePlanFetcher={updatePlanFetcherMock}
       />,
@@ -47,6 +51,7 @@ describe("<AppIdLayoutView />", () => {
       <AppIdLayoutView
         endpoint={null}
         searchParams={new URLSearchParams()}
+        setSearchParams={setSearchParams}
         subscription={subscription}
         updatePlanFetcher={updatePlanFetcherMock}
       />,
@@ -71,6 +76,7 @@ describe("<AppIdLayoutView />", () => {
       <AppIdLayoutView
         endpoint={endpoint}
         searchParams={new URLSearchParams()}
+        setSearchParams={setSearchParams}
         subscription={subscription}
         updatePlanFetcher={updatePlanFetcherMock}
       />,
@@ -95,6 +101,7 @@ describe("<AppIdLayoutView />", () => {
       <AppIdLayoutView
         endpoint={endpoint}
         searchParams={new URLSearchParams()}
+        setSearchParams={setSearchParams}
         subscription={subscription}
         updatePlanFetcher={updatePlanFetcherMock}
       />,
@@ -120,6 +127,7 @@ describe("<AppIdLayoutView />", () => {
       <AppIdLayoutView
         endpoint={endpoint}
         searchParams={new URLSearchParams()}
+        setSearchParams={setSearchParams}
         subscription={subscription}
         updatePlanFetcher={updatePlanFetcherMock}
       />,
@@ -147,6 +155,7 @@ describe("<AppIdLayoutView />", () => {
       <AppIdLayoutView
         endpoint={endpoint}
         searchParams={new URLSearchParams()}
+        setSearchParams={setSearchParams}
         subscription={subscription}
         updatePlanFetcher={updatePlanFetcherMock}
       />,
@@ -162,6 +171,7 @@ describe("<AppIdLayoutView />", () => {
       <AppIdLayoutView
         endpoint={endpoint}
         searchParams={new URLSearchParams()}
+        setSearchParams={setSearchParams}
         subscription={subscription}
         updatePlanFetcher={updatePlanFetcherMock}
       />,
@@ -178,6 +188,7 @@ describe("<AppIdLayoutView />", () => {
       <AppIdLayoutView
         endpoint={endpoint}
         searchParams={new URLSearchParams()}
+        setSearchParams={setSearchParams}
         subscription={subscription}
         updatePlanFetcher={updatePlanFetcherMock}
       />,
@@ -196,6 +207,7 @@ describe("<AppIdLayoutView />", () => {
       <AppIdLayoutView
         endpoint={endpoint}
         searchParams={new URLSearchParams()}
+        setSearchParams={setSearchParams}
         subscription={subscription}
         updatePlanFetcher={updatePlanFetcherMock}
       />,

@@ -1,5 +1,14 @@
 import { AspectRatio } from "@mantine/core"
-import { Box, Button, Group, Title, Text } from "@pokt-foundation/pocket-blocks"
+import {
+  Box,
+  Button,
+  Group,
+  Title,
+  Text,
+  IconCircleCheck,
+  Tooltip,
+  Checkbox,
+} from "@pokt-foundation/pocket-blocks"
 import { ActionFunction, json, LinksFunction, LoaderFunction } from "@remix-run/node"
 import { Form, useLoaderData, useSearchParams } from "@remix-run/react"
 import { useMemo } from "react"
@@ -21,11 +30,15 @@ export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url)
   const tagId = url.searchParams.get("tag")
   const query = url.searchParams.get("query")
+  const approved = url.searchParams.get("approved")
 
   let search = undefined
   let filter: InputMaybe<ecosystem_filter> = { status: { _eq: "published" } }
   if (tagId) {
     filter.tags = { id: { _eq: tagId } }
+  }
+  if (approved) {
+    filter.pocket_approved = { _eq: Boolean(approved === "on") }
   }
 
   if (query) {
@@ -80,6 +93,10 @@ export default function TermsAndConditions() {
     }
   }, [selectedTagId, eco.tags])
 
+  const selectedApproved = useMemo(() => {
+    return searchParams.get("approved") === "on"
+  }, [searchParams])
+
   const handleClearParams = () => {
     setSearchParams({})
   }
@@ -110,6 +127,13 @@ export default function TermsAndConditions() {
                   </Button>
                 ))}
             </Group>
+          </Box>
+          <Box mb={32}>
+            <Checkbox
+              defaultChecked={selectedApproved}
+              label="Pocket Approved"
+              name="approved"
+            />
           </Box>
           <Box mb={32}>
             <Group>
@@ -156,12 +180,19 @@ export default function TermsAndConditions() {
                     </Group>
                   </div>
                 </Group>
-                <Form method="post">
-                  <input name="id" type="hidden" value={item.id} />
-                  <Button name="votes" type="submit" value={(item.votes ?? 0) + 1}>
-                    <Text size="sm">{item.votes ?? 0} Votes</Text>
-                  </Button>
-                </Form>
+                <Group>
+                  {item.pocket_approved && (
+                    <Tooltip label={"Pocket Approved"}>
+                      <IconCircleCheck fill="var(--color-white-main)" />
+                    </Tooltip>
+                  )}
+                  <Form method="post">
+                    <input name="id" type="hidden" value={item.id} />
+                    <Button name="votes" type="submit" value={(item.votes ?? 0) + 1}>
+                      <Text size="sm">{item.votes ?? 0} Votes</Text>
+                    </Button>
+                  </Form>
+                </Group>
               </Group>
             </Card>
           ))

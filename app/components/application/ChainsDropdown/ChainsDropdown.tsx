@@ -2,8 +2,8 @@ import { Box, IconPlus, Dropdown, Button } from "@pokt-foundation/pocket-blocks"
 import React, { SyntheticEvent, useState } from "react"
 import ChainWithImage, { links as ChainWithImageLinks } from "../ChainWithImage"
 import styles from "./styles.css"
-import { BlockchainsQuery } from "~/models/portal/sdk"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
+import { BlockchainsQuery } from "~/models/portal/sdk"
 
 /* c8 ignore start */
 export const links = () => {

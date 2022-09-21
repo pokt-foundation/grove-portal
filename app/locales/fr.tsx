@@ -437,6 +437,26 @@ const schema = {
     showButtonText: "Minimize -fr",
     hideButtonText: "Learn More -fr",
   },
+  BannerErrorCard: {
+    title: "Attention: Potential Issues with Data",
+    body: [
+      "We're experiencing some technical issues right now and the data on this page may be inaccurate. We are working through this as quickly as we can. -fr",
+      <>
+        Please write to us on
+        <Link
+          className="pokt-link"
+          rel="noreferrer"
+          target="_blank"
+          to="https://discord.gg/pokt"
+        >
+          {" "}
+          Discord{" "}
+        </Link>{" "}
+        if you need further assistance. -fr
+      </>,
+      "If you recently created this app and have not run any relays yet, please disregard this message. -fr",
+    ],
+  },
 }
 
 export default schema

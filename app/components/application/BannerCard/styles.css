@@ -14,12 +14,15 @@
   border: 1px solid var(--color-success);
 }
 
-/* add warning color */
 .pokt-banner.warning .pokt-card {
-  border: 1px solid var(--color-error);
+  border: 1px solid var(--color-warning);
 }
 
 .pokt-banner button {
   font-weight: normal;
   color: var(--color-white-dark);
+}
+
+.pokt-banner .pokt-link {
+  color: var(--color-primary-main);
 }

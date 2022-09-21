@@ -21,6 +21,7 @@ import BannerCard, { links as BannerCardLinks } from "~/components/application/B
 import UsageChartCard, {
   links as UsageChartCardLinks,
 } from "~/components/application/UsageChartCard"
+import { useTranslate } from "~/context/TranslateContext"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { FREE_TIER_MAX_RELAYS } from "~/utils/pocketUtils"
@@ -46,6 +47,7 @@ export const meta: MetaFunction = () => {
 export const Application = () => {
   const appIdRoute = useMatchesRoute("routes/dashboard/apps/$appId")
   const appIdData = appIdRoute?.data as AppIdLoaderData
+  const { t } = useTranslate()
 
   useEffect(() => {
     trackEvent(AmplitudeEvents.AppDetailsView)
@@ -114,8 +116,8 @@ export const Application = () => {
       )}
       {allZeros() === 0 && (
         <BannerCard
-          bannerType="error"
-          copy={{ title: "a title", body: "some body error text" }}
+          bannerType="success"
+          copy={{ title: t.BannerErrorCard.title, body: t.BannerErrorCard.body }}
         />
       )}
     </>

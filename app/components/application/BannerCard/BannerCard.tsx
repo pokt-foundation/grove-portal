@@ -3,9 +3,8 @@ import {
   Text,
   IconInfo,
   IconWarning,
-  IconCheck,
+  IconCircleCheck,
   IconErrorHex,
-  Collapse,
 } from "@pokt-foundation/pocket-blocks"
 import clsx from "clsx"
 import { useState } from "react"
@@ -20,7 +19,11 @@ export const links = () => {
 /* c8 ignore stop */
 
 interface BannerCardProps {
-  copy: { title: string; body: string; body2?: string }
+  copy: {
+    title: string
+    body: (string | JSX.Element)[]
+    body2?: (string | JSX.Element)[]
+  }
   bannerType: "error" | "informational" | "success" | "warning"
 }
 
@@ -29,7 +32,7 @@ export default function BannerCard({ copy, bannerType }: BannerCardProps) {
   const [visible, setVisible] = useState(true)
 
   const close = () => {
-    setVisible(!visible)
+    setVisible(false)
   }
 
   return (
@@ -43,10 +46,10 @@ export default function BannerCard({ copy, bannerType }: BannerCardProps) {
                   <IconInfo fill="var(--color-secondary-light)" />
                 )}
                 {bannerType === "error" && <IconErrorHex fill="var(--color-error)" />}
-                {false && bannerType === "warning" && (
-                  <IconWarning fill="var(--color-error)" />
+                {bannerType === "warning" && <IconWarning fill="var(--color-warning)" />}
+                {bannerType === "success" && (
+                  <IconCircleCheck fill="var(--color-success)" />
                 )}
-                {bannerType === "success" && <IconCheck fill="var(--color-success)" />}
                 <h3>{copy.title}</h3>
               </div>
               <Button variant="subtle" onClick={() => close()}>
@@ -54,8 +57,18 @@ export default function BannerCard({ copy, bannerType }: BannerCardProps) {
               </Button>
             </div>
             <div>
-              <Text mb={8}>{copy.body}</Text>
-              {copy.body2 && <Text mb={8}>{copy.body}</Text>}
+              {copy.body.map((str, index) => (
+                <Text key={index} mb={8}>
+                  {str}
+                </Text>
+              ))}
+              {copy.body2 &&
+                copy.body2.length > 0 &&
+                copy.body2.map((str, index) => (
+                  <Text key={index} mb={8}>
+                    {str}
+                  </Text>
+                ))}
             </div>
           </Card>
         </div>

@@ -11,7 +11,6 @@ import clsx from "clsx"
 import { useState } from "react"
 import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/shared/Card"
-import { useTranslate } from "~/context/TranslateContext"
 
 /* c8 ignore start */
 export const links = () => {
@@ -29,7 +28,6 @@ interface BannerCardProps {
 }
 
 export default function BannerCard({ copy, bannerType }: BannerCardProps) {
-  const { t } = useTranslate()
   const [visible, setVisible] = useState(true)
 
   const close = () => {

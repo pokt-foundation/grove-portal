@@ -134,7 +134,7 @@ interface TranslationData {
   AppUsageCurrentCard: {
     label: string
     list: {
-      sessionRelays: {
+      avgRelays: {
         label: string
         help: string
       }

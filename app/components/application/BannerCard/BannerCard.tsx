@@ -5,6 +5,7 @@ import {
   IconWarning,
   IconCircleCheck,
   IconErrorHex,
+  IconX,
 } from "@pokt-foundation/pocket-blocks"
 import clsx from "clsx"
 import { useState } from "react"
@@ -52,8 +53,12 @@ export default function BannerCard({ copy, bannerType }: BannerCardProps) {
                 )}
                 <h3>{copy.title}</h3>
               </div>
-              <Button variant="subtle" onClick={() => close()}>
-                {t.common.close}
+              <Button
+                aria-label="Close this notification"
+                variant="subtle"
+                onClick={() => close()}
+              >
+                <IconX fill="var(--color-white-dark)" />
               </Button>
             </div>
             <div>

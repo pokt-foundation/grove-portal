@@ -24,6 +24,7 @@ import UsageChartCard, {
 import { useTranslate } from "~/context/TranslateContext"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
+import { useFeatureFlags } from "~/context/FeatureFlagContext"
 import { FREE_TIER_MAX_RELAYS } from "~/utils/pocketUtils"
 
 export const links = () => {
@@ -48,6 +49,7 @@ export const Application = () => {
   const appIdRoute = useMatchesRoute("routes/dashboard/apps/$appId")
   const appIdData = appIdRoute?.data as AppIdLoaderData
   const { t } = useTranslate()
+  const { flags } = useFeatureFlags()
 
   useEffect(() => {
     trackEvent(AmplitudeEvents.AppDetailsView)
@@ -114,9 +116,9 @@ export const Application = () => {
           />
         </section>
       )}
-      {allZeros() === 0 && (
+      {flags.INFLUX_RELAY_ERROR === "true" && allZeros() === 0 && (
         <BannerCard
-          bannerType="success"
+          bannerType="error"
           copy={{ title: t.BannerErrorCard.title, body: t.BannerErrorCard.body }}
         />
       )}

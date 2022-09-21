@@ -6,11 +6,13 @@ export interface FeatureFlags {
   MULTI_LANGUAGE: string
   STRIPE_PAYMENT: string
   ENTERPRISE: string
+  INFLUX_RELAY_ERROR: string
 }
 
 export const defaultFeatureFlags = {
   MULTI_LANGUAGE: ENV.FLAG_MULTI_LANGUAGE ?? "false",
   STRIPE_PAYMENT: ENV.FLAG_STRIPE_PAYMENT || "true",
+  INFLUX_RELAY_ERROR: ENV.FLAG_INFLUX_RELAY_ERROR ?? "false",
   ENTERPRISE: "false" || ENV.FLAG_ENTERPRISE, //change once enterprise is available
 }
 

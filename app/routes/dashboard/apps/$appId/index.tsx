@@ -21,10 +21,10 @@ import BannerCard, { links as BannerCardLinks } from "~/components/application/B
 import UsageChartCard, {
   links as UsageChartCardLinks,
 } from "~/components/application/UsageChartCard"
+import { useFeatureFlags } from "~/context/FeatureFlagContext"
 import { useTranslate } from "~/context/TranslateContext"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
-import { useFeatureFlags } from "~/context/FeatureFlagContext"
 import { FREE_TIER_MAX_RELAYS } from "~/utils/pocketUtils"
 
 export const links = () => {

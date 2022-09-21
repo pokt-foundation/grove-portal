@@ -53,13 +53,25 @@ export default function AppRequestsRateCard({
 
   const successPercent = useMemo(() => Math.min(successRate * 100, 100), [successRate])
 
+  const getItemColor = (successRateDelta: string | number) => {
+    if (Math.abs(successRateDelta as number) === 0) return undefined
+    if (successRateDelta > 0) return "success"
+    return "error"
+  }
+
+  const getItemIcon = (successRateDelta: string | number) => {
+    if (Math.abs(successRateDelta as number) === 0) return undefined
+    if (successRateDelta > 0) return ArrowSuccess
+    return ArrowError
+  }
+
   const listItems: CardListItem[] = [
     {
       label: t.AppRequestsRateCard.list.successDelta.label,
       value: `${Math.abs(successRateDelta as number)}%`,
       help: t.AppRequestsRateCard.list.successDelta.help,
-      color: successRateDelta >= 0 ? "success" : "error",
-      icon: successRateDelta >= 0 ? IconArrowUp : IconArrowDown,
+      color: getItemColor(successRateDelta),
+      icon: getItemIcon(successRateDelta),
     },
     {
       label: t.AppRequestsRateCard.list.errorRate.label,
@@ -100,3 +112,10 @@ export default function AppRequestsRateCard({
     </div>
   )
 }
+
+const ArrowSuccess = () => (
+  <IconArrowUp fill="var(--color-success)" height={16} width={16} />
+)
+const ArrowError = () => (
+  <IconArrowDown fill="var(--color-error)" height={16} width={16} />
+)

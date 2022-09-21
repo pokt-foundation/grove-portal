@@ -17,9 +17,12 @@ import AppRequestsRateCard, {
 import AppUsageCurrentCard, {
   links as AppUsageCurrentCardLinks,
 } from "~/components/application/AppUsageCurrentCard"
+import BannerCard, { links as BannerCardLinks } from "~/components/application/BannerCard"
 import UsageChartCard, {
   links as UsageChartCardLinks,
 } from "~/components/application/UsageChartCard"
+import { useFeatureFlags } from "~/context/FeatureFlagContext"
+import { useTranslate } from "~/context/TranslateContext"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { FREE_TIER_MAX_RELAYS } from "~/utils/pocketUtils"
@@ -32,6 +35,7 @@ export const links = () => {
     ...AppRequestsRateCardLinks(),
     ...AppOverLimitCardLinks(),
     ...UsageChartCardLinks(),
+    ...BannerCardLinks(),
   ]
 }
 
@@ -44,6 +48,8 @@ export const meta: MetaFunction = () => {
 export const Application = () => {
   const appIdRoute = useMatchesRoute("routes/dashboard/apps/$appId")
   const appIdData = appIdRoute?.data as AppIdLoaderData
+  const { t } = useTranslate()
+  const { flags } = useFeatureFlags()
 
   useEffect(() => {
     trackEvent(AmplitudeEvents.AppDetailsView)
@@ -56,6 +62,16 @@ export const Application = () => {
 
     return appIdData.relaysToday.Count.Total >= appIdData.endpoint.appLimits.dailyLimit
   }, [appIdData])
+
+  const allZeros = () => {
+    let relays = 0
+    relays += appIdData.relaysToday.Count.Total
+    relays += appIdData.relaysYesterday.Count.Total
+    for (let i = 0; i < appIdData.dailyNetworkRelaysPerWeek.length; i += 1) {
+      relays += appIdData.dailyNetworkRelaysPerWeek[i].Count.Total
+    }
+    return relays
+  }
 
   return (
     <>
@@ -99,6 +115,12 @@ export const Application = () => {
             relays={appIdData.dailyNetworkRelaysPerWeek}
           />
         </section>
+      )}
+      {flags.INFLUX_RELAY_ERROR === "true" && allZeros() === 0 && (
+        <BannerCard
+          bannerType="error"
+          copy={{ title: t.BannerErrorCard.title, body: t.BannerErrorCard.body }}
+        />
       )}
     </>
   )

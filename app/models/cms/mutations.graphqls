@@ -1,0 +1,5 @@
+mutation updateEcosystem($id: ID!, $data: update_ecosystem_input!) {
+  update_ecosystem_item(id: $id, data: $data) {
+    id
+  }
+}

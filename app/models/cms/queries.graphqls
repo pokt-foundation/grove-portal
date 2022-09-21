@@ -46,3 +46,69 @@ query getLegal($language: String) {
     }
   }
 }
+
+query getEcosystem(
+  $filter: ecosystem_filter
+  $limit: Int
+  $offset: Int
+  $page: Int
+  $search: String
+  $sort: [String]
+  $language: String
+) {
+  ecosystem(
+    filter: $filter
+    limit: $limit
+    offset: $offset
+    page: $page
+    search: $search
+    sort: $sort
+  ) {
+    id
+    discord
+    featured
+    name
+    reviews {
+      id
+      children {
+        id
+        review
+        user
+        votes
+      }
+      parent {
+        id
+      }
+      review
+      user
+      votes
+    }
+    tags {
+      id
+      translations(filter: { languages_code: { _eq: $language } }) {
+        name
+        display
+      }
+    }
+    thumbnail {
+      id
+      filename_disk
+      storage
+      title
+      type
+    }
+    translations(filter: { languages_code: { _eq: $language } }) {
+      id
+      summary
+    }
+    votes
+    website
+  }
+  tags(filter: { parent: { id: { _eq: 27 } } }) {
+    id
+    translations(filter: { languages_code: { _eq: $language } }) {
+      name
+      display
+    }
+  }
+}

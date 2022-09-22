@@ -84,8 +84,7 @@ type LoaderData = {
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
-  const user = await requireUser(request)
-  const portal = initPortalClient(user.accessToken)
+  const portal = initPortalClient()
   const blockchainResponse = await portal.blockchains({ active: true }).catch((e) => {
     console.log(e)
   })

@@ -187,8 +187,8 @@ export default function AppIdLayoutView({
                 <Nav
                   dropdown
                   appId={endpoint.id}
-                  routes={routes}
                   ariaLabel="Application"
+                  routes={routes}
                 />
               </div>
             </Grid.Col>

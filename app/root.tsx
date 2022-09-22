@@ -148,17 +148,6 @@ export default function App() {
         icon: IconCircleQuestion,
         protected: Protected.Public,
       },
-      {
-        to: "https://www.pokt.network/",
-        external: true,
-        label: "About Pocket",
-        protected: Protected.Public,
-      },
-      {
-        to: "/contact-sales",
-        label: "Contact",
-        protected: Protected.Public,
-      },
     ]
 
     let protectedLevel = Protected.Public

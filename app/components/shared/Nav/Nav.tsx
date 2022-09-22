@@ -16,6 +16,7 @@ type NavProps = {
   routes: Route[]
   dropdown?: boolean
   appId?: string
+  ariaLabel: string
 }
 
 type Route = {
@@ -26,7 +27,7 @@ type Route = {
   external?: boolean
 }
 
-export const Nav = ({ routes, dropdown = false, appId }: NavProps) => {
+export const Nav = ({ routes, dropdown = false, appId, ariaLabel }: NavProps) => {
   const [mobilePageSelect, setMobilePageSelect] = useState<string | null>(null)
 
   const reformatRoute = (routes: Route[]) => {
@@ -62,7 +63,7 @@ export const Nav = ({ routes, dropdown = false, appId }: NavProps) => {
   }
 
   return (
-    <nav className={clsx("pokt-nav", dropdown && "mobile")}>
+    <nav aria-label={ariaLabel} className={clsx("pokt-nav", dropdown && "mobile")}>
       {dropdown && (
         <div className="mobile-navigation-dropdown">
           <Select

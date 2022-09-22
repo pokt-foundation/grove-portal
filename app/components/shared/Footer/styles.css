@@ -7,10 +7,34 @@
   background-color: rgb(25, 36, 48);
   color: white;
   min-height: 64px;
+  padding: 16px 64px;
+}
+
+.pokt-footer nav {
+  display: inherit;
+  width: 100%;
+}
+
+.pokt-footer nav > div {
+  width: 100%;
+}
+
+.pokt-footer nav > div > div {
+  gap: 24px;
+}
+
+.pokt-footer span.vertical-split {
+  height: 40px;
+  width: 1px;
+  border-right: 1px solid var(--color-disabled-dark);
 }
 
 .pokt-footer .mantine-Grid-root {
   width: 100%;
+}
+
+.pokt-footer .greenLink {
+  color: var(--color-primary-main);
 }
 
 .pokt-footer .center {

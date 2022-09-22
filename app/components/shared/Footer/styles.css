@@ -7,7 +7,7 @@
   background-color: rgb(25, 36, 48);
   color: white;
   min-height: 64px;
-  padding: 48px 64px 16px 64px;
+  padding: 16px 64px;
 }
 
 .pokt-footer nav {
@@ -16,8 +16,6 @@
 }
 
 .pokt-footer nav > div {
-  padding-top: 16px;
-  border-top: 1px solid var(--color-disabled-dark);
   width: 100%;
 }
 

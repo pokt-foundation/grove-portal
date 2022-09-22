@@ -1,6 +1,7 @@
 import { IconCaretLeft, Grid, Button } from "@pokt-foundation/pocket-blocks"
 import { Outlet, useFetcher } from "@remix-run/react"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
+import { dayjs } from "~/utils/dayjs"
 import styles from "./styles.css"
 import AdEconomicsForDevs, {
   links as AdEconomicsForDevsLinks,
@@ -31,6 +32,7 @@ import { EndpointQuery, PayPlanType } from "~/models/portal/sdk"
 import { Stripe } from "~/models/stripe/stripe.server"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 import { getPlanName } from "~/utils/utils"
+import BannerCard from "~/components/application/BannerCard"
 
 /* c8 ignore start */
 export const links = () => {
@@ -68,6 +70,12 @@ export default function AppIdLayoutView({
   const { flags } = useFeatureFlags()
   const [showSuccessModal, setShowSuccessModel] = useState<boolean>(false)
   const [showErrorModal, setShowErrorModel] = useState<boolean>(false)
+
+  const createdAtMinsDiffToday = useMemo(
+    () => dayjs().diff(endpoint?.createdAt, "minutes"),
+    [endpoint],
+  )
+
   const [routes, setRoutes] = useState([
     {
       to: "/dashboard/apps",
@@ -199,6 +207,16 @@ export default function AppIdLayoutView({
               <LegacyBannerCard />
             )}
           <Outlet />
+
+          {(!endpoint || createdAtMinsDiffToday <= 5) && (
+            <BannerCard
+              bannerType="informational"
+              copy={{
+                title: t.appId.endpointInfoBanner.title,
+                body: t.appId.endpointInfoBanner.body,
+              }}
+            />
+          )}
         </Grid.Col>
         <Grid.Col md={4}>
           {endpoint && (

@@ -106,6 +106,10 @@ interface TranslationData {
       notifications: string
       plan: string
     }
+    endpointInfoBanner: {
+      title: string
+      body: string[]
+    }
   }
   AppRequestsByOriginCard: {
     label: string

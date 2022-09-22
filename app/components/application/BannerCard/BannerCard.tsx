@@ -56,7 +56,7 @@ export default function BannerCard({ copy, bannerType }: BannerCardProps) {
                 variant="subtle"
                 onClick={() => close()}
               >
-                <IconX fill="var(--color-white-dark)" />
+                <IconX fill="var(--color-white-light)" />
               </Button>
             </div>
             <div>

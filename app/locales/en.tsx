@@ -188,6 +188,12 @@ const schema = {
       notifications: "Notifications",
       plan: "Plan Details",
     },
+    endpointInfoBanner: {
+      title: "App creation",
+      body: [
+        "Hold tight while we complete the provisioning of your application. It may take up to 5 minutes before your endpoint can connect successfully to the network.",
+      ],
+    },
   },
   AppRequestsByOriginCard: {
     label: "Requests By Origin",

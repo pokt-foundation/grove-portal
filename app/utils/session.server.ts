@@ -56,7 +56,7 @@ export const requireUserProfile = async (
   request: Request,
   defaultRedirect = "/",
 ): Promise<Auth0Profile> => {
-  const user = await requireUser(request)
+  const user = await requireUser(request, defaultRedirect)
   return user.profile
 }
 

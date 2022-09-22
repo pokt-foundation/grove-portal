@@ -16,7 +16,7 @@ type LoaderData = {
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
-  const user = await requireUserProfile(request)
+  const user = await requireUserProfile(request, "/api/auth/auth0")
   return json<LoaderData>({
     user: user,
   })

@@ -133,7 +133,7 @@ export default function App() {
         to: "/dashboard/apps",
         label: t.dashboard.routes.apps,
         icon: IconApp,
-        protected: Protected.Private,
+        protected: Protected.Public, // show this link to all. dashboard layout handles redirect to login.
       },
       {
         to: "https://docs.pokt.network",

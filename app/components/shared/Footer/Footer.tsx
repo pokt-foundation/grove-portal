@@ -1,7 +1,8 @@
-import { Grid } from "@pokt-foundation/pocket-blocks"
+import { Group, IconTwitter } from "@pokt-foundation/pocket-blocks"
 import { Link } from "@remix-run/react"
 import styles from "./styles.css"
 import { useTranslate } from "~/context/TranslateContext"
+import IconDiscord from "../Icons/IconDiscord"
 
 /* c8 ignore start */
 export const links = () => {
@@ -16,13 +17,47 @@ export const Footer = () => {
 
   return (
     <footer className="pokt-footer">
-      <Grid align="center">
-        <Grid.Col className="center">
+      <Group position="apart">
+        <div>
           &copy; 2022 Pocket Network Inc.{" "}
-          <Link to="/terms-and-conditions">{footer.termsOfUse}</Link> |{" "}
-          <a href="https://www.pokt.network/privacy-policy">{footer.privacyPolicy}</a>
-        </Grid.Col>
-      </Grid>
+          <Link className="greenLink" to="/terms-and-conditions">
+            {footer.termsOfUse}
+          </Link>{" "}
+          |{" "}
+          <a
+            className="greenLink"
+            href="//www.pokt.network/privacy-policy"
+            rel="noreferrer"
+            target="_blank"
+          >
+            {footer.privacyPolicy}
+          </a>
+        </div>
+        <Group>
+          <a href="//www.pokt.network/" rel="noreferrer" target="_blank">
+            About POKT
+          </a>
+          <Link to="/contact-sales">Contact</Link>
+          <span aria-hidden className="vertical-split"></span>
+          <a
+            aria-label="Connect with the Pokt Team on Twitter"
+            className="discord-icon"
+            href="//twitter.com/POKTnetwork"
+            rel="noreferrer"
+            target="_blank"
+          >
+            <IconTwitter fill={"var(--color-white-main)"} />
+          </a>
+          <a
+            aria-label="Connect with the Pokt Team on Discord"
+            href="//discord.gg/pokt"
+            rel="noreferrer"
+            target="_blank"
+          >
+            <IconDiscord height={24} width={34} />
+          </a>
+        </Group>
+      </Group>
     </footer>
   )
 }

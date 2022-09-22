@@ -148,17 +148,6 @@ export default function App() {
         icon: IconCircleQuestion,
         protected: Protected.Public,
       },
-      {
-        to: "https://www.pokt.network/",
-        external: true,
-        label: "About Pocket",
-        protected: Protected.Public,
-      },
-      {
-        to: "/contact-sales",
-        label: "Contact",
-        protected: Protected.Public,
-      },
     ]
 
     let protectedLevel = Protected.Public
@@ -174,7 +163,7 @@ export default function App() {
     <WithProviders>
       <Document>
         <Header user={user}>
-          <Nav routes={routes} />
+          <Nav ariaLabel="Main" routes={routes} />
         </Header>
         <main>
           <Container className="container" size="lg">

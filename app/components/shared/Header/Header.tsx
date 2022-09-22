@@ -111,15 +111,17 @@ export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) 
           })}
         >
           <div className={`pokt-header-nav nav-${nav} pokt-header-flex`}>{children}</div>
-          <Form ref={logoutFormRef} action="/api/auth/auth0" method="post">
-            <input
-              readOnly
-              aria-label="hidden"
-              name="logout"
-              type="hidden"
-              value="true"
-            />
-          </Form>
+          {user && (
+            <Form ref={logoutFormRef} action="/api/auth/auth0" method="post">
+              <input
+                readOnly
+                aria-label="hidden"
+                name="logout"
+                type="hidden"
+                value="true"
+              />
+            </Form>
+          )}
 
           <UserMenuDropdown routes={routes} user={user} />
           {!user && (

@@ -25,10 +25,6 @@ export const Nav = ({ user }: NavProps) => {
         label: "FAQs",
       },
       {
-        to: "https://www.pokt.network/",
-        label: "About Pocket",
-      },
-      {
         to: "https://docs.pokt.network/home/paths/app-developer",
         label: "Docs",
       },

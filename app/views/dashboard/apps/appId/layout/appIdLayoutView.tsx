@@ -1,6 +1,6 @@
 import { IconCaretLeft, Grid, Button } from "@pokt-foundation/pocket-blocks"
 import { Outlet, useFetcher } from "@remix-run/react"
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import styles from "./styles.css"
 import AdEconomicsForDevs, {
   links as AdEconomicsForDevsLinks,

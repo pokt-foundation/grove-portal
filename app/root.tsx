@@ -163,7 +163,7 @@ export default function App() {
     <WithProviders>
       <Document>
         <Header user={user}>
-          <Nav routes={routes} />
+          <Nav ariaLabel="Main" routes={routes} />
         </Header>
         <main>
           <Container className="container" size="lg">

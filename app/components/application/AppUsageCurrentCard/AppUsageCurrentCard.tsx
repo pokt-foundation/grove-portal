@@ -22,11 +22,13 @@ export const links = () => {
 /* c8 ignore stop */
 
 interface UsageCurrentCardProps {
+  averageRelays: number
   maxDailyRelays: number
   totalRelays: UserLBTotalRelaysResponse["total_relays"]
 }
 
 export default function AppUsageCurrentCard({
+  averageRelays,
   maxDailyRelays,
   totalRelays,
 }: UsageCurrentCardProps) {
@@ -34,10 +36,15 @@ export default function AppUsageCurrentCard({
 
   const listItems: CardListItem[] = [
     {
+      label: t.AppUsageCurrentCard.list.avgRelays.label,
+      value: commify(averageRelays),
+      help: t.AppUsageCurrentCard.list.avgRelays.help,
+      color: "secondary",
+    },
+    {
       label: t.AppUsageCurrentCard.list.dailyRelays.label,
       value: commify(totalRelays.toFixed(0)),
       help: t.AppUsageCurrentCard.list.dailyRelays.help,
-      color: "secondary",
     },
     {
       label: t.AppUsageCurrentCard.list.maxRelays.label,

@@ -205,9 +205,9 @@ const schema = {
   AppUsageCurrentCard: {
     label: "Daily Usage -fr",
     list: {
-      sessionRelays: {
-        label: "Session Relays -fr",
-        help: "Total number of request sent during the current network session, each session has 4 blocks, 15 min each, 1 hour total. -fr",
+      avgRelays: {
+        label: "Average Relays -fr",
+        help: "Average number of requests per day sent over the last 7 days. -fr",
       },
       dailyRelays: {
         label: "Daily Relays -fr",

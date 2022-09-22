@@ -123,11 +123,11 @@ export default function App() {
 
     const allRoutes = [
       {
-        to: "/dashboard",
+        to: "/network",
         label: "Network",
         icon: IconNetwork,
         end: true,
-        protected: Protected.Private,
+        protected: Protected.Public,
       },
       {
         to: "/dashboard/apps",

@@ -2,8 +2,7 @@ import { LinksFunction, LoaderFunction, json } from "@remix-run/node"
 import { Outlet, useCatch, useLoaderData } from "@remix-run/react"
 import { useEffect } from "react"
 import { Auth0Profile } from "remix-auth-auth0"
-import analyticsInit, { AmplitudeEvents, trackEvent } from "../utils/analytics"
-import { useTranslate } from "~/context/TranslateContext"
+import analyticsInit from "../utils/analytics"
 import styles from "~/styles/dashboard.css"
 import { requireUserProfile } from "~/utils/session.server"
 
@@ -24,11 +23,9 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export default function Dashboard() {
   const { user } = useLoaderData() as LoaderData
-  const { t } = useTranslate()
 
   useEffect(() => {
     analyticsInit(user)
-    trackEvent(AmplitudeEvents.DashboardView)
   }, [user])
 
   return <Outlet />

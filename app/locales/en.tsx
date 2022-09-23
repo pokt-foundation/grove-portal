@@ -189,7 +189,7 @@ const schema = {
       plan: "Plan Details",
     },
     endpointInfoBanner: {
-      title: "App creation",
+      title: "Endpoint Creation In Progress",
       body: [
         "Hold tight while we complete the provisioning of your application. It may take up to 5 minutes before your endpoint can connect successfully to the network.",
       ],

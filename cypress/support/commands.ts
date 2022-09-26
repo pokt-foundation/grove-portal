@@ -64,6 +64,6 @@ Cypress.Commands.add("login", (username: string, password: string) => {
       sameSite: "lax",
     })
 
-    cy.visit("/dashboard/apps")
+    cy.visit("/dashboard")
   })
 })

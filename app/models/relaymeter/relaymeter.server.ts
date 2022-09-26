@@ -56,7 +56,7 @@ export const getRelaysPerWeek = async (
   id?: string,
 ): Promise<RelayMetric[]> => {
   const relays = await Promise.all(
-    [1, 2, 3, 4, 5, 6, 7].map(async (num) => {
+    [0, 1, 2, 3, 4, 5, 6].map(async (num) => {
       const day = dayjs()
         .utc()
         .hour(0)

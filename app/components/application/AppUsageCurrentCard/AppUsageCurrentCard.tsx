@@ -1,4 +1,4 @@
-import { Grid } from "@pokt-foundation/pocket-blocks"
+import { Grid, Tooltip } from "@pokt-foundation/pocket-blocks"
 import {
   UserLBSessionRelaysResponse,
   UserLBTotalRelaysResponse,
@@ -37,7 +37,7 @@ export default function AppUsageCurrentCard({
   const listItems: CardListItem[] = [
     {
       label: t.AppUsageCurrentCard.list.avgRelays.label,
-      value: commify(averageRelays),
+      value: commify(averageRelays.toFixed(0)),
       help: t.AppUsageCurrentCard.list.avgRelays.help,
       color: "secondary",
     },
@@ -48,7 +48,7 @@ export default function AppUsageCurrentCard({
     },
     {
       label: t.AppUsageCurrentCard.list.maxRelays.label,
-      value: commify(maxDailyRelays),
+      value: commify(maxDailyRelays) !== "0" ? commify(maxDailyRelays) : "Unlimited",
       help: t.AppUsageCurrentCard.list.maxRelays.help,
     },
   ]
@@ -63,13 +63,23 @@ export default function AppUsageCurrentCard({
           <Grid align="center">
             {totalRelays > 0 && (
               <Grid.Col xs={3}>
-                {maxDailyRelays && totalRelays && (
-                  <CircleGraph
-                    color="#c5ec4b"
-                    size={70}
-                    strokeWidth={10}
-                    value={Math.min(1, totalRelays / maxDailyRelays)}
-                  />
+                {totalRelays && (
+                  <Tooltip
+                    label={`Showing the percentage of daily relays divided by ${
+                      maxDailyRelays > 0 ? "max relays" : "average relays"
+                    }.`}
+                  >
+                    <CircleGraph
+                      color="#c5ec4b"
+                      size={70}
+                      strokeWidth={10}
+                      value={Math.min(
+                        1,
+                        totalRelays /
+                          (maxDailyRelays > 0 ? maxDailyRelays : averageRelays),
+                      )}
+                    />
+                  </Tooltip>
                 )}
               </Grid.Col>
             )}

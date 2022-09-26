@@ -21,9 +21,9 @@ export function formatDailyRelaysForGraphing(relays: RelayMetric[] = []): {
   const { high, low } = sortRelaysByDate.reduce(
     ({ high: highest, low: lowest }, { Count }) => ({
       high: Math.max(highest, Count.Total),
-      low: lowest === 0 ? Count.Total : Math.min(lowest, Count.Total),
+      low: Math.min(lowest, Count.Total),
     }),
-    { high: 0, low: 0 },
+    { high: 0, low: relays[0].Count.Total },
   )
 
   const diff = high - low

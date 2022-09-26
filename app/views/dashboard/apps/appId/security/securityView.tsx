@@ -1,5 +1,6 @@
+import { Loader } from "@mantine/core"
 import { Button, Text, Switch } from "@pokt-foundation/pocket-blocks"
-import { useFetcher } from "@remix-run/react"
+import { useFetcher, useTransition } from "@remix-run/react"
 import React, { useState } from "react"
 import styles from "./styles.css"
 import AppEndpointUrl, {
@@ -40,6 +41,8 @@ type SecurityViewProps = {
 }
 
 export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps) => {
+  const transition = useTransition()
+
   type FormatData = {
     id: string
     inputValue: string
@@ -430,6 +433,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
           }}
         >
           {t.common.save}
+          {transition.state !== "idle" && <Loader color="black" ml={8} size="sm" />}
         </Button>
       </securityAction.Form>
     </div>

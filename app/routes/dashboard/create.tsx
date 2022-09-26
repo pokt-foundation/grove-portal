@@ -125,7 +125,7 @@ export default function CreateApp() {
   const transition = useTransition()
   const action = useActionData() as ActionData
   const [radioSelectedValue, setRadioSelectedValue] = useState(
-    flags.STRIPE_PAYMENT ? PayPlanType.PayAsYouGoV0 : PayPlanType.FreetierV0,
+    flags.STRIPE_PAYMENT === "true" ? PayPlanType.PayAsYouGoV0 : PayPlanType.FreetierV0,
   )
   const [name, setName] = useState("")
   const [referral, setReferral] = useState("")
@@ -151,7 +151,7 @@ export default function CreateApp() {
       price: 0,
       priceText: "$0.00",
       cardDescription:
-        "Access to reliable, censor resistant infrastructure. Free up to 250k relays per day.",
+        "Access to reliable, fast infrastructure. Free up to 250k relays per day.",
     },
     {
       name: getPlanName(PayPlanType.PayAsYouGoV0),

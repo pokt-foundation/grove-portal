@@ -1,14 +1,16 @@
 interface IconDiscordProps {
-  color?: string
+  fill?: string
+  height?: number
+  width?: number
 }
 
-function IconDiscord({ color }: IconDiscordProps) {
+function IconDiscord({ fill, height, width }: IconDiscordProps) {
   return (
     <svg
       fill="none"
-      height="34"
+      height={height ?? "34"}
       viewBox="0 0 71 60"
-      width="42"
+      width={width ?? "42"}
       xmlns="http://www.w3.org/2000/svg"
     >
       <g clip-path="url(#clip0)">
@@ -19,7 +21,7 @@ function IconDiscord({ color }: IconDiscordProps) {
       </g>
       <defs>
         <clipPath id="clip0">
-          <rect fill="white" height="55" width="71" />
+          <rect fill={fill ?? "var(--color-white-main)"} height="55" width="71" />
         </clipPath>
       </defs>
     </svg>

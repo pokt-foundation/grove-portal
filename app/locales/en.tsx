@@ -6,7 +6,7 @@ const schema = {
   common: {
     submit: "submit",
     StopSubscription: "Stop Subscription",
-    save: "save",
+    save: "Save",
     close: "Close",
     goBack: "go back",
     cancel: "Cancel",
@@ -39,7 +39,7 @@ const schema = {
   },
   faq: {
     title: "Pocket Portal",
-    subtitle: "FAQ",
+    subtitle: "FAQs",
     faqs: [
       {
         question: "What is the Pocket Portal?",
@@ -188,6 +188,12 @@ const schema = {
       notifications: "Notifications",
       plan: "Plan Details",
     },
+    endpointInfoBanner: {
+      title: "Endpoint Creation In Progress",
+      body: [
+        "Hold tight while we complete the provisioning of your application. It may take up to 5 minutes before your endpoint can connect successfully to the network.",
+      ],
+    },
   },
   AppRequestsByOriginCard: {
     label: "Requests By Origin",
@@ -216,9 +222,9 @@ const schema = {
   AppUsageCurrentCard: {
     label: "Daily Usage",
     list: {
-      sessionRelays: {
-        label: "Session Relays",
-        help: "Total number of request sent during the current network session, each session has 4 blocks, 15 min each, 1 hour total.",
+      avgRelays: {
+        label: "Average Relays",
+        help: "Average number of requests per day sent over the last 7 days.",
       },
       dailyRelays: {
         label: "Daily Relays",
@@ -327,7 +333,7 @@ const schema = {
     button: "Manage Plan in Stripe",
   },
   ContactSalesView: {
-    title: "We have Enterprise solutions for your needs",
+    title: "We're ready to help",
     description:
       "Give us some basic information and our solutions team will reach out soon.",
     formSubmitted: "Form Submitted",
@@ -380,7 +386,7 @@ const schema = {
     howIsThisCalculated: "How is this calculated?",
     modalTitle: "How is this price calculated",
     modalDescription:
-      "This formula is how Pocket portal calculates and charge you app relyas montly. If you want to learn more see our",
+      "This formula is how Pocket portal calculates and charge you app relays monthly. If you want to learn more see our",
     secondModalDescription: "documentation",
     totalDailyRelays: "Total daily relays",
     freeRelays: "free relays",
@@ -429,7 +435,7 @@ const schema = {
   LegacyBannerCard: {
     title: "Free Tier is about to change",
     body: [
-      "On September 21st our unlimited free tier plan is coming to an end. All Free-tier applications will be rate limited at 250K relays per day.",
+      "On September 27th our unlimited free tier plan is coming to an end. All Free-tier applications will be rate limited at 250K relays per day.",
       "As an early customer, we've got you covered. You will be grandfathered into a legacy free tier plan for a limited time which will grant your app uniterupted service.",
       <>
         Please view our
@@ -447,6 +453,26 @@ const schema = {
     ],
     showButtonText: "Minimize",
     hideButtonText: "Learn More",
+  },
+  BannerErrorCard: {
+    title: "Attention: Potential Issues with Data",
+    body: [
+      "We're experiencing some technical issues right now and the data on this page may be inaccurate. We are working through this as quickly as we can.",
+      <>
+        Please write to us on
+        <Link
+          className="pokt-link"
+          rel="noreferrer"
+          target="_blank"
+          to="https://discord.gg/pokt"
+        >
+          {" "}
+          Discord{" "}
+        </Link>{" "}
+        if you need further assistance.
+      </>,
+      "If you recently created this app and have not run any relays yet, please disregard this message.",
+    ],
   },
 }
 

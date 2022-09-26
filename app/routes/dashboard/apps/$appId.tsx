@@ -102,13 +102,14 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
 export default function AppIdLayout() {
   const { endpoint, subscription } = useLoaderData() as AppIdLoaderData
-  const [searchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams()
   const updatePlanFetcher = useFetcher()
 
   return (
     <AppIdLayoutView
       endpoint={endpoint}
       searchParams={searchParams}
+      setSearchParams={setSearchParams}
       subscription={subscription}
       updatePlanFetcher={updatePlanFetcher}
     />

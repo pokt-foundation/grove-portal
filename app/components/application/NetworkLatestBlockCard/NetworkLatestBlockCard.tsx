@@ -5,7 +5,7 @@ import CardList, {
   CardListItem,
   links as CardListLinks,
 } from "~/components/shared/CardList"
-import { LatestBlockType } from "~/routes/dashboard/index"
+import { LatestBlockType } from "~/routes/network"
 
 /* c8 ignore start */
 export const links = () => {

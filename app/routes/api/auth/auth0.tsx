@@ -2,7 +2,12 @@ import { redirect } from "@remix-run/node"
 import type { ActionFunction, LoaderFunction } from "@remix-run/node"
 import { authenticator } from "~/utils/auth.server"
 
-export let loader: LoaderFunction = () => redirect("/login")
+export let loader: LoaderFunction = ({ request }) => {
+  return authenticator.authenticate("auth0", request, {
+    successRedirect: "/dashboard",
+    failureRedirect: "/",
+  })
+}
 
 export let action: ActionFunction = async ({ request }) => {
   const formData = await request.formData()

@@ -1,4 +1,4 @@
-import { IconCaretLeft, Grid } from "@pokt-foundation/pocket-blocks"
+import { IconCaretLeft, Grid, Button } from "@pokt-foundation/pocket-blocks"
 import { Outlet, useFetcher } from "@remix-run/react"
 import { useEffect, useState } from "react"
 import styles from "./styles.css"
@@ -14,6 +14,7 @@ import AppKeysCard, {
 import AppPlanDetails, {
   links as AppPlanDetailsLinks,
 } from "~/components/application/AppPlanDetails"
+import BannerCard, { links as BannerCardLinks } from "~/components/application/BannerCard"
 import FeedbackCard, {
   links as FeedbackCardLinks,
 } from "~/components/application/FeedbackCard"
@@ -23,12 +24,13 @@ import LegacyBannerCard, {
 import StopRemoveApp, {
   links as StopRemoveAppLinks,
 } from "~/components/application/StopRemoveApp"
-import Modal, { links as ModalLinks } from "~/components/shared/Modal"
+import Modal, { links as ModalLinks, ModalCTA } from "~/components/shared/Modal"
 import Nav, { links as NavLinks } from "~/components/shared/Nav"
 import { useFeatureFlags } from "~/context/FeatureFlagContext"
 import { useTranslate } from "~/context/TranslateContext"
 import { EndpointQuery, PayPlanType } from "~/models/portal/sdk"
 import { Stripe } from "~/models/stripe/stripe.server"
+import { dayjs } from "~/utils/dayjs"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 import { getPlanName } from "~/utils/utils"
 
@@ -44,6 +46,7 @@ export const links = () => {
     ...ModalLinks(),
     ...AppPlanDetailsLinks(),
     ...LegacyBannerCardLinks(),
+    ...BannerCardLinks(),
     { rel: "stylesheet", href: styles },
   ]
 }
@@ -52,6 +55,7 @@ export const links = () => {
 type AppIdLayoutViewProps = {
   endpoint: EndpointQuery["endpoint"] | null
   searchParams: URLSearchParams
+  setSearchParams: typeof URLSearchParams["arguments"]
   subscription: Stripe.Subscription | undefined
   updatePlanFetcher: ReturnType<typeof useFetcher>
 }
@@ -59,6 +63,7 @@ type AppIdLayoutViewProps = {
 export default function AppIdLayoutView({
   endpoint,
   searchParams,
+  setSearchParams,
   subscription,
   updatePlanFetcher,
 }: AppIdLayoutViewProps) {
@@ -66,6 +71,9 @@ export default function AppIdLayoutView({
   const { flags } = useFeatureFlags()
   const [showSuccessModal, setShowSuccessModel] = useState<boolean>(false)
   const [showErrorModal, setShowErrorModel] = useState<boolean>(false)
+
+  const createdAtMinsDiffToday = dayjs().diff(endpoint?.createdAt, "minutes")
+
   const [routes, setRoutes] = useState([
     {
       to: "/dashboard/apps",
@@ -98,11 +106,9 @@ export default function AppIdLayoutView({
   useEffect(() => {
     const success = searchParams.get("success")
     const cancelError = searchParams.get("cancelError")
+
     if (!success) return
     if (success === "true") {
-      const path = window.location.pathname
-      window.history.replaceState({}, document.title, path)
-
       // update plan type to paid on success
       if (
         endpoint &&
@@ -120,6 +126,7 @@ export default function AppIdLayoutView({
           },
         )
       }
+      setSearchParams({})
       setShowSuccessModel(true)
     }
 
@@ -183,7 +190,12 @@ export default function AppIdLayoutView({
             <Grid.Col xs={12}>
               <div>
                 <h1 style={{ marginTop: 0 }}>{endpoint.name}</h1>
-                <Nav dropdown appId={endpoint.id} routes={routes} />
+                <Nav
+                  dropdown
+                  appId={endpoint.id}
+                  ariaLabel="Application"
+                  routes={routes}
+                />
               </div>
             </Grid.Col>
           )}
@@ -193,6 +205,16 @@ export default function AppIdLayoutView({
               <LegacyBannerCard />
             )}
           <Outlet />
+
+          {(!endpoint || createdAtMinsDiffToday <= 5) && (
+            <BannerCard
+              bannerType="informational"
+              copy={{
+                title: t.appId.endpointInfoBanner.title,
+                body: t.appId.endpointInfoBanner.body,
+              }}
+            />
+          )}
         </Grid.Col>
         <Grid.Col md={4}>
           {endpoint && (
@@ -242,11 +264,14 @@ export default function AppIdLayoutView({
       >
         <div>
           <p>
-            You have successfully set up a pay as you go subscription. You now have access
-            to 50+ chains and unlimited relays. We can't wait to see what you build with
-            it!
+            You have successfully set up a Pay As You Go subscription. You now have access
+            to dozens of chains and unlimited relays. We can't wait to see what you build
+            with it!
           </p>
         </div>
+        <ModalCTA>
+          <Button onClick={() => setShowSuccessModel(false)}>Continue To App</Button>
+        </ModalCTA>
       </Modal>
       <Modal
         opened={showErrorModal}
@@ -256,10 +281,14 @@ export default function AppIdLayoutView({
         <div>
           <p>
             We are sorry but something went wrong when setting up your pay as you go
-            subscription. Please try again. If you are still having trouble reach out and
-            we would be happy to help get you sorted.
+            subscription. Please try again by clicking the "Upgrade to 'Pay As You Go'"
+            button. If you are still having trouble reach out and we would be happy to
+            help get you sorted.
           </p>
         </div>
+        <ModalCTA>
+          <Button onClick={() => setShowErrorModel(false)}>Try Again</Button>
+        </ModalCTA>
       </Modal>
     </div>
   )

@@ -2,6 +2,7 @@ import React, { useContext, useMemo } from "react"
 import { useUser } from "./UserContext"
 import en from "~/locales/en"
 import fr from "~/locales/fr"
+import { BannerErrorCard } from "~/locales/types/BannerErrorCard"
 import { CalculateYourPricing } from "~/locales/types/CalculateYourPricing"
 import {
   ContactSalesForm,
@@ -105,6 +106,10 @@ interface TranslationData {
       notifications: string
       plan: string
     }
+    endpointInfoBanner: {
+      title: string
+      body: string[]
+    }
   }
   AppRequestsByOriginCard: {
     label: string
@@ -133,7 +138,7 @@ interface TranslationData {
   AppUsageCurrentCard: {
     label: string
     list: {
-      sessionRelays: {
+      avgRelays: {
         label: string
         help: string
       }
@@ -242,6 +247,7 @@ interface TranslationData {
   security: SecurityPageViewTypes
   stopRemoveApp: StopRemoveApp
   LegacyBannerCard: LegacyBannerCard
+  BannerErrorCard: BannerErrorCard
 }
 
 export type Language = typeof languages[number]

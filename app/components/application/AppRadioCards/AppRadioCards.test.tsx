@@ -13,7 +13,7 @@ const tiers = [
     price: 0,
     priceText: "$0.00",
     cardDescription:
-      "Access to reliable, censor resistant infrastructure. Free up to 250k relays per day.",
+      "Access to reliable, fast infrastructure. Free up to 250k relays per day.",
   },
   {
     name: "Pay As You Go",

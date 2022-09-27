@@ -131,6 +131,7 @@ export default function AppIdLayoutView({
     }
 
     if (success === "false" || cancelError === "true") {
+      searchParams.delete("success")
       setShowErrorModel(true)
     }
   }, [searchParams, endpoint, updatePlanFetcher])

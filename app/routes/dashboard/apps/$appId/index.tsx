@@ -75,7 +75,7 @@ export const Application = () => {
 
   const totalRelaysForTheWeek = useMemo(() => {
     return appIdData.dailyNetworkRelaysPerWeek.reduce((prev, curr) => {
-      return prev + curr.Count.Total
+      return prev + curr.Count.Success
     }, 0)
   }, [appIdData.dailyNetworkRelaysPerWeek])
 
@@ -94,7 +94,7 @@ export const Application = () => {
               <AppUsageCurrentCard
                 averageRelays={totalRelaysForTheWeek / 7}
                 maxDailyRelays={appIdData.endpoint.appLimits.dailyLimit}
-                totalRelays={appIdData.relaysToday.Count.Total}
+                totalRelays={appIdData.relaysToday.Count.Success}
               />
             </section>
           )}

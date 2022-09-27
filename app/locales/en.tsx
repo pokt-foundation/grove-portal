@@ -444,7 +444,7 @@ const schema = {
           FAQs{" "}
         </Link>
         for more information and
-        <Link className="pokt-link" to="/dashboard/contact-sales">
+        <Link className="pokt-link" to="/contact-sales">
           {" "}
           contact us{" "}
         </Link>

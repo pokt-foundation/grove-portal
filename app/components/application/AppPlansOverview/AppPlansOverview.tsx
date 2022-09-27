@@ -73,7 +73,7 @@ export default function AppPlansOverview({ planType }: AppPlansOverviewProps) {
             <Text mt={8} weight="lighter">
               {AppPlansOverview.planDetails.enterpriseSolutions.description}{" "}
               <Text color="var(--color-primary-main)" component="span">
-                <Link to="/dashboard/contact-sales">
+                <Link to="/contact-sales">
                   {AppPlansOverview.planDetails.enterpriseSolutions.contactUS}
                 </Link>
               </Text>

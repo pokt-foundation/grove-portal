@@ -72,17 +72,15 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
   const [secretKeyRequired, setSecretKeyRequired] = useState<boolean>(
     Boolean(endpoint.gatewaySettings.secretKeyRequired),
   )
-  const [whitelistBlockchains, setWhitelistBlockchains] = useState<string[]>([])
-  const [whitelistUserAgentsElement, setWhitelistUserAgentsElement] = useState<string>("")
+  const [whitelistBlockchains, setWhitelistBlockchains] = useState<string[]>(
+    endpoint.gatewaySettings.whitelistBlockchains as string[],
+  )
   const [whitelistUserAgents, setWhitelistUserAgents] = useState<string[]>(
-    (endpoint.gatewaySettings?.whitelistUserAgents as string[]) || [],
+    endpoint.gatewaySettings?.whitelistUserAgents as string[],
   )
-  const [whitelistOriginsElement, setWhitelistOriginsElement] = useState<string>("")
   const [whitelistOrigins, setWhitelistOrigins] = useState<string[]>(
-    (endpoint.gatewaySettings?.whitelistOrigins as string[]) || [],
+    endpoint.gatewaySettings?.whitelistOrigins as string[],
   )
-  const [whitelistContractsInput, setWhitelistContractsInput] = useState("")
-  const [whitelistContractsDropdown, setWhitelistContractsDropdown] = useState<string>("")
   const [whitelistContracts, setWhitelistContracts] = useState<
     Array<{ id: string; inputValue: string }>
   >(
@@ -91,12 +89,17 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
       "contracts",
     ),
   )
-  const [whitelistContractsError, setWhitelistContractsError] = useState<boolean>(false)
-  const [whitelistMethodsInput, setWhitelistMethodsInput] = useState<string>("")
-  const [whitelistMethodsDropdown, setWhitelistMethodsDropdown] = useState<string>("")
   const [whitelistMethods, setWhitelistMethods] = useState<
     Array<{ id: string; inputValue: string }>
   >(formatData<WhitelistMethod>(endpoint.gatewaySettings?.whitelistMethods, "methods"))
+
+  const [whitelistUserAgentsElement, setWhitelistUserAgentsElement] = useState<string>("")
+  const [whitelistOriginsElement, setWhitelistOriginsElement] = useState<string>("")
+  const [whitelistContractsInput, setWhitelistContractsInput] = useState("")
+  const [whitelistContractsDropdown, setWhitelistContractsDropdown] = useState<string>("")
+  const [whitelistContractsError, setWhitelistContractsError] = useState<boolean>(false)
+  const [whitelistMethodsInput, setWhitelistMethodsInput] = useState<string>("")
+  const [whitelistMethodsDropdown, setWhitelistMethodsDropdown] = useState<string>("")
   const [whitelistMethodsError, setWhitelistMethodsError] = useState<boolean>(false)
 
   const removeFromArray = (item: string, arr: string[]) => arr.filter((i) => i !== item)

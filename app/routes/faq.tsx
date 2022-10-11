@@ -18,6 +18,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   const cms = initCmsClient()
   const questions = await cms.getQuestions({
     filter: { status: { _eq: "published" } },
+    sort: ["id"],
     language: "en-US",
   })
 

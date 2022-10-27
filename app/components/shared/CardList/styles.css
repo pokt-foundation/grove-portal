@@ -2,6 +2,10 @@
   list-style-type: none;
 }
 
+.pokt-card-list .pokt-list-item .mantine-List-itemWrapper {
+  width: 100%;
+}
+
 .pokt-card-list p {
   margin: 0;
   color: var(--color-white-main);

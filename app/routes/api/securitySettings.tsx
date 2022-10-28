@@ -18,7 +18,7 @@ const unifyContracts = (chains: string[], values: string[]) => {
   if (Object.keys(together).length !== 0) {
     for (const [key, value] of Object.entries(together)) {
       formatted.push({
-        blockchainId: key,
+        blockchainID: key,
         contracts: value,
       })
     }
@@ -42,7 +42,7 @@ const unifyMethods = (chains: string[], values: string[]) => {
   if (Object.keys(together).length !== 0) {
     for (const [key, value] of Object.entries(together)) {
       formatted.push({
-        blockchainId: key,
+        blockchainID: key,
         methods: value,
       })
     }
@@ -58,8 +58,8 @@ export interface AppSecurityActionResponse {
     whitelistOrigins: string[]
     whitelistUserAgents: string[]
     whitelistBlockchains: string[]
-    whitelistContracts: { blockchainId: string; contracts: string[] }[]
-    whitelistMethods: { blockchainId: string; methods: string[] }[]
+    whitelistContracts: { blockchainID: string; contracts: string[] }[]
+    whitelistMethods: { blockchainID: string; methods: string[] }[]
     whitelistContractsChains: string[]
     whitelistContractsValues: string[]
     whitelistMethodsChains: string[]

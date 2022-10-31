@@ -19,7 +19,6 @@ export default function AdEconomicsForDevs() {
       action={
         <Button
           className="pokt-ad-action"
-          // @ts-ignore
           component="a"
           href={ECONOMICS_URL}
           rel="noreferrer"

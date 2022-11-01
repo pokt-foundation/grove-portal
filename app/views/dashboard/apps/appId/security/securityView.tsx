@@ -40,6 +40,9 @@ type SecurityViewProps = {
   blockchains: BlockchainsQuery["blockchains"]
 }
 
+type WhitelistContractType = Pick<WhitelistContract, "blockchainID" | "contracts">
+type WhitelistMethodType = Pick<WhitelistMethod, "blockchainID" | "methods">
+
 export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps) => {
   const transition = useTransition()
 
@@ -48,7 +51,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
     inputValue: string
   }
 
-  const formatData = <T extends WhitelistContract | WhitelistMethod>(
+  const formatData = <T extends WhitelistContractType | WhitelistMethodType>(
     data: Maybe<T>[],
     key: keyof T,
   ) => {
@@ -58,7 +61,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
       }
       const subArray = (curr[key] as unknown as string[]).reduce(
         (subPrev: FormatData[], subCurr) => {
-          return [...subPrev, { id: curr.blockchainId, inputValue: subCurr }]
+          return [...subPrev, { id: curr.blockchainID, inputValue: subCurr }]
         },
         [],
       )
@@ -84,14 +87,19 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
   const [whitelistContracts, setWhitelistContracts] = useState<
     Array<{ id: string; inputValue: string }>
   >(
-    formatData<WhitelistContract>(
+    formatData<WhitelistContractType>(
       endpoint.gatewaySettings?.whitelistContracts,
       "contracts",
     ),
   )
   const [whitelistMethods, setWhitelistMethods] = useState<
     Array<{ id: string; inputValue: string }>
-  >(formatData<WhitelistMethod>(endpoint.gatewaySettings?.whitelistMethods, "methods"))
+  >(
+    formatData<WhitelistMethodType>(
+      endpoint.gatewaySettings?.whitelistMethods,
+      "methods",
+    ),
+  )
 
   const [whitelistUserAgentsElement, setWhitelistUserAgentsElement] = useState<string>("")
   const [whitelistOriginsElement, setWhitelistOriginsElement] = useState<string>("")

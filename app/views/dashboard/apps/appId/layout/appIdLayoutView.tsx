@@ -14,7 +14,6 @@ import AppKeysCard, {
 import AppPlanDetails, {
   links as AppPlanDetailsLinks,
 } from "~/components/application/AppPlanDetails"
-import BannerCard, { links as BannerCardLinks } from "~/components/application/BannerCard"
 import FeedbackCard, {
   links as FeedbackCardLinks,
 } from "~/components/application/FeedbackCard"
@@ -30,7 +29,6 @@ import { useFeatureFlags } from "~/context/FeatureFlagContext"
 import { useTranslate } from "~/context/TranslateContext"
 import { EndpointQuery, PayPlanType } from "~/models/portal/sdk"
 import { Stripe } from "~/models/stripe/stripe.server"
-import { dayjs } from "~/utils/dayjs"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 import { getPlanName } from "~/utils/utils"
 
@@ -46,7 +44,6 @@ export const links = () => {
     ...ModalLinks(),
     ...AppPlanDetailsLinks(),
     ...LegacyBannerCardLinks(),
-    ...BannerCardLinks(),
     { rel: "stylesheet", href: styles },
   ]
 }
@@ -71,8 +68,6 @@ export default function AppIdLayoutView({
   const { flags } = useFeatureFlags()
   const [showSuccessModal, setShowSuccessModel] = useState<boolean>(false)
   const [showErrorModal, setShowErrorModel] = useState<boolean>(false)
-
-  const createdAtMinsDiffToday = dayjs().diff(endpoint?.createdAt, "minutes")
 
   const [routes, setRoutes] = useState([
     {
@@ -207,16 +202,6 @@ export default function AppIdLayoutView({
               <LegacyBannerCard />
             )}
           <Outlet />
-
-          {(!endpoint || createdAtMinsDiffToday <= 5) && (
-            <BannerCard
-              bannerType="informational"
-              copy={{
-                title: t.appId.endpointInfoBanner.title,
-                body: t.appId.endpointInfoBanner.body,
-              }}
-            />
-          )}
         </Grid.Col>
         <Grid.Col md={4}>
           {endpoint && (

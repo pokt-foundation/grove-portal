@@ -40,17 +40,17 @@ export default function FaqsView({ categories }: FaqsViewProps) {
                   ? value[0].category?.translations[0]?.display
                   : ""}
               </h2>
-              <Accordion className="faqs">
+              <Accordion chevronPosition="right" className="faqs">
                 {value.map((item) => (
-                  <Accordion.Item
-                    key={item.id}
-                    className="faqs-item"
-                    iconPosition="right"
-                    label={item.translations ? item.translations[0]?.question : ""}
-                  >
-                    {item.translations && item.translations[0]?.answer && (
-                      <Remark>{item.translations[0].answer ?? ""}</Remark>
-                    )}
+                  <Accordion.Item key={item.id} className="faqs-item" value={item.id}>
+                    <Accordion.Control>
+                      {item.translations ? String(item.translations[0]?.question) : ""}
+                    </Accordion.Control>
+                    <Accordion.Panel>
+                      {item.translations && item.translations[0]?.answer && (
+                        <Remark>{item.translations[0].answer ?? ""}</Remark>
+                      )}
+                    </Accordion.Panel>
                   </Accordion.Item>
                 ))}
               </Accordion>

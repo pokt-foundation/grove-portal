@@ -39,11 +39,11 @@ query endpoint($endpointID: ID!) {
       secretKeyRequired
       whitelistBlockchains
       whitelistContracts {
-        blockchainId
+        blockchainID
         contracts
       }
       whitelistMethods {
-        blockchainId
+        blockchainID
         methods
       }
       whitelistOrigins

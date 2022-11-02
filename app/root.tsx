@@ -77,18 +77,18 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 const WithProviders: React.FC = ({ children }) => {
   return (
-    <MantineProvider
-      withCSSVariables
-      withGlobalStyles
-      withNormalizeCSS
-      theme={{ ...theme, primaryColor: "blue" }}
-    >
-      <FeatureFlagsContextProvider>
-        <UserContextProvider>
+    <FeatureFlagsContextProvider>
+      <UserContextProvider>
+        <MantineProvider
+          withCSSVariables
+          withGlobalStyles
+          withNormalizeCSS
+          theme={{ ...theme, primaryColor: "blue" }}
+        >
           <TranslateContextProvider>{children}</TranslateContextProvider>
-        </UserContextProvider>
-      </FeatureFlagsContextProvider>
-    </MantineProvider>
+        </MantineProvider>
+      </UserContextProvider>
+    </FeatureFlagsContextProvider>
   )
 }
 

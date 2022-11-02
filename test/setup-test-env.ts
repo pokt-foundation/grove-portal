@@ -1,4 +1,4 @@
-import { installGlobals } from "@remix-run/node/globals"
+import { installGlobals } from "@remix-run/node"
 // import "@testing-library/jest-dom"
 import matchers, { TestingLibraryMatchers } from "@testing-library/jest-dom/matchers"
 import { toHaveNoViolations } from "jest-axe"

@@ -1,9 +1,6 @@
 import { Grid } from "@pokt-foundation/pocket-blocks"
 import { LoaderFunction, json, MetaFunction } from "@remix-run/node"
 import { useLoaderData, useTransition } from "@remix-run/react"
-import AdEconomicsForDevs, {
-  links as AdEconomicsForDevsLinks,
-} from "~/components/application/AdEconomicsForDevs"
 import ChainWithImage, {
   links as ChainWithImageLinks,
 } from "~/components/application/ChainWithImage"
@@ -50,7 +47,6 @@ export const links = () => {
     ...NetworkSuccessRateCardLinks(),
     ...NetworkRelayPerformanceCardLinks(),
     ...UsageChartCardLinks(),
-    ...AdEconomicsForDevsLinks(),
     ...TableLinks(),
     ...ChainWithImageLinks(),
     ...FeedbackCardLinks(),
@@ -220,9 +216,6 @@ export default function Index() {
               today={dailyNetworkRelays}
               week={weeklyNetworkRelays}
             />
-          </section>
-          <section>
-            <AdEconomicsForDevs />
           </section>
           <section>
             <FeedbackCard />

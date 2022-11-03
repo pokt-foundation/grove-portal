@@ -1,9 +1,6 @@
 import { Button, Grid } from "@pokt-foundation/pocket-blocks"
 import { json, LoaderFunction } from "@remix-run/node"
 import { Link, Outlet, useLoaderData, useTransition } from "@remix-run/react"
-import AdEconomicsForDevs, {
-  links as AdEconomicsForDevsLinks,
-} from "~/components/application/AdEconomicsForDevs"
 import FeedbackCard, {
   links as FeedbackCardLinks,
 } from "~/components/application/FeedbackCard"
@@ -26,7 +23,6 @@ export const links = () => {
     ...CardLinks(),
     ...CardListLinks(),
     ...FeedbackCardLinks(),
-    ...AdEconomicsForDevsLinks(),
     ...LoaderLinks(),
     { rel: "stylesheet", href: styles },
   ]
@@ -89,9 +85,6 @@ export const Apps = () => {
               </Button>
             )}
           </Card>
-          <section>
-            <AdEconomicsForDevs />
-          </section>
           <section>
             <FeedbackCard />
           </section>

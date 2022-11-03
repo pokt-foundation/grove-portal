@@ -2,9 +2,6 @@ import { IconCaretLeft, Grid, Button } from "@pokt-foundation/pocket-blocks"
 import { Outlet, useFetcher } from "@remix-run/react"
 import { useEffect, useState } from "react"
 import styles from "./styles.css"
-import AdEconomicsForDevs, {
-  links as AdEconomicsForDevsLinks,
-} from "~/components/application/AdEconomicsForDevs"
 import AppAddressCard, {
   links as AppAddressCardLinks,
 } from "~/components/application/AppAddressCard"
@@ -38,7 +35,6 @@ export const links = () => {
     ...NavLinks(),
     ...AppKeysCardLinks(),
     ...AppAddressCardLinks(),
-    ...AdEconomicsForDevsLinks(),
     ...FeedbackCardLinks(),
     ...StopRemoveAppLinks(),
     ...ModalLinks(),
@@ -224,9 +220,6 @@ export default function AppIdLayoutView({
               </section>
               <section>
                 <AppAddressCard apps={endpoint.apps} />
-              </section>
-              <section>
-                <AdEconomicsForDevs />
               </section>
               <section>
                 <FeedbackCard />

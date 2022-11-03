@@ -121,7 +121,7 @@ const Document = ({ children, title }: { children: React.ReactNode; title?: stri
   )
 }
 
-createEmotionCache({ key: "mantine" })
+createEmotionCache({ key: "pocket-blocks" })
 
 export default function App() {
   const { ENV, user } = useLoaderData<RootLoaderData>()

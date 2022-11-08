@@ -26,11 +26,6 @@ describe("dashboard page tests", () => {
     // should have relay performance
     cy.findByRole("heading", { name: /relay performance/i }).should("be.visible")
 
-    // should have developer ad
-    cy.findByRole("heading", { name: /pocket economics for app developers/i }).should(
-      "be.visible",
-    )
-
     // should have share feedback
     cy.findByRole("heading", { name: /share feedback/i }).should("be.visible")
   })

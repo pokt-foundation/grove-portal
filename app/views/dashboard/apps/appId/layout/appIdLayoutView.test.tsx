@@ -38,7 +38,7 @@ describe("<AppIdLayoutView />", () => {
       screen.getByRole("dialog", { name: /subscription error/i }),
     ).toBeInTheDocument()
   })
-  it("renders success modal when search param 'success = true'", async () => {
+  it("renders success modal when search param 'success = true'", () => {
     render(
       <AppIdLayoutView
         endpoint={endpoint}

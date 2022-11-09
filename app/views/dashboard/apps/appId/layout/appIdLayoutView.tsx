@@ -118,7 +118,7 @@ export default function AppIdLayoutView({
           },
         )
       }
-      // trackEvent(AmplitudeEvents.NewSubscription)
+      trackEvent(AmplitudeEvents.NewSubscription)
       setSearchParams({})
       setShowSuccessModel(true)
     }

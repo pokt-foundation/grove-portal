@@ -32,7 +32,7 @@ export default function FAQs() {
 
   const categories = useMemo(() => {
     if (questions.questions) {
-      const newArr = questions.questions.reduce((prev: any, curr: any) => {
+      const newArr = questions.questions.reduce((prev: any, curr) => {
         return [
           ...prev,
           {

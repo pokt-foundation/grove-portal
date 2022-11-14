@@ -1,5 +1,4 @@
 import { createEmotionCache, MantineProvider } from "@mantine/core"
-import { StylesPlaceholder } from "@mantine/remix"
 import {
   theme,
   Alert,
@@ -21,6 +20,7 @@ import {
   useLoaderData,
   useSearchParams,
 } from "@remix-run/react"
+import { StylesPlaceholder } from "@mantine/remix"
 
 import { useEffect, useMemo } from "react"
 import { Auth0Profile } from "remix-auth-auth0"

@@ -78,8 +78,8 @@ export const loader: LoaderFunction = async ({ request }) => {
 const WithProviders: React.FC = ({ children }) => {
   return (
     <MantineProvider
-      withCSSVariables
       withGlobalStyles
+      withCSSVariables
       withNormalizeCSS
       theme={{ ...theme, primaryColor: "blue" }}
     >

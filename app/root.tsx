@@ -1,5 +1,4 @@
 import {
-  theme,
   Alert,
   Center,
   Container,
@@ -19,8 +18,6 @@ import {
   useLoaderData,
   useSearchParams,
 } from "@remix-run/react"
-import { MantineProvider } from "@mantine/core"
-
 import { useEffect, useMemo } from "react"
 import { Auth0Profile } from "remix-auth-auth0"
 import { authenticator } from "./utils/auth.server"
@@ -77,13 +74,11 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 const WithProviders: React.FC = ({ children }) => {
   return (
-    <MantineProvider theme={theme} withGlobalStyles withNormalizeCSS>
-      <FeatureFlagsContextProvider>
-        <UserContextProvider>
-          <TranslateContextProvider>{children}</TranslateContextProvider>
-        </UserContextProvider>
-      </FeatureFlagsContextProvider>
-    </MantineProvider>
+    <FeatureFlagsContextProvider>
+      <UserContextProvider>
+        <TranslateContextProvider>{children}</TranslateContextProvider>
+      </UserContextProvider>
+    </FeatureFlagsContextProvider>
   )
 }
 

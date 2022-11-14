@@ -1,4 +1,4 @@
-import { Accordion } from "@mantine/core"
+import { Accordion, AccordionItem, Chip, Group } from "@mantine/core"
 import { LinksFunction } from "@remix-run/node"
 import styles from "./styles.css"
 import Remark, { links as RemarkLinks } from "~/components/shared/Remark"
@@ -42,7 +42,7 @@ export default function FaqsView({ categories }: FaqsViewProps) {
               </h2>
               <Accordion className="faqs">
                 {value.map((item) => (
-                  <Accordion.Item
+                  <AccordionItem
                     key={item.id}
                     className="faqs-item"
                     iconPosition="right"
@@ -51,7 +51,7 @@ export default function FaqsView({ categories }: FaqsViewProps) {
                     {item.translations && item.translations[0]?.answer && (
                       <Remark>{item.translations[0].answer ?? ""}</Remark>
                     )}
-                  </Accordion.Item>
+                  </AccordionItem>
                 ))}
               </Accordion>
             </div>

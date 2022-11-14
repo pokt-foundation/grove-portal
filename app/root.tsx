@@ -1,4 +1,4 @@
-import { createEmotionCache, MantineProvider } from "@mantine/core"
+import { MantineProvider } from "@mantine/core"
 import {
   theme,
   Alert,
@@ -20,7 +20,6 @@ import {
   useLoaderData,
   useSearchParams,
 } from "@remix-run/react"
-import { StylesPlaceholder } from "@mantine/remix"
 
 import { useEffect, useMemo } from "react"
 import { Auth0Profile } from "remix-auth-auth0"
@@ -107,7 +106,6 @@ const Document = ({ children, title }: { children: React.ReactNode; title?: stri
   return (
     <html lang={language}>
       <head>
-        <StylesPlaceholder />
         <Meta />
         <title>{title}</title>
         <Links />
@@ -121,8 +119,6 @@ const Document = ({ children, title }: { children: React.ReactNode; title?: stri
     </html>
   )
 }
-
-createEmotionCache({ key: "mantine" })
 
 export default function App() {
   const { ENV, user } = useLoaderData<RootLoaderData>()

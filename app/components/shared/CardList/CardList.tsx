@@ -24,7 +24,7 @@ export const CardList = ({ items }: CardListProps) => {
   return (
     <List className="pokt-card-list">
       {items.map((item) => (
-        <Grid key={item.label} className="pokt-card-list__grid">
+        <Grid className="pokt-card-list__grid" key={item.label}>
           <Grid.Col span={6}>
             <div className="pokt-list-label">
               <p>{item.label}</p>

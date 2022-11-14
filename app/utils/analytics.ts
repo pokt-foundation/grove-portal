@@ -22,6 +22,7 @@ export const AmplitudeEvents = {
   NotificationSettingsChange: "NOTIFICATION_SETTINGS_CHANGE",
   SecuritySettingsUpdate: "SECURITY_SETTINGS_UPDATE",
   ContactSalesView: "CONTACT_SALES_VIEW",
+  NewSubscription: "NEW_SUBSCRIPTION_CREATED",
 }
 
 function splitUser(user: { id: string }) {

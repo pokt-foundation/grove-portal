@@ -1,11 +1,16 @@
 import { useFetcher } from "@remix-run/react"
 import { vi, expect } from "vitest"
 import AppIdLayoutView from "./appIdLayoutView"
-import { render, screen, userEvent } from "test/helpers"
+import { render, screen } from "test/helpers"
 import t from "~/locales/en"
 import { endpoint } from "~/models/portal/portal.data"
 import { PayPlanType } from "~/models/portal/sdk"
 import { subscription } from "~/models/stripe/stripe.data"
+
+vi.mock("~/utils/analytics", async () => ({
+  ...(await vi.importActual<any>("~/utils/analytics")),
+  trackEvent: vi.fn(),
+}))
 
 const updatePlanFetcherMock = {
   state: "idle",

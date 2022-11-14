@@ -2,9 +2,6 @@ import { IconCaretLeft, Grid, Button } from "@pokt-foundation/pocket-blocks"
 import { Outlet, useFetcher } from "@remix-run/react"
 import { useEffect, useState } from "react"
 import styles from "./styles.css"
-import AdEconomicsForDevs, {
-  links as AdEconomicsForDevsLinks,
-} from "~/components/application/AdEconomicsForDevs"
 import AppAddressCard, {
   links as AppAddressCardLinks,
 } from "~/components/application/AppAddressCard"
@@ -29,6 +26,7 @@ import { useFeatureFlags } from "~/context/FeatureFlagContext"
 import { useTranslate } from "~/context/TranslateContext"
 import { EndpointQuery, PayPlanType } from "~/models/portal/sdk"
 import { Stripe } from "~/models/stripe/stripe.server"
+import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 import { getPlanName } from "~/utils/utils"
 
@@ -38,7 +36,6 @@ export const links = () => {
     ...NavLinks(),
     ...AppKeysCardLinks(),
     ...AppAddressCardLinks(),
-    ...AdEconomicsForDevsLinks(),
     ...FeedbackCardLinks(),
     ...StopRemoveAppLinks(),
     ...ModalLinks(),
@@ -121,6 +118,7 @@ export default function AppIdLayoutView({
           },
         )
       }
+      trackEvent(AmplitudeEvents.NewSubscription)
       setSearchParams({})
       setShowSuccessModel(true)
     }
@@ -224,9 +222,6 @@ export default function AppIdLayoutView({
               </section>
               <section>
                 <AppAddressCard apps={endpoint.apps} />
-              </section>
-              <section>
-                <AdEconomicsForDevs />
               </section>
               <section>
                 <FeedbackCard />

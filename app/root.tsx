@@ -4,6 +4,7 @@ import {
   Container,
   IconBookOpen,
   IconCircleQuestion,
+  IconMail,
 } from "@pokt-foundation/pocket-blocks"
 import { LinksFunction, LoaderFunction, MetaFunction, json } from "@remix-run/node"
 import {
@@ -146,6 +147,13 @@ export default function App() {
         to: "/faq",
         label: "FAQs",
         icon: IconCircleQuestion,
+        protected: Protected.Public,
+      },
+      {
+        to: "https://support.pokt.network",
+        external: true,
+        label: "Support",
+        icon: IconMail,
         protected: Protected.Public,
       },
     ]

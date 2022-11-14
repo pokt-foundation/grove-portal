@@ -23,6 +23,7 @@ export default function AdEconomicsForDevs() {
           href={ECONOMICS_URL}
           rel="noreferrer"
           target="_blank"
+          textColor="black"
         >
           Read More
         </Button>

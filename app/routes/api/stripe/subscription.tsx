@@ -41,11 +41,9 @@ export const action: ActionFunction = async ({ request }) => {
         cancel_at_period_end: action,
       })
       if (updatedSubscription) {
-        await portal.updateEndpoint({
-          input: {
-            id: appId as string,
-            payPlanType: action ? PayPlanType.FreetierV0 : PayPlanType.PayAsYouGoV0,
-          },
+        await portal.adminUpdatePayPlanType({
+          endpointID: appId as string,
+          payPlanType: action ? PayPlanType.FreetierV0 : PayPlanType.PayAsYouGoV0,
         })
         return json({
           error: false,

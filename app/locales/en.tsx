@@ -306,6 +306,15 @@ const schema = {
         appsLimit: "Up to 2 Applicaitions",
         chainAccess: "No limit",
       },
+      [PayPlanType.Enterprise]: {
+        title: "Enterprise",
+        description: "Custom plans for large scale apps.",
+        description2: "",
+        pricing: "Contact Us",
+        relayLimit: "",
+        appsLimit: "",
+        chainAccess: "",
+      },
       enterpriseSolutions: {
         description: "Custom plans for large scale apps.",
         contactUS: "Contact Us",

@@ -218,6 +218,15 @@ interface TranslationData {
         appsLimit: string
         chainAccess: string
       }
+      [PayPlanType.Enterprise]: {
+        title: string
+        description: string
+        description2: string
+        pricing: string
+        relayLimit: string
+        appsLimit: string
+        chainAccess: string
+      }
       enterpriseSolutions: {
         description: string
         contactUS: string

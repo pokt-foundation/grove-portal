@@ -24,7 +24,7 @@ import UsageChartCard, {
 } from "~/components/application/UsageChartCard"
 import Loader, { links as LoaderLinks } from "~/components/shared/Loader"
 import Table, { links as TableLinks } from "~/components/shared/Table"
-import { Block, Order } from "~/models/indexer/sdk"
+import { Block } from "~/models/indexer/sdk"
 import { initPoktScanClient } from "~/models/poktscan/poktscan.server"
 import { GetHighestBlockQuery } from "~/models/poktscan/sdk"
 import { initPortalClient } from "~/models/portal/portal.server"
@@ -37,7 +37,6 @@ import {
 import styles from "~/styles/dashboard.index.css"
 import { getServiceLevelByChain } from "~/utils/chainUtils"
 import { dayjs } from "~/utils/dayjs"
-import { requireUser } from "~/utils/session.server"
 
 export const links = () => {
   return [

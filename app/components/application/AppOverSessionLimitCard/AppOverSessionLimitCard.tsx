@@ -1,5 +1,4 @@
 import { IconInfo, Avatar, Button } from "@pokt-foundation/pocket-blocks"
-import { Link } from "@remix-run/react"
 import React from "react"
 import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/shared/Card"

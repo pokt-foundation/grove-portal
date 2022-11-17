@@ -1,4 +1,4 @@
-import { Button, Text, Group } from "@pokt-foundation/pocket-blocks"
+import { Button, Text } from "@pokt-foundation/pocket-blocks"
 import { Form } from "@remix-run/react"
 import { useState } from "react"
 import styles from "./styles.css"

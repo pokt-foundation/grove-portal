@@ -1,4 +1,3 @@
-import { useViewportSize } from "@mantine/hooks"
 import { Button, IconUser } from "@pokt-foundation/pocket-blocks"
 import { Item, Separator } from "@radix-ui/react-dropdown-menu"
 import { Form, Link, useLocation } from "@remix-run/react"

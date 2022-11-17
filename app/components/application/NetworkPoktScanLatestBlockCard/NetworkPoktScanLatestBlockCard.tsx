@@ -28,7 +28,27 @@ function appendZeroToTime(time: string) {
 }
 
 export default function LatestBlock({ latestBlock }: LatestBlockProps) {
-  const blockProducedDateInLocalTime = useMemo(() => {
+  if (!latestBlock) {
+    return null
+  }
+
+  const rows: CardListItem[] = getList(latestBlock)
+
+  return (
+    <div className="pokt-network-latest-block">
+      <Card>
+        <div className="pokt-card-header">
+          <h3>Latest Block</h3>
+        </div>
+        <CardList items={rows} />
+        <PoweredBy alt="Poktscan" image="/poktscanLogo.png" to="https://poktscan.com/" />
+      </Card>
+    </div>
+  )
+}
+
+export const getList = (latestBlock: GetHighestBlockQuery) => {
+  const blockProducedDateInLocalTime = () => {
     const blockProducedTimeInDate = new Date(String(latestBlock.highestBlock?.item?.time))
     const hours = appendZeroToTime(blockProducedTimeInDate.getHours().toLocaleString())
     const minutes = appendZeroToTime(
@@ -36,20 +56,16 @@ export default function LatestBlock({ latestBlock }: LatestBlockProps) {
     )
 
     return `${hours}:${minutes} ${Intl.DateTimeFormat().resolvedOptions().timeZone}`
-  }, [latestBlock])
-
-  if (!latestBlock) {
-    return null
   }
 
-  const rows: CardListItem[] = [
+  return [
     {
       label: "Block",
       value: `${latestBlock.highestBlock?.item?.height}`,
     },
     {
       label: "Time",
-      value: blockProducedDateInLocalTime,
+      value: blockProducedDateInLocalTime(),
     },
     {
       label: "Relays",
@@ -68,16 +84,4 @@ export default function LatestBlock({ latestBlock }: LatestBlockProps) {
       value: `${latestBlock.highestBlock?.validatorThreshold?.toLocaleString()}`,
     },
   ]
-
-  return (
-    <div className="pokt-network-latest-block">
-      <Card>
-        <div className="pokt-card-header">
-          <h3>Latest Block</h3>
-        </div>
-        <CardList items={rows} />
-        <PoweredBy alt="Poktscan" image="/poktscanLogo.png" to="https://poktscan.com/" />
-      </Card>
-    </div>
-  )
 }

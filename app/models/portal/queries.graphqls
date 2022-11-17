@@ -80,3 +80,7 @@ query blockchains($active: Boolean) {
     path
   }
 }
+
+query getUserJWT($username: String!, $password: String!) {
+  getUserJWT(username: $username, password: $password)
+}

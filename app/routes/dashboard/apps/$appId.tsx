@@ -47,11 +47,13 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
   if (searchParams.get("success") === "true") {
     try {
-      await portal.updateEndpoint({
-        input: {
-          id: params.appId,
-          payPlanType: PayPlanType.PayAsYouGoV0,
-        },
+      const form = new FormData()
+      form.append("id", params.appId)
+      form.append("type", PayPlanType.PayAsYouGoV0)
+
+      await fetch(url.origin + "/api/updatePlan", {
+        method: "POST",
+        body: form,
       })
     } catch (e) {}
   }

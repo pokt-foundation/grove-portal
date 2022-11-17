@@ -3,7 +3,7 @@ import invariant from "tiny-invariant"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { PayPlanType } from "~/models/portal/sdk"
 import { getErrorMessage } from "~/utils/catchError"
-import { requireUser } from "~/utils/session.server"
+import { getRequiredServerEnvVar } from "~/utils/environment"
 
 export type UpdatePlanActionData =
   | {
@@ -14,22 +14,34 @@ export type UpdatePlanActionData =
       message: string
     }
 
+export type UpdatePlanArgs = { id: string | null; type: PayPlanType | null }
+
 export const action: ActionFunction = async ({ request }) => {
-  const user = await requireUser(request)
   const formData = await request.formData()
-  const id = formData.get("id") as string | null
-  const type = formData.get("type") as PayPlanType | null
-  const portal = initPortalClient(user.accessToken)
+  const id = formData.get("id") as UpdatePlanArgs["id"]
+  const type = formData.get("type") as UpdatePlanArgs["type"]
+
+  const result = await updatePlan({ id, type })
+  return result
+}
+
+export const updatePlan = async ({ id, type }: UpdatePlanArgs) => {
+  const portal = initPortalClient()
 
   try {
     invariant(id, "endpoint id not found")
     invariant(type, "plan type not found")
 
-    await portal.updateEndpoint({
-      input: {
-        id: id,
-        payPlanType: type,
-      },
+    const resultGetUserJWT = await portal.getUserJWT({
+      username: getRequiredServerEnvVar("ADMIN_EMAIL"),
+      password: getRequiredServerEnvVar("ADMIN_PASSWORD"),
+    })
+
+    const portalAdmin = initPortalClient(resultGetUserJWT.getUserJWT)
+
+    await portalAdmin.adminUpdatePayPlanType({
+      endpointID: id,
+      payPlanType: type,
     })
 
     return json<UpdatePlanActionData>({

@@ -4,7 +4,7 @@ import { render, screen } from "test/helpers"
 import { latestBlock } from "~/models/poktscan/poktscan.data"
 
 describe("<NetworkPoktScanLatestBlockCard />", () => {
-  it("renders card and links to discord", () => {
+  it("renders card and latest block details", () => {
     render(<NetworkPoktScanLatestBlockCard latestBlock={latestBlock} />)
     const list = getList(latestBlock)
 

@@ -38,7 +38,7 @@ export type NetworkLoaderData = {
   dailyNetworkRelays: RelayMetric
   weeklyNetworkRelays: RelayMetric
   monthlyNetworkRelays: RelayMetric
-  poktscanLatestBlock: GetHighestBlockQuery
+  poktscanLatestBlock: GetHighestBlockQuery | null
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -48,7 +48,10 @@ export const loader: LoaderFunction = async ({ request }) => {
   })
 
   const poktscan = initPoktScanClient()
-  const poktscanLatestBlock = await poktscan.getHighestBlock()
+  const poktscanLatestBlock =
+    (await poktscan.getHighestBlock().catch((e) => {
+      console.log(e)
+    })) ?? null
 
   const dailyNetworkRelaysPerWeek = await getRelaysPerWeek("network")
   // api auto adjusts to/from to begining and end of each day so putting the same time here gives us back one full day

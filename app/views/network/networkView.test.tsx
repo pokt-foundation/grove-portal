@@ -55,4 +55,21 @@ describe("<NetworkView />", () => {
       screen.queryByRole("heading", { name: /available networks/i }),
     ).not.toBeInTheDocument()
   })
+  it("hides latest block when poktscan returns an error or nothing", () => {
+    render(
+      <NetworkView
+        blockchains={blockchains}
+        dailyNetworkRelays={today}
+        dailyNetworkRelaysPerWeek={relayMetricPerWeek}
+        monthlyNetworkRelays={month}
+        poktscanLatestBlock={null}
+        state={"idle"}
+        weeklyNetworkRelays={week}
+      />,
+    )
+
+    expect(
+      screen.queryByRole("heading", { name: /latest block/i }),
+    ).not.toBeInTheDocument()
+  })
 })

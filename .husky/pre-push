@@ -5,4 +5,4 @@ pnpm run generate:types
 pnpm run format
 pnpm run lint:fix
 pnpm run typecheck
-pnpm run test:unit:changed
+pnpm run test:unit:run

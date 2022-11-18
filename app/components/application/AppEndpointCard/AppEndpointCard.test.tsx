@@ -3,10 +3,6 @@ import AppEndpointCard from "./AppEndpointCard"
 import { render, screen } from "test/helpers"
 import { IUserContext, UserContext } from "~/context/UserContext"
 import { endpoint, blockchains } from "~/models/portal/portal.data"
-import { ProcessedEndpoint } from "~/models/portal/sdk"
-import { ChainMetadata, prefixFromChainId } from "~/utils/chainUtils"
-
-let app: ProcessedEndpoint
 
 let userValue: IUserContext
 

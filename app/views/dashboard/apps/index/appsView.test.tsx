@@ -1,6 +1,6 @@
 import { expect } from "vitest"
 import AppsView from "./appsView"
-import { render, screen, userEvent } from "test/helpers"
+import { render, screen } from "test/helpers"
 import { endpoints } from "~/models/portal/portal.data"
 import { relayMetricPerWeek } from "~/models/relaymeter/relaymeter.data"
 

@@ -6,9 +6,6 @@ import { endpoint } from "~/models/portal/portal.data"
 import { PayPlanType } from "~/models/portal/sdk"
 import { subscription } from "~/models/stripe/stripe.data"
 
-const stopSubscription = schema.common.StopSubscription
-const removeApplication = "Remove Application"
-
 describe("<StopRemoveApp />", () => {
   it("renders Stop Subscription button for paid plantype", () => {
     render(

@@ -1,4 +1,3 @@
-import { Link } from "@remix-run/react"
 import { Remark as ReactRemark, RemarkProps } from "react-remark"
 import styles from "./styles.css"
 

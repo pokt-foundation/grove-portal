@@ -1,6 +1,6 @@
 import { Grid } from "@pokt-foundation/pocket-blocks"
 import { LinksFunction, MetaFunction } from "@remix-run/node"
-import { Form, useLocation, useSearchParams } from "@remix-run/react"
+import { Form, useSearchParams } from "@remix-run/react"
 import { useEffect, useState } from "react"
 import { CallOutBox, links as CallOutBoxLinks } from "~/components/shared/CallOutBox"
 import Modal, { links as ModalLinks } from "~/components/shared/Modal"
@@ -22,7 +22,6 @@ export default function Index() {
     t: { landing },
   } = useTranslate()
   const [searchParams] = useSearchParams()
-  const location = useLocation()
   const [showExpiredModal, setShowExpiredModal] = useState(false)
 
   useEffect(() => {

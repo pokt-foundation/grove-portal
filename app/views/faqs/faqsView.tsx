@@ -1,4 +1,4 @@
-import { Accordion, AccordionItem, Chip, Group } from "@mantine/core"
+import { Accordion, AccordionItem } from "@mantine/core"
 import { LinksFunction } from "@remix-run/node"
 import styles from "./styles.css"
 import Remark, { links as RemarkLinks } from "~/components/shared/Remark"

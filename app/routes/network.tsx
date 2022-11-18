@@ -1,6 +1,6 @@
 import { LoaderFunction, json, MetaFunction } from "@remix-run/node"
 import { useLoaderData, useTransition } from "@remix-run/react"
-import { Block, Order } from "~/models/indexer/sdk"
+import { Block } from "~/models/indexer/sdk"
 import { initPoktScanClient } from "~/models/poktscan/poktscan.server"
 import { GetHighestBlockQuery } from "~/models/poktscan/sdk"
 import { initPortalClient } from "~/models/portal/portal.server"

@@ -52,7 +52,7 @@ export const links: LinksFunction = () => {
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
   description:
-    "Pocket Explorer helps you to explore and search the Pocket blockchain for transactions, addresses, tokens, prices and other activities taking place on the Pocket Network (POKT).",
+    "Pocket Portal, your gateway to Web3 done right. The Portal acts as your one-stop-shop to manage, and monitor your application's connection to blockchain data.",
   viewport: "width=device-width,initial-scale=1",
 })
 

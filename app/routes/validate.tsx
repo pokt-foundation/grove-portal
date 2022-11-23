@@ -15,14 +15,11 @@ export default function ValidateEmail() {
         <Grid grow align="center" gutter="lg" justify="center">
           <Grid.Col className="pokt-validate__content" sm={7} xs={12}>
             <Box className="pokt-validate__title">
-              <Title css={{ fontWeight: "$regular" }} order={1}>
+              <Title order={1} style={{ fontWeight: 500 }}>
                 Email Verification{" "}
                 <Title
-                  css={{
-                    color: "var(--color-secondary-main)",
-                    fontWeight: "$bold",
-                  }}
                   order={1}
+                  style={{ color: "var(--color-secondary-main)", fontWeight: 700 }}
                 >
                   Sent
                 </Title>

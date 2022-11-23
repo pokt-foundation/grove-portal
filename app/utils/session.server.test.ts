@@ -15,7 +15,7 @@ vi.mock("./auth.server", () => ({
   },
 }))
 
-const request = new Request("")
+const request = new Request("http://localhost:3000/")
 
 describe("requireUser", () => {
   it("throws and redrects if there is no user", async () => {

@@ -1,4 +1,7 @@
+import { createEmotionCache, MantineProvider } from "@mantine/core"
+import { StylesPlaceholder } from "@mantine/remix"
 import {
+  theme,
   Alert,
   Center,
   Container,
@@ -18,6 +21,7 @@ import {
   useLoaderData,
   useSearchParams,
 } from "@remix-run/react"
+
 import { useEffect, useMemo } from "react"
 import { Auth0Profile } from "remix-auth-auth0"
 import { authenticator } from "./utils/auth.server"
@@ -76,7 +80,14 @@ const WithProviders: React.FC = ({ children }) => {
   return (
     <FeatureFlagsContextProvider>
       <UserContextProvider>
-        <TranslateContextProvider>{children}</TranslateContextProvider>
+        <MantineProvider
+          withCSSVariables
+          withGlobalStyles
+          withNormalizeCSS
+          theme={{ ...theme, primaryColor: "blue" }}
+        >
+          <TranslateContextProvider>{children}</TranslateContextProvider>
+        </MantineProvider>
       </UserContextProvider>
     </FeatureFlagsContextProvider>
   )
@@ -96,6 +107,7 @@ const Document = ({ children, title }: { children: React.ReactNode; title?: stri
   return (
     <html lang={language}>
       <head>
+        <StylesPlaceholder />
         <Meta />
         <title>{title}</title>
         <Links />
@@ -109,6 +121,8 @@ const Document = ({ children, title }: { children: React.ReactNode; title?: stri
     </html>
   )
 }
+
+createEmotionCache({ key: "pocket-blocks" })
 
 export default function App() {
   const { ENV, user } = useLoaderData<RootLoaderData>()

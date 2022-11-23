@@ -1,5 +1,5 @@
 import { Grid } from "@pokt-foundation/pocket-blocks"
-import { Transition } from "@remix-run/react/transition"
+import { Transition } from "@remix-run/react/dist/transition"
 import styles from "./styles.css"
 import ChainWithImage, {
   links as ChainWithImageLinks,

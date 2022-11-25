@@ -40,6 +40,21 @@ export default function analyticsInit(user?: { id: string }) {
     amplitude.init(getRequiredClientEnvVar("AMPLITUDE_API_KEY"), getUser, {
       includeReferrer: true,
       includeUtm: true,
+      trackingOptions: {
+        city: false,
+        country: false,
+        carrier: true,
+        deviceManufacturer: true,
+        deviceModel: true,
+        dma: true,
+        ipAddress: false,
+        language: true,
+        osName: true,
+        osVersion: true,
+        platform: true,
+        region: false,
+        versionName: true,
+      },
     })
   } catch (error) {
     log(error, "error")

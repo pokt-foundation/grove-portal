@@ -43,17 +43,8 @@ export default function analyticsInit(user?: { id: string }) {
       trackingOptions: {
         city: false,
         country: false,
-        carrier: true,
-        deviceManufacturer: true,
-        deviceModel: true,
-        dma: true,
         ipAddress: false,
-        language: true,
-        osName: true,
-        osVersion: true,
-        platform: true,
         region: false,
-        versionName: true,
       },
     })
   } catch (error) {

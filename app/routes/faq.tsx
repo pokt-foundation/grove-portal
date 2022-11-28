@@ -2,7 +2,7 @@ import { json, LinksFunction, LoaderFunction } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
 import { useMemo } from "react"
 import { initCmsClient } from "~/models/cms/cms.server"
-import { getQuestionsQuery, questions as Questions } from "~/models/cms/sdk"
+import { getQuestionsQuery } from "~/models/cms/sdk"
 import { groupBy } from "~/utils/utils"
 import FaqsView, { links as FaqsViewLinks } from "~/views/faqs/faqsView"
 

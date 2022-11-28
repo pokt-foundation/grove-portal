@@ -1,3 +1,7 @@
+.container {
+  margin-top: 16px;
+}
+
 @media screen and (max-width: 640px) {
   div.mantine-Col-root section:last-of-type .pokt-card {
     margin-bottom: 0;

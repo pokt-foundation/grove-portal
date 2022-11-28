@@ -1,8 +1,5 @@
 import { Grid, Tooltip } from "@pokt-foundation/pocket-blocks"
-import {
-  UserLBSessionRelaysResponse,
-  UserLBTotalRelaysResponse,
-} from "@pokt-foundation/portal-types"
+import { UserLBTotalRelaysResponse } from "@pokt-foundation/portal-types"
 import { CircleGraph } from "@pokt-foundation/ui"
 import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/shared/Card"

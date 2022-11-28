@@ -95,7 +95,6 @@ export const action: ActionFunction = async ({ request }) => {
   try {
     const { createNewEndpoint } = await portal.createEndpoint({
       name,
-      payPlanType: PayPlanType.FreetierV0,
     })
 
     if (!createNewEndpoint) {

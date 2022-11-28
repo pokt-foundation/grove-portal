@@ -15,7 +15,7 @@ interface NetworkSuccessRateCardProps {
   month: RelayMetric
 }
 
-const numbersFormatter = Intl.NumberFormat("en", {
+export const numbersFormatter = Intl.NumberFormat("en", {
   notation: "compact",
   maximumFractionDigits: 2,
 })

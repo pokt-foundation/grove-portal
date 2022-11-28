@@ -25,6 +25,7 @@ describe("requireUser", () => {
     try {
       await requireUser(request)
     } catch (error) {
+      // eslint-disable-next-line jest/no-conditional-expect
       expect(error).toBeTruthy()
     }
     expect(authenticator.isAuthenticated).toHaveBeenCalled()
@@ -92,6 +93,7 @@ describe("requireUser", () => {
     try {
       await requireUser(request)
     } catch (error) {
+      // eslint-disable-next-line jest/no-conditional-expect
       expect(error).toBeFalsy()
     }
     expect(authenticator.isAuthenticated).toHaveBeenCalled()
@@ -303,6 +305,7 @@ describe("requireAdmin", () => {
     try {
       await requireAdmin(request)
     } catch (error) {
+      // eslint-disable-next-line jest/no-conditional-expect
       expect(error).toBeTruthy()
     }
   })
@@ -383,6 +386,7 @@ describe("getUserProfile", () => {
     try {
       await getUserProfile(request)
     } catch (error) {
+      // eslint-disable-next-line jest/no-conditional-expect
       expect(error).toBeTruthy()
     }
     expect(authenticator.isAuthenticated).toHaveBeenCalled()

@@ -1,10 +1,9 @@
-import { Button, Group, Text } from "@pokt-foundation/pocket-blocks"
-import { Form, Link, useFetcher, useLocation } from "@remix-run/react"
+import { Button, Text } from "@pokt-foundation/pocket-blocks"
+import { Form, useFetcher } from "@remix-run/react"
 import { useEffect, useState } from "react"
 import styles from "./styles.css"
 import Modal, { links as ModalLinks, ModalCTA } from "~/components/shared/Modal"
 import { useTranslate } from "~/context/TranslateContext"
-import { endpoint } from "~/models/portal/portal.data"
 import { PayPlanType } from "~/models/portal/sdk"
 import { ProcessedEndpoint } from "~/models/portal/sdk"
 import { Stripe } from "~/models/stripe/stripe.server"
@@ -14,7 +13,7 @@ import { isPaidPlan } from "~/utils/utils"
 
 /* c8 ignore next */
 export const links = () => {
-  return [{ rel: "stylesheet", href: styles }]
+  return [...ModalLinks(), { rel: "stylesheet", href: styles }]
 }
 
 interface StopRemoveAppProps {

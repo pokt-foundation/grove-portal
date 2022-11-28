@@ -1,5 +1,19 @@
-mutation createEndpoint($name: String!, $payPlanType: PayPlanType) {
-  createNewEndpoint(name: $name, payPlanType: $payPlanType) {
+mutation createEndpoint($name: String!) {
+  createNewEndpoint(name: $name) {
+    id
+  }
+}
+
+mutation adminUpdatePayPlanType(
+  $endpointID: ID!
+  $payPlanType: PayPlanType!
+  $customLimit: Int
+) {
+  adminUpdatePayPlanType(
+    endpointID: $endpointID
+    payPlanType: $payPlanType
+    customLimit: $customLimit
+  ) {
     id
   }
 }

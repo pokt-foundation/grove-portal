@@ -10,4 +10,34 @@ export const relayMetric: RelayMetric = {
   To: "2022-08-23T00:00:00Z",
 }
 
+export const today: RelayMetric = {
+  ...relayMetric,
+  Count: {
+    ...relayMetric.Count,
+    Success: 9,
+    Failure: 1,
+    Total: 10,
+  },
+}
+
+export const week: RelayMetric = {
+  ...relayMetric,
+  Count: {
+    ...relayMetric.Count,
+    Success: 999,
+    Failure: 1,
+    Total: 1000,
+  },
+}
+
+export const month: RelayMetric = {
+  ...relayMetric,
+  Count: {
+    ...relayMetric.Count,
+    Success: 999999,
+    Failure: 1,
+    Total: 1000000,
+  },
+}
+
 export const relayMetricPerWeek: RelayMetric[] = Array(7).fill(relayMetric)

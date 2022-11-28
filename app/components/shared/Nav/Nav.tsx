@@ -49,7 +49,7 @@ export const Nav = ({ routes, dropdown = false, appId, ariaLabel }: NavProps) =>
         window.location.href = `/dashboard/apps/${appId}/${mobilePageSelect}`
       }
     }
-  }, [mobilePageSelect])
+  }, [appId, mobilePageSelect])
 
   const LinkLabel = ({ route }: { route: Route }) => {
     const Icon = route.icon

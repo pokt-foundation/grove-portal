@@ -130,7 +130,7 @@ const schema = {
       {
         title: "Thousands of nodes -fr",
         smallText: "Serving any network at any given moment -fr",
-        blueText: "47K+",
+        blueText: "20K+",
         description: "Nodes -fr",
       },
       {

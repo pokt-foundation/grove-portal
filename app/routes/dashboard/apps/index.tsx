@@ -3,13 +3,8 @@ import { useLoaderData, useSearchParams } from "@remix-run/react"
 import { useEffect } from "react"
 import { AllAppsLoaderData } from "../apps"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
-import {
-  getRelays,
-  getRelaysPerWeek,
-  RelayMetric,
-} from "~/models/relaymeter/relaymeter.server"
+import { getRelaysPerWeek, RelayMetric } from "~/models/relaymeter/relaymeter.server"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
-import { dayjs } from "~/utils/dayjs"
 import { getPoktId, requireUser } from "~/utils/session.server"
 import AppsView, { links as AppsViewLinks } from "~/views/dashboard/apps/index/appsView"
 

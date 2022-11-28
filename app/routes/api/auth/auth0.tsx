@@ -1,4 +1,3 @@
-import { redirect } from "@remix-run/node"
 import type { ActionFunction, LoaderFunction } from "@remix-run/node"
 import { authenticator } from "~/utils/auth.server"
 

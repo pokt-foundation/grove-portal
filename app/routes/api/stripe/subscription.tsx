@@ -1,8 +1,9 @@
-import { ActionFunction, json, redirect } from "@remix-run/node"
+import { ActionFunction, json } from "@remix-run/node"
 import invariant from "tiny-invariant"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { PayPlanType } from "~/models/portal/sdk"
 import { getSubscription, stripe, Stripe } from "~/models/stripe/stripe.server"
+import { updatePlan } from "~/routes/api/updatePlan"
 import { getErrorMessage } from "~/utils/catchError"
 import { getPoktId, requireUser } from "~/utils/session.server"
 
@@ -41,12 +42,11 @@ export const action: ActionFunction = async ({ request }) => {
         cancel_at_period_end: action,
       })
       if (updatedSubscription) {
-        await portal.updateEndpoint({
-          input: {
-            id: appId as string,
-            payPlanType: action ? PayPlanType.FreetierV0 : PayPlanType.PayAsYouGoV0,
-          },
+        await updatePlan({
+          id: appId as string,
+          type: action ? PayPlanType.FreetierV0 : PayPlanType.PayAsYouGoV0,
         })
+
         return json({
           error: false,
           subscription: updatedSubscription,

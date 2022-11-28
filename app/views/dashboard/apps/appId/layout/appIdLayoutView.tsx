@@ -128,7 +128,7 @@ export default function AppIdLayoutView({
       searchParams.delete("cancelError")
       setShowErrorModel(true)
     }
-  }, [searchParams, endpoint, updatePlanFetcher])
+  }, [searchParams, endpoint, updatePlanFetcher, setSearchParams])
 
   useEffect(() => {
     if (

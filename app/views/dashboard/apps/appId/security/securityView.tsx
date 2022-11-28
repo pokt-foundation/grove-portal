@@ -391,8 +391,8 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                   setWhitelistMethods([
                     ...whitelistMethods,
                     { id: whitelistMethodsDropdown, inputValue: whitelistMethodsInput },
-                  ]),
-                    setWhitelistMethodsInput("")
+                  ])
+                  setWhitelistMethodsInput("")
                   setWhitelistMethodsDropdown("")
                 }
               }}

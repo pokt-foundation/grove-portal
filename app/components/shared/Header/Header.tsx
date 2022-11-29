@@ -1,6 +1,6 @@
 import { Button, IconUser } from "@pokt-foundation/pocket-blocks"
 import { Item, Separator } from "@radix-ui/react-dropdown-menu"
-import { Form, Link, useLocation } from "@remix-run/react"
+import { Form, Link, useFetcher, useLocation } from "@remix-run/react"
 import clsx from "clsx"
 import { useEffect, useMemo, useRef, useState } from "react"
 import React from "react"
@@ -33,6 +33,7 @@ export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) 
   const [isActive, setIsActive] = useState(false)
   const logoutFormRef = useRef<HTMLFormElement>(null)
   const location = useLocation()
+  const fetcher = useFetcher()
 
   const routes: Route[] = useMemo(() => {
     const userRoutes = [
@@ -125,22 +126,22 @@ export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) 
           <UserMenuDropdown routes={routes} user={user} />
           {!user && (
             <>
-              <Form action="/api/auth/auth0" method="post">
-                <Button color="blue" type="submit" variant="outline">
-                  Login
-                </Button>
-              </Form>
-              <Form action="/api/auth/auth0" method="post">
-                <Button
-                  color="blue"
-                  name="signup"
-                  type="submit"
-                  value="true"
-                  variant="outline"
-                >
-                  Sign Up
-                </Button>
-              </Form>
+              <Button
+                color="blue"
+                variant="outline"
+                onClick={() => fetcher.load("/api/auth/auth0")}
+              >
+                Login
+              </Button>
+              <Button
+                color="blue"
+                name="signup"
+                value="true"
+                variant="outline"
+                onClick={() => fetcher.load("/api/auth/auth0")}
+              >
+                Sign Up
+              </Button>
             </>
           )}
           {/* <HeaderChildren user={user} nav={nav} slot={children} /> */}

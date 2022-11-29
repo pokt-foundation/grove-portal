@@ -2,7 +2,7 @@ import userEvent from "@testing-library/user-event"
 import { Auth0Profile } from "remix-auth-auth0"
 import { expect } from "vitest"
 import ProfileView, { SUCCESSFUL_CHANGE_PASSWORD_MSG } from "./profileView"
-import { render, screen, waitFor } from "test/helpers"
+import { fireEvent, render, screen, waitFor } from "test/helpers"
 
 const profile: Auth0Profile = {
   id: "auth0|230rf40fgj0jf30e",
@@ -63,7 +63,8 @@ describe("<ProfileView />", () => {
 
     const changePasswordButton = screen.getByRole("button", { name: /Change password/i })
     expect(changePasswordButton).toBeInTheDocument()
-    user.click(changePasswordButton)
+
+    fireEvent.click(changePasswordButton)
 
     await waitFor(() => {
       expect(
@@ -78,8 +79,10 @@ describe("<ProfileView />", () => {
     })
 
     const doneButton = screen.getByRole("button", { name: /Done/i })
+
     expect(doneButton).toBeInTheDocument()
-    user.click(doneButton)
+
+    fireEvent.click(doneButton)
 
     await waitFor(() => {
       expect(

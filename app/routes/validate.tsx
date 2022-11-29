@@ -1,6 +1,6 @@
 import { Container, Grid, Button, Text, Title, Box } from "@pokt-foundation/pocket-blocks"
 import { LinksFunction } from "@remix-run/node"
-import { Form } from "@remix-run/react"
+import { useFetcher } from "@remix-run/react"
 
 import styles from "~/styles/validate.css"
 
@@ -9,6 +9,8 @@ export const links: LinksFunction = () => {
 }
 
 export default function ValidateEmail() {
+  const fetcher = useFetcher()
+
   return (
     <div className="pokt-validate">
       <Container mt={72} size="lg">
@@ -32,11 +34,13 @@ export default function ValidateEmail() {
             </Text>
 
             <Box className="pokt-validate__button">
-              <Form action="/api/auth/auth0" method="post">
-                <Button size="md" type="submit">
-                  Login
-                </Button>
-              </Form>
+              <Button
+                size="md"
+                type="submit"
+                onClick={() => fetcher.load("/api/auth/auth0")}
+              >
+                Login
+              </Button>
             </Box>
           </Grid.Col>
 

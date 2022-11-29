@@ -69,11 +69,13 @@ export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) 
       {
         id: "login",
         el: () => (
-          <Form action="/api/auth/auth0" method="post">
-            <Button type="submit" variant="outline">
-              Login
-            </Button>
-          </Form>
+          <Button
+            type="submit"
+            variant="outline"
+            onClick={() => fetcher.load("/api/auth/auth0")}
+          >
+            Login
+          </Button>
         ),
       },
     ]
@@ -192,22 +194,29 @@ type HeaderChildrenProps = {
   user?: Auth0Profile
 }
 const HeaderChildren = ({ user, nav, slot }: HeaderChildrenProps) => {
+  const fetcher = useFetcher()
+
   return (
     <>
       <div className={`pokt-header-nav nav-${nav} pokt-header-flex`}>{slot}</div>
       {!user && (
-        <Form action="/api/auth/auth0" method="post">
-          <Button type="submit" variant="outline">
-            Login
-          </Button>
-        </Form>
+        <Button
+          type="submit"
+          variant="outline"
+          onClick={() => fetcher.load("/api/auth/auth0")}
+        >
+          Login
+        </Button>
       )}
       {user && (
-        <Form action="/api/auth/auth0" method="post">
-          <Button name="logout" type="submit" value="true" variant="outline">
-            Logout
-          </Button>
-        </Form>
+        <Button
+          name="logout"
+          value="true"
+          variant="outline"
+          onClick={() => fetcher.load("/api/auth/auth0")}
+        >
+          Logout
+        </Button>
       )}
     </>
   )

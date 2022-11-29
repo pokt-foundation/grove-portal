@@ -1,6 +1,6 @@
 import { Grid } from "@pokt-foundation/pocket-blocks"
 import { LinksFunction, MetaFunction } from "@remix-run/node"
-import { Form, useSearchParams } from "@remix-run/react"
+import { Form, useFetcher, useSearchParams } from "@remix-run/react"
 import { useEffect, useState } from "react"
 import { CallOutBox, links as CallOutBoxLinks } from "~/components/shared/CallOutBox"
 import Modal, { links as ModalLinks } from "~/components/shared/Modal"
@@ -23,6 +23,7 @@ export default function Index() {
   } = useTranslate()
   const [searchParams] = useSearchParams()
   const [showExpiredModal, setShowExpiredModal] = useState(false)
+  const fetcher = useFetcher()
 
   useEffect(() => {
     const expired = searchParams.get("expired")
@@ -36,11 +37,14 @@ export default function Index() {
           <h2>{landing.title}</h2>
           <p className="text">{landing.subtitle}</p>
           <p className="text"></p>
-          <Form action="/api/auth/auth0" method="post">
-            <button className="button" name="login" type="submit" value="true">
-              {landing.getStarted}
-            </button>
-          </Form>
+          <button
+            className="button"
+            name="login"
+            value="true"
+            onClick={() => fetcher.load("/api/auth/auth0")}
+          >
+            {landing.getStarted}
+          </button>
         </Grid.Col>
         <Grid.Col lg={2} md={0} />
 

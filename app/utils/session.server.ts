@@ -65,7 +65,17 @@ export const requireAdmin = async (
   defaultRedirect = "/",
 ): Promise<Auth0Profile> => {
   let user = await authenticator.isAuthenticated(request)
-  if (!user || !user.profile.emails[0].value.includes("@pokt.network")) {
+
+  if (!user) {
+    throw redirect(defaultRedirect)
+  }
+
+  const decode = jwt_decode<{
+    exp: number
+    permissions: string[]
+  }>(user.accessToken)
+
+  if (!decode.permissions.includes("write:pay_plan_types")) {
     throw redirect(defaultRedirect)
   }
   return user.profile

@@ -17,7 +17,7 @@ export type UpdatePlanActionData =
 export type UpdatePlanArgs = {
   id: string | null
   type: PayPlanType | null
-  limit: number | null
+  limit?: number | null
 }
 
 export const action: ActionFunction = async ({ request }) => {

@@ -14,6 +14,7 @@ export const links: LinksFunction = () => [...CardLinks(), ...CardListLinks()]
 export default function FeatureFlags() {
   const fetcher = useFetcher()
   const { flags } = useFeatureFlags()
+  //@ts-ignore next
   const items: CardListItem[] = Object.entries(flags).map(([key, value]) => ({
     label: key,
     value: <Checkbox defaultChecked={value === "true"} name={key} />,

@@ -10,7 +10,7 @@ export const links: LinksFunction = () => [...CardLinks(), ...TextInputLinks()]
 
 export default function CustomPayPlan() {
   const [selectedPlanType, setSelectedPlanType] = useState<string | null>(null)
-  const updatePlanFetcher = useFetcher()
+  const { Form, ...updatePlanFetcher } = useFetcher()
 
   const plans = Object.values(PayPlanType)
 
@@ -20,7 +20,7 @@ export default function CustomPayPlan() {
         <div className="pokt-card-header">
           <h3>Update Pay Plan</h3>
         </div>
-        <updatePlanFetcher.Form action="/api/updatePlan" method="post">
+        <Form action="/api/updatePlan" method="post">
           <Select
             data={plans}
             id="pay_plan_type"
@@ -43,7 +43,7 @@ export default function CustomPayPlan() {
           <Button disabled={updatePlanFetcher.state !== "idle"} mt={16} type="submit">
             Submit
           </Button>
-        </updatePlanFetcher.Form>
+        </Form>
         {updatePlanFetcher.data && updatePlanFetcher.data.error && (
           <div>{JSON.stringify(updatePlanFetcher.data)}</div>
         )}

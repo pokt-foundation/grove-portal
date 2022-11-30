@@ -75,10 +75,21 @@ export const requireAdmin = async (
     permissions: string[]
   }>(user.accessToken)
 
-  if (!decode.permissions.includes("write:pay_plan_types")) {
+  if (!isAdmin(decode.permissions)) {
     throw redirect(defaultRedirect)
   }
   return user.profile
+}
+
+export const isAdmin = (permissions: string[]) => {
+  let isAdmin = false
+  const adminPermissions = ["write:pay_plan_types"]
+
+  adminPermissions.forEach((adminPermission) => {
+    isAdmin = permissions.includes(adminPermission)
+  })
+
+  return isAdmin
 }
 
 export const getUserId = async (request: Request) => {

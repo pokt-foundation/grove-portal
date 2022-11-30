@@ -6,7 +6,6 @@ import CardList, {
   CardListItem,
   links as CardListLinks,
 } from "~/components/shared/CardList"
-import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { useFeatureFlags } from "~/context/FeatureFlagContext"
 
 export const links: LinksFunction = () => [...CardLinks(), ...CardListLinks()]
@@ -28,9 +27,6 @@ export default function FeatureFlags() {
         </div>
         <fetcher.Form action="/api/featureflags" method="post">
           <CardList items={items} />
-          {/* {Object.entries(flags).map(([key, value]) => (
-            <TextInput key={key} label={key} name={key} placeholder={value} />
-          ))} */}
           <Button mt={16} type="submit">
             Submit
           </Button>

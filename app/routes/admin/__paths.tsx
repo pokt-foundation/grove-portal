@@ -33,7 +33,7 @@ type Route = {
 }
 
 export default function Admin() {
-  const routes = [
+  const routes: Route[] = [
     {
       to: "customPayPlan",
       label: "Pay Plan",

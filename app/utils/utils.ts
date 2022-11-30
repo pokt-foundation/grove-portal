@@ -44,7 +44,11 @@ export function isPaidPlan(planType: PayPlanType) {
 }
 
 export function isLegacyPlan(planType: PayPlanType) {
-  if (planType === PayPlanType.PayAsYouGoV0 || planType === PayPlanType.FreetierV0) {
+  if (
+    planType === PayPlanType.PayAsYouGoV0 ||
+    planType === PayPlanType.FreetierV0 ||
+    planType === PayPlanType.Enterprise
+  ) {
     return false
   }
   return true
@@ -57,6 +61,9 @@ export const getPlanName = (planType: PayPlanType) => {
     }
     case PayPlanType.PayAsYouGoV0: {
       return "Pay As You Go"
+    }
+    case PayPlanType.Enterprise: {
+      return "Enterprise"
     }
     default: {
       return "Legacy"

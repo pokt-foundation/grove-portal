@@ -82,7 +82,6 @@ const WithProviders: React.FC = ({ children }) => {
       <UserContextProvider>
         <MantineProvider
           withCSSVariables
-          withGlobalStyles
           withNormalizeCSS
           theme={{ ...theme, primaryColor: "blue" }}
         >

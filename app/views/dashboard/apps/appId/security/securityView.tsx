@@ -1,5 +1,5 @@
 import { Loader } from "@mantine/core"
-import { Button, Text, Switch } from "@pokt-foundation/pocket-blocks"
+import { Button, Text, Switch, IconPlus } from "@pokt-foundation/pocket-blocks"
 import { useFetcher, useTransition } from "@remix-run/react"
 import React, { useState } from "react"
 import styles from "./styles.css"
@@ -196,7 +196,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             />
             <Button
               aria-label={t.security.userAgentAria}
-              type="button"
+              size="xs"
               onClick={() => {
                 if (whitelistUserAgentsElement !== "") {
                   setWhitelistUserAgents(
@@ -206,7 +206,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                 }
               }}
             >
-              +
+              <IconPlus fill="#ffffff" width="20px" />
             </Button>
           </div>
           <div>
@@ -241,7 +241,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             />
             <Button
               aria-label={t.security.OriginAria}
-              type="button"
+              size="xs"
               onClick={() => {
                 if (whitelistOriginsElement !== "") {
                   setWhitelistOrigins(
@@ -251,7 +251,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                 }
               }}
             >
-              +
+              <IconPlus fill="#ffffff" width="20px" />
             </Button>
           </div>
           <div>
@@ -298,7 +298,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             />
             <Button
               aria-label={t.security.contractAria}
-              type="button"
+              size="xs"
               onClick={() => {
                 if (whitelistContractsInput === "" || whitelistContractsDropdown === "") {
                   setWhitelistContractsError(true)
@@ -316,7 +316,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                 }
               }}
             >
-              +
+              <IconPlus fill="#ffffff" width="20px" />
             </Button>
           </div>
           {whitelistContractsError && (
@@ -382,7 +382,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             />
             <Button
               aria-label={t.security.methodAria}
-              type="button"
+              size="xs"
               onClick={() => {
                 if (whitelistMethodsInput === "" || whitelistMethodsDropdown === "") {
                   setWhitelistMethodsError(true)
@@ -397,7 +397,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                 }
               }}
             >
-              +
+              <IconPlus fill="#ffffff" width="20px" />
             </Button>
           </div>
 

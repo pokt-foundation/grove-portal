@@ -59,7 +59,7 @@ export default function TextInput({
         className={clsx({
           "pokt-text-input": true,
           "right-section": props.rightSection,
-          iconPadding: iconPadding,
+          iconPadding: iconPadding || rightSection,
         })}
         rightSection={rightSection}
         size={props.size ?? "md"}
@@ -70,10 +70,11 @@ export default function TextInput({
         <Button
           className="pokt-text-delete"
           color="blue"
+          size="xs"
           variant="outline"
           onClick={handleRemove}
         >
-          <IconDeleteAlt fill="var(--color-white-light)" />
+          <IconDeleteAlt fill="var(--color-white-light)" width="20px" />
         </Button>
       )}
     </div>

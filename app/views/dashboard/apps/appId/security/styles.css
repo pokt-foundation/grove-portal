@@ -20,6 +20,7 @@
 
 .security div.flexGrowRow {
   display: flex;
+  align-items: center;
   flex-direction: row;
   flex-wrap: nowrap;
   flex-grow: 1;
@@ -75,7 +76,6 @@
 .security button[type="submit"] {
   align-self: end;
   width: 160px;
-  color: var(--color-black-dark);
 }
 
 .security .pokt-text {

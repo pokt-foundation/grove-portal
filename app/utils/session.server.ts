@@ -65,10 +65,31 @@ export const requireAdmin = async (
   defaultRedirect = "/",
 ): Promise<Auth0Profile> => {
   let user = await authenticator.isAuthenticated(request)
-  if (!user || !user.profile.emails[0].value.includes("@pokt.network")) {
+
+  if (!user) {
+    throw redirect(defaultRedirect)
+  }
+
+  const decode = jwt_decode<{
+    exp: number
+    permissions: string[]
+  }>(user.accessToken)
+
+  if (!isAdmin(decode.permissions)) {
     throw redirect(defaultRedirect)
   }
   return user.profile
+}
+
+export const isAdmin = (permissions: string[]) => {
+  let isAdmin = false
+  const adminPermissions = ["write:pay_plan_types"]
+
+  adminPermissions.forEach((adminPermission) => {
+    isAdmin = permissions.includes(adminPermission)
+  })
+
+  return isAdmin
 }
 
 export const getUserId = async (request: Request) => {

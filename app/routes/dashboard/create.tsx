@@ -27,8 +27,9 @@ import { Stripe, stripe } from "~/models/stripe/stripe.server"
 import styles from "~/styles/dashboard.apps.create.css"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { getErrorMessage } from "~/utils/catchError"
-import { getRequiredServerEnvVar } from "~/utils/environment"
-import { requireUser } from "~/utils/session.server"
+import { getRequiredClientEnvVar, getRequiredServerEnvVar } from "~/utils/environment"
+import { MAX_USER_APPS } from "~/utils/pocketUtils"
+import { getUserPermissions, requireUser, Permissions } from "~/utils/session.server"
 import { getPlanName } from "~/utils/utils"
 
 export const meta: MetaFunction = () => {
@@ -53,7 +54,26 @@ type LoaderData = {
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
-  await requireUser(request)
+  const user = await requireUser(request)
+
+  const portal = initPortalClient(user.accessToken)
+  const endpointsResponse = await portal.endpoints().catch((e) => {
+    console.log(e)
+  })
+
+  const permissions = getUserPermissions(user.accessToken)
+  const underMaxApps = endpointsResponse
+    ? endpointsResponse.endpoints.length < MAX_USER_APPS
+    : false
+
+  const userCanCreateApp =
+    permissions.includes(Permissions.AppsUnlimited) ||
+    getRequiredClientEnvVar("GODMODE_ACCOUNTS")?.includes(user.profile.id) ||
+    underMaxApps
+
+  if (!userCanCreateApp) {
+    return redirect("/dashboard/apps")
+  }
 
   const priceID = getRequiredServerEnvVar("STRIPE_PRICE_ID")
   const price = await stripe.prices.retrieve(priceID).catch((error) => {

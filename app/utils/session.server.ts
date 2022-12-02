@@ -11,6 +11,11 @@ import { Auth0Profile } from "remix-auth-auth0"
 import { authenticator } from "./auth.server"
 import { getRequiredServerEnvVar } from "./environment"
 
+export enum Permissions {
+  PayPlanTypes = "write:pay_plan_types",
+  AppsUnlimited = "create:apps_unlimited",
+}
+
 let cookie:
   | Cookie
   | (CookieParseOptions & CookieSerializeOptions & CookieSignatureOptions) = {
@@ -70,12 +75,9 @@ export const requireAdmin = async (
     throw redirect(defaultRedirect)
   }
 
-  const decode = jwt_decode<{
-    exp: number
-    permissions: string[]
-  }>(user.accessToken)
+  const permissions = getUserPermissions(user.accessToken)
 
-  if (!isAdmin(decode.permissions)) {
+  if (!isAdmin(permissions)) {
     throw redirect(defaultRedirect)
   }
   return user.profile
@@ -83,13 +85,22 @@ export const requireAdmin = async (
 
 export const isAdmin = (permissions: string[]) => {
   let isAdmin = false
-  const adminPermissions = ["write:pay_plan_types"]
+  const adminPermissions = [Permissions.PayPlanTypes]
 
   adminPermissions.forEach((adminPermission) => {
     isAdmin = permissions.includes(adminPermission)
   })
 
   return isAdmin
+}
+
+export const getUserPermissions = (accessToken: string) => {
+  const decode = jwt_decode<{
+    exp: number
+    permissions: string[]
+  }>(accessToken)
+
+  return decode.permissions
 }
 
 export const getUserId = async (request: Request) => {

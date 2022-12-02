@@ -23,7 +23,9 @@ export const getErrorMetrics = async (publicKeys: string[]): Promise<ErrorMetric
       ",",
     )})&limit=50&order=timestamp.desc&or=(method.neq.synccheck,method.neq.checks)`
 
-  const res = await fetch(metricsURL)
+  const controller = new AbortController()
+  setTimeout(() => controller.abort(), 1000)
+  const res = await fetch(metricsURL, { signal: controller.signal })
 
   if (!res || res.status !== 200) {
     throw new Error(res.statusText)

@@ -43,6 +43,13 @@ export function isPaidPlan(planType: PayPlanType) {
   return true
 }
 
+export function isEnterprisePlan(planType: PayPlanType) {
+  if (planType !== PayPlanType.Enterprise) {
+    return false
+  }
+  return true
+}
+
 export function isLegacyPlan(planType: PayPlanType) {
   if (
     planType === PayPlanType.PayAsYouGoV0 ||

@@ -16,7 +16,12 @@ import { EndpointsQuery } from "~/models/portal/sdk"
 import styles from "~/styles/dashboard.apps.css"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 import { MAX_USER_APPS } from "~/utils/pocketUtils"
-import { getPoktId, requireUser } from "~/utils/session.server"
+import {
+  getPoktId,
+  getUserPermissions,
+  Permissions,
+  requireUser,
+} from "~/utils/session.server"
 
 export const links = () => {
   return [
@@ -30,7 +35,7 @@ export const links = () => {
 
 export type AllAppsLoaderData = {
   endpoints: EndpointsQuery["endpoints"] | null
-  userId: string
+  isEnterprise: boolean
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -40,14 +45,21 @@ export const loader: LoaderFunction = async ({ request }) => {
     console.log(e)
   })
 
+  const userId = getPoktId(user.profile.id)
+
+  const permissions = getUserPermissions(user.accessToken)
+  const isEnterprise =
+    permissions.includes(Permissions.AppsUnlimited) ||
+    getRequiredClientEnvVar("GODMODE_ACCOUNTS")?.includes(userId)
+
   return json<AllAppsLoaderData>({
     endpoints: endpointsResponse ? endpointsResponse.endpoints : null,
-    userId: getPoktId(user.profile.id),
+    isEnterprise,
   })
 }
 
 export const Apps = () => {
-  const { endpoints, userId } = useLoaderData() as AllAppsLoaderData
+  const { endpoints, isEnterprise } = useLoaderData() as AllAppsLoaderData
   const appIdRoute = useMatchesRoute("routes/dashboard/apps/$appId")
   const { state } = useTransition()
 
@@ -58,9 +70,7 @@ export const Apps = () => {
     },
     {
       label: "Max Apps",
-      value: getRequiredClientEnvVar("GODMODE_ACCOUNTS")?.includes(userId)
-        ? "unlimited"
-        : MAX_USER_APPS,
+      value: isEnterprise ? "unlimited" : MAX_USER_APPS,
     },
   ]
 
@@ -77,9 +87,7 @@ export const Apps = () => {
               <h3>Account</h3>
             </div>
             <CardList items={userAppsStatus} />
-            {(!endpoints ||
-              endpoints.length < MAX_USER_APPS ||
-              getRequiredClientEnvVar("GODMODE_ACCOUNTS")?.includes(userId)) && (
+            {(!endpoints || endpoints.length < MAX_USER_APPS || isEnterprise) && (
               <Button fullWidth component={Link} mt={32} to="/dashboard/create">
                 Create New Application
               </Button>

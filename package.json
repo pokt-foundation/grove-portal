@@ -9,7 +9,7 @@
     "dev": "run-s generate:types remix:dev",
     "format": "prettier --write .",
     "generate:types": "run-p generate:types:*",
-    "generate:local:cms": "graphql-codegen -r dotenv/config --config ./app/models/cms/codegen.config.yml",
+    "generate:types:cms": "graphql-codegen -r dotenv/config --config ./app/models/cms/codegen.config.yml",
     "generate:types:indexer": "graphql-codegen -r dotenv/config --config ./app/models/indexer/codegen.config.yml",
     "generate:types:poktscan": "graphql-codegen -r dotenv/config --config ./app/models/poktscan/codegen.config.yml",
     "generate:types:portal": "graphql-codegen -r dotenv/config --config ./app/models/portal/codegen.config.yml",

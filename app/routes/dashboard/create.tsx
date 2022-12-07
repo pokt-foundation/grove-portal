@@ -62,14 +62,18 @@ export const loader: LoaderFunction = async ({ request }) => {
   })
 
   const permissions = getUserPermissions(user.accessToken)
-  const underMaxApps = endpointsResponse
-    ? endpointsResponse.endpoints.length < MAX_USER_APPS
-    : false
+  const underMaxApps = () => {
+    if (!endpointsResponse || endpointsResponse.endpoints.length < MAX_USER_APPS) {
+      return true
+    }
+
+    return false
+  }
 
   const userCanCreateApp =
     permissions.includes(Permissions.AppsUnlimited) ||
     getRequiredClientEnvVar("GODMODE_ACCOUNTS")?.includes(user.profile.id) ||
-    underMaxApps
+    underMaxApps()
 
   if (!userCanCreateApp) {
     return redirect("/dashboard/apps")

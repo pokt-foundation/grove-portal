@@ -48,7 +48,7 @@ export default function AppPlanDetails({
           </div>
         </div>
         <div className="flexRow">
-          <Title style={{ display: "flex", gap: "8px" }} mb={16} mt={8} order={3}>
+          <Title mb={16} mt={8} order={3} style={{ display: "flex", gap: "8px" }}>
             {t.AppPlanDetails.currentPlan}{" "}
             <HelpTooltip label={t.AppPlanDetails.currentPlanToolTip} />
           </Title>

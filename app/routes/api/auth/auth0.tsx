@@ -2,7 +2,10 @@ import type { ActionFunction, LoaderFunction } from "@remix-run/node"
 import { authenticator } from "~/utils/auth.server"
 
 export let loader: LoaderFunction = ({ request }) => {
-  return authenticator.authenticate("auth0", request, {
+  const url = new URL(request.url)
+  url.searchParams.append("prompt", "login")
+  const loginRequest = new Request(url.toString(), request)
+  return authenticator.authenticate("auth0", loginRequest, {
     successRedirect: "/dashboard",
     failureRedirect: "/",
   })

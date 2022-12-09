@@ -11,7 +11,9 @@
   padding: 0;
 }
 
-.mantine-Tooltip-body {
+.mantine-Tooltip-tooltip {
+  text-align: left !important;
+  white-space: break-spaces;
   max-width: 300px;
   color: var(--color-black-main);
   background-color: var(--color-white-main);

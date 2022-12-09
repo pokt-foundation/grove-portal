@@ -20,7 +20,7 @@ export default function FeatureFlags() {
   }))
 
   return (
-    <Container size="lg">
+    <Container size="xl">
       <Card>
         <div className="pokt-card-header">
           <h3>Test Feature Flags</h3>

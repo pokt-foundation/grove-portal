@@ -13,7 +13,7 @@ export default function ValidateEmail() {
 
   return (
     <div className="pokt-validate">
-      <Container mt={72} size="lg">
+      <Container mt={72} size="xl">
         <Grid grow align="center" gutter="lg" justify="center">
           <Grid.Col className="pokt-validate__content" sm={7} xs={12}>
             <Box className="pokt-validate__title">

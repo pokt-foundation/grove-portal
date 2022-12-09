@@ -187,7 +187,7 @@ export default function App() {
           <Nav ariaLabel="Main" routes={routes} />
         </Header>
         <main>
-          <Container className="container" size="lg">
+          <Container className="container" size="xl">
             <Outlet />
           </Container>
         </main>

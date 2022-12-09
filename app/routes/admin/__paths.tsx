@@ -46,7 +46,7 @@ export default function Admin() {
   ]
 
   return (
-    <Container size="lg">
+    <Container size="xl">
       <Space h={60} />
       <Grid>
         <Grid.Col sm={3}>

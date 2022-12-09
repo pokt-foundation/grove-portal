@@ -5,8 +5,6 @@
 .create-application button[type="submit"] {
   float: right;
   width: 378px;
-  color: var(--color-black-dark);
-  background-color: var(--color-primary-main);
 }
 
 .create-application .termsOfUseText {

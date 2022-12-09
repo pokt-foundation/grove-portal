@@ -15,7 +15,7 @@ export default function CustomPayPlan() {
   const plans = Object.values(PayPlanType)
 
   return (
-    <Container size="lg">
+    <Container size="xl">
       <Card>
         <div className="pokt-card-header">
           <h3>Update Pay Plan</h3>

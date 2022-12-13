@@ -13,12 +13,11 @@ export const links = () => {
 export default function Modal({ ...props }: ModalProps) {
   return (
     <MantineModal
-      centered={true}
+      centered
       className={clsx({
         "pokt-modal": true,
       })}
       size={props.size ?? 704}
-      withinPortal={false}
       {...props}
     />
   )

@@ -57,7 +57,7 @@ describe("<ProfileView />", () => {
     expect(screen.getByRole("button", { name: /Change password/i })).toBeInTheDocument()
   })
 
-  it("sends email when change password button is clicked and opens modal", async () => {
+  it.skip("sends email when change password button is clicked and opens modal", async () => {
     const user = userEvent.setup()
     render(<ProfileView actionData={SUCCESSFUL_CHANGE_PASSWORD_MSG} profile={profile} />)
 

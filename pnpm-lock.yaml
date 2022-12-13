@@ -9,9 +9,10 @@ specifiers:
   '@graphql-codegen/introspection': ^2.2.1
   '@graphql-codegen/typescript-graphql-request': ^4.5.8
   '@graphql-codegen/typescript-operations': ^2.5.6
-  '@mantine/core': ^5.6.2
-  '@mantine/hooks': ^5.6.2
-  '@mantine/remix': ^5.6.2
+  '@mantine/core': ^5.6.3
+  '@mantine/hooks': ^5.6.3
+  '@mantine/modals': ^5.9.4
+  '@mantine/remix': ^5.6.3
   '@pokt-foundation/pocket-blocks': ^2.0.1
   '@pokt-foundation/pocketjs-isomorphic-provider': ^1.0.0
   '@pokt-foundation/pocketjs-types': ^1.0.1
@@ -83,6 +84,7 @@ dependencies:
   '@emotion/server': 11.10.0
   '@mantine/core': 5.6.3_6542zjnkluxgtzhdjsiwi2tqmi
   '@mantine/hooks': 5.6.3_react@17.0.2
+  '@mantine/modals': 5.9.4_bgv52opjwukrxuagmqoeaurkjm
   '@mantine/remix': 5.6.3_dvsl6surpqwccgotlvgym6ul74
   '@pokt-foundation/pocket-blocks': 2.0.1_7fcou2rmwwndt67bfnltzwbu5a
   '@pokt-foundation/pocketjs-isomorphic-provider': 1.0.0
@@ -2157,6 +2159,21 @@ packages:
       react: 17.0.2
     dev: false
 
+  /@mantine/modals/5.9.4_bgv52opjwukrxuagmqoeaurkjm:
+    resolution: {integrity: sha512-Iu2qWHv3dxHyLQ1/60aEEtJGPCG+K/+BAzGJyk9a/WPN9cQqtKf03jS25xNTwlXW3IVtS/7MP0Ygq84X6yNKAg==}
+    peerDependencies:
+      '@mantine/core': 5.9.4
+      '@mantine/hooks': 5.9.4
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
+      '@mantine/core': 5.6.3_6542zjnkluxgtzhdjsiwi2tqmi
+      '@mantine/hooks': 5.6.3_react@17.0.2
+      '@mantine/utils': 5.9.4_react@17.0.2
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+    dev: false
+
   /@mantine/remix/5.6.3_dvsl6surpqwccgotlvgym6ul74:
     resolution: {integrity: sha512-63sCgWUQiP4dGUfmRne0NDxrH37Rg3QvgEWLNh7A43chB6IqZC8f9swatBM8TxtFIT7edCVpkfDJyqfUfRz2iw==}
     peerDependencies:
@@ -2208,6 +2225,14 @@ packages:
 
   /@mantine/utils/5.6.3_react@17.0.2:
     resolution: {integrity: sha512-GrDvXJG7inJaQHjsfg8pOYFE/vNpHMKScQM0M4hKlDoVjXsQUPxw8Lx4A7jhmVf2eNJUqvOQ9A1jbO7W7bedcA==}
+    peerDependencies:
+      react: '>=16.8.0'
+    dependencies:
+      react: 17.0.2
+    dev: false
+
+  /@mantine/utils/5.9.4_react@17.0.2:
+    resolution: {integrity: sha512-NZAn30jjF52X+MFnkO3oaVgo2LPx3o/QxYlcuMkRBUTZALEXvQgrD0OyGDRgEXnfMdmkBP6rk3Pol6yXXEwU6w==}
     peerDependencies:
       react: '>=16.8.0'
     dependencies:

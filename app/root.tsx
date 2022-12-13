@@ -81,6 +81,7 @@ const WithProviders: React.FC = ({ children }) => {
     <FeatureFlagsContextProvider>
       <UserContextProvider>
         <MantineProvider
+          withGlobalStyles
           withCSSVariables
           withNormalizeCSS
           theme={{ ...theme, primaryColor: "blue" }}
@@ -121,7 +122,7 @@ const Document = ({ children, title }: { children: React.ReactNode; title?: stri
   )
 }
 
-createEmotionCache({ key: "pocket-blocks" })
+createEmotionCache({ key: "mantine" })
 
 export default function App() {
   const { ENV, user } = useLoaderData<RootLoaderData>()

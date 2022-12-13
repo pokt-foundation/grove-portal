@@ -30,7 +30,7 @@ specifiers:
   '@sentry/tracing': ^6.19.7
   '@sentry/types': ^6.19.7
   '@stitches/react': ^1.2.8
-  '@testing-library/cypress': ^8.0.2
+  '@testing-library/cypress': ^8.0.7
   '@testing-library/dom': ^8.14.0
   '@testing-library/jest-dom': ^5.16.4
   '@testing-library/react': ^12.1.5
@@ -47,7 +47,7 @@ specifiers:
   c8: ^7.11.2
   clsx: ^1.1.1
   cross-env: ^7.0.3
-  cypress: 10.4.0
+  cypress: ^10.11.0
   d3-format: ^3.1.0
   dayjs: ^1.11.4
   dotenv: ^16.0.1
@@ -126,7 +126,7 @@ devDependencies:
   '@remix-run/eslint-config': 1.4.3_2t2bu4zkuyzgizcvacdmgzvste
   '@remix-run/serve': 1.4.3_biqbaboplfbrettd7655fr4n2y
   '@sentry/types': 6.19.7
-  '@testing-library/cypress': 8.0.2_cypress@10.4.0
+  '@testing-library/cypress': 8.0.7_cypress@10.11.0
   '@testing-library/dom': 8.14.0
   '@testing-library/jest-dom': 5.16.4
   '@testing-library/react': 12.1.5_biqbaboplfbrettd7655fr4n2y
@@ -141,7 +141,7 @@ devDependencies:
   '@vitejs/plugin-react': 1.3.2
   c8: 7.11.2
   cross-env: 7.0.3
-  cypress: 10.4.0
+  cypress: 10.11.0
   dotenv: 16.0.1
   eslint: 8.14.0
   eslint-config-prettier: 8.5.0_eslint@8.14.0
@@ -3234,15 +3234,15 @@ packages:
       defer-to-connect: 2.0.1
     dev: true
 
-  /@testing-library/cypress/8.0.2_cypress@10.4.0:
-    resolution: {integrity: sha512-KVdm7n37sg/A4e3wKMD4zUl0NpzzVhx06V9Tf0hZHZ7nrZ4yFva6Zwg2EFF1VzHkEfN/ahUzRtT1qiW+vuWnJw==}
+  /@testing-library/cypress/8.0.7_cypress@10.11.0:
+    resolution: {integrity: sha512-3HTV725rOS+YHve/gD9coZp/UcPK5xhr4H0GMnq/ni6USdtzVtSOG9WBFtd8rYnrXk8rrGD+0toRFYouJNIG0Q==}
     engines: {node: '>=12', npm: '>=6'}
     peerDependencies:
-      cypress: ^2.1.0 || ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0 || ^9.0.0
+      cypress: ^2.1.0 || ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0 || ^11.0.0
     dependencies:
-      '@babel/runtime': 7.17.9
+      '@babel/runtime': 7.18.3
       '@testing-library/dom': 8.14.0
-      cypress: 10.4.0
+      cypress: 10.11.0
     dev: true
 
   /@testing-library/dom/8.14.0:
@@ -5545,8 +5545,8 @@ packages:
   /csstype/3.1.0:
     resolution: {integrity: sha512-uX1KG+x9h5hIJsaKR9xHUeUraxf8IODOwq9JLNPq6BwB04a/xgpq3rcx47l5BZu5zBPlgD342tdke3Hom/nJRA==}
 
-  /cypress/10.4.0:
-    resolution: {integrity: sha512-OM7F8MRE01SHQRVVzunid1ZK1m90XTxYnl+7uZfIrB4CYqUDCrZEeSyCXzIbsS6qcaijVCAhqDL60SxG8N6hew==}
+  /cypress/10.11.0:
+    resolution: {integrity: sha512-lsaE7dprw5DoXM00skni6W5ElVVLGAdRUUdZjX2dYsGjbY/QnpzWZ95Zom1mkGg0hAaO/QVTZoFVS7Jgr/GUPA==}
     engines: {node: '>=12.0.0'}
     hasBin: true
     requiresBuild: true
@@ -5570,7 +5570,7 @@ packages:
       dayjs: 1.11.4
       debug: 4.3.4_supports-color@8.1.1
       enquirer: 2.3.6
-      eventemitter2: 6.4.5
+      eventemitter2: 6.4.7
       execa: 4.1.0
       executable: 4.1.1
       extract-zip: 2.0.1_supports-color@8.1.1
@@ -6789,7 +6789,7 @@ packages:
     peerDependencies:
       eslint: '>=6.8'
     dependencies:
-      '@babel/runtime': 7.17.9
+      '@babel/runtime': 7.18.3
       '@testing-library/dom': 8.14.0
       eslint: 8.14.0
       requireindex: 1.2.0
@@ -6822,7 +6822,7 @@ packages:
     peerDependencies:
       eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8
     dependencies:
-      '@babel/runtime': 7.17.9
+      '@babel/runtime': 7.18.3
       aria-query: 4.2.2
       array-includes: 3.1.5
       ast-types-flow: 0.0.7
@@ -7106,8 +7106,8 @@ packages:
     resolution: {integrity: sha512-i/2XbnSz/uxRCU6+NdVJgKWDTM427+MqYbkQzD321DuCQJUqOuJKIA0IM2+W2xtYHdKOmZ4dR6fExsd4SXL+WQ==}
     engines: {node: '>=6'}
 
-  /eventemitter2/6.4.5:
-    resolution: {integrity: sha512-bXE7Dyc1i6oQElDG0jMRZJrRAn9QR2xyyFGmBdZleNmyQX0FqGYmhZIrIrpPfm/w//LTo4tVQGOGQcGCb5q9uw==}
+  /eventemitter2/6.4.7:
+    resolution: {integrity: sha512-tYUSVOGeQPKt/eC1ABfhHy5Xd96N3oIijJvN3O9+TsC28T5V9yX9oEfEK5faP0EFSNVOG97qtAS68GBrQB2hDg==}
     dev: true
 
   /execa/4.1.0:
@@ -10891,7 +10891,7 @@ packages:
     dev: true
 
   /proxy-from-env/1.0.0:
-    resolution: {integrity: sha1-M8UDmPcOp+uW0h97gXYwpVeRx+4=}
+    resolution: {integrity: sha512-F2JHgJQ1iqwnHDcQjVBsq3n/uoaFL+iPW/eAeL7kVxy/2RrWaN4WroKjjvbsoRtv0ftelNyC01bjRhn/bhcf4A==}
     dev: true
 
   /prr/1.0.1:
@@ -13091,7 +13091,7 @@ packages:
     dev: true
 
   /verror/1.10.0:
-    resolution: {integrity: sha1-OhBcoXBTr1XW4nDB+CiGguGNpAA=}
+    resolution: {integrity: sha512-ZZKSmDAEFOijERBLkmYfJ+vmk3w+7hOLYDNkRCuRuMJGEmqYNCNLyBBFwWKVMhfwaEF3WOd0Zlw86U/WC/+nYw==}
     engines: {'0': node >=0.6.0}
     dependencies:
       assert-plus: 1.0.0

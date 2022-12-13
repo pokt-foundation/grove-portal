@@ -18,6 +18,7 @@ export default function Modal({ ...props }: ModalProps) {
         "pokt-modal": true,
       })}
       size={props.size ?? 704}
+      withinPortal={false}
       {...props}
     />
   )

@@ -4,7 +4,7 @@ import { render, screen } from "test/helpers"
 import schema from "~/locales/en"
 
 describe("<ContactSalesView />", () => {
-  it.skip("renders", () => {
+  it("renders", () => {
     render(<ContactSalesView result="success" />)
 
     expect(

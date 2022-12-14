@@ -1,10 +1,10 @@
-import { RemixBrowser } from "@remix-run/react"
 import { ClientProvider } from "@mantine/remix"
-import { hydrateRoot } from "react-dom/client"
+import { RemixBrowser } from "@remix-run/react"
+import { hydrate } from "react-dom"
 
-hydrateRoot(
-  document,
+hydrate(
   <ClientProvider>
     <RemixBrowser />
   </ClientProvider>,
+  document,
 )

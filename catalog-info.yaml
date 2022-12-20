@@ -1,0 +1,24 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: portal-ui-web
+  description: The Pocket Portal website.
+  tags:
+    - typescript
+    - react
+    - remix
+  links:
+    - url: https://www.portal.pokt.network/
+      title: Pocket Portal
+      icon: dashboard
+      type: prod
+    - url: https://staging.portal.pokt.network/
+      title: Pocket Portal [stage]
+      icon: dashboard
+      type: stage
+spec:
+  type: website
+  lifecycle: production
+  owner: experience-team
+  consumesApis:
+    - portal-ui-backend

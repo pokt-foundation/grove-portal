@@ -20,5 +20,6 @@ spec:
   type: website
   lifecycle: production
   owner: experience-team
+  system: pocket-portal
   consumesApis:
     - portal-ui-backend

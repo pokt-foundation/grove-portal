@@ -1,8 +1,9 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: portal-ui-web
+  name: pocket-portal
   description: The Pocket Portal website.
+  title: Pocket Portal Website
   tags:
     - typescript
     - react

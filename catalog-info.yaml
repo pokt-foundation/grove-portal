@@ -19,7 +19,7 @@ metadata:
 spec:
   type: website
   lifecycle: production
-  owner: experience-team
-  system: pocket-portal
+  owner: front-end-devs
+  system: portal
   consumesApis:
     - portal-ui-backend

@@ -1,5 +1,6 @@
 import { LoaderFunction, json, MetaFunction } from "@remix-run/node"
 import { useLoaderData, useTransition } from "@remix-run/react"
+import { useEffect } from "react"
 import { Block } from "~/models/indexer/sdk"
 import { initPoktScanClient } from "~/models/poktscan/poktscan.server"
 import { GetHighestBlockQuery } from "~/models/poktscan/sdk"
@@ -10,6 +11,7 @@ import {
   getRelaysPerWeek,
   RelayMetric,
 } from "~/models/relaymeter/relaymeter.server"
+import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { dayjs } from "~/utils/dayjs"
 import NetworkView, { links as NetworkViewLinks } from "~/views/network/networkView"
 
@@ -111,6 +113,11 @@ export default function Index() {
     poktscanLatestBlock,
   } = useLoaderData() as NetworkLoaderData
   const { state } = useTransition()
+
+  useEffect(() => {
+    trackEvent(AmplitudeEvents.NetworkView)
+  }, [])
+
   return (
     <NetworkView
       blockchains={blockchains}

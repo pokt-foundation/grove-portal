@@ -20,6 +20,7 @@ import {
 } from "@remix-run/react"
 import { useEffect, useMemo } from "react"
 import { Auth0Profile } from "remix-auth-auth0"
+import analyticsInit from "./utils/analytics"
 import { authenticator } from "./utils/auth.server"
 import Footer, { links as FooterLinks } from "~/components/shared/Footer"
 import Header, { links as HeaderLinks } from "~/components/shared/Header"
@@ -113,6 +114,10 @@ const Document = ({ children, title }: { children: React.ReactNode; title?: stri
 export default function App() {
   const { ENV, user } = useLoaderData<RootLoaderData>()
   const { t } = useTranslate()
+
+  useEffect(() => {
+    analyticsInit(user)
+  }, [user])
 
   const routes = useMemo(() => {
     enum Protected {

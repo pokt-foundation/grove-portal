@@ -6,6 +6,7 @@ import { CallOutBox, links as CallOutBoxLinks } from "~/components/shared/CallOu
 import Modal, { links as ModalLinks } from "~/components/shared/Modal"
 import { useTranslate } from "~/context/TranslateContext"
 import styles from "~/styles/landing.css"
+import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 
 export const meta: MetaFunction = () => {
   return {
@@ -23,6 +24,10 @@ export default function Index() {
   } = useTranslate()
   const [searchParams] = useSearchParams()
   const [showExpiredModal, setShowExpiredModal] = useState(false)
+
+  useEffect(() => {
+    trackEvent(AmplitudeEvents.LandingView)
+  }, [])
 
   useEffect(() => {
     const expired = searchParams.get("expired")

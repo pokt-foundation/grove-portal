@@ -13,6 +13,7 @@ export const AmplitudeEvents = {
   EndpointRemoval: "ENDPOINT_REMOVAL",
   StopSubscription: "STOP_SUBSCRIPTION",
   LandingView: "LANDING_VIEW",
+  NetworkView: "NETWORK_VIEW",
   DashboardView: "DASHBOARD_VIEW",
   RequestDetailsView: "REQUEST_DETAILS_VIEW",
   SecurityDetailsView: "SECURITY_DETAILS_VIEW",

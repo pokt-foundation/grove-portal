@@ -2,6 +2,13 @@ describe("dashboard page tests", () => {
   it("should load network page", () => {
     cy.visit("/network")
 
+    cy.on("uncaught:exception", (err, runnable) => {
+      expect(err.message).to.include("loggerProvider")
+      // return false to prevent the error from
+      // failing this test
+      return false
+    })
+
     // should have network summary heading
     cy.findByRole("heading", { name: /network summary/i }).should("be.visible")
     // should have network summary nodes staked

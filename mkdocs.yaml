@@ -1,0 +1,12 @@
+site_name: "Pocket Portal Website"
+site_description: "Documentation for the pocket portal website"
+
+nav:
+  - Home: index.md
+  - Code Structure: code.md
+  - Infrastructure: infra.md
+  - Quality: quality.md
+  - Monitoring: monitoring.md
+
+plugins:
+  - techdocs-core

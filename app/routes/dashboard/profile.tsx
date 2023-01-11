@@ -1,16 +1,28 @@
-import type { ActionFunction, LinksFunction } from "@remix-run/node"
-import { useActionData, useCatch } from "@remix-run/react"
+import { ActionFunction, LinksFunction, LoaderFunction, json } from "@remix-run/node"
+import { useActionData, useCatch, useLoaderData } from "@remix-run/react"
 import { useEffect } from "react"
 import { Auth0Profile } from "remix-auth-auth0"
 import invariant from "tiny-invariant"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { getRequiredServerEnvVar } from "~/utils/environment"
+import { requireUser } from "~/utils/session.server"
 import ProfileView, {
   links as ProfileViewLinks,
 } from "~/views/dashboard/apps/profile/profileView"
 
 export const links: LinksFunction = () => [...ProfileViewLinks()]
+
+type LoaderData = {
+  profile: Auth0Profile
+}
+
+export const loader: LoaderFunction = async ({ request }) => {
+  const user = await requireUser(request)
+  return json<LoaderData>({
+    profile: user.profile,
+  })
+}
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData()
@@ -38,15 +50,14 @@ export const action: ActionFunction = async ({ request }) => {
 }
 
 export default function Profile() {
-  const dashboardRoute = useMatchesRoute("routes/dashboard")
-  const dashboardData = dashboardRoute?.data?.user as Auth0Profile
+  const { profile } = useLoaderData()
   const actionData = useActionData()
 
   useEffect(() => {
     trackEvent(AmplitudeEvents.ProfileView)
   }, [])
 
-  return <ProfileView actionData={actionData} profile={dashboardData} />
+  return <ProfileView actionData={actionData} profile={profile} />
 }
 
 export const CatchBoundary = () => {

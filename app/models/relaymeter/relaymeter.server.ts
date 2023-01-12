@@ -29,7 +29,6 @@ export const getRelays = async (
 
   path = `${path}?to=${to}&from=${from}`
 
-  // const res = await fetch(`${getRequiredClientEnvVar("RELAY_METER_API_URL")}/${path}`)
   const res = await fetch(`${getRequiredClientEnvVar("RELAY_METER_API_URL")}/${path}`, {
     headers: {
       Authorization: `${getRequiredServerEnvVar("RELAY_METER_API_TOKEN")}`,

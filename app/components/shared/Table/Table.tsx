@@ -127,22 +127,28 @@ export const Table = <T extends IdObj>({
               </tr>
             </thead>
             <tbody>
-              {paginatedData.map((item) => (
-                <tr key={item.id}>
-                  {Object.entries(removeIdFromObject(item)).map(([key, value]) => (
-                    <td key={key}>
-                      {typeof value === "object"
-                        ? (
-                            value as {
-                              value: string
-                              element: JSX.Element
-                            }
-                          ).element
-                        : value}
-                    </td>
-                  ))}
+              {paginatedData.length ? (
+                paginatedData.map((item) => (
+                  <tr key={item.id}>
+                    {Object.entries(removeIdFromObject(item)).map(([key, value]) => (
+                      <td key={key}>
+                        {typeof value === "object"
+                          ? (
+                              value as {
+                                value: string
+                                element: JSX.Element
+                              }
+                            ).element
+                          : value}
+                      </td>
+                    ))}
+                  </tr>
+                ))
+              ) : (
+                <tr key="emptySearch" className="empty-search">
+                  Your search is empty, try again.
                 </tr>
-              ))}
+              )}
               {emptyRows &&
                 emptyRows.map((row, index) => (
                   <tr key={index} className={row}>

@@ -105,10 +105,10 @@ export const Table = <T extends IdObj>({
             {label && <h3>{label}</h3>}
             {search && (
               <TextInput
-                aria-label={`${t.search.label} ${label}`}
+                aria-label={`${t.search.searchBy} Network, ID or Status`}
                 className="pokt-table-search"
                 name="search"
-                placeholder={`${t.search.label} ${label}`}
+                placeholder={`${t.search.searchBy} Network, ID or Status`}
                 rightSectionWidth={85}
                 size="xs"
                 variant="default"

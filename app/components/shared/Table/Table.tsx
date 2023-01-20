@@ -145,8 +145,8 @@ export const Table = <T extends IdObj>({
                   </tr>
                 ))
               ) : (
-                <tr key="emptySearch" className="empty-search">
-                  Your search is empty, try again.
+                <tr>
+                  <td className="empty-search">Your search is empty, try again.</td>
                 </tr>
               )}
               {emptyRows &&

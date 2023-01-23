@@ -16,6 +16,7 @@ const schema = {
     label: "Search -fr",
     placeholder: "Search by Transaction Hash, Block # and Address -fr",
     emptySearch: "Nothing found. -fr",
+    searchBy: "Search by -fr"
   },
   terms: {
     address: "address -fr",

@@ -32,6 +32,7 @@ interface TranslationData {
   search: {
     label: string
     placeholder: string
+    emptySearch: string
   }
   terms: {
     address: string

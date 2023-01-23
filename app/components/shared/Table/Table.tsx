@@ -1,4 +1,4 @@
-import { TextInput } from "@mantine/core"
+import { Text, TextInput } from "@mantine/core"
 import { Group, Table as MantineTable, Pagination } from "@pokt-foundation/pocket-blocks"
 import { useMemo, useState } from "react"
 import styles from "./styles.css"
@@ -146,7 +146,9 @@ export const Table = <T extends IdObj>({
                 ))
               ) : (
                 <tr>
-                  <td className="empty-search">Your search is empty, try again.</td>
+                  <td colSpan={Object.keys(data[0]).length} className="empty-search">
+                    <Text align="center">{t.search.emptySearch}</Text>
+                  </td>
                 </tr>
               )}
               {emptyRows &&

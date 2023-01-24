@@ -84,7 +84,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   )
 
   const dailyNetworkRelaysPerWeek = await getRelaysPerWeek("endpoints", endpoint.id)
-  const { blockchains } = await portal.blockchains()
+  const { blockchains } = await portal.blockchains({ active: true })
 
   // api auto adjusts to/from to begining and end of each day so putting the same time here gives us back one full day
   const today = dayjs().utc().format()

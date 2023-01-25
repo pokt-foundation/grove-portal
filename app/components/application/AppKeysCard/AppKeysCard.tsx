@@ -29,7 +29,7 @@ export default function AppKeysCard({ id, secret, publicKey }: AppKeysCardProps)
             readOnly
             label="Secret Key"
             revealed={secretHidden}
-            setRevealed={setSecretHidden}
+            setRevealed={() => setSecretHidden(!secretHidden)}
             type={secretHidden ? "password" : "text"}
             value={secret}
           />
@@ -41,7 +41,7 @@ export default function AppKeysCard({ id, secret, publicKey }: AppKeysCardProps)
             readOnly
             label="Public Key"
             revealed={publicKeyHidden}
-            setRevealed={setPublicKeyHidden}
+            setRevealed={() => setPublicKeyHidden(!publicKeyHidden)}
             type={publicKeyHidden ? "password" : "text"}
             value={publicKey}
           />

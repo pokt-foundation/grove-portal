@@ -54,11 +54,7 @@ export default function AppAddressCard({ apps }: AppAddressCardProps) {
                 key={appId}
                 copy
                 readOnly
-                value={appId}
                 revealed={hiddenIds.includes(appId)}
-                // Check either if the appId is or isn't included in the hiddenIds array,
-                // if it is, remove it
-                // if it's not, add it
                 setRevealed={() =>
                   setHiddenIds(
                     hiddenIds.includes(appId)
@@ -66,7 +62,11 @@ export default function AppAddressCard({ apps }: AppAddressCardProps) {
                       : [...hiddenIds, appId],
                   )
                 }
+                // Check either if the appId is or isn't included in the hiddenIds array,
+                // if it is, remove it
+                // if it's not, add it
                 type={hiddenIds.includes(appId) ? "password" : "text"}
+                value={appId}
               />
             ) : null,
           )
@@ -82,11 +82,7 @@ export default function AppAddressCard({ apps }: AppAddressCardProps) {
                     key={appId}
                     copy
                     readOnly
-                    value={appId}
                     revealed={hiddenIds.includes(appId)}
-                    // Check either if the appId is or isn't included in the hiddenIds array,
-                    // if it is, remove it
-                    // if it's not, add it
                     setRevealed={() =>
                       setHiddenIds(
                         hiddenIds.includes(appId)
@@ -94,7 +90,11 @@ export default function AppAddressCard({ apps }: AppAddressCardProps) {
                           : [...hiddenIds, appId],
                       )
                     }
+                    // Check either if the appId is or isn't included in the hiddenIds array,
+                    // if it is, remove it
+                    // if it's not, add it
                     type={hiddenIds.includes(appId) ? "password" : "text"}
+                    value={appId}
                   />
                 ) : null,
               )}

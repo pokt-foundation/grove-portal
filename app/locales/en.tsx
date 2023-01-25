@@ -15,7 +15,7 @@ const schema = {
   search: {
     label: "Search",
     placeholder: "Search by Transaction Hash, Block # and Address",
-    searchBy: "Search by"
+    searchBy: "Search by",
   },
   terms: {
     address: "address",

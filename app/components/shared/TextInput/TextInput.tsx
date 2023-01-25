@@ -23,7 +23,7 @@ export type InputProps = TextInputProps & {
   hasDelete?: boolean
   iconPadding?: boolean
   handleRemove?: () => void
-  setRevealed?: Function
+  setRevealed?: () => void
 }
 
 export default function TextInput({

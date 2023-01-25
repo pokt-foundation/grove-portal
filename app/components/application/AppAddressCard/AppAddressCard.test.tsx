@@ -28,7 +28,10 @@ describe("<AppAddressCard />", () => {
     expect(screen.getByText(numberOfApps)).toBeInTheDocument()
   })
   it("hides extra apps when there are more than 3 and allows users to expand", async () => {
-    const extraApps = apps?.concat([{ appId: "345", address: "", publicKey: "" }, { appId: "456", address: "", publicKey: "" } ])
+    const extraApps = apps?.concat([
+      { appId: "345", address: "", publicKey: "" },
+      { appId: "456", address: "", publicKey: "" },
+    ])
     render(<AppAddressCard apps={extraApps} />)
     const numberOfApps = "4"
     expect(screen.getByText(numberOfApps)).toBeInTheDocument()

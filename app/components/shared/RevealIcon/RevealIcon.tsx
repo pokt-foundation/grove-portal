@@ -1,5 +1,4 @@
 import { IconEyeOn, IconEyeOff } from "@pokt-foundation/pocket-blocks"
-import { Dispatch, SetStateAction } from "react"
 import styles from "./styles.css"
 
 /* c8 ignore start */

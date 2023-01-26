@@ -1,0 +1,30 @@
+.notification-message {
+  display: none;
+  position: relative;
+  max-width: 893px;
+  padding: 32px 12px;
+  flex-direction: row;
+  align-items: center;
+  background: linear-gradient(90deg, #1b4109 0%, #1b2331 55.21%);
+  border-radius: 10px;
+}
+
+.notification-message.active {
+  display: flex;
+}
+
+.notification-message-text {
+  display: flex;
+  flex-direction: column;
+  margin-left: 28px;
+  gap: 16px;
+}
+
+.notification-message .close {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: 12px;
+    right: 12px;
+    cursor: pointer;
+}

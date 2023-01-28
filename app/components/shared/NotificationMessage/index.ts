@@ -1,3 +1,3 @@
-import NotificationMessage from './NotificationMessage'
+import NotificationMessage from "./NotificationMessage"
 export * from "./NotificationMessage"
 export default NotificationMessage

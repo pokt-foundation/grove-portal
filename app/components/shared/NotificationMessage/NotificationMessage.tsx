@@ -1,11 +1,11 @@
 import clsx from "clsx"
 import { Dispatch, SetStateAction } from "react"
-import ErrorIcon from "../Icons/ErrorIcon"
 import CloseIcon from "../Icons/CloseIcon"
-import SuccessIcon from "../Icons/SuccessIcon"
-import styles from "./styles.css"
+import ErrorIcon from "../Icons/ErrorIcon"
 import InfoIcon from "../Icons/InfoIcon"
+import SuccessIcon from "../Icons/SuccessIcon"
 import WarningIcon from "../Icons/WarningIcon"
+import styles from "./styles.css"
 
 /* c8 ignore start */
 export const links = () => {
@@ -20,7 +20,7 @@ export interface NotificationMessageType {
   description: string
 }
 
-export interface NotificationMessageProps {
+type NotificationMessageProps = {
   notificationMessage: NotificationMessageType
   setNotificationMessage: Dispatch<SetStateAction<NotificationMessageType>>
 }

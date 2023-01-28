@@ -1,25 +1,25 @@
 const CloseIcon = () => {
   return (
     <svg
-      width="16"
+      fill="none"
       height="16"
       viewBox="0 0 16 16"
-      fill="none"
+      width="16"
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
         d="M12 4L4 12"
         stroke="#BDBCDB"
-        stroke-width="2"
         stroke-linecap="round"
         stroke-linejoin="round"
+        stroke-width="2"
       />
       <path
         d="M4 4L12 12"
         stroke="#BDBCDB"
-        stroke-width="2"
         stroke-linecap="round"
         stroke-linejoin="round"
+        stroke-width="2"
       />
     </svg>
   )

@@ -2,7 +2,7 @@ import { ActionFunction, json, MetaFunction, redirect } from "@remix-run/node"
 import { useActionData, useCatch } from "@remix-run/react"
 import { useEffect } from "react"
 import styles from "~/styles/contact-sales.css"
-import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
+import { CustomEvents, trackEvent } from "~/utils/analytics"
 import { authenticator } from "~/utils/auth.server"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 import ContactSalesView, {
@@ -79,7 +79,7 @@ export default function ContactSales() {
   const actionData = useActionData()
 
   useEffect(() => {
-    trackEvent(AmplitudeEvents.ContactSalesView)
+    trackEvent(CustomEvents.ContactSalesView)
   }, [])
 
   return <ContactSalesView {...actionData} />

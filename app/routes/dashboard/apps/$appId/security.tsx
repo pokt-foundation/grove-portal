@@ -3,7 +3,7 @@ import { useParams } from "@remix-run/react"
 import { useEffect } from "react"
 import { AppIdLoaderData } from "../$appId"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
-import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
+import { CustomEvents, trackEvent } from "~/utils/analytics"
 import SecurityView, {
   links as SecurityViewLinks,
 } from "~/views/dashboard/apps/appId/security/securityView"
@@ -23,7 +23,7 @@ export const AppSecurity = () => {
   const params = useParams()
 
   useEffect(() => {
-    trackEvent(AmplitudeEvents.SecurityDetailsView)
+    trackEvent(CustomEvents.SecurityDetailsView)
   }, [])
 
   const { endpoint, blockchains } = appIDRoute?.data as AppIdLoaderData

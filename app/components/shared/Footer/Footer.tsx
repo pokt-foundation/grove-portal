@@ -3,6 +3,7 @@ import { Link } from "@remix-run/react"
 import IconDiscord from "../Icons/IconDiscord"
 import styles from "./styles.css"
 import { useTranslate } from "~/context/TranslateContext"
+import { CustomEvents, trackEvent } from "~/utils/analytics"
 
 /* c8 ignore start */
 export const links = () => {
@@ -22,7 +23,11 @@ export const Footer = () => {
           <div>
             <Text>
               &copy; 2022 Pocket Network Inc.{" "}
-              <Link className="greenLink" to="/terms-and-conditions">
+              <Link
+                className="greenLink"
+                to="/terms-and-conditions"
+                onClick={() => trackEvent(CustomEvents.TermsOfUse)}
+              >
                 {footer.termsOfUse}
               </Link>{" "}
               |{" "}
@@ -31,16 +36,24 @@ export const Footer = () => {
                 href="https://www.pokt.network/privacy-policy"
                 rel="noreferrer"
                 target="_blank"
+                onClick={() => trackEvent(CustomEvents.PrivacyPolicy)}
               >
                 {footer.privacyPolicy}
               </a>
             </Text>
           </div>
           <Group>
-            <a href="https://www.pokt.network/" rel="noreferrer" target="_blank">
+            <a
+              href="https://www.pokt.network/"
+              rel="noreferrer"
+              target="_blank"
+              onClick={() => trackEvent(CustomEvents.AboutPokt)}
+            >
               About POKT
             </a>
-            <Link to="/contact-sales">Contact</Link>
+            <Link to="/contact-sales" onClick={() => trackEvent(CustomEvents.Contact)}>
+              Contact
+            </Link>
             <span aria-hidden className="vertical-split"></span>
             <a
               aria-label="Twitter"
@@ -48,6 +61,7 @@ export const Footer = () => {
               href="https://twitter.com/POKTnetwork"
               rel="noreferrer"
               target="_blank"
+              onClick={() => trackEvent(CustomEvents.SocialTwitter)}
             >
               <IconTwitter fill={"var(--color-white-main)"} />
             </a>
@@ -56,6 +70,7 @@ export const Footer = () => {
               href="https://discord.gg/pokt"
               rel="noreferrer"
               target="_blank"
+              onClick={() => trackEvent(CustomEvents.SocialDiscord)}
             >
               <IconDiscord height={24} width={34} />
             </a>

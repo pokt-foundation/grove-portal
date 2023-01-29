@@ -6,7 +6,7 @@ import { initPortalClient } from "~/models/portal/portal.server"
 import { ProcessedEndpoint } from "~/models/portal/sdk"
 import { getRelays, RelayMetric } from "~/models/relaymeter/relaymeter.server"
 import { getCustomer, Stripe, stripe } from "~/models/stripe/stripe.server"
-import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
+import { CustomEvents, trackEvent } from "~/utils/analytics"
 import { getErrorMessage } from "~/utils/catchError"
 import { dayjs } from "~/utils/dayjs"
 import { getRequiredServerEnvVar } from "~/utils/environment"
@@ -120,7 +120,7 @@ export const AppPlanDetails = () => {
   const data = useLoaderData() as AppPlanLoaderData
 
   useEffect(() => {
-    trackEvent(AmplitudeEvents.AppPlanDetailsView)
+    trackEvent(CustomEvents.AppPlanDetailsView)
   }, [])
 
   return <PlanView {...data} />

@@ -1,9 +1,11 @@
 import { TextInput } from "@mantine/core"
+import { useDebouncedValue } from "@mantine/hooks"
 import { Group, Table as MantineTable, Pagination } from "@pokt-foundation/pocket-blocks"
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import styles from "./styles.css"
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import { useTranslate } from "~/context/TranslateContext"
+import { trackEvent } from "~/utils/analytics"
 
 /* c8 ignore start */
 export const links = () => {
@@ -45,6 +47,16 @@ export const Table = <T extends IdObj>({
 }: TableProps<T>) => {
   const { t } = useTranslate()
   const [searchTerm, setSearchTerm] = useState("")
+  const [debouncedSearchTerm] = useDebouncedValue(searchTerm, 200)
+
+  useEffect(() => {
+    if (label && debouncedSearchTerm) {
+      trackEvent(`SEARCH_${label?.replace(" ", "_").toLocaleUpperCase()}`, {
+        query: debouncedSearchTerm,
+      })
+    }
+  }, [debouncedSearchTerm, label])
+
   const totalData = useMemo(() => {
     let rows = data
     if (search && searchTerm) {

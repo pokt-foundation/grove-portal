@@ -312,7 +312,7 @@ export const postLBUserApplication = async (
     // TODO: LOG AMPLITUDE EVENT
     //
     //
-    // amplitude.getInstance().logEvent(AmplitudeEvents.EndpointCreation, {
+    // amplitude.getInstance().logEvent(CustomEvents.EndpointCreation, {
     //   creationDate: new Date().toISOString(),
     //   endpointId: id,
     //   endpointName: data.name,
@@ -350,7 +350,7 @@ export const postLBRemoveUserApplication = async (
     // TODO: LOG AMPLITUDE EVENT
     //
     //
-    // amplitude.getInstance().logEvent(AmplitudeEvents.EndpointRemoval, {
+    // amplitude.getInstance().logEvent(CustomEvents.EndpointRemoval, {
     //   endpointId: appId,
     // })
   }

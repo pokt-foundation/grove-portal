@@ -8,7 +8,7 @@ import { PayPlanType } from "~/models/portal/sdk"
 import { ProcessedEndpoint } from "~/models/portal/sdk"
 import { Stripe } from "~/models/stripe/stripe.server"
 import { StripeDeleteActionData } from "~/routes/api/stripe/subscription"
-import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
+import { CustomEvents, trackEvent } from "~/utils/analytics"
 import { isPaidPlan } from "~/utils/utils"
 
 /* c8 ignore next */
@@ -80,7 +80,7 @@ export default function StopRemoveApp({
                   <Button
                     type="submit"
                     onClick={() => {
-                      trackEvent(AmplitudeEvents.StopSubscription)
+                      trackEvent(CustomEvents.StopSubscription)
                     }}
                   >
                     {t.common.StopSubscription}
@@ -126,7 +126,7 @@ export default function StopRemoveApp({
                 <Button
                   type="submit"
                   onClick={() => {
-                    trackEvent(AmplitudeEvents.EndpointRemoval)
+                    trackEvent(CustomEvents.EndpointRemoval)
                   }}
                 >
                   {t.stopRemoveApp.removeApp}

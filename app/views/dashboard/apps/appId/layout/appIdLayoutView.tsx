@@ -26,7 +26,7 @@ import { useFeatureFlags } from "~/context/FeatureFlagContext"
 import { useTranslate } from "~/context/TranslateContext"
 import { EndpointQuery, PayPlanType } from "~/models/portal/sdk"
 import { Stripe } from "~/models/stripe/stripe.server"
-import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
+import { CustomEvents, trackEvent } from "~/utils/analytics"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 import { getPlanName } from "~/utils/utils"
 
@@ -118,7 +118,7 @@ export default function AppIdLayoutView({
           },
         )
       }
-      trackEvent(AmplitudeEvents.NewSubscription)
+      trackEvent(CustomEvents.NewSubscription)
       setSearchParams({})
       setShowSuccessModel(true)
     }

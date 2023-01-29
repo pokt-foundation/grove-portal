@@ -3,7 +3,7 @@ import { Form } from "@remix-run/react"
 import { useState } from "react"
 import styles from "./styles.css"
 import Modal, { links as ModalLinks, ModalCTA } from "~/components/shared/Modal"
-import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
+import { CustomEvents, trackEvent } from "~/utils/analytics"
 
 /* c8 ignore start */
 export const links = () => {
@@ -42,7 +42,7 @@ export default function AppEndpointCard({ appId }: AppRemoveModalProps) {
             <Button
               type="submit"
               onClick={() => {
-                trackEvent(AmplitudeEvents.EndpointRemoval)
+                trackEvent(CustomEvents.EndpointRemoval)
               }}
             >
               Remove Application

@@ -24,7 +24,7 @@ import UsageChartCard, {
 import { useFeatureFlags } from "~/context/FeatureFlagContext"
 import { useTranslate } from "~/context/TranslateContext"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
-import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
+import { CustomEvents, trackEvent } from "~/utils/analytics"
 
 export const links = () => {
   return [
@@ -51,7 +51,7 @@ export const Application = () => {
   const { flags } = useFeatureFlags()
 
   useEffect(() => {
-    trackEvent(AmplitudeEvents.AppDetailsView)
+    trackEvent(CustomEvents.AppDetailsView)
   }, [])
 
   const exceedsMaxRelays = useMemo(() => {

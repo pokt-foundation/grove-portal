@@ -3,7 +3,7 @@ import { useActionData, useCatch, useLoaderData } from "@remix-run/react"
 import { useEffect } from "react"
 import { Auth0Profile } from "remix-auth-auth0"
 import invariant from "tiny-invariant"
-import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
+import { CustomEvents, trackEvent } from "~/utils/analytics"
 import { getRequiredServerEnvVar } from "~/utils/environment"
 import { requireUser } from "~/utils/session.server"
 import ProfileView, {
@@ -53,7 +53,7 @@ export default function Profile() {
   const actionData = useActionData()
 
   useEffect(() => {
-    trackEvent(AmplitudeEvents.ProfileView)
+    trackEvent(CustomEvents.ProfileView)
   }, [])
 
   return <ProfileView actionData={actionData} profile={profile} />

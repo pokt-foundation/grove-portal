@@ -7,6 +7,7 @@ function getClientEnv() {
     MAINNET_RPC_URL: process.env.MAINNET_RPC_URL,
     NODE_ENV: process.env.NODE_ENV,
     AMPLITUDE_API_KEY: process.env.AMPLITUDE_API_KEY,
+    MIXPANEL_API_KEY: process.env.MIXPANEL_API_KEY,
     SENTRY_DSN: process.env.SENTRY_DSN,
     BUILD_ID: process.env.BUILD_ID,
     GODMODE_ACCOUNTS: process.env.GODMODE_ACCOUNTS,

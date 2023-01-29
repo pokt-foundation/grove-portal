@@ -25,7 +25,7 @@ import { initPortalClient } from "~/models/portal/portal.server"
 import { PayPlanType } from "~/models/portal/sdk"
 import { Stripe, stripe } from "~/models/stripe/stripe.server"
 import styles from "~/styles/dashboard.apps.create.css"
-import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
+import { CustomEvents, trackEvent } from "~/utils/analytics"
 import { getErrorMessage } from "~/utils/catchError"
 import { getRequiredClientEnvVar, getRequiredServerEnvVar } from "~/utils/environment"
 import { MAX_USER_APPS } from "~/utils/pocketUtils"
@@ -212,7 +212,7 @@ export default function CreateApp() {
             type="submit"
             variant="filled"
             onClick={() => {
-              trackEvent(AmplitudeEvents.EndpointCreation)
+              trackEvent(CustomEvents.EndpointCreation)
             }}
           >
             Create App

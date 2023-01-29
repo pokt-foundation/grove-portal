@@ -11,7 +11,7 @@ import {
   getRelaysPerWeek,
   RelayMetric,
 } from "~/models/relaymeter/relaymeter.server"
-import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
+import { CustomEvents, trackEvent } from "~/utils/analytics"
 import { dayjs } from "~/utils/dayjs"
 import NetworkView, { links as NetworkViewLinks } from "~/views/network/networkView"
 
@@ -115,7 +115,7 @@ export default function Index() {
   const { state } = useTransition()
 
   useEffect(() => {
-    trackEvent(AmplitudeEvents.NetworkView)
+    trackEvent(CustomEvents.NetworkView)
   }, [])
 
   return (

@@ -1,10 +1,11 @@
 import { json, LoaderFunction, MetaFunction } from "@remix-run/node"
 import { useLoaderData, useSearchParams } from "@remix-run/react"
+import mixpanel from "mixpanel-browser"
 import { useEffect } from "react"
 import { AllAppsLoaderData } from "../apps"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { getRelaysPerWeek, RelayMetric } from "~/models/relaymeter/relaymeter.server"
-import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
+import { CustomEvents, trackEvent } from "~/utils/analytics"
 import { getPoktId, requireUser } from "~/utils/session.server"
 import AppsView, { links as AppsViewLinks } from "~/views/dashboard/apps/index/appsView"
 
@@ -55,7 +56,7 @@ export const Apps = () => {
   const [searchParams] = useSearchParams()
 
   useEffect(() => {
-    trackEvent(AmplitudeEvents.AllAppsView)
+    trackEvent(CustomEvents.AllAppsView)
   }, [])
 
   return (

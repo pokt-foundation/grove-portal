@@ -19,7 +19,7 @@ import {
   WhitelistMethod,
 } from "~/models/portal/sdk"
 import { Blockchain, EndpointQuery } from "~/models/portal/sdk"
-import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
+import { CustomEvents, trackEvent } from "~/utils/analytics"
 import { CHAIN_ID_PREFIXES } from "~/utils/chainUtils"
 
 /* c8 ignore start */
@@ -440,7 +440,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
           type="submit"
           variant="filled"
           onClick={() => {
-            trackEvent(AmplitudeEvents.SecuritySettingsUpdate)
+            trackEvent(CustomEvents.SecuritySettingsUpdate)
           }}
         >
           {t.common.save}

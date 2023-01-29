@@ -18,7 +18,7 @@ import { ErrorMetric, getErrorMetrics } from "~/models/errormetrics/errormetrics
 // import { getLBOriginClassification } from "~/models/portal.server"
 import { initPortalClient } from "~/models/portal/portal.server"
 import styles from "~/styles/dashboard.apps.$appId.requests.css"
-import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
+import { CustomEvents, trackEvent } from "~/utils/analytics"
 import { requireUser } from "~/utils/session.server"
 
 export const meta: MetaFunction = () => {
@@ -89,7 +89,7 @@ export default function AppIdRequests() {
   const appIdData = appIdIndexRoute?.data as AppIdLoaderData
 
   useEffect(() => {
-    trackEvent(AmplitudeEvents.RequestDetailsView)
+    trackEvent(CustomEvents.RequestDetailsView)
   }, [])
 
   return (

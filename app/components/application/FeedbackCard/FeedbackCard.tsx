@@ -2,6 +2,7 @@ import styles from "./styles.css"
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import IconDiscord from "~/components/shared/Icons/IconDiscord"
 import { useTranslate } from "~/context/TranslateContext"
+import { CustomEvents, trackEvent } from "~/utils/analytics"
 
 /* c8 ignore start */
 export const links = () => {
@@ -38,6 +39,7 @@ export default function FeedbackBox({ className }: { className?: string }) {
             href="https://discord.gg/pokt"
             rel="noreferrer"
             target="_blank"
+            onClick={() => trackEvent(CustomEvents.ShareFeedback)}
           >
             <IconDiscord />
           </a>

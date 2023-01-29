@@ -5,7 +5,7 @@ import styles from "./styles.css"
 import Card from "~/components/shared/Card"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { AppIdLoaderData } from "~/routes/dashboard/apps/$appId"
-import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
+import { CustomEvents, trackEvent } from "~/utils/analytics"
 import { formatNumberToSICompact } from "~/utils/formattingUtils"
 import { FREE_TIER_MAX_RELAYS } from "~/utils/pocketUtils"
 
@@ -109,7 +109,7 @@ export default function NotificationsAlertForm() {
               disabled={state === "loading" || state === "submitting"}
               type="submit"
               onClick={() => {
-                trackEvent(AmplitudeEvents.NotificationSettingsChange)
+                trackEvent(CustomEvents.NotificationSettingsChange)
               }}
             >
               {state === "loading" || state === "submitting" ? state : "Save Changes"}

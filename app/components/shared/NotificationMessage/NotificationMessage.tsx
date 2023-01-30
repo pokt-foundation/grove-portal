@@ -39,7 +39,7 @@ const NotificationMessageIcon = ({ type }: { type: NotificationMessageType["type
 }
 
 const NotificationMessage = ({
-  notificationMessage: { isActive, type, userEmail, title, description },
+  notificationMessage: { isActive, type, title, description },
   setNotificationMessage,
 }: NotificationMessageProps) => {
   return (

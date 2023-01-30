@@ -9,7 +9,7 @@ export const links = () => {
 
 type RevealIconProps = {
   revealed: boolean
-  setRevealed: Function
+  setRevealed: () => void
 }
 
 export default function RevealIcon({ revealed, setRevealed }: RevealIconProps) {
@@ -18,7 +18,7 @@ export default function RevealIcon({ revealed, setRevealed }: RevealIconProps) {
       aria-label={`Click to ${revealed ? "show" : "hide"} value`}
       className="pokt-reveal"
       tabIndex={0}
-      onClick={() => setRevealed(!revealed)}
+      onClick={setRevealed}
     >
       {revealed ? (
         <IconEyeOn fill="var(--color-secondary-main)" />

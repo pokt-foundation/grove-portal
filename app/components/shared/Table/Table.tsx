@@ -36,7 +36,7 @@ interface IdObj {
       }
 }
 
-type tableDataArray = [
+type TableDataArray = [
   string,
   (
     | string
@@ -108,10 +108,6 @@ export const Table = <T extends IdObj>({
     return obj
   }
 
-  paginatedData.map((item) => {
-    console.log(Object.entries(removeIdFromObject(item)))
-  })
-
   return (
     <div className="pokt-table">
       <Card>
@@ -146,7 +142,7 @@ export const Table = <T extends IdObj>({
                 paginatedData.map((item) => (
                   <tr key={item.id}>
                     {Object.entries(removeIdFromObject(item)).map(
-                      ([key, value]: tableDataArray) => (
+                      ([key, value]: TableDataArray) => (
                         <td key={key}>
                           {typeof value === "object" ? value.element : value}
                         </td>

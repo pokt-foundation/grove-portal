@@ -152,7 +152,7 @@ export const Table = <T extends IdObj>({
                 ))
               ) : (
                 <tr>
-                  <td colSpan={Object.keys(data[0]).length} className="empty-search">
+                  <td className="empty-search" colSpan={Object.keys(data[0]).length}>
                     <Text align="center">{t.search.emptySearch}</Text>
                   </td>
                 </tr>

@@ -1,6 +1,6 @@
 import { expect } from "vitest"
-import { render, screen } from "test/helpers"
 import MemberRole from "./MemberRoleCard"
+import { render, screen } from "test/helpers"
 
 describe("<MemberRoleCard />", () => {
   const role = "Owner"

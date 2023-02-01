@@ -8,7 +8,7 @@ export const links = () => {
 }
 
 type MemberRoleProps = {
-  role: "Owner" | "Member"
+  role: "Owner" | "Admin" | "Member"
 }
 
 const MemberRole = ({ role }: MemberRoleProps) => {

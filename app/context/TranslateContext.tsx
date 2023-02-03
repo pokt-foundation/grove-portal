@@ -106,6 +106,7 @@ interface TranslationData {
       security: string
       notifications: string
       plan: string
+      team: string
     }
   }
   AppRequestsByOriginCard: {

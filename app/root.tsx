@@ -1,3 +1,4 @@
+import { MantineProvider } from "@mantine/core"
 import {
   Alert,
   Center,

@@ -77,9 +77,7 @@ export const AppsView = ({
             label="Applications"
             paginate={
               getRequiredClientEnvVar("GODMODE_ACCOUNTS")?.includes(userId)
-                ? {
-                    perPage: 10,
-                  }
+                ? { perPage: 10 }
                 : undefined
             }
           />

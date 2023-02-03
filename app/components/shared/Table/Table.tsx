@@ -17,6 +17,8 @@ interface TableProps<T> {
   label?: string
   paginate?: boolean | PaginateProps
   search?: boolean | any[]
+  rightComponent?: React.ReactNode
+  subHeader?: React.ReactNode
 }
 
 interface PaginateProps {
@@ -42,6 +44,8 @@ export const Table = <T extends IdObj>({
   label,
   paginate,
   search = false,
+  rightComponent,
+  subHeader,
 }: TableProps<T>) => {
   const { t } = useTranslate()
   const [searchTerm, setSearchTerm] = useState("")
@@ -115,8 +119,12 @@ export const Table = <T extends IdObj>({
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             )}
+            {rightComponent && rightComponent}
           </Group>
         )}
+
+        {subHeader && <div>subHeader</div>}
+
         <div className="pokt-table-overflow">
           <MantineTable>
             <thead>

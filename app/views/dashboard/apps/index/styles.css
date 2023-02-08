@@ -1,5 +1,5 @@
 .pokt-apps-view .pokt-icon {
-  fill: var(--color-white-main);
+  fill: var(--color-primary-main);
   width: 20px;
   height: 20px;
   vertical-align: middle;
@@ -7,4 +7,21 @@
 
 .pokt-card .empty-apps-link {
   color: var(--color-primary-main);
+}
+
+.mantine-Tabs-tabsListWrapper {
+  border-bottom: 0;
+}
+
+.mantine-Tabs-tabLabel {
+  color: var(--color-disabled);
+}
+
+.mantine-Tabs-tabActive .mantine-Tabs-tabLabel {
+  color: var(--color-white-main);
+}
+
+.mantine-Tabs-tabControl {
+  padding: 0;
+  margin: 0 24px;
 }

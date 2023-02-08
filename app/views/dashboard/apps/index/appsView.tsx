@@ -40,6 +40,7 @@ type AppsViewProps = {
   endpoints: EndpointsQuery["endpoints"] | null
   dailyNetworkRelaysPerWeek: RelayMetric[] | null
   searchParams: URLSearchParams
+  teams: typeof teamsMockData
 }
 
 export const AppsView = ({
@@ -47,6 +48,7 @@ export const AppsView = ({
   dailyNetworkRelaysPerWeek,
   searchParams,
   userId,
+  teams,
 }: AppsViewProps) => {
   const [showErrorModal, setShowErrorModal] = useState(false)
 
@@ -112,7 +114,7 @@ export const AppsView = ({
               <Table
                 search
                 columns={["App", "Invite status", "Email", "Role", ""]}
-                data={teamsMockData.map((team) => ({
+                data={teams.map((team) => ({
                   id: team.id,
                   app: {
                     value: team.app,
@@ -126,11 +128,7 @@ export const AppsView = ({
                   role: team.role,
                   action: {
                     value: "",
-                    element: (
-                      <Link to={team.id.toString()}>
-                        <IconMoreVertical className="pokt-icon" />
-                      </Link>
-                    ),
+                    element: <IconMoreVertical className="pokt-icon" fill="#A9E34B" />,
                   },
                 }))}
                 paginate={

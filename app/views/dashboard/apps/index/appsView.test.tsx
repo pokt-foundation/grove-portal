@@ -18,7 +18,7 @@ describe("<AppsView />", () => {
       />,
     )
 
-    expect(screen.getByRole("heading", { name: /applications/i })).toBeInTheDocument()
+    expect(screen.getByRole("tab", { name: /my applications/i })).toBeInTheDocument()
     expect(screen.queryByRole("table")).not.toBeInTheDocument()
     expect(screen.queryByRole("button", { name: /1/i })).not.toBeInTheDocument()
   })
@@ -32,7 +32,7 @@ describe("<AppsView />", () => {
       />,
     )
 
-    expect(screen.getByRole("heading", { name: /applications/i })).toBeInTheDocument()
+    expect(screen.getByRole("tab", { name: /my applications/i})).toBeInTheDocument()
     expect(screen.getByRole("table")).toBeInTheDocument()
     expect(screen.queryByRole("button", { name: /1/i })).not.toBeInTheDocument()
   })
@@ -46,7 +46,7 @@ describe("<AppsView />", () => {
       />,
     )
 
-    expect(screen.getByRole("heading", { name: /applications/i })).toBeInTheDocument()
+    expect(screen.getByRole("tab", { name: /my applications/i})).toBeInTheDocument()
     expect(screen.getByRole("button", { name: /1/i })).toBeInTheDocument()
   })
   it("renders error modal", () => {

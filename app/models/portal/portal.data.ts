@@ -505,3 +505,42 @@ export const blockchains: Blockchain[] = [
     blockchainAliases: ["osmosis-mainnet"],
   },
 ]
+
+
+export const teamsMockData = [
+  {
+    id: 0,
+    app: "AppA",
+    inviteStatus: "ACCEPTED",
+    email: "cameronwilliamson@pocketnetwork",
+    role: "Admin"
+  },
+  {
+    id: 1,
+    app: "AppB",
+    inviteStatus: "ACCEPTED",
+    email: "cameronwilliamson@pocketnetwork",
+    role: "Member"
+  },
+  {
+    id: 2,
+    app: "AppC",
+    inviteStatus: "PENDING",
+    email: "cameronwilliamson@pocketnetwork",
+    role: "Member"
+  },
+  {
+    id: 3,
+    app: "AppD",
+    inviteStatus: "PENDING",
+    email: "cameronwilliamson@pocketnetwork",
+    role: "Admin"
+  },
+  {
+    id: 4,
+    app: "AppE",
+    inviteStatus: "EXPIRED",
+    email: "cameronwilliamson@pocketnetwork",
+    role: "Admin"
+  }
+] as const

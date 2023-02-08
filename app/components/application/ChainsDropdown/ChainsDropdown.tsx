@@ -46,6 +46,7 @@ export default function ChainsDropdown({
   return (
     <span className="pokt-chains-dropdown">
       <Dropdown
+        contentClassName="dropdown-pokt-chains__content"
         label={
           <>
             {defaultText || "Add New"}{" "}

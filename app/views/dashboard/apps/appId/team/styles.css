@@ -78,3 +78,7 @@
   background-color: var(--color-primary-light);
   color: var(--color-black-main);
 }
+
+.dropdown-teams__content {
+  padding: 4px;
+}

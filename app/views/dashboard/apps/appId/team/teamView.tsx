@@ -98,7 +98,10 @@ function TeamView({ state }: TeamViewProps) {
             role: {
               element: (
                 <div className="list__role">
-                  <Dropdown label={<DropdownTrigger label="Member" />}>
+                  <Dropdown
+                    contentClassName="dropdown-teams__content"
+                    label={<DropdownTrigger label="Member" />}
+                  >
                     <DropdownItem action={() => {}} label="Send new Invite" />
                     <DropdownItem action={() => {}} label="Remove" variant="green" />
                   </Dropdown>

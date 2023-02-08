@@ -24,7 +24,7 @@
 
 .pokt-dropdown-content {
   margin-top: 8px;
-  padding: 4px;
+  padding: 16px;
   background: #11171d;
   border: 1px solid #ced4da;
   border-radius: 4px;
@@ -34,7 +34,7 @@
 }
 
 .pokt-dropdown-content > * {
-  margin: 0;
+  margin: 1em 0;
 }
 
 .pokt-dropdown-content div[role="menuitem"] {

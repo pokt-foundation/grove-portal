@@ -10,6 +10,6 @@ describe("dashboard page tests", () => {
     })
 
     // should have network summary heading
-    cy.findByRole("heading", { name: /applications/i }).should("be.visible")
+    cy.findByRole("tab", { name: /my applications/i }).should("be.visible")
   })
 })

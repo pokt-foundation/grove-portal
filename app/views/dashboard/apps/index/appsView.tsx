@@ -112,7 +112,6 @@ export const AppsView = ({
 
             <Tabs.Tab label="Teams">
               <Table
-                search
                 columns={["App", "Invite status", "Email", "Role", ""]}
                 data={teams.map((team) => ({
                   id: team.id,

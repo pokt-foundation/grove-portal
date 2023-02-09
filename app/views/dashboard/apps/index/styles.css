@@ -25,3 +25,12 @@
   padding: 0;
   margin: 0 24px;
 }
+
+.mantine-Tabs-body .pokt-table-header {
+  justify-content: end;
+}
+
+.mantine-Tabs-body .pokt-card {
+  padding: 0;
+  margin: 0;
+}

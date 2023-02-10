@@ -74,3 +74,8 @@
   white-space: nowrap;
   margin: 0;
 }
+
+.pokt-table .empty-search {
+  color: var(--color-white-main);
+  padding: "16px 8px";
+}

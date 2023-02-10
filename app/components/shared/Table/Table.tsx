@@ -1,4 +1,4 @@
-import { TextInput } from "@mantine/core"
+import { Text, TextInput } from "@mantine/core"
 import { Group, Table as MantineTable, Pagination } from "@pokt-foundation/pocket-blocks"
 import { useMemo, useState } from "react"
 import styles from "./styles.css"
@@ -37,6 +37,17 @@ interface IdObj {
         element: JSX.Element
       }
 }
+
+type TableDataArray = [
+  string,
+  (
+    | string
+    | {
+        value: string
+        element: JSX.Element
+      }
+  ),
+]
 
 export const Table = <T extends IdObj>({
   data,
@@ -135,22 +146,25 @@ export const Table = <T extends IdObj>({
               </tr>
             </thead>
             <tbody>
-              {paginatedData.map((item) => (
-                <tr key={item.id}>
-                  {Object.entries(removeIdFromObject(item)).map(([key, value]) => (
-                    <td key={key}>
-                      {typeof value === "object"
-                        ? (
-                            value as {
-                              value: string
-                              element: JSX.Element
-                            }
-                          ).element
-                        : value}
-                    </td>
-                  ))}
+              {paginatedData.length > 0 ? (
+                paginatedData.map((item) => (
+                  <tr key={item.id}>
+                    {Object.entries(removeIdFromObject(item)).map(
+                      ([key, value]: TableDataArray) => (
+                        <td key={key}>
+                          {typeof value === "object" ? value.element : value}
+                        </td>
+                      ),
+                    )}
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td className="empty-search" colSpan={Object.keys(data[0]).length}>
+                    <Text align="center">{t.search.emptySearch}</Text>
+                  </td>
                 </tr>
-              ))}
+              )}
               {emptyRows &&
                 emptyRows.map((row, index) => (
                   <tr key={index} className={row}>

@@ -1,0 +1,79 @@
+.notification-message {
+  display: none;
+}
+
+.notification-message.active {
+  display: flex;
+}
+
+.notification-message {
+  position: relative;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #104a64 0%, #1b2331 55.21%);
+}
+
+.notification-message.options {
+  background: linear-gradient(90deg, #104a64 0%, #1b2331 55.21%);
+}
+
+.notification-message.info {
+  background: linear-gradient(90deg, #104a64 0%, #1b2331 55.21%);
+}
+
+.notification-message.success {
+  background: linear-gradient(90deg, #1b4109 0%, #1b2331 55.21%);
+}
+
+.notification-message.warning {
+  background: linear-gradient(90deg, #816110 0%, #1b2331 55.21%);
+}
+
+.notification-message.error {
+  background: linear-gradient(90deg, #641010 0%, #1b2331 55.21%);
+}
+
+.notification-message-content {
+  display: flex;
+  max-width: 893px;
+  padding: 32px 12px;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  row-gap: 10px;
+}
+
+@media screen and (min-width: 768px) {
+  .notification-message-content {
+    flex-direction: row;
+    align-items: center;
+    row-gap: none;
+  }
+
+  .notification-message-content #title {
+    margin-left: 28px;
+  }
+
+  .notification-message-content #accept {
+    margin-left: 50px;
+  }
+
+  .notification-message-content #decline {
+    margin-left: 12px;
+  }
+}
+
+.notification-message-text {
+  display: flex;
+  flex-direction: column;
+  margin-left: 28px;
+  gap: 16px;
+}
+
+.notification-message .close {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  top: 12px;
+  right: 12px;
+  cursor: pointer;
+}

@@ -1,13 +1,12 @@
+import fs from "fs"
+import path from "path"
 import { expect } from "vitest"
 import NotificationMessage, { NotificationMessageType } from "./NotificationMessage"
 import { render, screen } from "test/helpers"
-import fs from "fs"
-import path from "path"
 
 const mockedNotificationMessage: NotificationMessageType = {
   type: "success",
   isActive: true,
-  userEmail: "ricardo.souza@pokt.network",
   title: "Invite sent",
   description:
     "We have sent an invitation to ricardo.souza@pokt.network. You can review the invite status below.",

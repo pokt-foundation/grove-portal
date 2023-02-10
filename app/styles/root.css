@@ -68,3 +68,10 @@ h3 {
   align-items: center;
   gap: 16px;
 }
+
+button.pokt-button-with__icon,
+button.pokt-button-with__icon:hover {
+  border: none;
+  background-color: transparent;
+  padding: 0;
+}

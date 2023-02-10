@@ -7,15 +7,15 @@
   --color-secondary-dark: #156dc0;
   --color-black-main: #192430;
   --color-black-light: #262a34;
-  --color-black-dark: #0f141a;
+  --color-black-dark: #161e25;
   --color-white-main: #edeff0;
   --color-white-light: #ffffff;
   --color-white-dark: #d9d9d9;
-  --color-success: #03e200;
-  --color-error: #e61c0e;
+  --color-success: #51cf66;
+  --color-error: #fa5252;
   --color-disabled: #898d92;
   --color-disabled-dark: #32404f;
-  --color-warning: #ffb82e;
+  --color-warning: #f59f00;
   --zindex-none: -1;
   --zindex-base: 1;
   --zindex-nav: 100;
@@ -45,7 +45,7 @@ body {
   overflow-x: hidden;
   overflow-y: auto;
   font-family: "Manrope";
-  background-color: var(--color-black-dark);
+  background-color: #11171d;
   color: var(--color-white-main);
   width: 100%;
 }

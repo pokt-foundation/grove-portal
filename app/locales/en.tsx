@@ -189,6 +189,7 @@ const schema = {
       security: "Security",
       notifications: "Notifications",
       plan: "Plan Details",
+      team: "Team",
     },
   },
   AppRequestsByOriginCard: {

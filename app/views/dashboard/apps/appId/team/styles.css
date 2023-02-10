@@ -1,0 +1,80 @@
+.invite-new-user__form {
+  display: flex;
+  flex-direction: column;
+  margin-top: 24px;
+}
+
+.invite-new-user__form .radio-card-grid {
+  box-sizing: border-box;
+  padding: 24px 0 24px 0;
+}
+
+.invite-new-user__form__buttons-container {
+  display: inline-flex;
+  gap: 16px;
+}
+
+.list__role {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dropdown-trigger {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dropdown-trigger__arrow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 8px;
+  padding: 6px;
+  background: #18222c;
+  border: 1px solid #222e3b;
+  border-radius: 2px;
+}
+
+.dropdown-item {
+  all: unset;
+  display: block;
+  box-sizing: border-box;
+  padding: 8px 12px;
+  min-width: 152px;
+  border-radius: 2px;
+  color: var(--color-white-main);
+  background-color: #293746;
+  cursor: pointer;
+}
+
+.dropdown-item:not(:first-child) {
+  margin-top: 4px;
+}
+
+.dropdown-item:hover:not(:first-child) {
+  margin-top: 4px;
+}
+
+.dropdown-item:hover {
+  all: unset;
+  display: block;
+  box-sizing: border-box;
+  padding: 8px 12px;
+  min-width: 152px;
+  border-radius: 2px;
+  color: var(--color-white-main);
+  background-color: #29374680;
+  cursor: pointer;
+}
+
+.dropdown-item--green {
+  background-color: var(--color-primary-main);
+  color: var(--color-black-main);
+}
+
+.dropdown-item--green:hover {
+  background-color: var(--color-primary-light);
+  color: var(--color-black-main);
+}

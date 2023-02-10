@@ -1,3 +1,4 @@
+import { Button, Text } from "@pokt-foundation/pocket-blocks"
 import clsx from "clsx"
 import { Dispatch, SetStateAction } from "react"
 import CloseIcon from "../Icons/CloseIcon"
@@ -13,8 +14,7 @@ export const links = () => {
 }
 
 export interface NotificationMessageType {
-  type: "success" | "info" | "warning" | "error"
-  userEmail: string
+  type: "success" | "info" | "warning" | "error" | "options"
   isActive: boolean
   title: string
   description: string
@@ -23,6 +23,8 @@ export interface NotificationMessageType {
 type NotificationMessageProps = {
   notificationMessage: NotificationMessageType
   setNotificationMessage: Dispatch<SetStateAction<NotificationMessageType>>
+  handleAccept?: () => void
+  handleDecline?: () => void
 }
 
 const NotificationMessageIcon = ({ type }: { type: NotificationMessageType["type"] }) => {
@@ -35,18 +37,23 @@ const NotificationMessageIcon = ({ type }: { type: NotificationMessageType["type
       return <WarningIcon />
     case "error":
       return <ErrorIcon />
+    default:
+      return <InfoIcon />
   }
 }
 
 const NotificationMessage = ({
-  notificationMessage: { isActive, type, title, description },
+  notificationMessage: { type, title, description, isActive },
   setNotificationMessage,
+  handleAccept,
+  handleDecline,
 }: NotificationMessageProps) => {
   return (
     <div
       className={clsx({
         "notification-message": true,
         active: isActive,
+        [type]: true,
       })}
     >
       <span
@@ -54,7 +61,6 @@ const NotificationMessage = ({
         onClick={() =>
           setNotificationMessage({
             type: "success",
-            userEmail: "",
             isActive: false,
             title: "",
             description: "",
@@ -63,11 +69,26 @@ const NotificationMessage = ({
       >
         <CloseIcon />
       </span>
-      <NotificationMessageIcon type={type} />
-      <div className="notification-message-text">
-        <div className="notification-message-title">{title}</div>
-        <div className="notification-message-description">{description}</div>
-      </div>
+      {type !== "options" ? (
+        <div className="notification-message-content">
+          <NotificationMessageIcon type={type} />
+          <div className="notification-message-text">
+            <div className="notification-message-title">{title}</div>
+            <div className="notification-message-description">{description}</div>
+          </div>
+        </div>
+      ) : (
+        <div className="notification-message-content">
+          <InfoIcon />
+          <Text id="title">{title}</Text>
+          <Button id="accept" variant="filled" onClick={handleAccept}>
+            Accept
+          </Button>
+          <Button id="decline" variant="outline" onClick={handleDecline}>
+            Decline
+          </Button>
+        </div>
+      )}
     </div>
   )
 }

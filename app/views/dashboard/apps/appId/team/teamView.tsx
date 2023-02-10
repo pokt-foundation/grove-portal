@@ -1,4 +1,10 @@
-import { Button, IconPlus, IconCaretDown, Title } from "@pokt-foundation/pocket-blocks"
+import {
+  Button,
+  IconPlus,
+  IconCaretDown,
+  Title,
+  IconMoreVertical,
+} from "@pokt-foundation/pocket-blocks"
 import { Form, useTransition } from "@remix-run/react"
 import { Transition } from "@remix-run/react/transition"
 import clsx from "clsx"
@@ -105,7 +111,11 @@ function TeamView({ state }: TeamViewProps) {
                     <DropdownItem action={() => {}} label="Send new Invite" />
                     <DropdownItem action={() => {}} label="Remove" variant="green" />
                   </Dropdown>
-                  <div>Dots</div>
+
+                  <Button
+                    className="pokt-button-with__icon"
+                    leftIcon={<IconMoreVertical fill="#A9E34B" />}
+                  />
                 </div>
               ),
               value: "Role",

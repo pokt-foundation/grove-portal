@@ -4,6 +4,7 @@ import {
   Title,
   Text,
   IconMoreVertical,
+  Button,
 } from "@pokt-foundation/pocket-blocks"
 import { Link } from "@remix-run/react"
 import { useEffect, useState } from "react"
@@ -127,7 +128,14 @@ export const AppsView = ({
                   role: team.role,
                   action: {
                     value: "",
-                    element: <IconMoreVertical className="pokt-icon" fill="#A9E34B" />,
+                    element: (
+                      <Button
+                        className="pokt-button-with__icon"
+                        leftIcon={
+                          <IconMoreVertical className="pokt-icon" fill="#A9E34B" />
+                        }
+                      />
+                    ),
                   },
                 }))}
                 paginate={

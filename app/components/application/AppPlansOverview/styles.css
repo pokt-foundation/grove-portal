@@ -3,11 +3,11 @@
 }
 
 .plan-data.title {
-  color: var(--color-secondary-main);
+  color: var(--mantine-color-blue-6);
 }
 
 .plan-data-highlights {
-  color: var(--color-secondary-main);
+  color: var(--mantine-color-blue-6);
   margin-top: 0;
 }
 
@@ -21,5 +21,5 @@
 }
 
 .enterprise-solutions-box__title {
-  color: var(--color-white-main);
+  color: var(--mantine-color-white);
 }

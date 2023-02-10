@@ -1,4 +1,4 @@
-import { Box, Title, Text, Grid } from "@pokt-foundation/pocket-blocks"
+import { Anchor, Box, Title, Text, Grid } from "@pokt-foundation/pocket-blocks"
 import { Link } from "@remix-run/react"
 import ReactHtmlParser from "react-html-parser"
 import styles from "./styles.css"
@@ -72,10 +72,10 @@ export default function AppPlansOverview({ planType }: AppPlansOverviewProps) {
             </Title>
             <Text mt={8} weight="lighter">
               {AppPlansOverview.planDetails.enterpriseSolutions.description}{" "}
-              <Text color="var(--color-primary-main)" component="span">
-                <Link to="/contact-sales">
+              <Text color="var(--mantine-color-green-6)" component="span">
+                <Anchor component={Link} to="/contact-sales">
                   {AppPlansOverview.planDetails.enterpriseSolutions.contactUS}
-                </Link>
+                </Anchor>
               </Text>
             </Text>
           </Box>

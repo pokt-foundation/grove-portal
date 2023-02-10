@@ -1,5 +1,5 @@
 .pokt-app-over-limit .pokt-card {
-  border: 1px solid var(--color-error);
+  border: 1px solid var(--mantine-color-red-6);
 }
 
 .pokt-app-over-limit .pokt-card-header svg {

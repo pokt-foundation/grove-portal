@@ -19,7 +19,7 @@
 }
 
 .pokt-header-brand {
-  height: 3rem;
+  height: 1.5rem;
   object-fit: contain;
 }
 
@@ -47,7 +47,7 @@
   bottom: 0;
   right: -300px;
   padding: 16px;
-  background: var(--color-black-light);
+  background: var(--mantine-color-navy-4);
   box-sizing: border-box;
   transition: right ease-in-out 0.3s;
   z-index: calc(var(--zindex-nav) + 1);

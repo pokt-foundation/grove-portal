@@ -1,21 +1,21 @@
 :root {
-  --color-primary-main: #c5ec4b;
+  /* --color-primary-main: #c5ec4b;
   --color-primary-light: #dcfc77;
   --color-primary-dark: #89a534;
   --color-secondary-main: #1d8aed;
-  --color-secondary-light: #41a1fc;
-  --color-secondary-dark: #156dc0;
-  --color-black-main: #192430;
-  --color-black-light: #262a34;
-  --color-black-dark: #0f141a;
-  --color-white-main: #edeff0;
-  --color-white-light: #ffffff;
-  --color-white-dark: #d9d9d9;
-  --color-success: #03e200;
+  --mantine-color-blue-4: #41a1fc;
+  --mantine-color-blue-8: #156dc0;
+  --mantine-color-navy-4: #192430;
+  --mantine-color-navy-3: #262a34;
+  --mantine-color-navy-6: #0f141a;
+  --mantine-color-gray-2: #edeff0;
+  --mantine-color-gray-0: #ffffff;
+  --mantine-color-gray-4: #d9d9d9;
+  --mantine-color-yellow-6: #03e200;
   --color-error: #e61c0e;
-  --color-disabled: #898d92;
-  --color-disabled-dark: #32404f;
-  --color-warning: #ffb82e;
+  --mantine-color-gray-6: #898d92;
+  --mantine-color-gray-8: #32404f;
+  --mantine-color-orange-6: #ffb82e; */
   --zindex-none: -1;
   --zindex-base: 1;
   --zindex-nav: 100;
@@ -45,8 +45,6 @@ body {
   overflow-x: hidden;
   overflow-y: auto;
   font-family: "Manrope";
-  background-color: var(--color-black-dark);
-  color: var(--color-white-main);
   width: 100%;
 }
 

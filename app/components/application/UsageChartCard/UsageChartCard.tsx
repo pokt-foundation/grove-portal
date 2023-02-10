@@ -1,10 +1,14 @@
-import { LineChart, useTheme } from "@pokt-foundation/ui"
-import clsx from "clsx"
+import {
+  Box,
+  LineChart,
+  ParentSize,
+  useMantineTheme,
+} from "@pokt-foundation/pocket-blocks"
 import { useMemo } from "react"
-import { formatDailyRelaysForGraphing } from "./formatDailyRelaysForGraphing"
 import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/shared/Card"
 import { RelayMetric } from "~/models/relaymeter/relaymeter.server"
+import { dayjs } from "~/utils/dayjs"
 
 /* c8 ignore start */
 export const links = () => {
@@ -25,7 +29,7 @@ export default function UsageChartCard({
   detail = "last 7 Days",
   emptyLabel,
 }: NetworkChardCardProps) {
-  const theme = useTheme()
+  // const theme = useTheme()
 
   const hasRelays = useMemo(() => {
     const r = relays.reduce((prev, curr) => {
@@ -35,7 +39,22 @@ export default function UsageChartCard({
     return r > 0
   }, [relays])
 
-  const { labels, lines, scales } = formatDailyRelaysForGraphing(relays)
+  const theme = useMantineTheme()
+  const groups = [
+    {
+      id: 1,
+      label: title,
+      color: hasRelays ? theme.colors[theme.primaryColor][6] : "gray",
+      dotColor: hasRelays ? theme.colors[theme.primaryColor][3] : "gray",
+      data: relays
+        .sort((a, b) => dayjs(a.From).utc().valueOf() - dayjs(b.From).utc().valueOf())
+        .map((relay) => ({
+          x: dayjs(relay.To).format("ddd"),
+          y: relay.Count.Total,
+        })),
+    },
+  ]
+
   return (
     <div className="pokt-network-chart">
       <Card>
@@ -49,22 +68,25 @@ export default function UsageChartCard({
               <p>{emptyLabel}</p>
             </div>
           )}
-          <LineChart
-            renderBackground
-            renderCheckpoints
-            renderHorizontalCheckLines
-            renderVerticalCheckLines
-            backgroundFill="#1B2331"
-            borderColor={`rgba(0,0,0,0)`}
-            className={clsx(["pokt-chart-relays", { empty: !hasRelays }])}
-            color={() => theme.accentAlternative}
-            dotColor={hasRelays ? theme.accent : theme.disabled}
-            dotRadius={8}
-            height={180}
-            label={(index: number) => labels[index]}
-            lines={lines}
-            scales={scales}
-          />
+          <Box
+            sx={{
+              height: "200px",
+              maxHeight: "200px",
+              width: "100%",
+              color: theme.colorScheme === "dark" ? theme.white : theme.black,
+            }}
+          >
+            <ParentSize>
+              {({ width, height }) => (
+                <LineChart
+                  groups={groups}
+                  // lineSubject={21}
+                  height={height}
+                  width={width}
+                />
+              )}
+            </ParentSize>
+          </Box>
         </div>
       </Card>
     </div>

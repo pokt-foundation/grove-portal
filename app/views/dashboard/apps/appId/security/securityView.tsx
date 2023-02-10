@@ -1,5 +1,4 @@
-import { Loader } from "@mantine/core"
-import { Button, Text, Switch } from "@pokt-foundation/pocket-blocks"
+import { Button, Text, Switch, Loader } from "@pokt-foundation/pocket-blocks"
 import { useFetcher, useTransition } from "@remix-run/react"
 import React, { useState } from "react"
 import styles from "./styles.css"
@@ -196,6 +195,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             />
             <Button
               aria-label={t.security.userAgentAria}
+              size="sm"
               type="button"
               onClick={() => {
                 if (whitelistUserAgentsElement !== "") {
@@ -241,6 +241,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             />
             <Button
               aria-label={t.security.OriginAria}
+              size="sm"
               type="button"
               onClick={() => {
                 if (whitelistOriginsElement !== "") {
@@ -298,6 +299,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             />
             <Button
               aria-label={t.security.contractAria}
+              size="sm"
               type="button"
               onClick={() => {
                 if (whitelistContractsInput === "" || whitelistContractsDropdown === "") {
@@ -382,6 +384,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             />
             <Button
               aria-label={t.security.methodAria}
+              size="sm"
               type="button"
               onClick={() => {
                 if (whitelistMethodsInput === "" || whitelistMethodsDropdown === "") {

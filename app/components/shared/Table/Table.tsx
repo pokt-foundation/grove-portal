@@ -1,5 +1,9 @@
-import { TextInput } from "@mantine/core"
-import { Group, Table as MantineTable, Pagination } from "@pokt-foundation/pocket-blocks"
+import {
+  Group,
+  Table as MantineTable,
+  Pagination,
+  TextInput,
+} from "@pokt-foundation/pocket-blocks"
 import { useMemo, useState } from "react"
 import styles from "./styles.css"
 import Card, { links as CardLinks } from "~/components/shared/Card"

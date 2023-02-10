@@ -1,4 +1,4 @@
-import { Button, Text } from "@pokt-foundation/pocket-blocks"
+import { Anchor, Button, Text } from "@pokt-foundation/pocket-blocks"
 import {
   ActionFunction,
   json,
@@ -219,13 +219,14 @@ export default function CreateApp() {
           </Button>
           <Text className="termsOfUseText" mb={16} mt={32} size="xs">
             By using this application, you agree to our{" "}
-            <a
+            <Anchor
               href="https://www.pokt.network/site-terms-of-use"
               rel="noreferrer"
               target="_blank"
+              variant="text"
             >
               Terms of Use
-            </a>
+            </Anchor>
             .
           </Text>
         </Form>

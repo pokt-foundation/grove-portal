@@ -1,5 +1,9 @@
-import { Grid, IconArrowDown, IconArrowUp } from "@pokt-foundation/pocket-blocks"
-import { CircleGraph } from "@pokt-foundation/ui"
+import {
+  Grid,
+  IconArrowDown,
+  IconArrowUp,
+  useMantineTheme,
+} from "@pokt-foundation/pocket-blocks"
 import { useMemo } from "react"
 import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/shared/Card"
@@ -26,6 +30,7 @@ export default function AppRequestsRateCard({
   currentRelays,
 }: RequestsRateCardProps) {
   const { t } = useTranslate()
+  const theme = useMantineTheme()
 
   const successRate = useMemo(() => {
     return currentRelays.Total === 0 ? 0 : currentRelays.Success / currentRelays.Total
@@ -85,6 +90,15 @@ export default function AppRequestsRateCard({
     },
   ]
 
+  const data = [
+    {
+      label: "error",
+      usage: currentRelays.Failure,
+      color: theme.colors.dark[6],
+    },
+    { label: "success", usage: currentRelays.Success, color: theme.colors.green[6] },
+  ]
+
   return (
     <div className="pokt-app-requests-rate">
       <Card>
@@ -93,16 +107,6 @@ export default function AppRequestsRateCard({
         </div>
         <div>
           <Grid align="center">
-            {successPercent > 0 && (
-              <Grid.Col xs={3}>
-                <CircleGraph
-                  color="#c5ec4b"
-                  size={70}
-                  strokeWidth={10}
-                  value={successRate}
-                />
-              </Grid.Col>
-            )}
             <Grid.Col xs={successPercent > 0 ? 9 : 12}>
               <CardList items={listItems} />
             </Grid.Col>
@@ -114,8 +118,8 @@ export default function AppRequestsRateCard({
 }
 
 const ArrowSuccess = () => (
-  <IconArrowUp fill="var(--color-success)" height={16} width={16} />
+  <IconArrowUp fill="var(--mantine-color-yellow-6)" height={16} width={16} />
 )
 const ArrowError = () => (
-  <IconArrowDown fill="var(--color-error)" height={16} width={16} />
+  <IconArrowDown fill="var(--mantine-color-red-6)" height={16} width={16} />
 )

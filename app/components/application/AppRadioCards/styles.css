@@ -15,7 +15,8 @@
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  border: 2px solid var(--color-white-main);
+  border-width: 2px;
+  border-style: solid;
   height: 100%;
   align-content: baseline;
   border-radius: 8px;
@@ -30,11 +31,6 @@
   width: 100%;
 }
 
-.radio-card.disabled {
-  color: var(--color-disabled);
-  border-color: var(--color-disabled);
-}
-
 .radio-card > .mantine-Text-root {
   margin-top: 24px;
 }
@@ -43,23 +39,11 @@
   font-size: 21px;
 }
 
-.radio-card.active {
-  border-color: var(--color-primary-main);
+/* .radio-card p {
+  color: var(--mantine-color-white);
 }
-
-.radio-card p {
-  color: var(--color-white-main);
-}
+*/
 
 label.mantine-Radio-label {
-  color: var(--color-white-main);
-}
-
-.radio-card.disabled input[type="radio"] {
-  background-color: var(--color-disabled);
-  border-color: var(--color-disabled);
-}
-
-.radio-card.disabled label {
-  color: var(--color-disabled);
-}
+  color: var(--mantine-color-white);
+} 

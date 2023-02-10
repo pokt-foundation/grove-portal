@@ -61,7 +61,6 @@ export default function NetworkView({
       <Grid gutter={32}>
         <Grid.Col md={8}>
           <section>
-            <h3>Network Summary</h3>
             <Grid gutter={32}>
               <Grid.Col sm={4}>
                 <NetworkSummaryCard
@@ -111,21 +110,17 @@ export default function NetworkView({
         </Grid.Col>
         <Grid.Col md={4}>
           <section>
-            <h3>Network Success Rate</h3>
-            <NetworkSuccessRateCard relays={weeklyNetworkRelays} />
-          </section>
-          {poktscanLatestBlock && (
-            <section>
-              <NetworkPoktScanLatestBlockCard latestBlock={poktscanLatestBlock} />
-            </section>
-          )}
-          <section>
             <NetworkRelayPerformanceCard
               month={monthlyNetworkRelays}
               today={dailyNetworkRelays}
               week={weeklyNetworkRelays}
             />
           </section>
+          {poktscanLatestBlock && (
+            <section>
+              <NetworkPoktScanLatestBlockCard latestBlock={poktscanLatestBlock} />
+            </section>
+          )}
           <section>
             <FeedbackCard />
           </section>

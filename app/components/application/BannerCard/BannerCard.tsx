@@ -42,12 +42,16 @@ export default function BannerCard({ copy, bannerType }: BannerCardProps) {
             <div className="pokt-card-header">
               <div className="pokt-group">
                 {bannerType === "informational" && (
-                  <IconInfo fill="var(--color-secondary-light)" />
+                  <IconInfo fill="var(--mantine-color-blue-4)" />
                 )}
-                {bannerType === "error" && <IconErrorHex fill="var(--color-error)" />}
-                {bannerType === "warning" && <IconWarning fill="var(--color-warning)" />}
+                {bannerType === "error" && (
+                  <IconErrorHex fill="var(--mantine-color-red-6)" />
+                )}
+                {bannerType === "warning" && (
+                  <IconWarning fill="var(--mantine-color-orange-6)" />
+                )}
                 {bannerType === "success" && (
-                  <IconCircleCheck fill="var(--color-success)" />
+                  <IconCircleCheck fill="var(--mantine-color-yellow-6)" />
                 )}
                 <h3>{copy.title}</h3>
               </div>
@@ -56,7 +60,7 @@ export default function BannerCard({ copy, bannerType }: BannerCardProps) {
                 variant="subtle"
                 onClick={() => close()}
               >
-                <IconX fill="var(--color-white-light)" />
+                <IconX fill="var(--mantine-color-gray-0)" />
               </Button>
             </div>
             <div>

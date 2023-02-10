@@ -1,4 +1,4 @@
-import { Button } from "@pokt-foundation/pocket-blocks"
+import { Button, Divider, theme, useMantineTheme } from "@pokt-foundation/pocket-blocks"
 import React, { useMemo, useState } from "react"
 import styles from "./styles.css"
 import Modal, { links as ModalLinks, ModalCTA } from "~/components/shared/Modal"
@@ -28,6 +28,7 @@ interface CalculateYourPriceProps {
 
 export default function CalculateYourPricing({ price }: CalculateYourPriceProps) {
   const { t } = useTranslate()
+  const theme = useMantineTheme()
   const [relays, setRelays] = useState<number>(0)
   const [open, setOpen] = useState<boolean>(false)
 
@@ -81,14 +82,19 @@ export default function CalculateYourPricing({ price }: CalculateYourPriceProps)
             <h4>{t.CalculateYourPricing.pricePerRelay}</h4>
             <p>${price}</p>
           </div>
-          <div className="divider" />
+          <div
+            className="divider"
+            style={{
+              borderColor: theme.colors[theme.primaryColor][6],
+            }}
+          />
           <div>
             <h4>{t.CalculateYourPricing.totalMonthlyPrice}</h4>
             <p>${totalMonthly}</p>
           </div>
         </div>
       </div>
-      <Button className="calculate-your-pricing-question" onClick={() => setOpen(true)}>
+      <Button variant="subtle" onClick={() => setOpen(true)}>
         {t.CalculateYourPricing.howIsThisCalculated}
       </Button>
 

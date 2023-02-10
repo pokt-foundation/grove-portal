@@ -33,7 +33,7 @@
 .pokt-ad h3 span {
   display: block;
   text-align: center;
-  color: var(--color-secondary-light);
+  color: var(--mantine-color-blue-4);
   font-size: 1.5rem;
   font-weight: 500;
 }
@@ -43,8 +43,8 @@
   font-weight: bold;
   padding: 0px 42px;
   background: transparent;
-  border: 2px solid var(--color-white-main);
-  color: var(--color-white-main);
+  border: 2px solid var(--mantine-color-white);
+  color: var(--mantine-color-white);
   margin-top: 32px;
   height: 52px;
   min-width: 224px;

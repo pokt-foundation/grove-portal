@@ -1,4 +1,4 @@
-import { Select } from "@pokt-foundation/pocket-blocks"
+import { Anchor, Select } from "@pokt-foundation/pocket-blocks"
 import { NavLink } from "@remix-run/react"
 import clsx from "clsx"
 import React, { useEffect, useState } from "react"
@@ -81,19 +81,45 @@ export const Nav = ({ routes, dropdown = false, appId, ariaLabel }: NavProps) =>
         {routes.map((route) => (
           <li key={route.to}>
             {route.external ? (
-              <a className="nav-link" href={route.to} rel="noreferrer" target="_blank">
+              <Anchor
+                className="nav-link"
+                href={route.to}
+                rel="noreferrer"
+                sx={(theme) => ({
+                  color: theme.white,
+                  transition: "color 0.3s ease-in-out",
+                  "&.active": {
+                    color: theme.colors[theme.primaryColor][6],
+                  },
+                  "&:hover": {
+                    color: theme.colors[theme.primaryColor][9],
+                  },
+                })}
+                target="_blank"
+                variant="text"
+              >
                 <LinkLabel route={route} />
-              </a>
+              </Anchor>
             ) : (
-              <NavLink
-                className={({ isActive }) =>
-                  `nav-link ${isActive ? "nav-link-active" : ""}`
-                }
+              <Anchor
+                className="nav-link"
+                component={NavLink}
                 end={route.end}
+                styles={{}}
+                sx={(theme) => ({
+                  color: theme.white,
+                  transition: "color 0.3s ease-in-out",
+                  "&.active": {
+                    color: theme.colors[theme.primaryColor][6],
+                  },
+                  "&:hover": {
+                    color: theme.colors[theme.primaryColor][9],
+                  },
+                })}
                 to={route.to}
               >
                 <LinkLabel route={route} />
-              </NavLink>
+              </Anchor>
             )}
           </li>
         ))}

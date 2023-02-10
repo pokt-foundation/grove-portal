@@ -24,9 +24,9 @@ export default function CopyTextIcon({ text }: CopyTextIconProps) {
       onClick={() => clipboard.copy(text)}
     >
       {clipboard.copied ? (
-        <IconPlus fill="var(--color-white-main)" />
+        <IconPlus fill="var(--mantine-color-white)" />
       ) : (
-        <IconCopy fill="var(--color-secondary-main)" />
+        <IconCopy fill="var(--mantine-color-blue-6)" />
       )}
     </span>
   )

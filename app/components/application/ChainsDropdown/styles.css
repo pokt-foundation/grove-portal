@@ -20,7 +20,7 @@
 .pokt-chains-dropdown-chain:hover,
 .pokt-chains-dropdown-chain:focus-visible {
   outline: none;
-  background-color: var(--color-black-light);
+  background-color: var(--mantine-color-navy-4);
 }
 
 .pokt-chains-dropdown .pokt-dropdown-trigger svg {

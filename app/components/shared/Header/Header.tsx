@@ -1,21 +1,22 @@
-import { Button, IconUser } from "@pokt-foundation/pocket-blocks"
-import { Item, Separator } from "@radix-ui/react-dropdown-menu"
+import {
+  Avatar,
+  Button,
+  IconLogOut,
+  IconUser,
+  Menu,
+  useMantineTheme,
+} from "@pokt-foundation/pocket-blocks"
 import { Form, Link, useLocation } from "@remix-run/react"
 import clsx from "clsx"
 import { useEffect, useMemo, useRef, useState } from "react"
 import React from "react"
 import { Auth0Profile } from "remix-auth-auth0"
-import Dropdown, { links as DropdownLinks } from "../Dropdown"
 import HamburgerMenu, { links as HamburgerMenuLinks } from "../HamburgerMenu"
 import styles from "./styles.css"
 
 /* c8 ignore start */
 export const links = () => {
-  return [
-    ...DropdownLinks(),
-    { rel: "stylesheet", href: styles },
-    ...HamburgerMenuLinks(),
-  ]
+  return [{ rel: "stylesheet", href: styles }, ...HamburgerMenuLinks()]
 }
 /* c8 ignore stop */
 
@@ -38,28 +39,48 @@ export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) 
     const userRoutes = [
       {
         id: "account",
-        el: () => <h5>Account</h5>,
+        el: () => <Menu.Label>Account</Menu.Label>,
       },
       {
         id: "user",
-        el: () => <Link to="/dashboard/profile">User Profile</Link>,
+        el: () => (
+          <Menu.Item component={Link} to="/dashboard/profile">
+            User Profile
+          </Menu.Item>
+        ),
+      },
+      {
+        id: "support",
+        el: () => (
+          <Menu.Item
+            component={"a"}
+            href="https://pokt.height.app/inbox?taskForm=Pokt-Technical-Support-k1jo7CqGZMvI"
+            rel="noreferrer"
+            target="_blank"
+          >
+            Support
+          </Menu.Item>
+        ),
       },
       {
         id: "logout",
         el: () => (
-          <Button
-            leftIcon={<img alt="logout" src="/logout.svg" />}
-            variant="outline"
-            onClick={() => {
-              if (logoutFormRef.current) {
-                logoutFormRef.current.dispatchEvent(
-                  new Event("submit", { cancelable: true, bubbles: true }),
-                )
-              }
-            }}
-          >
-            Logout
-          </Button>
+          <Menu.Item>
+            <Button
+              leftIcon={<IconLogOut height={18} width={18} />}
+              size="sm"
+              variant="outline"
+              onClick={() => {
+                if (logoutFormRef.current) {
+                  logoutFormRef.current.dispatchEvent(
+                    new Event("submit", { cancelable: true, bubbles: true }),
+                  )
+                }
+              }}
+            >
+              Logout
+            </Button>
+          </Menu.Item>
         ),
       },
     ]
@@ -96,7 +117,7 @@ export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) 
               alt="pocket network"
               className="pokt-header-brand"
               loading="lazy"
-              src="/logo.svg"
+              src="/pni_portal_logo_blue.svg"
             ></img>
           </Link>
         </div>
@@ -126,14 +147,14 @@ export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) 
           {!user && (
             <>
               <Form action="/api/auth/auth0" method="post">
-                <Button color="blue" type="submit" variant="outline">
+                <Button color="gray" size="sm" type="submit" variant="subtle">
                   Login
                 </Button>
               </Form>
               <Form action="/api/auth/auth0" method="post">
                 <Button
-                  color="blue"
                   name="signup"
+                  size="sm"
                   type="submit"
                   value="true"
                   variant="outline"
@@ -164,22 +185,23 @@ type UserMenuDropdownProps = {
 }
 
 function UserMenuDropdown({ user, routes }: UserMenuDropdownProps) {
+  const theme = useMantineTheme()
   return (
     <>
       {user && (
-        <Dropdown label={<IconUser fill="var(--color-white-light)" />}>
-          {routes.map(({ el, id: routeID }, index) => {
-            const El = el
-            return (
-              <React.Fragment key={routeID}>
-                <Item>
-                  <El />
-                </Item>
-                {index < routes.length - 1 && <Separator />}
-              </React.Fragment>
-            )
-          })}
-        </Dropdown>
+        <Menu>
+          <Menu.Target>
+            <Avatar variant="outline">
+              <IconUser fill="var(--mantine-color-gray-0)" />
+            </Avatar>
+          </Menu.Target>
+          <Menu.Dropdown>
+            {routes.map(({ el, id: routeID }, index) => {
+              const El = el
+              return <El key={routeID} />
+            })}
+          </Menu.Dropdown>
+        </Menu>
       )}
     </>
   )

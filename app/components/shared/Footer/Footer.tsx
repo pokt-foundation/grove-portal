@@ -1,4 +1,4 @@
-import { Group, IconTwitter, Text } from "@pokt-foundation/pocket-blocks"
+import { Anchor, Group, IconTwitter, Text } from "@pokt-foundation/pocket-blocks"
 import { Link } from "@remix-run/react"
 import IconDiscord from "../Icons/IconDiscord"
 import styles from "./styles.css"
@@ -22,18 +22,17 @@ export const Footer = () => {
           <div>
             <Text>
               &copy; 2022 Pocket Network Inc.{" "}
-              <Link className="greenLink" to="/terms-and-conditions">
+              <Anchor component={Link} to="/terms-and-conditions">
                 {footer.termsOfUse}
-              </Link>{" "}
+              </Anchor>{" "}
               |{" "}
-              <a
-                className="greenLink"
+              <Anchor
                 href="https://www.pokt.network/privacy-policy"
                 rel="noreferrer"
                 target="_blank"
               >
                 {footer.privacyPolicy}
-              </a>
+              </Anchor>
             </Text>
           </div>
           <Group>
@@ -42,23 +41,23 @@ export const Footer = () => {
             </a>
             <Link to="/contact-sales">Contact</Link>
             <span aria-hidden className="vertical-split"></span>
-            <a
+            <Anchor
               aria-label="Twitter"
               className="discord-icon"
               href="https://twitter.com/POKTnetwork"
               rel="noreferrer"
               target="_blank"
             >
-              <IconTwitter fill={"var(--color-white-main)"} />
-            </a>
-            <a
+              <IconTwitter fill={"var(--mantine-color-white)"} />
+            </Anchor>
+            <Anchor
               aria-label="Discord"
               href="https://discord.gg/pokt"
               rel="noreferrer"
               target="_blank"
             >
               <IconDiscord height={24} width={34} />
-            </a>
+            </Anchor>
           </Group>
         </Group>
       </nav>

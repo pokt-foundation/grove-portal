@@ -1,4 +1,4 @@
-import { Text, Radio, Grid } from "@pokt-foundation/pocket-blocks"
+import { Text, Radio, Grid, Box } from "@pokt-foundation/pocket-blocks"
 import clsx from "clsx"
 import styles from "./styles.css"
 import { useFeatureFlags } from "~/context/FeatureFlagContext"
@@ -43,12 +43,28 @@ export default function AppRadioCards({
           sm={12 / radioData.length}
           xs={12}
         >
-          <div
+          <Box
             className={clsx(
               "radio-card",
               radio.value === currentRadio ? "active" : null,
               { disabled: radio.active === "false" },
             )}
+            sx={(theme) => ({
+              borderColor: theme.colorScheme === "dark" ? theme.white : theme.black,
+              "&.active": {
+                borderColor: theme.colors[theme.primaryColor][6],
+              },
+              "&.disabled": {
+                borderColor: theme.colors.gray[6],
+              },
+              "&.disabled input": {
+                color: theme.colors.gray[6],
+              },
+              "&.disabled input[type='radio']": {
+                borderColor: theme.colors.gray[6],
+                backgroundColor: theme.colors.gray[6],
+              },
+            })}
             onClick={() => radio.active === "true" && setRadio(radio.value)}
           >
             <div className="flexRow">
@@ -64,7 +80,7 @@ export default function AppRadioCards({
               </Text>
             </div>
             <Text>{radio.cardDescription}</Text>
-          </div>
+          </Box>
         </Grid.Col>
       ))}
     </Grid>

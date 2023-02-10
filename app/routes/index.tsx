@@ -1,4 +1,4 @@
-import { Grid } from "@pokt-foundation/pocket-blocks"
+import { Button, Grid } from "@pokt-foundation/pocket-blocks"
 import { LinksFunction, MetaFunction } from "@remix-run/node"
 import { Form, useSearchParams } from "@remix-run/react"
 import { useEffect, useState } from "react"
@@ -42,9 +42,9 @@ export default function Index() {
           <p className="text">{landing.subtitle}</p>
           <p className="text"></p>
           <Form action="/api/auth/auth0" method="post">
-            <button className="button" name="login" type="submit" value="true">
+            <Button name="login" type="submit" value="true" variant="filled">
               {landing.getStarted}
-            </button>
+            </Button>
           </Form>
         </Grid.Col>
         <Grid.Col lg={2} md={0} />

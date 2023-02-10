@@ -21,7 +21,7 @@ function IconDiscord({ fill, height, width }: IconDiscordProps) {
       </g>
       <defs>
         <clipPath id="clip0">
-          <rect fill={fill ?? "var(--color-white-main)"} height="55" width="71" />
+          <rect fill={fill ?? "var(--mantine-color-white)"} height="55" width="71" />
         </clipPath>
       </defs>
     </svg>

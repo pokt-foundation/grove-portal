@@ -19,7 +19,7 @@ export default function ValidateEmail() {
                 Email Verification{" "}
                 <Title
                   css={{
-                    color: "var(--color-secondary-main)",
+                    color: "var(--mantine-color-blue-6)",
                     fontWeight: "$bold",
                   }}
                   order={1}

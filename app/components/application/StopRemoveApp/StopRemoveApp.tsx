@@ -1,4 +1,4 @@
-import { Button, Text } from "@pokt-foundation/pocket-blocks"
+import { Button, Text, IconDeleteAlt } from "@pokt-foundation/pocket-blocks"
 import { Form, useFetcher } from "@remix-run/react"
 import { useEffect, useState } from "react"
 import styles from "./styles.css"
@@ -54,13 +54,14 @@ export default function StopRemoveApp({
     <>
       {isPaidPlan(planType) && subscription ? (
         <>
-          <Button fullWidth variant="outline" onClick={() => setShowStopModal(true)}>
-            <img
-              aria-hidden
-              alt={t.common.StopSubscription}
-              className="pokt-app-remove-delete-icon"
-              src="/delete.svg"
-            />{" "}
+          <Button
+            fullWidth
+            color="gray"
+            leftIcon={<IconDeleteAlt height={18} width={18} />}
+            size="xs"
+            variant="outline"
+            onClick={() => setShowStopModal(true)}
+          >
             {t.common.StopSubscription}
           </Button>
           <Modal
@@ -92,13 +93,14 @@ export default function StopRemoveApp({
         </>
       ) : (
         <div className="pokt-app-remove">
-          <Button fullWidth variant="outline" onClick={() => setRemoveAppOpened(true)}>
-            <img
-              aria-hidden
-              alt={t.stopRemoveApp.removeApp}
-              className="pokt-app-remove-delete-icon"
-              src="/delete.svg"
-            />
+          <Button
+            fullWidth
+            color="gray"
+            leftIcon={<IconDeleteAlt height={18} width={18} />}
+            size="xs"
+            variant="outline"
+            onClick={() => setRemoveAppOpened(true)}
+          >
             {t.stopRemoveApp.removeApp}
           </Button>
           <Modal

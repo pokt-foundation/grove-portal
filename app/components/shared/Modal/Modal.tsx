@@ -1,5 +1,4 @@
-import { Modal as MantineModal, ModalProps } from "@mantine/core"
-import { Group } from "@pokt-foundation/pocket-blocks"
+import { Modal as MantineModal, ModalProps, Group } from "@pokt-foundation/pocket-blocks"
 import clsx from "clsx"
 import React from "react"
 import styles from "./styles.css"

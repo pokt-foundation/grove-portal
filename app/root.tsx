@@ -1,10 +1,14 @@
+import { StylesPlaceholder } from "@mantine/remix"
 import {
   Alert,
   Center,
   Container,
+  createEmotionCache,
   IconBookOpen,
   IconCircleQuestion,
   IconMail,
+  MantineProvider,
+  theme,
 } from "@pokt-foundation/pocket-blocks"
 import { LinksFunction, LoaderFunction, MetaFunction, json } from "@remix-run/node"
 import {
@@ -73,13 +77,57 @@ export const loader: LoaderFunction = async ({ request }) => {
   return json<RootLoaderData>(data)
 }
 
+createEmotionCache({ key: "pni" })
+
 const WithProviders: React.FC = ({ children }) => {
   return (
-    <FeatureFlagsContextProvider>
-      <UserContextProvider>
-        <TranslateContextProvider>{children}</TranslateContextProvider>
-      </UserContextProvider>
-    </FeatureFlagsContextProvider>
+    <MantineProvider
+      withCSSVariables
+      withGlobalStyles
+      withNormalizeCSS
+      theme={{
+        ...theme,
+
+        colorScheme: "dark",
+        primaryColor: "magenta",
+        globalStyles: (theme) => ({
+          body: {
+            ...theme.fn.fontStyles(),
+            backgroundColor:
+              theme.colorScheme === "dark" ? theme.colors.navy[7] : theme.colors.gray[2],
+            color:
+              theme.colorScheme === "dark" ? theme.colors.gray[0] : theme.colors.navy[9],
+            lineHeight: theme.lineHeight,
+          },
+        }),
+        components: {
+          ...theme.components,
+          Paper: {
+            styles: {
+              root: {
+                overflow: "visible !important",
+              },
+            },
+          },
+          Card: {
+            styles: (theme) => ({
+              root: {
+                backgroundColor:
+                  theme.colorScheme === "dark"
+                    ? theme.colors.navy[5]
+                    : theme.colors.gray[1],
+              },
+            }),
+          },
+        },
+      }}
+    >
+      <FeatureFlagsContextProvider>
+        <UserContextProvider>
+          <TranslateContextProvider>{children}</TranslateContextProvider>
+        </UserContextProvider>
+      </FeatureFlagsContextProvider>
+    </MantineProvider>
   )
 }
 
@@ -97,6 +145,7 @@ const Document = ({ children, title }: { children: React.ReactNode; title?: stri
   return (
     <html lang={language}>
       <head>
+        {/* <StylesPlaceholder /> */}
         <Meta />
         <title>{title}</title>
         <Links />

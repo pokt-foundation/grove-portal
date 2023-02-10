@@ -15,7 +15,7 @@ vi.mock("./auth.server", () => ({
   },
 }))
 
-const request = new Request("")
+const request = new Request("https://portal.pokt.network")
 
 describe("requireUser", () => {
   it("throws and redrects if there is no user", async () => {

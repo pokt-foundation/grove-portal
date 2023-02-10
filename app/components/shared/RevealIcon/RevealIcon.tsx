@@ -21,9 +21,9 @@ export default function RevealIcon({ revealed, setRevealed }: RevealIconProps) {
       onClick={setRevealed}
     >
       {revealed ? (
-        <IconEyeOn fill="var(--color-secondary-main)" />
+        <IconEyeOn fill="var(--mantine-color-blue-6)" />
       ) : (
-        <IconEyeOff fill="var(--color-secondary-main)" />
+        <IconEyeOff fill="var(--mantine-color-blue-6)" />
       )}
     </span>
   )

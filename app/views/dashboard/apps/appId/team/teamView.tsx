@@ -106,7 +106,7 @@ function TeamView({ state }: TeamViewProps) {
                     contentClassName="dropdown-teams__content"
                     label={<DropdownTrigger label="Member" />}
                   >
-                    <DropdownItem action={() => {}} label="Send new Invite" />
+                    <DropdownItem action={() => {}} label="Admin" />
                     <DropdownItem action={() => {}} label="Remove" variant="green" />
                   </Dropdown>
                 </div>

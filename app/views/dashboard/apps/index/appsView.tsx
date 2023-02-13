@@ -4,7 +4,6 @@ import {
   Title,
   Text,
   IconMoreVertical,
-  Button,
 } from "@pokt-foundation/pocket-blocks"
 import { Link } from "@remix-run/react"
 import { useEffect, useState } from "react"
@@ -13,6 +12,7 @@ import UsageChartCard, {
   links as UsageCardLinks,
 } from "~/components/application/UsageChartCard"
 import Card, { links as CardLinks } from "~/components/shared/Card"
+import Dropdown, { DropdownItem, links as DropdownLinks } from "~/components/shared/Dropdown"
 import Modal, { links as ModalLinks } from "~/components/shared/Modal"
 import StatusTag, { links as StatusTagLinks } from "~/components/shared/StatusTag"
 import Table, { links as TableLinks } from "~/components/shared/Table"
@@ -31,6 +31,7 @@ export const links = () => {
     ...UsageCardLinks(),
     ...ModalLinks(),
     ...StatusTagLinks(),
+    ...DropdownLinks(),
     { rel: "stylesheet", href: styles },
   ]
 }
@@ -127,14 +128,23 @@ export const AppsView = ({
                   email: team.email,
                   role: team.role,
                   action: {
-                    value: "",
+                    value: "More",
                     element: (
-                      <Button
-                        className="pokt-button-with__icon"
-                        leftIcon={
-                          <IconMoreVertical className="pokt-icon" fill="#A9E34B" />
-                        }
-                      />
+                      <div className="list__more-actions">
+                        <Dropdown
+                          contentClassName="dropdown-teams__content"
+                          label={
+                            <IconMoreVertical className="pokt-icon" fill="#A9E34B" />
+                          }
+                        >
+                          <DropdownItem action={() => {}} label="Send new Invite" />
+                          <DropdownItem
+                            action={() => {}}
+                            label="Remove"
+                            variant="green"
+                          />
+                        </Dropdown>
+                      </div>
                     ),
                   },
                 }))}

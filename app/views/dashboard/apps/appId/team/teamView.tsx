@@ -1,13 +1,11 @@
 import {
   Button,
   IconPlus,
-  IconCaretDown,
   Title,
   IconMoreVertical,
 } from "@pokt-foundation/pocket-blocks"
 import { Form, useTransition } from "@remix-run/react"
 import { Transition } from "@remix-run/react/transition"
-import clsx from "clsx"
 import { useState } from "react"
 
 import styles from "./styles.css"
@@ -15,7 +13,7 @@ import AppRadioCards, {
   links as AppRadioCardsLinks,
 } from "~/components/application/AppRadioCards"
 import Card from "~/components/shared/Card"
-import Dropdown, { links as DropdownLinks } from "~/components/shared/Dropdown"
+import Dropdown, { DropdownItem, DropdownTrigger, links as DropdownLinks } from "~/components/shared/Dropdown"
 import Loader, { links as LoaderLinks } from "~/components/shared/Loader"
 import StatusTag, { links as StatusTagLinks } from "~/components/shared/StatusTag"
 import Table, { links as TableLinks } from "~/components/shared/Table"
@@ -92,7 +90,7 @@ function TeamView({ state }: TeamViewProps) {
       )}
       <Table
         paginate
-        columns={["Email", "Status", "Role"]}
+        columns={["Email", "Status", "Role", ""]}
         data={[
           {
             id: 1,
@@ -111,14 +109,23 @@ function TeamView({ state }: TeamViewProps) {
                     <DropdownItem action={() => {}} label="Send new Invite" />
                     <DropdownItem action={() => {}} label="Remove" variant="green" />
                   </Dropdown>
-
-                  <Button
-                    className="pokt-button-with__icon"
-                    leftIcon={<IconMoreVertical fill="#A9E34B" />}
-                  />
                 </div>
               ),
               value: "Role",
+            },
+            action: {
+              element: (
+                <div className="list__more-actions">
+                  <Dropdown
+                    contentClassName="dropdown-teams__content"
+                    label={<IconMoreVertical fill="#A9E34B" />}
+                  >
+                    <DropdownItem action={() => {}} label="Send new Invite" />
+                    <DropdownItem action={() => {}} label="Remove" variant="green" />
+                  </Dropdown>
+                </div>
+              ),
+              value: "More",
             },
           },
         ]}
@@ -134,41 +141,6 @@ function TeamView({ state }: TeamViewProps) {
         }
       />
     </>
-  )
-}
-
-type DropdownTriggerProps = {
-  label: string
-}
-
-type DropdownItemProps = {
-  label: string
-  variant?: "default" | "green"
-  action: () => void
-}
-
-function DropdownTrigger({ label }: DropdownTriggerProps) {
-  return (
-    <div className="dropdown-trigger">
-      <div className="dropdown-trigger__label">{label}</div>
-      <div className="dropdown-trigger__arrow">
-        <IconCaretDown className="pokt-icon" height="12px" width="12px" />
-      </div>
-    </div>
-  )
-}
-
-function DropdownItem({ label, action, variant }: DropdownItemProps) {
-  return (
-    <button
-      className={clsx({
-        "dropdown-item": true,
-        "dropdown-item--green": variant === "green",
-      })}
-      onClick={action}
-    >
-      {label}
-    </button>
   )
 }
 

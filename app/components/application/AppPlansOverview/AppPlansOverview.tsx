@@ -1,6 +1,6 @@
 import { Anchor, Box, Title, Text, Grid } from "@pokt-foundation/pocket-blocks"
 import { Link } from "@remix-run/react"
-import ReactHtmlParser from "react-html-parser"
+import parse from "html-react-parser"
 import styles from "./styles.css"
 import { useTranslate } from "~/context/TranslateContext"
 import { PayPlanType } from "~/models/portal/sdk"
@@ -39,9 +39,7 @@ export default function AppPlansOverview({ planType }: AppPlansOverviewProps) {
           <Title className="plan-data-highlights" mt={20} order={5}>
             {AppPlansOverview.planDetailsTitles.pricing}
           </Title>
-          <Text mt={16}>
-            {ReactHtmlParser(AppPlansOverview.planDetails[planType].pricing)}
-          </Text>
+          <Text mt={16}>{parse(AppPlansOverview.planDetails[planType].pricing)}</Text>
         </Grid.Col>
 
         <Grid.Col md={1} xs={5}>

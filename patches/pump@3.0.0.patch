@@ -1,0 +1,13 @@
+diff --git a/index.js b/index.js
+index c15059f176c7948adac32d2baa17b536b4427cab..8b806b5128a743752809c6f4dea4108a45049d9c 100644
+--- a/index.js
++++ b/index.js
+@@ -3,7 +3,7 @@ var eos = require('end-of-stream')
+ var fs = require('fs') // we only need fs to get the ReadStream and WriteStream prototypes
+ 
+ var noop = function () {}
+-var ancient = /^v?\.0/.test(process.version)
++var ancient = null
+ 
+ var isFn = function (fn) {
+   return typeof fn === 'function'

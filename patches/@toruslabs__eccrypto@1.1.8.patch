@@ -1,0 +1,10 @@
+diff --git a/browser.js b/browser.js
+index c9847dfe234746d5938470116ef8aa6350209017..e414fc2b2b622b0268d4b89f06816edd984e07fe 100644
+--- a/browser.js
++++ b/browser.js
+@@ -1,4 +1,5 @@
+ "use strict";
++import { Buffer } from 'buffer';
+ 
+ var EC = require("elliptic").ec;
+ 

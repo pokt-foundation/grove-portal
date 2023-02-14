@@ -1,5 +1,10 @@
 import { Text, TextInput } from "@mantine/core"
-import { Group, Table as MantineTable, Pagination } from "@pokt-foundation/pocket-blocks"
+import {
+  Group,
+  Table as MantineTable,
+  Pagination,
+  IconSearch,
+} from "@pokt-foundation/pocket-blocks"
 import { useMemo, useState } from "react"
 import styles from "./styles.css"
 import Card, { links as CardLinks } from "~/components/shared/Card"
@@ -122,6 +127,7 @@ export const Table = <T extends IdObj>({
               <TextInput
                 aria-label={`${t.search.searchBy} Network, ID or Status`}
                 className="pokt-table-search"
+                icon={<IconSearch fill="white" height={12} width={12} />}
                 name="search"
                 placeholder={`${t.search.searchBy} Network, ID or Status`}
                 rightSectionWidth={85}

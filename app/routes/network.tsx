@@ -8,7 +8,7 @@ import { initPortalClient } from "~/models/portal/portal.server"
 import { Blockchain } from "~/models/portal/sdk"
 import {
   getRelays,
-  getRelaysPerWeek,
+  getRelaysPerPeriod,
   RelayMetric,
 } from "~/models/relaymeter/relaymeter.server"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
@@ -55,7 +55,7 @@ export const loader: LoaderFunction = async ({ request }) => {
       console.log(e)
     })) ?? null
 
-  const dailyNetworkRelaysPerWeek = await getRelaysPerWeek("network")
+  const dailyNetworkRelaysPerWeek = await getRelaysPerPeriod("network", 7)
   // api auto adjusts to/from to begining and end of each day so putting the same time here gives us back one full day
   const today = dayjs().utc().hour(0).minute(0).second(0).millisecond(0).format()
   const week = dayjs()

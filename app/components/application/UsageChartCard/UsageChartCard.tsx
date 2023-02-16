@@ -49,7 +49,7 @@ export default function UsageChartCard({
       data: relays
         .sort((a, b) => dayjs(a.From).utc().valueOf() - dayjs(b.From).utc().valueOf())
         .map((relay) => ({
-          x: dayjs(relay.To).format("ddd"),
+          x: dayjs(relay.To).format("MMM DD"),
           y: relay.Count.Total,
         })),
     },

@@ -30,14 +30,8 @@ mutation removeEndpoint($endpointID: ID!) {
   }
 }
 
-mutation createEndpointUser(
-  $endpointID: ID! 
-  $input: UserAccessInput!
-) {
-  createEndpointUser(
-    endpointID: $endpointID 
-    input: $input
-  ) {
+mutation createEndpointUser($endpointID: ID!, $input: UserAccessInput!) {
+  createEndpointUser(endpointID: $endpointID, input: $input) {
     id
     users {
       roleName

@@ -1,8 +1,8 @@
-import { ActionFunction, json } from "@remix-run/node"
+import { ActionFunction, json, LoaderFunction } from "@remix-run/node"
 import { useCatch, useTransition } from "@remix-run/react"
 import invariant from "tiny-invariant"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { RoleName } from "~/models/portal/sdk"
+import { EndpointQuery, RoleName } from "~/models/portal/sdk"
 import { getErrorMessage } from "~/utils/catchError"
 import { requireUser } from "~/utils/session.server"
 
@@ -12,6 +12,21 @@ import TeamView, {
 
 export const links = () => {
   return [...TeamViewLinks()]
+}
+
+export const loader: LoaderFunction = async ({ request, params }) => {
+  const { appId } = params
+  const user = await requireUser(request)
+  const portal = initPortalClient(user.accessToken)
+  invariant(appId && typeof appId === "string", "App ID error")
+
+  const endpointResponse = await portal.endpoint({
+    endpointID: appId,
+  })
+
+  return json<EndpointQuery | null>({
+    endpoint: endpointResponse.endpoint,
+  })
 }
 
 export const action: ActionFunction = async ({ request, params }) => {

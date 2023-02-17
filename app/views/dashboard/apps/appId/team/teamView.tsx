@@ -1,5 +1,5 @@
 import { Button, IconPlus, Title, IconMoreVertical } from "@pokt-foundation/pocket-blocks"
-import { Form, useActionData, useTransition } from "@remix-run/react"
+import { Form, useActionData, useLoaderData, useTransition } from "@remix-run/react"
 import { Transition } from "@remix-run/react/transition"
 import { useState } from "react"
 
@@ -20,7 +20,7 @@ import NotificationMessage, {
 import StatusTag, { links as StatusTagLinks } from "~/components/shared/StatusTag"
 import Table, { links as TableLinks } from "~/components/shared/Table"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
-import { RoleName } from "~/models/portal/sdk"
+import { EndpointQuery, RoleName } from "~/models/portal/sdk"
 
 export const links = () => {
   return [
@@ -62,30 +62,12 @@ type TeamViewProps = {
 
 function TeamView({ state }: TeamViewProps) {
   const actionData = useActionData()
-  console.log(actionData)
+  const loaderData = useLoaderData<EndpointQuery | null>()
   const [isInviteNewUserOpen, setInviteNewUserOpen] = useState(false)
   const [email, setEmail] = useState("")
   const [radioSelectedValue, setRadioSelectedValue] = useState("ADMIN")
 
   const transition = useTransition()
-
-  const mockedData = [
-    {
-      email: "testadmin@pokt.network",
-      roleName: "ADMIN",
-      accepted: true,
-    },
-    {
-      email: "testowner@pokt.network",
-      roleName: "OWNER",
-      accepted: true,
-    },
-    {
-      email: "test2@pokt.network",
-      roleName: "MEMBER",
-      accepted: true,
-    },
-  ]
 
   const userRole = "ADMIN"
 
@@ -150,49 +132,74 @@ function TeamView({ state }: TeamViewProps) {
       <Table
         paginate
         columns={["Email", "Status", "Role", ""]}
-        data={mockedData.map(({ email, roleName, accepted }) => {
-          return {
-            id: email,
-            email: email,
-            status: {
-              element: <StatusTag accepted={accepted} />,
-              value: accepted ? "ACCEPTED" : "PENDING",
-            },
-            role: {
-              element: (
-                <div className="list__role">
-                  {userRole === "ADMIN" || userRole === "OWNER" ? (
-                    <Dropdown
-                      contentClassName="dropdown-teams__content"
-                      label={<DropdownTrigger label={roleName} />}
-                    >
-                      <DropdownItem action={() => {}} label="Admin" />
-                    </Dropdown>
-                  ) : (
-                    roleName
-                  )}
-                </div>
-              ),
-              value: "Role",
-            },
-            action: {
-              element: (
-                <div className="list__more-actions">
-                  <Dropdown
-                    contentClassName="dropdown-teams__content"
-                    label={<IconMoreVertical fill="#A9E34B" />}
-                  >
-                    {!accepted && (
-                      <DropdownItem action={() => {}} label="Send new Invite" />
-                    )}
-                    <DropdownItem action={() => {}} label="Remove" variant="green" />
-                  </Dropdown>
-                </div>
-              ),
-              value: "More",
-            },
-          }
-        })}
+        data={
+          loaderData
+            ? loaderData.endpoint.users.map(({ accepted, roleName, email }) => {
+                return {
+                  id: email,
+                  email: email,
+                  status: {
+                    element: <StatusTag accepted={accepted} />,
+                    value: accepted ? "ACCEPTED" : "PENDING",
+                  },
+                  role: {
+                    element: (
+                      <div className="list__role">
+                        {userRole === "ADMIN" || userRole === "OWNER" ? (
+                          <Dropdown
+                            contentClassName="dropdown-teams__content"
+                            label={<DropdownTrigger label={roleName} />}
+                          >
+                            <DropdownItem action={() => {}} label="Admin" />
+                          </Dropdown>
+                        ) : (
+                          roleName
+                        )}
+                      </div>
+                    ),
+                    value: "Role",
+                  },
+                  action: {
+                    element: (
+                      <div className="list__more-actions">
+                        <Dropdown
+                          contentClassName="dropdown-teams__content"
+                          label={<IconMoreVertical fill="#A9E34B" />}
+                        >
+                          {!accepted && (
+                            <DropdownItem action={() => {}} label="Send new Invite" />
+                          )}
+                          <DropdownItem
+                            action={() => {}}
+                            label="Remove"
+                            variant="green"
+                          />
+                        </Dropdown>
+                      </div>
+                    ),
+                    value: "More",
+                  },
+                }
+              })
+            : [
+                {
+                  action: {
+                    element: <></>,
+                    value: "",
+                  },
+                  email: "",
+                  id: "",
+                  role: {
+                    element: <></>,
+                    value: "",
+                  },
+                  status: {
+                    element: <></>,
+                    value: "",
+                  },
+                },
+              ]
+        }
         label="Users"
         rightComponent={
           <Button

@@ -1,5 +1,5 @@
 import { Button, IconPlus, Title, IconMoreVertical } from "@pokt-foundation/pocket-blocks"
-import { Form, useTransition } from "@remix-run/react"
+import { Form, useActionData, useTransition } from "@remix-run/react"
 import { Transition } from "@remix-run/react/transition"
 import { useState } from "react"
 
@@ -14,9 +14,13 @@ import Dropdown, {
   links as DropdownLinks,
 } from "~/components/shared/Dropdown"
 import Loader, { links as LoaderLinks } from "~/components/shared/Loader"
+import NotificationMessage, {
+  links as NotificationMessageLinks,
+} from "~/components/shared/NotificationMessage"
 import StatusTag, { links as StatusTagLinks } from "~/components/shared/StatusTag"
 import Table, { links as TableLinks } from "~/components/shared/Table"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
+import { RoleName } from "~/models/portal/sdk"
 
 export const links = () => {
   return [
@@ -26,22 +30,28 @@ export const links = () => {
     ...LoaderLinks(),
     ...StatusTagLinks(),
     ...TableLinks(),
+    ...NotificationMessageLinks(),
     { rel: "stylesheet", href: styles },
   ]
 }
 
-const tiers = [
+const tiers: {
+  cardDescription: string
+  name: string
+  value: RoleName
+  active: string
+}[] = [
   {
     cardDescription: "Team Member abilities and manage application access and billing",
     name: "Team Admin",
-    value: "ADMIN",
+    value: RoleName.Admin,
     active: "true",
   },
   {
     cardDescription:
       "View application metrics, manage security and view basic plan details",
     name: "Team Member",
-    value: "MEMBER",
+    value: RoleName.Member,
     active: "true",
   },
 ]
@@ -51,6 +61,8 @@ type TeamViewProps = {
 }
 
 function TeamView({ state }: TeamViewProps) {
+  const actionData = useActionData()
+  console.log(actionData)
   const [isInviteNewUserOpen, setInviteNewUserOpen] = useState(false)
   const [email, setEmail] = useState("")
   const [radioSelectedValue, setRadioSelectedValue] = useState("ADMIN")
@@ -80,6 +92,29 @@ function TeamView({ state }: TeamViewProps) {
   return (
     <>
       {state === "loading" && <Loader />}
+      {actionData && (
+        <>
+          <NotificationMessage
+            notificationMessage={{
+              type: "success",
+              isActive: !actionData.error,
+              title: "Invite sent",
+              description:
+                "We have sent an invitation to ricardo.souza@pokt.network. You can review the invite status below.",
+            }}
+            setNotificationMessage={() => null}
+          />
+          <NotificationMessage
+            notificationMessage={{
+              type: "error",
+              isActive: actionData.error,
+              title: "Invite error",
+              description: "We had some issues with the invite. Please try again later.",
+            }}
+            setNotificationMessage={() => null}
+          />
+        </>
+      )}
       {isInviteNewUserOpen && (
         <Card>
           <Title order={3}>Invite New User</Title>
@@ -97,15 +132,19 @@ function TeamView({ state }: TeamViewProps) {
               radioData={tiers}
               setRadio={setRadioSelectedValue}
             />
+
+            <div className="invite-new-user__form__buttons-container">
+              <Button variant="outline" onClick={() => setInviteNewUserOpen(false)}>
+                Cancel
+              </Button>
+              <Button
+                disabled={transition.state === "submitting" || email === ""}
+                type="submit"
+              >
+                Send Invite
+              </Button>
+            </div>
           </Form>
-          <div className="invite-new-user__form__buttons-container">
-            <Button variant="outline" onClick={() => setInviteNewUserOpen(false)}>
-              Cancel
-            </Button>
-            <Button disabled={transition.state === "submitting" || email === ""}>
-              Send Invite
-            </Button>
-          </div>
         </Card>
       )}
       <Table

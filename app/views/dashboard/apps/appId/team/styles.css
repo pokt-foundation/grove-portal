@@ -23,3 +23,7 @@
 .list__more-actions .pokt-dropdown-trigger {
   background-color: transparent;
 }
+
+.notification-message.active {
+  margin-bottom: 32px;
+}

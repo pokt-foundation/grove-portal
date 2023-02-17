@@ -12,7 +12,10 @@ import UsageChartCard, {
   links as UsageCardLinks,
 } from "~/components/application/UsageChartCard"
 import Card, { links as CardLinks } from "~/components/shared/Card"
-import Dropdown, { DropdownItem, links as DropdownLinks } from "~/components/shared/Dropdown"
+import Dropdown, {
+  DropdownItem,
+  links as DropdownLinks,
+} from "~/components/shared/Dropdown"
 import Modal, { links as ModalLinks } from "~/components/shared/Modal"
 import StatusTag, { links as StatusTagLinks } from "~/components/shared/StatusTag"
 import Table, { links as TableLinks } from "~/components/shared/Table"
@@ -114,7 +117,7 @@ export const AppsView = ({
 
             <Tabs.Tab label="Teams">
               <Table
-                columns={["App", "Invite status", "Email", "Role", ""]}
+                columns={["App", "Invite status", "Role", ""]}
                 data={teams.map((team) => ({
                   id: team.id,
                   app: {
@@ -122,11 +125,10 @@ export const AppsView = ({
                     element: <Link to={team.id.toString()}>{team.app}</Link>,
                   },
                   inviteStatus: {
-                    value: team.inviteStatus,
-                    element: <StatusTag status={team.inviteStatus} />,
+                    value: team.accepted ? "Accepted" : "Pending",
+                    element: <StatusTag accepted={team.accepted} />,
                   },
-                  email: team.email,
-                  role: team.role,
+                  role: team.roleName,
                   action: {
                     value: "More",
                     element: (
@@ -137,10 +139,14 @@ export const AppsView = ({
                             <IconMoreVertical className="pokt-icon" fill="#A9E34B" />
                           }
                         >
-                          <DropdownItem action={() => {}} label="Send new Invite" />
+                          {team.accepted ? (
+                            <DropdownItem action={() => {}} label="View App" />
+                          ) : (
+                            <DropdownItem action={() => {}} label="Accept Invite" />
+                          )}
                           <DropdownItem
                             action={() => {}}
-                            label="Remove"
+                            label="Leave App"
                             variant="green"
                           />
                         </Dropdown>

@@ -70,7 +70,7 @@ function TeamView({ state }: TeamViewProps) {
   const [confirmationModalProps, setConfirmationModalProps] =
     useState<ConfirmationModalPropsType>({
       type: "options",
-      isActive: true,
+      isActive: false,
     })
   const [confirmationModalTitle, setConfirmationModalTitle] = useState<string>("")
   const [confirmationModalDescription, setConfirmationModalDescription] =

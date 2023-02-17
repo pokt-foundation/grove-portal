@@ -1,23 +1,28 @@
-import {
-  Button,
-  IconPlus,
-  Title,
-  IconMoreVertical,
-} from "@pokt-foundation/pocket-blocks"
+import { Button, IconPlus, Title, IconMoreVertical } from "@pokt-foundation/pocket-blocks"
 import { Form, useTransition } from "@remix-run/react"
 import { Transition } from "@remix-run/react/transition"
-import { useState } from "react"
+import { PropsWithChildren, useState } from "react"
 
 import styles from "./styles.css"
 import AppRadioCards, {
   links as AppRadioCardsLinks,
 } from "~/components/application/AppRadioCards"
 import Card from "~/components/shared/Card"
-import Dropdown, { DropdownItem, DropdownTrigger, links as DropdownLinks } from "~/components/shared/Dropdown"
+import Dropdown, {
+  DropdownItem,
+  DropdownTrigger,
+  links as DropdownLinks,
+} from "~/components/shared/Dropdown"
 import Loader, { links as LoaderLinks } from "~/components/shared/Loader"
 import StatusTag, { links as StatusTagLinks } from "~/components/shared/StatusTag"
 import Table, { links as TableLinks } from "~/components/shared/Table"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
+import ConfirmationModal, {
+  ConfirmationModalPropsType,
+  links as ConfirmationModalLinks,
+} from "~/components/shared/ConfirmationModal"
+import Text from "~/components/shared/Text"
+import { ButtonProps } from "@pokt-foundation/pocket-blocks/dist/src/package/component/atom/button/button"
 
 export const links = () => {
   return [
@@ -27,6 +32,7 @@ export const links = () => {
     ...LoaderLinks(),
     ...StatusTagLinks(),
     ...TableLinks(),
+    ...ConfirmationModalLinks(),
     { rel: "stylesheet", href: styles },
   ]
 }
@@ -51,13 +57,46 @@ type TeamViewProps = {
   state: Transition["state"]
 }
 
+type ConfirmationModalOptionsType = {
+  onClick: () => void
+  title: string
+  variant: PropsWithChildren<ButtonProps["variant"]>
+}
+
 function TeamView({ state }: TeamViewProps) {
   const [isInviteNewUserOpen, setInviteNewUserOpen] = useState(false)
   const [email, setEmail] = useState("")
   const [radioSelectedValue, setRadioSelectedValue] = useState("ADMIN")
+  const [confirmationModalProps, setConfirmationModalProps] =
+    useState<ConfirmationModalPropsType>({
+      type: "options",
+      isActive: true,
+    })
+  const [confirmationModalTitle, setConfirmationModalTitle] = useState<string>("")
+  const [confirmationModalDescription, setConfirmationModalDescription] =
+    useState<string>("")
 
   const transition = useTransition()
 
+  const handleRemoveCancelClick = () => {
+    console.log("cancel")
+  }
+
+  const handleRemoveClick = () => {
+    console.log("remove")
+  }
+
+  const handleRemoveTryAgain = () => {
+    console.log("try again")
+  }
+
+  const handleListItemRemove = () => {
+    setConfirmationModalProps({ type: "options", isActive: true })
+    setConfirmationModalTitle("Do you want to remove this user from this app team?")
+    setConfirmationModalDescription(
+      "That user will completely lose access to the current application.",
+    )
+  }
   return (
     <>
       {state === "loading" && <Loader />}
@@ -107,7 +146,11 @@ function TeamView({ state }: TeamViewProps) {
                     label={<DropdownTrigger label="Member" />}
                   >
                     <DropdownItem action={() => {}} label="Admin" />
-                    <DropdownItem action={() => {}} label="Remove" variant="green" />
+                    <DropdownItem
+                      action={handleListItemRemove}
+                      label="Remove"
+                      variant="green"
+                    />
                   </Dropdown>
                 </div>
               ),
@@ -121,7 +164,11 @@ function TeamView({ state }: TeamViewProps) {
                     label={<IconMoreVertical fill="#A9E34B" />}
                   >
                     <DropdownItem action={() => {}} label="Send new Invite" />
-                    <DropdownItem action={() => {}} label="Remove" variant="green" />
+                    <DropdownItem
+                      action={handleListItemRemove}
+                      label="Remove"
+                      variant="green"
+                    />
                   </Dropdown>
                 </div>
               ),
@@ -140,6 +187,33 @@ function TeamView({ state }: TeamViewProps) {
           </Button>
         }
       />
+      <ConfirmationModal
+        confirmationModalProps={confirmationModalProps}
+        setConfirmationModalProps={setConfirmationModalProps}
+      >
+        <div className="confirmation-modal-content">
+          <Text weight="700" className="confirmation-modal-title">
+            {confirmationModalTitle}
+          </Text>
+          <Text className="confirmation-modal-description">
+            {confirmationModalDescription}
+          </Text>
+          {confirmationModalProps.type === "options" ? (
+            <div className="confirmation-modal-options">
+              <Button id="cancel" variant="outline">
+                Cancel
+              </Button>
+              <Button variant="filled" color="red">
+                Remove
+              </Button>
+            </div>
+          ) : (
+            <div className="confirmation-modal-options">
+              <Button>Try again</Button>
+            </div>
+          )}
+        </div>
+      </ConfirmationModal>
     </>
   )
 }

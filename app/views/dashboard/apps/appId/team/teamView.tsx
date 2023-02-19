@@ -1,4 +1,5 @@
 import { Button, IconPlus, Title, IconMoreVertical } from "@pokt-foundation/pocket-blocks"
+import { ButtonProps } from "@pokt-foundation/pocket-blocks/dist/src/package/component/atom/button/button"
 import { Form, useTransition } from "@remix-run/react"
 import { Transition } from "@remix-run/react/transition"
 import { PropsWithChildren, useState } from "react"
@@ -8,6 +9,10 @@ import AppRadioCards, {
   links as AppRadioCardsLinks,
 } from "~/components/application/AppRadioCards"
 import Card from "~/components/shared/Card"
+import ConfirmationModal, {
+  ConfirmationModalPropsType,
+  links as ConfirmationModalLinks,
+} from "~/components/shared/ConfirmationModal"
 import Dropdown, {
   DropdownItem,
   DropdownTrigger,
@@ -16,13 +21,8 @@ import Dropdown, {
 import Loader, { links as LoaderLinks } from "~/components/shared/Loader"
 import StatusTag, { links as StatusTagLinks } from "~/components/shared/StatusTag"
 import Table, { links as TableLinks } from "~/components/shared/Table"
-import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
-import ConfirmationModal, {
-  ConfirmationModalPropsType,
-  links as ConfirmationModalLinks,
-} from "~/components/shared/ConfirmationModal"
 import Text from "~/components/shared/Text"
-import { ButtonProps } from "@pokt-foundation/pocket-blocks/dist/src/package/component/atom/button/button"
+import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 
 export const links = () => {
   return [
@@ -192,7 +192,7 @@ function TeamView({ state }: TeamViewProps) {
         setConfirmationModalProps={setConfirmationModalProps}
       >
         <div className="confirmation-modal-content">
-          <Text weight="700" className="confirmation-modal-title">
+          <Text className="confirmation-modal-title" weight="700">
             {confirmationModalTitle}
           </Text>
           <Text className="confirmation-modal-description">
@@ -203,7 +203,7 @@ function TeamView({ state }: TeamViewProps) {
               <Button id="cancel" variant="outline">
                 Cancel
               </Button>
-              <Button variant="filled" color="red">
+              <Button color="red" variant="filled">
                 Remove
               </Button>
             </div>

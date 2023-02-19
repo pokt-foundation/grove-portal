@@ -97,6 +97,26 @@ function TeamView({ state }: TeamViewProps) {
       "That user will completely lose access to the current application.",
     )
   }
+  const mockedData = [
+    {
+      email: "testadmin@pokt.network",
+      roleName: "ADMIN",
+      accepted: true,
+    },
+    {
+      email: "testowner@pokt.network",
+      roleName: "OWNER",
+      accepted: true,
+    },
+    {
+      email: "test2@pokt.network",
+      roleName: "MEMBER",
+      accepted: true,
+    },
+  ]
+
+  const userRole = "ADMIN"
+
   return (
     <>
       {state === "loading" && <Loader />}
@@ -108,6 +128,7 @@ function TeamView({ state }: TeamViewProps) {
               label="Email address"
               name="email-address"
               placeholder="new@server.com"
+              type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -130,13 +151,13 @@ function TeamView({ state }: TeamViewProps) {
       <Table
         paginate
         columns={["Email", "Status", "Role", ""]}
-        data={[
-          {
-            id: 1,
-            email: "carlos@carlosvq.com",
+        data={mockedData.map(({ email, roleName, accepted }) => {
+          return {
+            id: email,
+            email: email,
             status: {
-              element: <StatusTag status="EXPIRED" />,
-              value: "Expired",
+              element: <StatusTag accepted={accepted} />,
+              value: accepted ? "ACCEPTED" : "PENDING",
             },
             role: {
               element: (
@@ -174,8 +195,8 @@ function TeamView({ state }: TeamViewProps) {
               ),
               value: "More",
             },
-          },
-        ]}
+          }
+        })}
         label="Users"
         rightComponent={
           <Button

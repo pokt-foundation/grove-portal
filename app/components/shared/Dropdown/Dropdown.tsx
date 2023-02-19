@@ -12,7 +12,7 @@ export const links = () => {
 type DropdownProps = {
   label: string | React.ReactElement
   contentClassName: string
-}
+} & DropdownMenu.DropdownMenuProps
 
 export const Dropdown: React.FC<DropdownProps> = ({
   label,
@@ -44,6 +44,7 @@ type DropdownItemProps = {
   label: string
   variant?: "default" | "green"
   action: () => void
+  disabled?: boolean
 }
 
 function DropdownTrigger({ label }: DropdownTriggerProps) {
@@ -57,13 +58,14 @@ function DropdownTrigger({ label }: DropdownTriggerProps) {
   )
 }
 
-function DropdownItem({ label, action, variant }: DropdownItemProps) {
+function DropdownItem({ label, action, variant, disabled = false }: DropdownItemProps) {
   return (
     <button
       className={clsx({
         "dropdown-item": true,
         "dropdown-item--green": variant === "green",
       })}
+      disabled={disabled}
       onClick={action}
     >
       {label}

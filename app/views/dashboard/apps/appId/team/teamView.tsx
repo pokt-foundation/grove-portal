@@ -4,6 +4,7 @@ import { Form, useTransition } from "@remix-run/react"
 import { Transition } from "@remix-run/react/transition"
 import { PropsWithChildren, useState } from "react"
 
+import { Auth0Profile } from "remix-auth-auth0"
 import styles from "./styles.css"
 import AppRadioCards, {
   links as AppRadioCardsLinks,
@@ -23,7 +24,6 @@ import StatusTag, { links as StatusTagLinks } from "~/components/shared/StatusTa
 import Table, { links as TableLinks } from "~/components/shared/Table"
 import Text from "~/components/shared/Text"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
-import { Auth0Profile } from "remix-auth-auth0"
 import { EndpointQuery } from "~/models/portal/sdk"
 
 export const links = () => {
@@ -211,10 +211,10 @@ function TeamView({ state, endpoint, profile }: TeamViewProps) {
                 </Button>
                 <Button
                   color="red"
-                  variant="filled"
                   name="email"
-                  value={confirmationModalEmail}
                   type="submit"
+                  value={confirmationModalEmail}
+                  variant="filled"
                 >
                   Remove
                 </Button>

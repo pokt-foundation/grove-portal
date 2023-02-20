@@ -2,6 +2,7 @@ import { ActionFunction, json, LoaderFunction } from "@remix-run/node"
 import { useCatch, useLoaderData, useTransition } from "@remix-run/react"
 import { Auth0Profile } from "remix-auth-auth0"
 import invariant from "tiny-invariant"
+import { AppIdLoaderData } from "../$appId"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { requireUser } from "~/utils/session.server"
@@ -9,7 +10,6 @@ import { requireUser } from "~/utils/session.server"
 import TeamView, {
   links as TeamViewLinks,
 } from "~/views/dashboard/apps/appId/team/teamView"
-import { AppIdLoaderData } from "../$appId"
 
 export const links = () => {
   return [...TeamViewLinks()]
@@ -28,15 +28,13 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export const action: ActionFunction = async ({ request, params }) => {
   const { appId } = params
-  const { profile } = useLoaderData()
   const user = await requireUser(request)
   const portal = initPortalClient(user.accessToken)
   const formData = await request.formData()
   const email = formData.get("email")
-  
+
   invariant(appId, "app id not found")
   invariant(email && typeof email === "string", "user email not found")
-
 
   // const email = "ricardo.souza@pokt.network"
   try {
@@ -57,7 +55,7 @@ export default function Team() {
   const { profile } = useLoaderData()
   const { endpoint } = appIDRoute?.data as AppIdLoaderData
 
-  return <TeamView state={state} endpoint={endpoint} profile={profile} />
+  return <TeamView endpoint={endpoint} profile={profile} state={state} />
 }
 
 export const CatchBoundary = () => {

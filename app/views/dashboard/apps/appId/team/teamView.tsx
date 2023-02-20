@@ -1,4 +1,9 @@
-import { Button, IconPlus, Title, IconMoreVertical } from "@pokt-foundation/pocket-blocks"
+import {
+  Button,
+  IconPlus,
+  Title,
+  IconMoreVertical,
+} from "@pokt-foundation/pocket-blocks"
 import { Form, useTransition } from "@remix-run/react"
 import { Transition } from "@remix-run/react/transition"
 import { useState } from "react"
@@ -8,11 +13,7 @@ import AppRadioCards, {
   links as AppRadioCardsLinks,
 } from "~/components/application/AppRadioCards"
 import Card from "~/components/shared/Card"
-import Dropdown, {
-  DropdownItem,
-  DropdownTrigger,
-  links as DropdownLinks,
-} from "~/components/shared/Dropdown"
+import Dropdown, { DropdownItem, DropdownTrigger, links as DropdownLinks } from "~/components/shared/Dropdown"
 import Loader, { links as LoaderLinks } from "~/components/shared/Loader"
 import StatusTag, { links as StatusTagLinks } from "~/components/shared/StatusTag"
 import Table, { links as TableLinks } from "~/components/shared/Table"
@@ -57,26 +58,6 @@ function TeamView({ state }: TeamViewProps) {
 
   const transition = useTransition()
 
-  const mockedData = [
-    {
-      email: "testadmin@pokt.network",
-      roleName: "ADMIN",
-      accepted: true,
-    },
-    {
-      email: "testowner@pokt.network",
-      roleName: "OWNER",
-      accepted: true,
-    },
-    {
-      email: "test2@pokt.network",
-      roleName: "MEMBER",
-      accepted: true,
-    },
-  ]
-
-  const userRole = "ADMIN"
-
   return (
     <>
       {state === "loading" && <Loader />}
@@ -88,7 +69,6 @@ function TeamView({ state }: TeamViewProps) {
               label="Email address"
               name="email-address"
               placeholder="new@server.com"
-              type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -111,27 +91,24 @@ function TeamView({ state }: TeamViewProps) {
       <Table
         paginate
         columns={["Email", "Status", "Role", ""]}
-        data={mockedData.map(({ email, roleName, accepted }) => {
-          return {
-            id: email,
-            email: email,
+        data={[
+          {
+            id: 1,
+            email: "carlos@carlosvq.com",
             status: {
-              element: <StatusTag accepted={accepted} />,
-              value: accepted ? "ACCEPTED" : "PENDING",
+              element: <StatusTag status="EXPIRED" />,
+              value: "Expired",
             },
             role: {
               element: (
                 <div className="list__role">
-                  {userRole === "ADMIN" || userRole === "OWNER" ? (
-                    <Dropdown
-                      contentClassName="dropdown-teams__content"
-                      label={<DropdownTrigger label={roleName} />}
-                    >
-                      <DropdownItem action={() => {}} label="Admin" />
-                    </Dropdown>
-                  ) : (
-                    roleName
-                  )}
+                  <Dropdown
+                    contentClassName="dropdown-teams__content"
+                    label={<DropdownTrigger label="Member" />}
+                  >
+                    <DropdownItem action={() => {}} label="Admin" />
+                    <DropdownItem action={() => {}} label="Remove" variant="green" />
+                  </Dropdown>
                 </div>
               ),
               value: "Role",
@@ -143,17 +120,15 @@ function TeamView({ state }: TeamViewProps) {
                     contentClassName="dropdown-teams__content"
                     label={<IconMoreVertical fill="#A9E34B" />}
                   >
-                    {!accepted && (
-                      <DropdownItem action={() => {}} label="Send new Invite" />
-                    )}
+                    <DropdownItem action={() => {}} label="Send new Invite" />
                     <DropdownItem action={() => {}} label="Remove" variant="green" />
                   </Dropdown>
                 </div>
               ),
               value: "More",
             },
-          }
-        })}
+          },
+        ]}
         label="Users"
         rightComponent={
           <Button

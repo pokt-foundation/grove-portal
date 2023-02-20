@@ -7,19 +7,20 @@ export const links = () => {
 }
 
 type StatusTagProps = {
-  accepted: boolean
+  status: "ACCEPTED" | "PENDING" | "EXPIRED"
 }
 
-function StatusTag({ accepted }: StatusTagProps) {
+function StatusTag({ status }: StatusTagProps) {
   return (
     <div
       className={clsx({
         "status-tag": true,
-        "status-tag--accepted": accepted,
-        "status-tag--pending": !accepted,
+        "status-tag--accepted": status === "ACCEPTED",
+        "status-tag--pending": status === "PENDING",
+        "status-tag--expired": status === "EXPIRED",
       })}
     >
-      <span className="status-tag__label">{accepted ? "ACCEPTED" : "PENDING"}</span>
+      <span className="status-tag__label">{status}</span>
     </div>
   )
 }

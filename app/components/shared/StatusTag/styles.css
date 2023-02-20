@@ -20,6 +20,11 @@
   border-color: var(--color-warning);
 }
 
+.status-tag--expired {
+  color: var(--color-error);
+  border-color: var(--color-error);
+}
+
 .status-tag__label {
   display: block;
   text-transform: uppercase;

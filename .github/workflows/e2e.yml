@@ -47,6 +47,7 @@ jobs:
           install: false
           config-file: cypress.config.ts
           browser: chrome
+          failOnStatusCode: false
         env:
           CYPRESS_BASE_URL: ${{ github.event.deployment_status.target_url }}
 

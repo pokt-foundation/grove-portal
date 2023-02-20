@@ -62,6 +62,11 @@ query endpoint($endpointID: ID!) {
     status
     updatedAt
     userId
+    users {
+      roleName
+      email
+      accepted
+    }
   }
 }
 

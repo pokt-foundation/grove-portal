@@ -18,7 +18,7 @@
   margin: auto;
   max-width: 429px;
   max-height: 250px;
-  z-index: 2147483648;
+  z-index: 2;
   transition: all 0.225s linear;
   background-color: #192430;
 }

@@ -36,7 +36,6 @@ export const action: ActionFunction = async ({ request, params }) => {
   invariant(appId, "app id not found")
   invariant(email && typeof email === "string", "user email not found")
 
-  // const email = "ricardo.souza@pokt.network"
   try {
     await portal.deleteEndpointUser({
       endpointID: appId,

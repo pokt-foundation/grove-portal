@@ -1,8 +1,7 @@
 import { Button, IconPlus, Title, IconMoreVertical } from "@pokt-foundation/pocket-blocks"
-import { ButtonProps } from "@pokt-foundation/pocket-blocks/dist/src/package/component/atom/button/button"
-import { Form, useTransition } from "@remix-run/react"
+import { Form, useActionData, useTransition } from "@remix-run/react"
 import { Transition } from "@remix-run/react/transition"
-import { PropsWithChildren, useState } from "react"
+import { useState } from "react"
 
 import { Auth0Profile } from "remix-auth-auth0"
 import styles from "./styles.css"
@@ -10,10 +9,6 @@ import AppRadioCards, {
   links as AppRadioCardsLinks,
 } from "~/components/application/AppRadioCards"
 import Card from "~/components/shared/Card"
-import ConfirmationModal, {
-  ConfirmationModalPropsType,
-  links as ConfirmationModalLinks,
-} from "~/components/shared/ConfirmationModal"
 import Dropdown, {
   DropdownItem,
   DropdownTrigger,
@@ -25,6 +20,7 @@ import Table, { links as TableLinks } from "~/components/shared/Table"
 import Text from "~/components/shared/Text"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { EndpointQuery } from "~/models/portal/sdk"
+import Modal from "~/components/shared/Modal"
 
 export const links = () => {
   return [
@@ -34,7 +30,6 @@ export const links = () => {
     ...LoaderLinks(),
     ...StatusTagLinks(),
     ...TableLinks(),
-    ...ConfirmationModalLinks(),
     { rel: "stylesheet", href: styles },
   ]
 }
@@ -62,9 +57,8 @@ type TeamViewProps = {
 }
 
 type ConfirmationModalOptionsType = {
-  onClick: () => void
-  title: string
-  variant: PropsWithChildren<ButtonProps["variant"]>
+  type: "options" | "error"
+  isActive: boolean
 }
 
 function TeamView({ state, endpoint, profile }: TeamViewProps) {
@@ -72,7 +66,7 @@ function TeamView({ state, endpoint, profile }: TeamViewProps) {
   const [inviteEmail, setInviteEmail] = useState("")
   const [radioSelectedValue, setRadioSelectedValue] = useState("ADMIN")
   const [confirmationModalProps, setConfirmationModalProps] =
-    useState<ConfirmationModalPropsType>({
+    useState<ConfirmationModalOptionsType>({
       type: "options",
       isActive: false,
     })
@@ -82,20 +76,8 @@ function TeamView({ state, endpoint, profile }: TeamViewProps) {
   const [confirmationModalEmail, setConfirmationModalEmail] = useState<string>("")
 
   const transition = useTransition()
-
-  const handleRemoveCancelClick = () => {
-    console.log("cancel")
-  }
-
-  const handleRemoveClick = () => {
-    console.log("remove")
-  }
-
-  const handleRemoveTryAgain = () => {
-    console.log("try again")
-  }
-
-  const userRole = "ADMIN"
+  const actionData = useActionData()
+  console.log(actionData)
 
   return (
     <>
@@ -193,20 +175,35 @@ function TeamView({ state, endpoint, profile }: TeamViewProps) {
             </Button>
           }
         />
-        <ConfirmationModal
-          confirmationModalProps={confirmationModalProps}
-          setConfirmationModalProps={setConfirmationModalProps}
+        <Modal
+          title="Deleting a user"
+          opened={confirmationModalProps.isActive}
+          onClose={() =>
+            setConfirmationModalProps({ ...confirmationModalProps, isActive: false })
+          }
+          size={429}
+          padding={20}
         >
           <div className="confirmation-modal-content">
-            <Text className="confirmation-modal-title" weight="700">
+            <Text className="confirmation-modal-title" weight={700} mb="2em">
               {confirmationModalTitle}
             </Text>
-            <Text className="confirmation-modal-description">
+            <Text className="confirmation-modal-description" weight={400} mb="2em">
               {confirmationModalDescription}
             </Text>
             {confirmationModalProps.type === "options" ? (
               <div className="confirmation-modal-options">
-                <Button id="cancel" variant="outline">
+                <Button
+                  id="cancel"
+                  variant="outline"
+                  onClick={() =>
+                    setConfirmationModalProps({
+                      ...confirmationModalProps,
+                      isActive: false,
+                    })
+                  }
+                  mr="1em"
+                >
                   Cancel
                 </Button>
                 <Button
@@ -225,7 +222,7 @@ function TeamView({ state, endpoint, profile }: TeamViewProps) {
               </div>
             )}
           </div>
-        </ConfirmationModal>
+        </Modal>
       </Form>
     </>
   )

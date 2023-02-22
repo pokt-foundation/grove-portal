@@ -23,3 +23,21 @@
 .list__more-actions .pokt-dropdown-trigger {
   background-color: transparent;
 }
+
+.confirmation-modal-options button {
+  padding: 14px 56.5px;
+  font-weight: normal;
+  border-radius: 8px;
+  width: 182px;
+  height: 52px;
+}
+
+.confirmation-modal-title,
+.confirmation-modal-description {
+  max-width: 285px;
+  line-height: 110%;
+}
+
+.confirmation-modal-options #cancel {
+  border: 1px solid #fafafa;
+}

@@ -31,9 +31,9 @@ export const action: ActionFunction = async ({ request, params }) => {
   const user = await requireUser(request)
   const portal = initPortalClient(user.accessToken)
   const formData = await request.formData()
-  const action = formData.get("action")
+  const type = formData.get("type")
 
-  switch (action) {
+  switch (type) {
     case "delete":
       const email = formData.get("email")
 
@@ -46,9 +46,9 @@ export const action: ActionFunction = async ({ request, params }) => {
           email: email !== null ? email.toString() : "",
         })
 
-        return json<{ action: string; error: boolean }>({ action, error: false })
+        return json<{ type: string; error: boolean }>({ type, error: false })
       } catch (e) {
-        return json<{ action: string; error: boolean }>({ action, error: true })
+        return json<{ type: string; error: boolean }>({ type, error: true })
       }
     default:
       break

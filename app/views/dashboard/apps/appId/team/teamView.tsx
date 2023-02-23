@@ -7,9 +7,9 @@ import {
 } from "@pokt-foundation/pocket-blocks"
 import { Form, useActionData, useTransition } from "@remix-run/react"
 import { Transition } from "@remix-run/react/transition"
-import { useState } from "react"
+import clsx from "clsx"
+import { useEffect, useState } from "react"
 
-import { Auth0Profile } from "remix-auth-auth0"
 import styles from "./styles.css"
 import AppRadioCards, {
   links as AppRadioCardsLinks,
@@ -20,6 +20,7 @@ import Dropdown, {
   DropdownTrigger,
   links as DropdownLinks,
 } from "~/components/shared/Dropdown"
+import ErrorIcon from "~/components/shared/Icons/ErrorIcon"
 import Loader, { links as LoaderLinks } from "~/components/shared/Loader"
 import Modal from "~/components/shared/Modal"
 import StatusTag, { links as StatusTagLinks } from "~/components/shared/StatusTag"
@@ -27,8 +28,9 @@ import Table, { links as TableLinks } from "~/components/shared/Table"
 import Text from "~/components/shared/Text"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { EndpointQuery } from "~/models/portal/sdk"
-import ErrorIcon from "~/components/shared/Icons/ErrorIcon"
-import clsx from "clsx"
+import NotificationMessage, {
+  links as NotificationMessageLinks,
+} from "~/components/shared/NotificationMessage"
 
 export const links = () => {
   return [
@@ -38,6 +40,7 @@ export const links = () => {
     ...LoaderLinks(),
     ...StatusTagLinks(),
     ...TableLinks(),
+    ...NotificationMessageLinks(),
     { rel: "stylesheet", href: styles },
   ]
 }
@@ -81,22 +84,51 @@ function TeamView({ state, endpoint }: TeamViewProps) {
   const [confirmationModalDescription, setConfirmationModalDescription] =
     useState<string>("")
   const [confirmationModalEmail, setConfirmationModalEmail] = useState<string>("")
+  const [notificationMessageTitle, setNotificationMessageTitle] = useState<string>("")
+  const [notificationMessageDescription, setNotificationMessageDescription] =
+    useState<string>("")
 
   const transition = useTransition()
-  const actionData = useActionData<{ action: string; error: boolean }>()
+  const actionData = useActionData<{ type: string; error: boolean }>()
 
-  if (actionData && actionData.action === "delete") {
-    if (actionData.error && confirmationModalProps.type !== "error") {
-      setConfirmationModalProps({ type: "error", isActive: true })
-      setConfirmationModalTitle("Error deleting the user")
-      setConfirmationModalDescription("Please, try again")
-    } else if (!actionData.error)
-      setConfirmationModalProps({ ...confirmationModalProps, isActive: false })
-  }
+  useEffect(() => {
+    if (actionData && actionData.type === "delete") {
+      if (actionData.error && confirmationModalProps.type !== "error") {
+        setConfirmationModalProps({ type: "error", isActive: true })
+        setConfirmationModalTitle("Error deleting the user")
+        setConfirmationModalDescription("Please, try again")
+      } else if (!actionData.error && notificationMessageTitle !== "User removed")
+        setConfirmationModalProps({ ...confirmationModalProps, isActive: false })
+      setNotificationMessageTitle("User removed")
+      setNotificationMessageDescription("We have sent a confirmation to the user.")
+    }
+  }, [actionData])
 
   return (
     <>
       {state === "loading" && <Loader />}
+      {actionData && (
+        <>
+          <NotificationMessage
+            notificationMessage={{
+              type: "success",
+              isActive: !actionData.error,
+              title: notificationMessageTitle,
+              description: notificationMessageDescription,
+            }}
+            setNotificationMessage={() => null}
+          />
+          <NotificationMessage
+            notificationMessage={{
+              type: "error",
+              isActive: actionData.error && actionData.type !== "delete" ? true : false,
+              title: notificationMessageTitle,
+              description: notificationMessageDescription,
+            }}
+            setNotificationMessage={() => null}
+          />
+        </>
+      )}
       {isInviteNewUserOpen && (
         <Card>
           <Title order={3}>Invite New User</Title>
@@ -218,8 +250,8 @@ function TeamView({ state, endpoint }: TeamViewProps) {
             </Text>
             <input
               name="email"
-              value={confirmationModalEmail}
               style={{ display: "none" }}
+              value={confirmationModalEmail}
             />
             {confirmationModalProps.type === "options" ? (
               <div className="confirmation-modal-options">
@@ -238,9 +270,9 @@ function TeamView({ state, endpoint }: TeamViewProps) {
                 </Button>
                 <Button
                   color="red"
-                  name="action"
-                  type="submit"
+                  name="type"
                   value="delete"
+                  type="submit"
                   variant="filled"
                 >
                   Remove
@@ -248,7 +280,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
               </div>
             ) : (
               <div className="confirmation-modal-options">
-                <Button name="action" type="submit" value="delete">
+                <Button name="type" value="delete" type="submit">
                   Try again
                 </Button>
               </div>

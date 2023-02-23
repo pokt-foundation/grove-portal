@@ -40,3 +40,14 @@ mutation createEndpointUser($endpointID: ID!, $input: UserAccessInput!) {
     }
   }
 }
+
+mutation deleteEndpointUser($endpointID: ID!, $email: String!) {
+  deleteEndpointUser(endpointID: $endpointID, email: $email) {
+    id
+    users {
+      roleName
+      email
+      accepted
+    }
+  }
+}

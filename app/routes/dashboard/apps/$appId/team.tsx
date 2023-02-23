@@ -1,8 +1,11 @@
 import { ActionFunction, json, LoaderFunction } from "@remix-run/node"
 import { useCatch, useTransition } from "@remix-run/react"
+import { Auth0Profile } from "remix-auth-auth0"
 import invariant from "tiny-invariant"
+import { AppIdLoaderData } from "../$appId"
+import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { EndpointQuery, RoleName } from "~/models/portal/sdk"
+import {RoleName } from "~/models/portal/sdk"
 import { getErrorMessage } from "~/utils/catchError"
 import { requireUser } from "~/utils/session.server"
 
@@ -14,18 +17,14 @@ export const links = () => {
   return [...TeamViewLinks()]
 }
 
-export const loader: LoaderFunction = async ({ request, params }) => {
-  const { appId } = params
+type LoaderData = {
+  profile: Auth0Profile
+}
+
+export const loader: LoaderFunction = async ({ request }) => {
   const user = await requireUser(request)
-  const portal = initPortalClient(user.accessToken)
-  invariant(appId && typeof appId === "string", "App ID error")
-
-  const endpointResponse = await portal.endpoint({
-    endpointID: appId,
-  })
-
-  return json<EndpointQuery | null>({
-    endpoint: endpointResponse.endpoint,
+  return json<LoaderData>({
+    profile: user.profile,
   })
 }
 
@@ -34,42 +33,64 @@ export const action: ActionFunction = async ({ request, params }) => {
   const user = await requireUser(request)
   const portal = initPortalClient(user.accessToken)
   const formData = await request.formData()
-  const email = formData.get("email-address")
-  const roleName = formData.get("app-subscription")
+  const action = formData.get("action")
 
-  invariant(appId, "app id not found")
-  invariant(roleName && typeof roleName === "string", "user role not found")
-  invariant(email && typeof email === "string", "user email not found")
+  if (action === "delete") {
+    const email = formData.get("email")
 
-  try {
-    const { createEndpointUser } = await portal.createEndpointUser({
-      endpointID: appId,
-      input: {
-        email,
-        roleName: roleName === "ADMIN" ? RoleName.Admin : RoleName.Member,
-      },
-    })
+    invariant(appId, "app id not found")
+    invariant(email && typeof email === "string", "user email not found")
 
-    if (!createEndpointUser) {
-      throw new Error("Error creating invite")
+    try {
+      await portal.deleteEndpointUser({
+        endpointID: appId,
+        email: email !== null ? email.toString() : "",
+      })
+
+      return json<{ action: string; error: boolean }>({ action, error: false })
+    } catch (e) {
+      return json<{ action: string; error: boolean }>({ action, error: true })
     }
+  } else if (action === "invite") {
+    const email = formData.get("email-address")
+    const roleName = formData.get("app-subscription")
 
-    return json({
-      error: false,
-      data: createEndpointUser,
-    })
-  } catch (error) {
-    return json({
-      error: true,
-      message: getErrorMessage(error),
-    })
+    invariant(appId, "app id not found")
+    invariant(roleName && typeof roleName === "string", "user role not found")
+    invariant(email && typeof email === "string", "user email not found")
+
+    try {
+      const { createEndpointUser } = await portal.createEndpointUser({
+        endpointID: appId,
+        input: {
+          email,
+          roleName: roleName === "ADMIN" ? RoleName.Admin : RoleName.Member,
+        },
+      })
+
+      if (!createEndpointUser) {
+        throw new Error("Error creating invite")
+      }
+
+      return json({
+        error: false,
+        data: createEndpointUser,
+      })
+    } catch (error) {
+      return json({
+        error: true,
+        message: getErrorMessage(error),
+      })
+    }
   }
 }
 
 export default function Team() {
+  const appIDRoute = useMatchesRoute("routes/dashboard/apps/$appId")
   const { state } = useTransition()
+  const { endpoint } = appIDRoute?.data as AppIdLoaderData
 
-  return <TeamView state={state} />
+  return <TeamView endpoint={endpoint} state={state} />
 }
 
 export const CatchBoundary = () => {

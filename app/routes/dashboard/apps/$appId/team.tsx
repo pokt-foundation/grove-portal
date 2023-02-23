@@ -1,5 +1,5 @@
 import { ActionFunction, json, LoaderFunction } from "@remix-run/node"
-import { useCatch, useLoaderData, useTransition } from "@remix-run/react"
+import { useCatch, useTransition } from "@remix-run/react"
 import { Auth0Profile } from "remix-auth-auth0"
 import invariant from "tiny-invariant"
 import { AppIdLoaderData } from "../$appId"
@@ -31,30 +31,36 @@ export const action: ActionFunction = async ({ request, params }) => {
   const user = await requireUser(request)
   const portal = initPortalClient(user.accessToken)
   const formData = await request.formData()
-  const email = formData.get("email")
+  const action = formData.get("action")
 
-  invariant(appId, "app id not found")
-  invariant(email && typeof email === "string", "user email not found")
+  switch (action) {
+    case "delete":
+      const email = formData.get("email")
 
-  try {
-    await portal.deleteEndpointUser({
-      endpointID: appId,
-      email: email !== null ? email.toString() : "",
-    })
+      invariant(appId, "app id not found")
+      invariant(email && typeof email === "string", "user email not found")
 
-    return json<boolean>(true)
-  } catch (e) {
-    return json<any>(e)
+      try {
+        await portal.deleteEndpointUser({
+          endpointID: appId,
+          email: email !== null ? email.toString() : "",
+        })
+
+        return json<{ action: string; error: boolean }>({ action, error: false })
+      } catch (e) {
+        return json<{ action: string; error: boolean }>({ action, error: true })
+      }
+    default:
+      break
   }
 }
 
 export default function Team() {
   const appIDRoute = useMatchesRoute("routes/dashboard/apps/$appId")
   const { state } = useTransition()
-  const { profile } = useLoaderData()
   const { endpoint } = appIDRoute?.data as AppIdLoaderData
 
-  return <TeamView endpoint={endpoint} profile={profile} state={state} />
+  return <TeamView endpoint={endpoint} state={state} />
 }
 
 export const CatchBoundary = () => {

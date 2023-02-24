@@ -27,7 +27,8 @@ export const loader: LoaderFunction = async ({ request }) => {
   })
 }
 
-type ActionData = {
+export type ActionData = {
+  email: string
   type: "delete" | "invite"
   error: boolean
 }
@@ -51,9 +52,9 @@ export const action: ActionFunction = async ({ request, params }) => {
         email: email !== null ? email.toString() : "",
       })
 
-      return json<ActionData>({ type, error: false })
+      return json<ActionData>({ email, type, error: false })
     } catch (e) {
-      return json<ActionData>({ type, error: true })
+      return json<ActionData>({ email, type, error: true })
     }
   } else if (type === "invite") {
     const email = formData.get("email-address")
@@ -76,12 +77,14 @@ export const action: ActionFunction = async ({ request, params }) => {
         throw new Error("Error creating invite")
       }
 
-      return json({
+      return json<ActionData>({
+        email,
         error: false,
         type,
       })
     } catch (error) {
-      return json({
+      return json<ActionData>({
+        email,
         error: true,
         type,
       })

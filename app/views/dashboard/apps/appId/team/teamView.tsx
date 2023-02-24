@@ -174,25 +174,14 @@ function TeamView({ state, endpoint }: TeamViewProps) {
               </Button>
               <Button
                 disabled={transition.state === "submitting" || inviteEmail === ""}
+                name="type"
                 type="submit"
+                value="invite"
               >
                 Send Invite
               </Button>
             </div>
           </Form>
-          <div className="invite-new-user__form__buttons-container">
-            <Button variant="outline" onClick={() => setInviteNewUserOpen(false)}>
-              Cancel
-            </Button>
-            <Button
-              disabled={transition.state === "submitting" || inviteEmail === ""}
-              name="type"
-              type="submit"
-              value="invite"
-            >
-              Send Invite
-            </Button>
-          </div>
         </Card>
       )}
       <Table

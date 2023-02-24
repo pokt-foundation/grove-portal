@@ -5,7 +5,7 @@ import invariant from "tiny-invariant"
 import { AppIdLoaderData } from "../$appId"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { initPortalClient } from "~/models/portal/portal.server"
-import {RoleName } from "~/models/portal/sdk"
+import { RoleName } from "~/models/portal/sdk"
 import { requireUser } from "~/utils/session.server"
 
 import TeamView, {

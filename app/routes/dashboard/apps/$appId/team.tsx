@@ -6,7 +6,6 @@ import { AppIdLoaderData } from "../$appId"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { initPortalClient } from "~/models/portal/portal.server"
 import {RoleName } from "~/models/portal/sdk"
-import { getErrorMessage } from "~/utils/catchError"
 import { requireUser } from "~/utils/session.server"
 
 import TeamView, {
@@ -28,14 +27,19 @@ export const loader: LoaderFunction = async ({ request }) => {
   })
 }
 
+type ActionData = {
+  type: "delete" | "invite"
+  error: boolean
+}
+
 export const action: ActionFunction = async ({ request, params }) => {
   const { appId } = params
   const user = await requireUser(request)
   const portal = initPortalClient(user.accessToken)
   const formData = await request.formData()
-  const action = formData.get("action")
+  const type = formData.get("type")
 
-  if (action === "delete") {
+  if (type === "delete") {
     const email = formData.get("email")
 
     invariant(appId, "app id not found")
@@ -47,11 +51,11 @@ export const action: ActionFunction = async ({ request, params }) => {
         email: email !== null ? email.toString() : "",
       })
 
-      return json<{ action: string; error: boolean }>({ action, error: false })
+      return json<ActionData>({ type, error: false })
     } catch (e) {
-      return json<{ action: string; error: boolean }>({ action, error: true })
+      return json<ActionData>({ type, error: true })
     }
-  } else if (action === "invite") {
+  } else if (type === "invite") {
     const email = formData.get("email-address")
     const roleName = formData.get("app-subscription")
 
@@ -74,12 +78,12 @@ export const action: ActionFunction = async ({ request, params }) => {
 
       return json({
         error: false,
-        data: createEndpointUser,
+        type,
       })
     } catch (error) {
       return json({
         error: true,
-        message: getErrorMessage(error),
+        type,
       })
     }
   }

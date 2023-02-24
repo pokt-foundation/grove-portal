@@ -8,7 +8,8 @@ import {
 import { Form, useActionData, useTransition } from "@remix-run/react"
 import { Transition } from "@remix-run/react/transition"
 import clsx from "clsx"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+
 import styles from "./styles.css"
 import AppRadioCards, {
   links as AppRadioCardsLinks,
@@ -88,18 +89,41 @@ function TeamView({ state, endpoint }: TeamViewProps) {
   const [confirmationModalDescription, setConfirmationModalDescription] =
     useState<string>("")
   const [confirmationModalEmail, setConfirmationModalEmail] = useState<string>("")
+  const [notificationMessageTitle, setNotificationMessageTitle] = useState<string>("")
+  const [notificationMessageDescription, setNotificationMessageDescription] =
+    useState<string>("")
 
   const transition = useTransition()
-  const actionData = useActionData<{ action: string; error: boolean }>()
+  const actionData = useActionData<{ type: string; error: boolean }>()
 
-  if (actionData && actionData.action === "delete") {
-    if (actionData.error && confirmationModalProps.type !== "error") {
-      setConfirmationModalProps({ type: "error", isActive: true })
-      setConfirmationModalTitle("Error deleting the user")
-      setConfirmationModalDescription("Please, try again")
-    } else if (!actionData.error)
-      setConfirmationModalProps({ ...confirmationModalProps, isActive: false })
-  }
+  useEffect(() => {
+    if (actionData) {
+      if (actionData.type === "delete") {
+        if (actionData.error && confirmationModalProps.type !== "error") {
+          setConfirmationModalProps({ type: "error", isActive: true })
+          setConfirmationModalTitle("Error deleting the user")
+          setConfirmationModalDescription("Please, try again")
+        } else if (!actionData.error && notificationMessageTitle !== "User removed") {
+          setConfirmationModalProps({ ...confirmationModalProps, isActive: false })
+        }
+        setNotificationMessageTitle("User removed")
+        setNotificationMessageDescription("We have sent a confirmation to the user.")
+      } else if (actionData.type === "invite") {
+        if (actionData.error) {
+          setNotificationMessageTitle("Invite error")
+          setNotificationMessageDescription(
+            "We had some issues with the invite. Please try again later.",
+          )
+          return
+        }
+
+        setNotificationMessageTitle("Invite sent")
+        setNotificationMessageDescription(
+          "We have sent an invitation to ricardo.souza@pokt.network. You can review the invite status below.",
+        )
+      }
+    }
+  }, [actionData, confirmationModalProps, notificationMessageTitle])
 
   return (
     <>
@@ -110,18 +134,17 @@ function TeamView({ state, endpoint }: TeamViewProps) {
             notificationMessage={{
               type: "success",
               isActive: !actionData.error,
-              title: "Invite sent",
-              description:
-                "We have sent an invitation to ricardo.souza@pokt.network. You can review the invite status below.",
+              title: notificationMessageTitle,
+              description: notificationMessageDescription,
             }}
             setNotificationMessage={() => null}
           />
           <NotificationMessage
             notificationMessage={{
               type: "error",
-              isActive: actionData.error,
-              title: "Invite error",
-              description: "We had some issues with the invite. Please try again later.",
+              isActive: !!(actionData.error && actionData.type !== "delete"),
+              title: notificationMessageTitle,
+              description: notificationMessageDescription,
             }}
             setNotificationMessage={() => null}
           />
@@ -287,7 +310,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
                 </Button>
                 <Button
                   color="red"
-                  name="action"
+                  name="type"
                   type="submit"
                   value="delete"
                   variant="filled"
@@ -297,7 +320,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
               </div>
             ) : (
               <div className="confirmation-modal-options">
-                <Button name="action" type="submit" value="delete">
+                <Button name="type" type="submit" value="delete">
                   Try again
                 </Button>
               </div>

@@ -25,6 +25,7 @@ import Loader, { links as LoaderLinks } from "~/components/shared/Loader"
 import Modal from "~/components/shared/Modal"
 import NotificationMessage, {
   links as NotificationMessageLinks,
+  NotificationMessageType,
 } from "~/components/shared/NotificationMessage"
 import StatusTag, { links as StatusTagLinks } from "~/components/shared/StatusTag"
 import Table, { links as TableLinks } from "~/components/shared/Table"
@@ -92,6 +93,10 @@ function TeamView({ state, endpoint }: TeamViewProps) {
   const [notificationMessageTitle, setNotificationMessageTitle] = useState<string>("")
   const [notificationMessageDescription, setNotificationMessageDescription] =
     useState<string>("")
+  const [notificationMessageIsActive, setNotificationMessageIsActive] =
+    useState<NotificationMessageType["isActive"]>(false)
+  const [notificationMessageType, setNotificationMessageType] =
+    useState<NotificationMessageType["type"]>("success")
 
   const transition = useTransition()
   const actionData = useActionData<{ type: string; error: boolean }>()
@@ -106,17 +111,22 @@ function TeamView({ state, endpoint }: TeamViewProps) {
         } else if (!actionData.error && notificationMessageTitle !== "User removed") {
           setConfirmationModalProps({ ...confirmationModalProps, isActive: false })
         }
+        setNotificationMessageIsActive(true)
+        setNotificationMessageType("success")
         setNotificationMessageTitle("User removed")
         setNotificationMessageDescription("We have sent a confirmation to the user.")
       } else if (actionData.type === "invite") {
         if (actionData.error) {
+          setNotificationMessageIsActive(true)
+          setNotificationMessageType("error")
           setNotificationMessageTitle("Invite error")
           setNotificationMessageDescription(
             "We had some issues with the invite. Please try again later.",
           )
           return
         }
-
+        setNotificationMessageIsActive(true)
+        setNotificationMessageType("success")
         setNotificationMessageTitle("Invite sent")
         setNotificationMessageDescription(
           "We have sent an invitation to ricardo.souza@pokt.network. You can review the invite status below.",
@@ -132,21 +142,12 @@ function TeamView({ state, endpoint }: TeamViewProps) {
         <>
           <NotificationMessage
             notificationMessage={{
-              type: "success",
-              isActive: !actionData.error,
+              type: notificationMessageType,
+              isActive: notificationMessageIsActive,
               title: notificationMessageTitle,
               description: notificationMessageDescription,
             }}
-            setNotificationMessage={() => null}
-          />
-          <NotificationMessage
-            notificationMessage={{
-              type: "error",
-              isActive: !!(actionData.error && actionData.type !== "delete"),
-              title: notificationMessageTitle,
-              description: notificationMessageDescription,
-            }}
-            setNotificationMessage={() => null}
+            setNotificationMessageIsActive={setNotificationMessageIsActive}
           />
         </>
       )}

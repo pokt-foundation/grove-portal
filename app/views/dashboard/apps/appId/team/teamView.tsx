@@ -32,6 +32,7 @@ import Table, { links as TableLinks } from "~/components/shared/Table"
 import Text from "~/components/shared/Text"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { EndpointQuery, RoleName } from "~/models/portal/sdk"
+import { ActionData } from "~/routes/dashboard/apps/$appId/team"
 
 export const links = () => {
   return [
@@ -99,7 +100,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
     useState<NotificationMessageType["type"]>("success")
 
   const transition = useTransition()
-  const actionData = useActionData<{ type: string; error: boolean }>()
+  const actionData = useActionData<ActionData>()
 
   useEffect(() => {
     if (actionData) {
@@ -114,7 +115,9 @@ function TeamView({ state, endpoint }: TeamViewProps) {
         setNotificationMessageIsActive(true)
         setNotificationMessageType("success")
         setNotificationMessageTitle("User removed")
-        setNotificationMessageDescription("We have sent a confirmation to the user.")
+        setNotificationMessageDescription(
+          `We have sent a confirmation to ${actionData.email}.`,
+        )
       } else if (actionData.type === "invite") {
         if (actionData.error) {
           setNotificationMessageIsActive(true)
@@ -129,7 +132,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
         setNotificationMessageType("success")
         setNotificationMessageTitle("Invite sent")
         setNotificationMessageDescription(
-          "We have sent an invitation to ricardo.souza@pokt.network. You can review the invite status below.",
+          `We have sent an invitation to ${actionData.email}. You can review the invite status below.`,
         )
       }
     }

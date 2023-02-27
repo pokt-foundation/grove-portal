@@ -15,8 +15,8 @@ import { useTranslate } from "~/context/TranslateContext"
 import {
   BlockchainsQuery,
   Maybe,
-  WhitelistContract,
-  WhitelistMethod,
+  WhitelistContracts,
+  WhitelistMethods,
 } from "~/models/portal/sdk"
 import { Blockchain, EndpointQuery } from "~/models/portal/sdk"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
@@ -40,8 +40,8 @@ type SecurityViewProps = {
   blockchains: BlockchainsQuery["blockchains"]
 }
 
-type WhitelistContractType = Pick<WhitelistContract, "blockchainID" | "contracts">
-type WhitelistMethodType = Pick<WhitelistMethod, "blockchainID" | "methods">
+type WhitelistContractType = Pick<WhitelistContracts, "blockchainID" | "contracts">
+type WhitelistMethodType = Pick<WhitelistMethods, "blockchainID" | "methods">
 
 export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps) => {
   const transition = useTransition()

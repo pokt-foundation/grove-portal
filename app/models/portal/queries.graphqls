@@ -69,7 +69,6 @@ query blockchains($active: Boolean) {
   blockchains(active: $active) {
     id
     ticker
-    network
     blockchain
     blockchainAliases
     active

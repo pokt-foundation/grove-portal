@@ -1,7 +1,6 @@
 .pokt-modal [role="dialog"] {
   color: var(--color-white-main);
   background-color: var(--color-black-main);
-  padding: 32px;
   border-radius: 8px;
 }
 

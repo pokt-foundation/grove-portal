@@ -1,5 +1,5 @@
 import { ActionFunction, json, LoaderFunction } from "@remix-run/node"
-import { useCatch, useTransition } from "@remix-run/react"
+import { useCatch, useLoaderData, useTransition } from "@remix-run/react"
 import { Auth0Profile } from "remix-auth-auth0"
 import invariant from "tiny-invariant"
 import { AppIdLoaderData } from "../$appId"
@@ -16,14 +16,16 @@ export const links = () => {
   return [...TeamViewLinks()]
 }
 
-type LoaderData = {
+export type TeamLoaderData = {
   profile: Auth0Profile
+  accessToken: string
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
   const user = await requireUser(request)
-  return json<LoaderData>({
+  return json<TeamLoaderData>({
     profile: user.profile,
+    accessToken: user.accessToken
   })
 }
 
@@ -35,8 +37,8 @@ export type ActionData = {
 
 export const action: ActionFunction = async ({ request, params }) => {
   const { appId } = params
-  const user = await requireUser(request)
-  const portal = initPortalClient(user.accessToken)
+  const { accessToken } = useLoaderData<TeamLoaderData>()
+  const portal = initPortalClient(accessToken)
   const formData = await request.formData()
   const type = formData.get("type")
 

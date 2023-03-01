@@ -5,7 +5,7 @@ import {
   IconMoreVertical,
   Grid,
 } from "@pokt-foundation/pocket-blocks"
-import { Form, useActionData, useTransition } from "@remix-run/react"
+import { Form, useActionData, useLoaderData, useTransition } from "@remix-run/react"
 import { Transition } from "@remix-run/react/transition"
 import clsx from "clsx"
 import { useEffect, useState } from "react"
@@ -32,7 +32,7 @@ import Table, { links as TableLinks } from "~/components/shared/Table"
 import Text from "~/components/shared/Text"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { EndpointQuery, RoleName } from "~/models/portal/sdk"
-import { ActionData } from "~/routes/dashboard/apps/$appId/team"
+import { ActionData, TeamLoaderData } from "~/routes/dashboard/apps/$appId/team"
 
 export const links = () => {
   return [
@@ -101,6 +101,12 @@ function TeamView({ state, endpoint }: TeamViewProps) {
 
   const transition = useTransition()
   const actionData = useActionData<ActionData>()
+  const { profile } = useLoaderData<TeamLoaderData>()
+
+  const isAdminUser = endpoint?.users?.some(
+    ({ email, roleName }) =>
+      email === profile._json.email && (roleName === "OWNER" || roleName === "ADMIN"),
+  )
 
   useEffect(() => {
     if (actionData) {
@@ -154,7 +160,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
           />
         </>
       )}
-      {isInviteNewUserOpen && (
+      {isInviteNewUserOpen && isAdminUser ? (
         <Card>
           <Title order={3}>Invite New User</Title>
           <Form className="invite-new-user__form" method="post">
@@ -187,7 +193,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
             </div>
           </Form>
         </Card>
-      )}
+      ) : null}
       <Table
         paginate
         columns={["Email", "Status", "Role", ""]}
@@ -202,56 +208,69 @@ function TeamView({ state, endpoint }: TeamViewProps) {
             role: {
               element: (
                 <div className="list__role">
-                  <Dropdown
-                    contentClassName="dropdown-teams__content"
-                    label={<DropdownTrigger label={roleName} />}
-                  >
-                    <DropdownItem action={() => {}} label="Admin" />
-                  </Dropdown>
+                  {isAdminUser ? (
+                    <Dropdown
+                      contentClassName="dropdown-teams__content"
+                      label={<DropdownTrigger label={roleName} />}
+                    >
+                      <DropdownItem action={() => {}} label="Admin" />
+                    </Dropdown>
+                  ) : (
+                    <Text>{roleName}</Text>
+                  )}
                 </div>
               ),
               value: "Role",
             },
             action: {
-              element: (
-                <div className="list__more-actions">
-                  <Dropdown
-                    contentClassName="dropdown-teams__content"
-                    label={<IconMoreVertical fill="#A9E34B" />}
-                  >
-                    {!accepted && (
-                      <DropdownItem action={() => {}} label="Send new Invite" />
-                    )}
-                    <DropdownItem
-                      action={() => {
-                        setConfirmationModalProps({ type: "options", isActive: true })
-                        setConfirmationModalTitle(
-                          "Do you want to remove this user from this app team?",
-                        )
-                        setConfirmationModalDescription(
-                          "That user will completely lose access to the current application.",
-                        )
-                        setConfirmationModalEmail(email)
-                      }}
-                      label="Remove"
-                      variant="green"
-                    />
-                  </Dropdown>
-                </div>
-              ),
+              element:
+                isAdminUser || email === profile?._json.email ? (
+                  <div className="list__more-actions">
+                    <Dropdown
+                      contentClassName="dropdown-teams__content"
+                      label={<IconMoreVertical fill="#A9E34B" />}
+                    >
+                      {!accepted && isAdminUser ? (
+                        <DropdownItem action={() => {}} label="Send new Invite" />
+                      ) : null}
+                      {isAdminUser || email === profile?._json.email ? (
+                        <DropdownItem
+                          action={() => {
+                            setConfirmationModalProps({ type: "options", isActive: true })
+                            setConfirmationModalTitle(
+                              "Do you want to remove this user from this app team?",
+                            )
+                            setConfirmationModalDescription(
+                              "That user will completely lose access to the current application.",
+                            )
+                            setConfirmationModalEmail(email)
+                          }}
+                          label={email === profile?._json.email ? "Leave team" : "Remove"}
+                          variant="green"
+                        />
+                      ) : (
+                        <></>
+                      )}
+                    </Dropdown>
+                  </div>
+                ) : (
+                  <></>
+                ),
               value: "More",
             },
           }
         })}
         label="Users"
         rightComponent={
-          <Button
-            rightIcon={<IconPlus fill="var(--color-white-light)" />}
-            variant="outline"
-            onClick={() => setInviteNewUserOpen(true)}
-          >
-            Invite new user
-          </Button>
+          isAdminUser ? (
+            <Button
+              rightIcon={<IconPlus fill="var(--color-white-light)" />}
+              variant="outline"
+              onClick={() => setInviteNewUserOpen(true)}
+            >
+              Invite new user
+            </Button>
+          ) : null
         }
       />
       <Modal

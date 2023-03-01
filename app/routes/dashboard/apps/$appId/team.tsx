@@ -25,7 +25,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   const user = await requireUser(request)
   return json<TeamLoaderData>({
     profile: user.profile,
-    accessToken: user.accessToken
+    accessToken: user.accessToken,
   })
 }
 
@@ -37,8 +37,8 @@ export type ActionData = {
 
 export const action: ActionFunction = async ({ request, params }) => {
   const { appId } = params
-  const { accessToken } = useLoaderData<TeamLoaderData>()
-  const portal = initPortalClient(accessToken)
+  const user = await requireUser(request)
+  const portal = initPortalClient(user.accessToken)
   const formData = await request.formData()
   const type = formData.get("type")
 

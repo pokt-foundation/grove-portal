@@ -32,7 +32,7 @@ describe("requireUser", () => {
   })
   it("throws, logs out and redriects to /validate if user email is not verified", async () => {
     vi.mocked(authenticator.isAuthenticated).mockReturnValue(
-      new Promise((resolve) => {
+      new Promise((resolve: any) => {
         resolve({
           accessToken: "",
           refreshToken: "",
@@ -103,7 +103,7 @@ describe("requireUser", () => {
   })
   it("returns user", async () => {
     vi.mocked(authenticator.isAuthenticated).mockReturnValue(
-      new Promise((resolve) => {
+      new Promise((resolve: any) => {
         resolve({
           accessToken: "mockToken",
           refreshToken: "",
@@ -217,7 +217,7 @@ describe("requireUserProfile", () => {
     }
 
     vi.mocked(authenticator.isAuthenticated).mockReturnValue(
-      new Promise((resolve) => {
+      new Promise((resolve: any) => {
         resolve({
           accessToken: "mockToken",
           refreshToken: "",
@@ -287,7 +287,7 @@ describe("requireAdmin", () => {
     }
 
     vi.mocked(authenticator.isAuthenticated).mockReturnValue(
-      new Promise((resolve) => {
+      new Promise((resolve: any) => {
         resolve({
           accessToken: "mockToken",
           refreshToken: "",
@@ -356,7 +356,7 @@ describe("requireAdmin", () => {
     }
 
     vi.mocked(authenticator.isAuthenticated).mockReturnValue(
-      new Promise((resolve) => {
+      new Promise((resolve: any) => {
         resolve({
           accessToken: "mockToken",
           refreshToken: "",
@@ -438,7 +438,7 @@ describe("getUserProfile", () => {
     }
 
     vi.mocked(authenticator.isAuthenticated).mockReturnValue(
-      new Promise((resolve) => {
+      new Promise((resolve: any) => {
         resolve({
           accessToken: "mockToken",
           refreshToken: "",

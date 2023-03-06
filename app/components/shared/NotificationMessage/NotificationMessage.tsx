@@ -22,9 +22,7 @@ export interface NotificationMessageType {
 
 type NotificationMessageProps = {
   notificationMessage: NotificationMessageType
-  setNotificationMessageIsActive: Dispatch<
-    SetStateAction<NotificationMessageType["isActive"]>
-  >
+  setNotificationMessage: Dispatch<SetStateAction<NotificationMessageType>>
   handleAccept?: () => void
   handleDecline?: () => void
 }
@@ -46,7 +44,7 @@ const NotificationMessageIcon = ({ type }: { type: NotificationMessageType["type
 
 const NotificationMessage = ({
   notificationMessage: { type, title, description, isActive },
-  setNotificationMessageIsActive,
+  setNotificationMessage,
 }: NotificationMessageProps) => {
   return (
     <div
@@ -56,7 +54,15 @@ const NotificationMessage = ({
         [type]: true,
       })}
     >
-      <span className="close" onClick={() => setNotificationMessageIsActive(false)}>
+      <span
+        className="close"
+        onClick={() =>
+          setNotificationMessage({
+            ...{ type, title, description, isActive },
+            isActive: false,
+          })
+        }
+      >
         <CloseIcon />
       </span>
       {type !== "options" ? (
@@ -75,26 +81,20 @@ const NotificationMessage = ({
             <InfoIcon />
             <Text id="title">{title}</Text>
           </div>
-            <div className="content-options">
-              <Button
-                id="accept"
-                variant="filled"
-                name="type"
-                value="accept"
-                type="submit"
-              >
-                Accept
-              </Button>
-              <Button
-                id="decline"
-                variant="outline"
-                name="type"
-                value="decline"
-                type="submit"
-              >
-                Decline
-              </Button>
-            </div>
+          <div className="content-options">
+            <Button id="accept" variant="filled" name="type" value="accept" type="submit">
+              Accept
+            </Button>
+            <Button
+              id="decline"
+              variant="outline"
+              name="type"
+              value="decline"
+              type="submit"
+            >
+              Decline
+            </Button>
+          </div>
         </div>
       )}
     </div>

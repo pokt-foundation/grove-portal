@@ -1,14 +1,14 @@
 import { expect } from "vitest"
 import AppsView from "./appsView"
 import { render, screen } from "test/helpers"
-import { endpoints, teamsMockData } from "~/models/portal/portal.data"
+import { endpoints, profileMockData, teamsMockData } from "~/models/portal/portal.data"
 import { relayMetricPerWeek } from "~/models/relaymeter/relaymeter.data"
 
 const userId = "mock"
 const userIdGod = "god"
 
 describe("<AppsView />", () => {
-  it("renders without endpoints", () => {
+  it("renders without endpoints", async () => {
     render(
       <AppsView
         dailyNetworkRelaysPerWeek={relayMetricPerWeek}
@@ -16,6 +16,7 @@ describe("<AppsView />", () => {
         searchParams={new URLSearchParams({ error: "false" })}
         teams={teamsMockData}
         userId={userId}
+        profile={profileMockData}
       />,
     )
 
@@ -31,6 +32,7 @@ describe("<AppsView />", () => {
         searchParams={new URLSearchParams({ error: "false" })}
         teams={teamsMockData}
         userId={userId}
+        profile={profileMockData}
       />,
     )
 
@@ -46,6 +48,7 @@ describe("<AppsView />", () => {
         searchParams={new URLSearchParams({ error: "false" })}
         teams={teamsMockData}
         userId={userIdGod}
+        profile={profileMockData}
       />,
     )
 
@@ -60,6 +63,7 @@ describe("<AppsView />", () => {
         searchParams={new URLSearchParams({ error: "true" })}
         teams={teamsMockData}
         userId={userIdGod}
+        profile={profileMockData}
       />,
     )
 

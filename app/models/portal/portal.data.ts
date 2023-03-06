@@ -1,3 +1,4 @@
+import { Auth0Profile } from "remix-auth-auth0"
 import { AppStatus, Blockchain, PayPlanType, ProcessedEndpoint } from "./sdk"
 
 export const endpoint: ProcessedEndpoint = {
@@ -503,3 +504,46 @@ export const teamsMockData = [
     roleName: "ADMIN",
   },
 ] as const
+
+export const profileMockData: Auth0Profile = {
+  provider: "auth0",
+  displayName: "test@gmail.com",
+  id: "auth0|53bede86ac0efcc90f641962",
+  name: {
+    familyName: "",
+    givenName: "",
+    middleName: "",
+  },
+  emails: [{ value: "test@gmail.com" }],
+  photos: [
+    {
+      value:
+        "https://s.gravatar.com/avatar/c24291e8d1c27961558174cd37c09632?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fde.png",
+    },
+  ],
+  _json: {
+    sub: "auth0|53bede86ac0efcc90f641962",
+    nickname: "test",
+    name: "test@gmail.com",
+    picture:
+      "https://s.gravatar.com/avatar/c24291e8d1c27961558174cd37c09632?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fde.png",
+    updated_at: "2023-03-06T17:08:45.125Z",
+    email: "test@gmail.com",
+    email_verified: true,
+    given_name: "",
+    family_name: "",
+    middle_name: "",
+    preferred_username: "",
+    profile: "",
+    website: "",
+    gender: "",
+    birthdate: "",
+    zoneinfo: "",
+    locale: "",
+    phone_number: "",
+    phone_number_verified: false,
+    address: {
+      country: ""
+    }
+  },
+}

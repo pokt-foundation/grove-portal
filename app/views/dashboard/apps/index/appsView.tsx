@@ -5,7 +5,7 @@ import {
   Text,
   IconMoreVertical,
 } from "@pokt-foundation/pocket-blocks"
-import { Link } from "@remix-run/react"
+import { Form, Link, useActionData } from "@remix-run/react"
 import { useEffect, useState } from "react"
 import styles from "./styles.css"
 import UsageChartCard, {
@@ -25,6 +25,12 @@ import { RelayMetric } from "~/models/relaymeter/relaymeter.server"
 import { dayjs } from "~/utils/dayjs"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 import { getPlanName } from "~/utils/utils"
+import NotificationMessage, {
+  links as NotificationMessageLinks,
+  NotificationMessageType,
+} from "~/components/shared/NotificationMessage"
+import { Auth0Profile } from "remix-auth-auth0"
+import { AppsActionData } from "~/routes/dashboard/apps/index"
 
 /* c8 ignore start */
 export const links = () => {
@@ -35,6 +41,7 @@ export const links = () => {
     ...ModalLinks(),
     ...StatusTagLinks(),
     ...DropdownLinks(),
+    ...NotificationMessageLinks(),
     { rel: "stylesheet", href: styles },
   ]
 }
@@ -46,6 +53,7 @@ type AppsViewProps = {
   dailyNetworkRelaysPerWeek: RelayMetric[] | null
   searchParams: URLSearchParams
   teams: typeof teamsMockData
+  profile: Auth0Profile
 }
 
 export const AppsView = ({
@@ -54,8 +62,19 @@ export const AppsView = ({
   searchParams,
   userId,
   teams,
+  profile,
 }: AppsViewProps) => {
   const [showErrorModal, setShowErrorModal] = useState(false)
+  const [notificationMessageProps, setNotificationMessageProps] =
+    useState<NotificationMessageType>({
+      type: "info",
+      title: "",
+      description: "",
+      isActive: false,
+    })
+  const [optionsEndpointId, setOptionsEndpointId] = useState<string>("")
+
+  const actionData = useActionData<AppsActionData>()
 
   useEffect(() => {
     const error = searchParams.get("error")
@@ -66,9 +85,69 @@ export const AppsView = ({
     }
   }, [searchParams])
 
+  useEffect(() => {
+    if (endpoints && endpoints !== null && endpoints.length > 0) {
+      const notAcceptedEndpoints = endpoints?.filter((endpoint) => {
+        const notAcceptedEndpoint = endpoint?.users?.find((user) => {
+          return user.email === profile?._json?.email && !user.accepted
+        })
+        return notAcceptedEndpoint || false
+      })
+
+      if (notAcceptedEndpoints.length > 0) {
+        setNotificationMessageProps({
+          type: "options",
+          title: `You have been invited to ${notAcceptedEndpoints[0]?.name}`,
+          description: "Do you wish to accept?",
+          isActive: true,
+        })
+        setOptionsEndpointId(notAcceptedEndpoints[0]?.id || "")
+      }
+    }
+  }, [endpoints])
+
+  useEffect(() => {
+    if (actionData && actionData.error) {
+      setNotificationMessageProps({
+        type: "error",
+        title: "There was an error accepting your invite",
+        description: "",
+        isActive: true,
+      })
+    } else if (actionData && !actionData.error) {
+      setNotificationMessageProps({
+        type: "success",
+        title: "You accepted the invite.",
+        description: "",
+        isActive: true,
+      })
+    }
+  }, [actionData])
+
   return (
     <div className="pokt-apps-view">
       <section>
+        <div style={{ width: "100%", marginBottom: "1em" }}>
+          <Form method="post" style={{ width: "100%" }}>
+            <NotificationMessage
+              notificationMessage={notificationMessageProps}
+              setNotificationMessage={setNotificationMessageProps}
+            />
+            <input
+              name="appId"
+              style={{ display: "none" }}
+              value={optionsEndpointId}
+              readOnly
+            />
+            <input
+              name="email"
+              style={{ display: "none" }}
+              value={profile._json.email}
+              readOnly
+            />
+          </Form>
+        </div>
+
         <Card>
           <Tabs color="green">
             <Tabs.Tab label="My Applications">
@@ -87,9 +166,17 @@ export const AppsView = ({
                     action: {
                       value: "",
                       element: (
-                        <Link to={app.id}>
-                          <IconCaretRight className="pokt-icon" />
-                        </Link>
+                        <>
+                          {app.users.map((user) =>
+                            user.email === profile?._json?.email && user.accepted ? (
+                              <Link to={app.id} key={app.id}>
+                                <IconCaretRight className="pokt-icon" />
+                              </Link>
+                            ) : (
+                              <Link to=""></Link>
+                            ),
+                          )}
+                        </>
                       ),
                     },
                   }))}

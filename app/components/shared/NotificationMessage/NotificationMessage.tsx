@@ -22,7 +22,9 @@ export interface NotificationMessageType {
 
 type NotificationMessageProps = {
   notificationMessage: NotificationMessageType
-  setNotificationMessage: Dispatch<SetStateAction<NotificationMessageType>>
+  setNotificationMessageIsActive: Dispatch<
+    SetStateAction<NotificationMessageType["isActive"]>
+  >
   handleAccept?: () => void
   handleDecline?: () => void
 }
@@ -44,7 +46,7 @@ const NotificationMessageIcon = ({ type }: { type: NotificationMessageType["type
 
 const NotificationMessage = ({
   notificationMessage: { type, title, description, isActive },
-  setNotificationMessage,
+  setNotificationMessageIsActive,
   handleAccept,
   handleDecline,
 }: NotificationMessageProps) => {
@@ -56,17 +58,7 @@ const NotificationMessage = ({
         [type]: true,
       })}
     >
-      <span
-        className="close"
-        onClick={() =>
-          setNotificationMessage({
-            type: "success",
-            isActive: false,
-            title: "",
-            description: "",
-          })
-        }
-      >
+      <span className="close" onClick={() => setNotificationMessageIsActive(false)}>
         <CloseIcon />
       </span>
       {type !== "options" ? (

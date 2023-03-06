@@ -17,7 +17,7 @@ describe("<NotificationMessage />", () => {
     render(
       <NotificationMessage
         notificationMessage={mockedNotificationMessage}
-        setNotificationMessage={() => null}
+        setNotificationMessageIsActive={() => null}
       />,
     )
     expect(screen.getByText(mockedNotificationMessage.title)).toBeInTheDocument()
@@ -26,10 +26,10 @@ describe("<NotificationMessage />", () => {
   it("won't render title if the prop isActive is false", () => {
     const cssFile = fs.readFileSync(path.resolve(__dirname, "./styles.css"), "utf8")
 
-    const { container, getByText, debug } = render(
+    const { container } = render(
       <NotificationMessage
         notificationMessage={{ ...mockedNotificationMessage, isActive: false }}
-        setNotificationMessage={() => null}
+        setNotificationMessageIsActive={() => null}
       />,
     )
 
@@ -37,8 +37,7 @@ describe("<NotificationMessage />", () => {
     style.innerHTML = cssFile
     container.append(style)
 
-    const itemNode = getByText(mockedNotificationMessage.title)
-    debug()
+    const itemNode = screen.getByText(mockedNotificationMessage.title)
     expect(itemNode).not.toBeVisible()
   })
 })

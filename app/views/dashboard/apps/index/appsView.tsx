@@ -76,7 +76,7 @@ export const AppsView = ({
                 <Table
                   search
                   columns={["App", "Created", "Plan", ""]}
-                  data={(endpoints as unknown as ProcessedEndpoint[]).map((app) => ({
+                  data={(endpoints as ProcessedEndpoint[]).map((app) => ({
                     id: app.id,
                     app: {
                       value: app.name,
@@ -115,52 +115,54 @@ export const AppsView = ({
               )}
             </Tabs.Tab>
 
-            <Tabs.Tab label="Teams">
-              <Table
-                columns={["App", "Invite status", "Role", ""]}
-                data={teams.map((team) => ({
-                  id: team.id,
-                  app: {
-                    value: team.app,
-                    element: <Link to={team.id.toString()}>{team.app}</Link>,
-                  },
-                  inviteStatus: {
-                    value: team.accepted ? "Accepted" : "Pending",
-                    element: <StatusTag accepted={team.accepted} />,
-                  },
-                  role: team.roleName,
-                  action: {
-                    value: "More",
-                    element: (
-                      <div className="list__more-actions">
-                        <Dropdown
-                          contentClassName="dropdown-teams__content"
-                          label={
-                            <IconMoreVertical className="pokt-icon" fill="#A9E34B" />
-                          }
-                        >
-                          {team.accepted ? (
-                            <DropdownItem action={() => {}} label="View App" />
-                          ) : (
-                            <DropdownItem action={() => {}} label="Accept Invite" />
-                          )}
-                          <DropdownItem
-                            action={() => {}}
-                            label="Leave App"
-                            variant="green"
-                          />
-                        </Dropdown>
-                      </div>
-                    ),
-                  },
-                }))}
-                paginate={
-                  getRequiredClientEnvVar("GODMODE_ACCOUNTS")?.includes(userId)
-                    ? { perPage: 10 }
-                    : undefined
-                }
-              />
-            </Tabs.Tab>
+            {endpoints && endpoints.length > 0 ? (
+              <Tabs.Tab label="Teams">
+                <Table
+                  columns={["App", "Invite status", "Role", ""]}
+                  data={teams.map((team) => ({
+                    id: team.id,
+                    app: {
+                      value: team.app,
+                      element: <Link to={team.id.toString()}>{team.app}</Link>,
+                    },
+                    inviteStatus: {
+                      value: team.accepted ? "Accepted" : "Pending",
+                      element: <StatusTag accepted={team.accepted} />,
+                    },
+                    role: team.roleName,
+                    action: {
+                      value: "More",
+                      element: (
+                        <div className="list__more-actions">
+                          <Dropdown
+                            contentClassName="dropdown-teams__content"
+                            label={
+                              <IconMoreVertical className="pokt-icon" fill="#A9E34B" />
+                            }
+                          >
+                            {team.accepted ? (
+                              <DropdownItem action={() => {}} label="View App" />
+                            ) : (
+                              <DropdownItem action={() => {}} label="Accept Invite" />
+                            )}
+                            <DropdownItem
+                              action={() => {}}
+                              label="Leave App"
+                              variant="green"
+                            />
+                          </Dropdown>
+                        </div>
+                      ),
+                    },
+                  }))}
+                  paginate={
+                    getRequiredClientEnvVar("GODMODE_ACCOUNTS")?.includes(userId)
+                      ? { perPage: 10 }
+                      : undefined
+                  }
+                />
+              </Tabs.Tab>
+            ) : null}
           </Tabs>
         </Card>
       </section>

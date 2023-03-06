@@ -1,9 +1,10 @@
 import { json, LoaderFunction, MetaFunction } from "@remix-run/node"
 import { useLoaderData, useSearchParams } from "@remix-run/react"
 import { useEffect } from "react"
+import invariant from "tiny-invariant"
 import { AllAppsLoaderData } from "../apps"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
-import { getRelaysPerWeek, RelayMetric } from "~/models/relaymeter/relaymeter.server"
+import { getRelaysPerPeriod, RelayMetric } from "~/models/relaymeter/relaymeter.server"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { getPoktId, requireUser } from "~/utils/session.server"
 import AppsView, { links as AppsViewLinks } from "~/views/dashboard/apps/index/appsView"
@@ -25,12 +26,13 @@ export type AppsLoaderData = {
 
 export const loader: LoaderFunction = async ({ request }) => {
   const user = await requireUser(request)
+  invariant(user.profile.id && user.profile.emails, "user not found")
   const userId = getPoktId(user.profile.id)
 
   let dailyNetworkRelaysPerWeek: RelayMetric[] | null = null
 
   try {
-    dailyNetworkRelaysPerWeek = await getRelaysPerWeek("users", userId)
+    dailyNetworkRelaysPerWeek = await getRelaysPerPeriod("users", 7, userId)
   } catch (e) {}
 
   return json<AppsLoaderData>(

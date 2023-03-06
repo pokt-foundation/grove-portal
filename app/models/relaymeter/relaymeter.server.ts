@@ -36,6 +36,7 @@ export const getRelays = async (
   })
 
   if (!res || res.status !== 200) {
+    console.log(res)
     throw new Error(res.statusText)
   }
 

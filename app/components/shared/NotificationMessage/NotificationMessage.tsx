@@ -1,5 +1,4 @@
 import { Button, Text } from "@pokt-foundation/pocket-blocks"
-import { Form } from "@remix-run/react"
 import clsx from "clsx"
 import { Dispatch, SetStateAction } from "react"
 import CloseIcon from "../Icons/CloseIcon"

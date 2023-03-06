@@ -82,15 +82,15 @@ const NotificationMessage = ({
             <Text id="title">{title}</Text>
           </div>
           <div className="content-options">
-            <Button id="accept" variant="filled" name="type" value="accept" type="submit">
+            <Button id="accept" name="type" type="submit" value="accept" variant="filled">
               Accept
             </Button>
             <Button
               id="decline"
-              variant="outline"
               name="type"
-              value="decline"
               type="submit"
+              value="decline"
+              variant="outline"
             >
               Decline
             </Button>

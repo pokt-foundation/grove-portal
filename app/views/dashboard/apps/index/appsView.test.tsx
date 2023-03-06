@@ -13,10 +13,10 @@ describe("<AppsView />", () => {
       <AppsView
         dailyNetworkRelaysPerWeek={relayMetricPerWeek}
         endpoints={null}
+        profile={profileMockData}
         searchParams={new URLSearchParams({ error: "false" })}
         teams={teamsMockData}
         userId={userId}
-        profile={profileMockData}
       />,
     )
 
@@ -29,10 +29,10 @@ describe("<AppsView />", () => {
       <AppsView
         dailyNetworkRelaysPerWeek={relayMetricPerWeek}
         endpoints={endpoints}
+        profile={profileMockData}
         searchParams={new URLSearchParams({ error: "false" })}
         teams={teamsMockData}
         userId={userId}
-        profile={profileMockData}
       />,
     )
 
@@ -45,10 +45,10 @@ describe("<AppsView />", () => {
       <AppsView
         dailyNetworkRelaysPerWeek={relayMetricPerWeek}
         endpoints={endpoints}
+        profile={profileMockData}
         searchParams={new URLSearchParams({ error: "false" })}
         teams={teamsMockData}
         userId={userIdGod}
-        profile={profileMockData}
       />,
     )
 
@@ -60,10 +60,10 @@ describe("<AppsView />", () => {
       <AppsView
         dailyNetworkRelaysPerWeek={relayMetricPerWeek}
         endpoints={endpoints}
+        profile={profileMockData}
         searchParams={new URLSearchParams({ error: "true" })}
         teams={teamsMockData}
         userId={userIdGod}
-        profile={profileMockData}
       />,
     )
 

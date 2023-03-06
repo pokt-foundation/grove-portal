@@ -1,16 +1,16 @@
 import { ActionFunction, json, LoaderFunction, MetaFunction } from "@remix-run/node"
 import { useLoaderData, useSearchParams } from "@remix-run/react"
 import { useEffect } from "react"
+import { Auth0Profile } from "remix-auth-auth0"
+import invariant from "tiny-invariant"
 import { AllAppsLoaderData } from "../apps"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { teamsMockData } from "~/models/portal/portal.data"
+import { initPortalClient } from "~/models/portal/portal.server"
 import { getRelaysPerWeek, RelayMetric } from "~/models/relaymeter/relaymeter.server"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { getPoktId, requireUser } from "~/utils/session.server"
 import AppsView, { links as AppsViewLinks } from "~/views/dashboard/apps/index/appsView"
-import invariant from "tiny-invariant"
-import { initPortalClient } from "~/models/portal/portal.server"
-import { Auth0Profile } from "remix-auth-auth0"
 
 export const links = () => {
   return [...AppsViewLinks()]
@@ -123,10 +123,10 @@ export const Apps = () => {
     <AppsView
       dailyNetworkRelaysPerWeek={dailyNetworkRelaysPerWeek}
       endpoints={endpoints}
+      profile={profile}
       searchParams={searchParams}
       teams={teamsMockData}
       userId={userId}
-      profile={profile}
     />
   )
 }

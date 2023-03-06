@@ -41,11 +41,13 @@ export type AllAppsLoaderData = {
 export const loader: LoaderFunction = async ({ request }) => {
   const user = await requireUser(request)
   const portal = initPortalClient(user.accessToken)
-  const endpointsResponse = await portal.endpoints({
-    pending: true
-  }).catch((e) => {
-    console.log(e)
-  })
+  const endpointsResponse = await portal
+    .endpoints({
+      pending: true,
+    })
+    .catch((e) => {
+      console.log(e)
+    })
 
   const userId = getPoktId(user.profile.id)
 

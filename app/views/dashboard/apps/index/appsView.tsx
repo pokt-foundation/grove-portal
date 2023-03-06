@@ -7,6 +7,7 @@ import {
 } from "@pokt-foundation/pocket-blocks"
 import { Form, Link, useActionData } from "@remix-run/react"
 import { useEffect, useState } from "react"
+import { Auth0Profile } from "remix-auth-auth0"
 import styles from "./styles.css"
 import UsageChartCard, {
   links as UsageCardLinks,
@@ -17,20 +18,19 @@ import Dropdown, {
   links as DropdownLinks,
 } from "~/components/shared/Dropdown"
 import Modal, { links as ModalLinks } from "~/components/shared/Modal"
+import NotificationMessage, {
+  links as NotificationMessageLinks,
+  NotificationMessageType,
+} from "~/components/shared/NotificationMessage"
 import StatusTag, { links as StatusTagLinks } from "~/components/shared/StatusTag"
 import Table, { links as TableLinks } from "~/components/shared/Table"
 import { teamsMockData } from "~/models/portal/portal.data"
 import { EndpointsQuery, ProcessedEndpoint } from "~/models/portal/sdk"
 import { RelayMetric } from "~/models/relaymeter/relaymeter.server"
+import { AppsActionData } from "~/routes/dashboard/apps/index"
 import { dayjs } from "~/utils/dayjs"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 import { getPlanName } from "~/utils/utils"
-import NotificationMessage, {
-  links as NotificationMessageLinks,
-  NotificationMessageType,
-} from "~/components/shared/NotificationMessage"
-import { Auth0Profile } from "remix-auth-auth0"
-import { AppsActionData } from "~/routes/dashboard/apps/index"
 
 /* c8 ignore start */
 export const links = () => {
@@ -134,16 +134,16 @@ export const AppsView = ({
               setNotificationMessage={setNotificationMessageProps}
             />
             <input
+              readOnly
               name="appId"
               style={{ display: "none" }}
               value={optionsEndpointId}
-              readOnly
             />
             <input
+              readOnly
               name="email"
               style={{ display: "none" }}
               value={profile._json.email}
-              readOnly
             />
           </Form>
         </div>
@@ -169,7 +169,7 @@ export const AppsView = ({
                         <>
                           {app.users.map((user) =>
                             user.email === profile?._json?.email && user.accepted ? (
-                              <Link to={app.id} key={app.id}>
+                              <Link key={app.id} to={app.id}>
                                 <IconCaretRight className="pokt-icon" />
                               </Link>
                             ) : (

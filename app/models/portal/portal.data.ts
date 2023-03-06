@@ -543,7 +543,7 @@ export const profileMockData: Auth0Profile = {
     phone_number: "",
     phone_number_verified: false,
     address: {
-      country: ""
-    }
+      country: "",
+    },
   },
 }

@@ -1,6 +1,7 @@
-import { Card, Grid, IconArrowDown, IconArrowUp } from "@pokt-foundation/pocket-blocks"
+import { Grid, IconArrowDown, IconArrowUp } from "@pokt-foundation/pocket-blocks"
 import { useMemo } from "react"
 import styles from "./styles.css"
+import Card, { links as CardLinks } from "~/components/shared/Card"
 import CardList, {
   CardListItem,
   links as CardListLinks,
@@ -10,7 +11,7 @@ import { RelayMetric } from "~/models/relaymeter/relaymeter.server"
 
 /* c8 ignore start */
 export const links = () => {
-  return [...CardListLinks(), { rel: "stylesheet", href: styles }]
+  return [...CardLinks(), ...CardListLinks(), { rel: "stylesheet", href: styles }]
 }
 /* c8 ignore stop */
 

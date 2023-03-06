@@ -1,10 +1,11 @@
-import { Card, IconCaretRight, Title, Text, Anchor } from "@pokt-foundation/pocket-blocks"
+import { IconCaretRight, Title, Text, Anchor } from "@pokt-foundation/pocket-blocks"
 import { Link } from "@remix-run/react"
 import { useEffect, useState } from "react"
 import styles from "./styles.css"
 import UsageChartCard, {
   links as UsageCardLinks,
 } from "~/components/application/UsageChartCard"
+import Card, { links as CardLinks } from "~/components/shared/Card"
 import Modal, { links as ModalLinks } from "~/components/shared/Modal"
 import Table, { links as TableLinks } from "~/components/shared/Table"
 import { EndpointsQuery, ProcessedEndpoint } from "~/models/portal/sdk"
@@ -16,6 +17,7 @@ import { getPlanName } from "~/utils/utils"
 /* c8 ignore start */
 export const links = () => {
   return [
+    ...CardLinks(),
     ...TableLinks(),
     ...UsageCardLinks(),
     ...ModalLinks(),

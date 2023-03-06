@@ -1,4 +1,4 @@
-import { Anchor, Button, Card, Text } from "@pokt-foundation/pocket-blocks"
+import { Anchor, Button, Text } from "@pokt-foundation/pocket-blocks"
 import {
   ActionFunction,
   json,
@@ -18,6 +18,7 @@ import AppRadioCards, {
 import CalculateYourPricing, {
   links as CalculateYourPricingLinks,
 } from "~/components/application/CalculateYourPricing/CalculateYourPricing"
+import Card, { links as CardLinks } from "~/components/shared/Card"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { useFeatureFlags } from "~/context/FeatureFlagContext"
 import { initPortalClient } from "~/models/portal/portal.server"
@@ -39,6 +40,7 @@ export const meta: MetaFunction = () => {
 
 export const links = () => {
   return [
+    ...CardLinks(),
     ...TextInputLinks(),
     ...AppPlansOverviewLinks(),
     ...AppRadioCardsLinks(),

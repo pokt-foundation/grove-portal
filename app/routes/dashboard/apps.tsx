@@ -1,9 +1,10 @@
-import { Button, Card, Grid } from "@pokt-foundation/pocket-blocks"
+import { Button, Grid } from "@pokt-foundation/pocket-blocks"
 import { json, LoaderFunction } from "@remix-run/node"
 import { Link, Outlet, useLoaderData, useTransition } from "@remix-run/react"
 import FeedbackCard, {
   links as FeedbackCardLinks,
 } from "~/components/application/FeedbackCard"
+import Card, { links as CardLinks } from "~/components/shared/Card"
 import CardList, {
   CardListItem,
   links as CardListLinks,
@@ -24,6 +25,7 @@ import {
 
 export const links = () => {
   return [
+    ...CardLinks(),
     ...CardListLinks(),
     ...FeedbackCardLinks(),
     ...LoaderLinks(),

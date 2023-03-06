@@ -45,6 +45,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     return redirect(`/dashboard/apps/${params.appId}`)
   }
   const user = await requireUser(request)
+  invariant(user.profile.id && user.profile.emails, "user not found")
   const userId = await getPoktId(user.profile.id)
   const portal = initPortalClient(user.accessToken)
 

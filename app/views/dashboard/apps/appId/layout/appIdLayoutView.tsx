@@ -49,7 +49,7 @@ export const links = () => {
 type AppIdLayoutViewProps = {
   endpoint: EndpointQuery["endpoint"] | null
   searchParams: URLSearchParams
-  setSearchParams: typeof URLSearchParams["arguments"]
+  setSearchParams: (typeof URLSearchParams)["arguments"]
   subscription: Stripe.Subscription | undefined
   updatePlanFetcher: ReturnType<typeof useFetcher>
 }

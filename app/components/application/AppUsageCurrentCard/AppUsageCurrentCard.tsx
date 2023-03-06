@@ -1,7 +1,6 @@
-import { Grid, Tooltip } from "@pokt-foundation/pocket-blocks"
+import { Card, Grid } from "@pokt-foundation/pocket-blocks"
 import { UserLBTotalRelaysResponse } from "@pokt-foundation/portal-types"
 import styles from "./styles.css"
-import { Card, links as CardLinks } from "~/components/shared/Card"
 import CardList, {
   CardListItem,
   links as CardListLinks,
@@ -13,7 +12,7 @@ import { commify } from "~/utils/formattingUtils"
 
 /* c8 ignore start */
 export const links = () => {
-  return [...CardLinks(), ...CardListLinks(), { rel: "stylesheet", href: styles }]
+  return [...CardListLinks(), { rel: "stylesheet", href: styles }]
 }
 /* c8 ignore stop */
 

@@ -1,4 +1,4 @@
-import { StylesPlaceholder } from "@mantine/remix"
+// import { StylesPlaceholder } from "@mantine/remix"
 import {
   Alert,
   Center,
@@ -22,7 +22,7 @@ import {
   useLoaderData,
   useSearchParams,
 } from "@remix-run/react"
-import { useEffect, useMemo } from "react"
+import React, { useEffect, useMemo } from "react"
 import { Auth0Profile } from "remix-auth-auth0"
 import analyticsInit from "./utils/analytics"
 import { authenticator } from "./utils/auth.server"
@@ -79,7 +79,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 createEmotionCache({ key: "pni" })
 
-const WithProviders: React.FC = ({ children }) => {
+const WithProviders = ({ children }: { children: React.ReactNode }) => {
   return (
     <MantineProvider
       withCSSVariables

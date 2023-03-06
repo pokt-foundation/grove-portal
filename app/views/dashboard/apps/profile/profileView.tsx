@@ -1,10 +1,9 @@
-import { Button } from "@pokt-foundation/pocket-blocks"
+import { Button, Card } from "@pokt-foundation/pocket-blocks"
 import { LinksFunction } from "@remix-run/node"
 import { Form } from "@remix-run/react"
 import { useEffect, useState } from "react"
 import { Auth0Profile } from "remix-auth-auth0"
 import styles from "./styles.css"
-import Card, { links as CardLinks } from "~/components/shared/Card"
 import Modal, { links as ModalLinks } from "~/components/shared/Modal"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 
@@ -13,7 +12,6 @@ export const SUCCESSFUL_CHANGE_PASSWORD_MSG =
 
 /* c8 ignore start */
 export const links: LinksFunction = () => [
-  ...CardLinks(),
   ...TextInputLinks(),
   ...ModalLinks(),
   { rel: "stylesheet", href: styles },
@@ -26,7 +24,7 @@ type ProfileViewProps = {
 }
 
 export const ProfileView = ({ profile, actionData }: ProfileViewProps) => {
-  const { nickname = "", email = "" } = profile._json
+  const { nickname, email } = profile._json || { nickname: "", email: "" }
   const [open, setOpen] = useState<boolean>(false)
 
   const closeModal = () => setOpen(false)

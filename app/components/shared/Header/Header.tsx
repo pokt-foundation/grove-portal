@@ -4,7 +4,6 @@ import {
   IconLogOut,
   IconUser,
   Menu,
-  useMantineTheme,
 } from "@pokt-foundation/pocket-blocks"
 import { Form, Link, useLocation } from "@remix-run/react"
 import clsx from "clsx"
@@ -28,6 +27,7 @@ type Route = {
 type HeaderProps = {
   nav?: "left" | "right"
   user?: Auth0Profile
+  children: React.ReactNode
 }
 
 export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) => {
@@ -185,7 +185,6 @@ type UserMenuDropdownProps = {
 }
 
 function UserMenuDropdown({ user, routes }: UserMenuDropdownProps) {
-  const theme = useMantineTheme()
   return (
     <>
       {user && (

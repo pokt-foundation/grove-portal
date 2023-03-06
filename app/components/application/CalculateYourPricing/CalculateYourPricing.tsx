@@ -1,4 +1,4 @@
-import { Button, Divider, theme, useMantineTheme } from "@pokt-foundation/pocket-blocks"
+import { Button, useMantineTheme } from "@pokt-foundation/pocket-blocks"
 import React, { useMemo, useState } from "react"
 import styles from "./styles.css"
 import Modal, { links as ModalLinks, ModalCTA } from "~/components/shared/Modal"

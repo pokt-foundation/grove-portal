@@ -1,5 +1,5 @@
-import styles from "./styles.css"
 import { Card as PBCard } from "@pokt-foundation/pocket-blocks"
+import styles from "./styles.css"
 
 /* c8 ignore start */
 export const links = () => {

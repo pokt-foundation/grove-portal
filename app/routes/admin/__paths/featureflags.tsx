@@ -1,14 +1,13 @@
-import { Button, Checkbox, Container } from "@pokt-foundation/pocket-blocks"
+import { Button, Card, Checkbox, Container } from "@pokt-foundation/pocket-blocks"
 import { LinksFunction } from "@remix-run/node"
 import { useFetcher } from "@remix-run/react"
-import Card, { links as CardLinks } from "~/components/shared/Card"
 import CardList, {
   CardListItem,
   links as CardListLinks,
 } from "~/components/shared/CardList"
 import { useFeatureFlags } from "~/context/FeatureFlagContext"
 
-export const links: LinksFunction = () => [...CardLinks(), ...CardListLinks()]
+export const links: LinksFunction = () => [...CardListLinks()]
 
 export default function FeatureFlags() {
   const fetcher = useFetcher()

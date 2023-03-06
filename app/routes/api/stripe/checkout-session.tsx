@@ -8,6 +8,7 @@ import { getPoktId, requireUser } from "~/utils/session.server"
 
 export const loader: LoaderFunction = async ({ request }) => {
   const user = await requireUser(request)
+  invariant(user.profile.id && user.profile.emails, "user not found")
   const userId = getPoktId(user.profile.id)
 
   const url = new URL(request.url)

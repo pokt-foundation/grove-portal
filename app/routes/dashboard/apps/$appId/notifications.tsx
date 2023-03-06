@@ -6,16 +6,16 @@ import invariant from "tiny-invariant"
 import NotificationsAlertForm, {
   links as NotificationsAlertFormLinks,
 } from "~/components/application/NotificationsAlertForm/NotificationsAlertForm"
-import NotificationsWeeklyBandwidthUsageCard, {
-  links as NotificationsWeeklyBandwidthUsageCardLinks,
-} from "~/components/application/NotificationsWeeklyBandwidthUsageCard"
+// import NotificationsWeeklyBandwidthUsageCard, {
+//   links as NotificationsWeeklyBandwidthUsageCardLinks,
+// } from "~/components/application/NotificationsWeeklyBandwidthUsageCard"
 import { initPortalClient } from "~/models/portal/portal.server"
 import styles from "~/styles/dashboard.apps.$appId.notifications.css"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { requireUser } from "~/utils/session.server"
 
 export const links: LinksFunction = () => [
-  ...NotificationsWeeklyBandwidthUsageCardLinks(),
+  // ...NotificationsWeeklyBandwidthUsageCardLinks(),
   ...NotificationsAlertFormLinks(),
   {
     rel: "stylesheet",

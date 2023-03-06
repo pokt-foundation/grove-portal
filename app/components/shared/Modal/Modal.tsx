@@ -23,7 +23,7 @@ export default function Modal({ ...props }: ModalProps) {
   )
 }
 
-export const ModalCTA: React.FC = ({ children }) => {
+export const ModalCTA = ({ children }: { children: React.ReactNode }) => {
   return (
     <Group align="center" className="pokt-modal-cta buttonGroup" position="center">
       {children}

@@ -1,12 +1,6 @@
-import {
-  Grid,
-  IconArrowDown,
-  IconArrowUp,
-  useMantineTheme,
-} from "@pokt-foundation/pocket-blocks"
+import { Card, Grid, IconArrowDown, IconArrowUp } from "@pokt-foundation/pocket-blocks"
 import { useMemo } from "react"
 import styles from "./styles.css"
-import { Card, links as CardLinks } from "~/components/shared/Card"
 import CardList, {
   CardListItem,
   links as CardListLinks,
@@ -16,7 +10,7 @@ import { RelayMetric } from "~/models/relaymeter/relaymeter.server"
 
 /* c8 ignore start */
 export const links = () => {
-  return [...CardLinks(), ...CardListLinks(), { rel: "stylesheet", href: styles }]
+  return [...CardListLinks(), { rel: "stylesheet", href: styles }]
 }
 /* c8 ignore stop */
 
@@ -30,7 +24,6 @@ export default function AppRequestsRateCard({
   currentRelays,
 }: RequestsRateCardProps) {
   const { t } = useTranslate()
-  const theme = useMantineTheme()
 
   const successRate = useMemo(() => {
     return currentRelays.Total === 0 ? 0 : currentRelays.Success / currentRelays.Total
@@ -88,15 +81,6 @@ export default function AppRequestsRateCard({
       label: t.AppRequestsRateCard.list.totalRequests.label,
       value: Intl.NumberFormat().format(currentRelays.Total),
     },
-  ]
-
-  const data = [
-    {
-      label: "error",
-      usage: currentRelays.Failure,
-      color: theme.colors.dark[6],
-    },
-    { label: "success", usage: currentRelays.Success, color: theme.colors.green[6] },
   ]
 
   return (

@@ -1,16 +1,10 @@
+import { Card, useMantineTheme } from "@pokt-foundation/pocket-blocks"
 import styles from "./styles.css"
-import { Card, links as CardLinks } from "~/components/shared/Card"
 import { RelayMetric } from "~/models/relaymeter/relaymeter.server"
-import {
-  Box,
-  ParentSize,
-  PieChart,
-  useMantineTheme,
-} from "@pokt-foundation/pocket-blocks"
 
 /* c8 ignore start */
 export const links = () => {
-  return [...CardLinks(), { rel: "stylesheet", href: styles }]
+  return [{ rel: "stylesheet", href: styles }]
 }
 /* c8 ignore stop */
 
@@ -20,14 +14,6 @@ interface NetworkSuccessRateCardProps {
 
 export default function NetworkSuccessRateCard({ relays }: NetworkSuccessRateCardProps) {
   const theme = useMantineTheme()
-  const data = [
-    {
-      label: "error",
-      usage: relays.Count.Failure,
-      color: theme.colors.dark[6],
-    },
-    { label: "success", usage: relays.Count.Success, color: theme.colors.green[6] },
-  ]
   return (
     <div className="pokt-network-success-rate">
       <Card>

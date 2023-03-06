@@ -1,14 +1,12 @@
-import { Grid, Space, Container } from "@pokt-foundation/pocket-blocks"
+import { Card, Grid, Space, Container } from "@pokt-foundation/pocket-blocks"
 import { LoaderFunction, json, LinksFunction } from "@remix-run/node"
 import { NavLink, Outlet } from "@remix-run/react"
 import clsx from "clsx"
 import { Auth0Profile } from "remix-auth-auth0"
-import Card, { links as CardLinks } from "~/components/shared/Card"
 import styles from "~/styles/admin.css"
 import { requireAdmin } from "~/utils/session.server"
 
 export const links: LinksFunction = () => [
-  ...CardLinks(),
   {
     rel: "stylesheet",
     href: styles,

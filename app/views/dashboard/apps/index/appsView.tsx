@@ -1,11 +1,10 @@
-import { IconCaretRight, Title, Text, Anchor } from "@pokt-foundation/pocket-blocks"
+import { Card, IconCaretRight, Title, Text, Anchor } from "@pokt-foundation/pocket-blocks"
 import { Link } from "@remix-run/react"
 import { useEffect, useState } from "react"
 import styles from "./styles.css"
 import UsageChartCard, {
   links as UsageCardLinks,
 } from "~/components/application/UsageChartCard"
-import Card, { links as CardLinks } from "~/components/shared/Card"
 import Modal, { links as ModalLinks } from "~/components/shared/Modal"
 import Table, { links as TableLinks } from "~/components/shared/Table"
 import { EndpointsQuery, ProcessedEndpoint } from "~/models/portal/sdk"
@@ -18,7 +17,6 @@ import { getPlanName } from "~/utils/utils"
 export const links = () => {
   return [
     ...TableLinks(),
-    ...CardLinks(),
     ...UsageCardLinks(),
     ...ModalLinks(),
     { rel: "stylesheet", href: styles },
@@ -90,7 +88,7 @@ export const AppsView = ({
             </div>
             <Text>
               Get started by{" "}
-              <Anchor component={Link} className="empty-apps-link" to="/dashboard/create">
+              <Anchor className="empty-apps-link" component={Link} to="/dashboard/create">
                 creating your first application
               </Anchor>
               .

@@ -1,5 +1,5 @@
 import { Grid } from "@pokt-foundation/pocket-blocks"
-import { Transition } from "@remix-run/react/transition"
+import { Transition } from "@remix-run/react/dist/transition"
 import styles from "./styles.css"
 import ChainWithImage, {
   links as ChainWithImageLinks,
@@ -13,9 +13,9 @@ import NetworkPoktScanLatestBlockCard, {
 import NetworkRelayPerformanceCard, {
   links as NetworkRelayPerformanceCardLinks,
 } from "~/components/application/NetworkRelayPerformanceCard"
-import NetworkSuccessRateCard, {
-  links as NetworkSuccessRateCardLinks,
-} from "~/components/application/NetworkSuccessRateCard"
+// import NetworkSuccessRateCard, {
+//   links as NetworkSuccessRateCardLinks,
+// } from "~/components/application/NetworkSuccessRateCard"
 import NetworkSummaryCard, {
   links as NetworkSummaryCardLinks,
 } from "~/components/application/NetworkSummaryCard"
@@ -31,7 +31,7 @@ export const links = () => {
   return [
     ...NetworkSummaryCardLinks(),
     ...NetworkPoktScanLatestBlockCardLinks(),
-    ...NetworkSuccessRateCardLinks(),
+    // ...NetworkSuccessRateCardLinks(),
     ...NetworkRelayPerformanceCardLinks(),
     ...UsageChartCardLinks(),
     ...TableLinks(),

@@ -17,7 +17,7 @@ export type CardListItem = {
   value: string | number
   help?: string
   color?: "primary" | "secondary" | "success" | "error"
-  icon?: React.ReactNode
+  icon?: React.ReactNode | (() => JSX.Element)
 }
 
 export const CardList = ({ items }: CardListProps) => {

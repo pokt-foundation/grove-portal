@@ -1,4 +1,5 @@
 import { Button, Text } from "@pokt-foundation/pocket-blocks"
+import { Form } from "@remix-run/react"
 import clsx from "clsx"
 import { Dispatch, SetStateAction } from "react"
 import CloseIcon from "../Icons/CloseIcon"
@@ -47,8 +48,6 @@ const NotificationMessageIcon = ({ type }: { type: NotificationMessageType["type
 const NotificationMessage = ({
   notificationMessage: { type, title, description, isActive },
   setNotificationMessageIsActive,
-  handleAccept,
-  handleDecline,
 }: NotificationMessageProps) => {
   return (
     <div
@@ -66,19 +65,37 @@ const NotificationMessage = ({
           <NotificationMessageIcon type={type} />
           <div className="notification-message-text">
             <div className="notification-message-title">{title}</div>
-            <div className="notification-message-description">{description}</div>
+            {description ? (
+              <div className="notification-message-description">{description}</div>
+            ) : null}
           </div>
         </div>
       ) : (
         <div className="notification-message-content">
-          <InfoIcon />
-          <Text id="title">{title}</Text>
-          <Button id="accept" variant="filled" onClick={handleAccept}>
-            Accept
-          </Button>
-          <Button id="decline" variant="outline" onClick={handleDecline}>
-            Decline
-          </Button>
+          <div className="content-options">
+            <InfoIcon />
+            <Text id="title">{title}</Text>
+          </div>
+            <div className="content-options">
+              <Button
+                id="accept"
+                variant="filled"
+                name="type"
+                value="accept"
+                type="submit"
+              >
+                Accept
+              </Button>
+              <Button
+                id="decline"
+                variant="outline"
+                name="type"
+                value="decline"
+                type="submit"
+              >
+                Decline
+              </Button>
+            </div>
         </div>
       )}
     </div>

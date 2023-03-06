@@ -1,5 +1,5 @@
-query endpoints {
-  endpoints {
+query endpoints($pending: Boolean) {
+  endpoints(pending: $pending) {
     appLimits {
       dailyLimit
       planType

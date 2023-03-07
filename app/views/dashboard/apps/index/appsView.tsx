@@ -53,12 +53,14 @@ export const AppsView = ({
   dailyNetworkRelaysPerWeek,
   searchParams,
   userId,
-  user
+  user,
 }: AppsViewProps) => {
   const uEmail = user.profile.emails[0].value
   const [showErrorModal, setShowErrorModal] = useState(false)
   const notOwnerEndpoints = endpoints ? endpoints.admin.concat(endpoints.member) : []
-  const userDataByEndpoint = notOwnerEndpoints.map(endpoint => endpoint?.users.find(u => u.email === uEmail ))
+  const userDataByEndpoint = notOwnerEndpoints.map((endpoint) =>
+    endpoint?.users.find((u) => u.email === uEmail),
+  )
 
   useEffect(() => {
     const error = searchParams.get("error")
@@ -118,8 +120,10 @@ export const AppsView = ({
               )}
             </Tabs.Tab>
 
-            {notOwnerEndpoints && notOwnerEndpoints.length > 0 && userDataByEndpoint.length > 0 ? (
-              <Tabs.Tab label="Teams">
+            <Tabs.Tab label="Teams">
+              {notOwnerEndpoints &&
+              notOwnerEndpoints.length > 0 &&
+              userDataByEndpoint.length > 0 ? (
                 <Table
                   columns={["App", "Invite status", "Role", ""]}
                   data={(notOwnerEndpoints as ProcessedEndpoint[]).map((team, idx) => ({
@@ -129,7 +133,7 @@ export const AppsView = ({
                       element: <Link to={team.id.toString()}>{team.name}</Link>,
                     },
                     inviteStatus: {
-                      value:  userDataByEndpoint[idx]?.accepted ? "Accepted" : "Pending",
+                      value: userDataByEndpoint[idx]?.accepted ? "Accepted" : "Pending",
                       element: <StatusTag accepted={userDataByEndpoint[idx]!.accepted} />,
                     },
                     role: userDataByEndpoint[idx]!.roleName,
@@ -164,8 +168,8 @@ export const AppsView = ({
                       : undefined
                   }
                 />
-              </Tabs.Tab>
-            ) : null}
+              ) : null}
+            </Tabs.Tab>
           </Tabs>
         </Card>
       </section>

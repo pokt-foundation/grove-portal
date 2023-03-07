@@ -1,4 +1,4 @@
-// import { StylesPlaceholder } from "@mantine/remix"
+import { StylesPlaceholder } from "@mantine/remix"
 import {
   Alert,
   Center,
@@ -134,7 +134,7 @@ const Document = ({ children, title }: { children: React.ReactNode; title?: stri
   return (
     <html lang={language}>
       <head>
-        {/* <StylesPlaceholder /> */}
+        <StylesPlaceholder />
         <Global
           styles={(theme) => ({
             body: {

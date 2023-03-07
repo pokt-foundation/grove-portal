@@ -1,4 +1,4 @@
-// import { StylesPlaceholder } from "@mantine/remix"
+import { StylesPlaceholder } from "@mantine/remix"
 import {
   Alert,
   Center,
@@ -87,9 +87,8 @@ const WithProviders = ({ children }: { children: React.ReactNode }) => {
       withNormalizeCSS
       theme={{
         ...theme,
-
         colorScheme: "dark",
-        primaryColor: "magenta",
+        primaryColor: "blue",
         globalStyles: (theme) => ({
           body: {
             ...theme.fn.fontStyles(),
@@ -145,7 +144,7 @@ const Document = ({ children, title }: { children: React.ReactNode; title?: stri
   return (
     <html lang={language}>
       <head>
-        {/* <StylesPlaceholder /> */}
+        <StylesPlaceholder />
         <Meta />
         <title>{title}</title>
         <Links />

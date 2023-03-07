@@ -1,9 +1,10 @@
-import { StylesPlaceholder } from "@mantine/remix"
+// import { StylesPlaceholder } from "@mantine/remix"
 import {
   Alert,
   Center,
   Container,
   createEmotionCache,
+  Global,
   IconBookOpen,
   IconCircleQuestion,
   IconMail,
@@ -87,18 +88,7 @@ const WithProviders = ({ children }: { children: React.ReactNode }) => {
       withNormalizeCSS
       theme={{
         ...theme,
-        colorScheme: "dark",
         primaryColor: "blue",
-        globalStyles: (theme) => ({
-          body: {
-            ...theme.fn.fontStyles(),
-            backgroundColor:
-              theme.colorScheme === "dark" ? theme.colors.navy[7] : theme.colors.gray[2],
-            color:
-              theme.colorScheme === "dark" ? theme.colors.gray[0] : theme.colors.navy[9],
-            lineHeight: theme.lineHeight,
-          },
-        }),
         components: {
           ...theme.components,
           Paper: {
@@ -144,7 +134,23 @@ const Document = ({ children, title }: { children: React.ReactNode; title?: stri
   return (
     <html lang={language}>
       <head>
-        <StylesPlaceholder />
+        {/* <StylesPlaceholder /> */}
+        <Global
+          styles={(theme) => ({
+            body: {
+              ...theme.fn.fontStyles(),
+              backgroundColor:
+                theme.colorScheme === "dark"
+                  ? theme.colors.navy[7]
+                  : theme.colors.gray[2],
+              color:
+                theme.colorScheme === "dark"
+                  ? theme.colors.gray[0]
+                  : theme.colors.navy[9],
+              lineHeight: theme.lineHeight,
+            },
+          })}
+        />
         <Meta />
         <title>{title}</title>
         <Links />

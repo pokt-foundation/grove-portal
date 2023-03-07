@@ -165,7 +165,7 @@ export default function App() {
   const { t } = useTranslate()
 
   useEffect(() => {
-    analyticsInit(user)
+    analyticsInit({ id: user?.id ?? "" })
   }, [user])
 
   const routes = useMemo(() => {

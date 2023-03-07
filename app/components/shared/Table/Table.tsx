@@ -126,7 +126,7 @@ export const Table = <T extends IdObj>({
             <thead>
               <tr>
                 {columns.map((key) => (
-                  <th key={key as string}>{key}</th>
+                  <th key={key as string}>{key as string}</th>
                 ))}
               </tr>
             </thead>

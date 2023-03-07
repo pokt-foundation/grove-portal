@@ -22,7 +22,7 @@ type NavProps = {
 type Route = {
   to: string
   label?: string
-  icon?: React.ReactNode | (() => JSX.Element)
+  icon?: React.ReactNode | (() => JSX.Element) | React.FunctionComponent
   end?: boolean
   external?: boolean
 }

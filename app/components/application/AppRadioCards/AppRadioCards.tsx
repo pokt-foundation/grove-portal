@@ -65,6 +65,7 @@ export default function AppRadioCards({
                 backgroundColor: theme.colors.gray[6],
               },
             })}
+            // @ts-ignore: next
             onClick={() => radio.active === "true" && setRadio(radio.value)}
           >
             <div className="flexRow">

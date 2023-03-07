@@ -1,5 +1,5 @@
 import { IconCaretLeft, Grid, Button } from "@pokt-foundation/pocket-blocks"
-import { Outlet, useFetcher } from "@remix-run/react"
+import { FetcherWithComponents, Outlet, useFetcher } from "@remix-run/react"
 import { useEffect, useState } from "react"
 import styles from "./styles.css"
 import AppAddressCard, {
@@ -51,7 +51,7 @@ type AppIdLayoutViewProps = {
   searchParams: URLSearchParams
   setSearchParams: (typeof URLSearchParams)["arguments"]
   subscription: Stripe.Subscription | undefined
-  updatePlanFetcher: ReturnType<typeof useFetcher>
+  updatePlanFetcher: FetcherWithComponents<any>
 }
 
 export default function AppIdLayoutView({

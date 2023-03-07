@@ -3,7 +3,6 @@ import { useLoaderData, useSearchParams } from "@remix-run/react"
 import { useEffect } from "react"
 import { AllAppsLoaderData } from "../apps"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
-import { teamsMockData } from "~/models/portal/portal.data"
 import { getRelaysPerWeek, RelayMetric } from "~/models/relaymeter/relaymeter.server"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { getPoktId, requireUser } from "~/utils/session.server"
@@ -51,7 +50,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export const Apps = () => {
   const allAppsRoute = useMatchesRoute("routes/dashboard/apps")
-  const { endpoints } = allAppsRoute?.data as AllAppsLoaderData
+  const { endpoints, user } = allAppsRoute?.data as AllAppsLoaderData
   const { dailyNetworkRelaysPerWeek, userId } = useLoaderData() as AppsLoaderData
   const [searchParams] = useSearchParams()
 
@@ -64,7 +63,7 @@ export const Apps = () => {
       dailyNetworkRelaysPerWeek={dailyNetworkRelaysPerWeek}
       endpoints={endpoints}
       searchParams={searchParams}
-      teams={teamsMockData}
+      user={user}
       userId={userId}
     />
   )

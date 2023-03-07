@@ -1,4 +1,11 @@
-import { AppStatus, Blockchain, PayPlanType, ProcessedEndpoint } from "./sdk"
+import {
+  AppStatus,
+  Blockchain,
+  EndpointsQuery,
+  PayPlanType,
+  ProcessedEndpoint,
+  RoleName,
+} from "./sdk"
 
 export const endpoint: ProcessedEndpoint = {
   appLimits: {
@@ -43,10 +50,21 @@ export const endpoint: ProcessedEndpoint = {
   updatedAt: "2022-08-22 15:55:11.288274 +0000 UTC",
   userId: "62fd1d49a6eba977fd212c23",
   applications: [],
-  users: [],
+  users: [
+    {
+      accepted: true,
+      email: "test@test.test",
+      roleName: RoleName.Admin
+    }
+  ],
 }
 
-export const endpoints: ProcessedEndpoint[] = Array(2).fill(endpoint)
+export const endpoints: EndpointsQuery = {
+  admin: [endpoint],
+  member: [endpoint],
+  owner: [endpoint],
+  __typename: "Query"
+}
 
 export const blockchains: Blockchain[] = [
   {

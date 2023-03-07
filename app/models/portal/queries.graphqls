@@ -1,5 +1,43 @@
 query endpoints {
-  endpoints {
+  owner: endpoints(filter: OWNER) {
+    appLimits {
+      dailyLimit
+      planType
+      publicKey
+    }
+    createdAt
+    gigastake
+    id
+    name
+    status
+    updatedAt
+    userId
+    users {
+      roleName
+      email
+      accepted
+    }
+  }
+  admin: endpoints(filter: ADMIN, pending: true) {
+    appLimits {
+      dailyLimit
+      planType
+      publicKey
+    }
+    createdAt
+    gigastake
+    id
+    name
+    status
+    updatedAt
+    userId
+    users {
+      roleName
+      email
+      accepted
+    }
+  }
+  member: endpoints(filter: MEMBER, pending: true) {
     appLimits {
       dailyLimit
       planType

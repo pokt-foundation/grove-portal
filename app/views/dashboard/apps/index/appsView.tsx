@@ -19,9 +19,9 @@ import Dropdown, {
 import Modal, { links as ModalLinks } from "~/components/shared/Modal"
 import StatusTag, { links as StatusTagLinks } from "~/components/shared/StatusTag"
 import Table, { links as TableLinks } from "~/components/shared/Table"
-import { teamsMockData } from "~/models/portal/portal.data"
 import { EndpointsQuery, ProcessedEndpoint } from "~/models/portal/sdk"
 import { RelayMetric } from "~/models/relaymeter/relaymeter.server"
+import { PocketUser } from "~/routes/api/user"
 import { dayjs } from "~/utils/dayjs"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 import { getPlanName } from "~/utils/utils"
@@ -42,10 +42,10 @@ export const links = () => {
 
 type AppsViewProps = {
   userId: string
-  endpoints: EndpointsQuery["endpoints"] | null
+  endpoints: EndpointsQuery | null
   dailyNetworkRelaysPerWeek: RelayMetric[] | null
   searchParams: URLSearchParams
-  teams: typeof teamsMockData
+  user: PocketUser
 }
 
 export const AppsView = ({
@@ -53,9 +53,12 @@ export const AppsView = ({
   dailyNetworkRelaysPerWeek,
   searchParams,
   userId,
-  teams,
+  user
 }: AppsViewProps) => {
+  const uEmail = user.profile.emails[0].value
   const [showErrorModal, setShowErrorModal] = useState(false)
+  const notOwnerEndpoints = endpoints ? endpoints.admin.concat(endpoints.member) : []
+  const userDataByEndpoint = notOwnerEndpoints.map(endpoint => endpoint?.users.find(u => u.email === uEmail ))
 
   useEffect(() => {
     const error = searchParams.get("error")
@@ -72,11 +75,11 @@ export const AppsView = ({
         <Card>
           <Tabs color="green">
             <Tabs.Tab label="My Applications">
-              {endpoints && endpoints.length > 0 ? (
+              {endpoints && endpoints.owner.length > 0 ? (
                 <Table
                   search
                   columns={["App", "Created", "Plan", ""]}
-                  data={(endpoints as ProcessedEndpoint[]).map((app) => ({
+                  data={(endpoints.owner as ProcessedEndpoint[]).map((app) => ({
                     id: app.id,
                     app: {
                       value: app.name,
@@ -115,21 +118,21 @@ export const AppsView = ({
               )}
             </Tabs.Tab>
 
-            {endpoints && endpoints.length > 0 ? (
+            {notOwnerEndpoints && notOwnerEndpoints.length > 0 && userDataByEndpoint.length > 0 ? (
               <Tabs.Tab label="Teams">
                 <Table
                   columns={["App", "Invite status", "Role", ""]}
-                  data={teams.map((team) => ({
+                  data={(notOwnerEndpoints as ProcessedEndpoint[]).map((team, idx) => ({
                     id: team.id,
                     app: {
-                      value: team.app,
-                      element: <Link to={team.id.toString()}>{team.app}</Link>,
+                      value: team.name,
+                      element: <Link to={team.id.toString()}>{team.name}</Link>,
                     },
                     inviteStatus: {
-                      value: team.accepted ? "Accepted" : "Pending",
-                      element: <StatusTag accepted={team.accepted} />,
+                      value:  userDataByEndpoint[idx]?.accepted ? "Accepted" : "Pending",
+                      element: <StatusTag accepted={userDataByEndpoint[idx]!.accepted} />,
                     },
-                    role: team.roleName,
+                    role: userDataByEndpoint[idx]!.roleName,
                     action: {
                       value: "More",
                       element: (
@@ -140,7 +143,7 @@ export const AppsView = ({
                               <IconMoreVertical className="pokt-icon" fill="#A9E34B" />
                             }
                           >
-                            {team.accepted ? (
+                            {userDataByEndpoint[idx]?.accepted ? (
                               <DropdownItem action={() => {}} label="View App" />
                             ) : (
                               <DropdownItem action={() => {}} label="Accept Invite" />

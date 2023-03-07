@@ -72,11 +72,11 @@ const NotificationMessage = ({
       ) : (
         <div className="notification-message-content">
           <InfoIcon />
-          <Text id="title">{title}</Text>
-          <Button id="accept" variant="filled" onClick={handleAccept}>
+          <Text>{title}</Text>
+          <Button variant="filled" onClick={handleAccept}>
             Accept
           </Button>
-          <Button id="decline" variant="outline" onClick={handleDecline}>
+          <Button variant="outline" onClick={handleDecline}>
             Decline
           </Button>
         </div>

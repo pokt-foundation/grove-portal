@@ -7,7 +7,7 @@ import {
   Menu,
 } from "@pokt-foundation/pocket-blocks"
 import { Form, useActionData, useLoaderData, useTransition } from "@remix-run/react"
-import { Transition } from "@remix-run/react/transition"
+import { Transition } from "@remix-run/react/dist/transition"
 import clsx from "clsx"
 import { useEffect, useState } from "react"
 
@@ -100,7 +100,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
 
   const isAdminUser = endpoint?.users?.some(
     ({ email, roleName }) =>
-      email === profile._json.email && (roleName === "OWNER" || roleName === "ADMIN"),
+      email === profile._json?.email && (roleName === "OWNER" || roleName === "ADMIN"),
   )
 
   useEffect(() => {
@@ -221,7 +221,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
             },
             action: {
               element:
-                isAdminUser || email === profile?._json.email ? (
+                isAdminUser || email === profile?._json?.email ? (
                   <div className="list__more-actions">
                     <Menu>
                       <Menu.Target>
@@ -232,7 +232,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
                           <Menu.Item>Send new Invite</Menu.Item>
                         ) : null}
                         {isAdminUser ||
-                          (email === profile?._json.email && (
+                          (email === profile?._json?.email && (
                             <Menu.Item
                               color="green"
                               onClick={() => {

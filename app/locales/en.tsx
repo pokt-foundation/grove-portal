@@ -15,6 +15,7 @@ const schema = {
   search: {
     label: "Search",
     placeholder: "Search by Transaction Hash, Block # and Address",
+    emptySearch: "Nothing found.",
     searchBy: "Search by",
   },
   terms: {
@@ -188,6 +189,7 @@ const schema = {
       security: "Security",
       notifications: "Notifications",
       plan: "Plan Details",
+      team: "Team",
     },
   },
   AppRequestsByOriginCard: {

@@ -39,6 +39,16 @@
   justify-content: end;
 }
 
+.dropdown-user-menu__content {
+  width: 220px;
+}
+
+.dropdown-user-menu__content button {
+  border: none;
+  color: var(--color-white-light);
+  padding: 0;
+}
+
 /* START: MOBILE DRAWER MENU */
 .pokt-aside-menu {
   position: absolute;

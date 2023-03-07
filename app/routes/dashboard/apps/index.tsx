@@ -4,6 +4,7 @@ import { useEffect } from "react"
 import invariant from "tiny-invariant"
 import { AllAppsLoaderData } from "../apps"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
+import { teamsMockData } from "~/models/portal/portal.data"
 import { getRelaysPerPeriod, RelayMetric } from "~/models/relaymeter/relaymeter.server"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { getPoktId, requireUser } from "~/utils/session.server"
@@ -65,6 +66,7 @@ export const Apps = () => {
       dailyNetworkRelaysPerWeek={dailyNetworkRelaysPerWeek}
       endpoints={endpoints}
       searchParams={searchParams}
+      teams={teamsMockData}
       userId={userId}
     />
   )

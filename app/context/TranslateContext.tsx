@@ -32,6 +32,7 @@ interface TranslationData {
   search: {
     label: string
     placeholder: string
+    emptySearch: string
     searchBy: string
   }
   terms: {
@@ -106,6 +107,7 @@ interface TranslationData {
       security: string
       notifications: string
       plan: string
+      team: string
     }
   }
   AppRequestsByOriginCard: {

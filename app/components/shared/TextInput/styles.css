@@ -40,10 +40,6 @@
   height: 20px;
 }
 
-.pokt-text:not(:last-child) {
-  margin-bottom: 8px;
-}
-
 .pokt-text-delete {
   padding: 0 8px;
 }

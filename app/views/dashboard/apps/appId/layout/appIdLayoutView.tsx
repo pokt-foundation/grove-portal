@@ -93,6 +93,10 @@ export default function AppIdLayoutView({
       to: "notifications",
       label: t.appId.routes.notifications,
     },
+    {
+      to: "team",
+      label: t.appId.routes.team,
+    },
   ])
 
   useEffect(() => {

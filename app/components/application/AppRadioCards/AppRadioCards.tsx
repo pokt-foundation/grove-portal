@@ -15,8 +15,8 @@ interface AppRadioCardsProps {
     name: string
     value: string
     active: string
-    price: number | string
-    priceText: string
+    price?: number | string
+    priceText?: string
     cardDescription: string
   }[]
   currentRadio: string
@@ -37,6 +37,7 @@ export default function AppRadioCards({
         <Grid.Col
           key={radio.name}
           className={clsx({
+            "radio-card-grid__col": true,
             "order-first":
               flags.STRIPE_PAYMENT && radio.value === PayPlanType.PayAsYouGoV0,
           })}
@@ -76,9 +77,11 @@ export default function AppRadioCards({
                 name="app-subscription"
                 value={radio.value}
               />
-              <Text>
-                {radio.active === "true" ? radio.priceText : t.common.unavailable}
-              </Text>
+              {radio.priceText && (
+                <Text>
+                  {radio.active === "true" ? radio.priceText : t.common.unavailable}
+                </Text>
+              )}
             </div>
             <Text>{radio.cardDescription}</Text>
           </Box>

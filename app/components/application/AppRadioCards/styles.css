@@ -1,6 +1,17 @@
 .radio-card-grid {
+  margin: 0;
   padding: 24px 0 36px 0;
   align-items: stretch;
+}
+
+@media (min-width: 768px) {
+  .radio-card-grid__col {
+    padding: 0;
+  }
+
+  .radio-card-grid__col:not(:first-child) {
+    padding-left: 16px;
+  }
 }
 
 .radio-card-grid > .order-first {

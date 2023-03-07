@@ -1,4 +1,14 @@
-import { IconCaretRight, Title, Text, Anchor } from "@pokt-foundation/pocket-blocks"
+import {
+  IconCaretRight,
+  IconMoreVertical,
+  Title,
+  Text,
+  Tabs,
+  Menu,
+  Button,
+  Badge,
+  Anchor,
+} from "@pokt-foundation/pocket-blocks"
 import { Link } from "@remix-run/react"
 import { useEffect, useState } from "react"
 import styles from "./styles.css"
@@ -7,7 +17,9 @@ import UsageChartCard, {
 } from "~/components/application/UsageChartCard"
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import Modal, { links as ModalLinks } from "~/components/shared/Modal"
+import StatusTag, { links as StatusTagLinks } from "~/components/shared/StatusTag"
 import Table, { links as TableLinks } from "~/components/shared/Table"
+import { teamsMockData } from "~/models/portal/portal.data"
 import { EndpointsQuery, ProcessedEndpoint } from "~/models/portal/sdk"
 import { RelayMetric } from "~/models/relaymeter/relaymeter.server"
 import { dayjs } from "~/utils/dayjs"
@@ -21,6 +33,7 @@ export const links = () => {
     ...TableLinks(),
     ...UsageCardLinks(),
     ...ModalLinks(),
+    ...StatusTagLinks(),
     { rel: "stylesheet", href: styles },
   ]
 }
@@ -31,6 +44,7 @@ type AppsViewProps = {
   endpoints: EndpointsQuery["endpoints"] | null
   dailyNetworkRelaysPerWeek: RelayMetric[] | null
   searchParams: URLSearchParams
+  teams: typeof teamsMockData
 }
 
 export const AppsView = ({
@@ -38,6 +52,7 @@ export const AppsView = ({
   dailyNetworkRelaysPerWeek,
   searchParams,
   userId,
+  teams,
 }: AppsViewProps) => {
   const [showErrorModal, setShowErrorModal] = useState(false)
 
@@ -53,50 +68,111 @@ export const AppsView = ({
   return (
     <div className="pokt-apps-view">
       <section>
-        {endpoints && endpoints.length > 0 ? (
-          <Table
-            search
-            columns={["App", "Created", "Plan", ""]}
-            data={(endpoints as unknown as ProcessedEndpoint[]).map((app) => ({
-              id: app.id,
-              app: {
-                value: app.name,
-                element: <Link to={app.id}>{app.name}</Link>,
-              },
-              created: dayjs(app.createdAt).format("MM/DD/YY"),
-              plan: getPlanName(app.appLimits.planType),
-              action: {
-                value: "",
-                element: (
-                  <Link to={app.id}>
-                    <IconCaretRight className="pokt-icon" />
-                  </Link>
-                ),
-              },
-            }))}
-            label="Applications"
-            paginate={
-              getRequiredClientEnvVar("GODMODE_ACCOUNTS")?.includes(userId)
-                ? {
-                    perPage: 10,
+        <Card>
+          <Tabs color="green" defaultValue="applications">
+            <Tabs.List>
+              <Tabs.Tab value="applications">My Applications</Tabs.Tab>
+              {endpoints && endpoints.length > 0 && (
+                <Tabs.Tab value="teams">Teams</Tabs.Tab>
+              )}
+            </Tabs.List>
+
+            <Tabs.Panel value="applications">
+              {endpoints && endpoints.length > 0 ? (
+                <Table
+                  search
+                  columns={["App", "Created", "Plan", ""]}
+                  data={(endpoints as ProcessedEndpoint[]).map((app) => ({
+                    id: app.id,
+                    app: {
+                      value: app.name,
+                      element: <Link to={app.id}>{app.name}</Link>,
+                    },
+                    created: dayjs(app.createdAt).format("MM/DD/YY"),
+                    plan: getPlanName(app.appLimits.planType),
+                    action: {
+                      value: "",
+                      element: (
+                        <Anchor component={Link} to={app.id} type="text">
+                          <IconCaretRight className="pokt-icon" />
+                        </Anchor>
+                      ),
+                    },
+                  }))}
+                  paginate={
+                    getRequiredClientEnvVar("GODMODE_ACCOUNTS")?.includes(userId)
+                      ? { perPage: 10 }
+                      : undefined
                   }
-                : undefined
-            }
-          />
-        ) : (
-          <Card>
-            <div className="pokt-card-header">
-              <Title order={3}>Applications</Title>
-            </div>
-            <Text>
-              Get started by{" "}
-              <Anchor className="empty-apps-link" component={Link} to="/dashboard/create">
-                creating your first application
-              </Anchor>
-              .
-            </Text>
-          </Card>
-        )}
+                />
+              ) : (
+                <Card>
+                  <div className="pokt-card-header">
+                    <Title order={3}>Applications</Title>
+                  </div>
+                  <Text>
+                    Get started by{" "}
+                    <Link className="empty-apps-link" to="/dashboard/create">
+                      creating your first application
+                    </Link>
+                    .
+                  </Text>
+                </Card>
+              )}
+            </Tabs.Panel>
+
+            {endpoints && endpoints.length > 0 && (
+              <Tabs.Panel value="teams">
+                <Table
+                  columns={["App", "Invite status", "Role", ""]}
+                  data={teams.map((team) => ({
+                    id: team.id,
+                    app: {
+                      value: team.app,
+                      element: <Link to={team.id.toString()}>{team.app}</Link>,
+                    },
+                    inviteStatus: {
+                      value: team.accepted ? "Accepted" : "Pending",
+                      element: (
+                        <Badge color={team.accepted ? "green" : "orange"}>
+                          {team.accepted ? "Accepted" : "Pending"}
+                        </Badge>
+                      ),
+                    },
+                    role: team.roleName,
+                    action: {
+                      value: "More",
+                      element: (
+                        <div className="list__more-actions">
+                          <Menu>
+                            <Menu.Target>
+                              <Button size="xs" variant="subtle">
+                                <IconMoreVertical className="pokt-icon" fill="#A9E34B" />
+                              </Button>
+                            </Menu.Target>
+                            <Menu.Dropdown className="dropdown-teams__content">
+                              {team.accepted ? (
+                                <Menu.Item>View App</Menu.Item>
+                              ) : (
+                                <Menu.Item>Accept Invite</Menu.Item>
+                              )}
+                              <Menu.Item color="green">Leave App</Menu.Item>
+                            </Menu.Dropdown>
+                          </Menu>
+                        </div>
+                      ),
+                    },
+                  }))}
+                  paginate={
+                    getRequiredClientEnvVar("GODMODE_ACCOUNTS")?.includes(userId)
+                      ? { perPage: 10 }
+                      : undefined
+                  }
+                />
+              </Tabs.Panel>
+            )}
+          </Tabs>
+        </Card>
       </section>
       {dailyNetworkRelaysPerWeek && (
         <section>

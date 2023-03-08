@@ -54,8 +54,8 @@ export const endpoint: ProcessedEndpoint = {
     {
       accepted: true,
       email: "test@test.test",
-      roleName: RoleName.Admin
-    }
+      roleName: RoleName.Admin,
+    },
   ],
 }
 
@@ -63,7 +63,7 @@ export const endpoints: EndpointsQuery = {
   admin: [endpoint],
   member: [endpoint],
   owner: [endpoint],
-  __typename: "Query"
+  __typename: "Query",
 }
 
 export const blockchains: Blockchain[] = [

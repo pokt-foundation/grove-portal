@@ -58,13 +58,7 @@ type DropdownItemProps = {
   disabled?: boolean
 }
 
-function DropdownItem({
-  label,
-  action,
-  variant,
-  disabled = false,
-
-}: DropdownItemProps) {
+function DropdownItem({ label, action, variant, disabled = false }: DropdownItemProps) {
   return (
     <button
       className={clsx({

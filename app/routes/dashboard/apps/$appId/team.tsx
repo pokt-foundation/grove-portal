@@ -1,5 +1,5 @@
 import { ActionFunction, json, LoaderFunction } from "@remix-run/node"
-import { useCatch, useLoaderData, useTransition } from "@remix-run/react"
+import { useCatch, useTransition } from "@remix-run/react"
 import { Auth0Profile } from "remix-auth-auth0"
 import invariant from "tiny-invariant"
 import { AppIdLoaderData } from "../$appId"
@@ -7,10 +7,10 @@ import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { RoleName } from "~/models/portal/sdk"
 import { requireUser } from "~/utils/session.server"
-
 import TeamView, {
   links as TeamViewLinks,
 } from "~/views/dashboard/apps/appId/team/teamView"
+import { sendEmail } from "~/utils/mail.server"
 
 export const links = () => {
   return [...TeamViewLinks()]
@@ -39,11 +39,11 @@ export const action: ActionFunction = async ({ request, params }) => {
   const { appId } = params
   const user = await requireUser(request)
   const portal = initPortalClient(user.accessToken)
-  const formData = await request.formData()
-  const type = formData.get("type")
+  const uiFormData = await request.formData()
+  const type = uiFormData.get("type")
 
   if (type === "delete") {
-    const email = formData.get("email")
+    const email = uiFormData.get("email")
 
     invariant(appId, "app id not found")
     invariant(email && typeof email === "string", "user email not found")
@@ -59,8 +59,9 @@ export const action: ActionFunction = async ({ request, params }) => {
       return json<ActionData>({ email, type, error: true })
     }
   } else if (type === "invite") {
-    const email = formData.get("email-address")
-    const roleName = formData.get("app-subscription")
+    const email = uiFormData.get("email-address")
+    const roleName = uiFormData.get("app-subscription")
+    const appName = uiFormData.get("app-name")
 
     invariant(appId, "app id not found")
     invariant(roleName && typeof roleName === "string", "user role not found")
@@ -78,6 +79,17 @@ export const action: ActionFunction = async ({ request, params }) => {
       if (!createEndpointUser) {
         throw new Error("Error creating invite")
       }
+
+      // trigger invite email
+      await sendEmail(
+        email,
+        "Your invite to POKT Portal",
+        "pocket-dashboard-team-invite",
+        {
+          app: appName?.toString() || "an App",
+          invite_link: "https://www.portal.pokt.network/dashboard/apps",
+        },
+      )
 
       return json<ActionData>({
         email,

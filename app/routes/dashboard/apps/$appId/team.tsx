@@ -94,6 +94,10 @@ export const action: ActionFunction = async ({ request, params }) => {
     const email = formData.get("email")
     const roleName = formData.get("roleName")
 
+    console.log("EMAIL: ", email)
+    console.log("ROLE NAME: ", roleName)
+    console.log("HELLO: ", roleName === "MEMBER" ? RoleName.Admin : RoleName.Member)
+
     invariant(roleName && typeof roleName === "string", "user role not found")
     invariant(email && typeof email === "string", "user email not found")
 

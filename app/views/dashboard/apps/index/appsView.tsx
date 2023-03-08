@@ -67,10 +67,6 @@ export const AppsView = ({
     endpoint?.users.find((u) => u.email === uEmail),
   )
 
-  console.log(uEmail)
-  console.log(notOwnerEndpoints)
-  console.log(userDataByEndpoint)
-  console.log(profile)
   const [notificationMessageProps, setNotificationMessageProps] =
     useState<NotificationMessageType>({
       type: "info",
@@ -92,7 +88,11 @@ export const AppsView = ({
   }, [searchParams])
 
   useEffect(() => {
-    if (endpoints && endpoints !== null && endpoints.admin.length > 0 && endpoints.member.length > 0) {
+    if (
+      endpoints &&
+      endpoints !== null &&
+      (endpoints.admin.length > 0 || endpoints.member.length > 0)
+    ) {
       const notAcceptedAdminEndpoints = endpoints?.admin.filter((endpoint) => {
         const notAcceptedEndpoint = endpoint?.users?.find((user) => {
           return user.email === profile?._json?.email && !user.accepted
@@ -107,7 +107,9 @@ export const AppsView = ({
         return notAcceptedEndpoint || false
       })
 
-      const notAcceptedEndpoints = notAcceptedAdminEndpoints.concat(notAcceptedMemberEndpoints)
+      const notAcceptedEndpoints = notAcceptedAdminEndpoints?.concat(
+        notAcceptedMemberEndpoints ?? [],
+      )
 
       if (notAcceptedEndpoints.length > 0) {
         setNotificationMessageProps({
@@ -182,12 +184,14 @@ export const AppsView = ({
                       value: "",
                       element: (
                         <>
-                          {app.users.map((user) =>
-                            user.email === profile?._json?.email && user.accepted && (
-                              <Link key={app.id} to={app.id}>
-                                <IconCaretRight className="pokt-icon" />
-                              </Link>
-                            )
+                          {app.users.map(
+                            (user) =>
+                              user.email === profile?._json?.email &&
+                              user.accepted && (
+                                <Link key={app.id} to={app.id}>
+                                  <IconCaretRight className="pokt-icon" />
+                                </Link>
+                              ),
                           )}
                         </>
                       ),

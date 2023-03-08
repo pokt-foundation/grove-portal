@@ -4,6 +4,7 @@ import {
   IconCaretUp,
   Collapse,
   Divider,
+  Text,
 } from "@pokt-foundation/pocket-blocks"
 import clsx from "clsx"
 import { useState } from "react"
@@ -43,9 +44,9 @@ export default function AppAddressCard({ apps }: AppAddressCardProps) {
       ])}
     >
       <Card>
-        <div className="flexContainer">
+        <div className="pokt-card-header">
           <h3>{appAddressCard.heading}</h3>
-          {apps && apps.length > 0 && <p>{apps.length}</p>}
+          {apps && apps.length > 0 && <Text m="0">{apps.length}</Text>}
         </div>
         {visibleApps && visibleApps.length > 0 ? (
           visibleApps.map(({ appId }) =>

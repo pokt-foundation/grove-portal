@@ -3,6 +3,7 @@ import { Link, useFetcher } from "@remix-run/react"
 import clsx from "clsx"
 import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/shared/Card"
+import CardList, { links as CardListLinks } from "~/components/shared/CardList"
 import HelpTooltip from "~/components/shared/HelpTooltip"
 import { useFeatureFlags } from "~/context/FeatureFlagContext"
 import { useTranslate } from "~/context/TranslateContext"
@@ -13,7 +14,7 @@ import { getPlanName, isFreePlan, isLegacyPlan } from "~/utils/utils"
 
 /* c8 ignore next */
 export const links = () => {
-  return [...CardLinks(), { rel: "stylesheet", href: styles }]
+  return [...CardLinks(), ...CardListLinks(), { rel: "stylesheet", href: styles }]
 }
 
 interface AppPlanDetailsProps {
@@ -38,55 +39,54 @@ export default function AppPlanDetails({
   return (
     <div className="pokt-app-plan-details">
       <Card>
-        <div className="flexRow">
-          <Title mb={16} mt={8} order={3}>
-            {t.AppPlanDetails.relayLimit}
-          </Title>
-          <div>
-            <Text>{dailyLimit !== 0 ? commify(dailyLimit) : "Unlimited"}</Text>
-            <Text className="smallText">{t.AppPlanDetails.relaysPerDay}</Text>
-          </div>
-        </div>
-        <div className="flexRow">
-          <Title className="centerGap" mb={16} mt={8} order={3}>
-            {t.AppPlanDetails.currentPlan}{" "}
-            <HelpTooltip label={t.AppPlanDetails.currentPlanToolTip} />
-          </Title>
-          <div>
-            <Text className="centerGap">{getPlanName(planType)}</Text>
-          </div>
-        </div>
-        {!subscription && (isFreePlan(planType) || isLegacyPlan(planType)) && (
-          <Button
-            className={clsx("upgrade-button", "pokt-button", {
-              disabled: flags.STRIPE_PAYMENT === "false",
-            })}
-            component={Link}
-            disabled={flags.STRIPE_PAYMENT === "false"}
-            to={stripe}
-            variant="outline"
-          >
-            {t.AppPlanDetails.upgrade}
-          </Button>
-        )}
-        {subscription && subscription.cancel_at_period_end && (
-          <subscriptionFetcher.Form action="/api/stripe/subscription" method="post">
-            <input hidden name="app-id" value={id} />
-            <input hidden name="subscription-renew" value="true" />
+        <div className="pokt-card-header">
+          <h3>Plan</h3>
+          {!subscription && (isFreePlan(planType) || isLegacyPlan(planType)) && (
             <Button
-              fullWidth
-              className="upgrade-button pokt-button"
+              className={clsx("pokt-button", {
+                disabled: flags.STRIPE_PAYMENT === "false",
+              })}
+              component={Link}
               disabled={flags.STRIPE_PAYMENT === "false"}
-              type="submit"
+              size="xs"
+              to={stripe}
               variant="outline"
             >
-              {t.AppPlanDetails.renew}
-              {/* {subscriptionFetcher.state === "submitting" && (
+              {/* {t.AppPlanDetails.upgrade} */}
+              Upgrade
+            </Button>
+          )}
+          {subscription && subscription.cancel_at_period_end && (
+            <subscriptionFetcher.Form action="/api/stripe/subscription" method="post">
+              <input hidden name="app-id" value={id} />
+              <input hidden name="subscription-renew" value="true" />
+              <Button
+                disabled={flags.STRIPE_PAYMENT === "false"}
+                size="xs"
+                type="submit"
+                variant="outline"
+              >
+                {t.AppPlanDetails.renew}
+                {/* {subscriptionFetcher.state === "submitting" && (
                 <Loader className="pokt-loader" />
               )} */}
-            </Button>
-          </subscriptionFetcher.Form>
-        )}
+              </Button>
+            </subscriptionFetcher.Form>
+          )}
+        </div>
+        <CardList
+          items={[
+            {
+              label: t.AppPlanDetails.relayLimit,
+              value: dailyLimit !== 0 ? commify(dailyLimit) : "Unlimited",
+            },
+            {
+              label: t.AppPlanDetails.currentPlan,
+              value: getPlanName(planType),
+              help: t.AppPlanDetails.currentPlanToolTip,
+            },
+          ]}
+        />
       </Card>
     </div>
   )

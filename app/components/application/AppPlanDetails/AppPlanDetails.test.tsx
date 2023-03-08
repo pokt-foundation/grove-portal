@@ -30,7 +30,6 @@ describe("<AppPlanDetails />", () => {
     expect(screen.getByText(dailyLimitText)).toBeInTheDocument()
     expect(screen.getByText(schema.AppPlanDetails.relayLimit)).toBeInTheDocument()
     expect(screen.getByText(schema.AppPlanDetails.currentPlan)).toBeInTheDocument()
-    expect(screen.getAllByRole("heading", { level: 3 })).toHaveLength(2)
   })
   it("renders unlimited relays with paid plan", () => {
     render(
@@ -63,7 +62,6 @@ describe("<AppPlanDetails />", () => {
     expect(screen.getByText(schema.AppPlanDetails.relayLimit)).toBeInTheDocument()
     expect(screen.getByText(schema.AppPlanDetails.currentPlan)).toBeInTheDocument()
     expect(screen.getByText(dailyLimitText)).toBeInTheDocument()
-    expect(screen.getAllByRole("heading", { level: 3 })).toHaveLength(2)
   })
   it("does NOT render upgrade button with paid plan", () => {
     render(

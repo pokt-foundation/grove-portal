@@ -320,7 +320,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
           }
         })}
         label="Users"
-        paginate={endpoint.users.length > 10 ? { perPage: 10 } : null}
+        paginate={endpoint.users.length > 10 ? { perPage: 10 } : false}
         rightComponent={
           isAdminUser || isOwnerUser ? (
             <Button

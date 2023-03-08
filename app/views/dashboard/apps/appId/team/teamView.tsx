@@ -99,13 +99,13 @@ function TeamView({ state, endpoint }: TeamViewProps) {
   const [confirmationModalDescription, setConfirmationModalDescription] =
     useState<string>("")
   const [confirmationModalEmail, setConfirmationModalEmail] = useState<string>("")
-  const [notificationMessageTitle, setNotificationMessageTitle] = useState<string>("")
-  const [notificationMessageDescription, setNotificationMessageDescription] =
-    useState<string>("")
-  const [notificationMessageIsActive, setNotificationMessageIsActive] =
-    useState<NotificationMessageType["isActive"]>(false)
-  const [notificationMessageType, setNotificationMessageType] =
-    useState<NotificationMessageType["type"]>("success")
+  const [notificationMessageProps, setNotificationMessageProps] =
+    useState<NotificationMessageType>({
+      type: "info",
+      title: "",
+      description: "",
+      isActive: false,
+    })
 
   const transition = useTransition()
   const actionData = useActionData<ActionData>()
@@ -126,39 +126,46 @@ function TeamView({ state, endpoint }: TeamViewProps) {
   useEffect(() => {
     if (actionData) {
       if (actionData.type === "delete") {
-        if (actionData.error && confirmationModalProps.type !== "error") {
-          setConfirmationModalProps({ type: "error", isActive: true })
-          setConfirmationModalTitle("Error deleting the user")
-          setConfirmationModalDescription("Please, try again")
-        } else if (!actionData.error && notificationMessageTitle !== "User removed") {
-          setConfirmationModalProps({ ...confirmationModalProps, isActive: false })
-        }
-        setNotificationMessageIsActive(true)
-        setNotificationMessageType("success")
-        setNotificationMessageTitle("User removed")
-        setNotificationMessageDescription(
-          `We have sent a confirmation to ${actionData.email}.`,
-        )
-      } else if (actionData.type === "invite") {
         if (actionData.error) {
-          setNotificationMessageIsActive(true)
-          setNotificationMessageType("error")
-          setNotificationMessageTitle("Invite error")
-          setNotificationMessageDescription(
-            "We had some issues with the invite. Please try again later.",
-          )
+          setNotificationMessageProps({
+            type: "error",
+            title: "Error deleting the user",
+            description: "Please, try again",
+            isActive: true,
+          })
+          setConfirmationModalProps({ type: "error", isActive: true })
           return
         }
-        setNotificationMessageIsActive(true)
-        setNotificationMessageType("success")
-        setNotificationMessageTitle("Invite sent")
-        setNotificationMessageDescription(
-          `We have sent an invitation to ${actionData.email}. You can review the invite status below.`,
-        )
+        setConfirmationModalProps({ ...confirmationModalProps, isActive: false })
+
+        setNotificationMessageProps({
+          type: "success",
+          isActive: true,
+          title: "User removed",
+          description: `We have sent a confirmation to ${actionData.email}.`,
+        })
+      } else if (actionData.type === "invite") {
+        if (actionData.error) {
+          setNotificationMessageProps({
+            type: "error",
+            isActive: true,
+            title: "Invite error",
+            description: "We had some issues with the invite. Please try again later.",
+          })
+          return
+        }
+
+        setNotificationMessageProps({
+          type: "success",
+          isActive: true,
+          title: "Invite sent",
+          description: `We have sent an invitation to ${actionData.email}. You can review the invite status below.`,
+        })
+
         setInviteEmail("")
       }
     }
-  }, [actionData, confirmationModalProps, notificationMessageTitle])
+  }, [actionData, confirmationModalProps])
 
   return (
     <>
@@ -167,12 +174,12 @@ function TeamView({ state, endpoint }: TeamViewProps) {
         <>
           <NotificationMessage
             notificationMessage={{
-              type: notificationMessageType,
-              isActive: notificationMessageIsActive,
-              title: notificationMessageTitle,
-              description: notificationMessageDescription,
+              type: notificationMessageProps.type,
+              isActive: notificationMessageProps.isActive,
+              title: notificationMessageProps.title,
+              description: notificationMessageProps.description,
             }}
-            setNotificationMessageIsActive={setNotificationMessageIsActive}
+            setNotificationMessage={setNotificationMessageProps}
           />
         </>
       )}

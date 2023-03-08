@@ -22,9 +22,7 @@ export interface NotificationMessageType {
 
 type NotificationMessageProps = {
   notificationMessage: NotificationMessageType
-  setNotificationMessageIsActive: Dispatch<
-    SetStateAction<NotificationMessageType["isActive"]>
-  >
+  setNotificationMessage: Dispatch<SetStateAction<NotificationMessageType>>
   handleAccept?: () => void
   handleDecline?: () => void
 }
@@ -46,9 +44,7 @@ const NotificationMessageIcon = ({ type }: { type: NotificationMessageType["type
 
 const NotificationMessage = ({
   notificationMessage: { type, title, description, isActive },
-  setNotificationMessageIsActive,
-  handleAccept,
-  handleDecline,
+  setNotificationMessage,
 }: NotificationMessageProps) => {
   return (
     <div
@@ -58,7 +54,15 @@ const NotificationMessage = ({
         [type]: true,
       })}
     >
-      <span className="close" onClick={() => setNotificationMessageIsActive(false)}>
+      <span
+        className="close"
+        onClick={() =>
+          setNotificationMessage({
+            ...{ type, title, description, isActive },
+            isActive: false,
+          })
+        }
+      >
         <CloseIcon />
       </span>
       {type !== "options" ? (
@@ -66,19 +70,31 @@ const NotificationMessage = ({
           <NotificationMessageIcon type={type} />
           <div className="notification-message-text">
             <div className="notification-message-title">{title}</div>
-            <div className="notification-message-description">{description}</div>
+            {description ? (
+              <div className="notification-message-description">{description}</div>
+            ) : null}
           </div>
         </div>
       ) : (
         <div className="notification-message-content">
-          <InfoIcon />
-          <Text id="title">{title}</Text>
-          <Button id="accept" variant="filled" onClick={handleAccept}>
-            Accept
-          </Button>
-          <Button id="decline" variant="outline" onClick={handleDecline}>
-            Decline
-          </Button>
+          <div className="content-options">
+            <InfoIcon />
+            <Text id="title">{title}</Text>
+          </div>
+          <div className="content-options">
+            <Button id="accept" name="type" type="submit" value="accept" variant="filled">
+              Accept
+            </Button>
+            <Button
+              id="decline"
+              name="type"
+              type="submit"
+              value="decline"
+              variant="outline"
+            >
+              Decline
+            </Button>
+          </div>
         </div>
       )}
     </div>

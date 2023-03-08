@@ -5,8 +5,9 @@ import {
   Text,
   IconMoreVertical,
 } from "@pokt-foundation/pocket-blocks"
-import { Link } from "@remix-run/react"
+import { Form, Link, useActionData } from "@remix-run/react"
 import { useEffect, useState } from "react"
+import { Auth0Profile } from "remix-auth-auth0"
 import styles from "./styles.css"
 import UsageChartCard, {
   links as UsageCardLinks,
@@ -17,11 +18,14 @@ import Dropdown, {
   links as DropdownLinks,
 } from "~/components/shared/Dropdown"
 import Modal, { links as ModalLinks } from "~/components/shared/Modal"
+import NotificationMessage, {
+  links as NotificationMessageLinks,
+  NotificationMessageType,
+} from "~/components/shared/NotificationMessage"
 import StatusTag, { links as StatusTagLinks } from "~/components/shared/StatusTag"
 import Table, { links as TableLinks } from "~/components/shared/Table"
 import { EndpointsQuery, ProcessedEndpoint } from "~/models/portal/sdk"
 import { RelayMetric } from "~/models/relaymeter/relaymeter.server"
-import { PocketUser } from "~/routes/api/user"
 import { dayjs } from "~/utils/dayjs"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 import { getPlanName } from "~/utils/utils"
@@ -35,6 +39,7 @@ export const links = () => {
     ...ModalLinks(),
     ...StatusTagLinks(),
     ...DropdownLinks(),
+    ...NotificationMessageLinks(),
     { rel: "stylesheet", href: styles },
   ]
 }
@@ -45,7 +50,7 @@ type AppsViewProps = {
   endpoints: EndpointsQuery | null
   dailyNetworkRelaysPerWeek: RelayMetric[] | null
   searchParams: URLSearchParams
-  user: PocketUser
+  profile: Auth0Profile
 }
 
 export const AppsView = ({
@@ -53,14 +58,29 @@ export const AppsView = ({
   dailyNetworkRelaysPerWeek,
   searchParams,
   userId,
-  user,
+  profile,
 }: AppsViewProps) => {
-  const uEmail = user.profile.emails[0].value
+  const uEmail = profile.emails[0].value
   const [showErrorModal, setShowErrorModal] = useState(false)
   const notOwnerEndpoints = endpoints ? endpoints.admin.concat(endpoints.member) : []
   const userDataByEndpoint = notOwnerEndpoints.map((endpoint) =>
     endpoint?.users.find((u) => u.email === uEmail),
   )
+
+  console.log(uEmail)
+  console.log(notOwnerEndpoints)
+  console.log(userDataByEndpoint)
+  console.log(profile)
+  const [notificationMessageProps, setNotificationMessageProps] =
+    useState<NotificationMessageType>({
+      type: "info",
+      title: "",
+      description: "",
+      isActive: false,
+    })
+  const [optionsEndpointId, setOptionsEndpointId] = useState<string>("")
+
+  const actionData = useActionData()
 
   useEffect(() => {
     const error = searchParams.get("error")
@@ -71,9 +91,78 @@ export const AppsView = ({
     }
   }, [searchParams])
 
+  useEffect(() => {
+    if (endpoints && endpoints !== null && endpoints.admin.length > 0 && endpoints.member.length > 0) {
+      const notAcceptedAdminEndpoints = endpoints?.admin.filter((endpoint) => {
+        const notAcceptedEndpoint = endpoint?.users?.find((user) => {
+          return user.email === profile?._json?.email && !user.accepted
+        })
+        return notAcceptedEndpoint || false
+      })
+
+      const notAcceptedMemberEndpoints = endpoints?.member.filter((endpoint) => {
+        const notAcceptedEndpoint = endpoint?.users?.find((user) => {
+          return user.email === profile?._json?.email && !user.accepted
+        })
+        return notAcceptedEndpoint || false
+      })
+
+      const notAcceptedEndpoints = notAcceptedAdminEndpoints.concat(notAcceptedMemberEndpoints)
+
+      if (notAcceptedEndpoints.length > 0) {
+        setNotificationMessageProps({
+          type: "options",
+          title: `You have been invited to ${notAcceptedEndpoints[0]?.name}`,
+          description: "Do you wish to accept?",
+          isActive: true,
+        })
+        setOptionsEndpointId(notAcceptedEndpoints[0]?.id || "")
+      }
+    }
+  }, [endpoints, profile])
+
+  useEffect(() => {
+    if (actionData && actionData.error) {
+      setNotificationMessageProps({
+        type: "error",
+        title: "There was an error accepting your invite",
+        description: "",
+        isActive: true,
+      })
+    } else if (actionData && !actionData.error) {
+      setNotificationMessageProps({
+        type: "success",
+        title: "You accepted the invite.",
+        description: "",
+        isActive: true,
+      })
+    }
+  }, [actionData])
+
   return (
     <div className="pokt-apps-view">
       <section>
+        <div style={{ width: "100%", marginBottom: "1em" }}>
+          <Form method="post" style={{ width: "100%" }}>
+            <NotificationMessage
+              notificationMessage={notificationMessageProps}
+              setNotificationMessage={setNotificationMessageProps}
+            />
+            <input
+              readOnly
+              name="appId"
+              style={{ display: "none" }}
+              value={optionsEndpointId}
+            />
+            <input
+              readOnly
+              name="email"
+              style={{ display: "none" }}
+              value={profile._json.email}
+            />
+          </Form>
+        </div>
+
         <Card>
           <Tabs color="green">
             <Tabs.Tab label="My Applications">
@@ -92,9 +181,15 @@ export const AppsView = ({
                     action: {
                       value: "",
                       element: (
-                        <Link to={app.id}>
-                          <IconCaretRight className="pokt-icon" />
-                        </Link>
+                        <>
+                          {app.users.map((user) =>
+                            user.email === profile?._json?.email && user.accepted && (
+                              <Link key={app.id} to={app.id}>
+                                <IconCaretRight className="pokt-icon" />
+                              </Link>
+                            )
+                          )}
+                        </>
                       ),
                     },
                   }))}

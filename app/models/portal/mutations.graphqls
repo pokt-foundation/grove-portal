@@ -64,3 +64,13 @@ mutation updateEndpointUserRole($endpointID: ID!, $input: UserAccessInput!) {
     }
   }
 }
+
+mutation acceptEndpointUser($endpointID: ID!) {
+  acceptEndpointUser(endpointID: $endpointID) {
+    users {
+      roleName
+      email
+      accepted
+    }
+  }
+}

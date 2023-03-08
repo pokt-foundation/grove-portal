@@ -13,6 +13,8 @@ function initPortalClient(token?: string) {
     }
   }
 
+  console.log("token: ", token)
+
   const client = new GraphQLClient(getRequiredClientEnvVar("PORTAL_API_URL"), options)
 
   return getSdkGen(client)

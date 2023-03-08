@@ -155,6 +155,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
         setNotificationMessageDescription(
           `We have sent an invitation to ${actionData.email}. You can review the invite status below.`,
         )
+        setInviteEmail("")
       }
     }
   }, [actionData, confirmationModalProps, notificationMessageTitle])
@@ -298,7 +299,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
         })}
         label="Users"
         rightComponent={
-          isAdminUser ? (
+          isAdminUser || isOwnerUser ? (
             <Button
               rightIcon={<IconPlus fill="var(--color-white-light)" />}
               variant="outline"

@@ -66,8 +66,6 @@ export default function TextInput({
           iconPadding: iconPadding,
         })}
         rightSection={rightSection}
-        size={props.size ?? "md"}
-        variant={props.variant ?? "unstyled"}
         {...props}
       />
       {hasDelete && (

@@ -37,7 +37,16 @@ export const getRelays = async (
 
   if (!res || res.status !== 200) {
     console.log(res)
-    throw new Error(res.statusText)
+    return {
+      Count: {
+        Total: 0,
+        Failure: 0,
+        Success: 0,
+      },
+      From: "",
+      To: "",
+    }
+    // throw new Error(res.statusText)
   }
 
   const body = await res.json()

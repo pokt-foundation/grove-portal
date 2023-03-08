@@ -51,7 +51,8 @@ export default function AppRadioCards({
               { disabled: radio.active === "false" },
             )}
             sx={(theme) => ({
-              borderColor: theme.colorScheme === "dark" ? theme.white : theme.black,
+              borderColor:
+                theme.colorScheme === "dark" ? theme.colors.gray : theme.colors.dark,
               "&.active": {
                 borderColor: theme.colors[theme.primaryColor][6],
               },

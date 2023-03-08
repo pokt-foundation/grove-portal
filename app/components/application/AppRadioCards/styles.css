@@ -1,6 +1,6 @@
 .radio-card-grid {
   margin: 0;
-  padding: 24px 0 36px 0;
+  padding: 16px 0 32px 0;
   align-items: stretch;
 }
 
@@ -22,7 +22,7 @@
 }
 
 .radio-card {
-  padding: 24px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
@@ -43,11 +43,13 @@
 }
 
 .radio-card > .mantine-Text-root {
-  margin-top: 24px;
+  margin-top: 16px;
+  margin-bottom: 0;
 }
 
 .radio-card label {
-  font-size: 21px;
+  font-size: 1rem;
+  font-weight: bold;
 }
 
 /* .radio-card p {

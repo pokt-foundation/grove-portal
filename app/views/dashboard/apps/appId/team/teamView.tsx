@@ -1,7 +1,6 @@
 import {
   Button,
   IconPlus,
-  Title,
   IconMoreVertical,
   Grid,
   Menu,
@@ -27,7 +26,6 @@ import NotificationMessage, {
   links as NotificationMessageLinks,
   NotificationMessageType,
 } from "~/components/shared/NotificationMessage"
-import StatusTag, { links as StatusTagLinks } from "~/components/shared/StatusTag"
 import Table, { links as TableLinks } from "~/components/shared/Table"
 import Text from "~/components/shared/Text"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
@@ -39,7 +37,6 @@ export const links = () => {
     ...AppRadioCardsLinks(),
     ...TextInputLinks(),
     ...LoaderLinks(),
-    ...StatusTagLinks(),
     ...TableLinks(),
     ...NotificationMessageLinks(),
     { rel: "stylesheet", href: styles },
@@ -161,7 +158,9 @@ function TeamView({ state, endpoint }: TeamViewProps) {
       )}
       {isInviteNewUserOpen && isAdminUser ? (
         <Card>
-          <Title order={3}>Invite New User</Title>
+          <div className="pokt-card-header">
+            <h3>Invite New User</h3>
+          </div>
           <Form className="invite-new-user__form" method="post">
             <TextInput
               label="Email address"
@@ -178,12 +177,18 @@ function TeamView({ state, endpoint }: TeamViewProps) {
             />
 
             <div className="invite-new-user__form__buttons-container">
-              <Button variant="outline" onClick={() => setInviteNewUserOpen(false)}>
+              <Button
+                color="gray"
+                size="sm"
+                variant="outline"
+                onClick={() => setInviteNewUserOpen(false)}
+              >
                 Cancel
               </Button>
               <Button
                 disabled={transition.state === "submitting" || inviteEmail === ""}
                 name="type"
+                size="sm"
                 type="submit"
                 value="invite"
               >

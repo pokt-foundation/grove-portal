@@ -4,11 +4,6 @@
   margin-top: 24px;
 }
 
-.invite-new-user__form .radio-card-grid {
-  box-sizing: border-box;
-  padding: 24px 0 24px 0;
-}
-
 .invite-new-user__form__buttons-container {
   display: inline-flex;
   gap: 16px;

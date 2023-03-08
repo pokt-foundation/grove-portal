@@ -69,7 +69,6 @@ query blockchains($active: Boolean) {
   blockchains(active: $active) {
     id
     ticker
-    network
     blockchain
     blockchainAliases
     active
@@ -78,6 +77,7 @@ query blockchains($active: Boolean) {
     chainIDCheck
     logLimitBlocks
     path
+    network
   }
 }
 

@@ -43,6 +43,7 @@ export const endpoint: ProcessedEndpoint = {
   updatedAt: "2022-08-22 15:55:11.288274 +0000 UTC",
   userId: "62fd1d49a6eba977fd212c23",
   applications: [],
+  users: [],
 }
 
 export const endpoints: ProcessedEndpoint[] = Array(2).fill(endpoint)

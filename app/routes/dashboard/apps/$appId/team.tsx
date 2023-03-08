@@ -1,5 +1,5 @@
 import { ActionFunction, json, LoaderFunction } from "@remix-run/node"
-import { useCatch, useLoaderData, useTransition } from "@remix-run/react"
+import { useCatch, useTransition } from "@remix-run/react"
 import { Auth0Profile } from "remix-auth-auth0"
 import invariant from "tiny-invariant"
 import { AppIdLoaderData } from "../$appId"
@@ -31,7 +31,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export type ActionData = {
   email: string
-  type: "delete" | "invite"
+  type: "delete" | "invite" | "update role"
   error: boolean
 }
 
@@ -42,10 +42,10 @@ export const action: ActionFunction = async ({ request, params }) => {
   const formData = await request.formData()
   const type = formData.get("type")
 
+  invariant(appId, "app id not found")
+
   if (type === "delete") {
     const email = formData.get("email")
-
-    invariant(appId, "app id not found")
     invariant(email && typeof email === "string", "user email not found")
 
     try {
@@ -62,7 +62,6 @@ export const action: ActionFunction = async ({ request, params }) => {
     const email = formData.get("email-address")
     const roleName = formData.get("app-subscription")
 
-    invariant(appId, "app id not found")
     invariant(roleName && typeof roleName === "string", "user role not found")
     invariant(email && typeof email === "string", "user email not found")
 
@@ -85,6 +84,40 @@ export const action: ActionFunction = async ({ request, params }) => {
         type,
       })
     } catch (error) {
+      return json<ActionData>({
+        email,
+        error: true,
+        type,
+      })
+    }
+  } else if (type === "update role") {
+    const email = formData.get("email")
+    const roleName = formData.get("roleName")
+
+    invariant(roleName && typeof roleName === "string", "user role not found")
+    invariant(email && typeof email === "string", "user email not found")
+
+    try {
+      const { updateEndpointUserRole } = await portal.updateEndpointUserRole({
+        endpointID: appId,
+        input: {
+          email,
+          roleName: roleName === "MEMBER" ? RoleName.Admin : RoleName.Member,
+        },
+      })
+
+      if (!updateEndpointUserRole) {
+        throw new Error("Erorr updating user role")
+      }
+
+      console.log("updateEndpointUserRole: ", updateEndpointUserRole)
+
+      return json<ActionData>({
+        email,
+        error: false,
+        type,
+      })
+    } catch (e) {
       return json<ActionData>({
         email,
         error: true,

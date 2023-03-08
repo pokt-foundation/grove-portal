@@ -5,10 +5,16 @@ import {
   IconMoreVertical,
   Grid,
 } from "@pokt-foundation/pocket-blocks"
-import { Form, useActionData, useLoaderData, useTransition } from "@remix-run/react"
+import {
+  Form,
+  useActionData,
+  useLoaderData,
+  useSubmit,
+  useTransition,
+} from "@remix-run/react"
 import { Transition } from "@remix-run/react/transition"
 import clsx from "clsx"
-import { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 
 import styles from "./styles.css"
 import AppRadioCards, {
@@ -79,6 +85,8 @@ type ConfirmationModalOptionsType = {
 }
 
 function TeamView({ state, endpoint }: TeamViewProps) {
+  const submit = useSubmit()
+  const updateRoleFormRef = useRef(null)
   const [isInviteNewUserOpen, setInviteNewUserOpen] = useState(false)
   const [inviteEmail, setInviteEmail] = useState("")
   const [radioSelectedValue, setRadioSelectedValue] = useState("ADMIN")
@@ -104,9 +112,16 @@ function TeamView({ state, endpoint }: TeamViewProps) {
   const { profile } = useLoaderData<TeamLoaderData>()
 
   const isAdminUser = endpoint?.users?.some(
-    ({ email, roleName }) =>
-      email === profile._json.email && (roleName === "OWNER" || roleName === "ADMIN"),
+    ({ email, roleName }) => email === profile._json.email && roleName === "ADMIN",
   )
+
+  const isOwnerUser = endpoint?.users?.some(
+    ({ email, roleName }) => email === profile._json.email && roleName === "OWNER",
+  )
+
+  const handleUpdateRoleSubmit = () => {
+    submit(updateRoleFormRef.current, { method: "post" })
+  }
 
   useEffect(() => {
     if (actionData) {
@@ -160,7 +175,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
           />
         </>
       )}
-      {isInviteNewUserOpen && isAdminUser ? (
+      {isInviteNewUserOpen && (isAdminUser || isOwnerUser) ? (
         <Card>
           <Title order={3}>Invite New User</Title>
           <Form className="invite-new-user__form" method="post">
@@ -207,33 +222,54 @@ function TeamView({ state, endpoint }: TeamViewProps) {
             },
             role: {
               element: (
-                <div className="list__role">
-                  {isAdminUser ? (
-                    <Dropdown
-                      contentClassName="dropdown-teams__content"
-                      label={<DropdownTrigger label={roleName} />}
-                    >
-                      <DropdownItem action={() => {}} label="Admin" />
-                    </Dropdown>
-                  ) : (
-                    <Text>{roleName}</Text>
-                  )}
-                </div>
+                <Form ref={updateRoleFormRef} method="post">
+                  <div className="list__role">
+                    <input name="roleName" type="hidden" value={roleName} />
+                    <input name="email" type="hidden" value={email} />
+                    <input name="type" type="hidden" value="update role" />
+
+                    {isOwnerUser && email !== profile?._json.email && (
+                      <Dropdown
+                        contentClassName="dropdown-teams__content"
+                        label={<DropdownTrigger label={roleName} />}
+                      >
+                        <DropdownItem
+                          action={handleUpdateRoleSubmit}
+                          label={roleName === RoleName.Admin ? "MEMBER" : "ADMIN"}
+                        />
+                      </Dropdown>
+                    )}
+
+                    {isAdminUser &&
+                      email !== profile?._json.email &&
+                      roleName === RoleName.Member && (
+                        <Dropdown
+                          contentClassName="dropdown-teams__content"
+                          label={<DropdownTrigger label={roleName} />}
+                        >
+                          <DropdownItem action={handleUpdateRoleSubmit} label="Admin" />
+                        </Dropdown>
+                      )}
+
+                    {((!isOwnerUser && !isAdminUser) ||
+                      email === profile?._json.email) && <Text>{roleName}</Text>}
+                  </div>
+                </Form>
               ),
               value: "Role",
             },
             action: {
               element:
-                isAdminUser || email === profile?._json.email ? (
+                isAdminUser || isOwnerUser || email === profile?._json.email ? (
                   <div className="list__more-actions">
                     <Dropdown
                       contentClassName="dropdown-teams__content"
                       label={<IconMoreVertical fill="#A9E34B" />}
                     >
-                      {!accepted && isAdminUser ? (
+                      {!accepted && (isAdminUser || isOwnerUser) ? (
                         <DropdownItem action={() => {}} label="Send new Invite" />
                       ) : null}
-                      {isAdminUser || email === profile?._json.email ? (
+                      {isAdminUser || isOwnerUser || email === profile?._json.email ? (
                         <DropdownItem
                           action={() => {
                             setConfirmationModalProps({ type: "options", isActive: true })

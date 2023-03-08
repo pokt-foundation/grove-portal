@@ -40,13 +40,6 @@ type DropdownTriggerProps = {
   label: string
 }
 
-type DropdownItemProps = {
-  label: string
-  variant?: "default" | "green"
-  action: () => void
-  disabled?: boolean
-}
-
 function DropdownTrigger({ label }: DropdownTriggerProps) {
   return (
     <div className="dropdown-trigger">
@@ -58,7 +51,20 @@ function DropdownTrigger({ label }: DropdownTriggerProps) {
   )
 }
 
-function DropdownItem({ label, action, variant, disabled = false }: DropdownItemProps) {
+type DropdownItemProps = {
+  label: string
+  variant?: "default" | "green"
+  action: () => void
+  disabled?: boolean
+}
+
+function DropdownItem({
+  label,
+  action,
+  variant,
+  disabled = false,
+
+}: DropdownItemProps) {
   return (
     <button
       className={clsx({

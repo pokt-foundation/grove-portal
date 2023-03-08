@@ -1,9 +1,11 @@
+import { inherits } from "util"
 import { Tabs } from "@mantine/core"
 import {
   IconCaretRight,
   Title,
   Text,
   IconMoreVertical,
+  Box,
 } from "@pokt-foundation/pocket-blocks"
 import { Form, Link, useActionData } from "@remix-run/react"
 import { useEffect, useState } from "react"
@@ -143,34 +145,36 @@ export const AppsView = ({
 
   return (
     <div className="pokt-apps-view">
+      {notificationMessageProps.isActive && (
+        <section>
+          <div style={{ width: "100%", marginBottom: "1em" }}>
+            <Form method="post" style={{ width: "100%" }}>
+              <NotificationMessage
+                notificationMessage={notificationMessageProps}
+                setNotificationMessage={setNotificationMessageProps}
+              />
+              <input
+                readOnly
+                name="appId"
+                style={{ display: "none" }}
+                value={optionsEndpointId}
+              />
+              <input
+                readOnly
+                name="email"
+                style={{ display: "none" }}
+                value={profile._json.email}
+              />
+            </Form>
+          </div>
+        </section>
+      )}
       <section>
-        <div style={{ width: "100%", marginBottom: "1em" }}>
-          <Form method="post" style={{ width: "100%" }}>
-            <NotificationMessage
-              notificationMessage={notificationMessageProps}
-              setNotificationMessage={setNotificationMessageProps}
-            />
-            <input
-              readOnly
-              name="appId"
-              style={{ display: "none" }}
-              value={optionsEndpointId}
-            />
-            <input
-              readOnly
-              name="email"
-              style={{ display: "none" }}
-              value={profile._json.email}
-            />
-          </Form>
-        </div>
-
         <Card>
           <Tabs color="green">
             <Tabs.Tab label="My Applications">
               {endpoints && endpoints.owner.length > 0 ? (
                 <Table
-                  search
                   columns={["App", "Created", "Plan", ""]}
                   data={(endpoints.owner as ProcessedEndpoint[]).map((app) => ({
                     id: app.id,
@@ -188,9 +192,11 @@ export const AppsView = ({
                             (user) =>
                               user.email === profile?._json?.email &&
                               user.accepted && (
-                                <Link key={app.id} to={app.id}>
-                                  <IconCaretRight className="pokt-icon" />
-                                </Link>
+                                <Box key={app.id} sx={{ textAlign: "right" }}>
+                                  <Link to={app.id}>
+                                    <IconCaretRight className="pokt-icon" />
+                                  </Link>
+                                </Box>
                               ),
                           )}
                         </>
@@ -235,15 +241,34 @@ export const AppsView = ({
                       value: userDataByEndpoint[idx]?.accepted ? "Accepted" : "Pending",
                       element: <StatusTag accepted={userDataByEndpoint[idx]!.accepted} />,
                     },
-                    role: userDataByEndpoint[idx]!.roleName,
+                    role: {
+                      value: userDataByEndpoint[idx]!.roleName,
+                      element: (
+                        <Text
+                          sx={{
+                            fontSize: "inherit",
+                            textTransform: "lowercase",
+                            "&:first-letter": { textTransform: "uppercase" },
+                          }}
+                        >
+                          {userDataByEndpoint[idx]!.roleName}
+                        </Text>
+                      ),
+                    },
                     action: {
                       value: "More",
                       element: (
-                        <div className="list__more-actions">
+                        <Box
+                          className="list__more-actions"
+                          sx={{ display: "flex", justifyContent: "flex-end" }}
+                        >
                           <Dropdown
                             contentClassName="dropdown-teams__content"
                             label={
-                              <IconMoreVertical className="pokt-icon" fill="#A9E34B" />
+                              <IconMoreVertical
+                                className="pokt-icon"
+                                fill="var(--color-primary-main)"
+                              />
                             }
                           >
                             {userDataByEndpoint[idx]?.accepted ? (
@@ -257,7 +282,7 @@ export const AppsView = ({
                               variant="green"
                             />
                           </Dropdown>
-                        </div>
+                        </Box>
                       ),
                     },
                   }))}

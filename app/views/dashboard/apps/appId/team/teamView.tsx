@@ -4,6 +4,8 @@ import {
   Title,
   IconMoreVertical,
   Grid,
+  Box,
+  Text,
 } from "@pokt-foundation/pocket-blocks"
 import {
   Form,
@@ -35,7 +37,6 @@ import NotificationMessage, {
 } from "~/components/shared/NotificationMessage"
 import StatusTag, { links as StatusTagLinks } from "~/components/shared/StatusTag"
 import Table, { links as TableLinks } from "~/components/shared/Table"
-import Text from "~/components/shared/Text"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { EndpointQuery, RoleName } from "~/models/portal/sdk"
 import { ActionData, TeamLoaderData } from "~/routes/dashboard/apps/$appId/team"
@@ -185,7 +186,9 @@ function TeamView({ state, endpoint }: TeamViewProps) {
       )}
       {isInviteNewUserOpen && (isAdminUser || isOwnerUser) ? (
         <Card>
-          <Title order={3}>Invite New User</Title>
+          <div className="pokt-card-header">
+            <h3>Invite New User</h3>
+          </div>
           <Form className="invite-new-user__form" method="post">
             <TextInput
               label="Email address"
@@ -218,7 +221,6 @@ function TeamView({ state, endpoint }: TeamViewProps) {
         </Card>
       ) : null}
       <Table
-        paginate
         columns={["Email", "Status", "Role", ""]}
         data={endpoint?.users?.map(({ email, roleName, accepted }) => {
           return {
@@ -260,7 +262,17 @@ function TeamView({ state, endpoint }: TeamViewProps) {
                       )}
 
                     {((!isOwnerUser && !isAdminUser) ||
-                      email === profile?._json.email) && <Text>{roleName}</Text>}
+                      email === profile?._json.email) && (
+                      <Text
+                        sx={{
+                          fontSize: "inherit",
+                          textTransform: "lowercase",
+                          "&:first-letter": { textTransform: "uppercase" },
+                        }}
+                      >
+                        {roleName}
+                      </Text>
+                    )}
                   </div>
                 </Form>
               ),
@@ -269,10 +281,13 @@ function TeamView({ state, endpoint }: TeamViewProps) {
             action: {
               element:
                 isAdminUser || isOwnerUser || email === profile?._json.email ? (
-                  <div className="list__more-actions">
+                  <Box
+                    className="list__more-actions"
+                    sx={{ display: "flex", justifyContent: "flex-end" }}
+                  >
                     <Dropdown
                       contentClassName="dropdown-teams__content"
-                      label={<IconMoreVertical fill="#A9E34B" />}
+                      label={<IconMoreVertical fill="var(--color-primary-main)" />}
                     >
                       {!accepted && (isAdminUser || isOwnerUser) ? (
                         <DropdownItem action={() => {}} label="Send new Invite" />
@@ -296,7 +311,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
                         <></>
                       )}
                     </Dropdown>
-                  </div>
+                  </Box>
                 ) : (
                   <></>
                 ),
@@ -305,6 +320,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
           }
         })}
         label="Users"
+        paginate={endpoint.users.length > 10 ? { perPage: 10 } : null}
         rightComponent={
           isAdminUser || isOwnerUser ? (
             <Button

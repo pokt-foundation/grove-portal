@@ -18,9 +18,10 @@ export const Dropdown: React.FC<DropdownProps> = ({
   label,
   contentClassName = "",
   children,
+  ...props
 }) => {
   return (
-    <DropdownMenu.Root>
+    <DropdownMenu.Root {...props}>
       <DropdownMenu.Trigger className="pokt-dropdown-trigger">
         {label}
       </DropdownMenu.Trigger>

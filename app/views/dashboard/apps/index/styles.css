@@ -17,13 +17,17 @@
   color: var(--color-disabled);
 }
 
+.pokt-apps-view .mantine-Tabs-tabActive {
+  border-bottom-color: var(--color-primary-main);
+}
+
 .mantine-Tabs-tabActive .mantine-Tabs-tabLabel {
   color: var(--color-white-main);
 }
 
 .mantine-Tabs-tabControl {
   padding: 0;
-  margin: 0 24px;
+  margin-right: 32px;
 }
 
 .mantine-Tabs-body .pokt-table-header {
@@ -37,4 +41,5 @@
 
 .list__more-actions .pokt-dropdown-trigger {
   background-color: transparent;
+  padding: 0 8px;
 }

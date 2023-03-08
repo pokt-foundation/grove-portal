@@ -173,10 +173,10 @@ function TeamView({ state, endpoint }: TeamViewProps) {
               onChange={(e) => setInviteEmail(e.target.value)}
             />
             <input
-              style={{ display: "none" }}
-              name="app-name"
-              value={endpoint.name}
               readOnly
+              name="app-name"
+              style={{ display: "none" }}
+              value={endpoint.name}
             />
             <AppRadioCards
               currentRadio={radioSelectedValue}

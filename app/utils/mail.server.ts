@@ -1,5 +1,5 @@
-import Mailgun from "mailgun.js"
 import formData from "form-data"
+import Mailgun from "mailgun.js"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 const mailgun = new Mailgun(formData)
 const mg = mailgun.client({
@@ -8,7 +8,12 @@ const mg = mailgun.client({
 })
 const DOMAIN_NAME = "pokt.network"
 
-const getMailgunTemplate = (to: string, subject: string, template: "pocket-dashboard-team-invite", variables: { [key: string]: string }) => {
+const getMailgunTemplate = (
+  to: string,
+  subject: string,
+  template: "pocket-dashboard-team-invite",
+  variables: { [key: string]: string },
+) => {
   return {
     from: "Mailgun Sandbox <postmaster@pokt.network>",
     to,
@@ -18,7 +23,12 @@ const getMailgunTemplate = (to: string, subject: string, template: "pocket-dashb
   }
 }
 
-const sendEmail = async (to: string, subject: string, template: "pocket-dashboard-team-invite", variables: { [key: string]: string }) => {
+const sendEmail = async (
+  to: string,
+  subject: string,
+  template: "pocket-dashboard-team-invite",
+  variables: { [key: string]: string },
+) => {
   const mailgunData = getMailgunTemplate(to, subject, template, variables)
   await mg.messages.create(DOMAIN_NAME, mailgunData)
 }

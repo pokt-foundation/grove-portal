@@ -6,11 +6,11 @@ import { AppIdLoaderData } from "../$appId"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { RoleName } from "~/models/portal/sdk"
+import { sendEmail } from "~/utils/mail.server"
 import { requireUser } from "~/utils/session.server"
 import TeamView, {
   links as TeamViewLinks,
 } from "~/views/dashboard/apps/appId/team/teamView"
-import { sendEmail } from "~/utils/mail.server"
 
 export const links = () => {
   return [...TeamViewLinks()]

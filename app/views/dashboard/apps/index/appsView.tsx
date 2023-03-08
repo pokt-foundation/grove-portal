@@ -147,26 +147,30 @@ export const AppsView = ({
                     inviteStatus: {
                       value: team.accepted ? "Accepted" : "Pending",
                       element: (
-                        <Badge
-                          color={team.accepted ? "green" : "orange"}
-                          variant="outline"
-                        >
-                          {team.accepted ? "Accepted" : "Pending"}
-                        </Badge>
+                        <Link to={team.id.toString()}>
+                          <Badge
+                            color={team.accepted ? "green" : "orange"}
+                            variant="outline"
+                          >
+                            {team.accepted ? "Accepted" : "Pending"}
+                          </Badge>
+                        </Link>
                       ),
                     },
                     role: {
                       value: team.roleName,
                       element: (
-                        <Text
-                          m="0"
-                          sx={{
-                            textTransform: "lowercase",
-                            "&:first-letter": { textTransform: "uppercase" },
-                          }}
-                        >
-                          {team.roleName}
-                        </Text>
+                        <Link to={team.id.toString()}>
+                          <Text
+                            m="0"
+                            sx={{
+                              textTransform: "lowercase",
+                              "&:first-letter": { textTransform: "uppercase" },
+                            }}
+                          >
+                            {team.roleName}
+                          </Text>
+                        </Link>
                       ),
                     },
                     action: {

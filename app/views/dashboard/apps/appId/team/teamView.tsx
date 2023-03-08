@@ -5,6 +5,10 @@ import {
   IconMoreVertical,
   Grid,
   Menu,
+  Select,
+  Anchor,
+  Badge,
+  Box,
 } from "@pokt-foundation/pocket-blocks"
 import { Form, useActionData, useLoaderData, useTransition } from "@remix-run/react"
 import { Transition } from "@remix-run/react/dist/transition"
@@ -189,92 +193,107 @@ function TeamView({ state, endpoint }: TeamViewProps) {
           </Form>
         </Card>
       ) : null}
-      <Table
-        paginate
-        columns={["Email", "Status", "Role", ""]}
-        data={endpoint?.users?.map(({ email, roleName, accepted }) => {
-          return {
-            id: email,
-            email: email,
-            status: {
-              element: <StatusTag accepted={accepted} />,
-              value: accepted ? "ACCEPTED" : "PENDING",
-            },
-            role: {
-              element: (
-                <div className="list__role">
-                  {isAdminUser ? (
-                    <Menu>
-                      <Menu.Target>
-                        <Button>{roleName}</Button>
-                      </Menu.Target>
-                      <Menu.Dropdown className="dropdown-teams__content">
-                        <Menu.Item>Admin</Menu.Item>
-                      </Menu.Dropdown>
-                    </Menu>
-                  ) : (
-                    <Text>{roleName}</Text>
-                  )}
-                </div>
-              ),
-              value: "Role",
-            },
-            action: {
-              element:
-                isAdminUser || email === profile?._json?.email ? (
-                  <div className="list__more-actions">
-                    <Menu>
-                      <Menu.Target>
-                        <IconMoreVertical fill="#A9E34B" />
-                      </Menu.Target>
-                      <Menu.Dropdown className="dropdown-teams__content">
-                        {!accepted && isAdminUser ? (
-                          <Menu.Item>Send new Invite</Menu.Item>
-                        ) : null}
-                        {isAdminUser ||
-                          (email === profile?._json?.email && (
-                            <Menu.Item
-                              color="green"
-                              onClick={() => {
-                                setConfirmationModalProps({
-                                  type: "options",
-                                  isActive: true,
-                                })
-                                setConfirmationModalTitle(
-                                  "Do you want to remove this user from this app team?",
-                                )
-                                setConfirmationModalDescription(
-                                  "That user will completely lose access to the current application.",
-                                )
-                                setConfirmationModalEmail(email)
-                              }}
-                            >
-                              {email === profile?._json.email ? "Leave team" : "Remove"}
-                            </Menu.Item>
-                          ))}
-                      </Menu.Dropdown>
-                    </Menu>
-                  </div>
-                ) : (
-                  <></>
+      <Card>
+        <Table
+          columns={["Email", "Status", "Role", ""]}
+          data={endpoint?.users?.map(({ email, roleName, accepted }) => {
+            return {
+              id: email,
+              email: email,
+              status: {
+                element: (
+                  <Badge color={accepted ? "green" : "orange"} variant="outline">
+                    {accepted ? "Accepted" : "Pending"}
+                  </Badge>
                 ),
-              value: "More",
-            },
+                value: accepted ? "ACCEPTED" : "PENDING",
+              },
+              role: {
+                element: (
+                  <div className="list__role">
+                    {isAdminUser ? (
+                      <Select
+                        data={Object.values(RoleName).map((role) => ({
+                          value: role,
+                          label: role,
+                        }))}
+                        defaultValue={roleName}
+                      />
+                    ) : (
+                      <Text
+                        sx={{
+                          textTransform: "lowercase",
+                          "&:first-letter": { textTransform: "uppercase" },
+                        }}
+                      >
+                        {roleName}
+                      </Text>
+                    )}
+                  </div>
+                ),
+                value: "Role",
+              },
+              action: {
+                element:
+                  isAdminUser || email === profile?._json?.email ? (
+                    <Box sx={{ textAlign: "right" }}>
+                      <Menu>
+                        <Menu.Target>
+                          <Anchor>
+                            <IconMoreVertical />
+                          </Anchor>
+                        </Menu.Target>
+                        <Menu.Dropdown className="dropdown-teams__content">
+                          {!accepted && isAdminUser ? (
+                            <Menu.Item>Send new Invite</Menu.Item>
+                          ) : null}
+                          {isAdminUser ||
+                            (email === profile?._json?.email && (
+                              <Menu.Item
+                                color="green"
+                                onClick={() => {
+                                  setConfirmationModalProps({
+                                    type: "options",
+                                    isActive: true,
+                                  })
+                                  setConfirmationModalTitle(
+                                    "Do you want to remove this user from this app team?",
+                                  )
+                                  setConfirmationModalDescription(
+                                    "That user will completely lose access to the current application.",
+                                  )
+                                  setConfirmationModalEmail(email)
+                                }}
+                              >
+                                {email === profile?._json.email ? "Leave team" : "Remove"}
+                              </Menu.Item>
+                            ))}
+                        </Menu.Dropdown>
+                      </Menu>
+                    </Box>
+                  ) : (
+                    <></>
+                  ),
+                value: "More",
+              },
+            }
+          })}
+          label="Users"
+          paginate={endpoint.users.length > 10 ? { perPage: 10 } : undefined}
+          rightComponent={
+            isAdminUser ? (
+              <Button
+                rightIcon={<IconPlus height={18} width={18} />}
+                size="xs"
+                variant="outline"
+                onClick={() => setInviteNewUserOpen(true)}
+              >
+                Invite new user
+              </Button>
+            ) : null
           }
-        })}
-        label="Users"
-        rightComponent={
-          isAdminUser ? (
-            <Button
-              rightIcon={<IconPlus fill="var(--color-white-light)" />}
-              variant="outline"
-              onClick={() => setInviteNewUserOpen(true)}
-            >
-              Invite new user
-            </Button>
-          ) : null
-        }
-      />
+        />
+      </Card>
       <Modal
         opened={confirmationModalProps.isActive}
         padding={20}

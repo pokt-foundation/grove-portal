@@ -108,6 +108,14 @@ const WithProviders = ({ children }: { children: React.ReactNode }) => {
               },
             }),
           },
+          Tabs: {
+            styles: (theme) => ({
+              tabsList: {
+                borderBottom: "2px solid transparent",
+                marginBottom: theme.spacing.md,
+              },
+            }),
+          },
         },
       }}
     >

@@ -5,6 +5,7 @@ import {
   TextInput,
   Text,
   IconSearch,
+  Box,
 } from "@pokt-foundation/pocket-blocks"
 import { useMemo, useState } from "react"
 import styles from "./styles.css"
@@ -120,7 +121,7 @@ export const Table = <T extends IdObj>({
 
   return (
     <div className="pokt-table">
-      <Card>
+      <Box>
         {(label || search) && (
           <Group align="center" className="pokt-table-header" position="apart">
             {label && <h3>{label}</h3>}
@@ -198,7 +199,7 @@ export const Table = <T extends IdObj>({
             />
           </Group>
         )}
-      </Card>
+      </Box>
     </div>
   )
 }

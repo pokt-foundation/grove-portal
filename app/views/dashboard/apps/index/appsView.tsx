@@ -8,6 +8,8 @@ import {
   Button,
   Badge,
   Anchor,
+  Box,
+  theme,
 } from "@pokt-foundation/pocket-blocks"
 import { Link } from "@remix-run/react"
 import { useEffect, useState } from "react"
@@ -80,7 +82,6 @@ export const AppsView = ({
             <Tabs.Panel value="applications">
               {endpoints && endpoints.length > 0 ? (
                 <Table
-                  search
                   columns={["App", "Created", "Plan", ""]}
                   data={(endpoints as ProcessedEndpoint[]).map((app) => ({
                     id: app.id,
@@ -88,25 +89,37 @@ export const AppsView = ({
                       value: app.name,
                       element: <Link to={app.id}>{app.name}</Link>,
                     },
-                    created: dayjs(app.createdAt).format("MM/DD/YY"),
-                    plan: getPlanName(app.appLimits.planType),
+                    created: {
+                      value: dayjs(app.createdAt).format("MM/DD/YY"),
+                      element: (
+                        <Link to={app.id}>{dayjs(app.createdAt).format("MM/DD/YY")}</Link>
+                      ),
+                    },
+                    plan: {
+                      value: getPlanName(app.appLimits.planType),
+                      element: (
+                        <Link to={app.id}>{getPlanName(app.appLimits.planType)}</Link>
+                      ),
+                    },
                     action: {
                       value: "",
                       element: (
-                        <Anchor component={Link} to={app.id} type="text">
-                          <IconCaretRight className="pokt-icon" />
-                        </Anchor>
+                        <Box sx={{ textAlign: "right" }}>
+                          <Anchor component={Link} to={app.id}>
+                            <IconCaretRight />
+                          </Anchor>
+                        </Box>
                       ),
                     },
                   }))}
                   paginate={
                     getRequiredClientEnvVar("GODMODE_ACCOUNTS")?.includes(userId)
-                      ? { perPage: 10 }
+                      ? { perPage: 5 }
                       : undefined
                   }
                 />
               ) : (
-                <Card>
+                <Box>
                   <div className="pokt-card-header">
                     <Title order={3}>Applications</Title>
                   </div>
@@ -117,7 +130,7 @@ export const AppsView = ({
                     </Link>
                     .
                   </Text>
-                </Card>
+                </Box>
               )}
             </Tabs.Panel>
 
@@ -134,21 +147,37 @@ export const AppsView = ({
                     inviteStatus: {
                       value: team.accepted ? "Accepted" : "Pending",
                       element: (
-                        <Badge color={team.accepted ? "green" : "orange"}>
+                        <Badge
+                          color={team.accepted ? "green" : "orange"}
+                          variant="outline"
+                        >
                           {team.accepted ? "Accepted" : "Pending"}
                         </Badge>
                       ),
                     },
-                    role: team.roleName,
+                    role: {
+                      value: team.roleName,
+                      element: (
+                        <Text
+                          m="0"
+                          sx={{
+                            textTransform: "lowercase",
+                            "&:first-letter": { textTransform: "uppercase" },
+                          }}
+                        >
+                          {team.roleName}
+                        </Text>
+                      ),
+                    },
                     action: {
                       value: "More",
                       element: (
-                        <div className="list__more-actions">
+                        <Box sx={{ textAlign: "right" }}>
                           <Menu>
                             <Menu.Target>
-                              <Button size="xs" variant="subtle">
-                                <IconMoreVertical className="pokt-icon" fill="#A9E34B" />
-                              </Button>
+                              <Anchor>
+                                <IconMoreVertical />
+                              </Anchor>
                             </Menu.Target>
                             <Menu.Dropdown className="dropdown-teams__content">
                               {team.accepted ? (
@@ -159,13 +188,13 @@ export const AppsView = ({
                               <Menu.Item color="green">Leave App</Menu.Item>
                             </Menu.Dropdown>
                           </Menu>
-                        </div>
+                        </Box>
                       ),
                     },
                   }))}
                   paginate={
                     getRequiredClientEnvVar("GODMODE_ACCOUNTS")?.includes(userId)
-                      ? { perPage: 10 }
+                      ? { perPage: 5 }
                       : undefined
                   }
                 />

@@ -1,4 +1,4 @@
-import { Grid } from "@pokt-foundation/pocket-blocks"
+import { Card, Grid } from "@pokt-foundation/pocket-blocks"
 import { Transition } from "@remix-run/react/dist/transition"
 import styles from "./styles.css"
 import ChainWithImage, {
@@ -90,21 +90,23 @@ export default function NetworkView({
           </section>
           {blockchains && (
             <section>
-              <Table
-                paginate
-                search
-                columns={["Network", "ID", "Status"]}
-                data={blockchains.map((chain) => ({
-                  id: chain.id,
-                  network: {
-                    value: `${chain.description}`,
-                    element: <ChainWithImage chain={chain.description} />,
-                  },
-                  chainId: chain.id,
-                  status: getServiceLevelByChain(chain.id),
-                }))}
-                label="Available Networks"
-              />
+              <Card>
+                <Table
+                  paginate
+                  search
+                  columns={["Network", "ID", "Status"]}
+                  data={blockchains.map((chain) => ({
+                    id: chain.id,
+                    network: {
+                      value: `${chain.description}`,
+                      element: <ChainWithImage chain={chain.description} />,
+                    },
+                    chainId: chain.id,
+                    status: getServiceLevelByChain(chain.id),
+                  }))}
+                  label="Available Networks"
+                />
+              </Card>
             </section>
           )}
         </Grid.Col>

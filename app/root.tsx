@@ -88,7 +88,7 @@ const WithProviders = ({ children }: { children: React.ReactNode }) => {
       withNormalizeCSS
       theme={{
         ...theme,
-        primaryColor: "green",
+        primaryColor: "magenta",
         components: {
           ...theme.components,
           Paper: {
@@ -113,6 +113,25 @@ const WithProviders = ({ children }: { children: React.ReactNode }) => {
               tabsList: {
                 borderBottom: "2px solid transparent",
                 marginBottom: theme.spacing.md,
+              },
+              tab: {
+                paddingRight: theme.spacing.xs,
+                paddingLeft: theme.spacing.xs,
+                transition: "border-color ease-in-out 0.3s, color ease-in-out 0.3s",
+                "&[data-active]": {
+                  borderColor: theme.colors[theme.primaryColor][6],
+                },
+                "&:hover": {
+                  backgroundColor: "transparent",
+                  borderColor: "transparent",
+                  color: theme.colors[theme.primaryColor][8],
+                },
+                "&[data-active]:hover": {
+                  borderColor: theme.colors[theme.primaryColor][8],
+                },
+                "&:not(:last-child)": {
+                  marginRight: theme.spacing.md,
+                },
               },
             }),
           },

@@ -143,8 +143,8 @@ export default function Index() {
       dailyNetworkRelays={dailyNetworkRelays}
       dailyNetworkRelaysPerWeek={dailyNetworkRelaysPerWeek}
       monthlyNetworkRelays={monthlyNetworkRelays}
-      poktscanLatestBlock={poktscanLatestBlock}
       poktscanChains={poktscanChains}
+      poktscanLatestBlock={poktscanLatestBlock}
       state={state}
       weeklyNetworkRelays={weeklyNetworkRelays}
     />

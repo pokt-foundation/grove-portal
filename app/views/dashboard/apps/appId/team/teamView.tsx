@@ -1,23 +1,15 @@
 import {
   Button,
   IconPlus,
-  Title,
   IconMoreVertical,
   Grid,
   Box,
   Text,
 } from "@pokt-foundation/pocket-blocks"
-import {
-  Form,
-  useActionData,
-  useLoaderData,
-  useSubmit,
-  useTransition,
-} from "@remix-run/react"
+import { Form, useActionData, useLoaderData, useTransition } from "@remix-run/react"
 import { Transition } from "@remix-run/react/transition"
 import clsx from "clsx"
-import React, { useEffect, useRef, useState } from "react"
-
+import { useEffect, useState } from "react"
 import styles from "./styles.css"
 import AppRadioCards, {
   links as AppRadioCardsLinks,
@@ -86,8 +78,6 @@ type ConfirmationModalOptionsType = {
 }
 
 function TeamView({ state, endpoint }: TeamViewProps) {
-  const submit = useSubmit()
-  const updateRoleFormRef = useRef(null)
   const [isInviteNewUserOpen, setInviteNewUserOpen] = useState(false)
   const [inviteEmail, setInviteEmail] = useState("")
   const [radioSelectedValue, setRadioSelectedValue] = useState("ADMIN")
@@ -107,6 +97,11 @@ function TeamView({ state, endpoint }: TeamViewProps) {
       description: "",
       isActive: false,
     })
+  const [isUpdateRoleModalOpened, setIsUpdateRoleModalOpened] = useState<boolean>(false)
+  const [updateRoleModalData, setUpdateRoleModalData] = useState({
+    email: "",
+    roleName: "",
+  })
 
   const transition = useTransition()
   const actionData = useActionData<ActionData>()
@@ -120,8 +115,12 @@ function TeamView({ state, endpoint }: TeamViewProps) {
     ({ email, roleName }) => email === profile._json.email && roleName === "OWNER",
   )
 
-  const handleUpdateRoleSubmit = () => {
-    submit(updateRoleFormRef.current, { method: "post" })
+  const handleUpdateRoleSubmit = (email: string, roleName: RoleName) => {
+    setUpdateRoleModalData({
+      email,
+      roleName,
+    })
+    setIsUpdateRoleModalOpened(true)
   }
 
   useEffect(() => {
@@ -164,6 +163,16 @@ function TeamView({ state, endpoint }: TeamViewProps) {
         })
 
         setInviteEmail("")
+      } else if (actionData.type === "update role") {
+        if (actionData.error) {
+          return
+        }
+
+        setIsUpdateRoleModalOpened(false)
+        setUpdateRoleModalData({
+          email: "",
+          roleName: "",
+        })
       }
     }
   }, [actionData, confirmationModalProps])
@@ -232,49 +241,47 @@ function TeamView({ state, endpoint }: TeamViewProps) {
             },
             role: {
               element: (
-                <Form ref={updateRoleFormRef} method="post">
-                  <div className="list__role">
-                    <input name="roleName" type="hidden" value={roleName} />
-                    <input name="email" type="hidden" value={email} />
-                    <input name="type" type="hidden" value="update role" />
+                <div className="list__role">
+                  {isOwnerUser && email !== profile?._json.email && (
+                    <Dropdown
+                      contentClassName="dropdown-teams__content"
+                      label={<DropdownTrigger label={roleName} />}
+                    >
+                      <DropdownItem
+                        action={() => handleUpdateRoleSubmit(email, roleName)}
+                        label={roleName === RoleName.Admin ? "MEMBER" : "ADMIN"}
+                      />
+                    </Dropdown>
+                  )}
 
-                    {isOwnerUser && email !== profile?._json.email && (
+                  {isAdminUser &&
+                    email !== profile?._json.email &&
+                    roleName === RoleName.Member && (
                       <Dropdown
                         contentClassName="dropdown-teams__content"
                         label={<DropdownTrigger label={roleName} />}
                       >
                         <DropdownItem
-                          action={handleUpdateRoleSubmit}
-                          label={roleName === RoleName.Admin ? "MEMBER" : "ADMIN"}
+                          action={() => handleUpdateRoleSubmit(email, roleName)}
+                          label="Admin"
                         />
                       </Dropdown>
                     )}
 
-                    {isAdminUser &&
-                      email !== profile?._json.email &&
-                      roleName === RoleName.Member && (
-                        <Dropdown
-                          contentClassName="dropdown-teams__content"
-                          label={<DropdownTrigger label={roleName} />}
-                        >
-                          <DropdownItem action={handleUpdateRoleSubmit} label="Admin" />
-                        </Dropdown>
-                      )}
-
-                    {((!isOwnerUser && !isAdminUser) ||
-                      email === profile?._json.email) && (
-                      <Text
-                        sx={{
-                          fontSize: "inherit",
-                          textTransform: "lowercase",
-                          "&:first-letter": { textTransform: "uppercase" },
-                        }}
-                      >
-                        {roleName}
-                      </Text>
-                    )}
-                  </div>
-                </Form>
+                  {((!isOwnerUser && !isAdminUser) ||
+                    email === profile?._json.email ||
+                    roleName === RoleName.Owner) && (
+                    <Text
+                      sx={{
+                        fontSize: "inherit",
+                        textTransform: "lowercase",
+                        "&:first-letter": { textTransform: "uppercase" },
+                      }}
+                    >
+                      {roleName}
+                    </Text>
+                  )}
+                </div>
               ),
               value: "Role",
             },
@@ -336,7 +343,6 @@ function TeamView({ state, endpoint }: TeamViewProps) {
       <Modal
         opened={confirmationModalProps.isActive}
         padding={20}
-        size={429}
         title="Deleting an user"
         onClose={() =>
           setConfirmationModalProps({ ...confirmationModalProps, isActive: false })
@@ -397,6 +403,35 @@ function TeamView({ state, endpoint }: TeamViewProps) {
                 </Button>
               </div>
             )}
+          </div>
+        </Form>
+      </Modal>
+
+      <Modal
+        opened={isUpdateRoleModalOpened}
+        size={429}
+        title="Change User Role"
+        onClose={() => setIsUpdateRoleModalOpened(false)}
+      >
+        <Form className="change-role-modal-form" method="post">
+          <div className="change-role-modal-content">
+            <Text>Are you sure you want to change {updateRoleModalData.email} role?</Text>
+            <div className="change-role-modal-options">
+              <Button
+                id="cancel"
+                mr="1em"
+                variant="outline"
+                onClick={() => setIsUpdateRoleModalOpened(false)}
+              >
+                Cancel
+              </Button>
+              <Button name="type" type="submit" value="update role" variant="filled">
+                Change
+              </Button>
+            </div>
+
+            <input name="email" type="hidden" value={updateRoleModalData.email} />
+            <input name="roleName" type="hidden" value={updateRoleModalData.roleName} />
           </div>
         </Form>
       </Modal>

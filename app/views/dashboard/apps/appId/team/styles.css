@@ -48,3 +48,10 @@
 .confirmation-modal-options #cancel {
   border: 1px solid #fafafa;
 }
+
+.change-role-modal-options {
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 80px;
+}

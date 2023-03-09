@@ -101,6 +101,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
   const [updateRoleModalData, setUpdateRoleModalData] = useState({
     email: "",
     roleName: "",
+    transferOwnership: false,
   })
 
   const transition = useTransition()
@@ -115,10 +116,15 @@ function TeamView({ state, endpoint }: TeamViewProps) {
     ({ email, roleName }) => email === profile._json.email && roleName === "OWNER",
   )
 
-  const handleUpdateRoleSubmit = (email: string, roleName: RoleName) => {
+  const handleUpdateRoleSubmit = (
+    email: string,
+    roleName: RoleName,
+    transferOwnership: boolean = false,
+  ) => {
     setUpdateRoleModalData({
       email,
       roleName,
+      transferOwnership,
     })
     setIsUpdateRoleModalOpened(true)
   }
@@ -172,6 +178,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
         setUpdateRoleModalData({
           email: "",
           roleName: "",
+          transferOwnership: false,
         })
       }
     }
@@ -247,6 +254,10 @@ function TeamView({ state, endpoint }: TeamViewProps) {
                       contentClassName="dropdown-teams__content"
                       label={<DropdownTrigger label={roleName} />}
                     >
+                      <DropdownItem
+                        action={() => handleUpdateRoleSubmit(email, roleName, true)}
+                        label="Transfer Ownership"
+                      />
                       <DropdownItem
                         action={() => handleUpdateRoleSubmit(email, roleName)}
                         label={roleName === RoleName.Admin ? "MEMBER" : "ADMIN"}
@@ -432,6 +443,11 @@ function TeamView({ state, endpoint }: TeamViewProps) {
 
             <input name="email" type="hidden" value={updateRoleModalData.email} />
             <input name="roleName" type="hidden" value={updateRoleModalData.roleName} />
+            <input
+              name="transferOwnership"
+              type="hidden"
+              value={String(updateRoleModalData.transferOwnership)}
+            />
           </div>
         </Form>
       </Modal>

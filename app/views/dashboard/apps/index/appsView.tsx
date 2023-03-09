@@ -1,4 +1,3 @@
-import { inherits } from "util"
 import { Tabs } from "@mantine/core"
 import {
   IconCaretRight,
@@ -272,7 +271,9 @@ export const AppsView = ({
                             }
                           >
                             {userDataByEndpoint[idx]?.accepted ? (
-                              <DropdownItem action={() => {}} label="View App" />
+                              <Link to={team.id.toString()}>
+                                <DropdownItem action={() => {}} label="View App" />
+                              </Link>
                             ) : (
                               <DropdownItem action={() => {}} label="Accept Invite" />
                             )}

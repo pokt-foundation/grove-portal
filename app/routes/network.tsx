@@ -3,7 +3,7 @@ import { useLoaderData, useTransition } from "@remix-run/react"
 import { useEffect } from "react"
 import { Block } from "~/models/indexer/sdk"
 import { initPoktScanClient } from "~/models/poktscan/poktscan.server"
-import { GetHighestBlockQuery } from "~/models/poktscan/sdk"
+import { GetChainsTotalsQuery, GetHighestBlockQuery } from "~/models/poktscan/sdk"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { Blockchain } from "~/models/portal/sdk"
 import {
@@ -41,6 +41,7 @@ export type NetworkLoaderData = {
   weeklyNetworkRelays: RelayMetric
   monthlyNetworkRelays: RelayMetric
   poktscanLatestBlock: GetHighestBlockQuery | null
+  poktscanChains: GetChainsTotalsQuery | null
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -54,6 +55,22 @@ export const loader: LoaderFunction = async ({ request }) => {
     (await poktscan.getHighestBlock().catch((e) => {
       console.log(e)
     })) ?? null
+  const poktscanChains =
+    (await poktscan
+      .getChainsTotals({
+        from: dayjs()
+          .utc()
+          .hour(0)
+          .minute(0)
+          .second(0)
+          .millisecond(0)
+          .subtract(30, "day")
+          .format(),
+        to: dayjs().utc().hour(0).minute(0).second(0).millisecond(0).format(),
+      })
+      .catch((e) => {
+        console.log(e)
+      })) ?? null
 
   const dailyNetworkRelaysPerWeek = await getRelaysPerWeek("network")
   // api auto adjusts to/from to begining and end of each day so putting the same time here gives us back one full day
@@ -91,6 +108,7 @@ export const loader: LoaderFunction = async ({ request }) => {
       weeklyNetworkRelays,
       monthlyNetworkRelays,
       poktscanLatestBlock,
+      poktscanChains,
     },
     {
       headers: {
@@ -111,6 +129,7 @@ export default function Index() {
     weeklyNetworkRelays,
     // latestBlock,
     poktscanLatestBlock,
+    poktscanChains,
   } = useLoaderData() as NetworkLoaderData
   const { state } = useTransition()
 
@@ -125,6 +144,7 @@ export default function Index() {
       dailyNetworkRelaysPerWeek={dailyNetworkRelaysPerWeek}
       monthlyNetworkRelays={monthlyNetworkRelays}
       poktscanLatestBlock={poktscanLatestBlock}
+      poktscanChains={poktscanChains}
       state={state}
       weeklyNetworkRelays={weeklyNetworkRelays}
     />

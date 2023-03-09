@@ -5,7 +5,13 @@ import {
   IconMoreVertical,
   Grid,
 } from "@pokt-foundation/pocket-blocks"
-import { Form, useActionData, useLoaderData, useTransition } from "@remix-run/react"
+import {
+  Form,
+  useActionData,
+  useFetcher,
+  useLoaderData,
+  useTransition,
+} from "@remix-run/react"
 import { Transition } from "@remix-run/react/transition"
 import clsx from "clsx"
 import { useEffect, useState } from "react"
@@ -102,6 +108,20 @@ function TeamView({ state, endpoint }: TeamViewProps) {
   const transition = useTransition()
   const actionData = useActionData<ActionData>()
   const { profile } = useLoaderData<TeamLoaderData>()
+  const inviteFetcher = useFetcher()
+
+  const handleResendInviteEmail = (email: string, app: string) => {
+    inviteFetcher.submit(
+      {
+        "email-address": email,
+        "app-name": app,
+        type: "resend",
+      },
+      {
+        method: "post",
+      },
+    )
+  }
 
   const isAdminUser = endpoint?.users?.some(
     ({ email, roleName }) =>
@@ -174,6 +194,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
             />
             <input
               readOnly
+              hidden
               name="app-name"
               style={{ display: "none" }}
               value={endpoint.name}
@@ -237,7 +258,10 @@ function TeamView({ state, endpoint }: TeamViewProps) {
                       label={<IconMoreVertical fill="#A9E34B" />}
                     >
                       {!accepted && isAdminUser ? (
-                        <DropdownItem action={() => {}} label="Send new Invite" />
+                        <DropdownItem
+                          action={() => handleResendInviteEmail(email, endpoint.name)}
+                          label="Send new Invite"
+                        />
                       ) : null}
                       {isAdminUser || email === profile?._json.email ? (
                         <DropdownItem
@@ -307,9 +331,18 @@ function TeamView({ state, endpoint }: TeamViewProps) {
               {confirmationModalDescription}
             </Text>
             <input
-              name="email"
+              name="email-address"
+              readOnly
+              hidden
               style={{ display: "none" }}
               value={confirmationModalEmail}
+            />
+            <input
+              hidden
+              readOnly
+              name="app-name"
+              style={{ display: "none" }}
+              value={endpoint.name}
             />
             {confirmationModalProps.type === "options" ? (
               <div className="confirmation-modal-options">

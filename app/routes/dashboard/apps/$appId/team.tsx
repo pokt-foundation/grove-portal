@@ -6,7 +6,11 @@ import { AppIdLoaderData } from "../$appId"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { RoleName } from "~/models/portal/sdk"
-import { sendEmail } from "~/utils/mail.server"
+import {
+  sendEmail,
+  sendTeamInviteEmail,
+  sendTeamUserRemovedEmail,
+} from "~/utils/mail.server"
 import { requireUser } from "~/utils/session.server"
 import TeamView, {
   links as TeamViewLinks,
@@ -31,7 +35,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export type ActionData = {
   email: string
-  type: "delete" | "invite"
+  type: "delete" | "invite" | "resend"
   error: boolean
 }
 
@@ -43,15 +47,18 @@ export const action: ActionFunction = async ({ request, params }) => {
   const type = uiFormData.get("type")
 
   if (type === "delete") {
-    const email = uiFormData.get("email")
+    const email = uiFormData.get("email-address")
+    const appName = uiFormData.get("app-name")
 
     invariant(appId, "app id not found")
     invariant(email && typeof email === "string", "user email not found")
 
     try {
+      await sendTeamUserRemovedEmail(email, String(appName ?? "a Portal App"))
+
       await portal.deleteEndpointUser({
         endpointID: appId,
-        email: email !== null ? email.toString() : "",
+        email: email,
       })
 
       return json<ActionData>({ email, type, error: false })
@@ -81,16 +88,27 @@ export const action: ActionFunction = async ({ request, params }) => {
       }
 
       // trigger invite email
-      await sendEmail(
-        email,
-        "Your invite to POKT Portal",
-        "pocket-dashboard-team-invite",
-        {
-          app: appName?.toString() || "an App",
-          invite_link: "https://www.portal.pokt.network/dashboard/apps",
-        },
-      )
+      await sendTeamInviteEmail(email, String(appName ?? "a Portal App"))
 
+      return json<ActionData>({
+        email,
+        error: false,
+        type,
+      })
+    } catch (error) {
+      return json<ActionData>({
+        email,
+        error: true,
+        type,
+      })
+    }
+  } else if (type === "resend") {
+    const email = uiFormData.get("email-address")
+    const appName = uiFormData.get("app-name")
+    invariant(email && typeof email === "string", "user email not found")
+
+    try {
+      await sendTeamInviteEmail(email, String(appName ?? "An App"))
       return json<ActionData>({
         email,
         error: false,

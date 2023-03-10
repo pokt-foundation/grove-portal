@@ -66,6 +66,7 @@ export const endpoints: EndpointsQuery = {
   admin: [endpoint],
   member: [endpoint],
   owner: [endpoint],
+  pending: [endpoint],
   __typename: "Query",
 }
 

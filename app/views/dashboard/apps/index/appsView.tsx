@@ -65,7 +65,9 @@ export const AppsView = ({
 }: AppsViewProps) => {
   const uEmail = profile.emails[0].value
   const [showErrorModal, setShowErrorModal] = useState(false)
-  const notOwnerEndpoints = endpoints ? endpoints.admin.concat(endpoints.member) : []
+  const notOwnerEndpoints = endpoints
+    ? [...endpoints.admin, ...endpoints.member, ...endpoints.pending]
+    : []
   const userDataByEndpoint = notOwnerEndpoints.map((endpoint) =>
     endpoint?.users.find((u) => u.email === uEmail),
   )
@@ -266,7 +268,11 @@ export const AppsView = ({
                     },
                     inviteStatus: {
                       value: userDataByEndpoint[idx]?.accepted ? "Accepted" : "Pending",
-                      element: <StatusTag accepted={userDataByEndpoint[idx]?.accepted} />,
+                      element: (
+                        <StatusTag
+                          accepted={Boolean(userDataByEndpoint[idx]?.accepted)}
+                        />
+                      ),
                     },
                     role: {
                       value: userDataByEndpoint[idx]?.roleName ?? "",

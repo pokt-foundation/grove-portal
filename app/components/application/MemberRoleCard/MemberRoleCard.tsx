@@ -1,5 +1,6 @@
+import { Group, Text } from "@pokt-foundation/pocket-blocks"
+import { RoleName } from "~/models/portal/sdk"
 import Card from "../../shared/Card"
-import Text from "../../shared/Text"
 import styles from "./styles.css"
 
 /* c8 ignore next */
@@ -8,16 +9,16 @@ export const links = () => {
 }
 
 type MemberRoleProps = {
-  role: "Owner" | "Admin" | "Member"
+  role: RoleName
 }
 
 const MemberRole = ({ role }: MemberRoleProps) => {
   return (
     <Card>
-      <div className="member-role">
+      <Group position="apart">
         <Text>Role</Text>
         <Text>{role}</Text>
-      </div>
+      </Group>
     </Card>
   )
 }

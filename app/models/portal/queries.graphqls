@@ -18,7 +18,7 @@ query endpoints {
       accepted
     }
   }
-  admin: endpoints(filter: ADMIN, pending: true) {
+  admin: endpoints(filter: ADMIN) {
     appLimits {
       dailyLimit
       planType
@@ -37,7 +37,26 @@ query endpoints {
       accepted
     }
   }
-  member: endpoints(filter: MEMBER, pending: true) {
+  member: endpoints(filter: MEMBER) {
+    appLimits {
+      dailyLimit
+      planType
+      publicKey
+    }
+    createdAt
+    gigastake
+    id
+    name
+    status
+    updatedAt
+    userId
+    users {
+      roleName
+      email
+      accepted
+    }
+  }
+  pending: endpoints(pending: true) {
     appLimits {
       dailyLimit
       planType

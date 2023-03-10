@@ -6,7 +6,13 @@ import {
   Box,
   Text,
 } from "@pokt-foundation/pocket-blocks"
-import { Form, useActionData, useLoaderData, useTransition } from "@remix-run/react"
+import {
+  Form,
+  useActionData,
+  useFetcher,
+  useLoaderData,
+  useTransition,
+} from "@remix-run/react"
 import { Transition } from "@remix-run/react/transition"
 import clsx from "clsx"
 import { useEffect, useState } from "react"
@@ -107,6 +113,20 @@ function TeamView({ state, endpoint }: TeamViewProps) {
   const transition = useTransition()
   const actionData = useActionData<ActionData>()
   const { profile } = useLoaderData<TeamLoaderData>()
+  const inviteFetcher = useFetcher()
+
+  const handleResendInviteEmail = (email: string, app: string) => {
+    inviteFetcher.submit(
+      {
+        "email-address": email,
+        "app-name": app,
+        type: "resend",
+      },
+      {
+        method: "post",
+      },
+    )
+  }
 
   const isAdminUser = endpoint?.users?.some(
     ({ email, roleName }) => email === profile._json.email && roleName === "ADMIN",
@@ -127,6 +147,15 @@ function TeamView({ state, endpoint }: TeamViewProps) {
       transferOwnership,
     })
     setIsUpdateRoleModalOpened(true)
+  }
+
+  const handleLeaveRemoveUser = (email: string) => {
+    setConfirmationModalProps({ type: "options", isActive: true })
+    setConfirmationModalTitle("Do you want to remove this user from this app team?")
+    setConfirmationModalDescription(
+      "That user will completely lose access to the current application.",
+    )
+    setConfirmationModalEmail(email)
   }
 
   useEffect(() => {
@@ -171,8 +200,9 @@ function TeamView({ state, endpoint }: TeamViewProps) {
           description: `We have sent an invitation to ${actionData.email}. You can review the invite status below.`,
         })
 
+        setInviteNewUserOpen(false)
         setInviteEmail("")
-      } else if (actionData.type === "update role") {
+      } else if (actionData.type === "updateRole") {
         if (actionData.error) {
           return
         }
@@ -216,6 +246,13 @@ function TeamView({ state, endpoint }: TeamViewProps) {
               type="email"
               value={inviteEmail}
               onChange={(e) => setInviteEmail(e.target.value)}
+            />
+            <input
+              hidden
+              readOnly
+              name="app-name"
+              style={{ display: "none" }}
+              value={endpoint.name}
             />
             <AppRadioCards
               currentRadio={radioSelectedValue}
@@ -311,20 +348,14 @@ function TeamView({ state, endpoint }: TeamViewProps) {
                       label={<IconMoreVertical fill="var(--color-primary-main)" />}
                     >
                       {!accepted && (isAdminUser || isOwnerUser) ? (
-                        <DropdownItem action={() => {}} label="Send new Invite" />
+                        <DropdownItem
+                          action={() => handleResendInviteEmail(email, endpoint.name)}
+                          label="Send new Invite"
+                        />
                       ) : null}
                       {isAdminUser || isOwnerUser || email === profile?._json.email ? (
                         <DropdownItem
-                          action={() => {
-                            setConfirmationModalProps({ type: "options", isActive: true })
-                            setConfirmationModalTitle(
-                              "Do you want to remove this user from this app team?",
-                            )
-                            setConfirmationModalDescription(
-                              "That user will completely lose access to the current application.",
-                            )
-                            setConfirmationModalEmail(email)
-                          }}
+                          action={() => handleLeaveRemoveUser(email)}
                           label={email === profile?._json.email ? "Leave team" : "Remove"}
                           variant="green"
                         />
@@ -381,9 +412,18 @@ function TeamView({ state, endpoint }: TeamViewProps) {
               {confirmationModalDescription}
             </Text>
             <input
-              name="email"
+              hidden
+              readOnly
+              name="email-address"
               style={{ display: "none" }}
               value={confirmationModalEmail}
+            />
+            <input
+              hidden
+              readOnly
+              name="app-name"
+              style={{ display: "none" }}
+              value={endpoint.name}
             />
             {confirmationModalProps.type === "options" ? (
               <div className="confirmation-modal-options">
@@ -439,13 +479,14 @@ function TeamView({ state, endpoint }: TeamViewProps) {
               >
                 Cancel
               </Button>
-              <Button name="type" type="submit" value="update role" variant="filled">
+              <Button name="type" type="submit" value="updateRole" variant="filled">
                 Change
               </Button>
             </div>
 
             <input name="email" type="hidden" value={updateRoleModalData.email} />
             <input name="roleName" type="hidden" value={updateRoleModalData.roleName} />
+            <input hidden value={endpoint.name} />
             <input
               name="transferOwnership"
               type="hidden"

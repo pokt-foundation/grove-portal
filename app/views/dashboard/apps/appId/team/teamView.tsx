@@ -193,8 +193,8 @@ function TeamView({ state, endpoint }: TeamViewProps) {
               onChange={(e) => setInviteEmail(e.target.value)}
             />
             <input
-              readOnly
               hidden
+              readOnly
               name="app-name"
               style={{ display: "none" }}
               value={endpoint.name}
@@ -331,9 +331,9 @@ function TeamView({ state, endpoint }: TeamViewProps) {
               {confirmationModalDescription}
             </Text>
             <input
-              name="email-address"
-              readOnly
               hidden
+              readOnly
+              name="email-address"
               style={{ display: "none" }}
               value={confirmationModalEmail}
             />

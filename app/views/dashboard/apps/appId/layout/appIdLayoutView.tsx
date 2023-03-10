@@ -1,6 +1,7 @@
 import { IconCaretLeft, Grid, Button } from "@pokt-foundation/pocket-blocks"
 import { Outlet, useFetcher } from "@remix-run/react"
 import { useEffect, useState } from "react"
+import { Auth0Profile } from "remix-auth-auth0"
 import styles from "./styles.css"
 import AppAddressCard, {
   links as AppAddressCardLinks,
@@ -17,6 +18,9 @@ import FeedbackCard, {
 import LegacyBannerCard, {
   links as LegacyBannerCardLinks,
 } from "~/components/application/LegacyBannerCard"
+import MemberRoleCard, {
+  links as MemberRoleCardLinks,
+} from "~/components/application/MemberRoleCard"
 import StopRemoveApp, {
   links as StopRemoveAppLinks,
 } from "~/components/application/StopRemoveApp"
@@ -29,10 +33,6 @@ import { Stripe } from "~/models/stripe/stripe.server"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 import { getPlanName } from "~/utils/utils"
-import MemberRoleCard, {
-  links as MemberRoleCardLinks,
-} from "~/components/application/MemberRoleCard"
-import { Auth0Profile } from "remix-auth-auth0"
 
 /* c8 ignore start */
 export const links = () => {
@@ -54,7 +54,7 @@ export const links = () => {
 type AppIdLayoutViewProps = {
   endpoint: EndpointQuery["endpoint"] | null
   searchParams: URLSearchParams
-  setSearchParams: (typeof URLSearchParams)["arguments"]
+  setSearchParams: typeof URLSearchParams["arguments"]
   subscription: Stripe.Subscription | undefined
   updatePlanFetcher: ReturnType<typeof useFetcher>
   user: Auth0Profile

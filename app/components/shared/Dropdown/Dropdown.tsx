@@ -57,9 +57,16 @@ type DropdownItemProps = {
   variant?: "default" | "green"
   action: () => void
   disabled?: boolean
+  type?: "submit" | "reset" | "button"
 }
 
-function DropdownItem({ label, action, variant, disabled = false }: DropdownItemProps) {
+function DropdownItem({
+  label,
+  action,
+  variant,
+  disabled = false,
+  type,
+}: DropdownItemProps) {
   return (
     <button
       className={clsx({
@@ -67,6 +74,7 @@ function DropdownItem({ label, action, variant, disabled = false }: DropdownItem
         "dropdown-item--green": variant === "green",
       })}
       disabled={disabled}
+      type={type}
       onClick={action}
     >
       {label}

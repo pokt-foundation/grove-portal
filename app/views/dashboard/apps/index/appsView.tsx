@@ -218,7 +218,7 @@ export const AppsView = ({
                           {app.users.map(
                             (user) =>
                               user.email === profile?._json?.email &&
-                              user.accepted && (
+                              user?.accepted && (
                                 <Box key={app.id} sx={{ textAlign: "right" }}>
                                   <Link to={app.id}>
                                     <IconCaretRight className="pokt-icon" />
@@ -266,10 +266,10 @@ export const AppsView = ({
                     },
                     inviteStatus: {
                       value: userDataByEndpoint[idx]?.accepted ? "Accepted" : "Pending",
-                      element: <StatusTag accepted={userDataByEndpoint[idx]!.accepted} />,
+                      element: <StatusTag accepted={userDataByEndpoint[idx]?.accepted} />,
                     },
                     role: {
-                      value: userDataByEndpoint[idx]!.roleName,
+                      value: userDataByEndpoint[idx]?.roleName ?? "",
                       element: (
                         <Text
                           sx={{
@@ -278,7 +278,7 @@ export const AppsView = ({
                             "&:first-letter": { textTransform: "uppercase" },
                           }}
                         >
-                          {userDataByEndpoint[idx]!.roleName}
+                          {userDataByEndpoint[idx]?.roleName ?? ""}
                         </Text>
                       ),
                     },
@@ -303,7 +303,19 @@ export const AppsView = ({
                                 <DropdownItem action={() => {}} label="View App" />
                               </Link>
                             ) : (
-                              <DropdownItem action={() => {}} label="Accept Invite" />
+                              <Form
+                                className="apps-dropdown-accept-invite-form"
+                                method="post"
+                              >
+                                <DropdownItem
+                                  action={() => {}}
+                                  label="Accept Invite"
+                                  type="submit"
+                                />
+                                <input name="type" type="hidden" value="accept" />
+                                <input name="email" type="hidden" value={uEmail} />
+                                <input name="appId" type="hidden" value={team.id} />
+                              </Form>
                             )}
                             <DropdownItem
                               action={() => {

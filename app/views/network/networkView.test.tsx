@@ -18,8 +18,8 @@ describe("<NetworkView />", () => {
         dailyNetworkRelays={today}
         dailyNetworkRelaysPerWeek={relayMetricPerWeek}
         monthlyNetworkRelays={month}
-        poktscanLatestBlock={latestBlock}
         poktscanChains={chainTotals}
+        poktscanLatestBlock={latestBlock}
         state={"idle"}
         weeklyNetworkRelays={week}
       />,
@@ -46,8 +46,8 @@ describe("<NetworkView />", () => {
         dailyNetworkRelays={today}
         dailyNetworkRelaysPerWeek={relayMetricPerWeek}
         monthlyNetworkRelays={month}
-        poktscanLatestBlock={latestBlock}
         poktscanChains={chainTotals}
+        poktscanLatestBlock={latestBlock}
         state={"idle"}
         weeklyNetworkRelays={week}
       />,
@@ -64,8 +64,8 @@ describe("<NetworkView />", () => {
         dailyNetworkRelays={today}
         dailyNetworkRelaysPerWeek={relayMetricPerWeek}
         monthlyNetworkRelays={month}
-        poktscanLatestBlock={null}
         poktscanChains={null}
+        poktscanLatestBlock={null}
         state={"idle"}
         weeklyNetworkRelays={week}
       />,

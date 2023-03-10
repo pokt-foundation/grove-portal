@@ -29,7 +29,7 @@ export type AppsLoaderData = {
 
 export type AppsActionData = {
   email: string
-  type: "accept" | "decline"
+  type: "accept" | "decline" | "leaveApp"
   error: boolean
 }
 
@@ -81,7 +81,7 @@ export const action: ActionFunction = async ({ request }) => {
       console.log(e)
       return json<AppsActionData>({ email, type, error: true })
     }
-  } else if (type === "decline") {
+  } else if (type === "decline" || type === "leaveApp") {
     const email = formData.get("email")
 
     invariant(appId, "app id not found")

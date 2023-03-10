@@ -1,10 +1,11 @@
-import { Tabs } from "@mantine/core"
+import { Grid, Tabs } from "@mantine/core"
 import {
   IconCaretRight,
   Title,
   Text,
   IconMoreVertical,
   Box,
+  Button,
 } from "@pokt-foundation/pocket-blocks"
 import { Form, Link, useActionData } from "@remix-run/react"
 import { useEffect, useState } from "react"
@@ -18,6 +19,7 @@ import Dropdown, {
   DropdownItem,
   links as DropdownLinks,
 } from "~/components/shared/Dropdown"
+import ErrorIcon from "~/components/shared/Icons/ErrorIcon"
 import Modal, { links as ModalLinks } from "~/components/shared/Modal"
 import NotificationMessage, {
   links as NotificationMessageLinks,
@@ -76,7 +78,13 @@ export const AppsView = ({
       isActive: false,
     })
   const [optionsEndpointId, setOptionsEndpointId] = useState<string>("")
-
+  const [isDeleteModalOptions, setIsDeleteModalOptions] = useState({
+    title: "Do you want to leave this app?",
+    description: "You will completely lose access to the current application.",
+    error: false,
+    isOpen: false,
+  })
+  const [appTodeleteID, setAppToDeleteID] = useState("")
   const actionData = useActionData()
 
   useEffect(() => {
@@ -125,20 +133,40 @@ export const AppsView = ({
   }, [endpoints, profile])
 
   useEffect(() => {
-    if (actionData && actionData.error) {
-      setNotificationMessageProps({
-        type: "error",
-        title: "There was an error accepting your invite",
-        description: "",
-        isActive: true,
-      })
-    } else if (actionData && !actionData.error) {
-      setNotificationMessageProps({
-        type: "success",
-        title: "You accepted the invite.",
-        description: "",
-        isActive: true,
-      })
+    if (actionData) {
+      if (actionData.error) {
+        if (actionData.type === "leaveApp") {
+          setIsDeleteModalOptions((prevOptions) => ({
+            ...prevOptions,
+            isOpen: true,
+            description: "Please, try again",
+            title: "Error leaving app",
+          }))
+          return
+        }
+        setNotificationMessageProps({
+          type: "error",
+          title: "There was an error accepting your invite",
+          description: "",
+          isActive: true,
+        })
+      } else if (!actionData.error) {
+        if (actionData.type === "leaveApp") {
+          setIsDeleteModalOptions((prevOptions) => ({
+            ...prevOptions,
+            isOpen: false,
+            title: "Do you want to leave this app?",
+            description: "You will completely lose access to the current application.",
+          }))
+          return
+        }
+        setNotificationMessageProps({
+          type: "success",
+          title: "You accepted the invite.",
+          description: "",
+          isActive: true,
+        })
+      }
     }
   }, [actionData])
 
@@ -278,8 +306,14 @@ export const AppsView = ({
                               <DropdownItem action={() => {}} label="Accept Invite" />
                             )}
                             <DropdownItem
-                              action={() => {}}
-                              label="Leave App"
+                              action={() => {
+                                setAppToDeleteID(team.id)
+                                setIsDeleteModalOptions((prevOptions) => ({
+                                  ...prevOptions,
+                                  isOpen: true,
+                                }))
+                              }}
+                              label="Leave Team"
                               variant="green"
                             />
                           </Dropdown>
@@ -315,6 +349,59 @@ export const AppsView = ({
         <div>
           <p>Sorry, you do not have access to this appplication.</p>
         </div>
+      </Modal>
+
+      <Modal
+        opened={isDeleteModalOptions.isOpen}
+        padding={20}
+        title="Deleting an user"
+        onClose={() => {
+          setAppToDeleteID("")
+          setIsDeleteModalOptions((prevOptions) => ({ ...prevOptions, isOpen: false }))
+        }}
+      >
+        <Form method="post">
+          <div>
+            {isDeleteModalOptions.error && (
+              <Grid mb="1.6em">
+                <ErrorIcon />
+              </Grid>
+            )}
+            <Text mb="1.6em" weight={700}>
+              {isDeleteModalOptions.title}
+            </Text>
+            <Text className="confirmation-modal-description" mb="1.6em" weight={400}>
+              {isDeleteModalOptions.description}
+            </Text>
+            <input name="email" type="hidden" value={uEmail} />
+            <input name="appId" type="hidden" value={appTodeleteID} />
+
+            <div className="confirmation-modal-options">
+              <Button
+                id="cancel"
+                mr="1em"
+                variant="outline"
+                onClick={() =>
+                  setIsDeleteModalOptions((prevOptions) => ({
+                    ...prevOptions,
+                    isOpen: false,
+                  }))
+                }
+              >
+                Cancel
+              </Button>
+              <Button
+                color="red"
+                name="type"
+                type="submit"
+                value="leaveApp"
+                variant="filled"
+              >
+                {isDeleteModalOptions.error ? "Try again" : "Leave"}
+              </Button>
+            </div>
+          </div>
+        </Form>
       </Modal>
     </div>
   )

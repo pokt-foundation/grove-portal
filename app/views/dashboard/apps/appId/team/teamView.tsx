@@ -142,7 +142,10 @@ function TeamView({ state, endpoint }: TeamViewProps) {
           setConfirmationModalProps({ type: "error", isActive: true })
           return
         }
-        setConfirmationModalProps({ ...confirmationModalProps, isActive: false })
+        setConfirmationModalProps((prevConfirmationModalProps) => ({
+          ...prevConfirmationModalProps,
+          isActive: false,
+        }))
 
         setNotificationMessageProps({
           type: "success",
@@ -182,7 +185,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
         })
       }
     }
-  }, [actionData, confirmationModalProps])
+  }, [actionData])
 
   return (
     <>
@@ -355,9 +358,9 @@ function TeamView({ state, endpoint }: TeamViewProps) {
         opened={confirmationModalProps.isActive}
         padding={20}
         title="Deleting an user"
-        onClose={() =>
+        onClose={() => {
           setConfirmationModalProps({ ...confirmationModalProps, isActive: false })
-        }
+        }}
       >
         <Form method="post">
           <div

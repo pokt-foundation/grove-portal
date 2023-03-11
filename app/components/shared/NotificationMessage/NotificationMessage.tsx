@@ -79,7 +79,7 @@ const NotificationMessage = ({
         <div className="notification-message-content">
           <div className="content-options">
             <InfoIcon />
-            <Text id="title">{title}</Text>
+            <Text>{title}</Text>
           </div>
           <div className="content-options">
             <Button id="accept" name="type" type="submit" value="accept" variant="filled">

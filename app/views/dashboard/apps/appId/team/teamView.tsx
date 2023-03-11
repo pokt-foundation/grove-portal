@@ -126,7 +126,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
 
   const userRole = useMemo(() => {
     return (
-      endpoint?.users?.find(({ email }) => email === profile._json.email)?.roleName ??
+      endpoint?.users?.find(({ email }) => email === profile?._json?.email)?.roleName ??
       RoleName.Member
     )
   }, [endpoint])
@@ -134,7 +134,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
   const isAdminUser = useMemo(
     () =>
       endpoint?.users?.some(
-        ({ email, roleName }) => email === profile._json.email && roleName === "ADMIN",
+        ({ email, roleName }) => email === profile?._json?.email && roleName === "ADMIN",
       ),
     [endpoint],
   )
@@ -142,7 +142,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
   const isOwnerUser = useMemo(
     () =>
       endpoint?.users?.some(
-        ({ email, roleName }) => email === profile._json.email && roleName === "OWNER",
+        ({ email, roleName }) => email === profile?._json?.email && roleName === "OWNER",
       ),
     [endpoint],
   )
@@ -179,7 +179,6 @@ function TeamView({ state, endpoint }: TeamViewProps) {
     return array.map((role) => ({
       value: role,
       label: role,
-      disabled: role === RoleName.Owner && !isOwnerUser,
     }))
   }, [isOwnerUser])
 
@@ -328,10 +327,8 @@ function TeamView({ state, endpoint }: TeamViewProps) {
                     {isOwnerUser || (isAdminUser && roleName !== RoleName.Owner) ? (
                       <Select
                         data={getRolesSelectData}
-                        onChange={(e) =>
-                          handleUpdateRoleSubmit(email, e.currentTarget.value)
-                        }
                         defaultValue={roleName}
+                        onChange={(value) => handleUpdateRoleSubmit(email, value)}
                       />
                     ) : (
                       <Text
@@ -378,7 +375,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
                                 setConfirmationModalEmail(email)
                               }}
                             >
-                              {email === profile?._json.email ? "Leave team" : "Remove"}
+                              {email === profile?._json?.email ? "Leave team" : "Remove"}
                             </Menu.Item>
                           </Menu.Dropdown>
                         </Menu>

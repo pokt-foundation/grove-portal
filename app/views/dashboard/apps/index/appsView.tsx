@@ -63,7 +63,7 @@ export const AppsView = ({
   userId,
   profile,
 }: AppsViewProps) => {
-  const uEmail = profile.emails[0].value
+  const uEmail = profile?._json?.email
   const [showErrorModal, setShowErrorModal] = useState(false)
   const notOwnerEndpoints = endpoints
     ? [...endpoints.admin, ...endpoints.member, ...endpoints.pending]
@@ -192,7 +192,7 @@ export const AppsView = ({
                 readOnly
                 name="email"
                 style={{ display: "none" }}
-                value={profile._json.email}
+                value={profile?._json?.email}
               />
             </Form>
           </div>
@@ -203,9 +203,9 @@ export const AppsView = ({
           <Tabs color="green" defaultValue="applications">
             <Tabs.List>
               <Tabs.Tab value="applications">My Applications</Tabs.Tab>
-              {notOwnerEndpoints && notOwnerEndpoints.length > 0 && userDataByEndpoint.length > 0 && (
-                <Tabs.Tab value="teams">Teams</Tabs.Tab>
-              )}
+              {notOwnerEndpoints &&
+                notOwnerEndpoints.length > 0 &&
+                userDataByEndpoint.length > 0 && <Tabs.Tab value="teams">Teams</Tabs.Tab>}
             </Tabs.List>
 
             <Tabs.Panel value="applications">
@@ -271,64 +271,70 @@ export const AppsView = ({
               )}
             </Tabs.Panel>
 
-            {notOwnerEndpoints && notOwnerEndpoints.length > 0 && userDataByEndpoint.length > 0 && (
-              <Tabs.Panel value="teams">
-                <Table
-                  columns={["App", "Invite status", "Role", ""]}
-                  data={(notOwnerEndpoints as ProcessedEndpoint[]).map((team, idx) => ({
-                    id: team.id,
-                    app: {
-                      value: team.name,
-                      element: <Link to={team.id.toString()}>{team.name}</Link>,
-                    },
-                    inviteStatus: {
-                      value: userDataByEndpoint[idx]?.accepted ? "Accepted" : "Pending",
-                      element: (
-                        <Link to={team.id.toString()}>
-                          <Badge
-                            color={userDataByEndpoint[idx]?.accepted ? "green" : "orange"}
-                            variant="outline"
-                          >
-                            {userDataByEndpoint[idx]?.accepted ? "Accepted" : "Pending"}
-                          </Badge>
-                        </Link>
-                      ),
-                    },
-                    role: {
-                      value: userDataByEndpoint[idx]?.roleName ?? "",
-                      element: (
-                        <Link to={team.id.toString()}>
-                          <Text
-                            sx={{
-                              margin: "0",
-                              fontSize: "inherit",
-                              textTransform: "lowercase",
-                              "&:first-letter": { textTransform: "uppercase" },
-                            }}
-                          >
-                            {userDataByEndpoint[idx]?.roleName ?? ""}
-                          </Text>
-                        </Link>
-                      ),
-                    },
-                    action: {
-                      value: "More",
-                      element: (
-                        <Box sx={{ textAlign: "right" }}>
-                          <Menu>
-                            <Menu.Target>
-                              <Anchor>
-                                <IconMoreVertical />
-                              </Anchor>
-                            </Menu.Target>
-                            <Menu.Dropdown className="dropdown-teams__content">
-                              {userDataByEndpoint[idx]?.accepted ? (
-                                <Menu.Item><Link to={team.id.toString()}>View App</Link></Menu.Item>
-                              ) : (
+            {notOwnerEndpoints &&
+              notOwnerEndpoints.length > 0 &&
+              userDataByEndpoint.length > 0 && (
+                <Tabs.Panel value="teams">
+                  <Table
+                    columns={["App", "Invite status", "Role", ""]}
+                    data={(notOwnerEndpoints as ProcessedEndpoint[]).map((team, idx) => ({
+                      id: team.id,
+                      app: {
+                        value: team.name,
+                        element: <Link to={team.id.toString()}>{team.name}</Link>,
+                      },
+                      inviteStatus: {
+                        value: userDataByEndpoint[idx]?.accepted ? "Accepted" : "Pending",
+                        element: (
+                          <Link to={team.id.toString()}>
+                            <Badge
+                              color={
+                                userDataByEndpoint[idx]?.accepted ? "green" : "orange"
+                              }
+                              variant="outline"
+                            >
+                              {userDataByEndpoint[idx]?.accepted ? "Accepted" : "Pending"}
+                            </Badge>
+                          </Link>
+                        ),
+                      },
+                      role: {
+                        value: userDataByEndpoint[idx]?.roleName ?? "",
+                        element: (
+                          <Link to={team.id.toString()}>
+                            <Text
+                              sx={{
+                                margin: "0",
+                                fontSize: "inherit",
+                                textTransform: "lowercase",
+                                "&:first-letter": { textTransform: "uppercase" },
+                              }}
+                            >
+                              {userDataByEndpoint[idx]?.roleName ?? ""}
+                            </Text>
+                          </Link>
+                        ),
+                      },
+                      action: {
+                        value: "More",
+                        element: (
+                          <Box sx={{ textAlign: "right" }}>
+                            <Menu>
+                              <Menu.Target>
+                                <Anchor>
+                                  <IconMoreVertical />
+                                </Anchor>
+                              </Menu.Target>
+                              <Menu.Dropdown className="dropdown-teams__content">
+                                {userDataByEndpoint[idx]?.accepted ? (
+                                  <Menu.Item>
+                                    <Link to={team.id.toString()}>View App</Link>
+                                  </Menu.Item>
+                                ) : (
                                   <Menu.Item>
                                     <Form
-                                className="apps-dropdown-accept-invite-form"
-                                method="post"
+                                      className="apps-dropdown-accept-invite-form"
+                                      method="post"
                                     >
                                       <Button type="submit">Accept Invite</Button>
                                       <input name="type" type="hidden" value="accept" />
@@ -336,28 +342,33 @@ export const AppsView = ({
                                       <input name="appId" type="hidden" value={team.id} />
                                     </Form>
                                   </Menu.Item>
-                              )}
-                              <Menu.Item color="green" onClick={() => { 
-                                setAppToDeleteID(team.id)
-                                setIsDeleteModalOptions((prevOptions) => ({
-                                  ...prevOptions,
-                                  isOpen: true,
-                                }))
-                              }}>Leave App</Menu.Item>
-                            </Menu.Dropdown>
-                          </Menu>
-                        </Box>
-                      ),
-                    },
-                  }))}
-                  paginate={
-                    getRequiredClientEnvVar("GODMODE_ACCOUNTS")?.includes(userId)
-                      ? { perPage: 5 }
-                      : undefined
-                  }
-                />
-              </Tabs.Panel>
-            )}
+                                )}
+                                <Menu.Item
+                                  color="green"
+                                  onClick={() => {
+                                    setAppToDeleteID(team.id)
+                                    setIsDeleteModalOptions((prevOptions) => ({
+                                      ...prevOptions,
+                                      isOpen: true,
+                                    }))
+                                  }}
+                                >
+                                  Leave App
+                                </Menu.Item>
+                              </Menu.Dropdown>
+                            </Menu>
+                          </Box>
+                        ),
+                      },
+                    }))}
+                    paginate={
+                      getRequiredClientEnvVar("GODMODE_ACCOUNTS")?.includes(userId)
+                        ? { perPage: 5 }
+                        : undefined
+                    }
+                  />
+                </Tabs.Panel>
+              )}
           </Tabs>
         </Card>
       </section>

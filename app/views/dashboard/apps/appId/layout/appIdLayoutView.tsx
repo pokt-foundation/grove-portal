@@ -56,7 +56,7 @@ type AppIdLayoutViewProps = {
   searchParams: URLSearchParams
   setSearchParams: (typeof URLSearchParams)["arguments"]
   subscription: Stripe.Subscription | undefined
-  updatePlanFetcher: ReturnType<typeof useFetcher>
+  updatePlanFetcher: FetcherWithComponents<any>
   user: Auth0Profile
 }
 
@@ -188,7 +188,7 @@ export default function AppIdLayoutView({
     }
   }, [endpoint, subscription, updatePlanFetcher])
 
-  const role = endpoint?.users.find((u) => u.email === user?._json.email)?.roleName
+  const role = endpoint?.users.find((u) => u.email === user?._json?.email)?.roleName
   console.log(user)
 
   return (

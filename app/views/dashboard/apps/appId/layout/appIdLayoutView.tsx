@@ -1,6 +1,7 @@
 import { IconCaretLeft, Grid, Button } from "@pokt-foundation/pocket-blocks"
 import { FetcherWithComponents, Outlet, useFetcher } from "@remix-run/react"
 import { useEffect, useState } from "react"
+import { Auth0Profile } from "remix-auth-auth0"
 import styles from "./styles.css"
 import AppAddressCard, {
   links as AppAddressCardLinks,
@@ -17,6 +18,9 @@ import FeedbackCard, {
 import LegacyBannerCard, {
   links as LegacyBannerCardLinks,
 } from "~/components/application/LegacyBannerCard"
+import MemberRoleCard, {
+  links as MemberRoleCardLinks,
+} from "~/components/application/MemberRoleCard"
 import StopRemoveApp, {
   links as StopRemoveAppLinks,
 } from "~/components/application/StopRemoveApp"
@@ -41,6 +45,7 @@ export const links = () => {
     ...ModalLinks(),
     ...AppPlanDetailsLinks(),
     ...LegacyBannerCardLinks(),
+    ...MemberRoleCardLinks(),
     { rel: "stylesheet", href: styles },
   ]
 }
@@ -51,7 +56,8 @@ type AppIdLayoutViewProps = {
   searchParams: URLSearchParams
   setSearchParams: (typeof URLSearchParams)["arguments"]
   subscription: Stripe.Subscription | undefined
-  updatePlanFetcher: FetcherWithComponents<any>
+  updatePlanFetcher: ReturnType<typeof useFetcher>
+  user: Auth0Profile
 }
 
 export default function AppIdLayoutView({
@@ -60,6 +66,7 @@ export default function AppIdLayoutView({
   setSearchParams,
   subscription,
   updatePlanFetcher,
+  user,
 }: AppIdLayoutViewProps) {
   const { t } = useTranslate()
   const { flags } = useFeatureFlags()
@@ -181,6 +188,9 @@ export default function AppIdLayoutView({
     }
   }, [endpoint, subscription, updatePlanFetcher])
 
+  const role = endpoint?.users.find((u) => u.email === user?._json.email)?.roleName
+  console.log(user)
+
   return (
     <div className="pokt-appid-layout-view">
       <Grid gutter={32}>
@@ -217,6 +227,11 @@ export default function AppIdLayoutView({
                   subscription={subscription}
                 />
               </section>
+              {role && (
+                <section>
+                  <MemberRoleCard role={role} />
+                </section>
+              )}
               <section>
                 <AppKeysCard
                   id={endpoint.id}

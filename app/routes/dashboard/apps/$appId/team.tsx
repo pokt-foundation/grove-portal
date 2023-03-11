@@ -1,13 +1,18 @@
 import { ActionFunction, json, LoaderFunction } from "@remix-run/node"
-import { useCatch, useLoaderData, useTransition } from "@remix-run/react"
+import { useCatch, useTransition } from "@remix-run/react"
 import { Auth0Profile } from "remix-auth-auth0"
 import invariant from "tiny-invariant"
 import { AppIdLoaderData } from "../$appId"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { RoleName } from "~/models/portal/sdk"
+import {
+  sendEmail,
+  sendTeamInviteEmail,
+  sendTeamNewOwnerEmail,
+  sendTeamUserRemovedEmail,
+} from "~/utils/mail.server"
 import { requireUser } from "~/utils/session.server"
-
 import TeamView, {
   links as TeamViewLinks,
 } from "~/views/dashboard/apps/appId/team/teamView"
@@ -31,7 +36,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export type ActionData = {
   email: string
-  type: "delete" | "invite"
+  type: "delete" | "invite" | "updateRole" | "resend"
   error: boolean
 }
 
@@ -42,16 +47,21 @@ export const action: ActionFunction = async ({ request, params }) => {
   const formData = await request.formData()
   const type = formData.get("type")
 
+  invariant(appId, "app id not found")
+
   if (type === "delete") {
-    const email = formData.get("email")
+    const email = formData.get("email-address")
+    const appName = formData.get("app-name")
 
     invariant(appId, "app id not found")
     invariant(email && typeof email === "string", "user email not found")
 
     try {
+      await sendTeamUserRemovedEmail(email, String(appName ?? "a Portal App"))
+
       await portal.deleteEndpointUser({
         endpointID: appId,
-        email: email !== null ? email.toString() : "",
+        email: email,
       })
 
       return json<ActionData>({ email, type, error: false })
@@ -61,8 +71,8 @@ export const action: ActionFunction = async ({ request, params }) => {
   } else if (type === "invite") {
     const email = formData.get("email-address")
     const roleName = formData.get("app-subscription")
+    const appName = formData.get("app-name")
 
-    invariant(appId, "app id not found")
     invariant(roleName && typeof roleName === "string", "user role not found")
     invariant(email && typeof email === "string", "user email not found")
 
@@ -79,12 +89,73 @@ export const action: ActionFunction = async ({ request, params }) => {
         throw new Error("Error creating invite")
       }
 
+      // trigger invite email
+      await sendTeamInviteEmail(email, String(appName ?? "a Portal App"))
+
       return json<ActionData>({
         email,
         error: false,
         type,
       })
     } catch (error) {
+      return json<ActionData>({
+        email,
+        error: true,
+        type,
+      })
+    }
+  } else if (type === "resend") {
+    const email = formData.get("email-address")
+    const appName = formData.get("app-name")
+    invariant(email && typeof email === "string", "user email not found")
+
+    try {
+      await sendTeamInviteEmail(email, String(appName ?? "An App"))
+      return json<ActionData>({
+        email,
+        error: false,
+        type,
+      })
+    } catch (error) {
+      return json<ActionData>({
+        email,
+        error: true,
+        type,
+      })
+    }
+  } else if (type === "updateRole") {
+    const email = formData.get("email")
+    const roleName = formData.get("roleName")
+    const appName = formData.get("app-name")
+    const transferOwnership = formData.get("transferOwnership")
+
+    invariant(roleName && typeof roleName === "string", "user role not found")
+    invariant(email && typeof email === "string", "user email not found")
+
+    try {
+      const invertedRoleName = roleName === "MEMBER" ? RoleName.Admin : RoleName.Member
+      const role = transferOwnership === "true" ? RoleName.Owner : invertedRoleName
+
+      const { updateEndpointUserRole } = await portal.updateEndpointUserRole({
+        endpointID: appId,
+        input: {
+          email,
+          roleName: role,
+        },
+      })
+
+      await sendTeamNewOwnerEmail(email, String(appName ?? "a Portal App"))
+
+      if (!updateEndpointUserRole) {
+        throw new Error("Erorr updating user role")
+      }
+
+      return json<ActionData>({
+        email,
+        error: false,
+        type,
+      })
+    } catch (e) {
       return json<ActionData>({
         email,
         error: true,

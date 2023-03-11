@@ -51,3 +51,26 @@ mutation deleteEndpointUser($endpointID: ID!, $email: String!) {
     }
   }
 }
+
+mutation updateEndpointUserRole($endpointID: ID!, $input: UserAccessInput!) {
+  updateEndpointUserRole(endpointID: $endpointID, input: $input) {
+    id
+    userId
+    name
+    users {
+      roleName
+      email
+      accepted
+    }
+  }
+}
+
+mutation acceptEndpointUser($endpointID: ID!) {
+  acceptEndpointUser(endpointID: $endpointID) {
+    users {
+      roleName
+      email
+      accepted
+    }
+  }
+}

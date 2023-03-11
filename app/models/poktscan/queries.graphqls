@@ -14,3 +14,15 @@ query getHighestBlock {
     validatorThreshold
   }
 }
+query getChainsTotals($from: String!, $to: String!) {
+  getChainsTotals(from: $from, to: $to) {
+    chains {
+      chain
+      power
+      total_pokt
+      total_relays
+    }
+    total_pokt
+    total_relays
+  }
+}

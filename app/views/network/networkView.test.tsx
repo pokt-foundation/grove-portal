@@ -1,7 +1,7 @@
 import { expect } from "vitest"
 import NetworkView from "./networkView"
 import { render, screen } from "test/helpers"
-import { latestBlock } from "~/models/poktscan/poktscan.data"
+import { latestBlock, chainTotals } from "~/models/poktscan/poktscan.data"
 import { blockchains } from "~/models/portal/portal.data"
 import {
   relayMetricPerWeek,
@@ -18,6 +18,7 @@ describe("<NetworkView />", () => {
         dailyNetworkRelays={today}
         dailyNetworkRelaysPerWeek={relayMetricPerWeek}
         monthlyNetworkRelays={month}
+        poktscanChains={chainTotals}
         poktscanLatestBlock={latestBlock}
         state={"idle"}
         weeklyNetworkRelays={week}
@@ -43,6 +44,7 @@ describe("<NetworkView />", () => {
         dailyNetworkRelays={today}
         dailyNetworkRelaysPerWeek={relayMetricPerWeek}
         monthlyNetworkRelays={month}
+        poktscanChains={chainTotals}
         poktscanLatestBlock={latestBlock}
         state={"idle"}
         weeklyNetworkRelays={week}
@@ -60,6 +62,7 @@ describe("<NetworkView />", () => {
         dailyNetworkRelays={today}
         dailyNetworkRelaysPerWeek={relayMetricPerWeek}
         monthlyNetworkRelays={month}
+        poktscanChains={null}
         poktscanLatestBlock={null}
         state={"idle"}
         weeklyNetworkRelays={week}

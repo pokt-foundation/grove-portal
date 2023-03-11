@@ -36,12 +36,11 @@ export const getRelays = async (
   })
 
   if (!res || res.status !== 200) {
-    console.log(res)
     return {
       Count: {
-        Total: 0,
         Failure: 0,
         Success: 0,
+        Total: 0,
       },
       From: "",
       To: "",

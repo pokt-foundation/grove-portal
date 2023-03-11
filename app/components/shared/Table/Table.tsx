@@ -2,19 +2,18 @@ import {
   Group,
   Table as MantineTable,
   Pagination,
-  TextInput,
   Text,
   IconSearch,
   Box,
 } from "@pokt-foundation/pocket-blocks"
 import { useMemo, useState } from "react"
 import styles from "./styles.css"
-import Card, { links as CardLinks } from "~/components/shared/Card"
+import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { useTranslate } from "~/context/TranslateContext"
 
 /* c8 ignore start */
 export const links = () => {
-  return [...CardLinks(), { rel: "stylesheet", href: styles }]
+  return [...TextInputLinks(), { rel: "stylesheet", href: styles }]
 }
 /* c8 ignore stop */
 
@@ -127,11 +126,11 @@ export const Table = <T extends IdObj>({
             {label && <h3>{label}</h3>}
             {search && (
               <TextInput
-                aria-label={`${t.search.searchBy} Network, ID or Status`}
+                aria-label={`${t.search.searchBy} ${columns.join(", ")}`}
                 className="pokt-table-search"
                 icon={<IconSearch fill="white" height={12} width={12} />}
                 name="search"
-                placeholder={`${t.search.searchBy} Network, ID or Status`}
+                placeholder={`${t.search.searchBy} ${columns.join(", ")}`}
                 rightSectionWidth={85}
                 size="xs"
                 variant="default"

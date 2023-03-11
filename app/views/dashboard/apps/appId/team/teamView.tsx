@@ -7,13 +7,19 @@ import {
   Select,
   Anchor,
   Badge,
+  Text,
   Box,
 } from "@pokt-foundation/pocket-blocks"
-import { Form, useActionData, useLoaderData, useTransition } from "@remix-run/react"
+import {
+  Form,
+  useActionData,
+  useFetcher,
+  useLoaderData,
+  useTransition,
+} from "@remix-run/react"
 import { Transition } from "@remix-run/react/dist/transition"
 import clsx from "clsx"
-import { useEffect, useState } from "react"
-
+import { useEffect, useMemo, useState } from "react"
 import styles from "./styles.css"
 import AppRadioCards, {
   links as AppRadioCardsLinks,
@@ -27,7 +33,6 @@ import NotificationMessage, {
   NotificationMessageType,
 } from "~/components/shared/NotificationMessage"
 import Table, { links as TableLinks } from "~/components/shared/Table"
-import Text from "~/components/shared/Text"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { EndpointQuery, RoleName } from "~/models/portal/sdk"
 import { ActionData, TeamLoaderData } from "~/routes/dashboard/apps/$appId/team"
@@ -87,58 +92,154 @@ function TeamView({ state, endpoint }: TeamViewProps) {
   const [confirmationModalDescription, setConfirmationModalDescription] =
     useState<string>("")
   const [confirmationModalEmail, setConfirmationModalEmail] = useState<string>("")
-  const [notificationMessageTitle, setNotificationMessageTitle] = useState<string>("")
-  const [notificationMessageDescription, setNotificationMessageDescription] =
-    useState<string>("")
-  const [notificationMessageIsActive, setNotificationMessageIsActive] =
-    useState<NotificationMessageType["isActive"]>(false)
-  const [notificationMessageType, setNotificationMessageType] =
-    useState<NotificationMessageType["type"]>("success")
+  const [notificationMessageProps, setNotificationMessageProps] =
+    useState<NotificationMessageType>({
+      type: "info",
+      title: "",
+      description: "",
+      isActive: false,
+    })
+  const [isUpdateRoleModalOpened, setIsUpdateRoleModalOpened] = useState<boolean>(false)
+  const [updateRoleModalData, setUpdateRoleModalData] = useState({
+    email: "",
+    roleName: "",
+    transferOwnership: false,
+  })
 
   const transition = useTransition()
   const actionData = useActionData<ActionData>()
   const { profile } = useLoaderData<TeamLoaderData>()
+  const inviteFetcher = useFetcher()
 
-  const isAdminUser = endpoint?.users?.some(
-    ({ email, roleName }) =>
-      email === profile._json?.email && (roleName === "OWNER" || roleName === "ADMIN"),
+  const handleResendInviteEmail = (email: string, app: string) => {
+    inviteFetcher.submit(
+      {
+        "email-address": email,
+        "app-name": app,
+        type: "resend",
+      },
+      {
+        method: "post",
+      },
+    )
+  }
+
+  const userRole = useMemo(() => {
+    return (
+      endpoint?.users?.find(({ email }) => email === profile._json.email)?.roleName ??
+      RoleName.Member
+    )
+  }, [endpoint])
+
+  const isAdminUser = useMemo(
+    () =>
+      endpoint?.users?.some(
+        ({ email, roleName }) => email === profile._json.email && roleName === "ADMIN",
+      ),
+    [endpoint],
   )
+
+  const isOwnerUser = useMemo(
+    () =>
+      endpoint?.users?.some(
+        ({ email, roleName }) => email === profile._json.email && roleName === "OWNER",
+      ),
+    [endpoint],
+  )
+
+  const handleUpdateRoleSubmit = (
+    email: string,
+    roleName: RoleName,
+    transferOwnership: boolean = false,
+  ) => {
+    setUpdateRoleModalData({
+      email,
+      roleName,
+      transferOwnership,
+    })
+    setIsUpdateRoleModalOpened(true)
+  }
+
+  const handleLeaveRemoveUser = (email: string) => {
+    setConfirmationModalProps({ type: "options", isActive: true })
+    setConfirmationModalTitle("Do you want to remove this user from this app team?")
+    setConfirmationModalDescription(
+      "That user will completely lose access to the current application.",
+    )
+    setConfirmationModalEmail(email)
+  }
+
+  const getRolesSelectData = (userMenuEmail: string) => {
+    let array = []
+    if (isOwnerUser && profile._json.email !== userMenuEmail) {
+      array = Object.values(RoleName)
+    } else {
+      array = Object.values(RoleName).filter((r) => r !== RoleName.Owner)
+    }
+    return array.map((role) => ({
+      value: role,
+      label: role,
+    }))
+  }
 
   useEffect(() => {
     if (actionData) {
       if (actionData.type === "delete") {
-        if (actionData.error && confirmationModalProps.type !== "error") {
-          setConfirmationModalProps({ type: "error", isActive: true })
-          setConfirmationModalTitle("Error deleting the user")
-          setConfirmationModalDescription("Please, try again")
-        } else if (!actionData.error && notificationMessageTitle !== "User removed") {
-          setConfirmationModalProps({ ...confirmationModalProps, isActive: false })
-        }
-        setNotificationMessageIsActive(true)
-        setNotificationMessageType("success")
-        setNotificationMessageTitle("User removed")
-        setNotificationMessageDescription(
-          `We have sent a confirmation to ${actionData.email}.`,
-        )
-      } else if (actionData.type === "invite") {
         if (actionData.error) {
-          setNotificationMessageIsActive(true)
-          setNotificationMessageType("error")
-          setNotificationMessageTitle("Invite error")
-          setNotificationMessageDescription(
-            "We had some issues with the invite. Please try again later.",
-          )
+          setNotificationMessageProps({
+            type: "error",
+            title: "Error deleting the user",
+            description: "Please, try again",
+            isActive: true,
+          })
+          setConfirmationModalProps({ type: "error", isActive: true })
           return
         }
-        setNotificationMessageIsActive(true)
-        setNotificationMessageType("success")
-        setNotificationMessageTitle("Invite sent")
-        setNotificationMessageDescription(
-          `We have sent an invitation to ${actionData.email}. You can review the invite status below.`,
-        )
+        setConfirmationModalProps((prevConfirmationModalProps) => ({
+          ...prevConfirmationModalProps,
+          isActive: false,
+        }))
+
+        setNotificationMessageProps({
+          type: "success",
+          isActive: true,
+          title: "User removed",
+          description: `We have sent a confirmation to ${actionData.email}.`,
+        })
+      } else if (actionData.type === "invite") {
+        if (actionData.error) {
+          setNotificationMessageProps({
+            type: "error",
+            isActive: true,
+            title: "Invite error",
+            description: "We had some issues with the invite. Please try again later.",
+          })
+          return
+        }
+
+        setNotificationMessageProps({
+          type: "success",
+          isActive: true,
+          title: "Invite sent",
+          description: `We have sent an invitation to ${actionData.email}. You can review the invite status below.`,
+        })
+
+        setInviteNewUserOpen(false)
+        setInviteEmail("")
+      } else if (actionData.type === "updateRole") {
+        if (actionData.error) {
+          return
+        }
+
+        setIsUpdateRoleModalOpened(false)
+        setUpdateRoleModalData({
+          email: "",
+          roleName: "",
+          transferOwnership: false,
+        })
       }
     }
-  }, [actionData, confirmationModalProps, notificationMessageTitle])
+  }, [actionData])
 
   return (
     <>
@@ -147,16 +248,16 @@ function TeamView({ state, endpoint }: TeamViewProps) {
         <>
           <NotificationMessage
             notificationMessage={{
-              type: notificationMessageType,
-              isActive: notificationMessageIsActive,
-              title: notificationMessageTitle,
-              description: notificationMessageDescription,
+              type: notificationMessageProps.type,
+              isActive: notificationMessageProps.isActive,
+              title: notificationMessageProps.title,
+              description: notificationMessageProps.description,
             }}
-            setNotificationMessageIsActive={setNotificationMessageIsActive}
+            setNotificationMessage={setNotificationMessageProps}
           />
         </>
       )}
-      {isInviteNewUserOpen && isAdminUser ? (
+      {isInviteNewUserOpen && (isAdminUser || isOwnerUser) ? (
         <Card>
           <div className="pokt-card-header">
             <h3>Invite New User</h3>
@@ -169,6 +270,13 @@ function TeamView({ state, endpoint }: TeamViewProps) {
               type="email"
               value={inviteEmail}
               onChange={(e) => setInviteEmail(e.target.value)}
+            />
+            <input
+              hidden
+              readOnly
+              name="app-name"
+              style={{ display: "none" }}
+              value={endpoint.name}
             />
             <AppRadioCards
               currentRadio={radioSelectedValue}
@@ -216,12 +324,12 @@ function TeamView({ state, endpoint }: TeamViewProps) {
               role: {
                 element: (
                   <div className="list__role">
-                    {isAdminUser ? (
+                    {isOwnerUser || isAdminUser ? (
                       <Select
-                        data={Object.values(RoleName).map((role) => ({
-                          value: role,
-                          label: role,
-                        }))}
+                        data={getRolesSelectData(email)}
+                        onChange={(e) =>
+                          handleUpdateRoleSubmit(email, e.currentTarget.value)
+                        }
                         defaultValue={roleName}
                       />
                     ) : (
@@ -240,7 +348,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
               },
               action: {
                 element:
-                  isAdminUser || email === profile?._json?.email ? (
+                  isOwnerUser || isAdminUser || email === profile?._json?.email ? (
                     <Box sx={{ textAlign: "right" }}>
                       <Menu>
                         <Menu.Target>
@@ -249,30 +357,27 @@ function TeamView({ state, endpoint }: TeamViewProps) {
                           </Anchor>
                         </Menu.Target>
                         <Menu.Dropdown className="dropdown-teams__content">
-                          {!accepted && isAdminUser ? (
+                          {!accepted && (isOwnerUser || isAdminUser) && (
                             <Menu.Item>Send new Invite</Menu.Item>
-                          ) : null}
-                          {isAdminUser ||
-                            (email === profile?._json?.email && (
-                              <Menu.Item
-                                color="green"
-                                onClick={() => {
-                                  setConfirmationModalProps({
-                                    type: "options",
-                                    isActive: true,
-                                  })
-                                  setConfirmationModalTitle(
-                                    "Do you want to remove this user from this app team?",
-                                  )
-                                  setConfirmationModalDescription(
-                                    "That user will completely lose access to the current application.",
-                                  )
-                                  setConfirmationModalEmail(email)
-                                }}
-                              >
-                                {email === profile?._json.email ? "Leave team" : "Remove"}
-                              </Menu.Item>
-                            ))}
+                          )}
+                          <Menu.Item
+                            color="green"
+                            onClick={() => {
+                              setConfirmationModalProps({
+                                type: "options",
+                                isActive: true,
+                              })
+                              setConfirmationModalTitle(
+                                "Do you want to remove this user from this app team?",
+                              )
+                              setConfirmationModalDescription(
+                                "That user will completely lose access to the current application.",
+                              )
+                              setConfirmationModalEmail(email)
+                            }}
+                          >
+                            {email === profile?._json.email ? "Leave team" : "Remove"}
+                          </Menu.Item>
                         </Menu.Dropdown>
                       </Menu>
                     </Box>
@@ -286,7 +391,8 @@ function TeamView({ state, endpoint }: TeamViewProps) {
           label="Users"
           paginate={endpoint.users.length > 10 ? { perPage: 10 } : undefined}
           rightComponent={
-            isAdminUser ? (
+            isOwnerUser ||
+            (isAdminUser && (
               <Button
                 rightIcon={<IconPlus height={18} width={18} />}
                 size="xs"
@@ -295,18 +401,17 @@ function TeamView({ state, endpoint }: TeamViewProps) {
               >
                 Invite new user
               </Button>
-            ) : null
+            ))
           }
         />
       </Card>
       <Modal
         opened={confirmationModalProps.isActive}
         padding={20}
-        size={429}
         title="Deleting an user"
-        onClose={() =>
+        onClose={() => {
           setConfirmationModalProps({ ...confirmationModalProps, isActive: false })
-        }
+        }}
       >
         <Form method="post">
           <div
@@ -327,9 +432,18 @@ function TeamView({ state, endpoint }: TeamViewProps) {
               {confirmationModalDescription}
             </Text>
             <input
-              name="email"
+              hidden
+              readOnly
+              name="email-address"
               style={{ display: "none" }}
               value={confirmationModalEmail}
+            />
+            <input
+              hidden
+              readOnly
+              name="app-name"
+              style={{ display: "none" }}
+              value={endpoint.name}
             />
             {confirmationModalProps.type === "options" ? (
               <div className="confirmation-modal-options">
@@ -363,6 +477,41 @@ function TeamView({ state, endpoint }: TeamViewProps) {
                 </Button>
               </div>
             )}
+          </div>
+        </Form>
+      </Modal>
+
+      <Modal
+        opened={isUpdateRoleModalOpened}
+        size={429}
+        title="Change User Role"
+        onClose={() => setIsUpdateRoleModalOpened(false)}
+      >
+        <Form className="change-role-modal-form" method="post">
+          <div className="change-role-modal-content">
+            <Text>Are you sure you want to change {updateRoleModalData.email} role?</Text>
+            <div className="change-role-modal-options">
+              <Button
+                id="cancel"
+                mr="1em"
+                variant="outline"
+                onClick={() => setIsUpdateRoleModalOpened(false)}
+              >
+                Cancel
+              </Button>
+              <Button name="type" type="submit" value="updateRole" variant="filled">
+                Change
+              </Button>
+            </div>
+
+            <input name="email" type="hidden" value={updateRoleModalData.email} />
+            <input name="roleName" type="hidden" value={updateRoleModalData.roleName} />
+            <input hidden value={endpoint.name} />
+            <input
+              name="transferOwnership"
+              type="hidden"
+              value={String(updateRoleModalData.transferOwnership)}
+            />
           </div>
         </Form>
       </Modal>

@@ -12,6 +12,7 @@ import NetworkPoktScanLatestBlockCard, {
 } from "~/components/application/NetworkPoktScanLatestBlockCard"
 import NetworkRelayPerformanceCard, {
   links as NetworkRelayPerformanceCardLinks,
+  numbersFormatter,
 } from "~/components/application/NetworkRelayPerformanceCard"
 // import NetworkSuccessRateCard, {
 //   links as NetworkSuccessRateCardLinks,
@@ -52,6 +53,7 @@ export default function NetworkView({
   dailyNetworkRelaysPerWeek,
   monthlyNetworkRelays,
   poktscanLatestBlock,
+  poktscanChains,
   state,
   weeklyNetworkRelays,
 }: NetworkViewProps) {
@@ -94,7 +96,7 @@ export default function NetworkView({
                 <Table
                   paginate
                   search
-                  columns={["Network", "ID", "Status"]}
+                  columns={["Network", "ID", "Avg. Daily Relays"]}
                   data={blockchains.map((chain) => ({
                     id: chain.id,
                     network: {
@@ -102,7 +104,11 @@ export default function NetworkView({
                       element: <ChainWithImage chain={chain.description} />,
                     },
                     chainId: chain.id,
-                    status: getServiceLevelByChain(chain.id),
+                    traffic: numbersFormatter.format(
+                      poktscanChains?.getChainsTotals.chains?.find(
+                        (c) => c && c.chain === chain.id,
+                      )?.total_relays / 30,
+                    ),
                   }))}
                   label="Available Networks"
                 />

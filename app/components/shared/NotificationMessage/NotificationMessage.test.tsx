@@ -17,7 +17,7 @@ describe("<NotificationMessage />", () => {
     render(
       <NotificationMessage
         notificationMessage={mockedNotificationMessage}
-        setNotificationMessageIsActive={() => null}
+        setNotificationMessage={() => null}
       />,
     )
     expect(screen.getByText(mockedNotificationMessage.title)).toBeInTheDocument()
@@ -29,7 +29,7 @@ describe("<NotificationMessage />", () => {
     const { container } = render(
       <NotificationMessage
         notificationMessage={{ ...mockedNotificationMessage, isActive: false }}
-        setNotificationMessageIsActive={() => null}
+        setNotificationMessage={() => null}
       />,
     )
 

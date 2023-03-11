@@ -169,9 +169,9 @@ function TeamView({ state, endpoint }: TeamViewProps) {
     setConfirmationModalEmail(email)
   }
 
-  const getRolesSelectData = (userMenuEmail: string) => {
+  const getRolesSelectData = useMemo(() => {
     let array = []
-    if (isOwnerUser && profile._json.email !== userMenuEmail) {
+    if (isOwnerUser) {
       array = Object.values(RoleName)
     } else {
       array = Object.values(RoleName).filter((r) => r !== RoleName.Owner)
@@ -179,8 +179,9 @@ function TeamView({ state, endpoint }: TeamViewProps) {
     return array.map((role) => ({
       value: role,
       label: role,
+      disabled: role === RoleName.Owner && !isOwnerUser,
     }))
-  }
+  }, [isOwnerUser])
 
   useEffect(() => {
     if (actionData) {
@@ -324,9 +325,9 @@ function TeamView({ state, endpoint }: TeamViewProps) {
               role: {
                 element: (
                   <div className="list__role">
-                    {isOwnerUser || isAdminUser ? (
+                    {isOwnerUser || (isAdminUser && roleName !== RoleName.Owner) ? (
                       <Select
-                        data={getRolesSelectData(email)}
+                        data={getRolesSelectData}
                         onChange={(e) =>
                           handleUpdateRoleSubmit(email, e.currentTarget.value)
                         }
@@ -350,36 +351,38 @@ function TeamView({ state, endpoint }: TeamViewProps) {
                 element:
                   isOwnerUser || isAdminUser || email === profile?._json?.email ? (
                     <Box sx={{ textAlign: "right" }}>
-                      <Menu>
-                        <Menu.Target>
-                          <Anchor>
-                            <IconMoreVertical />
-                          </Anchor>
-                        </Menu.Target>
-                        <Menu.Dropdown className="dropdown-teams__content">
-                          {!accepted && (isOwnerUser || isAdminUser) && (
-                            <Menu.Item>Send new Invite</Menu.Item>
-                          )}
-                          <Menu.Item
-                            color="green"
-                            onClick={() => {
-                              setConfirmationModalProps({
-                                type: "options",
-                                isActive: true,
-                              })
-                              setConfirmationModalTitle(
-                                "Do you want to remove this user from this app team?",
-                              )
-                              setConfirmationModalDescription(
-                                "That user will completely lose access to the current application.",
-                              )
-                              setConfirmationModalEmail(email)
-                            }}
-                          >
-                            {email === profile?._json.email ? "Leave team" : "Remove"}
-                          </Menu.Item>
-                        </Menu.Dropdown>
-                      </Menu>
+                      {!isOwnerUser && roleName === RoleName.Owner ? null : (
+                        <Menu>
+                          <Menu.Target>
+                            <Anchor>
+                              <IconMoreVertical />
+                            </Anchor>
+                          </Menu.Target>
+                          <Menu.Dropdown className="dropdown-teams__content">
+                            {!accepted && (isOwnerUser || isAdminUser) && (
+                              <Menu.Item>Send new Invite</Menu.Item>
+                            )}
+                            <Menu.Item
+                              color="green"
+                              onClick={() => {
+                                setConfirmationModalProps({
+                                  type: "options",
+                                  isActive: true,
+                                })
+                                setConfirmationModalTitle(
+                                  "Do you want to remove this user from this app team?",
+                                )
+                                setConfirmationModalDescription(
+                                  "That user will completely lose access to the current application.",
+                                )
+                                setConfirmationModalEmail(email)
+                              }}
+                            >
+                              {email === profile?._json.email ? "Leave team" : "Remove"}
+                            </Menu.Item>
+                          </Menu.Dropdown>
+                        </Menu>
+                      )}
                     </Box>
                   ) : (
                     <></>

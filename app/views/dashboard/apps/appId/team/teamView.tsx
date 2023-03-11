@@ -328,7 +328,9 @@ function TeamView({ state, endpoint }: TeamViewProps) {
                       <Select
                         data={getRolesSelectData}
                         defaultValue={roleName}
-                        onChange={(value) => handleUpdateRoleSubmit(email, value)}
+                        onChange={(value) =>
+                          handleUpdateRoleSubmit(email, value as RoleName)
+                        }
                       />
                     ) : (
                       <Text

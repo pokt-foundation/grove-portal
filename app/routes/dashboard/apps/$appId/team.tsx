@@ -144,7 +144,9 @@ export const action: ActionFunction = async ({ request, params }) => {
         },
       })
 
-      await sendTeamNewOwnerEmail(email, String(appName ?? "a Portal App"))
+      if (transferOwnership) { 
+        await sendTeamNewOwnerEmail(email, String(appName ?? "a Portal App"))
+      }
 
       if (!updateEndpointUserRole) {
         throw new Error("Erorr updating user role")

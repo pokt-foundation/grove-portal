@@ -32,6 +32,7 @@ import { RelayMetric } from "~/models/relaymeter/relaymeter.server"
 import { dayjs } from "~/utils/dayjs"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 import { getPlanName } from "~/utils/utils"
+import { endpoint } from "~/models/portal/portal.data"
 
 /* c8 ignore start */
 export const links = () => {
@@ -101,38 +102,17 @@ export const AppsView = ({
   useEffect(() => {
     if (
       endpoints &&
-      endpoints !== null &&
-      (endpoints.admin.length > 0 || endpoints.member.length > 0)
+      endpoints.pending.length > 0
     ) {
-      const notAcceptedAdminEndpoints = endpoints?.admin.filter((endpoint) => {
-        const notAcceptedEndpoint = endpoint?.users?.find((user) => {
-          return user.email === profile?._json?.email && !user.accepted
-        })
-        return notAcceptedEndpoint || false
+      setNotificationMessageProps({
+        type: "options",
+        title: `You have been invited to ${endpoints.pending[0]?.name}`,
+        description: "Do you wish to accept?",
+        isActive: true,
       })
-
-      const notAcceptedMemberEndpoints = endpoints?.member.filter((endpoint) => {
-        const notAcceptedEndpoint = endpoint?.users?.find((user) => {
-          return user.email === profile?._json?.email && !user.accepted
-        })
-        return notAcceptedEndpoint || false
-      })
-
-      const notAcceptedEndpoints = notAcceptedAdminEndpoints?.concat(
-        notAcceptedMemberEndpoints ?? [],
-      )
-
-      if (notAcceptedEndpoints.length > 0) {
-        setNotificationMessageProps({
-          type: "options",
-          title: `You have been invited to ${notAcceptedEndpoints[0]?.name}`,
-          description: "Do you wish to accept?",
-          isActive: true,
-        })
-        setOptionsEndpointId(notAcceptedEndpoints[0]?.id || "")
-      }
+      setOptionsEndpointId(endpoints.pending[0]?.id || "")
     }
-  }, [endpoints, profile])
+  }, [endpoints])
 
   useEffect(() => {
     if (actionData) {

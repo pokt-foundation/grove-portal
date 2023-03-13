@@ -99,10 +99,7 @@ export const AppsView = ({
   }, [searchParams])
 
   useEffect(() => {
-    if (
-      endpoints &&
-      endpoints.pending.length > 0
-    ) {
+    if (endpoints && endpoints.pending.length > 0) {
       setNotificationMessageProps({
         type: "options",
         title: `You have been invited to ${endpoints.pending[0]?.name}`,

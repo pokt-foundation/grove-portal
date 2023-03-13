@@ -8,7 +8,7 @@ const publicKey = "789"
 
 describe("<AppKeysCard />", () => {
   it("renders application id", () => {
-    render(<AppKeysCard id={id} />)
+    render(<AppKeysCard id={id} isMember={false}/>)
 
     const label = /portal id/i
 
@@ -16,7 +16,7 @@ describe("<AppKeysCard />", () => {
     expect(screen.getByRole("textbox", { name: label })).toHaveValue(id)
   })
   it("renders nothing for secret key if not passed", () => {
-    render(<AppKeysCard id={id} />)
+    render(<AppKeysCard id={id} isMember={false}/>)
 
     const label = /secret key/i
 
@@ -24,7 +24,7 @@ describe("<AppKeysCard />", () => {
     expect(screen.queryByRole("textbox", { name: label })).not.toBeInTheDocument()
   })
   it("renders secret key", () => {
-    render(<AppKeysCard id={id} secret={secret} />)
+    render(<AppKeysCard id={id} isMember={false} secret={secret}/>)
 
     const label = /secret key/i
 
@@ -32,7 +32,7 @@ describe("<AppKeysCard />", () => {
     expect(screen.getByLabelText(label)).toHaveValue(secret)
   })
   it("renders nothing for public key if not passed", () => {
-    render(<AppKeysCard id={id} />)
+    render(<AppKeysCard id={id} isMember={false}/>)
 
     const label = /public key/i
 
@@ -40,7 +40,7 @@ describe("<AppKeysCard />", () => {
     expect(screen.queryByRole("textbox", { name: label })).not.toBeInTheDocument()
   })
   it("renders public key", () => {
-    render(<AppKeysCard id={id} publicKey={publicKey} />)
+    render(<AppKeysCard id={id} isMember={false} publicKey={publicKey}/>)
 
     const label = /public key/i
 
@@ -48,7 +48,7 @@ describe("<AppKeysCard />", () => {
     expect(screen.getByLabelText(label)).toHaveValue(publicKey)
   })
   it("displays inputs properly", () => {
-    render(<AppKeysCard id={id} publicKey={publicKey} secret={secret} />)
+    render(<AppKeysCard id={id} isMember={false} publicKey={publicKey} secret={secret}/>)
     const showText = /Click to show value/i
     const hideText = /Click to hide value/i
     const copyText = /Click to copy/i
@@ -57,7 +57,7 @@ describe("<AppKeysCard />", () => {
     expect(screen.getAllByLabelText(copyText)).toHaveLength(3)
   })
   it("shows and hides from revealIcon", async () => {
-    render(<AppKeysCard id={id} publicKey={publicKey} secret={secret} />)
+    render(<AppKeysCard id={id} isMember={false} publicKey={publicKey} secret={secret}/>)
     const user = userEvent.setup()
     const showText = /Click to show value/i
     const hideText = /Click to hide value/i

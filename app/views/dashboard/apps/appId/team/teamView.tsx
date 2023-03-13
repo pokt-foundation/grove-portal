@@ -235,7 +235,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
           />
         </>
       )}
-      {isInviteNewUserOpen && (!isMember) ? (
+      {isInviteNewUserOpen && !isMember ? (
         <Card>
           <div className="pokt-card-header">
             <h3>Invite New User</h3>

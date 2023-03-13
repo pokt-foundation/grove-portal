@@ -144,7 +144,7 @@ export const action: ActionFunction = async ({ request, params }) => {
         },
       })
 
-      if (transferOwnership) { 
+      if (transferOwnership) {
         await sendTeamNewOwnerEmail(email, String(appName ?? "a Portal App"))
       }
 

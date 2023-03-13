@@ -12,6 +12,7 @@ describe("<StopRemoveApp />", () => {
       <StopRemoveApp
         appId="123"
         apps={endpoint.apps}
+        isMember={false}
         name="Hello World"
         planType={PayPlanType.PayAsYouGoV0}
         subscription={subscription}
@@ -31,6 +32,7 @@ describe("<StopRemoveApp />", () => {
       <StopRemoveApp
         appId="123"
         apps={endpoint.apps}
+        isMember={false}
         name="Hello World"
         planType={PayPlanType.FreetierV0}
         subscription={subscription}

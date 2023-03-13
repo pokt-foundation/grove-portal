@@ -1,4 +1,4 @@
-import { ActionFunction, json, LoaderFunction } from "@remix-run/node"
+import { ActionFunction, json, LoaderFunction, redirect } from "@remix-run/node"
 import { useCatch, useTransition } from "@remix-run/react"
 import { Auth0Profile } from "remix-auth-auth0"
 import invariant from "tiny-invariant"
@@ -64,7 +64,7 @@ export const action: ActionFunction = async ({ request, params }) => {
         email: email,
       })
 
-      return json<ActionData>({ email, type, error: false })
+      return redirect("/dashboard/apps")
     } catch (e) {
       return json<ActionData>({ email, type, error: true })
     }

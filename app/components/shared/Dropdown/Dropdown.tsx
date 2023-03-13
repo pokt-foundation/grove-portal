@@ -12,16 +12,18 @@ export const links = () => {
 type DropdownProps = {
   label: string | React.ReactElement
   contentClassName: string
+  modal?: boolean
 } & DropdownMenu.DropdownMenuProps
 
 export const Dropdown: React.FC<DropdownProps> = ({
   label,
   contentClassName = "",
   children,
+  modal = false,
   ...props
 }) => {
   return (
-    <DropdownMenu.Root {...props}>
+    <DropdownMenu.Root modal={modal} {...props}>
       <DropdownMenu.Trigger className="pokt-dropdown-trigger">
         {label}
       </DropdownMenu.Trigger>
@@ -55,7 +57,7 @@ function DropdownTrigger({ label }: DropdownTriggerProps) {
 type DropdownItemProps = {
   label: string
   variant?: "default" | "green"
-  action: () => void
+  action?: () => void
   disabled?: boolean
   type?: "submit" | "reset" | "button"
 }
@@ -68,17 +70,19 @@ function DropdownItem({
   type,
 }: DropdownItemProps) {
   return (
-    <button
-      className={clsx({
-        "dropdown-item": true,
-        "dropdown-item--green": variant === "green",
-      })}
-      disabled={disabled}
-      type={type}
-      onClick={action}
-    >
-      {label}
-    </button>
+    <DropdownMenu.Item>
+      <button
+        className={clsx({
+          "dropdown-item": true,
+          "dropdown-item--green": variant === "green",
+        })}
+        disabled={disabled}
+        type={type}
+        onClick={action}
+      >
+        {label}
+      </button>
+    </DropdownMenu.Item>
   )
 }
 

@@ -2,6 +2,7 @@ import { Loader } from "@mantine/core"
 import { Button, Text, Switch } from "@pokt-foundation/pocket-blocks"
 import { useFetcher, useTransition } from "@remix-run/react"
 import React, { useState } from "react"
+import { Auth0Profile } from "remix-auth-auth0"
 import styles from "./styles.css"
 import AppEndpointUrl, {
   links as AppEndpointUrlLinks,
@@ -15,6 +16,7 @@ import { useTranslate } from "~/context/TranslateContext"
 import {
   BlockchainsQuery,
   Maybe,
+  RoleName,
   WhitelistContracts,
   WhitelistMethods,
 } from "~/models/portal/sdk"
@@ -38,12 +40,18 @@ type SecurityViewProps = {
   endpoint: EndpointQuery["endpoint"]
   appId: string | undefined
   blockchains: BlockchainsQuery["blockchains"]
+  user: Auth0Profile
 }
 
 type WhitelistContractType = Pick<WhitelistContracts, "blockchainID" | "contracts">
 type WhitelistMethodType = Pick<WhitelistMethods, "blockchainID" | "methods">
 
-export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps) => {
+export const SecurityView = ({
+  endpoint,
+  appId,
+  blockchains,
+  user,
+}: SecurityViewProps) => {
   const transition = useTransition()
 
   type FormatData = {
@@ -110,6 +118,9 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
   const [whitelistMethodsDropdown, setWhitelistMethodsDropdown] = useState<string>("")
   const [whitelistMethodsError, setWhitelistMethodsError] = useState<boolean>(false)
 
+  const role = endpoint?.users.find((u) => u.email === user?._json.email)?.roleName
+  const isMember = role === RoleName.Member
+
   const removeFromArray = (item: string, arr: string[]) => arr.filter((i) => i !== item)
   const addIfMissing = (item: string, arr: string[]) => {
     if (arr.indexOf(item) !== -1) {
@@ -137,6 +148,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             <Switch
               aria-label={t.security.secretSwitchAria}
               checked={secretKeyRequired}
+              disabled={isMember}
               id="secretRequired"
               name="secretKeyRequired"
               onChange={(event) => setSecretKeyRequired(event.currentTarget.checked)}
@@ -186,6 +198,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
           </div>
           <div className="flexGrowRow">
             <TextInput
+              disabled={isMember}
               id="userAgents"
               name="whitelistUserAgentsInput"
               placeholder={t.security.userAgentPlaceholder}
@@ -196,6 +209,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             />
             <Button
               aria-label={t.security.userAgentAria}
+              disabled={isMember}
               type="button"
               onClick={() => {
                 if (whitelistUserAgentsElement !== "") {
@@ -232,6 +246,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
           </div>
           <div className="flexGrowRow">
             <TextInput
+              disabled={isMember}
               id="userOrigins"
               placeholder={t.security.OriginPlaceholder}
               value={whitelistOriginsElement}
@@ -241,6 +256,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             />
             <Button
               aria-label={t.security.OriginAria}
+              disabled={isMember}
               type="button"
               onClick={() => {
                 if (whitelistOriginsElement !== "") {
@@ -290,6 +306,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             />
             <input
               className="grow userInputs"
+              disabled={isMember}
               name="whitelistContractsInput"
               value={whitelistContractsInput}
               onChange={(e) => {
@@ -298,6 +315,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             />
             <Button
               aria-label={t.security.contractAria}
+              disabled={isMember}
               type="button"
               onClick={() => {
                 if (whitelistContractsInput === "" || whitelistContractsDropdown === "") {
@@ -374,6 +392,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             />
             <input
               className="grow userInputs"
+              disabled={isMember}
               name="whitelistMethodsInput"
               value={whitelistMethodsInput}
               onChange={(e) => {
@@ -382,6 +401,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             />
             <Button
               aria-label={t.security.methodAria}
+              disabled={isMember}
               type="button"
               onClick={() => {
                 if (whitelistMethodsInput === "" || whitelistMethodsDropdown === "") {
@@ -437,6 +457,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
           </div>
         </Card>
         <Button
+          disabled={isMember}
           type="submit"
           variant="filled"
           onClick={() => {

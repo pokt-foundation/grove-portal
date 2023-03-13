@@ -32,7 +32,6 @@ import { RelayMetric } from "~/models/relaymeter/relaymeter.server"
 import { dayjs } from "~/utils/dayjs"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 import { getPlanName } from "~/utils/utils"
-import { endpoint } from "~/models/portal/portal.data"
 
 /* c8 ignore start */
 export const links = () => {

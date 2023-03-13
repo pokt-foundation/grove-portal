@@ -28,7 +28,7 @@ import Modal, { links as ModalLinks, ModalCTA } from "~/components/shared/Modal"
 import Nav, { links as NavLinks } from "~/components/shared/Nav"
 import { useFeatureFlags } from "~/context/FeatureFlagContext"
 import { useTranslate } from "~/context/TranslateContext"
-import { EndpointQuery, PayPlanType } from "~/models/portal/sdk"
+import { EndpointQuery, PayPlanType, RoleName } from "~/models/portal/sdk"
 import { Stripe } from "~/models/stripe/stripe.server"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { getRequiredClientEnvVar } from "~/utils/environment"
@@ -189,7 +189,7 @@ export default function AppIdLayoutView({
   }, [endpoint, subscription, updatePlanFetcher])
 
   const role = endpoint?.users.find((u) => u.email === user?._json.email)?.roleName
-  console.log(user)
+  const isMember = role === RoleName.Member
 
   return (
     <div className="pokt-appid-layout-view">
@@ -222,6 +222,7 @@ export default function AppIdLayoutView({
                 <AppPlanDetails
                   dailyLimit={endpoint.appLimits.dailyLimit}
                   id={endpoint.id}
+                  isMember={isMember}
                   name={endpoint.name}
                   planType={endpoint.appLimits.planType}
                   subscription={subscription}
@@ -235,6 +236,7 @@ export default function AppIdLayoutView({
               <section>
                 <AppKeysCard
                   id={endpoint.id}
+                  isMember={isMember}
                   publicKey={endpoint.apps ? endpoint.apps[0]?.publicKey : ""}
                   secret={endpoint.gatewaySettings.secretKey}
                 />
@@ -249,6 +251,7 @@ export default function AppIdLayoutView({
                 <StopRemoveApp
                   appId={endpoint.id}
                   apps={endpoint.apps}
+                  isMember={isMember}
                   name={endpoint.name}
                   planType={endpoint.appLimits.planType}
                   subscription={subscription}

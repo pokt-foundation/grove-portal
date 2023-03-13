@@ -136,6 +136,8 @@ function TeamView({ state, endpoint }: TeamViewProps) {
     ({ email, roleName }) => email === profile._json.email && roleName === "OWNER",
   )
 
+  const isMember = !isAdminUser && !isOwnerUser
+
   const handleUpdateRoleSubmit = (
     email: string,
     roleName: RoleName,
@@ -233,7 +235,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
           />
         </>
       )}
-      {isInviteNewUserOpen && (isAdminUser || isOwnerUser) ? (
+      {isInviteNewUserOpen && (!isMember) ? (
         <Card>
           <div className="pokt-card-header">
             <h3>Invite New User</h3>

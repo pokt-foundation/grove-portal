@@ -43,11 +43,7 @@ type SecurityViewProps = {
 type WhitelistContractType = Pick<WhitelistContracts, "blockchainID" | "contracts">
 type WhitelistMethodType = Pick<WhitelistMethods, "blockchainID" | "methods">
 
-export const SecurityView = ({
-  endpoint,
-  appId,
-  blockchains,
-}: SecurityViewProps) => {
+export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps) => {
   const transition = useTransition()
 
   type FormatData = {

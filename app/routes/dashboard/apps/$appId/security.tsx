@@ -29,11 +29,7 @@ export const AppSecurity = () => {
   const { endpoint, blockchains } = appIDRoute?.data as AppIdLoaderData
 
   return (
-    <SecurityView
-      appId={params.appId}
-      blockchains={blockchains}
-      endpoint={endpoint}
-    />
+    <SecurityView appId={params.appId} blockchains={blockchains} endpoint={endpoint} />
   )
 }
 

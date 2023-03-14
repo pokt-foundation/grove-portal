@@ -7,11 +7,7 @@ import { endpoint, blockchains } from "~/models/portal/portal.data"
 describe("<SecurityView />", () => {
   it("renders", () => {
     render(
-      <SecurityView
-        appId={"123123"}
-        blockchains={blockchains}
-        endpoint={endpoint}
-      />,
+      <SecurityView appId={"123123"} blockchains={blockchains} endpoint={endpoint} />,
     )
     expect(
       screen.getByRole("heading", {

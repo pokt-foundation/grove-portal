@@ -26,14 +26,13 @@ export const AppSecurity = () => {
     trackEvent(AmplitudeEvents.SecurityDetailsView)
   }, [])
 
-  const { endpoint, blockchains, user } = appIDRoute?.data as AppIdLoaderData
+  const { endpoint, blockchains } = appIDRoute?.data as AppIdLoaderData
 
   return (
     <SecurityView
       appId={params.appId}
       blockchains={blockchains}
       endpoint={endpoint}
-      user={user}
     />
   )
 }

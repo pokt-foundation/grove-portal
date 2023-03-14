@@ -7,7 +7,6 @@ import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { RoleName } from "~/models/portal/sdk"
 import {
-  sendEmail,
   sendTeamInviteEmail,
   sendTeamNewOwnerEmail,
   sendTeamUserRemovedEmail,

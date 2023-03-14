@@ -223,17 +223,20 @@ function TeamView({ state, endpoint }: TeamViewProps) {
     <>
       {state === "loading" && <Loader />}
       {actionData && (
-        <>
           <NotificationMessage
-            notificationMessage={{
-              type: notificationMessageProps.type,
-              isActive: notificationMessageProps.isActive,
-              title: notificationMessageProps.title,
-              description: notificationMessageProps.description,
-            }}
-            setNotificationMessage={setNotificationMessageProps}
-          />
-        </>
+            type={notificationMessageProps.type}
+            isActive={notificationMessageProps.isActive}
+            title={notificationMessageProps.title}
+            withCloseButton
+            onClose={() =>
+              setNotificationMessageProps({
+                ...notificationMessageProps,
+                isActive: false,
+              })
+            }
+        >
+          <Text size="sm" color="white">{notificationMessageProps.description}</Text>
+          </NotificationMessage>
       )}
       {isInviteNewUserOpen && !isMember ? (
         <Card>

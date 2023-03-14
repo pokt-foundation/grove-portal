@@ -16,9 +16,11 @@ describe("<NotificationMessage />", () => {
   it("renders with a notification title and description", () => {
     render(
       <NotificationMessage
-        notificationMessage={mockedNotificationMessage}
-        setNotificationMessage={() => null}
-      />,
+        title={mockedNotificationMessage.title}
+        type={mockedNotificationMessage.type}
+        isActive={mockedNotificationMessage.isActive}
+        onClose={() => null}
+      ><p>{mockedNotificationMessage.description}</p></NotificationMessage>,
     )
     expect(screen.getByText(mockedNotificationMessage.title)).toBeInTheDocument()
     expect(screen.getByText(mockedNotificationMessage.description)).toBeInTheDocument()
@@ -28,9 +30,11 @@ describe("<NotificationMessage />", () => {
 
     const { container } = render(
       <NotificationMessage
-        notificationMessage={{ ...mockedNotificationMessage, isActive: false }}
-        setNotificationMessage={() => null}
-      />,
+        title={mockedNotificationMessage.title}
+        type={mockedNotificationMessage.type}
+        isActive={false}
+        onClose={() => null}
+      ><p>{mockedNotificationMessage.description}</p></NotificationMessage>,
     )
 
     const style = document.createElement("style")

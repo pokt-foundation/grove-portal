@@ -31,7 +31,7 @@ import Loader, { links as LoaderLinks } from "~/components/shared/Loader"
 import Modal from "~/components/shared/Modal"
 import NotificationMessage, {
   links as NotificationMessageLinks,
-  NotificationMessageType,
+  NotificationType,
 } from "~/components/shared/NotificationMessage"
 import StatusTag, { links as StatusTagLinks } from "~/components/shared/StatusTag"
 import Table, { links as TableLinks } from "~/components/shared/Table"
@@ -97,7 +97,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
     useState<string>("")
   const [confirmationModalEmail, setConfirmationModalEmail] = useState<string>("")
   const [notificationMessageProps, setNotificationMessageProps] =
-    useState<NotificationMessageType>({
+    useState<NotificationType>({
       type: "info",
       title: "",
       description: "",

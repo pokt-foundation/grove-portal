@@ -28,7 +28,6 @@ import NotificationMessage, {
 } from "~/components/shared/NotificationMessage"
 import StatusTag, { links as StatusTagLinks } from "~/components/shared/StatusTag"
 import Table, { links as TableLinks } from "~/components/shared/Table"
-import { endpoint } from "~/models/portal/portal.data"
 import { EndpointsQuery, ProcessedEndpoint } from "~/models/portal/sdk"
 import { RelayMetric } from "~/models/relaymeter/relaymeter.server"
 import { dayjs } from "~/utils/dayjs"
@@ -76,7 +75,7 @@ export const AppsView = ({
     return notOwnerEndpoints.map((endpoint) =>
       endpoint?.users.find((u) => u.email === uEmail),
     )
-  }, [notOwnerEndpoints])
+  }, [notOwnerEndpoints, uEmail])
   const [pendingEndpoints, setPendingEndpoints] = useState<
     EndpointsQuery["pending"] | null
   >(null)

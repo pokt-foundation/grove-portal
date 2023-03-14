@@ -4,7 +4,6 @@ import { Form, useTransition } from "@remix-run/react"
 import styles from "./styles.css"
 import Card from "~/components/shared/Card"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
-import { RoleName } from "~/models/portal/sdk"
 import { AppIdLoaderData } from "~/routes/dashboard/apps/$appId"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { formatNumberToSICompact } from "~/utils/formattingUtils"
@@ -63,10 +62,8 @@ export default function NotificationsAlertForm() {
   const { state } = useTransition()
   const appIdRoute = useMatchesRoute("routes/dashboard/apps/$appId")
   const appIdData = appIdRoute?.data as AppIdLoaderData
-  const { endpoint, user } = appIdData
+  const { endpoint } = appIdData
   const { notificationSettings } = endpoint
-  const role = endpoint?.users.find((u) => u.email === user?._json.email)?.roleName
-  const isMember = role === RoleName.Member
 
   return (
     <Form method="put">
@@ -99,7 +96,6 @@ export default function NotificationsAlertForm() {
                         ? (notificationSettings[level] as boolean)
                         : DEFAULT_ALERT_PERCENTAGES[level]
                     }
-                    disabled={isMember}
                     name={level}
                   />
                 </div>
@@ -109,7 +105,7 @@ export default function NotificationsAlertForm() {
           <div className="pokt-network-notifications-alert-btn-container">
             <Button
               className="pokt-network-notifications-submit-btn"
-              disabled={state === "loading" || state === "submitting" || isMember}
+              disabled={state === "loading" || state === "submitting"}
               type="submit"
               onClick={() => {
                 trackEvent(AmplitudeEvents.NotificationSettingsChange)

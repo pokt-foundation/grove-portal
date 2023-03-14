@@ -302,7 +302,7 @@ export const AppsView = ({
                               >
                                 <DropdownItem
                                   action={() => handleAcceptInviteFormSubmit(idx)}
-                                  label="Accept Invite"
+                                  label="Accept invite"
                                   type="submit"
                                 />
                                 <input name="type" type="hidden" value="accept" />
@@ -318,7 +318,11 @@ export const AppsView = ({
                                   isOpen: true,
                                 }))
                               }}
-                              label="Leave Team"
+                              label={
+                                Boolean(userDataByEndpoint[idx]?.accepted)
+                                  ? "Leave team"
+                                  : "Decline invite"
+                              }
                               variant="green"
                             />
                           </Dropdown>

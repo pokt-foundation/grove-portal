@@ -394,6 +394,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
         onClose={() => {
           setConfirmationModalProps({ ...confirmationModalProps, isActive: false })
         }}
+        size={429}
       >
         <Form method="post">
           <div

@@ -246,7 +246,11 @@ export const AppsView = ({
                     id: team.id,
                     app: {
                       value: team.name,
-                      element: <Link to={team.id.toString()}>{team.name}</Link>,
+                      element: Boolean(userDataByEndpoint[idx]?.accepted) ? (
+                        <Link to={team.id.toString()}>{team.name}</Link>
+                      ) : (
+                        <Text style={{ fontSize: "1em" }}>{team.name}</Text>
+                      ),
                     },
                     inviteStatus: {
                       value: userDataByEndpoint[idx]?.accepted ? "Accepted" : "Pending",

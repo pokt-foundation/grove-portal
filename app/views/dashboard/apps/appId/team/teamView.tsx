@@ -390,11 +390,11 @@ function TeamView({ state, endpoint }: TeamViewProps) {
       <Modal
         opened={confirmationModalProps.isActive}
         padding={20}
+        size={429}
         title="Deleting an user"
         onClose={() => {
           setConfirmationModalProps({ ...confirmationModalProps, isActive: false })
         }}
-        size={429}
       >
         <Form method="post">
           <div

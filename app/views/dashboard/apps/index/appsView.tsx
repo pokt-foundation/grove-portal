@@ -246,7 +246,7 @@ export const AppsView = ({
                     id: team.id,
                     app: {
                       value: team.name,
-                      element: Boolean(userDataByEndpoint[idx]?.accepted) ? (
+                      element: userDataByEndpoint[idx]?.accepted ? (
                         <Link to={team.id.toString()}>{team.name}</Link>
                       ) : (
                         <Text style={{ fontSize: "1em" }}>{team.name}</Text>
@@ -319,7 +319,7 @@ export const AppsView = ({
                                 }))
                               }}
                               label={
-                                Boolean(userDataByEndpoint[idx]?.accepted)
+                                userDataByEndpoint[idx]?.accepted
                                   ? "Leave team"
                                   : "Decline invite"
                               }

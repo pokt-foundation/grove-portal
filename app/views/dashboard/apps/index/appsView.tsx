@@ -6,9 +6,10 @@ import {
   IconMoreVertical,
   Box,
   Button,
+  Group,
 } from "@pokt-foundation/pocket-blocks"
 import { Form, Link, useActionData, useSubmit } from "@remix-run/react"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { Auth0Profile } from "remix-auth-auth0"
 import styles from "./styles.css"
 import UsageChartCard, {
@@ -23,10 +24,11 @@ import ErrorIcon from "~/components/shared/Icons/ErrorIcon"
 import Modal, { links as ModalLinks } from "~/components/shared/Modal"
 import NotificationMessage, {
   links as NotificationMessageLinks,
-  NotificationMessageType,
+  NotificationType,
 } from "~/components/shared/NotificationMessage"
 import StatusTag, { links as StatusTagLinks } from "~/components/shared/StatusTag"
 import Table, { links as TableLinks } from "~/components/shared/Table"
+import { endpoint } from "~/models/portal/portal.data"
 import { EndpointsQuery, ProcessedEndpoint } from "~/models/portal/sdk"
 import { RelayMetric } from "~/models/relaymeter/relaymeter.server"
 import { dayjs } from "~/utils/dayjs"
@@ -65,15 +67,22 @@ export const AppsView = ({
 }: AppsViewProps) => {
   const uEmail = profile.emails[0].value
   const [showErrorModal, setShowErrorModal] = useState(false)
-  const notOwnerEndpoints = endpoints
-    ? [...endpoints.admin, ...endpoints.member, ...endpoints.pending]
-    : []
-  const userDataByEndpoint = notOwnerEndpoints.map((endpoint) =>
-    endpoint?.users.find((u) => u.email === uEmail),
-  )
+  const notOwnerEndpoints = useMemo(() => {
+    return endpoints
+      ? [...endpoints.admin, ...endpoints.member, ...endpoints.pending]
+      : []
+  }, [endpoints])
+  const userDataByEndpoint = useMemo(() => {
+    return notOwnerEndpoints.map((endpoint) =>
+      endpoint?.users.find((u) => u.email === uEmail),
+    )
+  }, [notOwnerEndpoints])
+  const [pendingEndpoints, setPendingEndpoints] = useState<
+    EndpointsQuery["pending"] | null
+  >(null)
 
   const [notificationMessageProps, setNotificationMessageProps] =
-    useState<NotificationMessageType>({
+    useState<NotificationType>({
       type: "info",
       title: "",
       description: "",
@@ -105,16 +114,38 @@ export const AppsView = ({
   }, [searchParams])
 
   useEffect(() => {
-    if (endpoints && endpoints.pending.length > 0) {
+    let hasPending = false
+    if (endpoints && endpoints.pending) {
+      endpoints.pending.forEach((endpoint) => {
+        endpoint?.users.forEach((user) => {
+          if (user.email === uEmail && user.accepted === false) {
+            hasPending = true
+          }
+        })
+      })
+      if (hasPending) {
+        setPendingEndpoints(endpoints.pending)
+      }
+    }
+  }, [endpoints])
+
+  useEffect(() => {
+    if (pendingEndpoints && pendingEndpoints.length > 0) {
       setNotificationMessageProps({
         type: "options",
-        title: `You have been invited to ${endpoints.pending[0]?.name}`,
+        title: `You have been invited to ${pendingEndpoints[0]?.name}`,
         description: "Do you wish to accept?",
         isActive: true,
       })
-      setOptionsEndpointId(endpoints.pending[0]?.id || "")
+      setOptionsEndpointId(pendingEndpoints[0]?.id || "")
     }
-  }, [endpoints])
+  }, [pendingEndpoints])
+
+  const handleLocallyAcceptInvite = (id: string) => {
+    setPendingEndpoints((endpoints) =>
+      endpoints ? endpoints.filter((e) => e && e.id !== id) : null,
+    )
+  }
 
   useEffect(() => {
     if (actionData) {
@@ -159,23 +190,55 @@ export const AppsView = ({
       {notificationMessageProps.isActive && (
         <section>
           <div style={{ width: "100%", marginBottom: "1em" }}>
-            <Form method="post" style={{ width: "100%" }}>
+            <Form
+              method="post"
+              style={{ width: "100%" }}
+              onSubmit={() => handleLocallyAcceptInvite(optionsEndpointId)}
+            >
               <NotificationMessage
-                notificationMessage={notificationMessageProps}
-                setNotificationMessage={setNotificationMessageProps}
-              />
-              <input
-                readOnly
-                name="appId"
-                style={{ display: "none" }}
-                value={optionsEndpointId}
-              />
-              <input
-                readOnly
-                name="email"
-                style={{ display: "none" }}
-                value={profile._json.email}
-              />
+                withCloseButton
+                isActive={notificationMessageProps.isActive}
+                title={notificationMessageProps.title}
+                type={notificationMessageProps.type}
+                onClose={() =>
+                  setNotificationMessageProps({
+                    ...notificationMessageProps,
+                    isActive: false,
+                  })
+                }
+              >
+                {notificationMessageProps.description && (
+                  <Text color="white" size="sm">
+                    {notificationMessageProps.description}
+                  </Text>
+                )}
+                {notificationMessageProps.type === "options" && (
+                  <Group mt={8}>
+                    <Button
+                      id="accept"
+                      name="type"
+                      size="xs"
+                      type="submit"
+                      value="accept"
+                      variant="filled"
+                    >
+                      Accept
+                    </Button>
+                    <Button
+                      id="decline"
+                      name="type"
+                      size="xs"
+                      type="submit"
+                      value="decline"
+                      variant="outline"
+                    >
+                      Decline
+                    </Button>
+                  </Group>
+                )}
+              </NotificationMessage>
+              <input hidden readOnly name="appId" value={optionsEndpointId} />
+              <input hidden readOnly name="email" value={profile._json.email} />
             </Form>
           </div>
         </section>

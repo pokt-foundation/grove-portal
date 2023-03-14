@@ -398,7 +398,16 @@ export const AppsView = ({
                       : undefined
                   }
                 />
-              ) : null}
+              ) : (
+                <Card>
+                  <div className="pokt-card-header">
+                    <Title order={3}>Teams</Title>
+                  </div>
+                  <Text>
+                    Seems like you've not been invited to be part of a team.
+                  </Text>
+                </Card>
+              )}
             </Tabs.Tab>
           </Tabs>
         </Card>

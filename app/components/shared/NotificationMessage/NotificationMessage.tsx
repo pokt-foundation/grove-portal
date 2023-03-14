@@ -15,8 +15,8 @@ export const links = () => {
 
 export interface NotificationType {
   type: NotificationMessageType
-  title: React.ReactNode
-  description: React.ReactNode
+  title: string
+  description: string
   isActive: boolean
 }
 
@@ -24,7 +24,7 @@ type NotificationMessageProps = AlertProps & {
   type: NotificationMessageType
   isActive: boolean
   children: React.ReactNode | React.ReactChildren
-} 
+}
 
 type NotificationMessageType = "success" | "info" | "warning" | "error" | "options"
 
@@ -49,8 +49,7 @@ const NotificationMessage = ({
   children,
   ...props
 }: NotificationMessageProps) => {
-
-  const color = useMemo(() => { 
+  const color = useMemo(() => {
     switch (type) {
       case "success":
         return "green"
@@ -74,13 +73,13 @@ const NotificationMessage = ({
     >
       <Alert
         className="pokt-alert"
-        icon={<NotificationMessageIcon type={type} />}
         color={color}
-        variant="outline"
+        icon={<NotificationMessageIcon type={type} />}
         sx={(theme) => ({
           width: "100%",
           borderRadius: "8px",
         })}
+        variant="outline"
         {...props}
       >
         {children}

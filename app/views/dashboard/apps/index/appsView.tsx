@@ -6,7 +6,7 @@ import {
   IconMoreVertical,
   Box,
   Button,
-  Group
+  Group,
 } from "@pokt-foundation/pocket-blocks"
 import { Form, Link, useActionData, useSubmit } from "@remix-run/react"
 import { useEffect, useMemo, useRef, useState } from "react"
@@ -67,16 +67,19 @@ export const AppsView = ({
 }: AppsViewProps) => {
   const uEmail = profile.emails[0].value
   const [showErrorModal, setShowErrorModal] = useState(false)
-  const notOwnerEndpoints = useMemo(() => { 
+  const notOwnerEndpoints = useMemo(() => {
     return endpoints
-    ? [...endpoints.admin, ...endpoints.member, ...endpoints.pending]
-    : []
+      ? [...endpoints.admin, ...endpoints.member, ...endpoints.pending]
+      : []
   }, [endpoints])
-  const userDataByEndpoint = useMemo(() => { 
+  const userDataByEndpoint = useMemo(() => {
     return notOwnerEndpoints.map((endpoint) =>
-    endpoint?.users.find((u) => u.email === uEmail))
+      endpoint?.users.find((u) => u.email === uEmail),
+    )
   }, [notOwnerEndpoints])
-  const [pendingEndpoints, setPendingEndpoints] = useState<EndpointsQuery["pending"] | null>(null)
+  const [pendingEndpoints, setPendingEndpoints] = useState<
+    EndpointsQuery["pending"] | null
+  >(null)
 
   const [notificationMessageProps, setNotificationMessageProps] =
     useState<NotificationType>({
@@ -110,17 +113,17 @@ export const AppsView = ({
     }
   }, [searchParams])
 
-  useEffect(() => { 
+  useEffect(() => {
     let hasPending = false
-    if (endpoints && endpoints.pending) { 
-      endpoints.pending.forEach(endpoint => { 
-        endpoint?.users.forEach(user => { 
-          if (user.email === uEmail && user.accepted === false) { 
+    if (endpoints && endpoints.pending) {
+      endpoints.pending.forEach((endpoint) => {
+        endpoint?.users.forEach((user) => {
+          if (user.email === uEmail && user.accepted === false) {
             hasPending = true
           }
         })
       })
-      if (hasPending) { 
+      if (hasPending) {
         setPendingEndpoints(endpoints.pending)
       }
     }
@@ -139,7 +142,9 @@ export const AppsView = ({
   }, [pendingEndpoints])
 
   const handleLocallyAcceptInvite = (id: string) => {
-    setPendingEndpoints(endpoints => endpoints ? endpoints.filter(e => e && e.id !== id) : null)
+    setPendingEndpoints((endpoints) =>
+      endpoints ? endpoints.filter((e) => e && e.id !== id) : null,
+    )
   }
 
   useEffect(() => {
@@ -185,12 +190,16 @@ export const AppsView = ({
       {notificationMessageProps.isActive && (
         <section>
           <div style={{ width: "100%", marginBottom: "1em" }}>
-            <Form method="post" style={{ width: "100%" }} onSubmit={() => handleLocallyAcceptInvite(optionsEndpointId)}>
+            <Form
+              method="post"
+              style={{ width: "100%" }}
+              onSubmit={() => handleLocallyAcceptInvite(optionsEndpointId)}
+            >
               <NotificationMessage
+                withCloseButton
+                isActive={notificationMessageProps.isActive}
                 title={notificationMessageProps.title}
                 type={notificationMessageProps.type}
-                isActive={notificationMessageProps.isActive}
-                withCloseButton
                 onClose={() =>
                   setNotificationMessageProps({
                     ...notificationMessageProps,
@@ -199,19 +208,28 @@ export const AppsView = ({
                 }
               >
                 {notificationMessageProps.description && (
-                  <Text size="sm" color="white">{notificationMessageProps.description}</Text>
+                  <Text color="white" size="sm">
+                    {notificationMessageProps.description}
+                  </Text>
                 )}
                 {notificationMessageProps.type === "options" && (
                   <Group mt={8}>
-                    <Button id="accept" name="type" type="submit" value="accept" size="xs" variant="filled">
+                    <Button
+                      id="accept"
+                      name="type"
+                      size="xs"
+                      type="submit"
+                      value="accept"
+                      variant="filled"
+                    >
                       Accept
                     </Button>
                     <Button
                       id="decline"
                       name="type"
+                      size="xs"
                       type="submit"
                       value="decline"
-                      size="xs"
                       variant="outline"
                     >
                       Decline
@@ -219,18 +237,8 @@ export const AppsView = ({
                   </Group>
                 )}
               </NotificationMessage>
-              <input
-                readOnly
-                name="appId"
-                hidden
-                value={optionsEndpointId}
-              />
-              <input
-                readOnly
-                name="email"
-                hidden
-                value={profile._json.email}
-              />
+              <input hidden readOnly name="appId" value={optionsEndpointId} />
+              <input hidden readOnly name="email" value={profile._json.email} />
             </Form>
           </div>
         </section>

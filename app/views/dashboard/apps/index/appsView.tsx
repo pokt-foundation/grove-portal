@@ -284,10 +284,11 @@ export const AppsView = ({
                 />
               ) : (
                 <Card>
-                  <div className="pokt-card-header">
-                    <Title order={3}>Applications</Title>
-                  </div>
-                  <Text>
+                  <Title align="center" order={5}>
+                    You have no applications at this time.
+                  </Title>
+
+                  <Text align="center" color="dimmed" size="sm">
                     Get started by{" "}
                     <Link className="empty-apps-link" to="/dashboard/create">
                       creating your first application
@@ -400,10 +401,13 @@ export const AppsView = ({
                 />
               ) : (
                 <Card>
-                  <div className="pokt-card-header">
-                    <Title order={3}>Teams</Title>
-                  </div>
-                  <Text>Seems like you've not been invited to be part of a team.</Text>
+                  <Title align="center" order={5}>
+                    You have no teams at this time.
+                  </Title>
+
+                  <Text align="center" color="dimmed" size="sm">
+                    When you join a team it will be displayed here.
+                  </Text>
                 </Card>
               )}
             </Tabs.Tab>

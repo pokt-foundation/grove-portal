@@ -63,7 +63,7 @@ export const action: ActionFunction = async ({ request, params }) => {
         email: email,
       })
 
-      const isLeaveApp = email === user.profile._json.email
+      const isLeaveApp = email === user.profile._json?.email
 
       return isLeaveApp
         ? redirect("/dashboard/apps")

@@ -237,7 +237,7 @@ export const AppsView = ({
                 )}
               </NotificationMessage>
               <input hidden readOnly name="appId" value={optionsEndpointId} />
-              <input hidden readOnly name="email" value={profile._json.email} />
+              <input hidden readOnly name="email" value={profile._json?.email} />
             </Form>
           </div>
         </section>

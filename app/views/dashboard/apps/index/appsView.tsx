@@ -9,7 +9,6 @@ import {
   Badge,
   Anchor,
   Box,
-  theme,
   Grid,
   Group,
 } from "@pokt-foundation/pocket-blocks"
@@ -27,7 +26,6 @@ import NotificationMessage, {
   links as NotificationMessageLinks,
   NotificationType,
 } from "~/components/shared/NotificationMessage"
-import StatusTag, { links as StatusTagLinks } from "~/components/shared/StatusTag"
 import Table, { links as TableLinks } from "~/components/shared/Table"
 import { EndpointsQuery, ProcessedEndpoint } from "~/models/portal/sdk"
 import { RelayMetric } from "~/models/relaymeter/relaymeter.server"
@@ -42,7 +40,6 @@ export const links = () => {
     ...TableLinks(),
     ...UsageCardLinks(),
     ...ModalLinks(),
-    ...StatusTagLinks(),
     ...NotificationMessageLinks(),
     { rel: "stylesheet", href: styles },
   ]
@@ -95,13 +92,7 @@ export const AppsView = ({
     isOpen: false,
   })
   const [appTodeleteID, setAppToDeleteID] = useState("")
-  const acceptInviteFormSubmit = useSubmit()
-  const acceptInviteFormRefs = useRef<Array<HTMLFormElement | null>>([])
   const actionData = useActionData()
-
-  const handleAcceptInviteFormSubmit = (idx: number) => {
-    acceptInviteFormSubmit(acceptInviteFormRefs.current[idx], { method: "post" })
-  }
 
   useEffect(() => {
     const error = searchParams.get("error")

@@ -30,7 +30,7 @@ import Loader, { links as LoaderLinks } from "~/components/shared/Loader"
 import Modal from "~/components/shared/Modal"
 import NotificationMessage, {
   links as NotificationMessageLinks,
-  NotificationMessageType,
+  NotificationType,
 } from "~/components/shared/NotificationMessage"
 import Table, { links as TableLinks } from "~/components/shared/Table"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
@@ -93,7 +93,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
     useState<string>("")
   const [confirmationModalEmail, setConfirmationModalEmail] = useState<string>("")
   const [notificationMessageProps, setNotificationMessageProps] =
-    useState<NotificationMessageType>({
+    useState<NotificationType>({
       type: "info",
       title: "",
       description: "",
@@ -146,6 +146,8 @@ function TeamView({ state, endpoint }: TeamViewProps) {
       ),
     [endpoint],
   )
+
+  const isMember = !isAdminUser && !isOwnerUser
 
   const handleUpdateRoleSubmit = (
     email: string,
@@ -245,19 +247,24 @@ function TeamView({ state, endpoint }: TeamViewProps) {
     <>
       {state === "loading" && <Loader />}
       {actionData && (
-        <>
-          <NotificationMessage
-            notificationMessage={{
-              type: notificationMessageProps.type,
-              isActive: notificationMessageProps.isActive,
-              title: notificationMessageProps.title,
-              description: notificationMessageProps.description,
-            }}
-            setNotificationMessage={setNotificationMessageProps}
-          />
-        </>
+        <NotificationMessage
+          withCloseButton
+          isActive={notificationMessageProps.isActive}
+          title={notificationMessageProps.title}
+          type={notificationMessageProps.type}
+          onClose={() =>
+            setNotificationMessageProps({
+              ...notificationMessageProps,
+              isActive: false,
+            })
+          }
+        >
+          <Text color="white" size="sm">
+            {notificationMessageProps.description}
+          </Text>
+        </NotificationMessage>
       )}
-      {isInviteNewUserOpen && (isAdminUser || isOwnerUser) ? (
+      {isInviteNewUserOpen && !isMember ? (
         <Card>
           <div className="pokt-card-header">
             <h3>Invite New User</h3>
@@ -410,6 +417,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
       <Modal
         opened={confirmationModalProps.isActive}
         padding={20}
+        size={429}
         title="Deleting an user"
         onClose={() => {
           setConfirmationModalProps({ ...confirmationModalProps, isActive: false })

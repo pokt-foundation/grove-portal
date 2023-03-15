@@ -1,4 +1,4 @@
-import { ActionFunction, json, LoaderFunction } from "@remix-run/node"
+import { ActionFunction, json, LoaderFunction, redirect } from "@remix-run/node"
 import { useCatch, useTransition } from "@remix-run/react"
 import { Auth0Profile } from "remix-auth-auth0"
 import invariant from "tiny-invariant"
@@ -7,7 +7,6 @@ import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { RoleName } from "~/models/portal/sdk"
 import {
-  sendEmail,
   sendTeamInviteEmail,
   sendTeamNewOwnerEmail,
   sendTeamUserRemovedEmail,
@@ -64,7 +63,11 @@ export const action: ActionFunction = async ({ request, params }) => {
         email: email,
       })
 
-      return json<ActionData>({ email, type, error: false })
+      const isLeaveApp = email === user.profile._json.email
+
+      return isLeaveApp
+        ? redirect("/dashboard/apps")
+        : json<ActionData>({ email, type, error: false })
     } catch (e) {
       return json<ActionData>({ email, type, error: true })
     }
@@ -144,7 +147,9 @@ export const action: ActionFunction = async ({ request, params }) => {
         },
       })
 
-      await sendTeamNewOwnerEmail(email, String(appName ?? "a Portal App"))
+      if (transferOwnership && transferOwnership !== "false") {
+        await sendTeamNewOwnerEmail(email, String(appName ?? "a Portal App"))
+      }
 
       if (!updateEndpointUserRole) {
         throw new Error("Erorr updating user role")

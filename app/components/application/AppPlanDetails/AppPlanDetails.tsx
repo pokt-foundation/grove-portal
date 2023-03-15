@@ -23,6 +23,7 @@ interface AppPlanDetailsProps {
   id: string
   name: string
   subscription: Stripe.Subscription | undefined
+  isMember: boolean
 }
 
 export default function AppPlanDetails({
@@ -31,11 +32,13 @@ export default function AppPlanDetails({
   id,
   name,
   subscription,
+  isMember,
 }: AppPlanDetailsProps) {
   const { flags } = useFeatureFlags()
   const { t } = useTranslate()
   const subscriptionFetcher = useFetcher()
   const stripe = `/api/stripe/checkout-session?app-id=${id}&app-name=${name}`
+
   return (
     <div className="pokt-app-plan-details">
       <Card>

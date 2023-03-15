@@ -14,9 +14,15 @@ interface AppKeysCardProps {
   id: string
   secret?: string | null
   publicKey?: string
+  isMember: boolean
 }
 
-export default function AppKeysCard({ id, secret, publicKey }: AppKeysCardProps) {
+export default function AppKeysCard({
+  id,
+  secret,
+  publicKey,
+  isMember,
+}: AppKeysCardProps) {
   const [secretHidden, setSecretHidden] = useState(true)
   const [publicKeyHidden, setPublicKeyHidden] = useState(true)
 
@@ -24,7 +30,7 @@ export default function AppKeysCard({ id, secret, publicKey }: AppKeysCardProps)
     <div className="pokt-app-keys">
       <Card>
         <TextInput copy readOnly label="Portal ID" value={id} />
-        {secret && (
+        {secret && !isMember && (
           <>
             <Space h="sm" />
             <TextInput

@@ -61,9 +61,8 @@ export default function NotificationsAlertForm() {
   const { state } = useTransition()
   const appIdRoute = useMatchesRoute("routes/dashboard/apps/$appId")
   const appIdData = appIdRoute?.data as AppIdLoaderData
-  const {
-    endpoint: { notificationSettings },
-  } = appIdData
+  const { endpoint } = appIdData
+  const { notificationSettings } = endpoint
 
   return (
     <Form method="put">

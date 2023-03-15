@@ -22,6 +22,7 @@ interface StopRemoveAppProps {
   name: string
   planType: PayPlanType
   subscription?: Stripe.Subscription
+  isMember: boolean
 }
 
 export default function StopRemoveApp({
@@ -30,12 +31,12 @@ export default function StopRemoveApp({
   name,
   planType,
   subscription,
+  isMember,
 }: StopRemoveAppProps) {
   const { t } = useTranslate()
   const [showStopModal, setShowStopModal] = useState(false)
   const [removeAppOpened, setRemoveAppOpened] = useState(false)
   const subscriptionFetcher = useFetcher()
-  // const location = useLocation()
 
   useEffect(() => {
     const data = subscriptionFetcher.data as StripeDeleteActionData
@@ -44,11 +45,7 @@ export default function StopRemoveApp({
     }
   }, [appId, subscriptionFetcher])
 
-  // useEffect(() => {
-  //   if (location.pathname === "api/stripe/subscription") {
-  //     setShowStopModal(false)
-  //   }
-  // }, [location])
+  if (isMember) return <></>
 
   return (
     <>

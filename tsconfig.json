@@ -1,6 +1,11 @@
 {
   "include": ["remix.env.d.ts", "./test/*", "./app/**/*.ts", "./app/**/*.tsx"],
-  "exclude": ["./app/models/**/sdk.ts"],
+  "exclude": [
+    "./app/models/cms/sdk.ts",
+    "./app/models/portal/sdk.ts",
+    "./app/models/poktscan/sdk.ts",
+    "./app/models/indexer/sdk.ts"
+  ],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2019"],
     "types": ["vitest/globals"],

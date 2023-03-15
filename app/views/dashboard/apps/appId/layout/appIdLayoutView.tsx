@@ -188,7 +188,7 @@ export default function AppIdLayoutView({
     }
   }, [endpoint, subscription, updatePlanFetcher])
 
-  const role = endpoint?.users.find((u) => u.email === user?._json.email)?.roleName
+  const role = endpoint?.users.find((u) => u.email === user._json?.email)?.roleName
   const isMember = role === RoleName.Member
 
   return (

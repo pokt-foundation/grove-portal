@@ -345,7 +345,8 @@ function TeamView({ state, endpoint }: TeamViewProps) {
             },
             action: {
               element:
-                isAdminUser || isOwnerUser || email === profile?._json.email ? (
+                roleName !== RoleName["Owner"] &&
+                (isAdminUser || isOwnerUser || email === profile?._json.email) ? (
                   <Box
                     className="list__more-actions"
                     sx={{ display: "flex", justifyContent: "flex-end" }}
@@ -366,9 +367,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
                           label={email === profile?._json.email ? "Leave team" : "Remove"}
                           variant="green"
                         />
-                      ) : (
-                        <></>
-                      )}
+                      ) : null}
                     </Dropdown>
                   </Box>
                 ) : (

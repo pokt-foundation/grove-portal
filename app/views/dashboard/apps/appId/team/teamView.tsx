@@ -307,7 +307,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
                       />
                       <DropdownItem
                         action={() => handleUpdateRoleSubmit(email, roleName)}
-                        label={roleName === RoleName.Admin ? "MEMBER" : "ADMIN"}
+                        label={roleName === RoleName.Admin ? "Member" : "Admin"}
                       />
                     </Dropdown>
                   )}
@@ -358,7 +358,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
                       {!accepted && (isAdminUser || isOwnerUser) ? (
                         <DropdownItem
                           action={() => handleResendInviteEmail(email, endpoint.name)}
-                          label="Send new Invite"
+                          label="Send new invite"
                         />
                       ) : null}
                       {isAdminUser || isOwnerUser || email === profile?._json.email ? (

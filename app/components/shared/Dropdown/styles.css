@@ -112,3 +112,11 @@
 .dropdown-teams__content {
   padding: 4px;
 }
+
+.dropdown-trigger__label {
+  text-transform: lowercase;                       
+}
+
+.dropdown-trigger__label::first-letter {
+  text-transform: uppercase;
+}

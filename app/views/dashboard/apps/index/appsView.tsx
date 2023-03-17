@@ -299,7 +299,7 @@ export const AppsView = ({
               )}
             </Tabs.Tab>
 
-            <Tabs.Tab label="Teams">
+            <Tabs.Tab label="My Teams">
               {notOwnerEndpoints &&
               notOwnerEndpoints.length > 0 &&
               userDataByEndpoint.length > 0 ? (

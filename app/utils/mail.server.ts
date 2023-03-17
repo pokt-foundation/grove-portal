@@ -28,7 +28,7 @@ const getMailgunTemplate = (
   variables: { [key: string]: string },
 ) => {
   return {
-    from: "Mailgun Sandbox <postmaster@pokt.network>",
+    from: "Pocket Portal <postmaster@pokt.network>",
     to,
     subject,
     template,

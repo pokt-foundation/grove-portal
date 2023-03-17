@@ -3440,6 +3440,19 @@ export type getQuestionsQueryVariables = Exact<{
 
 export type getQuestionsQuery = { __typename?: 'Query', questions: Array<{ __typename?: 'questions', id: string, status?: string | null, category?: { __typename?: 'tags', id: string, translations?: Array<{ __typename?: 'tags_translations', name?: string | null, display?: string | null } | null> | null } | null, translations?: Array<{ __typename?: 'questions_translations', answer?: string | null, question?: string | null } | null> | null }> };
 
+export type getDocsQueryVariables = Exact<{
+  filter?: InputMaybe<documentation_filter>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  page?: InputMaybe<Scalars['Int']>;
+  search?: InputMaybe<Scalars['String']>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>> | InputMaybe<Scalars['String']>>;
+  language?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type getDocsQuery = { __typename?: 'Query', documentation: Array<{ __typename?: 'documentation', id: string, date_updated?: any | null, slug?: string | null, status?: string | null, weight?: number | null, parent?: { __typename?: 'documentation', id: string, slug?: string | null } | null, translations?: Array<{ __typename?: 'documentation_translations', id: string, body?: string | null, summary?: string | null, title?: string | null } | null> | null }> };
+
 export type getLegalQueryVariables = Exact<{
   language?: InputMaybe<Scalars['String']>;
 }>;
@@ -3474,6 +3487,34 @@ export const getQuestionsDocument = gql`
   }
 }
     `;
+export const getDocsDocument = gql`
+    query getDocs($filter: documentation_filter, $limit: Int, $offset: Int, $page: Int, $search: String, $sort: [String], $language: String) {
+  documentation(
+    filter: $filter
+    limit: $limit
+    offset: $offset
+    page: $page
+    search: $search
+    sort: $sort
+  ) {
+    id
+    date_updated
+    parent {
+      id
+      slug
+    }
+    slug
+    status
+    translations(filter: {languages_code: {_eq: $language}}) {
+      id
+      body
+      summary
+      title
+    }
+    weight
+  }
+}
+    `;
 export const getLegalDocument = gql`
     query getLegal($language: String) {
   legal_by_id(id: 1) {
@@ -3501,6 +3542,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
   return {
     getQuestions(variables?: getQuestionsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<getQuestionsQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<getQuestionsQuery>(getQuestionsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getQuestions', 'query');
+    },
+    getDocs(variables?: getDocsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<getDocsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<getDocsQuery>(getDocsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getDocs', 'query');
     },
     getLegal(variables?: getLegalQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<getLegalQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<getLegalQuery>(getLegalDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getLegal', 'query');

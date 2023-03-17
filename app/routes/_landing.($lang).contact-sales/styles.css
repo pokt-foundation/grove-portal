@@ -1,0 +1,15 @@
+.container {
+  margin-top: 32px;
+}
+
+.button {
+  margin-top: 2rem;
+  width: 214px;
+  color: var(--mantine-color-navy-6);
+}
+
+.contact-modal-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

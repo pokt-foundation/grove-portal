@@ -101,6 +101,7 @@ const WithProviders = ({ children }: { children: React.ReactNode }) => {
           Card: {
             styles: (theme) => ({
               root: {
+                padding: "32px",
                 backgroundColor:
                   theme.colorScheme === "dark"
                     ? theme.colors.navy[5]
@@ -260,9 +261,7 @@ export default function App() {
           <Nav ariaLabel="Main" routes={routes} />
         </Header>
         <main>
-          <Container className="container" size="lg">
-            <Outlet />
-          </Container>
+          <Outlet />
         </main>
         <Footer />
         <script

@@ -114,7 +114,7 @@
 }
 
 .dropdown-trigger__label {
-  text-transform: lowercase;                       
+  text-transform: lowercase;
 }
 
 .dropdown-trigger__label::first-letter {

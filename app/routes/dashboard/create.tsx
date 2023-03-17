@@ -63,7 +63,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   const permissions = getUserPermissions(user.accessToken)
   const underMaxApps = () => {
-    if (!endpointsResponse || endpointsResponse.endpoints.length < MAX_USER_APPS) {
+    if (!endpointsResponse || endpointsResponse.owner.length < MAX_USER_APPS) {
       return true
     }
 

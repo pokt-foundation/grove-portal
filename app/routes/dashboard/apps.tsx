@@ -1,6 +1,7 @@
 import { Button, Grid } from "@pokt-foundation/pocket-blocks"
 import { json, LoaderFunction } from "@remix-run/node"
 import { Link, Outlet, useLoaderData, useTransition } from "@remix-run/react"
+import { PocketUser } from "../api/user"
 import FeedbackCard, {
   links as FeedbackCardLinks,
 } from "~/components/application/FeedbackCard"
@@ -34,8 +35,9 @@ export const links = () => {
 }
 
 export type AllAppsLoaderData = {
-  endpoints: EndpointsQuery["endpoints"] | null
+  endpoints: EndpointsQuery | null
   isEnterprise: boolean
+  user: PocketUser
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -53,8 +55,9 @@ export const loader: LoaderFunction = async ({ request }) => {
     getRequiredClientEnvVar("GODMODE_ACCOUNTS")?.includes(userId)
 
   return json<AllAppsLoaderData>({
-    endpoints: endpointsResponse ? endpointsResponse.endpoints : null,
+    endpoints: endpointsResponse ? endpointsResponse : null,
     isEnterprise,
+    user,
   })
 }
 
@@ -66,7 +69,7 @@ export const Apps = () => {
   const userAppsStatus: CardListItem[] = [
     {
       label: "Current Apps",
-      value: Number(endpoints?.length) || 0,
+      value: Number(endpoints?.owner.length) || 0,
     },
     {
       label: "Max Apps",
@@ -87,7 +90,7 @@ export const Apps = () => {
               <h3>Account</h3>
             </div>
             <CardList items={userAppsStatus} />
-            {(!endpoints || endpoints.length < MAX_USER_APPS || isEnterprise) && (
+            {(!endpoints || endpoints.owner.length < MAX_USER_APPS || isEnterprise) && (
               <Button fullWidth component={Link} mt={32} to="/dashboard/create">
                 Create New Application
               </Button>

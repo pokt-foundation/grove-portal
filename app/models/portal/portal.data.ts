@@ -1,4 +1,14 @@
-import { AppStatus, Blockchain, PayPlanType, ProcessedEndpoint } from "./sdk"
+import { Auth0Profile } from "remix-auth-auth0"
+import {
+  AppStatus,
+  Blockchain,
+  EndpointsQuery,
+  PayPlanType,
+  ProcessedEndpoint,
+  RoleName,
+} from "./sdk"
+
+const testEmail = "test@test.test"
 
 export const endpoint: ProcessedEndpoint = {
   appLimits: {
@@ -43,10 +53,22 @@ export const endpoint: ProcessedEndpoint = {
   updatedAt: "2022-08-22 15:55:11.288274 +0000 UTC",
   userId: "62fd1d49a6eba977fd212c23",
   applications: [],
-  users: [],
+  users: [
+    {
+      accepted: true,
+      email: testEmail,
+      roleName: RoleName.Admin,
+    },
+  ],
 }
 
-export const endpoints: ProcessedEndpoint[] = Array(2).fill(endpoint)
+export const endpoints: EndpointsQuery = {
+  admin: [endpoint],
+  member: [endpoint],
+  owner: [endpoint],
+  pending: [endpoint],
+  __typename: "Query",
+}
 
 export const blockchains: Blockchain[] = [
   {
@@ -503,3 +525,46 @@ export const teamsMockData = [
     roleName: "ADMIN",
   },
 ] as const
+
+export const profileMockData: Auth0Profile = {
+  provider: "auth0",
+  displayName: testEmail,
+  id: "auth0|53bede86ac0efcc90f641962",
+  name: {
+    familyName: "",
+    givenName: "",
+    middleName: "",
+  },
+  emails: [{ value: testEmail }],
+  photos: [
+    {
+      value:
+        "https://s.gravatar.com/avatar/c24291e8d1c27961558174cd37c09632?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fde.png",
+    },
+  ],
+  _json: {
+    sub: "auth0|53bede86ac0efcc90f641962",
+    nickname: "test",
+    name: testEmail,
+    picture:
+      "https://s.gravatar.com/avatar/c24291e8d1c27961558174cd37c09632?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fde.png",
+    updated_at: "2023-03-06T17:08:45.125Z",
+    email: testEmail,
+    email_verified: true,
+    given_name: "",
+    family_name: "",
+    middle_name: "",
+    preferred_username: "",
+    profile: "",
+    website: "",
+    gender: "",
+    birthdate: "",
+    zoneinfo: "",
+    locale: "",
+    phone_number: "",
+    phone_number_verified: false,
+    address: {
+      country: "",
+    },
+  },
+}

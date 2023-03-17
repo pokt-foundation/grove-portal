@@ -1,5 +1,6 @@
 import { LoaderFunction, MetaFunction, json, redirect } from "@remix-run/node"
 import { useCatch, useFetcher, useLoaderData, useSearchParams } from "@remix-run/react"
+import { Auth0Profile } from "remix-auth-auth0"
 import invariant from "tiny-invariant"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { BlockchainsQuery, EndpointQuery, PayPlanType } from "~/models/portal/sdk"
@@ -33,6 +34,7 @@ export type AppIdLoaderData = {
   relaysYesterday: RelayMetric
   dailyNetworkRelaysPerWeek: RelayMetric[]
   subscription: Stripe.Subscription | undefined
+  user: Auth0Profile
 }
 
 export const loader: LoaderFunction = async ({ request, params }) => {
@@ -99,11 +101,12 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     relaysToday,
     relaysYesterday,
     subscription,
+    user: user.profile,
   })
 }
 
 export default function AppIdLayout() {
-  const { endpoint, subscription } = useLoaderData() as AppIdLoaderData
+  const { endpoint, subscription, user } = useLoaderData() as AppIdLoaderData
   const [searchParams, setSearchParams] = useSearchParams()
   const updatePlanFetcher = useFetcher()
 
@@ -114,6 +117,7 @@ export default function AppIdLayout() {
       setSearchParams={setSearchParams}
       subscription={subscription}
       updatePlanFetcher={updatePlanFetcher}
+      user={user}
     />
   )
 }

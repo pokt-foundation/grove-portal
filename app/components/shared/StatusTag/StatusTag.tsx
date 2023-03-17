@@ -7,10 +7,10 @@ export const links = () => {
 }
 
 type StatusTagProps = {
-  accepted: boolean
+  accepted?: boolean
 }
 
-function StatusTag({ accepted }: StatusTagProps) {
+function StatusTag({ accepted = false }: StatusTagProps) {
   return (
     <div
       className={clsx({

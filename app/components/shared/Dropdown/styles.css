@@ -34,7 +34,7 @@
 }
 
 .pokt-dropdown-content > * {
-  margin: 1em 0;
+  margin: 0.5em 0;
 }
 
 .pokt-dropdown-content div[role="menuitem"] {
@@ -111,4 +111,12 @@
 
 .dropdown-teams__content {
   padding: 4px;
+}
+
+.dropdown-trigger__label {
+  text-transform: lowercase;
+}
+
+.dropdown-trigger__label::first-letter {
+  text-transform: uppercase;
 }

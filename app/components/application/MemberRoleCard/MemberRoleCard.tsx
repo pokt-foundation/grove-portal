@@ -1,6 +1,7 @@
+import { Group, Text } from "@pokt-foundation/pocket-blocks"
 import Card from "../../shared/Card"
-import Text from "../../shared/Text"
 import styles from "./styles.css"
+import { RoleName } from "~/models/portal/sdk"
 
 /* c8 ignore next */
 export const links = () => {
@@ -8,16 +9,25 @@ export const links = () => {
 }
 
 type MemberRoleProps = {
-  role: "Owner" | "Admin" | "Member"
+  role: RoleName
 }
 
 const MemberRole = ({ role }: MemberRoleProps) => {
   return (
     <Card>
-      <div className="member-role">
+      <Group position="apart">
         <Text>Role</Text>
-        <Text>{role}</Text>
-      </div>
+        <Text
+          sx={{
+            textTransform: "lowercase",
+            "&::first-letter": {
+              textTransform: "uppercase",
+            },
+          }}
+        >
+          {role}
+        </Text>
+      </Group>
     </Card>
   )
 }

@@ -1,10 +1,10 @@
 import fs from "fs"
 import path from "path"
 import { expect } from "vitest"
-import NotificationMessage, { NotificationMessageType } from "./NotificationMessage"
+import NotificationMessage, { NotificationType } from "./NotificationMessage"
 import { render, screen } from "test/helpers"
 
-const mockedNotificationMessage: NotificationMessageType = {
+const mockedNotificationMessage: NotificationType = {
   type: "success",
   isActive: true,
   title: "Invite sent",
@@ -16,9 +16,13 @@ describe("<NotificationMessage />", () => {
   it("renders with a notification title and description", () => {
     render(
       <NotificationMessage
-        notificationMessage={mockedNotificationMessage}
-        setNotificationMessageIsActive={() => null}
-      />,
+        isActive={mockedNotificationMessage.isActive}
+        title={mockedNotificationMessage.title}
+        type={mockedNotificationMessage.type}
+        onClose={() => null}
+      >
+        <p>{mockedNotificationMessage.description}</p>
+      </NotificationMessage>,
     )
     expect(screen.getByText(mockedNotificationMessage.title)).toBeInTheDocument()
     expect(screen.getByText(mockedNotificationMessage.description)).toBeInTheDocument()
@@ -28,9 +32,13 @@ describe("<NotificationMessage />", () => {
 
     const { container } = render(
       <NotificationMessage
-        notificationMessage={{ ...mockedNotificationMessage, isActive: false }}
-        setNotificationMessageIsActive={() => null}
-      />,
+        isActive={false}
+        title={mockedNotificationMessage.title}
+        type={mockedNotificationMessage.type}
+        onClose={() => null}
+      >
+        <p>{mockedNotificationMessage.description}</p>
+      </NotificationMessage>,
     )
 
     const style = document.createElement("style")

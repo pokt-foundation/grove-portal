@@ -1,7 +1,6 @@
-import { Button, Text } from "@pokt-foundation/pocket-blocks"
+import { Alert, AlertProps } from "@pokt-foundation/pocket-blocks"
 import clsx from "clsx"
-import { Dispatch, SetStateAction } from "react"
-import CloseIcon from "../Icons/CloseIcon"
+import { useMemo } from "react"
 import ErrorIcon from "../Icons/ErrorIcon"
 import InfoIcon from "../Icons/InfoIcon"
 import SuccessIcon from "../Icons/SuccessIcon"
@@ -12,24 +11,24 @@ import styles from "./styles.css"
 export const links = () => {
   return [{ rel: "stylesheet", href: styles }]
 }
+/* c8 ignore end */
 
-export interface NotificationMessageType {
-  type: "success" | "info" | "warning" | "error" | "options"
-  isActive: boolean
+export interface NotificationType {
+  type: NotificationMessageType
   title: string
   description: string
+  isActive: boolean
 }
 
-type NotificationMessageProps = {
-  notificationMessage: NotificationMessageType
-  setNotificationMessageIsActive: Dispatch<
-    SetStateAction<NotificationMessageType["isActive"]>
-  >
-  handleAccept?: () => void
-  handleDecline?: () => void
+type NotificationMessageProps = AlertProps & {
+  type: NotificationMessageType
+  isActive: boolean
+  children: React.ReactNode | React.ReactChildren
 }
 
-const NotificationMessageIcon = ({ type }: { type: NotificationMessageType["type"] }) => {
+type NotificationMessageType = "success" | "info" | "warning" | "error" | "options"
+
+const NotificationMessageIcon = ({ type }: { type: NotificationMessageType }) => {
   switch (type) {
     case "success":
       return <SuccessIcon />
@@ -45,11 +44,25 @@ const NotificationMessageIcon = ({ type }: { type: NotificationMessageType["type
 }
 
 const NotificationMessage = ({
-  notificationMessage: { type, title, description, isActive },
-  setNotificationMessageIsActive,
-  handleAccept,
-  handleDecline,
+  type,
+  isActive,
+  children,
+  ...props
 }: NotificationMessageProps) => {
+  const color = useMemo(() => {
+    switch (type) {
+      case "success":
+        return "green"
+      case "warning":
+        return "orange"
+      case "error":
+        return "red"
+      case "info":
+      default:
+        return "blue"
+    }
+  }, [type])
+
   return (
     <div
       className={clsx({
@@ -58,29 +71,19 @@ const NotificationMessage = ({
         [type]: true,
       })}
     >
-      <span className="close" onClick={() => setNotificationMessageIsActive(false)}>
-        <CloseIcon />
-      </span>
-      {type !== "options" ? (
-        <div className="notification-message-content">
-          <NotificationMessageIcon type={type} />
-          <div className="notification-message-text">
-            <div className="notification-message-title">{title}</div>
-            <div className="notification-message-description">{description}</div>
-          </div>
-        </div>
-      ) : (
-        <div className="notification-message-content">
-          <InfoIcon />
-          <Text id="title">{title}</Text>
-          <Button id="accept" variant="filled" onClick={handleAccept}>
-            Accept
-          </Button>
-          <Button id="decline" variant="outline" onClick={handleDecline}>
-            Decline
-          </Button>
-        </div>
-      )}
+      <Alert
+        className="pokt-alert"
+        color={color}
+        icon={<NotificationMessageIcon type={type} />}
+        sx={(theme) => ({
+          width: "100%",
+          borderRadius: "8px",
+        })}
+        variant="outline"
+        {...props}
+      >
+        {children}
+      </Alert>
     </div>
   )
 }

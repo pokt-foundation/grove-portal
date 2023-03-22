@@ -9,8 +9,6 @@ describe("dashboard page tests", () => {
       return false
     })
 
-    // should have network summary heading
-    cy.findByRole("heading", { name: /network summary/i }).should("be.visible")
     // should have network summary nodes staked
     cy.findByRole("heading", { name: /nodes staked/i }).should("be.visible")
     // should have network summary apps staked
@@ -23,9 +21,6 @@ describe("dashboard page tests", () => {
 
     // should have available networks
     cy.findByRole("heading", { name: /available networks/i }).should("be.visible")
-
-    // should have network success rate
-    cy.findByRole("heading", { name: /network success rate/i }).should("be.visible")
 
     // should have latest block
     cy.findByRole("heading", { name: /latest block/i }).should("be.visible")

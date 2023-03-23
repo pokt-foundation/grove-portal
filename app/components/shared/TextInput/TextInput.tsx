@@ -1,11 +1,8 @@
 import { TextInput as MantineTextInput, TextInputProps } from "@mantine/core"
-import { Button, IconDeleteAlt } from "@pokt-foundation/pocket-blocks"
 import clsx from "clsx"
 import styles from "./styles.css"
-import CopyTextIcon, {
-  links as CopyTextIconLinks,
-} from "~/components/shared/CopyTextIcon"
-import RevealIcon, { links as RevealIconLinks } from "~/components/shared/RevealIcon"
+import { links as CopyTextIconLinks } from "~/components/shared/CopyTextIcon"
+import { links as RevealIconLinks } from "~/components/shared/RevealIcon"
 
 /* c8 ignore start */
 export const links = () => {
@@ -18,64 +15,30 @@ export const links = () => {
 /* c8 ignore stop */
 
 export type InputProps = TextInputProps & {
-  copy?: boolean
   revealed?: boolean
-  hasDelete?: boolean
-  iconPadding?: boolean
-  handleRemove?: () => void
   setRevealed?: () => void
+  children?: React.ReactNode
 }
 
 export default function TextInput({
-  copy = false,
   revealed = false,
-  hasDelete = false,
-  iconPadding = false,
-  handleRemove = () => {},
   setRevealed,
+  children,
   ...props
 }: InputProps) {
-  let rightSection = props.rightSection
-
-  if (!rightSection && copy && setRevealed) {
-    // hidden and copy icons
-    rightSection = (
-      <>
-        <RevealIcon revealed={revealed} setRevealed={setRevealed} />
-        <CopyTextIcon text={String(props.value)} />
-      </>
-    )
-  } else if (!rightSection && !copy && setRevealed) {
-    // only revealed icon
-    rightSection = <RevealIcon revealed={revealed} setRevealed={setRevealed} />
-  } else if (!rightSection && copy && !setRevealed) {
-    // only copy icon
-    rightSection = <CopyTextIcon text={String(props.value)} />
-  }
-
   return (
-    <div className="pokt-text">
+    <div className="pokt-text-wrapper">
       <MantineTextInput
         className={clsx({
           "pokt-text-input": true,
           "right-section": props.rightSection,
-          iconPadding: iconPadding,
         })}
-        rightSection={rightSection}
         size={props.size ?? "md"}
+        rightSection={props.rightSection}
         variant={props.variant ?? "unstyled"}
         {...props}
       />
-      {hasDelete && (
-        <Button
-          className="pokt-text-delete"
-          color="blue"
-          variant="outline"
-          onClick={handleRemove}
-        >
-          <IconDeleteAlt fill="var(--color-white-light)" />
-        </Button>
-      )}
+      {children}
     </div>
   )
 }

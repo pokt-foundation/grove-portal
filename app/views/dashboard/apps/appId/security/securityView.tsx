@@ -1,5 +1,5 @@
 import { Loader } from "@mantine/core"
-import { Button, Text, Switch } from "@pokt-foundation/pocket-blocks"
+import { Button, Text, Switch, IconDeleteAlt } from "@pokt-foundation/pocket-blocks"
 import { useFetcher, useTransition } from "@remix-run/react"
 import React, { useState } from "react"
 import styles from "./styles.css"
@@ -21,6 +21,7 @@ import {
 import { Blockchain, EndpointQuery } from "~/models/portal/sdk"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { CHAIN_ID_PREFIXES } from "~/utils/chainUtils"
+import CopyTextIcon from "~/components/shared/CopyTextIcon"
 
 /* c8 ignore start */
 export const links = () => {
@@ -212,15 +213,21 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
           <div>
             {whitelistUserAgents.map((item: string) => (
               <div key={item} className="list">
-                <TextInput
-                  copy
-                  readOnly
-                  handleRemove={() => {
-                    setWhitelistUserAgents((current) => removeFromArray(item, current))
-                  }}
-                  hasDelete={true}
-                  value={item}
-                />
+                <TextInput readOnly value={item}>
+                  <Button className="pokt-button-outline" color="blue" variant="outline">
+                    <CopyTextIcon text={String(item)} />
+                  </Button>
+                  <Button
+                    className="pokt-button-outline"
+                    color="blue"
+                    variant="outline"
+                    onClick={() => {
+                      setWhitelistUserAgents((current) => removeFromArray(item, current))
+                    }}
+                  >
+                    <IconDeleteAlt fill="var(--color-white-light)" />
+                  </Button>
+                </TextInput>
                 <input name="whitelistUserAgents" type="hidden" value={item} />
               </div>
             ))}
@@ -257,15 +264,21 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
           <div>
             {whitelistOrigins.map((item: string) => (
               <div key={item} className="list">
-                <TextInput
-                  copy
-                  readOnly
-                  handleRemove={() => {
-                    setWhitelistOrigins((current) => removeFromArray(item, current))
-                  }}
-                  hasDelete={true}
-                  value={item}
-                />
+                <TextInput readOnly value={item}>
+                  <Button className="pokt-button-outline" color="blue" variant="outline">
+                    <CopyTextIcon text={String(item)} />
+                  </Button>
+                  <Button
+                    className="pokt-button-outline"
+                    color="blue"
+                    variant="outline"
+                    onClick={() => {
+                      setWhitelistOrigins((current) => removeFromArray(item, current))
+                    }}
+                  >
+                    <IconDeleteAlt fill="var(--color-white-light)" />
+                  </Button>
+                </TextInput>
                 <input name="whitelistOrigins" type="hidden" value={item} />
               </div>
             ))}
@@ -332,7 +345,6 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
               return (
                 <div key={`${item.id} ${item.inputValue}`} className="list">
                   <AppEndpointUrl
-                    copy
                     hasDelete
                     readOnly
                     chain={blockchain}
@@ -414,7 +426,6 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
               return (
                 <div key={`${item.id} ${item.inputValue}`} className="list">
                   <AppEndpointUrl
-                    copy
                     hasDelete
                     readOnly
                     chain={blockchain}

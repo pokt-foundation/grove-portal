@@ -1,8 +1,8 @@
-.pokt-text {
+.pokt-text-wrapper {
   width: 100%;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
   gap: 16px;
 }
 
@@ -19,34 +19,11 @@
   border: 1px solid var(--color-black-light);
   border-radius: 4px;
   font-size: 0.75rem;
-}
-.pokt-text-input.right-section input {
-  padding-right: 32px;
+  padding-right: 20%;
 }
 
 .pokt-text-input label {
   color: var(--color-white-main);
-}
-
-.pokt-text-input .pokt-text-input-copy {
-  width: 20px;
-  height: 20px;
-  color: var(--color-secondary-main);
-  cursor: pointer;
-}
-
-.pokt-text-input .pokt-text-input-copy svg {
-  width: 20px;
-  height: 20px;
-}
-
-.pokt-text-delete {
-  padding: 0 8px;
-}
-
-.pokt-text-delete svg {
-  width: 20px;
-  height: 20px;
 }
 
 .pokt-text-input .mantine-TextInput-rightSection {

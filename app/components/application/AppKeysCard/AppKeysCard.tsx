@@ -1,8 +1,10 @@
-import { Space } from "@pokt-foundation/pocket-blocks"
+import { Button, Space } from "@pokt-foundation/pocket-blocks"
 import { useState } from "react"
 import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/shared/Card"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
+import CopyTextIcon from "~/components/shared/CopyTextIcon"
+import RevealIcon from "~/components/shared/RevealIcon"
 
 /* c8 ignore start */
 export const links = () => {
@@ -29,34 +31,51 @@ export default function AppKeysCard({
   return (
     <div className="pokt-app-keys">
       <Card>
-        <TextInput copy readOnly label="Portal ID" value={id} />
+        <TextInput readOnly label="Portal ID" value={id}>
+          <Button className="pokt-button-outline" color="blue" variant="outline">
+            <CopyTextIcon text={String(id)} />
+          </Button>
+        </TextInput>
         {secret && !isMember && (
           <>
             <Space h="sm" />
             <TextInput
-              copy
               readOnly
+              rightSection={
+                <RevealIcon
+                  revealed={secretHidden}
+                  setRevealed={() => setSecretHidden(!secretHidden)}
+                />
+              }
               label="Secret Key"
-              revealed={secretHidden}
-              setRevealed={() => setSecretHidden(!secretHidden)}
               type={secretHidden ? "password" : "text"}
               value={secret}
-            />
+            >
+              <Button className="pokt-button-outline" color="blue" variant="outline">
+                <CopyTextIcon text={String(secret)} />
+              </Button>
+            </TextInput>
           </>
         )}
         {publicKey && (
           <>
             <Space h="sm" />
             <TextInput
-              copy
-              iconPadding
               readOnly
+              rightSection={
+                <RevealIcon
+                  revealed={publicKeyHidden}
+                  setRevealed={() => setPublicKeyHidden(!publicKeyHidden)}
+                />
+              }
               label="Public Key"
-              revealed={publicKeyHidden}
-              setRevealed={() => setPublicKeyHidden(!publicKeyHidden)}
               type={publicKeyHidden ? "password" : "text"}
               value={publicKey}
-            />
+            >
+              <Button className="pokt-button-outline" color="blue" variant="outline">
+                <CopyTextIcon text={String(publicKey)} />
+              </Button>
+            </TextInput>
           </>
         )}
       </Card>

@@ -13,6 +13,8 @@ import { Card, links as CardLinks } from "~/components/shared/Card"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { useTranslate } from "~/context/TranslateContext"
 import { ProcessedEndpoint } from "~/models/portal/sdk"
+import CopyTextIcon from "~/components/shared/CopyTextIcon"
+import RevealIcon from "~/components/shared/RevealIcon"
 
 /* c8 ignore start */
 export const links = () => {
@@ -53,22 +55,26 @@ export default function AppAddressCard({ apps }: AppAddressCardProps) {
             appId ? (
               <TextInput
                 key={appId}
-                copy
                 readOnly
-                revealed={hiddenIds.includes(appId)}
-                setRevealed={() =>
-                  setHiddenIds(
-                    hiddenIds.includes(appId)
-                      ? hiddenIds.filter((app) => app !== appId)
-                      : [...hiddenIds, appId],
-                  )
+                rightSection={
+                  <RevealIcon
+                    revealed={hiddenIds.includes(appId)}
+                    setRevealed={() =>
+                      setHiddenIds(
+                        hiddenIds.includes(appId)
+                          ? hiddenIds.filter((app) => app !== appId)
+                          : [...hiddenIds, appId],
+                      )
+                    }
+                  />
                 }
-                // Check either if the appId is or isn't included in the hiddenIds array,
-                // if it is, remove it
-                // if it's not, add it
                 type={hiddenIds.includes(appId) ? "password" : "text"}
                 value={appId}
-              />
+              >
+                <Button color="blue" variant="outline">
+                  <CopyTextIcon text={String(appId)} />
+                </Button>
+              </TextInput>
             ) : null,
           )
         ) : (
@@ -81,22 +87,26 @@ export default function AppAddressCard({ apps }: AppAddressCardProps) {
                 appId ? (
                   <TextInput
                     key={appId}
-                    copy
                     readOnly
-                    revealed={hiddenIds.includes(appId)}
-                    setRevealed={() =>
-                      setHiddenIds(
-                        hiddenIds.includes(appId)
-                          ? hiddenIds.filter((app) => app !== appId)
-                          : [...hiddenIds, appId],
-                      )
+                    rightSection={
+                      <RevealIcon
+                        revealed={hiddenIds.includes(appId)}
+                        setRevealed={() =>
+                          setHiddenIds(
+                            hiddenIds.includes(appId)
+                              ? hiddenIds.filter((app) => app !== appId)
+                              : [...hiddenIds, appId],
+                          )
+                        }
+                      />
                     }
-                    // Check either if the appId is or isn't included in the hiddenIds array,
-                    // if it is, remove it
-                    // if it's not, add it
                     type={hiddenIds.includes(appId) ? "password" : "text"}
                     value={appId}
-                  />
+                  >
+                    <Button color="blue" variant="outline">
+                      <CopyTextIcon text={String(appId)} />
+                    </Button>
+                  </TextInput>
                 ) : null,
               )}
             </Collapse>

@@ -1,5 +1,5 @@
 import { ActionFunction, json, LoaderFunction, redirect } from "@remix-run/node"
-import { useCatch, useTransition } from "@remix-run/react"
+import { useCatch, useNavigation } from "@remix-run/react"
 import { Auth0Profile } from "remix-auth-auth0"
 import invariant from "tiny-invariant"
 import { AppIdLoaderData } from "../$appId"
@@ -172,10 +172,10 @@ export const action: ActionFunction = async ({ request, params }) => {
 
 export default function Team() {
   const appIDRoute = useMatchesRoute("routes/dashboard/apps/$appId")
-  const { state } = useTransition()
+  const navigation = useNavigation()
   const { endpoint } = appIDRoute?.data as AppIdLoaderData
 
-  return <TeamView endpoint={endpoint} state={state} />
+  return <TeamView endpoint={endpoint} state={navigation.state} />
 }
 
 export const CatchBoundary = () => {

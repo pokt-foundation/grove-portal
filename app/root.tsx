@@ -88,7 +88,7 @@ const WithProviders = ({ children }: { children: React.ReactNode }) => {
       withNormalizeCSS
       theme={{
         ...theme,
-        primaryColor: "magenta",
+        primaryColor: "blue",
         components: {
           ...theme.components,
           Paper: {

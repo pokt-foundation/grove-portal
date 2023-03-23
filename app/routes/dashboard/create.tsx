@@ -6,7 +6,7 @@ import {
   MetaFunction,
   redirect,
 } from "@remix-run/node"
-import { Form, useLoaderData, useActionData, useTransition } from "@remix-run/react"
+import { Form, useLoaderData, useActionData, useNavigation } from "@remix-run/react"
 import { useEffect, useMemo, useState } from "react"
 import invariant from "tiny-invariant"
 import AppPlansOverview, {
@@ -146,7 +146,7 @@ export const action: ActionFunction = async ({ request }) => {
 export default function CreateApp() {
   const { flags } = useFeatureFlags()
   const { price } = useLoaderData() as LoaderData
-  const transition = useTransition()
+  const navigation = useNavigation()
   const action = useActionData() as ActionData
   const [radioSelectedValue, setRadioSelectedValue] = useState(
     flags.STRIPE_PAYMENT === "true" ? PayPlanType.PayAsYouGoV0 : PayPlanType.FreetierV0,
@@ -209,7 +209,7 @@ export default function CreateApp() {
             setRadio={setRadioSelectedValue}
           />
           <Button
-            disabled={transition.state === "submitting" || name === ""}
+            disabled={navigation.state === "submitting" || name === ""}
             type="submit"
             variant="filled"
             onClick={() => {

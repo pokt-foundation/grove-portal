@@ -39,6 +39,9 @@ export default function TextInput({
   setRevealed,
   ...props
 }: InputProps) {
+  const hasRightSection =
+    Boolean(props.rightSection) || Boolean(copy) || Boolean(setRevealed)
+
   let rightSection = props.rightSection
 
   if (!rightSection && copy && setRevealed) {
@@ -62,7 +65,7 @@ export default function TextInput({
       <MantineTextInput
         className={clsx({
           "pokt-text-input": true,
-          "right-section": props.rightSection,
+          "right-section": Boolean(hasRightSection),
           iconPadding: iconPadding,
         })}
         rightSection={rightSection}

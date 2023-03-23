@@ -1,4 +1,4 @@
-import { Button, IconPlus, Menu } from "@pokt-foundation/pocket-blocks"
+import { Button, IconPlus, Menu, MenuProps } from "@pokt-foundation/pocket-blocks"
 import React, { SyntheticEvent, useState } from "react"
 import ChainWithImage, { links as ChainWithImageLinks } from "../ChainWithImage"
 import styles from "./styles.css"
@@ -18,7 +18,7 @@ export const links = () => {
 }
 /* c8 ignore stop */
 
-interface AppEndpointProps {
+type AppEndpointProps = MenuProps & {
   blockchains: BlockchainsQuery["blockchains"]
   defaultText: string
   selectedChains: string[]
@@ -32,6 +32,7 @@ export default function ChainsDropdown({
   icon = false,
   selectedChains,
   handleChainClick,
+  ...props
 }: AppEndpointProps) {
   const allChains = blockchains.filter(
     (chain) => chain && !selectedChains.includes(chain.id),
@@ -44,7 +45,7 @@ export default function ChainsDropdown({
 
   return (
     <span className="pokt-chains-dropdown">
-      <Menu>
+      <Menu {...props}>
         <Menu.Target>
           <Button rightIcon={icon && <IconPlus />} size="xs" variant="outline">
             {defaultText || "Add New"}

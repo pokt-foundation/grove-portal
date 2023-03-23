@@ -1,5 +1,5 @@
 import { Button, Text, Switch, Loader } from "@pokt-foundation/pocket-blocks"
-import { useFetcher, useTransition } from "@remix-run/react"
+import { useFetcher, useNavigation } from "@remix-run/react"
 import React, { useState } from "react"
 import styles from "./styles.css"
 import AppEndpointUrl, {
@@ -43,7 +43,7 @@ type WhitelistContractType = Pick<WhitelistContracts, "blockchainID" | "contract
 type WhitelistMethodType = Pick<WhitelistMethods, "blockchainID" | "methods">
 
 export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps) => {
-  const transition = useTransition()
+  const navigation = useNavigation()
 
   type FormatData = {
     id: string
@@ -156,6 +156,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                 setWhitelistBlockchains(addIfMissing(val, whitelistBlockchains))
               }}
               icon={true}
+              id="whitelistBlockchainsDropdown"
               selectedChains={[""]}
             />
           </div>
@@ -278,6 +279,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
           </div>
           <div className="flexGrowRow">
             <ChainsDropdown
+              aria-label={t.security.headings.contracts}
               blockchains={blockchains}
               defaultText={
                 whitelistContractsDropdown !== ""
@@ -287,6 +289,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
               handleChainClick={(val) => {
                 setWhitelistContractsDropdown(val)
               }}
+              id="whitelistContractsDropdown"
               selectedChains={[""]}
             />
             <input
@@ -362,6 +365,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
           </div>
           <div className="flexGrowRow">
             <ChainsDropdown
+              aria-label={t.security.headings.methods}
               blockchains={blockchains}
               defaultText={
                 whitelistMethodsDropdown !== ""
@@ -372,6 +376,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                 setWhitelistMethodsDropdown(val)
               }}
               icon={false}
+              id="whitelistMethodsDropdown"
               selectedChains={[""]}
             />
             <input
@@ -447,7 +452,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
           }}
         >
           {t.common.save}
-          {transition.state !== "idle" && <Loader color="black" ml={8} size="sm" />}
+          {navigation.state !== "idle" && <Loader color="black" ml={8} size="sm" />}
         </Button>
       </securityAction.Form>
     </div>

@@ -15,7 +15,7 @@ import {
   useActionData,
   useFetcher,
   useLoaderData,
-  useTransition,
+  useNavigation,
 } from "@remix-run/react"
 import { Transition } from "@remix-run/react/dist/transition"
 import clsx from "clsx"
@@ -106,7 +106,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
     transferOwnership: false,
   })
 
-  const transition = useTransition()
+  const navigation = useNavigation()
   const actionData = useActionData<ActionData>()
   const { profile } = useLoaderData<TeamLoaderData>()
   const inviteFetcher = useFetcher()
@@ -301,7 +301,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
                 Cancel
               </Button>
               <Button
-                disabled={transition.state === "submitting" || inviteEmail === ""}
+                disabled={navigation.state === "submitting" || inviteEmail === ""}
                 name="type"
                 size="sm"
                 type="submit"

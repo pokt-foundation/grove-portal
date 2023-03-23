@@ -1,5 +1,5 @@
 import { LoaderFunction, json, MetaFunction } from "@remix-run/node"
-import { useLoaderData, useTransition } from "@remix-run/react"
+import { useLoaderData, useNavigation } from "@remix-run/react"
 import { useEffect } from "react"
 import { Block } from "~/models/indexer/sdk"
 import { initPoktScanClient } from "~/models/poktscan/poktscan.server"
@@ -131,7 +131,7 @@ export default function Index() {
     poktscanLatestBlock,
     poktscanChains,
   } = useLoaderData() as NetworkLoaderData
-  const { state } = useTransition()
+  const navigation = useNavigation()
 
   useEffect(() => {
     trackEvent(AmplitudeEvents.NetworkView)
@@ -145,7 +145,7 @@ export default function Index() {
       monthlyNetworkRelays={monthlyNetworkRelays}
       poktscanChains={poktscanChains}
       poktscanLatestBlock={poktscanLatestBlock}
-      state={state}
+      state={navigation.state}
       weeklyNetworkRelays={weeklyNetworkRelays}
     />
   )

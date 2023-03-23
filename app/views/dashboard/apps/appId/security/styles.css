@@ -75,7 +75,6 @@
 .security button[type="submit"] {
   align-self: end;
   width: 160px;
-  color: var(--mantine-color-navy-6);
 }
 
 .security .pokt-text {

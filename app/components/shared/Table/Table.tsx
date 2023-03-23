@@ -4,16 +4,16 @@ import {
   Pagination,
   Text,
   IconSearch,
+  TextInput,
   Box,
 } from "@pokt-foundation/pocket-blocks"
 import { useMemo, useState } from "react"
 import styles from "./styles.css"
-import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { useTranslate } from "~/context/TranslateContext"
 
 /* c8 ignore start */
 export const links = () => {
-  return [...TextInputLinks(), { rel: "stylesheet", href: styles }]
+  return [{ rel: "stylesheet", href: styles }]
 }
 /* c8 ignore stop */
 

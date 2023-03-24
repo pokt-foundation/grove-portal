@@ -252,7 +252,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
               placeholder="new@server.com"
               type="email"
               value={inviteEmail}
-              onChange={(e) => setInviteEmail(e.target.value)}
+              onChange={(e) => setInviteEmail(e.target.value.toLowerCase())}
             />
             <input
               hidden

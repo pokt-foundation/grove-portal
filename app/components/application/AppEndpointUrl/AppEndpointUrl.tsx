@@ -1,10 +1,10 @@
+import { Button, IconDeleteAlt } from "@pokt-foundation/pocket-blocks"
 import styles from "./styles.css"
 import ChainWithImage from "~/components/application/ChainWithImage"
+import CopyTextIcon from "~/components/shared/CopyTextIcon"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { InputProps } from "~/components/shared/TextInput"
 import { Blockchain } from "~/models/portal/sdk"
-import { Button, IconDeleteAlt } from "@pokt-foundation/pocket-blocks"
-import CopyTextIcon from "~/components/shared/CopyTextIcon"
 
 /* c8 ignore start */
 export const links = () => {

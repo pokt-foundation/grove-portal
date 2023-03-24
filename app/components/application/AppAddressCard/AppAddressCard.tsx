@@ -10,11 +10,11 @@ import clsx from "clsx"
 import { useState } from "react"
 import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/shared/Card"
+import CopyTextIcon from "~/components/shared/CopyTextIcon"
+import RevealIcon from "~/components/shared/RevealIcon"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { useTranslate } from "~/context/TranslateContext"
 import { ProcessedEndpoint } from "~/models/portal/sdk"
-import CopyTextIcon from "~/components/shared/CopyTextIcon"
-import RevealIcon from "~/components/shared/RevealIcon"
 
 /* c8 ignore start */
 export const links = () => {

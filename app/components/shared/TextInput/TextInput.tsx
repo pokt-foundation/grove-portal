@@ -33,8 +33,8 @@ export default function TextInput({
           "pokt-text-input": true,
           "right-section": props.rightSection,
         })}
-        size={props.size ?? "md"}
         rightSection={props.rightSection}
+        size={props.size ?? "md"}
         variant={props.variant ?? "unstyled"}
         {...props}
       />

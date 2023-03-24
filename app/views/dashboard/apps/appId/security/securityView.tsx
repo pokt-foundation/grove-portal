@@ -10,6 +10,7 @@ import ChainsDropdown, {
   links as ChainsDropdownLinks,
 } from "~/components/application/ChainsDropdown/ChainsDropdown"
 import Card, { links as CardLinks } from "~/components/shared/Card"
+import CopyTextIcon from "~/components/shared/CopyTextIcon"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { useTranslate } from "~/context/TranslateContext"
 import {
@@ -21,7 +22,6 @@ import {
 import { Blockchain, EndpointQuery } from "~/models/portal/sdk"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { CHAIN_ID_PREFIXES } from "~/utils/chainUtils"
-import CopyTextIcon from "~/components/shared/CopyTextIcon"
 
 /* c8 ignore start */
 export const links = () => {

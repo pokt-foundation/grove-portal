@@ -2,9 +2,9 @@ import { Button, Space } from "@pokt-foundation/pocket-blocks"
 import { useState } from "react"
 import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/shared/Card"
-import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import CopyTextIcon from "~/components/shared/CopyTextIcon"
 import RevealIcon from "~/components/shared/RevealIcon"
+import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 
 /* c8 ignore start */
 export const links = () => {
@@ -41,13 +41,13 @@ export default function AppKeysCard({
             <Space h="sm" />
             <TextInput
               readOnly
+              label="Secret Key"
               rightSection={
                 <RevealIcon
                   revealed={secretHidden}
                   setRevealed={() => setSecretHidden(!secretHidden)}
                 />
               }
-              label="Secret Key"
               type={secretHidden ? "password" : "text"}
               value={secret}
             >
@@ -62,13 +62,13 @@ export default function AppKeysCard({
             <Space h="sm" />
             <TextInput
               readOnly
+              label="Public Key"
               rightSection={
                 <RevealIcon
                   revealed={publicKeyHidden}
                   setRevealed={() => setPublicKeyHidden(!publicKeyHidden)}
                 />
               }
-              label="Public Key"
               type={publicKeyHidden ? "password" : "text"}
               value={publicKey}
             >

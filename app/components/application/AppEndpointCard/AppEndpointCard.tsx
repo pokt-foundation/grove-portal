@@ -1,3 +1,5 @@
+import { Grid } from "@mantine/core"
+import { Box, Button, Text } from "@pokt-foundation/pocket-blocks"
 import { useEffect, useMemo } from "react"
 import ChainsDropdown, { links as ChainsDropdownLinks } from "../ChainsDropdown"
 import styles from "./styles.css"
@@ -8,15 +10,13 @@ import ChainWithImage, {
   links as ChainWithImageLinks,
 } from "~/components/application/ChainWithImage"
 import { Card, links as CardLinks } from "~/components/shared/Card"
+import CopyTextIcon from "~/components/shared/CopyTextIcon"
+import HelpTooltip from "~/components/shared/HelpTooltip"
+import DocsIcon from "~/components/shared/Icons/DocsIcon"
+import TextInput from "~/components/shared/TextInput"
 import { useUser } from "~/context/UserContext"
 import { Blockchain, BlockchainsQuery, EndpointQuery } from "~/models/portal/sdk"
 import { ChainMetadata, prefixFromChainId } from "~/utils/chainUtils"
-import { Grid } from "@mantine/core"
-import { Box, Button, Text } from "@pokt-foundation/pocket-blocks"
-import HelpTooltip from "~/components/shared/HelpTooltip"
-import TextInput from "~/components/shared/TextInput"
-import DocsIcon from "~/components/shared/Icons/DocsIcon"
-import CopyTextIcon from "~/components/shared/CopyTextIcon"
 
 /* c8 ignore start */
 export const links = () => {
@@ -156,8 +156,8 @@ export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) 
             )
           })}
         <Grid
-          justify="space-between"
           align="start"
+          justify="space-between"
           sx={{
             margin: "2em 0 0",
             paddingTop: "2em",
@@ -177,15 +177,17 @@ export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) 
               }}
             >
               <Grid align="center" m={0}>
-                <Text weight={600} size="lg" mr="0.5em">Your Data API</Text>
-                <Text weight={400} size="sm" mr="0.5em">
+                <Text mr="0.5em" size="lg" weight={600}>
+                  Your Data API
+                </Text>
+                <Text mr="0.5em" size="sm" weight={400}>
                   (powered by Covalent)
                 </Text>
                 <HelpTooltip label={"Help"} />
               </Grid>
               <Button className="pokt-button-outline" color="blue" variant="outline">
                 <Text className="pokt-button-outline-text">
-                  <a href="https://www.covalenthq.com/docs/api/" target="_blank">
+                  <a href="https://www.covalenthq.com/docs/api/" rel="noreferrer" target="_blank">
                     Docs
                   </a>
                 </Text>

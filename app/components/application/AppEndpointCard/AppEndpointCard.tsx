@@ -187,7 +187,11 @@ export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) 
               </Grid>
               <Button className="pokt-button-outline" color="blue" variant="outline">
                 <Text className="pokt-button-outline-text">
-                  <a href="https://www.covalenthq.com/docs/api/" rel="noreferrer" target="_blank">
+                  <a
+                    href="https://www.covalenthq.com/docs/api/"
+                    rel="noreferrer"
+                    target="_blank"
+                  >
                     Docs
                   </a>
                 </Text>

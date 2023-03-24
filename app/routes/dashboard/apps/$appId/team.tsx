@@ -83,7 +83,7 @@ export const action: ActionFunction = async ({ request, params }) => {
       const { createEndpointUser } = await portal.createEndpointUser({
         endpointID: appId,
         input: {
-          email,
+          email: email.toLowerCase(),
           roleName: roleName === "ADMIN" ? RoleName.Admin : RoleName.Member,
         },
       })

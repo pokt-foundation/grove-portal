@@ -224,8 +224,7 @@ export default function App() {
         protected: Protected.Public, // show this link to all. dashboard layout handles redirect to login.
       },
       {
-        to: "https://docs.pokt.network",
-        external: true,
+        to: "/docs",
         label: t.dashboard.routes.docs,
         icon: IconBookOpen,
         protected: Protected.Public,

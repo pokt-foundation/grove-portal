@@ -11,6 +11,7 @@ import {
   Navbar,
   NavLink,
   Text,
+  Title,
 } from "@pokt-foundation/pocket-blocks"
 import { json, LinksFunction, LoaderFunction, MetaFunction } from "@remix-run/node"
 import {
@@ -94,14 +95,16 @@ export default function Docs() {
     <AppShell
       fixed={false}
       header={
-        <Header height={60}>
+        <Header height={60} sx={{ backgroundColor: "transparent" }}>
           <Group>
             <MediaQuery largerThan="sm" styles={{ display: "none" }}>
               <Button onClick={() => setAppShellOpen((o) => !o)}>
                 <IconMenu />
               </Button>
             </MediaQuery>
-            <Text>Documentation</Text>
+            <Title order={1} sx={(theme) => ({ fontSize: theme.fontSizes.md })}>
+              Portal Documentation
+            </Title>
           </Group>
         </Header>
       }

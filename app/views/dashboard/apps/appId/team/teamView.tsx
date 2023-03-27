@@ -400,8 +400,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
           label="Users"
           paginate={endpoint.users.length > 10 ? { perPage: 10 } : undefined}
           rightComponent={
-            isOwnerUser ||
-            (isAdminUser && (
+            isOwnerUser || isAdminUser ? (
               <Button
                 rightIcon={<IconPlus height={18} width={18} />}
                 size="xs"
@@ -410,7 +409,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
               >
                 Invite new user
               </Button>
-            ))
+            ) : null
           }
         />
       </Card>
@@ -418,7 +417,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
         opened={confirmationModalProps.isActive}
         padding={20}
         size={429}
-        title="Deleting an user"
+        title="Deleting a user"
         onClose={() => {
           setConfirmationModalProps({ ...confirmationModalProps, isActive: false })
         }}

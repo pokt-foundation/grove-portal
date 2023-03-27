@@ -431,7 +431,7 @@ export const AppsView = ({
       <Modal
         opened={isDeleteModalOptions.isOpen}
         padding={20}
-        title="Deleting an user"
+        title="Deleting a user"
         onClose={() => {
           setAppToDeleteID("")
           setIsDeleteModalOptions((prevOptions) => ({ ...prevOptions, isOpen: false }))

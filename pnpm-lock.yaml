@@ -51,7 +51,7 @@ specifiers:
   eslint-config-prettier: ^8.5.0
   form-data: ^4.0.0
   graphql: ^16.5.0
-  graphql-request: 5.2.0
+  graphql-request: 5.1.0
   graphql-tag: ^2.12.6
   html-react-parser: ^3.0.8
   husky: ^8.0.0

@@ -7,5 +7,3 @@ generates:
       - "typescript"
       - "typescript-operations"
       - "typescript-graphql-request"
-    hooks:
-      afterOneFileWrite: 'sed -i "" "s/graphql-request\/dist/graphql-request\/src/g"'

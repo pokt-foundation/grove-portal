@@ -7,7 +7,7 @@ import { useTranslate } from "~/context/TranslateContext"
 import { PayPlanType } from "~/models/portal/sdk"
 import { ProcessedEndpoint } from "~/models/portal/sdk"
 import { Stripe } from "~/models/stripe/stripe.server"
-import { StripeDeleteActionData } from "~/routes/api/stripe/api.stripe.subscription"
+import { StripeDeleteActionData } from "~/routes/api.stripe.subscription"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { isPaidPlan } from "~/utils/utils"
 

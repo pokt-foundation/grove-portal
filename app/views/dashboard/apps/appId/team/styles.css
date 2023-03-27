@@ -30,6 +30,11 @@
   align-items: center;
 }
 
+.confirmation-modal-options {
+  display: flex;
+  align-items: center;
+}
+
 .confirmation-modal-options button {
   padding: 12px 56.5px;
   font-weight: normal;

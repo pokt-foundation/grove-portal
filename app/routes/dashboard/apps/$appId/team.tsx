@@ -152,7 +152,7 @@ export const action: ActionFunction = async ({ request, params }) => {
       }
 
       if (!updateEndpointUserRole) {
-        throw new Error("Erorr updating user role")
+        throw new Error("Error updating user role")
       }
 
       return json<ActionData>({

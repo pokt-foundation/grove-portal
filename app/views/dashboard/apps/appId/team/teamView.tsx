@@ -206,6 +206,13 @@ function TeamView({ state, endpoint }: TeamViewProps) {
         setInviteEmail("")
       } else if (actionData.type === "updateRole") {
         if (actionData.error) {
+          setNotificationMessageProps({
+            type: "error",
+            isActive: true,
+            title: "Role change error",
+            description:
+              "We had an issue updating the user role. Please try again later.",
+          })
           return
         }
 

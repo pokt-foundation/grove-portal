@@ -19,6 +19,7 @@ describe("<AppPlanDetails />", () => {
       <AppPlanDetails
         dailyLimit={unlimited}
         id={id}
+        isMember={false}
         name={name}
         planType={paidPlan}
         subscription={subscription}
@@ -37,6 +38,7 @@ describe("<AppPlanDetails />", () => {
       <AppPlanDetails
         dailyLimit={unlimited}
         id={id}
+        isMember={false}
         name={name}
         planType={paidPlan}
         subscription={subscription}
@@ -52,6 +54,7 @@ describe("<AppPlanDetails />", () => {
       <AppPlanDetails
         dailyLimit={dailyLimit}
         id={id}
+        isMember={false}
         name={name}
         planType={freePlan}
         subscription={subscription}
@@ -70,6 +73,7 @@ describe("<AppPlanDetails />", () => {
       <AppPlanDetails
         dailyLimit={dailyLimit}
         id={id}
+        isMember={false}
         name={name}
         planType={paidPlan}
         subscription={subscription}
@@ -85,6 +89,7 @@ describe("<AppPlanDetails />", () => {
       <AppPlanDetails
         dailyLimit={dailyLimit}
         id={id}
+        isMember={false}
         name={name}
         planType={freePlan}
         subscription={undefined}
@@ -100,6 +105,7 @@ describe("<AppPlanDetails />", () => {
       <AppPlanDetails
         dailyLimit={dailyLimit}
         id={id}
+        isMember={false}
         name={name}
         // @ts-ignore next
         planType={""}
@@ -118,6 +124,7 @@ describe("<AppPlanDetails />", () => {
       <AppPlanDetails
         dailyLimit={dailyLimit}
         id={id}
+        isMember={false}
         name={name}
         planType={freePlan}
         subscription={subscription}

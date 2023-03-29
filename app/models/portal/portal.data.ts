@@ -1,4 +1,14 @@
-import { AppStatus, Blockchain, PayPlanType, ProcessedEndpoint } from "./sdk"
+import { Auth0Profile } from "remix-auth-auth0"
+import {
+  AppStatus,
+  Blockchain,
+  EndpointsQuery,
+  PayPlanType,
+  ProcessedEndpoint,
+  RoleName,
+} from "./sdk"
+
+const testEmail = "test@test.test"
 
 export const endpoint: ProcessedEndpoint = {
   appLimits: {
@@ -43,16 +53,27 @@ export const endpoint: ProcessedEndpoint = {
   updatedAt: "2022-08-22 15:55:11.288274 +0000 UTC",
   userId: "62fd1d49a6eba977fd212c23",
   applications: [],
-  users: [],
+  users: [
+    {
+      accepted: true,
+      email: testEmail,
+      roleName: RoleName.Admin,
+    },
+  ],
 }
 
-export const endpoints: ProcessedEndpoint[] = Array(2).fill(endpoint)
+export const endpoints: EndpointsQuery = {
+  admin: [endpoint],
+  member: [endpoint],
+  owner: [endpoint],
+  pending: [endpoint],
+  __typename: "Query",
+}
 
 export const blockchains: Blockchain[] = [
   {
     id: "0002",
     ticker: "BTC",
-    network: "BTC",
     description: "Bitcoin",
     blockchain: "btc-mainnet",
     active: false,
@@ -65,7 +86,6 @@ export const blockchains: Blockchain[] = [
   {
     id: "0027",
     ticker: "GNO",
-    network: "POA-100",
     description: "Gnosis Chain Mainnet",
     blockchain: "poa-xdai",
     active: false,
@@ -78,7 +98,6 @@ export const blockchains: Blockchain[] = [
   {
     id: "0004",
     ticker: "BSC",
-    network: "BSC",
     description: "Binance Smart Chain",
     blockchain: "bsc-mainnet",
     active: false,
@@ -91,7 +110,6 @@ export const blockchains: Blockchain[] = [
   {
     id: "0021",
     ticker: "ETH",
-    network: "ETH-1",
     description: "Ethereum Mainnet",
     blockchain: "eth-mainnet",
     active: false,
@@ -104,7 +122,6 @@ export const blockchains: Blockchain[] = [
   {
     id: "0022",
     ticker: "ETH",
-    network: "ETH-1-ARCHIVAL",
     description: "Ethereum Mainnet Archival",
     blockchain: "eth-archival",
     active: false,
@@ -117,7 +134,6 @@ export const blockchains: Blockchain[] = [
   {
     id: "0044",
     ticker: "IOT",
-    network: "IOT-1",
     description: "IoTeX Mainnet",
     blockchain: "iotex-mainnet",
     active: false,
@@ -130,7 +146,6 @@ export const blockchains: Blockchain[] = [
   {
     id: "0025",
     ticker: "ETH",
-    network: "ETH-4",
     description: "Rinkeby",
     blockchain: "eth-rinkeby",
     active: false,
@@ -143,7 +158,6 @@ export const blockchains: Blockchain[] = [
   {
     id: "0009",
     ticker: "POLY",
-    network: "POLY",
     description: "Polygon Matic",
     blockchain: "poly-mainnet",
     active: false,
@@ -156,7 +170,6 @@ export const blockchains: Blockchain[] = [
   {
     id: "0001",
     ticker: "POKT",
-    network: "POKT-mainnet",
     description: "Pocket Network Mainnet",
     blockchain: "mainnet",
     active: false,
@@ -169,7 +182,6 @@ export const blockchains: Blockchain[] = [
   {
     id: "000B",
     ticker: "POLY",
-    network: "POLY",
     description: "Polygon Matic Archival",
     blockchain: "poly-archival",
     active: false,
@@ -182,7 +194,6 @@ export const blockchains: Blockchain[] = [
   {
     id: "0046",
     ticker: "EVM",
-    network: "evmos_9001-2",
     description: "Evmos Mainnet",
     blockchain: "evmos-mainnet",
     active: false,
@@ -195,7 +206,6 @@ export const blockchains: Blockchain[] = [
   {
     id: "0040",
     ticker: "HMY",
-    network: "HMY",
     description: "Harmony Shard 0",
     blockchain: "harmony-0",
     active: false,
@@ -208,7 +218,6 @@ export const blockchains: Blockchain[] = [
   {
     id: "0010",
     ticker: "BSC",
-    network: "BSC-ARCHIVAL",
     description: "Binance Smart Chain (Archival)",
     blockchain: "bsc-archival",
     active: false,
@@ -221,7 +230,6 @@ export const blockchains: Blockchain[] = [
   {
     id: "00A3",
     ticker: "AVAX",
-    network: "AVAX",
     description: "AVAX Archival",
     blockchain: "avax-archival",
     active: false,
@@ -234,7 +242,6 @@ export const blockchains: Blockchain[] = [
   {
     id: "0003",
     ticker: "AVAX",
-    network: "AVAX",
     description: "AVAX",
     blockchain: "avax-mainnet",
     active: false,
@@ -247,7 +254,6 @@ export const blockchains: Blockchain[] = [
   {
     id: "0029",
     ticker: "Algo",
-    network: "Algo",
     description: "Algorand Mainnet",
     blockchain: "algo-mainnet",
     active: false,
@@ -260,7 +266,6 @@ export const blockchains: Blockchain[] = [
   {
     id: "0024",
     ticker: "POA",
-    network: "POA-42",
     description: "Kovan",
     blockchain: "poa-kovan",
     active: false,
@@ -273,7 +278,6 @@ export const blockchains: Blockchain[] = [
   {
     id: "000A",
     ticker: "FUSE",
-    network: "FUSE",
     description: "Fuse Archival",
     blockchain: "fuse-archival",
     active: false,
@@ -286,7 +290,6 @@ export const blockchains: Blockchain[] = [
   {
     id: "0026",
     ticker: "ETH",
-    network: "ETH-5",
     description: "Goerli",
     blockchain: "eth-goerli",
     active: false,
@@ -299,7 +302,6 @@ export const blockchains: Blockchain[] = [
   {
     id: "000D",
     ticker: "Algo",
-    network: "Algo",
     description: "Algorand Archival",
     blockchain: "algo-archival",
     active: false,
@@ -312,7 +314,6 @@ export const blockchains: Blockchain[] = [
   {
     id: "0006",
     ticker: "SOL",
-    network: "SOL",
     description: "Solana",
     blockchain: "solana-mainnet",
     active: false,
@@ -325,7 +326,6 @@ export const blockchains: Blockchain[] = [
   {
     id: "000C",
     ticker: "POA",
-    network: "POA-100",
     description: "Gnosis Chain Archival",
     blockchain: "poa-xdai-archival",
     active: false,
@@ -338,7 +338,6 @@ export const blockchains: Blockchain[] = [
   {
     id: "0028",
     ticker: "ETH",
-    network: "ETH-1-ARCHIVAL",
     description: "Ethereum Mainnet Archival with trace calls",
     blockchain: "eth-trace",
     active: false,
@@ -351,7 +350,6 @@ export const blockchains: Blockchain[] = [
   {
     id: "0023",
     ticker: "ETH",
-    network: "ETH-3",
     description: "Ropsten",
     blockchain: "eth-ropsten",
     active: false,
@@ -364,7 +362,6 @@ export const blockchains: Blockchain[] = [
   {
     id: "0047",
     ticker: "OKC",
-    network: "OKC-66",
     description: "OKC Mainnet",
     blockchain: "oKc-mainnet",
     active: false,
@@ -377,7 +374,6 @@ export const blockchains: Blockchain[] = [
   {
     id: "0048",
     ticker: "BOBA",
-    network: "",
     description: "BOBA Mainnet",
     blockchain: "boba-mainnet",
     active: false,
@@ -390,7 +386,6 @@ export const blockchains: Blockchain[] = [
   {
     id: "03DF",
     ticker: "AVAX_DFK",
-    network: "AVAX",
     description: "AVAX_DFK",
     blockchain: "avax-dfk",
     active: false,
@@ -403,7 +398,6 @@ export const blockchains: Blockchain[] = [
   {
     id: "0049",
     ticker: "FTM",
-    network: "FTM",
     description: "Fantom Mainnet",
     blockchain: "fantom-mainnet",
     active: false,
@@ -416,7 +410,6 @@ export const blockchains: Blockchain[] = [
   {
     id: "03CB",
     ticker: "CRA",
-    network: "",
     description: "AVAX_CRA",
     blockchain: "avax-cra",
     active: false,
@@ -429,7 +422,6 @@ export const blockchains: Blockchain[] = [
   {
     id: "0052",
     ticker: "NEAR",
-    network: "",
     description: "NEAR Mainnet",
     blockchain: "near-mainnet",
     active: false,
@@ -442,7 +434,6 @@ export const blockchains: Blockchain[] = [
   {
     id: "0050",
     ticker: "GLMR",
-    network: "",
     description: "Moonbeam Mainnet",
     blockchain: "moonbeam-mainnet",
     active: false,
@@ -455,7 +446,6 @@ export const blockchains: Blockchain[] = [
   {
     id: "0051",
     ticker: "MOVR",
-    network: "",
     description: "Moonriver Mainnet",
     blockchain: "moonriver-mainnet",
     active: false,
@@ -468,7 +458,6 @@ export const blockchains: Blockchain[] = [
   {
     id: "0005",
     ticker: "FUSE",
-    network: "FUSE",
     description: "Fuse",
     blockchain: "fuse-mainnet",
     active: false,
@@ -481,7 +470,6 @@ export const blockchains: Blockchain[] = [
   {
     id: "0053",
     ticker: "OP",
-    network: "",
     description: "Optimism Mainnet",
     blockchain: "optimism-mainnet",
     active: false,
@@ -494,7 +482,6 @@ export const blockchains: Blockchain[] = [
   {
     id: "0054",
     ticker: "OSMO",
-    network: "",
     description: "Osmosis Mainnet",
     blockchain: "osmosis-mainnet",
     active: false,
@@ -505,3 +492,79 @@ export const blockchains: Blockchain[] = [
     blockchainAliases: ["osmosis-mainnet"],
   },
 ]
+
+export const teamsMockData = [
+  {
+    id: 0,
+    app: "AppA",
+    accepted: true,
+    roleName: "ADMIN",
+  },
+  {
+    id: 1,
+    app: "AppB",
+    accepted: true,
+    roleName: "MEMBER",
+  },
+  {
+    id: 2,
+    app: "AppC",
+    accepted: false,
+    roleName: "MEMBER",
+  },
+  {
+    id: 3,
+    app: "AppD",
+    accepted: false,
+    roleName: "ADMIN",
+  },
+  {
+    id: 4,
+    app: "AppE",
+    accepted: false,
+    roleName: "ADMIN",
+  },
+] as const
+
+export const profileMockData: Auth0Profile = {
+  provider: "auth0",
+  displayName: testEmail,
+  id: "auth0|53bede86ac0efcc90f641962",
+  name: {
+    familyName: "",
+    givenName: "",
+    middleName: "",
+  },
+  emails: [{ value: testEmail }],
+  photos: [
+    {
+      value:
+        "https://s.gravatar.com/avatar/c24291e8d1c27961558174cd37c09632?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fde.png",
+    },
+  ],
+  _json: {
+    sub: "auth0|53bede86ac0efcc90f641962",
+    nickname: "test",
+    name: testEmail,
+    picture:
+      "https://s.gravatar.com/avatar/c24291e8d1c27961558174cd37c09632?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fde.png",
+    updated_at: "2023-03-06T17:08:45.125Z",
+    email: testEmail,
+    email_verified: true,
+    given_name: "",
+    family_name: "",
+    middle_name: "",
+    preferred_username: "",
+    profile: "",
+    website: "",
+    gender: "",
+    birthdate: "",
+    zoneinfo: "",
+    locale: "",
+    phone_number: "",
+    phone_number_verified: false,
+    address: {
+      country: "",
+    },
+  },
+}

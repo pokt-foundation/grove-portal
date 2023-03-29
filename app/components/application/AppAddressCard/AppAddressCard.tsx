@@ -4,6 +4,7 @@ import {
   IconCaretUp,
   Collapse,
   Divider,
+  Text,
 } from "@pokt-foundation/pocket-blocks"
 import clsx from "clsx"
 import { useState } from "react"
@@ -28,6 +29,10 @@ export default function AppAddressCard({ apps }: AppAddressCardProps) {
     t: { appAddressCard },
   } = useTranslate()
   const [showAllApps, setShowAllApps] = useState(false)
+  const [hiddenIds, setHiddenIds] = useState<string[]>(() => {
+    // all ids are hidden by default
+    return apps?.length ? apps?.map(({ appId }) => appId) : []
+  })
   const visibleApps = apps ? apps.slice(0, 3) : apps
   const hiddenApps = apps ? apps.slice(3) : undefined
 
@@ -41,11 +46,30 @@ export default function AppAddressCard({ apps }: AppAddressCardProps) {
       <Card>
         <div className="flexContainer">
           <h3>{appAddressCard.heading}</h3>
-          {apps && apps.length > 0 && <p>{apps.length}</p>}
+          {apps && apps.length > 0 && <Text m="0">{apps.length}</Text>}
         </div>
         {visibleApps && visibleApps.length > 0 ? (
-          visibleApps.map((item) =>
-            item ? <TextInput key={item.appId} copy readOnly value={item.appId} /> : null,
+          visibleApps.map(({ appId }) =>
+            appId ? (
+              <TextInput
+                key={appId}
+                copy
+                readOnly
+                revealed={hiddenIds.includes(appId)}
+                setRevealed={() =>
+                  setHiddenIds(
+                    hiddenIds.includes(appId)
+                      ? hiddenIds.filter((app) => app !== appId)
+                      : [...hiddenIds, appId],
+                  )
+                }
+                // Check either if the appId is or isn't included in the hiddenIds array,
+                // if it is, remove it
+                // if it's not, add it
+                type={hiddenIds.includes(appId) ? "password" : "text"}
+                value={appId}
+              />
+            ) : null,
           )
         ) : (
           <p>{appAddressCard.error}</p>
@@ -53,9 +77,26 @@ export default function AppAddressCard({ apps }: AppAddressCardProps) {
         {hiddenApps && hiddenApps.length > 0 && (
           <>
             <Collapse in={showAllApps}>
-              {hiddenApps.map((item) =>
-                item ? (
-                  <TextInput key={item.appId} copy readOnly value={item.appId} />
+              {hiddenApps.map(({ appId }) =>
+                appId ? (
+                  <TextInput
+                    key={appId}
+                    copy
+                    readOnly
+                    revealed={hiddenIds.includes(appId)}
+                    setRevealed={() =>
+                      setHiddenIds(
+                        hiddenIds.includes(appId)
+                          ? hiddenIds.filter((app) => app !== appId)
+                          : [...hiddenIds, appId],
+                      )
+                    }
+                    // Check either if the appId is or isn't included in the hiddenIds array,
+                    // if it is, remove it
+                    // if it's not, add it
+                    type={hiddenIds.includes(appId) ? "password" : "text"}
+                    value={appId}
+                  />
                 ) : null,
               )}
             </Collapse>

@@ -1,9 +1,16 @@
 import { ActionFunction, LoaderFunction, json } from "@remix-run/node"
-import { Auth0Profile } from "remix-auth-auth0"
+import { Auth0ExtraParams, Auth0Profile } from "remix-auth-auth0"
 import { Language } from "~/context/TranslateContext"
 import { UserPreference, defaultUserPreference } from "~/context/UserContext"
 import { userPrefCookie } from "~/utils/cookies.server"
 import { getUserProfile } from "~/utils/session.server"
+
+export type PocketUser = {
+  profile: Auth0Profile
+  extraParams: Auth0ExtraParams
+  accessToken: string
+  refreshToken: string
+}
 
 export interface UserLoaderActionData {
   profile: Auth0Profile | undefined

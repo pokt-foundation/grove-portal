@@ -3,7 +3,7 @@ import { vi, expect } from "vitest"
 import AppIdLayoutView from "./appIdLayoutView"
 import { render, screen } from "test/helpers"
 import t from "~/locales/en"
-import { endpoint } from "~/models/portal/portal.data"
+import { endpoint, profileMockData } from "~/models/portal/portal.data"
 import { PayPlanType } from "~/models/portal/sdk"
 import { subscription } from "~/models/stripe/stripe.data"
 
@@ -31,6 +31,7 @@ describe("<AppIdLayoutView />", () => {
         setSearchParams={setSearchParams}
         subscription={subscription}
         updatePlanFetcher={updatePlanFetcherMock}
+        user={profileMockData}
       />,
     )
 
@@ -46,6 +47,7 @@ describe("<AppIdLayoutView />", () => {
         setSearchParams={setSearchParams}
         subscription={subscription}
         updatePlanFetcher={updatePlanFetcherMock}
+        user={profileMockData}
       />,
     )
 
@@ -59,6 +61,7 @@ describe("<AppIdLayoutView />", () => {
         setSearchParams={setSearchParams}
         subscription={subscription}
         updatePlanFetcher={updatePlanFetcherMock}
+        user={profileMockData}
       />,
     )
 
@@ -84,6 +87,7 @@ describe("<AppIdLayoutView />", () => {
         setSearchParams={setSearchParams}
         subscription={subscription}
         updatePlanFetcher={updatePlanFetcherMock}
+        user={profileMockData}
       />,
     )
 
@@ -109,6 +113,7 @@ describe("<AppIdLayoutView />", () => {
         setSearchParams={setSearchParams}
         subscription={subscription}
         updatePlanFetcher={updatePlanFetcherMock}
+        user={profileMockData}
       />,
     )
 
@@ -135,6 +140,7 @@ describe("<AppIdLayoutView />", () => {
         setSearchParams={setSearchParams}
         subscription={subscription}
         updatePlanFetcher={updatePlanFetcherMock}
+        user={profileMockData}
       />,
     )
 
@@ -163,6 +169,7 @@ describe("<AppIdLayoutView />", () => {
         setSearchParams={setSearchParams}
         subscription={subscription}
         updatePlanFetcher={updatePlanFetcherMock}
+        user={profileMockData}
       />,
     )
 
@@ -179,6 +186,7 @@ describe("<AppIdLayoutView />", () => {
         setSearchParams={setSearchParams}
         subscription={subscription}
         updatePlanFetcher={updatePlanFetcherMock}
+        user={profileMockData}
       />,
     )
 
@@ -196,6 +204,7 @@ describe("<AppIdLayoutView />", () => {
         setSearchParams={setSearchParams}
         subscription={subscription}
         updatePlanFetcher={updatePlanFetcherMock}
+        user={profileMockData}
       />,
     )
 
@@ -215,6 +224,7 @@ describe("<AppIdLayoutView />", () => {
         setSearchParams={setSearchParams}
         subscription={subscription}
         updatePlanFetcher={updatePlanFetcherMock}
+        user={profileMockData}
       />,
     )
 

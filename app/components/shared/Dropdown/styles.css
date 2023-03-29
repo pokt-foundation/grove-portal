@@ -4,9 +4,10 @@
   align-items: center;
   background-color: transparent;
   padding: 8px;
-  border: 1px solid var(--color-primary-main);
+  border: none;
   border-radius: 4px;
   color: var(--color-white-main);
+  background-color: var(--color-black-main);
 }
 
 .pokt-dropdown-trigger:hover {
@@ -24,17 +25,16 @@
 .pokt-dropdown-content {
   margin-top: 8px;
   padding: 16px;
-  background: linear-gradient(123.23deg, #141c24 11.81%, var(--color-black-light) 98.51%);
-  border: 1px solid var(--color-primary-main);
+  background: #11171d;
+  border: 1px solid #ced4da;
   border-radius: 4px;
   color: var(--color-white-light);
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 500;
-  min-width: 280px;
 }
 
 .pokt-dropdown-content > * {
-  margin: 1em 0;
+  margin: 0.5em 0;
 }
 
 .pokt-dropdown-content div[role="menuitem"] {
@@ -45,13 +45,78 @@
   border: 1px solid #32404f;
 }
 
-.pokt-dropdown-content button {
-  border: none;
-  color: var(--color-white-light);
-  padding: 0;
-}
-
 .pokt-dropdown-content h5 {
   font-size: 18px;
   margin: 0.5em 0;
+}
+
+.dropdown-trigger {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dropdown-trigger__arrow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 8px;
+  padding: 6px;
+  background: #18222c;
+  border: 1px solid #222e3b;
+  border-radius: 2px;
+}
+
+.dropdown-item {
+  all: unset;
+  display: block;
+  box-sizing: border-box;
+  padding: 8px 12px;
+  min-width: 152px;
+  border-radius: 2px;
+  color: var(--color-white-main);
+  background-color: #293746;
+  cursor: pointer;
+}
+
+.dropdown-item:not(:first-child) {
+  margin-top: 4px;
+}
+
+.dropdown-item:hover:not(:first-child) {
+  margin-top: 4px;
+}
+
+.dropdown-item:hover {
+  all: unset;
+  display: block;
+  box-sizing: border-box;
+  padding: 8px 12px;
+  min-width: 152px;
+  border-radius: 2px;
+  color: var(--color-white-main);
+  background-color: #29374680;
+  cursor: pointer;
+}
+
+.dropdown-item--green {
+  background-color: var(--color-primary-main);
+  color: var(--color-black-main);
+}
+
+.dropdown-item--green:hover {
+  background-color: var(--color-primary-light);
+  color: var(--color-black-main);
+}
+
+.dropdown-teams__content {
+  padding: 4px;
+}
+
+.dropdown-trigger__label {
+  text-transform: lowercase;
+}
+
+.dropdown-trigger__label::first-letter {
+  text-transform: uppercase;
 }

@@ -167,7 +167,10 @@ function UserMenuDropdown({ user, routes }: UserMenuDropdownProps) {
   return (
     <>
       {user && (
-        <Dropdown label={<IconUser fill="var(--color-white-light)" />}>
+        <Dropdown
+          contentClassName="dropdown-user-menu__content"
+          label={<IconUser fill="var(--color-white-light)" />}
+        >
           {routes.map(({ el, id: routeID }, index) => {
             const El = el
             return (

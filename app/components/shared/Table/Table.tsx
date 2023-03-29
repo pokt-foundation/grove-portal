@@ -1,5 +1,10 @@
-import { TextInput } from "@mantine/core"
-import { Group, Table as MantineTable, Pagination } from "@pokt-foundation/pocket-blocks"
+import { Text, TextInput } from "@mantine/core"
+import {
+  Group,
+  Table as MantineTable,
+  Pagination,
+  IconSearch,
+} from "@pokt-foundation/pocket-blocks"
 import { useMemo, useState } from "react"
 import styles from "./styles.css"
 import Card, { links as CardLinks } from "~/components/shared/Card"
@@ -17,6 +22,8 @@ interface TableProps<T> {
   label?: string
   paginate?: boolean | PaginateProps
   search?: boolean | any[]
+  rightComponent?: React.ReactNode
+  subHeader?: React.ReactNode
 }
 
 interface PaginateProps {
@@ -36,12 +43,25 @@ interface IdObj {
       }
 }
 
+type TableDataArray = [
+  string,
+  (
+    | string
+    | {
+        value: string
+        element: JSX.Element
+      }
+  ),
+]
+
 export const Table = <T extends IdObj>({
   data,
   columns = Object.keys(data[0]) as (keyof T)[],
   label,
   paginate,
   search = false,
+  rightComponent,
+  subHeader,
 }: TableProps<T>) => {
   const { t } = useTranslate()
   const [searchTerm, setSearchTerm] = useState("")
@@ -105,18 +125,23 @@ export const Table = <T extends IdObj>({
             {label && <h3>{label}</h3>}
             {search && (
               <TextInput
-                aria-label={`${t.search.searchBy} Network, ID or Status`}
+                aria-label={`${t.search.searchBy} ${columns.join(", ")}`}
                 className="pokt-table-search"
+                icon={<IconSearch fill="white" height={12} width={12} />}
                 name="search"
-                placeholder={`${t.search.searchBy} Network, ID or Status`}
+                placeholder={`${t.search.searchBy} ${columns.join(", ")}`}
                 rightSectionWidth={85}
                 size="xs"
                 variant="default"
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             )}
+            {rightComponent && rightComponent}
           </Group>
         )}
+
+        {subHeader && <div>subHeader</div>}
+
         <div className="pokt-table-overflow">
           <MantineTable>
             <thead>
@@ -127,22 +152,25 @@ export const Table = <T extends IdObj>({
               </tr>
             </thead>
             <tbody>
-              {paginatedData.map((item) => (
-                <tr key={item.id}>
-                  {Object.entries(removeIdFromObject(item)).map(([key, value]) => (
-                    <td key={key}>
-                      {typeof value === "object"
-                        ? (
-                            value as {
-                              value: string
-                              element: JSX.Element
-                            }
-                          ).element
-                        : value}
-                    </td>
-                  ))}
+              {paginatedData.length > 0 ? (
+                paginatedData.map((item) => (
+                  <tr key={item.id}>
+                    {Object.entries(removeIdFromObject(item)).map(
+                      ([key, value]: TableDataArray) => (
+                        <td key={key}>
+                          {typeof value === "object" ? value.element : value}
+                        </td>
+                      ),
+                    )}
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td className="empty-search" colSpan={Object.keys(data[0]).length}>
+                    <Text align="center">{t.search.emptySearch}</Text>
+                  </td>
                 </tr>
-              ))}
+              )}
               {emptyRows &&
                 emptyRows.map((row, index) => (
                   <tr key={index} className={row}>

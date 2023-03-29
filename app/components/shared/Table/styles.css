@@ -27,7 +27,7 @@
 }
 
 .pokt-table thead tr {
-  border-bottom: 1px solid rgb(9, 24, 40);
+  border-bottom: 1px solid #2f373e;
 }
 
 .pokt-table thead tr th {
@@ -41,7 +41,7 @@
 }
 
 .pokt-table tbody tr {
-  border-bottom: 1px solid rgb(9, 24, 40);
+  border-bottom: 1px solid #2f373e;
 }
 
 .pokt-table tbody tr td {
@@ -73,4 +73,9 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   margin: 0;
+}
+
+.pokt-table .empty-search {
+  color: var(--color-white-main);
+  padding: "16px 8px";
 }

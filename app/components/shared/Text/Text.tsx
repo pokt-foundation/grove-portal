@@ -17,7 +17,9 @@ export default function Text({ ...props }: TextProps) {
         },
         className,
       )}
-      style={props.component === "span" ? { fontSize: "inherit" } : undefined}
+      style={
+        props.component === "span" ? { fontSize: "inherit" } : { fontFamily: "inherit" }
+      }
       {...textProps}
     />
   )

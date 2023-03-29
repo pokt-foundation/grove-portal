@@ -1,5 +1,5 @@
 query endpoints {
-  endpoints {
+  owner: endpoints(filter: OWNER) {
     appLimits {
       dailyLimit
       planType
@@ -12,6 +12,68 @@ query endpoints {
     status
     updatedAt
     userId
+    users {
+      roleName
+      email
+      accepted
+    }
+  }
+  admin: endpoints(filter: ADMIN) {
+    appLimits {
+      dailyLimit
+      planType
+      publicKey
+    }
+    createdAt
+    gigastake
+    id
+    name
+    status
+    updatedAt
+    userId
+    users {
+      roleName
+      email
+      accepted
+    }
+  }
+  member: endpoints(filter: MEMBER) {
+    appLimits {
+      dailyLimit
+      planType
+      publicKey
+    }
+    createdAt
+    gigastake
+    id
+    name
+    status
+    updatedAt
+    userId
+    users {
+      roleName
+      email
+      accepted
+    }
+  }
+  pending: endpoints(pending: true) {
+    appLimits {
+      dailyLimit
+      planType
+      publicKey
+    }
+    createdAt
+    gigastake
+    id
+    name
+    status
+    updatedAt
+    userId
+    users {
+      roleName
+      email
+      accepted
+    }
   }
 }
 
@@ -62,6 +124,11 @@ query endpoint($endpointID: ID!) {
     status
     updatedAt
     userId
+    users {
+      roleName
+      email
+      accepted
+    }
   }
 }
 
@@ -77,7 +144,6 @@ query blockchains($active: Boolean) {
     chainIDCheck
     logLimitBlocks
     path
-    network
   }
 }
 

@@ -1,5 +1,5 @@
 .radio-card-grid {
-  padding: 24px 0 36px 0;
+  padding: 16px 0 32px 0;
   align-items: stretch;
 }
 
@@ -10,8 +10,8 @@
   order: 1;
 }
 
-.radio-card {
-  padding: 24px;
+.radio-card-grid .radio-card {
+  padding: 16px;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
@@ -21,7 +21,7 @@
   border-radius: 8px;
 }
 
-.radio-card .flexRow {
+.radio-card-grid .radio-card .flexRow {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -30,24 +30,25 @@
   width: 100%;
 }
 
-.radio-card.disabled {
+.radio-card-grid .radio-card.disabled {
   color: var(--color-disabled);
   border-color: var(--color-disabled);
 }
 
-.radio-card > .mantine-Text-root {
-  margin-top: 24px;
+.radio-card-grid .radio-card > .mantine-Text-root {
+  margin-top: 16px;
+  font-size: 0.875rem;
 }
 
-.radio-card label {
-  font-size: 21px;
+.radio-card-grid .radio-card label {
+  font-size: 1.125rem;
 }
 
-.radio-card.active {
+.radio-card-grid .radio-card.active {
   border-color: var(--color-primary-main);
 }
 
-.radio-card p {
+.radio-card-grid .radio-card p {
   color: var(--color-white-main);
 }
 
@@ -55,11 +56,11 @@ label.mantine-Radio-label {
   color: var(--color-white-main);
 }
 
-.radio-card.disabled input[type="radio"] {
+.radio-card-grid .radio-card.disabled input[type="radio"] {
   background-color: var(--color-disabled);
   border-color: var(--color-disabled);
 }
 
-.radio-card.disabled label {
+.radio-card-grid .radio-card.disabled label {
   color: var(--color-disabled);
 }

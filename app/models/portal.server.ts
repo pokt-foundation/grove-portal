@@ -571,7 +571,7 @@ export const postFeedback = async (
   const user = await requireUser(request)
   const body = {
     ...formData,
-    user: user.profile.emails[0].value,
+    user: user.profile._json.email,
   }
 
   const res = await fetch(

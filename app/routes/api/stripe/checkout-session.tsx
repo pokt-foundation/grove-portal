@@ -29,14 +29,14 @@ export const loader: LoaderFunction = async ({ request }) => {
     // check that customer exists or create a new one
     let customer: Stripe.Customer | null = null
     const userExists = await stripe.customers.list({
-      email: user.profile.emails[0].value,
+      email: user.profile._json.email,
     })
     if (userExists.data.length > 0) {
       customer = userExists.data.find((cust) => cust.metadata.user_id === userId) ?? null
     }
     if (!customer) {
       customer = await stripe.customers.create({
-        email: user.profile.emails[0].value,
+        email: user.profile._json.email,
         metadata: {
           user_id: userId,
         },

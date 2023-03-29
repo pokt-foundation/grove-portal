@@ -144,7 +144,6 @@ query blockchains($active: Boolean) {
     chainIDCheck
     logLimitBlocks
     path
-    network
   }
 }
 

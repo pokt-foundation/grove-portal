@@ -1,6 +1,6 @@
-import { Button, Text, Switch, Loader } from "@pokt-foundation/pocket-blocks"
+import { Button, Text, Switch, Loader, Select } from "@pokt-foundation/pocket-blocks"
 import { useFetcher, useNavigation } from "@remix-run/react"
-import React, { useState } from "react"
+import React, { useState, useMemo } from "react"
 import styles from "./styles.css"
 import AppEndpointUrl, {
   links as AppEndpointUrlLinks,
@@ -125,6 +125,13 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
   const removeFromArrayByValue = (item: string, field: string, arr: any[]) => {
     return arr.filter((obj) => (!obj[field].includes(item) ? obj : null))
   }
+
+  const selectChainData = useMemo(() => {
+    return blockchains.map((chain) => ({
+      label: chain?.description ?? "",
+      value: chain?.id ?? "",
+    }))
+  }, [blockchains])
 
   return (
     <div className="security">
@@ -278,19 +285,15 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             <h3>{t.security.headings.contracts}</h3>
           </div>
           <div className="flexGrowRow">
-            <ChainsDropdown
+            <Select
               aria-label={t.security.headings.contracts}
-              blockchains={blockchains}
-              defaultText={
-                whitelistContractsDropdown !== ""
-                  ? getChainName(whitelistContractsDropdown)
-                  : t.security.defaultSelectChainText
-              }
-              handleChainClick={(val) => {
-                setWhitelistContractsDropdown(val)
+              data={selectChainData}
+              placeholder={t.security.defaultSelectChainText}
+              onChange={(val) => {
+                if (val) {
+                  setWhitelistContractsDropdown(val)
+                }
               }}
-              id="whitelistContractsDropdown"
-              selectedChains={[""]}
             />
             <input
               className="grow userInputs"
@@ -364,20 +367,15 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             <h3>{t.security.headings.methods}</h3>
           </div>
           <div className="flexGrowRow">
-            <ChainsDropdown
+            <Select
               aria-label={t.security.headings.methods}
-              blockchains={blockchains}
-              defaultText={
-                whitelistMethodsDropdown !== ""
-                  ? getChainName(whitelistMethodsDropdown)
-                  : t.security.defaultSelectChainText
-              }
-              handleChainClick={(val) => {
-                setWhitelistMethodsDropdown(val)
+              data={selectChainData}
+              placeholder={t.security.defaultSelectChainText}
+              onChange={(val) => {
+                if (val) {
+                  setWhitelistMethodsDropdown(val)
+                }
               }}
-              icon={false}
-              id="whitelistMethodsDropdown"
-              selectedChains={[""]}
             />
             <input
               className="grow userInputs"

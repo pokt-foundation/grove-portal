@@ -81,11 +81,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   invariant(endpoint, "app id not found")
 
   const uEmail = user?.profile?._json?.email ?? ""
-  const subscription = await getSubscription(
-    uEmail,
-    endpoint.id,
-    userId,
-  )
+  const subscription = await getSubscription(uEmail, endpoint.id, userId)
 
   const dailyNetworkRelaysPerWeek = await getRelaysPerPeriod("endpoints", 7, endpoint.id)
   const { blockchains } = await portal.blockchains({ active: true })

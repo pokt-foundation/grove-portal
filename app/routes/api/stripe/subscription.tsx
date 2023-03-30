@@ -33,11 +33,7 @@ export const action: ActionFunction = async ({ request }) => {
       endpointID: appId as string,
     })
     const uEmail = user?.profile?._json?.email ?? ""
-    const subscription = await getSubscription(
-      uEmail,
-      endpoint.id,
-      userId,
-    )
+    const subscription = await getSubscription(uEmail, endpoint.id, userId)
 
     if (subscription) {
       const updatedSubscription = await stripe.subscriptions.update(subscription.id, {

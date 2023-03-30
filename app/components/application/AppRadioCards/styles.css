@@ -46,7 +46,7 @@
 }
 
 .radio-card-grid .radio-card.active {
-  border-color: var(--color-primary-main);
+  border-color: var(--mantine-color-blue-6);
 }
 
 .radio-card-grid .radio-card p {

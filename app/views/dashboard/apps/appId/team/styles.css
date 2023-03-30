@@ -52,6 +52,6 @@
 .change-role-modal-options {
   width: 90%;
   display: flex;
-  justify-content: space-between;
-  margin-top: 80px;
+  justify-content: start;
+  margin-top: 3em;
 }

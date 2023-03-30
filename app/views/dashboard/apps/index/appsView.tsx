@@ -260,19 +260,11 @@ export const AppsView = ({
                     action: {
                       value: "",
                       element: (
-                        <>
-                          {app.users.map(
-                            (user) =>
-                              user.email === profile?._json?.email &&
-                              user?.accepted && (
-                                <Box key={app.id} sx={{ textAlign: "right" }}>
-                                  <Link to={app.id}>
-                                    <IconCaretRight className="pokt-icon" />
-                                  </Link>
-                                </Box>
-                              ),
-                          )}
-                        </>
+                        <Box sx={{ textAlign: "right" }}>
+                          <Link to={app.id}>
+                            <IconCaretRight className="pokt-icon" />
+                          </Link>
+                        </Box>
                       ),
                     },
                   }))}

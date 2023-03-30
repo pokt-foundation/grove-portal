@@ -206,6 +206,13 @@ function TeamView({ state, endpoint }: TeamViewProps) {
         setInviteEmail("")
       } else if (actionData.type === "updateRole") {
         if (actionData.error) {
+          setNotificationMessageProps({
+            type: "error",
+            isActive: true,
+            title: "Ownership transfer failed",
+            description:
+              "The user has already reached the maximum number of applications that can be owned.",
+          })
           return
         }
 

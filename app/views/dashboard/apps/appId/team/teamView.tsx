@@ -209,9 +209,9 @@ function TeamView({ state, endpoint }: TeamViewProps) {
           setNotificationMessageProps({
             type: "error",
             isActive: true,
-            title: "Role change error",
+            title: "Ownership transfer failed",
             description:
-              "We had an issue updating the user role. Please try again later.",
+              "The user has already reached the maximum number of applications that can be owned.",
           })
           return
         }

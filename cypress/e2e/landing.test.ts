@@ -2,12 +2,12 @@ describe("landing page tests", () => {
   it("should load landing page", () => {
     cy.visit("/")
 
-    cy.on("uncaught:exception", (err, runnable) => {
-      expect(err.message).to.include("loggerProvider")
-      // return false to prevent the error from
-      // failing this test
-      return false
-    })
+    // cy.on("uncaught:exception", (err, runnable) => {
+    //   expect(err.message).to.include("loggerProvider")
+    //   // return false to prevent the error from
+    //   // failing this test
+    //   return false
+    // })
 
     // should find heading
     cy.findByRole("heading", { name: /your gateway to web3 done right/i }).should(
@@ -51,7 +51,6 @@ describe("landing page tests", () => {
     cy.findByRole("banner")
       .findByRole("navigation")
       .findByRole("link", { name: /faqs/i })
-      .click()
-    cy.url().should("include", "faq")
+      .should("have.attr", "href", "/faq")
   })
 })

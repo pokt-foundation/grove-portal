@@ -334,14 +334,14 @@ function TeamView({ state, endpoint }: TeamViewProps) {
                     <Select
                       data={getRolesSelectData}
                       defaultValue={roleName}
-                      onChange={(value) =>
-                        handleUpdateRoleSubmit(email, value as RoleName)
-                      }
                       // make the select disabled if:
                       // * the list user is the app owner
                       // * the list user hasn't accepted yet
                       // * the logged user is only a member
                       disabled={roleName === RoleName.Owner || !accepted || isMember}
+                      onChange={(value) =>
+                        handleUpdateRoleSubmit(email, value as RoleName)
+                      }
                     />
                   </div>
                 ),

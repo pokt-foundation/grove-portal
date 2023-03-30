@@ -1,6 +1,13 @@
-import { Button, Text, Switch, Loader, Select } from "@pokt-foundation/pocket-blocks"
+import {
+  Button,
+  Text,
+  Switch,
+  Loader,
+  Select,
+  Group,
+} from "@pokt-foundation/pocket-blocks"
 import { useFetcher, useNavigation } from "@remix-run/react"
-import React, { useState, useMemo } from "react"
+import React, { useState, useMemo, forwardRef } from "react"
 import styles from "./styles.css"
 import AppEndpointUrl, {
   links as AppEndpointUrlLinks,
@@ -8,6 +15,9 @@ import AppEndpointUrl, {
 import ChainsDropdown, {
   links as ChainsDropdownLinks,
 } from "~/components/application/ChainsDropdown/ChainsDropdown"
+import ChainWithImage, {
+  links as ChainWithImageLinks,
+} from "~/components/application/ChainWithImage"
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { useTranslate } from "~/context/TranslateContext"
@@ -19,7 +29,6 @@ import {
 } from "~/models/portal/sdk"
 import { Blockchain, EndpointQuery } from "~/models/portal/sdk"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
-import { CHAIN_ID_PREFIXES } from "~/utils/chainUtils"
 
 /* c8 ignore start */
 export const links = () => {
@@ -28,6 +37,7 @@ export const links = () => {
     ...TextInputLinks(),
     ...ChainsDropdownLinks(),
     ...AppEndpointUrlLinks(),
+    ...ChainWithImageLinks(),
     { rel: "stylesheet", href: styles },
   ]
 }
@@ -41,6 +51,18 @@ type SecurityViewProps = {
 
 type WhitelistContractType = Pick<WhitelistContracts, "blockchainID" | "contracts">
 type WhitelistMethodType = Pick<WhitelistMethods, "blockchainID" | "methods">
+
+const SelectItem = forwardRef<HTMLDivElement, { label: string; value: string }>(
+  ({ label, ...others }, ref) => (
+    <div ref={ref} {...others}>
+      <Group noWrap>
+        <ChainWithImage chain={label} />
+      </Group>
+    </div>
+  ),
+)
+
+SelectItem.displayName = "SelectItem"
 
 export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps) => {
   const navigation = useNavigation()
@@ -115,11 +137,6 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
       return arr
     }
     return [...arr, item]
-  }
-
-  const getChainName = (key: string) => {
-    const value = CHAIN_ID_PREFIXES.get(key)
-    return value?.name || "Undefined"
   }
 
   const removeFromArrayByValue = (item: string, field: string, arr: any[]) => {
@@ -286,9 +303,27 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
           </div>
           <div className="flexGrowRow">
             <Select
+              searchable
               aria-label={t.security.headings.contracts}
               data={selectChainData}
+              itemComponent={SelectItem}
               placeholder={t.security.defaultSelectChainText}
+              rightSection={<></>}
+              rightSectionWidth={0}
+              sx={(theme) => ({
+                // ".mantine-Select-dropdown": {
+                //   backgroundColor: theme.colors.navy[6],
+                // },
+                ".mantine-Select-input": {
+                  backgroundColor: "transparent",
+                  borderColor: theme.colors.blue[5],
+                },
+                ".mantine-Select-input::placeholder": {
+                  color: theme.colors.blue[5],
+                  fontWeight: 600,
+                  fontSize: "12px",
+                },
+              })}
               onChange={(val) => {
                 if (val) {
                   setWhitelistContractsDropdown(val)
@@ -368,15 +403,34 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
           </div>
           <div className="flexGrowRow">
             <Select
+              searchable
               aria-label={t.security.headings.methods}
               data={selectChainData}
+              itemComponent={SelectItem}
               placeholder={t.security.defaultSelectChainText}
+              rightSection={<></>}
+              rightSectionWidth={0}
+              sx={(theme) => ({
+                // ".mantine-Select-dropdown": {
+                //   backgroundColor: theme.colors.navy[6],
+                // },
+                ".mantine-Select-input": {
+                  backgroundColor: "transparent",
+                  borderColor: theme.colors.blue[5],
+                },
+                ".mantine-Select-input::placeholder": {
+                  color: theme.colors.blue[5],
+                  fontWeight: 600,
+                  fontSize: "12px",
+                },
+              })}
               onChange={(val) => {
                 if (val) {
                   setWhitelistMethodsDropdown(val)
                 }
               }}
             />
+
             <input
               className="grow userInputs"
               name="whitelistMethodsInput"

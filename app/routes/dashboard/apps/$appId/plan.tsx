@@ -53,7 +53,8 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     const { endpoint } = await portal.endpoint({
       endpointID: params.appId,
     })
-    const customer = await getCustomer(user.profile._json.email, userId)
+    const uEmail = user?.profile?._json?.email ?? ""
+    const customer = await getCustomer(uEmail, userId)
 
     if (customer) {
       const subscriptions = await stripe.subscriptions.list({

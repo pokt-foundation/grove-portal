@@ -61,7 +61,7 @@ export const AppsView = ({
   userId,
   profile,
 }: AppsViewProps) => {
-  const uEmail = profile?._json.email
+  const uEmail = profile?._json?.email
   const [showErrorModal, setShowErrorModal] = useState(false)
   const notOwnerEndpoints = useMemo(() => {
     return endpoints

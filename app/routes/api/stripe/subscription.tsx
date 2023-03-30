@@ -32,8 +32,9 @@ export const action: ActionFunction = async ({ request }) => {
     const { endpoint } = await portal.endpoint({
       endpointID: appId as string,
     })
+    const uEmail = user?.profile?._json?.email ?? ""
     const subscription = await getSubscription(
-      user.profile._json.email,
+      uEmail,
       endpoint.id,
       userId,
     )

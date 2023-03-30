@@ -14,7 +14,8 @@ export const action: ActionFunction = async ({ request }) => {
   const returnPath = returnPathParam ?? defaultReturnPath
   const returnUrl = `${url.origin}${returnPath}`
 
-  const customer = await getCustomer(user.profile._json.email, userId)
+  const uEmail = user?.profile?._json?.email ?? ""
+  const customer = await getCustomer(uEmail, userId)
 
   if (customer) {
     const portalSession = await stripe.billingPortal.sessions.create({

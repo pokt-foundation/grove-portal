@@ -311,9 +311,9 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
               rightSection={<></>}
               rightSectionWidth={0}
               sx={(theme) => ({
-                // ".mantine-Select-dropdown": {
-                //   backgroundColor: theme.colors.navy[6],
-                // },
+                ".mantine-Select-dropdown": {
+                  backgroundColor: "#0f161d",
+                },
                 ".mantine-Select-input": {
                   backgroundColor: "transparent",
                   borderColor: theme.colors.blue[5],
@@ -411,9 +411,9 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
               rightSection={<></>}
               rightSectionWidth={0}
               sx={(theme) => ({
-                // ".mantine-Select-dropdown": {
-                //   backgroundColor: theme.colors.navy[6],
-                // },
+                ".mantine-Select-dropdown": {
+                  backgroundColor: "#0f161d",
+                },
                 ".mantine-Select-input": {
                   backgroundColor: "transparent",
                   borderColor: theme.colors.blue[5],

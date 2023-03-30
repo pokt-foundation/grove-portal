@@ -33,7 +33,7 @@ export const action: ActionFunction = async ({ request }) => {
       endpointID: appId as string,
     })
     const subscription = await getSubscription(
-      user.profile.emails[0].value,
+      user.profile._json.email,
       endpoint.id,
       userId,
     )

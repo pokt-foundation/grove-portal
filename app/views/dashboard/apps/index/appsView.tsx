@@ -61,7 +61,7 @@ export const AppsView = ({
   userId,
   profile,
 }: AppsViewProps) => {
-  const uEmail = profile?._json?.email
+  const uEmail = profile?._json.email
   const [showErrorModal, setShowErrorModal] = useState(false)
   const notOwnerEndpoints = useMemo(() => {
     return endpoints
@@ -268,19 +268,11 @@ export const AppsView = ({
                     action: {
                       value: "",
                       element: (
-                        <>
-                          {app.users.map(
-                            (user) =>
-                              user.email === profile?._json?.email &&
-                              user?.accepted && (
-                                <Box key={app.id} sx={{ textAlign: "right" }}>
-                                  <Link to={app.id}>
-                                    <IconCaretRight className="pokt-icon" />
-                                  </Link>
-                                </Box>
-                              ),
-                          )}
-                        </>
+                        <Box sx={{ textAlign: "right" }}>
+                          <Link to={app.id}>
+                            <IconCaretRight className="pokt-icon" />
+                          </Link>
+                        </Box>
                       ),
                     },
                   }))}

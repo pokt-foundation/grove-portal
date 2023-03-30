@@ -573,7 +573,7 @@ export const postFeedback = async (
   invariant(user.profile.emails, "user not found")
   const body = {
     ...formData,
-    user: user.profile.emails[0].value,
+    user: user.profile._json.email,
   }
 
   const res = await fetch(

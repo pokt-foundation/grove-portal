@@ -83,7 +83,7 @@ export const action: ActionFunction = async ({ request, params }) => {
       const { createEndpointUser } = await portal.createEndpointUser({
         endpointID: appId,
         input: {
-          email,
+          email: email.toLowerCase(),
           roleName: roleName === "ADMIN" ? RoleName.Admin : RoleName.Member,
         },
       })
@@ -152,7 +152,7 @@ export const action: ActionFunction = async ({ request, params }) => {
       }
 
       if (!updateEndpointUserRole) {
-        throw new Error("Erorr updating user role")
+        throw new Error("Error updating user role")
       }
 
       return json<ActionData>({

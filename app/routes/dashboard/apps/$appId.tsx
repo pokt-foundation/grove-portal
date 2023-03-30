@@ -81,7 +81,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   invariant(endpoint, "app id not found")
 
   const subscription = await getSubscription(
-    user.profile.emails[0].value,
+    user.profile._json.email,
     endpoint.id,
     userId,
   )

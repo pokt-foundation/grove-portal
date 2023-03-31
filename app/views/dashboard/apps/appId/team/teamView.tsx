@@ -124,13 +124,6 @@ function TeamView({ state, endpoint }: TeamViewProps) {
     )
   }
 
-  const userRole = useMemo(() => {
-    return (
-      endpoint?.users?.find(({ email }) => email === profile?._json?.email)?.roleName ??
-      RoleName.Member
-    )
-  }, [endpoint])
-
   const isAdminUser = useMemo(
     () =>
       endpoint?.users?.some(
@@ -338,24 +331,18 @@ function TeamView({ state, endpoint }: TeamViewProps) {
               role: {
                 element: (
                   <div className="list__role">
-                    {isOwnerUser || (isAdminUser && roleName !== RoleName.Owner) ? (
-                      <Select
-                        data={getRolesSelectData}
-                        defaultValue={roleName}
-                        onChange={(value) =>
-                          handleUpdateRoleSubmit(email, value as RoleName)
-                        }
-                      />
-                    ) : (
-                      <Text
-                        sx={{
-                          textTransform: "lowercase",
-                          "&:first-letter": { textTransform: "uppercase" },
-                        }}
-                      >
-                        {roleName}
-                      </Text>
-                    )}
+                    <Select
+                      data={getRolesSelectData}
+                      defaultValue={roleName}
+                      // make the select disabled if:
+                      // * the list user is the app owner
+                      // * the list user hasn't accepted yet
+                      // * the logged user is only a member
+                      disabled={roleName === RoleName.Owner || !accepted || isMember}
+                      onChange={(value) =>
+                        handleUpdateRoleSubmit(email, value as RoleName)
+                      }
+                    />
                   </div>
                 ),
                 value: "Role",
@@ -373,7 +360,13 @@ function TeamView({ state, endpoint }: TeamViewProps) {
                           </Menu.Target>
                           <Menu.Dropdown className="dropdown-teams__content">
                             {!accepted && (isOwnerUser || isAdminUser) && (
-                              <Menu.Item>Send new Invite</Menu.Item>
+                              <Menu.Item
+                                onClick={() =>
+                                  handleResendInviteEmail(email, endpoint.name)
+                                }
+                              >
+                                Send new Invite
+                              </Menu.Item>
                             )}
                             <Menu.Item
                               color="green"

@@ -190,7 +190,12 @@ function UserMenuDropdown({ user, routes }: UserMenuDropdownProps) {
       {user && (
         <Menu>
           <Menu.Target>
-            <Avatar variant="outline">
+            <Avatar
+              sx={{
+                cursor: "pointer",
+              }}
+              variant="outline"
+            >
               <IconUser fill="var(--mantine-color-gray-0)" />
             </Avatar>
           </Menu.Target>

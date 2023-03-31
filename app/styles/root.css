@@ -73,3 +73,15 @@ button.pokt-button-with__icon:hover {
   background-color: transparent;
   padding: 0;
 }
+
+.link {
+  color: var(--mantine-color-blue-6);
+  outline: none;
+  background-color: transparent;
+  border: none;
+  display: inline-block;
+}
+
+.link:hover {
+  text-decoration: underline;
+}

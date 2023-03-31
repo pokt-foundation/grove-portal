@@ -142,11 +142,8 @@ function TeamView({ state, endpoint }: TeamViewProps) {
 
   const isMember = !isAdminUser && !isOwnerUser
 
-  const handleUpdateRoleSubmit = (
-    email: string,
-    roleName: RoleName,
-    transferOwnership: boolean = false,
-  ) => {
+  const handleUpdateRoleSubmit = (email: string, roleName: RoleName) => {
+    const transferOwnership: boolean = roleName === RoleName.Owner
     setUpdateRoleModalData({
       email,
       roleName,

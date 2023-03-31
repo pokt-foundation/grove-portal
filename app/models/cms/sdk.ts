@@ -22,8 +22,8 @@ export type Scalars = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  create_contact_sales_forms_item?: Maybe<Scalars['Boolean']>;
-  create_contact_sales_forms_items?: Maybe<Scalars['Boolean']>;
+  create_contact_sales_forms_item?: Maybe<contact_sales_forms>;
+  create_contact_sales_forms_items: Array<contact_sales_forms>;
   create_feedback_forms_item?: Maybe<Scalars['Boolean']>;
   create_feedback_forms_items?: Maybe<Scalars['Boolean']>;
   update_ecosystem_batch: Array<ecosystem>;
@@ -39,6 +39,12 @@ export type Mutationcreate_contact_sales_forms_itemArgs = {
 
 export type Mutationcreate_contact_sales_forms_itemsArgs = {
   data?: InputMaybe<Array<create_contact_sales_forms_input>>;
+  filter?: InputMaybe<contact_sales_forms_filter>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  page?: InputMaybe<Scalars['Int']>;
+  search?: InputMaybe<Scalars['String']>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 
@@ -91,6 +97,12 @@ export type Query = {
   articles_translations: Array<articles_translations>;
   articles_translations_aggregated: Array<articles_translations_aggregated>;
   articles_translations_by_id?: Maybe<articles_translations>;
+  comparison: Array<comparison>;
+  comparison_aggregated: Array<comparison_aggregated>;
+  comparison_by_id?: Maybe<comparison>;
+  contact_sales_forms: Array<contact_sales_forms>;
+  contact_sales_forms_aggregated: Array<contact_sales_forms_aggregated>;
+  contact_sales_forms_by_id?: Maybe<contact_sales_forms>;
   dictionary: Array<dictionary>;
   dictionary_aggregated: Array<dictionary_aggregated>;
   dictionary_by_id?: Maybe<dictionary>;
@@ -237,6 +249,58 @@ export type Queryarticles_translations_aggregatedArgs = {
 
 
 export type Queryarticles_translations_by_idArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QuerycomparisonArgs = {
+  filter?: InputMaybe<comparison_filter>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  page?: InputMaybe<Scalars['Int']>;
+  search?: InputMaybe<Scalars['String']>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+
+export type Querycomparison_aggregatedArgs = {
+  filter?: InputMaybe<comparison_filter>;
+  groupBy?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  page?: InputMaybe<Scalars['Int']>;
+  search?: InputMaybe<Scalars['String']>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+
+export type Querycomparison_by_idArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type Querycontact_sales_formsArgs = {
+  filter?: InputMaybe<contact_sales_forms_filter>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  page?: InputMaybe<Scalars['Int']>;
+  search?: InputMaybe<Scalars['String']>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+
+export type Querycontact_sales_forms_aggregatedArgs = {
+  filter?: InputMaybe<contact_sales_forms_filter>;
+  groupBy?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  page?: InputMaybe<Scalars['Int']>;
+  search?: InputMaybe<Scalars['String']>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+
+export type Querycontact_sales_forms_by_idArgs = {
   id: Scalars['ID'];
 };
 
@@ -1109,6 +1173,155 @@ export type boolean_filter_operators = {
   _neq?: InputMaybe<Scalars['Boolean']>;
   _nnull?: InputMaybe<Scalars['Boolean']>;
   _null?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type comparison = {
+  __typename?: 'comparison';
+  date_created?: Maybe<Scalars['Date']>;
+  date_created_func?: Maybe<datetime_functions>;
+  date_updated?: Maybe<Scalars['Date']>;
+  date_updated_func?: Maybe<datetime_functions>;
+  id: Scalars['ID'];
+  sort?: Maybe<Scalars['Int']>;
+  status?: Maybe<Scalars['String']>;
+  user_created?: Maybe<directus_users>;
+  user_updated?: Maybe<directus_users>;
+};
+
+
+export type comparisonuser_createdArgs = {
+  filter?: InputMaybe<directus_users_filter>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  page?: InputMaybe<Scalars['Int']>;
+  search?: InputMaybe<Scalars['String']>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+
+export type comparisonuser_updatedArgs = {
+  filter?: InputMaybe<directus_users_filter>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  page?: InputMaybe<Scalars['Int']>;
+  search?: InputMaybe<Scalars['String']>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type comparison_aggregated = {
+  __typename?: 'comparison_aggregated';
+  avg?: Maybe<comparison_aggregated_fields>;
+  avgDistinct?: Maybe<comparison_aggregated_fields>;
+  count?: Maybe<comparison_aggregated_count>;
+  countAll?: Maybe<Scalars['Int']>;
+  countDistinct?: Maybe<comparison_aggregated_count>;
+  group?: Maybe<Scalars['JSON']>;
+  max?: Maybe<comparison_aggregated_fields>;
+  min?: Maybe<comparison_aggregated_fields>;
+  sum?: Maybe<comparison_aggregated_fields>;
+  sumDistinct?: Maybe<comparison_aggregated_fields>;
+};
+
+export type comparison_aggregated_count = {
+  __typename?: 'comparison_aggregated_count';
+  date_created?: Maybe<Scalars['Int']>;
+  date_updated?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['Int']>;
+  sort?: Maybe<Scalars['Int']>;
+  status?: Maybe<Scalars['Int']>;
+  user_created?: Maybe<Scalars['Int']>;
+  user_updated?: Maybe<Scalars['Int']>;
+};
+
+export type comparison_aggregated_fields = {
+  __typename?: 'comparison_aggregated_fields';
+  id?: Maybe<Scalars['Float']>;
+  sort?: Maybe<Scalars['Float']>;
+};
+
+export type comparison_filter = {
+  _and?: InputMaybe<Array<InputMaybe<comparison_filter>>>;
+  _or?: InputMaybe<Array<InputMaybe<comparison_filter>>>;
+  date_created?: InputMaybe<date_filter_operators>;
+  date_created_func?: InputMaybe<datetime_function_filter_operators>;
+  date_updated?: InputMaybe<date_filter_operators>;
+  date_updated_func?: InputMaybe<datetime_function_filter_operators>;
+  id?: InputMaybe<number_filter_operators>;
+  sort?: InputMaybe<number_filter_operators>;
+  status?: InputMaybe<string_filter_operators>;
+  user_created?: InputMaybe<directus_users_filter>;
+  user_updated?: InputMaybe<directus_users_filter>;
+};
+
+export type contact_sales_forms = {
+  __typename?: 'contact_sales_forms';
+  date_created?: Maybe<Scalars['Date']>;
+  date_created_func?: Maybe<datetime_functions>;
+  date_updated?: Maybe<Scalars['Date']>;
+  date_updated_func?: Maybe<datetime_functions>;
+  id: Scalars['ID'];
+  user_created?: Maybe<directus_users>;
+  user_updated?: Maybe<directus_users>;
+};
+
+
+export type contact_sales_formsuser_createdArgs = {
+  filter?: InputMaybe<directus_users_filter>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  page?: InputMaybe<Scalars['Int']>;
+  search?: InputMaybe<Scalars['String']>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+
+export type contact_sales_formsuser_updatedArgs = {
+  filter?: InputMaybe<directus_users_filter>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  page?: InputMaybe<Scalars['Int']>;
+  search?: InputMaybe<Scalars['String']>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type contact_sales_forms_aggregated = {
+  __typename?: 'contact_sales_forms_aggregated';
+  avg?: Maybe<contact_sales_forms_aggregated_fields>;
+  avgDistinct?: Maybe<contact_sales_forms_aggregated_fields>;
+  count?: Maybe<contact_sales_forms_aggregated_count>;
+  countAll?: Maybe<Scalars['Int']>;
+  countDistinct?: Maybe<contact_sales_forms_aggregated_count>;
+  group?: Maybe<Scalars['JSON']>;
+  max?: Maybe<contact_sales_forms_aggregated_fields>;
+  min?: Maybe<contact_sales_forms_aggregated_fields>;
+  sum?: Maybe<contact_sales_forms_aggregated_fields>;
+  sumDistinct?: Maybe<contact_sales_forms_aggregated_fields>;
+};
+
+export type contact_sales_forms_aggregated_count = {
+  __typename?: 'contact_sales_forms_aggregated_count';
+  date_created?: Maybe<Scalars['Int']>;
+  date_updated?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['Int']>;
+  user_created?: Maybe<Scalars['Int']>;
+  user_updated?: Maybe<Scalars['Int']>;
+};
+
+export type contact_sales_forms_aggregated_fields = {
+  __typename?: 'contact_sales_forms_aggregated_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+export type contact_sales_forms_filter = {
+  _and?: InputMaybe<Array<InputMaybe<contact_sales_forms_filter>>>;
+  _or?: InputMaybe<Array<InputMaybe<contact_sales_forms_filter>>>;
+  date_created?: InputMaybe<date_filter_operators>;
+  date_created_func?: InputMaybe<datetime_function_filter_operators>;
+  date_updated?: InputMaybe<date_filter_operators>;
+  date_updated_func?: InputMaybe<datetime_function_filter_operators>;
+  id?: InputMaybe<number_filter_operators>;
+  user_created?: InputMaybe<directus_users_filter>;
+  user_updated?: InputMaybe<directus_users_filter>;
 };
 
 export type count_function_filter_operators = {

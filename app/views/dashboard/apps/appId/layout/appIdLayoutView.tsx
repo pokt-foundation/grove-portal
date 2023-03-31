@@ -190,6 +190,7 @@ export default function AppIdLayoutView({
 
   const role = endpoint?.users.find((u) => u.email === user._json?.email)?.roleName
   const isMember = role === RoleName.Member
+  const isAdmin = role === RoleName.Admin
 
   return (
     <div className="pokt-appid-layout-view">
@@ -251,6 +252,7 @@ export default function AppIdLayoutView({
                 <StopRemoveApp
                   appId={endpoint.id}
                   apps={endpoint.apps}
+                  isAdmin={isAdmin}
                   isMember={isMember}
                   name={endpoint.name}
                   planType={endpoint.appLimits.planType}

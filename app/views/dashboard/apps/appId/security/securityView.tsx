@@ -7,7 +7,7 @@ import {
   Group,
 } from "@pokt-foundation/pocket-blocks"
 import { useFetcher, useNavigation } from "@remix-run/react"
-import React, { useState, useMemo, forwardRef } from "react"
+import React, { useState, useMemo, forwardRef, useRef } from "react"
 import styles from "./styles.css"
 import AppEndpointUrl, {
   links as AppEndpointUrlLinks,
@@ -89,6 +89,8 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
       return [...prev, ...subArray]
     }, [])
   }
+
+  const approvedChainsSelectRef = useRef<HTMLInputElement>(null)
 
   const { t } = useTranslate()
   const securityAction = useFetcher()
@@ -172,7 +174,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
         <Card>
           <div className="pokt-card-header">
             <h3>{t.security.headings.approvedChains}</h3>
-            <ChainsDropdown
+            {/* <ChainsDropdown
               aria-label={t.security.chainsDropdownAria}
               blockchains={blockchains}
               defaultText={t.security.defaultSelectChainText}
@@ -182,6 +184,33 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
               icon={true}
               id="whitelistBlockchainsDropdown"
               selectedChains={[""]}
+            /> */}
+            <Select
+              ref={approvedChainsSelectRef}
+              searchable
+              aria-label={t.security.chainsDropdownAria}
+              data={selectChainData}
+              itemComponent={SelectItem}
+              placeholder={t.security.defaultSelectChainText}
+              sx={(theme) => ({
+                ".mantine-Select-dropdown": {
+                  backgroundColor: "#0f161d",
+                },
+                ".mantine-Select-input": {
+                  backgroundColor: "transparent",
+                  borderColor: theme.colors.blue[5],
+                },
+                ".mantine-Select-input::placeholder": {
+                  color: theme.colors.blue[5],
+                  fontWeight: 600,
+                  fontSize: "12px",
+                },
+              })}
+              onChange={(val) => {
+                if (val) {
+                  setWhitelistBlockchains(addIfMissing(val, whitelistBlockchains))
+                }
+              }}
             />
           </div>
           {whitelistBlockchains.map((item: string) => {
@@ -192,12 +221,13 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
               <React.Fragment key={item}>
                 <AppEndpointUrl
                   key={item}
+                  readOnly
                   chain={blockchain}
                   handleRemove={() => {
                     setWhitelistBlockchains((current) => removeFromArray(item, current))
                   }}
                   hasDelete={true}
-                  value={appId ?? ""}
+                  value={blockchain?.description ?? ""}
                 />
                 <input name="whitelistBlockchains" type="hidden" value={item} />
               </React.Fragment>
@@ -308,8 +338,6 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
               data={selectChainData}
               itemComponent={SelectItem}
               placeholder={t.security.defaultSelectChainText}
-              rightSection={<></>}
-              rightSectionWidth={0}
               sx={(theme) => ({
                 ".mantine-Select-dropdown": {
                   backgroundColor: "#0f161d",
@@ -408,8 +436,6 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
               data={selectChainData}
               itemComponent={SelectItem}
               placeholder={t.security.defaultSelectChainText}
-              rightSection={<></>}
-              rightSectionWidth={0}
               sx={(theme) => ({
                 ".mantine-Select-dropdown": {
                   backgroundColor: "#0f161d",

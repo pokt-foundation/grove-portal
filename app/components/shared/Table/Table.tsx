@@ -101,14 +101,6 @@ export const Table = <T extends IdObj>({
     return rows
   }, [totalData, paginate, page, perPage])
 
-  const emptyRows = useMemo(() => {
-    const rows = perPage - paginatedData.length
-    if (rows <= 0) {
-      return []
-    }
-    return new Array(rows).fill("empty")
-  }, [paginatedData, perPage])
-
   const __handlePageChange = (newPage: number) => {
     setPage(newPage)
   }
@@ -172,14 +164,6 @@ export const Table = <T extends IdObj>({
                   </td>
                 </tr>
               )}
-              {emptyRows &&
-                emptyRows.map((row, index) => (
-                  <tr key={index} className={row}>
-                    {Object.entries(removeIdFromObject(data[0])).map((_, index) => (
-                      <td key={index}></td>
-                    ))}
-                  </tr>
-                ))}
             </tbody>
           </MantineTable>
         </div>

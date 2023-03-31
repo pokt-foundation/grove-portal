@@ -23,6 +23,7 @@ interface StopRemoveAppProps {
   planType: PayPlanType
   subscription?: Stripe.Subscription
   isMember: boolean
+  isAdmin: boolean
 }
 
 export default function StopRemoveApp({
@@ -32,6 +33,7 @@ export default function StopRemoveApp({
   planType,
   subscription,
   isMember,
+  isAdmin,
 }: StopRemoveAppProps) {
   const { t } = useTranslate()
   const [showStopModal, setShowStopModal] = useState(false)
@@ -46,6 +48,7 @@ export default function StopRemoveApp({
   }, [appId, subscriptionFetcher])
 
   if (isMember) return <></>
+  if (isAdmin) return <></>
 
   return (
     <>

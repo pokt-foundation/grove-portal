@@ -15,7 +15,8 @@
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  border: 2px solid var(--color-white-main);
+  border-width: 2px;
+  border-style: solid;
   height: 100%;
   align-content: baseline;
   border-radius: 8px;
@@ -45,15 +46,14 @@
 }
 
 .radio-card-grid .radio-card.active {
-  border-color: var(--color-primary-main);
+  border-color: var(--mantine-color-blue-6);
 }
 
 .radio-card-grid .radio-card p {
   color: var(--color-white-main);
 }
-
-label.mantine-Radio-label {
-  color: var(--color-white-main);
+*/ label.mantine-Radio-label {
+  color: var(--mantine-color-white);
 }
 
 .radio-card-grid .radio-card.disabled input[type="radio"] {

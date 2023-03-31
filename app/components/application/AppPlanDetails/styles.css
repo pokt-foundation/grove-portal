@@ -39,12 +39,12 @@
 }
 
 .pokt-app-plan-details .upgrade-button.disabled {
-  color: var(--color-disabled);
-  border-color: var(--color-disabled);
+  color: var(--mantine-color-gray-6);
+  border-color: var(--mantine-color-gray-6);
 }
 
 .pokt-app-plan-details .pokt-loader {
-  fill: var(--color-white-main);
+  fill: var(--mantine-color-white);
 }
 
 .pokt-app-plan-details a[disabled] {

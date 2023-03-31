@@ -1,7 +1,7 @@
 .pokt-reveal {
   width: 20px;
   height: 20px;
-  color: var(--color-secondary-main);
+  color: var(--mantine-color-blue-6);
   cursor: pointer;
   margin-right: 8px;
 }

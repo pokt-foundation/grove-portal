@@ -1,5 +1,5 @@
 import { Button, Grid } from "@pokt-foundation/pocket-blocks"
-import { Form, useTransition } from "@remix-run/react"
+import { Form, useNavigation } from "@remix-run/react"
 import { useEffect, useRef } from "react"
 import styles from "./styles.css"
 import Card, { links as CardLinks } from "~/components/shared/Card"
@@ -22,7 +22,7 @@ export const links = () => {
 export default function ContactSalesForm() {
   const { t } = useTranslate()
   const formRef = useRef<HTMLFormElement>(null)
-  let transition = useTransition()
+  let navigation = useNavigation()
 
   const formFields: Array<{
     label: string
@@ -89,8 +89,8 @@ export default function ContactSalesForm() {
   ]
 
   useEffect(() => {
-    if (transition.type === "actionSubmission") formRef.current?.reset()
-  }, [transition.type])
+    if (navigation.state === "submitting") formRef.current?.reset()
+  }, [navigation.state])
 
   return (
     <div className="contact-sales-form-container">
@@ -148,12 +148,12 @@ export default function ContactSalesForm() {
             <Button
               className="pokt-button button"
               disabled={
-                transition.state === "loading" || transition.state === "submitting"
+                navigation.state === "loading" || navigation.state === "submitting"
               }
               type="submit"
               variant="filled"
             >
-              {transition.state === "loading" || transition.state === "submitting"
+              {navigation.state === "loading" || navigation.state === "submitting"
                 ? t.ContactSalesForm.submitting
                 : t.ContactSalesForm.submit}
             </Button>

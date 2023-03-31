@@ -37,7 +37,7 @@ export default function LegacyBannerCard() {
       <Card>
         <div className="pokt-card-header">
           <div className="pokt-group">
-            <IconInfo fill="var(--color-secondary-light)" />
+            <IconInfo fill="var(--mantine-color-blue-4)" />
             <h3>{t.LegacyBannerCard.title}</h3>
           </div>
           <Button variant="subtle" onClick={() => handleExpand()}>

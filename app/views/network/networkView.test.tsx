@@ -26,8 +26,6 @@ describe("<NetworkView />", () => {
     )
 
     const headers = [
-      /network summary/i,
-      /network success rate/i,
       /relay count/i,
       /available networks/i,
       /latest block/i,

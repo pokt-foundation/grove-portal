@@ -64,12 +64,16 @@ const addTotalToResponse = (body: RelayMetric) => {
   }
 }
 
-export const getRelaysPerWeek = async (
+export const getRelaysPerPeriod = async (
   type: RelayType = "network",
+  period: number = 7,
   id?: string,
 ): Promise<RelayMetric[]> => {
+  const array = Array(period)
+    .fill(0)
+    .map((_, index) => index)
   const relays = await Promise.all(
-    [0, 1, 2, 3, 4, 5, 6].map(async (num) => {
+    array.map(async (num) => {
       const day = dayjs()
         .utc()
         .hour(0)

@@ -26,15 +26,11 @@
 .pokt-footer span.vertical-split {
   height: 40px;
   width: 1px;
-  border-right: 1px solid var(--color-disabled-dark);
+  border-right: 1px solid var(--mantine-color-gray-8);
 }
 
 .pokt-footer .mantine-Grid-root {
   width: 100%;
-}
-
-.pokt-footer .greenLink {
-  color: var(--color-primary-main);
 }
 
 .pokt-footer .center {

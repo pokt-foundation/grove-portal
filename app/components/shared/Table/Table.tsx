@@ -1,18 +1,19 @@
-import { Text, TextInput } from "@mantine/core"
 import {
   Group,
   Table as MantineTable,
   Pagination,
+  Text,
   IconSearch,
+  TextInput,
+  Box,
 } from "@pokt-foundation/pocket-blocks"
 import { useMemo, useState } from "react"
 import styles from "./styles.css"
-import Card, { links as CardLinks } from "~/components/shared/Card"
 import { useTranslate } from "~/context/TranslateContext"
 
 /* c8 ignore start */
 export const links = () => {
-  return [...CardLinks(), { rel: "stylesheet", href: styles }]
+  return [{ rel: "stylesheet", href: styles }]
 }
 /* c8 ignore stop */
 
@@ -100,14 +101,6 @@ export const Table = <T extends IdObj>({
     return rows
   }, [totalData, paginate, page, perPage])
 
-  const emptyRows = useMemo(() => {
-    const rows = perPage - paginatedData.length
-    if (rows <= 0) {
-      return []
-    }
-    return new Array(rows).fill("empty")
-  }, [paginatedData, perPage])
-
   const __handlePageChange = (newPage: number) => {
     setPage(newPage)
   }
@@ -119,7 +112,7 @@ export const Table = <T extends IdObj>({
 
   return (
     <div className="pokt-table">
-      <Card>
+      <Box>
         {(label || search) && (
           <Group align="center" className="pokt-table-header" position="apart">
             {label && <h3>{label}</h3>}
@@ -147,7 +140,7 @@ export const Table = <T extends IdObj>({
             <thead>
               <tr>
                 {columns.map((key) => (
-                  <th key={key as string}>{key}</th>
+                  <th key={key as string}>{key as string}</th>
                 ))}
               </tr>
             </thead>
@@ -171,14 +164,6 @@ export const Table = <T extends IdObj>({
                   </td>
                 </tr>
               )}
-              {emptyRows &&
-                emptyRows.map((row, index) => (
-                  <tr key={index} className={row}>
-                    {Object.entries(removeIdFromObject(data[0])).map((_, index) => (
-                      <td key={index}></td>
-                    ))}
-                  </tr>
-                ))}
             </tbody>
           </MantineTable>
         </div>
@@ -197,7 +182,7 @@ export const Table = <T extends IdObj>({
             />
           </Group>
         )}
-      </Card>
+      </Box>
     </div>
   )
 }

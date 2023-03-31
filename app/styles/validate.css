@@ -22,7 +22,7 @@
   font-weight: 400;
   font-size: 18px;
   line-height: 140%;
-  color: var(--color-disabled);
+  color: var(--mantine-color-gray-6);
 }
 
 .pokt-validate__button {

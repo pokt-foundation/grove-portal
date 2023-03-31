@@ -1,5 +1,9 @@
-import { TextInput as MantineTextInput, TextInputProps } from "@mantine/core"
-import { Button, IconDeleteAlt } from "@pokt-foundation/pocket-blocks"
+import {
+  Button,
+  IconDeleteAlt,
+  TextInput as MantineTextInput,
+  TextInputProps,
+} from "@pokt-foundation/pocket-blocks"
 import clsx from "clsx"
 import styles from "./styles.css"
 import CopyTextIcon, {
@@ -35,6 +39,9 @@ export default function TextInput({
   setRevealed,
   ...props
 }: InputProps) {
+  const hasRightSection =
+    Boolean(props.rightSection) || Boolean(copy) || Boolean(setRevealed)
+
   let rightSection = props.rightSection
 
   if (!rightSection && copy && setRevealed) {
@@ -58,22 +65,21 @@ export default function TextInput({
       <MantineTextInput
         className={clsx({
           "pokt-text-input": true,
-          "right-section": props.rightSection,
+          "right-section": Boolean(hasRightSection),
           iconPadding: iconPadding,
         })}
         rightSection={rightSection}
-        size={props.size ?? "md"}
-        variant={props.variant ?? "unstyled"}
         {...props}
       />
       {hasDelete && (
         <Button
           className="pokt-text-delete"
-          color="blue"
-          variant="outline"
+          color="gray"
+          size="sm"
+          variant="light"
           onClick={handleRemove}
         >
-          <IconDeleteAlt fill="var(--color-white-light)" />
+          <IconDeleteAlt />
         </Button>
       )}
     </div>

@@ -7,5 +7,5 @@
 }
 
 .pokt-appid-layout-view .pokt-icon {
-  fill: var(--color-white-main);
+  fill: var(--mantine-color-white);
 }

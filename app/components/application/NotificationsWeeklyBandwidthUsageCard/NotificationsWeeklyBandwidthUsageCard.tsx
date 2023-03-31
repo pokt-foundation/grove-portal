@@ -1,7 +1,6 @@
 import { SimpleGrid } from "@pokt-foundation/pocket-blocks"
 import type { LinksFunction } from "@remix-run/node"
 import { useMemo } from "react"
-import CircleGraphWithGradient from "../CircleGraphWithGradient"
 import styles from "./styles.css"
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
@@ -162,11 +161,6 @@ export default function NotificationsWeeklyBandwidthUsageCard() {
               key={id}
               className="pokt-network-notifications-weekly-bandwidth-usage-item"
             >
-              <CircleGraphWithGradient
-                config={config}
-                gradientConfig={gradientConfig}
-                id={id}
-              />
               <h5>{title}</h5>
               <p>{subtitle}</p>
             </div>

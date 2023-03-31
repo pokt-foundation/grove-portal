@@ -1,5 +1,5 @@
-import { Grid } from "@pokt-foundation/pocket-blocks"
-import { Transition } from "@remix-run/react/transition"
+import { Card, Grid } from "@pokt-foundation/pocket-blocks"
+import { Transition } from "@remix-run/react/dist/transition"
 import styles from "./styles.css"
 import ChainWithImage, {
   links as ChainWithImageLinks,
@@ -14,9 +14,9 @@ import NetworkRelayPerformanceCard, {
   links as NetworkRelayPerformanceCardLinks,
   numbersFormatter,
 } from "~/components/application/NetworkRelayPerformanceCard"
-import NetworkSuccessRateCard, {
-  links as NetworkSuccessRateCardLinks,
-} from "~/components/application/NetworkSuccessRateCard"
+// import NetworkSuccessRateCard, {
+//   links as NetworkSuccessRateCardLinks,
+// } from "~/components/application/NetworkSuccessRateCard"
 import NetworkSummaryCard, {
   links as NetworkSummaryCardLinks,
 } from "~/components/application/NetworkSummaryCard"
@@ -32,7 +32,7 @@ export const links = () => {
   return [
     ...NetworkSummaryCardLinks(),
     ...NetworkPoktScanLatestBlockCardLinks(),
-    ...NetworkSuccessRateCardLinks(),
+    // ...NetworkSuccessRateCardLinks(),
     ...NetworkRelayPerformanceCardLinks(),
     ...UsageChartCardLinks(),
     ...TableLinks(),
@@ -63,7 +63,6 @@ export default function NetworkView({
       <Grid gutter={32}>
         <Grid.Col md={8}>
           <section>
-            <h3>Network Summary</h3>
             <Grid gutter={32}>
               <Grid.Col sm={4}>
                 <NetworkSummaryCard
@@ -93,38 +92,31 @@ export default function NetworkView({
           </section>
           {blockchains && (
             <section>
-              <Table
-                paginate
-                search
-                columns={["Network", "ID", "Avg. Daily Relays"]}
-                data={blockchains.map((chain) => ({
-                  id: chain.id,
-                  network: {
-                    value: `${chain.description}`,
-                    element: <ChainWithImage chain={chain.description} />,
-                  },
-                  chainId: chain.id,
-                  traffic: numbersFormatter.format(
-                    poktscanChains?.getChainsTotals.chains?.find(
-                      (c) => c && c.chain === chain.id,
-                    )?.total_relays / 30,
-                  ),
-                }))}
-                label="Available Networks"
-              />
+              <Card>
+                <Table
+                  paginate
+                  search
+                  columns={["Network", "ID", "Avg. Daily Relays"]}
+                  data={blockchains.map((chain) => ({
+                    id: chain.id,
+                    network: {
+                      value: `${chain.description}`,
+                      element: <ChainWithImage chain={chain.description} />,
+                    },
+                    chainId: chain.id,
+                    traffic: numbersFormatter.format(
+                      poktscanChains?.getChainsTotals.chains?.find(
+                        (c) => c && c.chain === chain.id,
+                      )?.total_relays / 30,
+                    ),
+                  }))}
+                  label="Available Networks"
+                />
+              </Card>
             </section>
           )}
         </Grid.Col>
         <Grid.Col md={4}>
-          <section>
-            <h3>Network Success Rate</h3>
-            <NetworkSuccessRateCard relays={weeklyNetworkRelays} />
-          </section>
-          {poktscanLatestBlock && (
-            <section>
-              <NetworkPoktScanLatestBlockCard latestBlock={poktscanLatestBlock} />
-            </section>
-          )}
           <section>
             <NetworkRelayPerformanceCard
               month={monthlyNetworkRelays}
@@ -132,6 +124,11 @@ export default function NetworkView({
               week={weeklyNetworkRelays}
             />
           </section>
+          {poktscanLatestBlock && (
+            <section>
+              <NetworkPoktScanLatestBlockCard latestBlock={poktscanLatestBlock} />
+            </section>
+          )}
           <section>
             <FeedbackCard />
           </section>

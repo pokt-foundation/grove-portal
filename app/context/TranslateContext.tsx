@@ -258,7 +258,7 @@ interface TranslationData {
   BannerErrorCard: BannerErrorCard
 }
 
-export type Language = typeof languages[number]
+export type Language = (typeof languages)[number]
 type Translate = {
   [K in Language]: TranslationData
 }

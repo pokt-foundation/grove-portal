@@ -1,10 +1,15 @@
+import { StylesPlaceholder } from "@mantine/remix"
 import {
   Alert,
   Center,
   Container,
+  createEmotionCache,
+  Global,
   IconBookOpen,
   IconCircleQuestion,
   IconMail,
+  MantineProvider,
+  theme,
 } from "@pokt-foundation/pocket-blocks"
 import { LinksFunction, LoaderFunction, MetaFunction, json } from "@remix-run/node"
 import {
@@ -18,7 +23,7 @@ import {
   useLoaderData,
   useSearchParams,
 } from "@remix-run/react"
-import { useEffect, useMemo } from "react"
+import React, { useEffect, useMemo } from "react"
 import { Auth0Profile } from "remix-auth-auth0"
 import analyticsInit from "./utils/analytics"
 import { authenticator } from "./utils/auth.server"
@@ -73,13 +78,72 @@ export const loader: LoaderFunction = async ({ request }) => {
   return json<RootLoaderData>(data)
 }
 
-const WithProviders: React.FC = ({ children }) => {
+createEmotionCache({ key: "pni" })
+
+const WithProviders = ({ children }: { children: React.ReactNode }) => {
   return (
-    <FeatureFlagsContextProvider>
-      <UserContextProvider>
-        <TranslateContextProvider>{children}</TranslateContextProvider>
-      </UserContextProvider>
-    </FeatureFlagsContextProvider>
+    <MantineProvider
+      withCSSVariables
+      withGlobalStyles
+      withNormalizeCSS
+      theme={{
+        ...theme,
+        primaryColor: "blue",
+        components: {
+          ...theme.components,
+          Paper: {
+            styles: {
+              root: {
+                overflow: "visible !important",
+              },
+            },
+          },
+          Card: {
+            styles: (theme) => ({
+              root: {
+                backgroundColor:
+                  theme.colorScheme === "dark"
+                    ? theme.colors.navy[5]
+                    : theme.colors.gray[1],
+              },
+            }),
+          },
+          Tabs: {
+            styles: (theme) => ({
+              tabsList: {
+                borderBottom: "2px solid transparent",
+                marginBottom: theme.spacing.md,
+              },
+              tab: {
+                paddingRight: theme.spacing.xs,
+                paddingLeft: theme.spacing.xs,
+                transition: "border-color ease-in-out 0.3s, color ease-in-out 0.3s",
+                "&[data-active]": {
+                  borderColor: theme.colors[theme.primaryColor][6],
+                },
+                "&:hover": {
+                  backgroundColor: "transparent",
+                  borderColor: "transparent",
+                  color: theme.colors[theme.primaryColor][8],
+                },
+                "&[data-active]:hover": {
+                  borderColor: theme.colors[theme.primaryColor][8],
+                },
+                "&:not(:last-child)": {
+                  marginRight: theme.spacing.md,
+                },
+              },
+            }),
+          },
+        },
+      }}
+    >
+      <FeatureFlagsContextProvider>
+        <UserContextProvider>
+          <TranslateContextProvider>{children}</TranslateContextProvider>
+        </UserContextProvider>
+      </FeatureFlagsContextProvider>
+    </MantineProvider>
   )
 }
 
@@ -97,6 +161,23 @@ const Document = ({ children, title }: { children: React.ReactNode; title?: stri
   return (
     <html lang={language}>
       <head>
+        <StylesPlaceholder />
+        <Global
+          styles={(theme) => ({
+            body: {
+              ...theme.fn.fontStyles(),
+              backgroundColor:
+                theme.colorScheme === "dark"
+                  ? theme.colors.navy[7]
+                  : theme.colors.gray[2],
+              color:
+                theme.colorScheme === "dark"
+                  ? theme.colors.gray[0]
+                  : theme.colors.navy[9],
+              lineHeight: theme.lineHeight,
+            },
+          })}
+        />
         <Meta />
         <title>{title}</title>
         <Links />
@@ -116,7 +197,7 @@ export default function App() {
   const { t } = useTranslate()
 
   useEffect(() => {
-    analyticsInit(user)
+    analyticsInit({ id: user?.id ?? "" })
   }, [user])
 
   const routes = useMemo(() => {

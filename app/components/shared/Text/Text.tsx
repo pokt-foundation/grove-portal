@@ -1,4 +1,3 @@
-// import { Text as MantineText, TextProps } from "@mantine/core"
 import { Text as PoktText, TextProps } from "@pokt-foundation/pocket-blocks"
 import clsx from "clsx"
 import styles from "./styles.css"

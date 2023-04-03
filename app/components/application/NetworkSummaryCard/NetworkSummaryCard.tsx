@@ -10,7 +10,7 @@ export const links = () => {
 interface NetworkSummaryCardProps {
   title: string
   subtitle: string
-  imgSrc: string
+  imgSrc?: string
 }
 
 export default function NetworkSummaryCard({
@@ -25,11 +25,13 @@ export default function NetworkSummaryCard({
           <h3>{title}</h3>
           <p>{subtitle}</p>
         </div>
-        <img
-          alt="network summary nodes"
-          className="pokt-network-summary-image"
-          src={imgSrc}
-        />
+        {imgSrc && (
+          <img
+            alt="network summary nodes"
+            className="pokt-network-summary-image"
+            src={imgSrc}
+          />
+        )}
       </Card>
     </div>
   )

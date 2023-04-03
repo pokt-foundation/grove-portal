@@ -32,7 +32,7 @@ export default function HelpTooltip(props: Omit<TooltipProps, "children">) {
   }, [open])
 
   return (
-    <Tooltip {...props} className="pokt-help" opened={open}>
+    <Tooltip {...props} multiline className="pokt-help" opened={open} width={220}>
       <Button onClick={() => setOpen((o) => !o)}>
         <IconCircleQuestion />
       </Button>

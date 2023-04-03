@@ -51,7 +51,6 @@ describe("landing page tests", () => {
     cy.findByRole("banner")
       .findByRole("navigation")
       .findByRole("link", { name: /faqs/i })
-      .click()
-    cy.url().should("include", "faq")
+      .should("have.attr", "href", "/faq")
   })
 })

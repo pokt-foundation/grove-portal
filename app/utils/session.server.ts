@@ -8,6 +8,7 @@ import {
 } from "@remix-run/node"
 import jwt_decode from "jwt-decode"
 import { Auth0Profile } from "remix-auth-auth0"
+import invariant from "tiny-invariant"
 import { authenticator } from "./auth.server"
 import { getRequiredServerEnvVar } from "./environment"
 
@@ -40,7 +41,7 @@ export const sessionStorage = createCookieSessionStorage({
 
 export const requireUser = async (request: Request, defaultRedirect = "/") => {
   const user = await authenticator.isAuthenticated(request)
-  if (!user) {
+  if (!user || !user.profile._json) {
     throw redirect(defaultRedirect)
   }
   if (!user.profile._json.email_verified) {
@@ -105,7 +106,7 @@ export const getUserPermissions = (accessToken: string) => {
 
 export const getUserId = async (request: Request) => {
   const user = await authenticator.isAuthenticated(request)
-  if (!user) return undefined
+  if (!user || !user.profile.id) return undefined
   return getPoktId(user.profile.id)
 }
 

@@ -1,11 +1,10 @@
-import { CircleGraph, useTheme } from "@pokt-foundation/ui"
+import { Card, useMantineTheme } from "@pokt-foundation/pocket-blocks"
 import styles from "./styles.css"
-import { Card, links as CardLinks } from "~/components/shared/Card"
 import { RelayMetric } from "~/models/relaymeter/relaymeter.server"
 
 /* c8 ignore start */
 export const links = () => {
-  return [...CardLinks(), { rel: "stylesheet", href: styles }]
+  return [{ rel: "stylesheet", href: styles }]
 }
 /* c8 ignore stop */
 
@@ -14,28 +13,10 @@ interface NetworkSuccessRateCardProps {
 }
 
 export default function NetworkSuccessRateCard({ relays }: NetworkSuccessRateCardProps) {
-  const theme = useTheme()
+  const theme = useMantineTheme()
   return (
     <div className="pokt-network-success-rate">
       <Card>
-        <CircleGraph
-          color="url(#network-success-gradient)"
-          size={80}
-          strokeWidth={12}
-          value={relays.Count.Success / (relays.Count.Success + relays.Count.Failure)}
-        >
-          <defs>
-            <linearGradient id="network-success-gradient">
-              <stop
-                offset="10%"
-                stopColor={theme.accentSecondAlternative}
-                stopOpacity="100%"
-              />
-              <stop offset="90%" stopColor={theme.accent} stopOpacity="100%" />
-            </linearGradient>
-          </defs>
-        </CircleGraph>
-
         <div className="pokt-network-success-rate-content">
           <h5>{Intl.NumberFormat().format(relays.Count.Success)}</h5>
           <p>
@@ -46,7 +27,7 @@ export default function NetworkSuccessRateCard({ relays }: NetworkSuccessRateCar
               width="10"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <circle cx="5" cy="5" fill={theme.accent} r="5" />
+              <circle cx="5" cy="5" fill={theme.colors.green[6]} r="5" />
             </svg>
             Successful relays
           </p>

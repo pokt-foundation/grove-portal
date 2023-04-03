@@ -1,6 +1,5 @@
-import { Grid, Tooltip } from "@pokt-foundation/pocket-blocks"
+import { Grid } from "@pokt-foundation/pocket-blocks"
 import { UserLBTotalRelaysResponse } from "@pokt-foundation/portal-types"
-import { CircleGraph } from "@pokt-foundation/ui"
 import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/shared/Card"
 import CardList, {
@@ -58,28 +57,6 @@ export default function AppUsageCurrentCard({
         </div>
         <div>
           <Grid align="center">
-            {totalRelays > 0 && (
-              <Grid.Col xs={3}>
-                {totalRelays && (
-                  <Tooltip
-                    label={`Showing the percentage of daily relays divided by ${
-                      maxDailyRelays > 0 ? "max relays" : "average relays"
-                    }.`}
-                  >
-                    <CircleGraph
-                      color="#c5ec4b"
-                      size={70}
-                      strokeWidth={10}
-                      value={Math.min(
-                        1,
-                        totalRelays /
-                          (maxDailyRelays > 0 ? maxDailyRelays : averageRelays),
-                      )}
-                    />
-                  </Tooltip>
-                )}
-              </Grid.Col>
-            )}
             <Grid.Col xs={totalRelays > 0 ? 9 : 12}>
               <CardList items={listItems} />
             </Grid.Col>

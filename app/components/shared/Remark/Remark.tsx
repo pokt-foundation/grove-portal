@@ -21,12 +21,7 @@ export const Remark = (props: RemarkProps) => {
               {props.children}
             </a>
           ),
-          img: (props: any) => (
-            <img
-              className="pokt-remark-img"
-              {...props}
-            />
-          ),
+          img: (props: any) => <img className="pokt-remark-img" {...props} />,
         },
       }}
     >

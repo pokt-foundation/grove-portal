@@ -24,13 +24,13 @@
 }
 
 .pokt-app-addresses .pokt-button {
-  border-color: var(--color-secondary-main);
+  border-color: var(--mantine-color-blue-6);
 }
 
 .pokt-app-addresses .pokt-button:hover {
-  border-color: var(--color-secondary-dark);
+  border-color: var(--mantine-color-blue-8);
 }
 
 .pokt-app-addresses .pokt-icon {
-  fill: var(--color-white-main);
+  fill: var(--mantine-color-white);
 }

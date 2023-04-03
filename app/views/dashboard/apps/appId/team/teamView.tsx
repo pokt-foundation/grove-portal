@@ -3,29 +3,28 @@ import {
   IconPlus,
   IconMoreVertical,
   Grid,
-  Box,
+  Menu,
+  Select,
+  Anchor,
+  Badge,
   Text,
+  Box,
 } from "@pokt-foundation/pocket-blocks"
 import {
   Form,
   useActionData,
   useFetcher,
   useLoaderData,
-  useTransition,
+  useNavigation,
 } from "@remix-run/react"
-import { Transition } from "@remix-run/react/transition"
+import { Transition } from "@remix-run/react/dist/transition"
 import clsx from "clsx"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import styles from "./styles.css"
 import AppRadioCards, {
   links as AppRadioCardsLinks,
 } from "~/components/application/AppRadioCards"
 import Card from "~/components/shared/Card"
-import Dropdown, {
-  DropdownItem,
-  DropdownTrigger,
-  links as DropdownLinks,
-} from "~/components/shared/Dropdown"
 import ErrorIcon from "~/components/shared/Icons/ErrorIcon"
 import Loader, { links as LoaderLinks } from "~/components/shared/Loader"
 import Modal from "~/components/shared/Modal"
@@ -33,7 +32,6 @@ import NotificationMessage, {
   links as NotificationMessageLinks,
   NotificationType,
 } from "~/components/shared/NotificationMessage"
-import StatusTag, { links as StatusTagLinks } from "~/components/shared/StatusTag"
 import Table, { links as TableLinks } from "~/components/shared/Table"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { EndpointQuery, RoleName } from "~/models/portal/sdk"
@@ -43,9 +41,7 @@ export const links = () => {
   return [
     ...AppRadioCardsLinks(),
     ...TextInputLinks(),
-    ...DropdownLinks(),
     ...LoaderLinks(),
-    ...StatusTagLinks(),
     ...TableLinks(),
     ...NotificationMessageLinks(),
     { rel: "stylesheet", href: styles },
@@ -110,7 +106,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
     transferOwnership: false,
   })
 
-  const transition = useTransition()
+  const navigation = useNavigation()
   const actionData = useActionData<ActionData>()
   const { profile } = useLoaderData<TeamLoaderData>()
   const inviteFetcher = useFetcher()
@@ -128,21 +124,26 @@ function TeamView({ state, endpoint }: TeamViewProps) {
     )
   }
 
-  const isAdminUser = endpoint?.users?.some(
-    ({ email, roleName }) => email === profile._json.email && roleName === "ADMIN",
+  const isAdminUser = useMemo(
+    () =>
+      endpoint?.users?.some(
+        ({ email, roleName }) => email === profile?._json?.email && roleName === "ADMIN",
+      ),
+    [endpoint],
   )
 
-  const isOwnerUser = endpoint?.users?.some(
-    ({ email, roleName }) => email === profile._json.email && roleName === "OWNER",
+  const isOwnerUser = useMemo(
+    () =>
+      endpoint?.users?.some(
+        ({ email, roleName }) => email === profile?._json?.email && roleName === "OWNER",
+      ),
+    [endpoint],
   )
 
   const isMember = !isAdminUser && !isOwnerUser
 
-  const handleUpdateRoleSubmit = (
-    email: string,
-    roleName: RoleName,
-    transferOwnership: boolean = false,
-  ) => {
+  const handleUpdateRoleSubmit = (email: string, roleName: RoleName) => {
+    const transferOwnership: boolean = roleName === RoleName.Owner
     setUpdateRoleModalData({
       email,
       roleName,
@@ -159,6 +160,19 @@ function TeamView({ state, endpoint }: TeamViewProps) {
     )
     setConfirmationModalEmail(email)
   }
+
+  const getRolesSelectData = useMemo(() => {
+    let array = []
+    if (isOwnerUser) {
+      array = Object.values(RoleName)
+    } else {
+      array = Object.values(RoleName).filter((r) => r !== RoleName.Owner)
+    }
+    return array.map((role) => ({
+      value: role,
+      label: role,
+    }))
+  }, [isOwnerUser])
 
   useEffect(() => {
     if (actionData) {
@@ -275,12 +289,18 @@ function TeamView({ state, endpoint }: TeamViewProps) {
             />
 
             <div className="invite-new-user__form__buttons-container">
-              <Button variant="outline" onClick={() => setInviteNewUserOpen(false)}>
+              <Button
+                color="gray"
+                size="sm"
+                variant="outline"
+                onClick={() => setInviteNewUserOpen(false)}
+              >
                 Cancel
               </Button>
               <Button
-                disabled={transition.state === "submitting" || inviteEmail === ""}
+                disabled={navigation.state === "submitting" || inviteEmail === ""}
                 name="type"
+                size="sm"
                 type="submit"
                 value="invite"
               >
@@ -290,119 +310,111 @@ function TeamView({ state, endpoint }: TeamViewProps) {
           </Form>
         </Card>
       ) : null}
-      <Table
-        columns={["Email", "Status", "Role", ""]}
-        data={endpoint?.users?.map(({ email, roleName, accepted }) => {
-          return {
-            id: email,
-            email: email,
-            status: {
-              element: <StatusTag accepted={accepted} />,
-              value: accepted ? "ACCEPTED" : "PENDING",
-            },
-            role: {
-              element: (
-                <div className="list__role">
-                  {isOwnerUser && email !== profile?._json.email && (
-                    <Dropdown
-                      contentClassName="dropdown-teams__content"
-                      label={<DropdownTrigger label={roleName} />}
-                    >
-                      <DropdownItem
-                        action={() => handleUpdateRoleSubmit(email, roleName, true)}
-                        label="Transfer Ownership"
-                      />
-                      <DropdownItem
-                        action={() => handleUpdateRoleSubmit(email, roleName)}
-                        label={roleName === RoleName.Admin ? "Member" : "Admin"}
-                      />
-                    </Dropdown>
-                  )}
-
-                  {isAdminUser &&
-                    email !== profile?._json.email &&
-                    roleName === RoleName.Member && (
-                      <Dropdown
-                        contentClassName="dropdown-teams__content"
-                        label={<DropdownTrigger label={roleName} />}
-                      >
-                        <DropdownItem
-                          action={() => handleUpdateRoleSubmit(email, roleName)}
-                          label="Admin"
-                        />
-                      </Dropdown>
-                    )}
-
-                  {((!isOwnerUser && !isAdminUser) ||
-                    email === profile?._json.email ||
-                    roleName === RoleName.Owner) && (
-                    <Text
-                      sx={{
-                        fontSize: "inherit",
-                        textTransform: "lowercase",
-                        "&:first-letter": { textTransform: "uppercase" },
-                      }}
-                    >
-                      {roleName}
-                    </Text>
-                  )}
-                </div>
-              ),
-              value: "Role",
-            },
-            action: {
-              element:
-                roleName !== RoleName["Owner"] &&
-                (isAdminUser || isOwnerUser || email === profile?._json.email) ? (
-                  <Box
-                    className="list__more-actions"
-                    sx={{ display: "flex", justifyContent: "flex-end" }}
-                  >
-                    <Dropdown
-                      contentClassName="dropdown-teams__content"
-                      label={<IconMoreVertical fill="var(--color-primary-main)" />}
-                    >
-                      {!accepted && (isAdminUser || isOwnerUser) ? (
-                        <DropdownItem
-                          action={() => handleResendInviteEmail(email, endpoint.name)}
-                          label="Send new invite"
-                        />
-                      ) : null}
-                      {isAdminUser || isOwnerUser || email === profile?._json.email ? (
-                        <DropdownItem
-                          action={() => handleLeaveRemoveUser(email)}
-                          label={email === profile?._json.email ? "Leave team" : "Remove"}
-                          variant="green"
-                        />
-                      ) : null}
-                    </Dropdown>
-                  </Box>
-                ) : (
-                  <></>
+      <Card>
+        <Table
+          columns={["Email", "Status", "Role", ""]}
+          data={endpoint?.users?.map(({ email, roleName, accepted }) => {
+            return {
+              id: email,
+              email: email,
+              status: {
+                element: (
+                  <Badge color={accepted ? "green" : "orange"} variant="outline">
+                    {accepted ? "Accepted" : "Pending"}
+                  </Badge>
                 ),
-              value: "More",
-            },
+                value: accepted ? "ACCEPTED" : "PENDING",
+              },
+              role: {
+                element: (
+                  <div className="list__role">
+                    <Select
+                      data={getRolesSelectData}
+                      defaultValue={roleName}
+                      // make the select disabled if:
+                      // * the list user is the app owner
+                      // * the list user hasn't accepted yet
+                      // * the logged user is only a member
+                      disabled={roleName === RoleName.Owner || !accepted || isMember}
+                      onChange={(value) =>
+                        handleUpdateRoleSubmit(email, value as RoleName)
+                      }
+                    />
+                  </div>
+                ),
+                value: "Role",
+              },
+              action: {
+                element:
+                  isOwnerUser || isAdminUser || email === profile?._json?.email ? (
+                    <Box sx={{ textAlign: "right" }}>
+                      {!isOwnerUser && roleName === RoleName.Owner ? null : (
+                        <Menu>
+                          <Menu.Target>
+                            <Anchor>
+                              <IconMoreVertical />
+                            </Anchor>
+                          </Menu.Target>
+                          <Menu.Dropdown className="dropdown-teams__content">
+                            {!accepted && (isOwnerUser || isAdminUser) && (
+                              <Menu.Item
+                                onClick={() =>
+                                  handleResendInviteEmail(email, endpoint.name)
+                                }
+                              >
+                                Send new Invite
+                              </Menu.Item>
+                            )}
+                            <Menu.Item
+                              color="green"
+                              onClick={() => {
+                                setConfirmationModalProps({
+                                  type: "options",
+                                  isActive: true,
+                                })
+                                setConfirmationModalTitle(
+                                  "Do you want to remove this user from this app team?",
+                                )
+                                setConfirmationModalDescription(
+                                  "That user will completely lose access to the current application.",
+                                )
+                                setConfirmationModalEmail(email)
+                              }}
+                            >
+                              {email === profile?._json?.email ? "Leave team" : "Remove"}
+                            </Menu.Item>
+                          </Menu.Dropdown>
+                        </Menu>
+                      )}
+                    </Box>
+                  ) : (
+                    <></>
+                  ),
+                value: "More",
+              },
+            }
+          })}
+          label="Users"
+          paginate={endpoint.users.length > 10 ? { perPage: 10 } : undefined}
+          rightComponent={
+            isOwnerUser || isAdminUser ? (
+              <Button
+                rightIcon={<IconPlus height={18} width={18} />}
+                size="xs"
+                variant="outline"
+                onClick={() => setInviteNewUserOpen(true)}
+              >
+                Invite new user
+              </Button>
+            ) : null
           }
-        })}
-        label="Users"
-        paginate={endpoint.users.length > 10 ? { perPage: 10 } : false}
-        rightComponent={
-          isAdminUser || isOwnerUser ? (
-            <Button
-              rightIcon={<IconPlus fill="var(--color-white-light)" />}
-              variant="outline"
-              onClick={() => setInviteNewUserOpen(true)}
-            >
-              Invite new user
-            </Button>
-          ) : null
-        }
-      />
+        />
+      </Card>
       <Modal
         opened={confirmationModalProps.isActive}
         padding={20}
         size={429}
-        title="Deleting an user"
+        title="Deleting a user"
         onClose={() => {
           setConfirmationModalProps({ ...confirmationModalProps, isActive: false })
         }}

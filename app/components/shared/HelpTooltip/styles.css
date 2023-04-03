@@ -13,6 +13,6 @@
 
 .mantine-Tooltip-body {
   max-width: 300px;
-  color: var(--color-black-main);
-  background-color: var(--color-white-main);
+  color: var(--mantine-color-navy-4);
+  background-color: var(--mantine-color-white);
 }

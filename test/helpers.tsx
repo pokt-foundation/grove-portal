@@ -30,23 +30,36 @@ export function render(ui: React.ReactElement, options?: RenderOptions) {
   }
   window.__remixRouteModules = { root: { default: RootComponent } }
   window.__remixContext = {
-    matches: [],
-    manifest: window.__remixManifest,
-    routeModules: window.__remixRouteModules,
-    routeData: {},
-    appState: {
-      catchBoundaryRouteId: null,
-      loaderBoundaryRouteId: null,
-      renderBoundaryRouteId: "root",
-      trackBoundaries: false,
-      trackCatchBoundaries: false,
+    state: {
+      loaderData: undefined,
+      actionData: null,
+      errors: null,
+    },
+    future: {
+      unstable_cssModules: false,
+      unstable_cssSideEffectImports: false,
+      unstable_dev: false,
+      unstable_postcss: false,
+      unstable_tailwind: false,
+      unstable_vanillaExtract: false,
+      v2_errorBoundary: false,
+      v2_meta: false,
+      v2_routeConvention: false,
     },
   }
 
   function Wrapper({ children }: { children: React.ReactNode }) {
     return <RemixBrowser>{children}</RemixBrowser>
   }
-  return rtlRender(ui, {
-    wrapper: Wrapper,
-  })
+
+  const { rerender, ...rest } = rtlRender(ui, { wrapper: Wrapper, ...options })
+
+  return {
+    rerender: (ui: React.ReactElement) => {
+      const RootComponent = () => ui
+      window.__remixRouteModules.root.default = RootComponent
+      rerender(ui)
+    },
+    ...rest,
+  }
 }

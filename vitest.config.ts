@@ -18,5 +18,10 @@ export default defineConfig({
       functions: 50,
       statements: 50,
     },
+    watchExclude: [
+      ".*\\/node_modules\\/.*",
+      ".*\\/build\\/.*",
+      ".*\\/postgres-data\\/.*",
+    ],
   },
 })

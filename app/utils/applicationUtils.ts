@@ -1,7 +1,7 @@
 // import dayjs from 'dayjs/esm'
 // import dayJsutcPlugin from 'dayjs/esm/plugin/utc'
+import { useMantineTheme } from "@pokt-foundation/pocket-blocks"
 import { UserLBDailyRelayBucket } from "@pokt-foundation/portal-types"
-import { useTheme } from "@pokt-foundation/ui"
 import { formatNumberToSICompact } from "./formattingUtils"
 import { norm } from "./mathUtils"
 
@@ -45,10 +45,10 @@ type HourlyLatencyBucket = {
 }
 
 export function useUsageColor(usage: number): [string, string] {
-  const theme = useTheme()
+  const theme = useMantineTheme()
 
   if (usage <= 0.25) {
-    return [theme.accent, theme.accentSecondAlternative]
+    return [theme.colors.green[6], theme.colors.green[4]]
   }
 
   if (usage <= 0.5) {
@@ -56,10 +56,10 @@ export function useUsageColor(usage: number): [string, string] {
   }
 
   if (usage <= 0.75) {
-    return [theme.warning, "#B57905"]
+    return [theme.colors.orange[6], theme.colors.orange[8]]
   }
 
-  return [theme.errorStart, theme.errorEnd]
+  return [theme.colors.red[6], theme.colors.red[8]]
 }
 
 export function useSuccessRateColor(successRate: number): string[] {

@@ -1,4 +1,4 @@
-import { Link } from "@pokt-foundation/ui"
+import { Anchor } from "@pokt-foundation/pocket-blocks"
 import { ActionFunction, LinksFunction, json } from "@remix-run/node"
 import { useCatch } from "@remix-run/react"
 import { useEffect } from "react"
@@ -6,16 +6,16 @@ import invariant from "tiny-invariant"
 import NotificationsAlertForm, {
   links as NotificationsAlertFormLinks,
 } from "~/components/application/NotificationsAlertForm/NotificationsAlertForm"
-import NotificationsWeeklyBandwidthUsageCard, {
-  links as NotificationsWeeklyBandwidthUsageCardLinks,
-} from "~/components/application/NotificationsWeeklyBandwidthUsageCard"
+// import NotificationsWeeklyBandwidthUsageCard, {
+//   links as NotificationsWeeklyBandwidthUsageCardLinks,
+// } from "~/components/application/NotificationsWeeklyBandwidthUsageCard"
 import { initPortalClient } from "~/models/portal/portal.server"
 import styles from "~/styles/dashboard.apps.$appId.notifications.css"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { requireUser } from "~/utils/session.server"
 
 export const links: LinksFunction = () => [
-  ...NotificationsWeeklyBandwidthUsageCardLinks(),
+  // ...NotificationsWeeklyBandwidthUsageCardLinks(),
   ...NotificationsAlertFormLinks(),
   {
     rel: "stylesheet",
@@ -63,11 +63,13 @@ export default function AppNotifications() {
   return (
     <section className="pokt-network-app-notifications">
       <NotificationsAlertForm />
-      <NotificationsWeeklyBandwidthUsageCard />
+      {/* <NotificationsWeeklyBandwidthUsageCard /> */}
       <p className="pokt-network-app-notifications-p">
         If you need more relays for your application or you are looking to stake your own
         POKT, please{" "}
-        <Link href="mailto:sales@pokt.netowork?subject=Portal Contact">contact us</Link>{" "}
+        <Anchor href="mailto:sales@pokt.netowork?subject=Portal Contact">
+          contact us
+        </Anchor>{" "}
         and our team will find a solution for you.
       </p>
     </section>

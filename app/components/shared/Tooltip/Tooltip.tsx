@@ -5,7 +5,7 @@ export type { TooltipProps }
 export default function Tooltip(props: TooltipProps) {
   const { children, ...tooltipProps } = props
   return (
-    <MantineTooltip wrapLines={tooltipProps.wrapLines ?? true} {...tooltipProps}>
+    <MantineTooltip multiline={tooltipProps.multiline ?? true} {...tooltipProps}>
       {children}
     </MantineTooltip>
   )

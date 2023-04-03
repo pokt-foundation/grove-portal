@@ -6,7 +6,7 @@
 }
 
 .calculate-your-pricing-container .calculate-your-pricing-placeholder {
-  color: var(--color-disabled);
+  color: var(--mantine-color-gray-6);
 }
 
 .calculate-your-pricing-container .calculate-your-pricing-footer {
@@ -16,11 +16,11 @@
 }
 
 .calculate-your-pricing-container .calculate-your-pricing-footer h4 {
-  color: var(--color-white-light);
+  color: var(--mantine-color-gray-0);
 }
 
 .calculate-your-pricing-container .calculate-your-pricing-footer p {
-  color: var(--color-white-light);
+  color: var(--mantine-color-gray-0);
   font-size: 24px;
   font-weight: 700;
 }
@@ -28,13 +28,12 @@
 .calculate-your-pricing-container .calculate-your-pricing-footer div.divider {
   width: 56px;
   height: 0px;
-  background: var(--color-primary-main);
-  border: 1px solid var(--color-primary-main);
+  border: 1px solid;
   transform: rotate(-90deg);
 }
 
 .calculate-your-pricing-container .calculate-your-pricing-question {
-  color: var(--color-primary-main);
+  color: var(--mantine-color-green-6);
   border: none;
   padding: 0;
   background: transparent;
@@ -46,11 +45,11 @@
 }
 
 .calculate-your-pricing-container .calculate-your-pricing-modal a {
-  color: var(--color-primary-main);
+  color: var(--mantine-color-green-6);
 }
 
 .calculate-your-pricing-container .calculate-your-pricing-modal h3 {
-  color: var(--color-secondary-main);
+  color: var(--mantine-color-blue-6);
 }
 
 .calculate-your-pricing-modal-footer {
@@ -59,7 +58,7 @@
 }
 
 .calculate-your-pricing-modal-footer button {
-  color: var(--color-black-dark);
+  color: var(--mantine-color-navy-6);
   width: 220px;
   margin: 24px 0 40px 0;
 }
@@ -74,13 +73,13 @@
 }
 
 .calculate-your-pricing-formula-value {
-  color: var(--color-disabled);
+  color: var(--mantine-color-gray-6);
   font-size: 12px;
   margin-top: 8px;
 }
 
 .calculate-your-pricing-formula .symbol {
-  color: var(--color-secondary-main);
+  color: var(--mantine-color-blue-6);
 }
 
 .calculate-your-pricing-conclusion {

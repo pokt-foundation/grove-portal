@@ -4,7 +4,6 @@
 
 .pokt-card-list p {
   margin: 0;
-  color: var(--color-white-main);
 }
 
 .pokt-card-list .pokt-list-label {
@@ -26,16 +25,16 @@
 }
 
 .pokt-card-list .pokt-list-value.primary {
-  color: var(--color-primary-main);
+  color: var(--mantine-color-green-6);
 }
 .pokt-card-list .pokt-list-value.secondary {
-  color: var(--color-secondary-main);
+  color: var(--mantine-color-blue-6);
 }
 .pokt-card-list .pokt-list-value.success {
-  color: var(--color-success);
+  color: var(--mantine-color-yellow-6);
 }
 .pokt-card-list .pokt-list-value.error {
-  color: var(--color-error);
+  color: var(--mantine-color-red-6);
 }
 
 .pokt-card-list .pokt-list-icon {

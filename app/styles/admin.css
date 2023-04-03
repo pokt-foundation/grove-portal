@@ -9,9 +9,9 @@
 }
 
 .admin-nav .nav-link-active {
-  color: var(--color-primary-main);
+  color: var(--mantine-color-green-6);
 }
 
 .admin-nav .nav-link-active:hover {
-  color: var(--color-primary-dark);
+  color: var(--mantine-color-green-8);
 }

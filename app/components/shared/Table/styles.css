@@ -22,8 +22,6 @@
 
 .pokt-table .pokt-table-header .pokt-table-search input {
   background-color: transparent;
-  border: 1px solid var(--color-white-main);
-  color: var(--color-white-main);
 }
 
 .pokt-table thead tr {
@@ -41,13 +39,17 @@
 }
 
 .pokt-table tbody tr {
-  border-bottom: 1px solid #2f373e;
+  border-bottom: 1px solid var(--mantine-color-navy-6);
+  transition: background-color 0.3s ease-in-out;
+  border-radius: 8px;
+}
+.pokt-table tbody tr:hover {
+  background-color: var(--mantine-color-navy-6);
 }
 
 .pokt-table tbody tr td {
   padding: 16px 8px;
   border: none;
-  color: var(--color-white-main);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -61,10 +63,6 @@
 .pokt-table .pokt-table-paginate {
   display: flex;
   justify-content: center;
-}
-
-.pokt-table .pokt-table-paginate svg {
-  color: var(--color-white-main);
 }
 
 .pokt-table-ellipsis {

@@ -3,26 +3,26 @@
 }
 
 .pokt-banner.informational .pokt-card {
-  border: 1px solid var(--color-secondary-light);
+  border: 1px solid var(--mantine-color-blue-4);
 }
 
 .pokt-banner.error .pokt-card {
-  border: 1px solid var(--color-error);
+  border: 1px solid var(--mantine-color-red-6);
 }
 
 .pokt-banner.success .pokt-card {
-  border: 1px solid var(--color-success);
+  border: 1px solid var(--mantine-color-yellow-6);
 }
 
 .pokt-banner.warning .pokt-card {
-  border: 1px solid var(--color-warning);
+  border: 1px solid var(--mantine-color-orange-6);
 }
 
 .pokt-banner button {
   font-weight: normal;
-  color: var(--color-white-dark);
+  color: var(--mantine-color-gray-4);
 }
 
 .pokt-banner .pokt-link {
-  color: var(--color-primary-main);
+  color: var(--mantine-color-green-6);
 }

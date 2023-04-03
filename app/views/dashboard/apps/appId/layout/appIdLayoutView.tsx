@@ -1,5 +1,5 @@
 import { IconCaretLeft, Grid, Button } from "@pokt-foundation/pocket-blocks"
-import { Outlet, useFetcher } from "@remix-run/react"
+import { FetcherWithComponents, Outlet, useFetcher } from "@remix-run/react"
 import { useEffect, useState } from "react"
 import { Auth0Profile } from "remix-auth-auth0"
 import styles from "./styles.css"
@@ -54,9 +54,9 @@ export const links = () => {
 type AppIdLayoutViewProps = {
   endpoint: EndpointQuery["endpoint"] | null
   searchParams: URLSearchParams
-  setSearchParams: typeof URLSearchParams["arguments"]
+  setSearchParams: (typeof URLSearchParams)["arguments"]
   subscription: Stripe.Subscription | undefined
-  updatePlanFetcher: ReturnType<typeof useFetcher>
+  updatePlanFetcher: FetcherWithComponents<any>
   user: Auth0Profile
 }
 
@@ -188,8 +188,9 @@ export default function AppIdLayoutView({
     }
   }, [endpoint, subscription, updatePlanFetcher])
 
-  const role = endpoint?.users.find((u) => u.email === user?._json.email)?.roleName
+  const role = endpoint?.users.find((u) => u.email === user._json?.email)?.roleName
   const isMember = role === RoleName.Member
+  const isAdmin = role === RoleName.Admin
 
   return (
     <div className="pokt-appid-layout-view">
@@ -251,6 +252,7 @@ export default function AppIdLayoutView({
                 <StopRemoveApp
                   appId={endpoint.id}
                   apps={endpoint.apps}
+                  isAdmin={isAdmin}
                   isMember={isMember}
                   name={endpoint.name}
                   planType={endpoint.appLimits.planType}

@@ -1,9 +1,9 @@
-import { captureMessage } from "@sentry/react"
-import type { Severity, SeverityLevel } from "@sentry/types"
+// import { captureMessage } from "@sentry/react"
+// import type { Severity, SeverityLevel } from "@sentry/types"
 import { getErrorMessage } from "./catchError"
 import { getRequiredClientEnvVar } from "./environment"
 
-const getLogType = (level: SeverityLevel): Function => {
+const getLogType = (level: string): Function => {
   let type = () => {}
   switch (level) {
     case "fatal":
@@ -25,13 +25,13 @@ const getLogType = (level: SeverityLevel): Function => {
   return type
 }
 
-export function log(error: unknown, level = "log" as SeverityLevel): void {
+export function log(error: unknown, level = "log"): void {
   const message = getErrorMessage(error)
   if (getRequiredClientEnvVar("NODE_ENV") !== "production") {
     const logType = getLogType(level)
     logType(message)
   }
   if (getRequiredClientEnvVar("NODE_ENV") === "production") {
-    captureMessage(message, level as Severity)
+    console.log(message, level)
   }
 }

@@ -17,20 +17,6 @@ export default function Modal({ ...props }: ModalProps) {
         "pokt-modal": true,
       })}
       size={props.size ?? 704}
-      sx={{
-        inner: {
-          position: "absolute",
-          top: "0",
-          left: "0",
-          right: "0",
-          bottom: "0",
-          overflowY: "auto",
-          padding: "48px 16px",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        },
-      }}
       withinPortal={false}
       {...props}
     />

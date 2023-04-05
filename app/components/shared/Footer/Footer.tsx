@@ -21,7 +21,7 @@ export const Footer = () => {
         <Group position="apart">
           <div>
             <Text>
-              &copy; 2022 Pocket Network Inc.{" "}
+              &copy; 2023 Pocket Network Inc.{" "}
               <Anchor component={Link} to="/terms-and-conditions">
                 {footer.termsOfUse}
               </Anchor>{" "}

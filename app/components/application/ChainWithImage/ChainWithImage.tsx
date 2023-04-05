@@ -10,10 +10,10 @@ export const links = () => {
 export interface AppEndpointProps {
   chain: string | undefined | null
   label?: string
-  withIcon: boolean
+  withIcon?: boolean
 }
 
-export default function Chain({ chain, label, withIcon }: AppEndpointProps) {
+export default function Chain({ chain, label, withIcon = true }: AppEndpointProps) {
   if (!chain) return <></>
 
   const labelText = label ?? chain

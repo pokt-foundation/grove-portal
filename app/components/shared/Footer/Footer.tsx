@@ -1,9 +1,9 @@
 import { Anchor, Group, IconTwitter, Text } from "@pokt-foundation/pocket-blocks"
 import { Link } from "@remix-run/react"
+import dayjs from "dayjs"
 import IconDiscord from "../Icons/IconDiscord"
 import styles from "./styles.css"
 import { useTranslate } from "~/context/TranslateContext"
-import dayjs from "dayjs"
 
 /* c8 ignore start */
 export const links = () => {

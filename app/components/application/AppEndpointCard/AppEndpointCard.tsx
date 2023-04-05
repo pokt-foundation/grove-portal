@@ -108,7 +108,10 @@ export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) 
       )
     }
   }
-
+  if (user.data?.preferences.endpoints && user?.data?.preferences?.endpoints[app.id]) {
+    console.log(user?.data?.preferences?.endpoints[app.id])
+  }
+  console.log(blockchains)
   return (
     <div className="pokt-app-endpoint">
       <Card>
@@ -117,7 +120,17 @@ export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) 
           <div>
             {app.gigastake ? (
               <ChainsDropdown
-                blockchains={blockchains}
+                blockchains={blockchains.sort(function (a, b) {
+                  if (a?.description && b?.description) {
+                    if (a.description < b.description) {
+                      return -1
+                    }
+                    if (a.description > b.description) {
+                      return 1
+                    }
+                  }
+                  return 0
+                })}
                 defaultText="Add New"
                 handleChainClick={handleAddToStoredChains}
                 icon={true}
@@ -129,7 +142,7 @@ export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) 
                 }
               />
             ) : (
-              <ChainWithImage chain={chainDescription} />
+              <ChainWithImage chain={chainDescription} withIcon />
             )}
           </div>
         </div>

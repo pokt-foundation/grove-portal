@@ -22,7 +22,7 @@ export default function AppEndpointUrl({ chain, ...props }: AppEndpointUrlProp) 
   return (
     <div className="pokt-app-endpoint-url">
       <div className="pokt-app-endpoint-url-abbrv">
-        <ChainWithImage chain={chain.description} label={chain.ticker} />
+        <ChainWithImage chain={chain.description} label={chain.ticker} withIcon />
       </div>
       <TextInput {...props} />
     </div>

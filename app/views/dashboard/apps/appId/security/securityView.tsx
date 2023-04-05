@@ -13,9 +13,7 @@ import styles from "./styles.css"
 import AppEndpointUrl, {
   links as AppEndpointUrlLinks,
 } from "~/components/application/AppEndpointUrl"
-import ChainsDropdown, {
-  links as ChainsDropdownLinks,
-} from "~/components/application/ChainsDropdown/ChainsDropdown"
+import { links as ChainsDropdownLinks } from "~/components/application/ChainsDropdown/ChainsDropdown"
 import ChainWithImage, {
   links as ChainWithImageLinks,
 } from "~/components/application/ChainWithImage"

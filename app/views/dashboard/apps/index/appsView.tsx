@@ -379,7 +379,7 @@ export const AppsView = ({
                                       className="apps-dropdown-accept-invite-form"
                                       method="post"
                                     >
-                                      <Button type="submit" size="sm">
+                                      <Button size="sm" type="submit">
                                         Accept Invite
                                       </Button>
                                       <input name="type" type="hidden" value="accept" />

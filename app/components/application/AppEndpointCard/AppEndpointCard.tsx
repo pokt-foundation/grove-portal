@@ -142,7 +142,7 @@ export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) 
                 }
               />
             ) : (
-              <ChainWithImage chain={chainDescription} withIcon />
+              <ChainWithImage withIcon chain={chainDescription} />
             )}
           </div>
         </div>

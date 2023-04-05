@@ -3,6 +3,7 @@ import { Link } from "@remix-run/react"
 import IconDiscord from "../Icons/IconDiscord"
 import styles from "./styles.css"
 import { useTranslate } from "~/context/TranslateContext"
+import dayjs from "dayjs"
 
 /* c8 ignore start */
 export const links = () => {
@@ -21,7 +22,7 @@ export const Footer = () => {
         <Group position="apart">
           <div>
             <Text>
-              &copy; 2023 Pocket Network Inc.{" "}
+              &copy; {dayjs().format("YYYY")} Pocket Network Inc.{" "}
               <Anchor component={Link} to="/terms-and-conditions">
                 {footer.termsOfUse}
               </Anchor>{" "}

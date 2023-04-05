@@ -56,7 +56,7 @@ const SelectItem = forwardRef<HTMLDivElement, { label: string; value: string }>(
   ({ label, ...others }, ref) => (
     <div ref={ref} {...others}>
       <Group noWrap>
-        <ChainWithImage chain={label} withIcon />
+        <ChainWithImage withIcon chain={label} />
       </Group>
     </div>
   ),

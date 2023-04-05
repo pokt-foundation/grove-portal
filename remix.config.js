@@ -36,8 +36,8 @@ module.exports = {
     "ccount",
     "property-information",
   ],
-  appDirectory: "app",
-  assetsBuildDirectory: "public/build",
-  serverBuildPath: "api/index.js",
-  publicPath: "/build/",
+  // appDirectory: "app",
+  // assetsBuildDirectory: "public/build",
+  // serverBuildPath: "api/index.js",
+  // publicPath: "/build/",
 }

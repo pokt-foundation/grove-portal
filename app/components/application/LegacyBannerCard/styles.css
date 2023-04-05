@@ -1,5 +1,5 @@
 .pokt-legacy-banner .pokt-card {
-  border: 1px solid var(--color-secondary-light);
+  border: 1px solid var(--mantine-color-blue-4);
   transition: padding ease-in-out 0.3s;
 }
 
@@ -13,5 +13,5 @@
 }
 
 .pokt-legacy-banner .pokt-link {
-  color: var(--color-primary-main);
+  color: var(--mantine-color-green-6);
 }

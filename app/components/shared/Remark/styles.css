@@ -1,3 +1,7 @@
 .pokt-remark-a {
-  color: var(--color-primary-main);
+  color: var(--mantine-color-blue-6);
+}
+
+.pokt-remark-img {
+  width: 100%;
 }

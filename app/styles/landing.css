@@ -41,8 +41,8 @@ p.text {
   border-radius: 0.75rem;
   box-sizing: border-box;
   cursor: pointer;
-  background-color: var(--color-primary-main);
-  color: var(--color-black-light);
+  background-color: var(--mantine-color-green-6);
+  color: var(--mantine-color-navy-4);
   font-size: 1rem;
   font-weight: 700;
   transition: all 300ms ease-in 0s;
@@ -61,24 +61,7 @@ p.text {
 }
 
 .blue {
-  color: var(--color-secondary-main);
-}
-
-.faqTitle {
-  margin-top: 1rem;
-  font-size: 2.5rem;
-  margin-bottom: 5rem;
-}
-
-.faqQuestion {
-  font-size: 2rem;
-  margin-bottom: 0;
-}
-
-.faqAnswer {
-  font-size: 1.125rem;
-  line-height: 150%;
-  margin-bottom: 2.5rem;
+  color: var(--mantine-color-blue-6);
 }
 
 .center {
@@ -89,53 +72,12 @@ p.text {
   display: block;
 }
 
-.link {
-  color: var(--color-primary-main);
-  outline: none;
-  background-color: transparent;
-  border: none;
-  display: inline-block;
-}
-
-.faqTitle {
-  margin-top: 1rem;
-  font-size: 2.5rem;
-  margin-bottom: 5rem;
-}
-
-.faqQuestion {
-  font-size: 2rem;
-  line-height: 100%;
-  margin-bottom: 0;
-}
-
-.faqAnswer {
-  font-size: 1.125rem;
-  margin-bottom: 2.5rem;
-}
-
-.faqAnswer a {
-  color: var(--color-primary-main);
-}
-
 .center {
   text-align: center;
 }
 
 .block {
   display: block;
-}
-
-.link {
-  color: var(--color-primary-main);
-  outline: none;
-  background-color: transparent;
-  border: none;
-  display: inline-block;
-}
-
-.link:hover {
-  text-decoration: underline;
 }
 
 .logo-box {

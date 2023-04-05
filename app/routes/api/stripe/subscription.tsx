@@ -19,6 +19,7 @@ export type StripeDeleteActionData =
 
 export const action: ActionFunction = async ({ request }) => {
   const user = await requireUser(request)
+  invariant(user.profile.id && user.profile.emails, "user not found")
   const userId = await getPoktId(user.profile.id)
   const portal = initPortalClient(user.accessToken)
   const formData = await request.formData()
@@ -31,11 +32,8 @@ export const action: ActionFunction = async ({ request }) => {
     const { endpoint } = await portal.endpoint({
       endpointID: appId as string,
     })
-    const subscription = await getSubscription(
-      user.profile.emails[0].value,
-      endpoint.id,
-      userId,
-    )
+    const uEmail = user?.profile?._json?.email ?? ""
+    const subscription = await getSubscription(uEmail, endpoint.id, userId)
 
     if (subscription) {
       const updatedSubscription = await stripe.subscriptions.update(subscription.id, {

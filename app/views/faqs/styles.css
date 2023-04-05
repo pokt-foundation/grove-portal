@@ -10,7 +10,7 @@
 }
 
 .pokt-faqs-view .color-secondary-main {
-  color: var(--color-secondary-main);
+  color: var(--mantine-color-blue-6);
 }
 
 .pokt-faqs-view .faqs-category {
@@ -23,7 +23,7 @@
 
 .pokt-faqs-view .faqs-item {
   padding: 32px;
-  border-bottom: 1px solid var(--color-disabled-dark);
+  border-bottom: 1px solid var(--mantine-color-gray-8);
 }
 
 .pokt-faqs-view .faqs-item:last-child {
@@ -31,7 +31,7 @@
 }
 
 .pokt-faqs-view .faqs-item {
-  color: var(--color-white-main);
+  color: var(--mantine-color-white);
 }
 
 .pokt-faqs-view .faqs-item button {
@@ -44,21 +44,21 @@
 
 .pokt-faqs-view .faqs-item .mantine-Accordion-label {
   font-size: 21px;
-  color: var(--color-white-dark);
+  color: var(--mantine-color-gray-4);
   transition: color ease-in-out 0.3s;
 }
 
 .pokt-faqs-view .faqs-item.mantine-Accordion-itemOpened .mantine-Accordion-label {
-  color: var(--color-white-main);
+  color: var(--mantine-color-white);
 }
 
 .pokt-faqs-view .faqs-item button:hover .mantine-Accordion-label {
-  color: var(--color-white-light);
+  color: var(--mantine-color-gray-0);
 }
 
 .pokt-faqs-view .faqs-item .mantine-Accordion-icon {
-  color: var(--color-white-dark);
-  background-color: var(--color-black-light);
+  color: var(--mantine-color-gray-4);
+  background-color: var(--mantine-color-navy-4);
   width: 30px;
   height: 30px;
   border-radius: 100%;
@@ -66,11 +66,11 @@
 }
 
 .pokt-faqs-view .faqs-item.mantine-Accordion-itemOpened .mantine-Accordion-icon {
-  color: var(--color-white-main);
-  background-color: var(--color-disabled-dark);
+  color: var(--mantine-color-white);
+  background-color: var(--mantine-color-gray-8);
 }
 
 .pokt-faqs-view .faqs-item button:hover .mantine-Accordion-icon {
-  color: var(--color-white-light);
-  background-color: var(--color-disabled-dark);
+  color: var(--mantine-color-gray-0);
+  background-color: var(--mantine-color-gray-8);
 }

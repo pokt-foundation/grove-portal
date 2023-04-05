@@ -1,11 +1,15 @@
-import { Grid, Tabs } from "@mantine/core"
 import {
   IconCaretRight,
+  IconMoreVertical,
   Title,
   Text,
-  IconMoreVertical,
-  Box,
+  Tabs,
+  Menu,
   Button,
+  Badge,
+  Anchor,
+  Box,
+  Grid,
   Group,
 } from "@pokt-foundation/pocket-blocks"
 import { Form, Link, useActionData, useSubmit } from "@remix-run/react"
@@ -16,17 +20,12 @@ import UsageChartCard, {
   links as UsageCardLinks,
 } from "~/components/application/UsageChartCard"
 import Card, { links as CardLinks } from "~/components/shared/Card"
-import Dropdown, {
-  DropdownItem,
-  links as DropdownLinks,
-} from "~/components/shared/Dropdown"
 import ErrorIcon from "~/components/shared/Icons/ErrorIcon"
 import Modal, { links as ModalLinks } from "~/components/shared/Modal"
 import NotificationMessage, {
   links as NotificationMessageLinks,
   NotificationType,
 } from "~/components/shared/NotificationMessage"
-import StatusTag, { links as StatusTagLinks } from "~/components/shared/StatusTag"
 import Table, { links as TableLinks } from "~/components/shared/Table"
 import { EndpointsQuery, ProcessedEndpoint } from "~/models/portal/sdk"
 import { RelayMetric } from "~/models/relaymeter/relaymeter.server"
@@ -37,12 +36,10 @@ import { getPlanName } from "~/utils/utils"
 /* c8 ignore start */
 export const links = () => {
   return [
-    ...TableLinks(),
     ...CardLinks(),
+    ...TableLinks(),
     ...UsageCardLinks(),
     ...ModalLinks(),
-    ...StatusTagLinks(),
-    ...DropdownLinks(),
     ...NotificationMessageLinks(),
     { rel: "stylesheet", href: styles },
   ]
@@ -64,7 +61,7 @@ export const AppsView = ({
   userId,
   profile,
 }: AppsViewProps) => {
-  const uEmail = profile.emails[0].value
+  const uEmail = profile?._json?.email
   const [showErrorModal, setShowErrorModal] = useState(false)
   const notOwnerEndpoints = useMemo(() => {
     return endpoints
@@ -95,13 +92,7 @@ export const AppsView = ({
     isOpen: false,
   })
   const [appTodeleteID, setAppToDeleteID] = useState("")
-  const acceptInviteFormSubmit = useSubmit()
-  const acceptInviteFormRefs = useRef<Array<HTMLFormElement | null>>([])
   const actionData = useActionData()
-
-  const handleAcceptInviteFormSubmit = (idx: number) => {
-    acceptInviteFormSubmit(acceptInviteFormRefs.current[idx], { method: "post" })
-  }
 
   useEffect(() => {
     const error = searchParams.get("error")
@@ -237,15 +228,22 @@ export const AppsView = ({
                 )}
               </NotificationMessage>
               <input hidden readOnly name="appId" value={optionsEndpointId} />
-              <input hidden readOnly name="email" value={profile._json.email} />
+              <input hidden readOnly name="email" value={profile._json?.email} />
             </Form>
           </div>
         </section>
       )}
       <section>
         <Card>
-          <Tabs color="green">
-            <Tabs.Tab label="My Applications">
+          <Tabs color="green" defaultValue="applications">
+            <Tabs.List>
+              <Tabs.Tab value="applications">My Applications</Tabs.Tab>
+              {notOwnerEndpoints &&
+                notOwnerEndpoints.length > 0 &&
+                userDataByEndpoint.length > 0 && <Tabs.Tab value="teams">Teams</Tabs.Tab>}
+            </Tabs.List>
+
+            <Tabs.Panel value="applications">
               {endpoints && endpoints.owner.length > 0 ? (
                 <Table
                   columns={["App", "Created", "Plan", ""]}
@@ -255,162 +253,151 @@ export const AppsView = ({
                       value: app.name,
                       element: <Link to={app.id}>{app.name}</Link>,
                     },
-                    created: dayjs(app.createdAt).format("MM/DD/YY"),
-                    plan: getPlanName(app.appLimits.planType),
+                    created: {
+                      value: dayjs(app.createdAt).format("MM/DD/YY"),
+                      element: (
+                        <Link to={app.id}>{dayjs(app.createdAt).format("MM/DD/YY")}</Link>
+                      ),
+                    },
+                    plan: {
+                      value: getPlanName(app.appLimits.planType),
+                      element: (
+                        <Link to={app.id}>{getPlanName(app.appLimits.planType)}</Link>
+                      ),
+                    },
                     action: {
                       value: "",
                       element: (
-                        <>
-                          {app.users.map(
-                            (user) =>
-                              user.email === profile?._json?.email &&
-                              user?.accepted && (
-                                <Box key={app.id} sx={{ textAlign: "right" }}>
-                                  <Link to={app.id}>
-                                    <IconCaretRight className="pokt-icon" />
-                                  </Link>
-                                </Box>
-                              ),
-                          )}
-                        </>
-                      ),
-                    },
-                  }))}
-                  paginate={
-                    getRequiredClientEnvVar("GODMODE_ACCOUNTS")?.includes(userId)
-                      ? { perPage: 10 }
-                      : undefined
-                  }
-                />
-              ) : (
-                <Card>
-                  <Title align="center" order={5}>
-                    You have no applications at this time.
-                  </Title>
-
-                  <Text align="center" color="dimmed" size="sm">
-                    Get started by{" "}
-                    <Link className="empty-apps-link" to="/dashboard/create">
-                      creating your first application
-                    </Link>
-                    .
-                  </Text>
-                </Card>
-              )}
-            </Tabs.Tab>
-
-            <Tabs.Tab label="My Teams">
-              {notOwnerEndpoints &&
-              notOwnerEndpoints.length > 0 &&
-              userDataByEndpoint.length > 0 ? (
-                <Table
-                  columns={["App", "Invite status", "Role", ""]}
-                  data={(notOwnerEndpoints as ProcessedEndpoint[]).map((team, idx) => ({
-                    id: team.id,
-                    app: {
-                      value: team.name,
-                      element: userDataByEndpoint[idx]?.accepted ? (
-                        <Link to={team.id.toString()}>{team.name}</Link>
-                      ) : (
-                        <Text style={{ fontSize: "1em" }}>{team.name}</Text>
-                      ),
-                    },
-                    inviteStatus: {
-                      value: userDataByEndpoint[idx]?.accepted ? "Accepted" : "Pending",
-                      element: (
-                        <StatusTag
-                          accepted={Boolean(userDataByEndpoint[idx]?.accepted)}
-                        />
-                      ),
-                    },
-                    role: {
-                      value: userDataByEndpoint[idx]?.roleName ?? "",
-                      element: (
-                        <Text
-                          sx={{
-                            fontSize: "inherit",
-                            textTransform: "lowercase",
-                            "&:first-letter": { textTransform: "uppercase" },
-                          }}
-                        >
-                          {userDataByEndpoint[idx]?.roleName ?? ""}
-                        </Text>
-                      ),
-                    },
-                    action: {
-                      value: "More",
-                      element: (
-                        <Box
-                          className="list__more-actions"
-                          sx={{ display: "flex", justifyContent: "flex-end" }}
-                        >
-                          <Dropdown
-                            contentClassName="dropdown-teams__content"
-                            label={
-                              <IconMoreVertical
-                                className="pokt-icon"
-                                fill="var(--color-primary-main)"
-                              />
-                            }
-                          >
-                            {userDataByEndpoint[idx]?.accepted ? (
-                              <Link to={team.id.toString()}>
-                                <DropdownItem action={() => {}} label="View App" />
-                              </Link>
-                            ) : (
-                              <Form
-                                ref={(el) => (acceptInviteFormRefs.current[idx] = el)}
-                                className="apps-dropdown-accept-invite-form"
-                                method="post"
-                              >
-                                <DropdownItem
-                                  action={() => handleAcceptInviteFormSubmit(idx)}
-                                  label="Accept invite"
-                                  type="submit"
-                                />
-                                <input name="type" type="hidden" value="accept" />
-                                <input name="email" type="hidden" value={uEmail} />
-                                <input name="appId" type="hidden" value={team.id} />
-                              </Form>
-                            )}
-                            <DropdownItem
-                              action={() => {
-                                setAppToDeleteID(team.id)
-                                setIsDeleteModalOptions((prevOptions) => ({
-                                  ...prevOptions,
-                                  isOpen: true,
-                                }))
-                              }}
-                              label={
-                                userDataByEndpoint[idx]?.accepted
-                                  ? "Leave team"
-                                  : "Decline invite"
-                              }
-                              variant="green"
-                            />
-                          </Dropdown>
+                        <Box sx={{ textAlign: "right" }}>
+                          <Link to={app.id}>
+                            <IconCaretRight className="pokt-icon" />
+                          </Link>
                         </Box>
                       ),
                     },
                   }))}
                   paginate={
                     getRequiredClientEnvVar("GODMODE_ACCOUNTS")?.includes(userId)
-                      ? { perPage: 10 }
+                      ? { perPage: 5 }
                       : undefined
                   }
                 />
               ) : (
-                <Card>
-                  <Title align="center" order={5}>
-                    You have no teams at this time.
-                  </Title>
-
-                  <Text align="center" color="dimmed" size="sm">
-                    When you join a team it will be displayed here.
+                <Box>
+                  <div className="pokt-card-header">
+                    <Title order={3}>Applications</Title>
+                  </div>
+                  <Text>
+                    Get started by{" "}
+                    <Link className="empty-apps-link" to="/dashboard/create">
+                      creating your first application
+                    </Link>
+                    .
                   </Text>
-                </Card>
+                </Box>
               )}
-            </Tabs.Tab>
+            </Tabs.Panel>
+
+            {notOwnerEndpoints &&
+              notOwnerEndpoints.length > 0 &&
+              userDataByEndpoint.length > 0 && (
+                <Tabs.Panel value="teams">
+                  <Table
+                    columns={["App", "Invite status", "Role", ""]}
+                    data={(notOwnerEndpoints as ProcessedEndpoint[]).map((team, idx) => ({
+                      id: team.id,
+                      app: {
+                        value: team.name,
+                        element: <Link to={team.id.toString()}>{team.name}</Link>,
+                      },
+                      inviteStatus: {
+                        value: userDataByEndpoint[idx]?.accepted ? "Accepted" : "Pending",
+                        element: (
+                          <Link to={team.id.toString()}>
+                            <Badge
+                              color={
+                                userDataByEndpoint[idx]?.accepted ? "green" : "orange"
+                              }
+                              variant="outline"
+                            >
+                              {userDataByEndpoint[idx]?.accepted ? "Accepted" : "Pending"}
+                            </Badge>
+                          </Link>
+                        ),
+                      },
+                      role: {
+                        value: userDataByEndpoint[idx]?.roleName ?? "",
+                        element: (
+                          <Link to={team.id.toString()}>
+                            <Text
+                              sx={{
+                                margin: "0",
+                                fontSize: "inherit",
+                                textTransform: "lowercase",
+                                "&:first-letter": { textTransform: "uppercase" },
+                              }}
+                            >
+                              {userDataByEndpoint[idx]?.roleName ?? ""}
+                            </Text>
+                          </Link>
+                        ),
+                      },
+                      action: {
+                        value: "More",
+                        element: (
+                          <Box sx={{ textAlign: "right" }}>
+                            <Menu>
+                              <Menu.Target>
+                                <Anchor>
+                                  <IconMoreVertical />
+                                </Anchor>
+                              </Menu.Target>
+                              <Menu.Dropdown className="dropdown-teams__content">
+                                {userDataByEndpoint[idx]?.accepted ? (
+                                  <Menu.Item>
+                                    <Link to={team.id.toString()}>View App</Link>
+                                  </Menu.Item>
+                                ) : (
+                                  <Menu.Item>
+                                    <Form
+                                      className="apps-dropdown-accept-invite-form"
+                                      method="post"
+                                    >
+                                      <Button type="submit">Accept Invite</Button>
+                                      <input name="type" type="hidden" value="accept" />
+                                      <input name="email" type="hidden" value={uEmail} />
+                                      <input name="appId" type="hidden" value={team.id} />
+                                    </Form>
+                                  </Menu.Item>
+                                )}
+                                <Menu.Item
+                                  color="green"
+                                  onClick={() => {
+                                    setAppToDeleteID(team.id)
+                                    setIsDeleteModalOptions((prevOptions) => ({
+                                      ...prevOptions,
+                                      isOpen: true,
+                                    }))
+                                  }}
+                                >
+                                  {userDataByEndpoint[idx]?.accepted
+                                    ? "Leave team"
+                                    : "Decline invite"}
+                                </Menu.Item>
+                              </Menu.Dropdown>
+                            </Menu>
+                          </Box>
+                        ),
+                      },
+                    }))}
+                    paginate={
+                      getRequiredClientEnvVar("GODMODE_ACCOUNTS")?.includes(userId)
+                        ? { perPage: 5 }
+                        : undefined
+                    }
+                  />
+                </Tabs.Panel>
+              )}
           </Tabs>
         </Card>
       </section>
@@ -436,7 +423,7 @@ export const AppsView = ({
       <Modal
         opened={isDeleteModalOptions.isOpen}
         padding={20}
-        title="Deleting an user"
+        title="Deleting a user"
         onClose={() => {
           setAppToDeleteID("")
           setIsDeleteModalOptions((prevOptions) => ({ ...prevOptions, isOpen: false }))

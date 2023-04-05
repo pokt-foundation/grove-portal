@@ -18,18 +18,7 @@
   align-items: center;
   gap: 8px;
   transition: color ease-in-out 0.3s;
-}
-
-.pokt-nav .nav-link:hover {
-  color: var(--color-white-dark);
-}
-
-.pokt-nav .nav-link-active {
-  color: var(--color-primary-main);
-}
-
-.pokt-nav .nav-link-active:hover {
-  color: var(--color-primary-dark);
+  text-decoration: none;
 }
 
 .pokt-nav .nav-link .pokt-icon {
@@ -39,19 +28,6 @@
 
 .pokt-nav .nav-link svg {
   transition: fill ease-in-out 0.3s;
-  fill: var(--color-white-main);
-}
-
-.pokt-nav .nav-link:hover svg {
-  fill: var(--color-white-dark);
-}
-
-.pokt-nav .nav-link.nav-link-active svg {
-  fill: var(--color-primary-main);
-}
-
-.pokt-nav .nav-link-active:hover svg {
-  fill: var(--color-primary-dark);
 }
 
 .pokt-nav.mobile {
@@ -60,11 +36,8 @@
 
 .pokt-nav-dropdown > div > div > input {
   background-color: var(--color-black-main);
-  color: var(--color-white-main);
-  border-color: var(--color-white-main);
-}
-.pokt-nav-dropdown > div > div svg {
-  color: var(--color-white-main) !important;
+  color: var(--mantine-color-white);
+  border-color: var(--mantine-color-white);
 }
 
 .pokt-nav .nav-space {

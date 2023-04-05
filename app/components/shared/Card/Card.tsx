@@ -1,3 +1,5 @@
+import { Card as PBCard } from "@pokt-foundation/pocket-blocks"
+import React from "react"
 import styles from "./styles.css"
 
 /* c8 ignore start */
@@ -6,8 +8,8 @@ export const links = () => {
 }
 /* c8 ignore stop */
 
-export const Card: React.FC = ({ children }) => {
-  return <div className="pokt-card">{children}</div>
+export const Card = ({ children }: { children: React.ReactNode }) => {
+  return <PBCard className="pokt-card">{children}</PBCard>
 }
 
 export default Card

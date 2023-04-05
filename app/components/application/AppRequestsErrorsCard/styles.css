@@ -7,5 +7,5 @@
 }
 
 .pokt-table-empty p {
-  color: var(--color-disabled);
+  color: var(--mantine-color-gray-6);
 }

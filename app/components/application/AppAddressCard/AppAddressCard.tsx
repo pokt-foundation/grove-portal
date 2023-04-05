@@ -46,7 +46,7 @@ export default function AppAddressCard({ apps }: AppAddressCardProps) {
       ])}
     >
       <Card>
-        <div className="flexContainer">
+        <div className="pokt-card-header">
           <h3>{appAddressCard.heading}</h3>
           {apps && apps.length > 0 && <Text m="0">{apps.length}</Text>}
         </div>

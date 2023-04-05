@@ -1,5 +1,5 @@
 h3 {
-  color: var(--color-secondary-main);
+  color: var(--mantine-color-blue-6);
   line-height: 3.25rem;
   font-size: 1.625rem;
   font-weight: normal;
@@ -42,7 +42,7 @@ p.smallText {
   margin: 0;
   font-weight: bold;
   text-align: center;
-  color: var(--color-secondary-main);
+  color: var(--mantine-color-blue-6);
 }
 
 .callOutGraphicDescription {

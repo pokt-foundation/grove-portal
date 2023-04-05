@@ -1,8 +1,7 @@
-import { Button, Text, Switch } from "@pokt-foundation/pocket-blocks"
+import { Button, Card, Text, Switch } from "@pokt-foundation/pocket-blocks"
 import { LinksFunction } from "@remix-run/node"
-import { Form, useTransition } from "@remix-run/react"
+import { Form, useNavigation } from "@remix-run/react"
 import styles from "./styles.css"
-import Card from "~/components/shared/Card"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { AppIdLoaderData } from "~/routes/dashboard/apps/$appId"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
@@ -59,7 +58,7 @@ function backgroundColor(usageLevel: string): string {
 }
 
 export default function NotificationsAlertForm() {
-  const { state } = useTransition()
+  const navigation = useNavigation()
   const appIdRoute = useMatchesRoute("routes/dashboard/apps/$appId")
   const appIdData = appIdRoute?.data as AppIdLoaderData
   const { endpoint } = appIdData
@@ -105,13 +104,17 @@ export default function NotificationsAlertForm() {
           <div className="pokt-network-notifications-alert-btn-container">
             <Button
               className="pokt-network-notifications-submit-btn"
-              disabled={state === "loading" || state === "submitting"}
+              disabled={
+                navigation.state === "loading" || navigation.state === "submitting"
+              }
               type="submit"
               onClick={() => {
                 trackEvent(AmplitudeEvents.NotificationSettingsChange)
               }}
             >
-              {state === "loading" || state === "submitting" ? state : "Save Changes"}
+              {navigation.state === "loading" || navigation.state === "submitting"
+                ? navigation.state
+                : "Save Changes"}
             </Button>
           </div>
           <Text mt={16} size="xs">

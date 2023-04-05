@@ -1,5 +1,4 @@
-import { Modal as MantineModal, ModalProps } from "@mantine/core"
-import { Group } from "@pokt-foundation/pocket-blocks"
+import { Modal as MantineModal, ModalProps, Group } from "@pokt-foundation/pocket-blocks"
 import clsx from "clsx"
 import React from "react"
 import styles from "./styles.css"
@@ -13,7 +12,7 @@ export const links = () => {
 export default function Modal({ ...props }: ModalProps) {
   return (
     <MantineModal
-      centered={true}
+      centered
       className={clsx({
         "pokt-modal": true,
       })}
@@ -24,7 +23,7 @@ export default function Modal({ ...props }: ModalProps) {
   )
 }
 
-export const ModalCTA: React.FC = ({ children }) => {
+export const ModalCTA = ({ children }: { children: React.ReactNode }) => {
   return (
     <Group align="center" className="pokt-modal-cta buttonGroup" position="center">
       {children}

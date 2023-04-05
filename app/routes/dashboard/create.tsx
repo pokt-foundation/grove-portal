@@ -1,4 +1,4 @@
-import { Button, Text } from "@pokt-foundation/pocket-blocks"
+import { Anchor, Button, Text } from "@pokt-foundation/pocket-blocks"
 import {
   ActionFunction,
   json,
@@ -6,7 +6,7 @@ import {
   MetaFunction,
   redirect,
 } from "@remix-run/node"
-import { Form, useLoaderData, useActionData, useTransition } from "@remix-run/react"
+import { Form, useLoaderData, useActionData, useNavigation } from "@remix-run/react"
 import { useEffect, useMemo, useState } from "react"
 import invariant from "tiny-invariant"
 import AppPlansOverview, {
@@ -72,7 +72,8 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   const userCanCreateApp =
     permissions.includes(Permissions.AppsUnlimited) ||
-    getRequiredClientEnvVar("GODMODE_ACCOUNTS")?.includes(user.profile.id) ||
+    (user.profile.id &&
+      getRequiredClientEnvVar("GODMODE_ACCOUNTS")?.includes(user.profile.id)) ||
     underMaxApps()
 
   if (!userCanCreateApp) {
@@ -145,7 +146,7 @@ export const action: ActionFunction = async ({ request }) => {
 export default function CreateApp() {
   const { flags } = useFeatureFlags()
   const { price } = useLoaderData() as LoaderData
-  const transition = useTransition()
+  const navigation = useNavigation()
   const action = useActionData() as ActionData
   const [radioSelectedValue, setRadioSelectedValue] = useState(
     flags.STRIPE_PAYMENT === "true" ? PayPlanType.PayAsYouGoV0 : PayPlanType.FreetierV0,
@@ -208,7 +209,7 @@ export default function CreateApp() {
             setRadio={setRadioSelectedValue}
           />
           <Button
-            disabled={transition.state === "submitting" || name === ""}
+            disabled={navigation.state === "submitting" || name === ""}
             type="submit"
             variant="filled"
             onClick={() => {
@@ -219,13 +220,14 @@ export default function CreateApp() {
           </Button>
           <Text className="termsOfUseText" mb={16} mt={32} size="xs">
             By using this application, you agree to our{" "}
-            <a
+            <Anchor
               href="https://www.pokt.network/site-terms-of-use"
               rel="noreferrer"
               target="_blank"
+              variant="text"
             >
               Terms of Use
-            </a>
+            </Anchor>
             .
           </Text>
         </Form>

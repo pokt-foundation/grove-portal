@@ -1,4 +1,9 @@
-import { TextInput as MantineTextInput, TextInputProps } from "@mantine/core"
+import {
+  Button,
+  IconDeleteAlt,
+  TextInput as MantineTextInput,
+  TextInputProps,
+} from "@pokt-foundation/pocket-blocks"
 import clsx from "clsx"
 import styles from "./styles.css"
 import { links as CopyTextIconLinks } from "~/components/shared/CopyTextIcon"

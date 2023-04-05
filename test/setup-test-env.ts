@@ -1,4 +1,4 @@
-import { installGlobals } from "@remix-run/node/globals"
+import { installGlobals } from "@remix-run/node"
 // import "@testing-library/jest-dom"
 import matchers, { TestingLibraryMatchers } from "@testing-library/jest-dom/matchers"
 import { toHaveNoViolations } from "jest-axe"
@@ -31,3 +31,17 @@ process.env.FLAG_LEGACY_MESSAGING = "true"
 
 installGlobals()
 global.ENV = getClientEnv()
+
+Object.defineProperty(window, "matchMedia", {
+  writable: true,
+  value: vi.fn().mockImplementation((query) => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: vi.fn(), // deprecated
+    removeListener: vi.fn(), // deprecated
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
+  })),
+})

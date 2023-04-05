@@ -6,7 +6,7 @@ import { initPortalClient } from "~/models/portal/portal.server"
 import { BlockchainsQuery, EndpointQuery, PayPlanType } from "~/models/portal/sdk"
 import {
   getRelays,
-  getRelaysPerWeek,
+  getRelaysPerPeriod,
   RelayMetric,
 } from "~/models/relaymeter/relaymeter.server"
 import { getSubscription, Stripe } from "~/models/stripe/stripe.server"
@@ -44,7 +44,8 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   invariant(params.appId, "app id not found")
 
   const user = await requireUser(request)
-  const userId = await getPoktId(user.profile.id)
+  invariant(user.profile.id && user.profile.emails, "user not found")
+  const userId = getPoktId(user.profile.id)
   const portal = initPortalClient(user.accessToken)
 
   if (searchParams.get("success") === "true") {
@@ -79,13 +80,10 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   const endpoint = endpointRes?.endpoint
   invariant(endpoint, "app id not found")
 
-  const subscription = await getSubscription(
-    user.profile.emails[0].value,
-    endpoint.id,
-    userId,
-  )
+  const uEmail = user?.profile?._json?.email ?? ""
+  const subscription = await getSubscription(uEmail, endpoint.id, userId)
 
-  const dailyNetworkRelaysPerWeek = await getRelaysPerWeek("endpoints", endpoint.id)
+  const dailyNetworkRelaysPerWeek = await getRelaysPerPeriod("endpoints", 7, endpoint.id)
   const { blockchains } = await portal.blockchains({ active: true })
 
   // api auto adjusts to/from to begining and end of each day so putting the same time here gives us back one full day

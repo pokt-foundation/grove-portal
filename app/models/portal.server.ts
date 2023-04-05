@@ -11,6 +11,7 @@ import {
   UserLBTotalSuccessfulRelaysResponse,
 } from "@pokt-foundation/portal-types"
 import { fetch } from "@remix-run/node"
+import invariant from "tiny-invariant"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 import { requireUser } from "~/utils/session.server"
 
@@ -569,9 +570,10 @@ export const postFeedback = async (
   request: Request,
 ): Promise<FeedbackFormResponse> => {
   const user = await requireUser(request)
+  invariant(user.profile.emails, "user not found")
   const body = {
     ...formData,
-    user: user.profile.emails[0].value,
+    user: user?.profile?._json?.email,
   }
 
   const res = await fetch(

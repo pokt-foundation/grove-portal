@@ -1,8 +1,7 @@
 import { Grid, IconArrowDown, IconArrowUp } from "@pokt-foundation/pocket-blocks"
-import { CircleGraph } from "@pokt-foundation/ui"
 import { useMemo } from "react"
 import styles from "./styles.css"
-import { Card, links as CardLinks } from "~/components/shared/Card"
+import Card, { links as CardLinks } from "~/components/shared/Card"
 import CardList, {
   CardListItem,
   links as CardListLinks,
@@ -93,16 +92,6 @@ export default function AppRequestsRateCard({
         </div>
         <div>
           <Grid align="center">
-            {successPercent > 0 && (
-              <Grid.Col xs={3}>
-                <CircleGraph
-                  color="#c5ec4b"
-                  size={70}
-                  strokeWidth={10}
-                  value={successRate}
-                />
-              </Grid.Col>
-            )}
             <Grid.Col xs={successPercent > 0 ? 9 : 12}>
               <CardList items={listItems} />
             </Grid.Col>
@@ -114,8 +103,8 @@ export default function AppRequestsRateCard({
 }
 
 const ArrowSuccess = () => (
-  <IconArrowUp fill="var(--color-success)" height={16} width={16} />
+  <IconArrowUp fill="var(--mantine-color-yellow-6)" height={16} width={16} />
 )
 const ArrowError = () => (
-  <IconArrowDown fill="var(--color-error)" height={16} width={16} />
+  <IconArrowDown fill="var(--mantine-color-red-6)" height={16} width={16} />
 )

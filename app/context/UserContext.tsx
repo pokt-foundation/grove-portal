@@ -73,7 +73,7 @@ const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
   const value = useMemo(
     () => ({
       ...user,
-      data: user.data ?? defaultUserData,
+      data: (user.data as UserLoaderActionData) ?? defaultUserData,
     }),
     [user],
   )

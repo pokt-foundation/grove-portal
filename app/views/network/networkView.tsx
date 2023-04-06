@@ -102,7 +102,7 @@ export default function NetworkView({
                     network: {
                       value: `${chain.description}`,
                       element: (
-                        <ChainWithImage withIcon={false} chain={chain.description} />
+                        <ChainWithImage chain={chain.description} withIcon={false} />
                       ),
                     },
                     chainId: chain.id,

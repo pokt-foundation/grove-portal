@@ -108,7 +108,7 @@ export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) 
       )
     }
   }
-  
+
   return (
     <div className="pokt-app-endpoint">
       <Card>

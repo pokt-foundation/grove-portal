@@ -13,7 +13,7 @@ export interface AppEndpointProps {
   withIcon?: boolean
 }
 
-export default function Chain({ chain, label, withIcon = true }: AppEndpointProps) {
+export default function ChainWithImage({ chain, label, withIcon = true }: AppEndpointProps) {
   if (!chain) return <></>
 
   const labelText = label ?? chain

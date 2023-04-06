@@ -108,10 +108,7 @@ export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) 
       )
     }
   }
-  if (user.data?.preferences.endpoints && user?.data?.preferences?.endpoints[app.id]) {
-    console.log(user?.data?.preferences?.endpoints[app.id])
-  }
-  console.log(blockchains)
+  
   return (
     <div className="pokt-app-endpoint">
       <Card>

@@ -135,6 +135,20 @@ const WithProviders = ({ children }: { children: React.ReactNode }) => {
               },
             }),
           },
+          TextInput: {
+            styles: {
+              input: {
+                backgroundColor: "transparent",
+              },
+            },
+          },
+          Textarea: {
+            styles: {
+              input: {
+                backgroundColor: "transparent",
+              },
+            },
+          },
         },
       }}
     >

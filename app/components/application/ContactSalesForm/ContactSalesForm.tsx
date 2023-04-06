@@ -1,16 +1,14 @@
-import { Button, Grid } from "@pokt-foundation/pocket-blocks"
+import { Button, Grid, Textarea, TextInput } from "@pokt-foundation/pocket-blocks"
 import { Form, useNavigation } from "@remix-run/react"
 import { useEffect, useRef } from "react"
 import styles from "./styles.css"
 import Card, { links as CardLinks } from "~/components/shared/Card"
-import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { useTranslate } from "~/context/TranslateContext"
 
 /* c8 ignore start */
 export const links = () => {
   return [
     ...CardLinks(),
-    ...TextInputLinks(),
     {
       rel: "stylesheet",
       href: styles,
@@ -53,6 +51,7 @@ export default function ContactSalesForm() {
       label: t.ContactSalesForm.email.label,
       name: "email",
       placeholder: t.ContactSalesForm.email.placeholder,
+      size: 6,
       component: "input",
       type: "email",
       required: true,
@@ -61,6 +60,7 @@ export default function ContactSalesForm() {
       label: t.ContactSalesForm.company.label,
       name: "company",
       placeholder: t.ContactSalesForm.company.placeholder,
+      size: 6,
       component: "input",
       required: false,
     },
@@ -110,34 +110,26 @@ export default function ContactSalesForm() {
                 <Grid.Col
                   key={name}
                   className="contact-sales-form-grid-col"
-                  md={size ?? 12}
+                  sm={size ?? 12}
                 >
                   {component === "input" && (
-                    <>
-                      <label className="label" htmlFor={name}>
-                        {label} {required && <span className="required-field">*</span>}
-                      </label>
-                      <TextInput
-                        className="input"
-                        name={name}
-                        placeholder={placeholder}
-                        required={required}
-                        type={type}
-                      />
-                    </>
+                    <TextInput
+                      className="input"
+                      label={label}
+                      name={name}
+                      placeholder={placeholder}
+                      required={required}
+                      type={type}
+                    />
                   )}
                   {component === "textarea" && (
-                    <>
-                      <label className="label" htmlFor={name}>
-                        {label} {required && <span className="required-field">*</span>}
-                      </label>
-                      <textarea
-                        className="textarea"
-                        name={name}
-                        placeholder={placeholder}
-                        required={required}
-                      />
-                    </>
+                    <Textarea
+                      className="textarea"
+                      label={label}
+                      name={name}
+                      placeholder={placeholder}
+                      required={required}
+                    />
                   )}
                 </Grid.Col>
               ),
@@ -150,6 +142,7 @@ export default function ContactSalesForm() {
               disabled={
                 navigation.state === "loading" || navigation.state === "submitting"
               }
+              size="sm"
               type="submit"
               variant="filled"
             >

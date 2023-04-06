@@ -1,61 +1,29 @@
-import { Alert, Center } from "@pokt-foundation/pocket-blocks"
-import { json, LoaderFunction } from "@remix-run/node"
+import { LoaderFunction, MetaFunction } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
-import { useMemo } from "react"
-import Remark from "~/components/shared/Remark"
-import { initCmsClient } from "~/models/cms/cms.server"
-import { getGenericQuery } from "~/models/cms/sdk"
+import NotFound404, {
+  seo_404_description,
+  seo_404_title,
+} from "~/components/shared/NotFound404"
+import { seo_title_append } from "~/utils/meta"
 
 type LoaderData = {
-  generic: getGenericQuery | undefined
-  param: string | undefined
+  param?: string
 }
 
-export const loader: LoaderFunction = async ({ params }) => {
-  const routelang = params.lang !== undefined ? params.lang : "en-US"
-  const cms = initCmsClient()
-
-  try {
-    const generic = await cms.getGeneric({
-      filter: { status: { _eq: "published" }, slug: { _eq: params["*"] } },
-      language: routelang,
-    })
-
-    return json<LoaderData>({
-      generic,
-      param: params["*"],
-    })
-  } catch (e) {
-    return json<LoaderData>({
-      generic: undefined,
-      param: params["*"],
-    })
+export const meta: MetaFunction = () => {
+  return {
+    title: `${seo_404_title} ${seo_title_append}`,
+    description: `${seo_404_description} ${seo_title_append}`,
   }
 }
 
-export default function Generic() {
-  const { generic, param } = useLoaderData<LoaderData>()
-
-  const markdown = useMemo(() => {
-    if (
-      generic &&
-      generic.generic_pages &&
-      generic.generic_pages.length > 0 &&
-      generic.generic_pages[0].translations
-    ) {
-      return generic.generic_pages[0].translations[0]?.body
-    }
-  }, [generic])
-
-  if (!markdown) {
-    return (
-      <Center className="error-container" mt="xl">
-        <Alert color="red" title="Page Not Found">
-          {param ?? "No Param"}
-        </Alert>
-      </Center>
-    )
+export const loader: LoaderFunction = ({ params }) => {
+  return {
+    param: params["*"],
   }
+}
 
-  return <>{markdown && <Remark>{markdown}</Remark>}</>
+export default function Route404() {
+  const data = useLoaderData() as LoaderData
+  return <NotFound404 message={data.param} />
 }

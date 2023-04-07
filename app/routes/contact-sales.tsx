@@ -1,10 +1,19 @@
-import { ActionFunction, json, MetaFunction, redirect } from "@remix-run/node"
-import { useActionData, useCatch } from "@remix-run/react"
+import {
+  ActionFunction,
+  json,
+  LoaderFunction,
+  MetaFunction,
+  redirect,
+} from "@remix-run/node"
+import { useActionData, useCatch, useLoaderData } from "@remix-run/react"
 import { useEffect } from "react"
+import invariant from "tiny-invariant"
+import { initCmsClient } from "~/models/cms/cms.server"
+import { initPortalClient } from "~/models/portal/portal.server"
+import { Blockchain } from "~/models/portal/sdk"
 import styles from "~/styles/contact-sales.css"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { authenticator } from "~/utils/auth.server"
-import { getRequiredClientEnvVar } from "~/utils/environment"
 import ContactSalesView, {
   links as ContactSalesViewLinks,
 } from "~/views/dashboard/apps/contact-sales/contactSalesView"
@@ -19,8 +28,35 @@ export const links = () => {
   return [...ContactSalesViewLinks(), { rel: "stylesheet", href: styles }]
 }
 
-type Result = "success" | "error"
+export type ContactSalesLoaderData = {
+  blockchains: Blockchain[] | null
+}
 
+export const loader: LoaderFunction = async () => {
+  const portal = initPortalClient()
+  const blockchainResponse = await portal.blockchains({ active: true }).catch((e) => {
+    console.log(e)
+  })
+
+  return json<ContactSalesLoaderData>(
+    {
+      blockchains: blockchainResponse
+        ? (blockchainResponse.blockchains.filter(
+            (chain) => chain !== null,
+          ) as Blockchain[])
+        : null,
+    },
+    {
+      headers: {
+        "Cache-Control": `private, max-age=${
+          process.env.NODE_ENV === "production" ? "3600" : "60"
+        }`,
+      },
+    },
+  )
+}
+
+type Result = "success" | "error"
 export type ContactSalesActionData =
   | {
       result: Result
@@ -45,26 +81,33 @@ export const action: ActionFunction = async ({ request }) => {
   const tellUsMore = formData.get("tell-us-more")
 
   try {
-    const response = await fetch(
-      getRequiredClientEnvVar("GOOGLE_SHEETS_CONTACT_SALES_API_URL"),
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          first_name: firstName,
-          last_name: lastName,
-          email,
-          company,
-          chain_of_interest: protocolChains,
-          relay_needs: relays,
-          more_info: tellUsMore,
-        }),
-      },
-    )
+    const cms = initCmsClient()
 
-    await response.json()
+    invariant(typeof firstName === "string", "first-name field must be a string")
+    invariant(typeof lastName === "string", "last-name field must be a string")
+    invariant(typeof email === "string", "email field must be a string")
+    invariant(
+      typeof protocolChains === "string",
+      "protocol-chains field must be a string",
+    )
+    invariant(typeof relays === "string", "relays field must be a string")
+
+    const response = await cms.createContactSalesFormsItem({
+      data: {
+        first_name: firstName,
+        last_name: lastName,
+        email: email,
+        company: typeof company === "string" ? company : undefined,
+        chain_of_interest: protocolChains,
+        daily_relay_needs: Number(relays),
+        more_info: typeof tellUsMore === "string" ? tellUsMore : undefined,
+      },
+    })
+
+    if (!response.create_contact_sales_forms_item?.id) {
+      throw new Error("Unable to add new form to directus")
+    }
+
     return redirect(user ? "/dashboard/apps" : "/")
   } catch (e) {
     return json<ContactSalesActionData>({
@@ -76,13 +119,19 @@ export const action: ActionFunction = async ({ request }) => {
 }
 
 export default function ContactSales() {
-  const actionData = useActionData()
+  const loaderData = useLoaderData() as ContactSalesLoaderData
+  const actionData = useActionData() as ContactSalesActionData
 
   useEffect(() => {
     trackEvent(AmplitudeEvents.ContactSalesView)
   }, [])
 
-  return <ContactSalesView {...actionData} />
+  return (
+    <ContactSalesView
+      actionData={actionData ?? { result: "error", error: null }}
+      loaderData={loaderData}
+    />
+  )
 }
 
 export const CatchBoundary = () => {

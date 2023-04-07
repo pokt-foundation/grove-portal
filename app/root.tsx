@@ -149,6 +149,13 @@ const WithProviders = ({ children }: { children: React.ReactNode }) => {
               },
             },
           },
+          MultiSelect: {
+            styles: {
+              input: {
+                backgroundColor: "transparent",
+              },
+            },
+          },
         },
       }}
     >

@@ -1,9 +1,16 @@
-import { Button, Grid, Textarea, TextInput } from "@pokt-foundation/pocket-blocks"
+import {
+  Button,
+  Grid,
+  MultiSelect,
+  Textarea,
+  TextInput,
+} from "@pokt-foundation/pocket-blocks"
 import { Form, useNavigation } from "@remix-run/react"
 import { useEffect, useRef } from "react"
 import styles from "./styles.css"
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import { useTranslate } from "~/context/TranslateContext"
+import { ContactSalesLoaderData } from "~/routes/contact-sales"
 
 /* c8 ignore start */
 export const links = () => {
@@ -17,17 +24,21 @@ export const links = () => {
 }
 /* c8 ignore stop */
 
-export default function ContactSalesForm() {
+type ContactSalesFormProps = {
+  loaderData: ContactSalesLoaderData
+}
+
+export default function ContactSalesForm({ loaderData }: ContactSalesFormProps) {
   const { t } = useTranslate()
   const formRef = useRef<HTMLFormElement>(null)
-  let navigation = useNavigation()
+  const navigation = useNavigation()
 
   const formFields: Array<{
     label: string
     name: string
     placeholder: string
     size?: number
-    component: "input" | "textarea"
+    component: "input" | "textarea" | "select"
     type?: "number" | "search" | "text" | "password" | "email" | "tel" | "url" | undefined
     required: boolean
   }> = [
@@ -68,7 +79,7 @@ export default function ContactSalesForm() {
       label: t.ContactSalesForm.chains.label,
       name: "protocol-chains",
       placeholder: t.ContactSalesForm.chains.placeholder,
-      component: "textarea",
+      component: "select",
       required: true,
     },
     {
@@ -130,6 +141,46 @@ export default function ContactSalesForm() {
                       placeholder={placeholder}
                       required={required}
                     />
+                  )}
+                  {component === "select" && (
+                    <>
+                      {loaderData.blockchains ? (
+                        <MultiSelect
+                          searchable
+                          aria-label={t.security.chainsDropdownAria}
+                          data={loaderData.blockchains.map((chain) => ({
+                            label: String(chain.description),
+                            value: String(chain.description),
+                          }))}
+                          label={label}
+                          name={name}
+                          placeholder={placeholder}
+                          required={required}
+                          sx={(theme) => ({
+                            ".mantine-Select-dropdown": {
+                              backgroundColor: "#0f161d",
+                            },
+                            ".mantine-Select-input": {
+                              backgroundColor: "transparent",
+                              borderColor: theme.colors.blue[5],
+                            },
+                            ".mantine-Select-input::placeholder": {
+                              color: theme.colors.blue[5],
+                              fontWeight: 600,
+                              fontSize: "12px",
+                            },
+                          })}
+                        />
+                      ) : (
+                        <Textarea
+                          className="textarea"
+                          label={label}
+                          name={name}
+                          placeholder={placeholder}
+                          required={required}
+                        />
+                      )}
+                    </>
                   )}
                 </Grid.Col>
               ),

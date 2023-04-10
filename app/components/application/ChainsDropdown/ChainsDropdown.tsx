@@ -70,7 +70,7 @@ export default function ChainsDropdown({
                   className="pokt-chains-dropdown-chain"
                   onClick={() => handleChainClick(`${chain?.id}`)}
                 >
-                  <ChainWithImage chain={chain?.description} />
+                  <ChainWithImage chain={chain?.description} withIcon={false} />
                 </Menu.Item>
               ))}
         </Menu.Dropdown>

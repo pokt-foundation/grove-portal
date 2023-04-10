@@ -46,12 +46,14 @@ export default function UsageChartCard({
       label: title,
       color: hasRelays ? theme.colors[theme.primaryColor][6] : "gray",
       dotColor: hasRelays ? theme.colors[theme.primaryColor][3] : "gray",
-      data: relays
-        .sort((a, b) => dayjs(a.From).utc().valueOf() - dayjs(b.From).utc().valueOf())
-        .map((relay) => ({
-          x: dayjs(relay.To).format("MMM DD"),
-          y: relay.Count.Total,
-        })),
+      data: hasRelays
+        ? relays
+            .sort((a, b) => dayjs(a.From).utc().valueOf() - dayjs(b.From).utc().valueOf())
+            .map((relay) => ({
+              x: dayjs(relay.To).format("MMM DD"),
+              y: relay.Count.Total,
+            }))
+        : [],
     },
   ]
 

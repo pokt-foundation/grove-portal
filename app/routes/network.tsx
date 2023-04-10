@@ -13,6 +13,7 @@ import {
 } from "~/models/relaymeter/relaymeter.server"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { dayjs } from "~/utils/dayjs"
+import { seo_title_append } from "~/utils/meta"
 import NetworkView, { links as NetworkViewLinks } from "~/views/network/networkView"
 
 export const links = () => {
@@ -21,7 +22,7 @@ export const links = () => {
 
 export const meta: MetaFunction = () => {
   return {
-    title: "Pocket Network Summary | POKT",
+    title: `Pocket Network Summary ${seo_title_append}`,
   }
 }
 

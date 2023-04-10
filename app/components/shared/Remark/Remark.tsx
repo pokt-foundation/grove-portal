@@ -1,4 +1,6 @@
-import { Remark as ReactRemark, RemarkProps } from "react-remark"
+import ReactMarkdown, { Options } from "react-markdown"
+import rehypeRaw from "rehype-raw"
+import remarkGfm from "remark-gfm"
 import styles from "./styles.css"
 
 /* c8 ignore start */
@@ -7,26 +9,28 @@ export const links = () => {
 }
 /* c8 ignore stop */
 
-export const Remark = (props: RemarkProps) => {
+export const Remark = (props: Options) => {
   return (
-    <ReactRemark
-      rehypeReactOptions={{
-        components: {
-          a: (props: any) => (
-            <a
-              className="pokt-remark-a"
-              target={props.href.includes("http") ? "_blank" : "_self"}
-              {...props}
-            >
-              {props.children}
-            </a>
-          ),
-          img: (props: any) => <img className="pokt-remark-img" {...props} />,
-        },
+    <ReactMarkdown
+      components={{
+        a: (props: any) => (
+          <a
+            className="pokt-remark-a"
+            target={props.href.includes("http") ? "_blank" : "_self"}
+            {...props}
+          >
+            {props.children}
+          </a>
+        ),
+        img: (props: any) => (
+          <img alt="pokt-remark" className="pokt-remark-img" {...props} />
+        ),
       }}
+      rehypePlugins={[rehypeRaw]}
+      remarkPlugins={[remarkGfm]}
     >
       {props.children}
-    </ReactRemark>
+    </ReactMarkdown>
   )
 }
 

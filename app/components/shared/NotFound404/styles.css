@@ -1,0 +1,67 @@
+.pokt-modal [role="dialog"] {
+  color: var(--mantine-color-white);
+  background-color: var(--mantine-color-navy-4);
+  padding: 32px;
+  border-radius: 8px;
+}
+
+.pokt-modal .mantine-Modal-header {
+  margin-bottom: 24px;
+}
+
+.pokt-modal .mantine-Modal-title {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.pokt-modal .mantine-Modal-header button {
+  color: var(--mantine-color-blue-6);
+}
+
+.pokt-modal .mantine-Modal-header button:hover {
+  color: var(--mantine-color-white);
+  background-color: transparent;
+  border: 1px solid var(--mantine-color-white);
+}
+
+.pokt-modal .pokt-modal-cta {
+  margin-top: 40px;
+}
+
+.mantine-Modal-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow-y: auto;
+  padding: 48px 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+}
+
+.mantine-Modal-header {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  margin-right: -9px;
+}

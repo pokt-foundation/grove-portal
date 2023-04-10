@@ -46,3 +46,14 @@ query getLegal($language: String) {
     }
   }
 }
+
+query getGeneric($filter: generic_pages_filter, $language: String) {
+  generic_pages(filter: $filter) {
+    slug
+    translations(filter: { languages_code: { _eq: $language } }) {
+      seo_title
+      seo_description
+      body
+    }
+  }
+}

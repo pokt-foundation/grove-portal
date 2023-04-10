@@ -14,13 +14,14 @@ import { Blockchain } from "~/models/portal/sdk"
 import styles from "~/styles/contact-sales.css"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { authenticator } from "~/utils/auth.server"
+import { seo_title_append } from "~/utils/meta"
 import ContactSalesView, {
   links as ContactSalesViewLinks,
 } from "~/views/dashboard/apps/contact-sales/contactSalesView"
 
 export const meta: MetaFunction = () => {
   return {
-    title: "Contact Sales",
+    title: `Contact Sales ${seo_title_append}`,
   }
 }
 

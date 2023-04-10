@@ -200,7 +200,6 @@ const Document = ({ children, title }: { children: React.ReactNode; title?: stri
           })}
         />
         <Meta />
-        <title>{title}</title>
         <Links />
       </head>
       <body>

@@ -6,15 +6,8 @@ import {
   Text,
   TextInput,
 } from "@pokt-foundation/pocket-blocks"
-import { Form, useFetcher } from "@remix-run/react"
+import { useFetcher } from "@remix-run/react"
 import { useEffect, useState } from "react"
-import styles from "./styles.css"
-
-/* c8 ignore start */
-export const links = () => {
-  return [{ rel: "stylesheet", href: styles }]
-}
-/* c8 ignore stop */
 
 interface AppNameProps {
   id: string
@@ -30,7 +23,6 @@ export default function AppKeysCard({ id, name }: AppNameProps) {
 
   const handleButtonClick = () => {
     if (editing) {
-      // todo: save to db
       fetcher.submit(
         {
           name: nameState,
@@ -53,12 +45,14 @@ export default function AppKeysCard({ id, name }: AppNameProps) {
       setError(true)
       setErrorMessage(fetcher.data.message)
     }
-  }, [fetcher.data])
+  }, [fetcher.data, name])
 
   useEffect(() => {
-    setTimeout(() => {
-      setError(false)
-    }, 2000)
+    if (error === true) {
+      setTimeout(() => {
+        setError(false)
+      }, 2000)
+    }
   }, [error])
 
   return (

@@ -1,5 +1,5 @@
 import { IconCaretLeft, Grid, Button } from "@pokt-foundation/pocket-blocks"
-import { FetcherWithComponents, Outlet, useFetcher } from "@remix-run/react"
+import { FetcherWithComponents, Outlet } from "@remix-run/react"
 import { useEffect, useState } from "react"
 import { Auth0Profile } from "remix-auth-auth0"
 import styles from "./styles.css"

@@ -10,7 +10,7 @@ import ChainWithImage, {
   links as ChainWithImageLinks,
 } from "~/components/application/ChainWithImage"
 import { Card, links as CardLinks } from "~/components/shared/Card"
-import CopyTextIcon from "~/components/shared/CopyTextIcon"
+import CopyText from "~/components/shared/CopyText"
 import HelpTooltip from "~/components/shared/HelpTooltip"
 import DocsIcon from "~/components/shared/Icons/DocsIcon"
 import TextInput from "~/components/shared/TextInput"

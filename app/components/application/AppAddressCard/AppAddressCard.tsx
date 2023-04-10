@@ -10,7 +10,7 @@ import clsx from "clsx"
 import { useState } from "react"
 import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/shared/Card"
-import CopyTextIcon from "~/components/shared/CopyTextIcon"
+import CopyText from "~/components/shared/CopyText"
 import RevealIcon from "~/components/shared/RevealIcon"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { useTranslate } from "~/context/TranslateContext"
@@ -71,9 +71,7 @@ export default function AppAddressCard({ apps }: AppAddressCardProps) {
                 type={hiddenIds.includes(appId) ? "password" : "text"}
                 value={appId}
               >
-                <Button color="blue" variant="outline">
-                  <CopyTextIcon text={String(appId)} />
-                </Button>
+                <CopyText text={String(appId)} />
               </TextInput>
             ) : null,
           )
@@ -104,7 +102,7 @@ export default function AppAddressCard({ apps }: AppAddressCardProps) {
                     value={appId}
                   >
                     <Button color="blue" variant="outline">
-                      <CopyTextIcon text={String(appId)} />
+                      <CopyText text={String(appId)} />
                     </Button>
                   </TextInput>
                 ) : null,

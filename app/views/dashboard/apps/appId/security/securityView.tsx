@@ -18,7 +18,7 @@ import ChainWithImage, {
   links as ChainWithImageLinks,
 } from "~/components/application/ChainWithImage"
 import Card, { links as CardLinks } from "~/components/shared/Card"
-import CopyTextIcon from "~/components/shared/CopyTextIcon"
+import CopyText from "~/components/shared/CopyText"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { useTranslate } from "~/context/TranslateContext"
 import {
@@ -268,9 +268,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             {whitelistUserAgents.map((item: string) => (
               <div key={item} className="list">
                 <TextInput readOnly value={item}>
-                  <Button className="pokt-button-outline" color="blue" variant="outline">
-                    <CopyTextIcon text={String(item)} />
-                  </Button>
+                  <CopyText text={String(item)} />
                   <Button
                     className="pokt-button-outline"
                     color="blue"
@@ -320,9 +318,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             {whitelistOrigins.map((item: string) => (
               <div key={item} className="list">
                 <TextInput readOnly value={item}>
-                  <Button className="pokt-button-outline" color="blue" variant="outline">
-                    <CopyTextIcon text={String(item)} />
-                  </Button>
+                  <CopyText text={String(item)} />
                   <Button
                     className="pokt-button-outline"
                     color="blue"

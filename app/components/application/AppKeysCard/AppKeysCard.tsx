@@ -2,7 +2,7 @@ import { Button, Space } from "@pokt-foundation/pocket-blocks"
 import { useState } from "react"
 import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/shared/Card"
-import CopyTextIcon from "~/components/shared/CopyTextIcon"
+import CopyText from "~/components/shared/CopyText"
 import RevealIcon from "~/components/shared/RevealIcon"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 
@@ -32,9 +32,7 @@ export default function AppKeysCard({
     <div className="pokt-app-keys">
       <Card>
         <TextInput readOnly label="Portal ID" value={id}>
-          <Button className="pokt-button-outline" color="blue" variant="outline">
-            <CopyTextIcon text={String(id)} />
-          </Button>
+          <CopyText text={String(id)} />
         </TextInput>
         {secret && !isMember && (
           <>
@@ -51,9 +49,7 @@ export default function AppKeysCard({
               type={secretHidden ? "password" : "text"}
               value={secret}
             >
-              <Button className="pokt-button-outline" color="blue" variant="outline">
-                <CopyTextIcon text={String(secret)} />
-              </Button>
+              <CopyText text={String(secret)} />
             </TextInput>
           </>
         )}
@@ -72,9 +68,7 @@ export default function AppKeysCard({
               type={publicKeyHidden ? "password" : "text"}
               value={publicKey}
             >
-              <Button className="pokt-button-outline" color="blue" variant="outline">
-                <CopyTextIcon text={String(publicKey)} />
-              </Button>
+              <CopyText text={String(publicKey)} />
             </TextInput>
           </>
         )}

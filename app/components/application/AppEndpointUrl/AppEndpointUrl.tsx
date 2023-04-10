@@ -1,10 +1,10 @@
 import { Button, IconDeleteAlt } from "@pokt-foundation/pocket-blocks"
 import styles from "./styles.css"
 import ChainWithImage from "~/components/application/ChainWithImage"
-import CopyTextIcon from "~/components/shared/CopyTextIcon"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { InputProps } from "~/components/shared/TextInput"
 import { Blockchain } from "~/models/portal/sdk"
+import CopyText from "~/components/shared/CopyText/CopyText"
 
 /* c8 ignore start */
 export const links = () => {
@@ -34,9 +34,11 @@ export default function AppEndpointUrl({
         <ChainWithImage chain={chain.description} label={chain.ticker} />
       </div>
       <TextInput {...props}>
-        <Button className="pokt-button-outline" color="blue" variant="outline">
-          <CopyTextIcon text={String(props.value)} />
-        </Button>
+        <CopyText text={String(props.value)}>
+          <Text color={theme.white} fz="sm" fw="normal" mr="0.5em">
+            Copy
+          </Text>
+        </CopyText>
         {hasDelete && (
           <Button
             aria-label="delete"

@@ -27,11 +27,7 @@ export const Footer = () => {
                 {footer.termsOfUse}
               </Anchor>{" "}
               |{" "}
-              <Anchor
-                href="https://www.pokt.network/privacy-policy"
-                rel="noreferrer"
-                target="_blank"
-              >
+              <Anchor component={Link} to="/privacy-policy">
                 {footer.privacyPolicy}
               </Anchor>
             </Text>

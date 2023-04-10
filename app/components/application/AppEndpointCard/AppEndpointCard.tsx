@@ -123,7 +123,17 @@ export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) 
           <div>
             {app.gigastake ? (
               <ChainsDropdown
-                blockchains={blockchains}
+                blockchains={blockchains.sort(function (a, b) {
+                  if (a?.description && b?.description) {
+                    if (a.description < b.description) {
+                      return -1
+                    }
+                    if (a.description > b.description) {
+                      return 1
+                    }
+                  }
+                  return 0
+                })}
                 defaultText="Add New"
                 handleChainClick={handleAddToStoredChains}
                 icon={true}

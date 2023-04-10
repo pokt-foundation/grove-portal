@@ -1,5 +1,6 @@
 import { Anchor, Group, IconTwitter, Text } from "@pokt-foundation/pocket-blocks"
 import { Link } from "@remix-run/react"
+import dayjs from "dayjs"
 import IconDiscord from "../Icons/IconDiscord"
 import styles from "./styles.css"
 import { useTranslate } from "~/context/TranslateContext"
@@ -21,7 +22,7 @@ export const Footer = () => {
         <Group position="apart">
           <div>
             <Text>
-              &copy; 2022 Pocket Network Inc.{" "}
+              &copy; {dayjs().format("YYYY")} Pocket Network Inc.{" "}
               <Anchor component={Link} to="/terms-and-conditions">
                 {footer.termsOfUse}
               </Anchor>{" "}

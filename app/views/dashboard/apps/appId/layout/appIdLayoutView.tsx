@@ -1,5 +1,5 @@
 import { IconCaretLeft, Grid, Button } from "@pokt-foundation/pocket-blocks"
-import { FetcherWithComponents, Outlet, useFetcher } from "@remix-run/react"
+import { FetcherWithComponents, Outlet } from "@remix-run/react"
 import { useEffect, useState } from "react"
 import { Auth0Profile } from "remix-auth-auth0"
 import styles from "./styles.css"
@@ -9,6 +9,7 @@ import AppAddressCard, {
 import AppKeysCard, {
   links as AppKeysCardLinks,
 } from "~/components/application/AppKeysCard"
+import AppName from "~/components/application/AppName"
 import AppPlanDetails, {
   links as AppPlanDetailsLinks,
 } from "~/components/application/AppPlanDetails"
@@ -199,7 +200,7 @@ export default function AppIdLayoutView({
           {endpoint && (
             <Grid.Col xs={12}>
               <div>
-                <h1 style={{ marginTop: 0 }}>{endpoint.name}</h1>
+                <AppName id={endpoint.id} name={endpoint.name} />
                 <Nav
                   dropdown
                   appId={endpoint.id}

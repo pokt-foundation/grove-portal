@@ -6,7 +6,7 @@ import ContactSalesForm, {
 } from "~/components/application/ContactSalesForm"
 import Modal, { links as ModalLinks } from "~/components/shared/Modal"
 import { useTranslate } from "~/context/TranslateContext"
-import { ContactSalesActionData } from "~/routes/contact-sales"
+import { ContactSalesActionData, ContactSalesLoaderData } from "~/routes/contact-sales"
 
 /* c8 ignore start */
 export const links = () => {
@@ -21,9 +21,14 @@ export const links = () => {
 }
 /* c8 ignore stop */
 
-export const ContactSalesView = (data: ContactSalesActionData) => {
+type ContactSalesViewProps = {
+  actionData: ContactSalesActionData
+  loaderData: ContactSalesLoaderData
+}
+
+export const ContactSalesView = ({ actionData, loaderData }: ContactSalesViewProps) => {
   const { t } = useTranslate()
-  const { result = "error", error = null } = data
+  const { result, error } = actionData
   const [successModalOpened, setSuccessModalOpened] = useState<boolean>(false)
   const [failedModalOpened, setFailedModalOpened] = useState<boolean>(false)
 
@@ -36,7 +41,7 @@ export const ContactSalesView = (data: ContactSalesActionData) => {
     <section>
       <Title order={1}>{t.ContactSalesView.title}</Title>
       <p>{t.ContactSalesView.description}</p>
-      <ContactSalesForm />
+      <ContactSalesForm loaderData={loaderData} />
       <Modal opened={successModalOpened} onClose={() => setSuccessModalOpened(false)}>
         <div className="contact-modal-container">
           <img alt="Success" src="/checkmarkWithCircle.svg" />

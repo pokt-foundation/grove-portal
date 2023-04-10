@@ -136,18 +136,25 @@ const WithProviders = ({ children }: { children: React.ReactNode }) => {
             }),
           },
           TextInput: {
-            styles: (theme) => ({
+            styles: {
               input: {
-                background: "transparent",
+                backgroundColor: "transparent",
               },
-            }),
+            },
           },
           Textarea: {
-            styles: (theme) => ({
+            styles: {
               input: {
-                background: "transparent",
+                backgroundColor: "transparent",
               },
-            }),
+            },
+          },
+          MultiSelect: {
+            styles: {
+              input: {
+                backgroundColor: "transparent",
+              },
+            },
           },
         },
       }}

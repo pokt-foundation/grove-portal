@@ -1,5 +1,5 @@
 import { Grid } from "@mantine/core"
-import { Box, Button, Text } from "@pokt-foundation/pocket-blocks"
+import { Box, Button, Text, theme } from "@pokt-foundation/pocket-blocks"
 import { useEffect, useMemo } from "react"
 import ChainsDropdown, { links as ChainsDropdownLinks } from "../ChainsDropdown"
 import styles from "./styles.css"
@@ -12,11 +12,11 @@ import ChainWithImage, {
 import { Card, links as CardLinks } from "~/components/shared/Card"
 import CopyText from "~/components/shared/CopyText"
 import HelpTooltip from "~/components/shared/HelpTooltip"
-import DocsIcon from "~/components/shared/Icons/DocsIcon"
 import TextInput from "~/components/shared/TextInput"
 import { useUser } from "~/context/UserContext"
 import { Blockchain, BlockchainsQuery, EndpointQuery } from "~/models/portal/sdk"
 import { ChainMetadata, prefixFromChainId } from "~/utils/chainUtils"
+import ExternalArrow from "~/components/shared/Icons/ExternalArrow"
 
 /* c8 ignore start */
 export const links = () => {
@@ -183,37 +183,65 @@ export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) 
               align="center"
               justify="space-between"
               sx={{
-                margin: "0 0 3em 0",
+                margin: "0 0 2em 0",
               }}
             >
               <Grid align="center" m={0}>
-                <Text mr="0.5em" size="lg" weight={600}>
+                <Text m="0 0.5em 0 0" size="lg" weight={600}>
                   Your Data API
                 </Text>
-                <Text mr="0.5em" size="sm" weight={400}>
+                <Text m="0 0.5em 0 0" size="sm" weight={400}>
                   (powered by Covalent)
                 </Text>
-                <HelpTooltip label={"Help"} />
+                <HelpTooltip
+                  label={
+                    "The following API key can be used to authenticate against the Covalent API. When authenticating, use the API key as the username and a blank password."
+                  }
+                />
               </Grid>
               <Button className="pokt-button-outline" color="blue" variant="outline">
-                <Text className="pokt-button-outline-text">
+                <Text color={theme.white} fz="sm" fw="normal" mr="0.5em">
                   <a
                     href="https://www.covalenthq.com/docs/api/"
                     rel="noreferrer"
                     target="_blank"
                   >
-                    Docs
+                    Data API Docs
                   </a>
                 </Text>
-                <DocsIcon />
+                <ExternalArrow />
               </Button>
             </Grid>
             <TextInput value={"https://api.covalenthq.com/v1"}>
-              <Button className="pokt-button-outline" color="blue" variant="outline">
-                <Text className="pokt-button-outline-text">Copy</Text>
-                <CopyTextIcon text={String("https://api.covalenthq.com/v1")} />
-              </Button>
+              <CopyText text={String("https://api.covalenthq.com/v1")}>
+                <Text color={theme.white} fz="sm" fw="normal" mr="0.5em">
+                  Copy
+                </Text>
+              </CopyText>
             </TextInput>
+            <Text color={theme.white} fz="sm" fw="normal" mb="0">
+              This endpoint supports Ethereum, Polygon, BSC and more. For a full list,
+              please{" "}
+              <a
+                className="link"
+                href="https://docs.pokt.network/supported-blockchains/"
+                target="_blank"
+              >
+                review the docs
+              </a>
+              .
+            </Text>
+            <Text color={theme.white} fz="sm" fw="normal" mt="0">
+              How was your experience?{" "}
+              <a
+                className="link"
+                href="https://docs.pokt.network/supported-blockchains/"
+                target="_blank"
+              >
+                Tell us here
+              </a>
+              .
+            </Text>
           </Box>
         </Grid>
       </Card>

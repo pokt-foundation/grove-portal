@@ -6,11 +6,3 @@
   width: 1.25em;
   height: 1.25em;
 }
-
-.pokt-button-outline-text {
-  font-size: 14px;
-  font-family: "Manrope";
-  color: var(--color-white-main);
-  font-weight: 400;
-  margin-right: 0.5em;
-}

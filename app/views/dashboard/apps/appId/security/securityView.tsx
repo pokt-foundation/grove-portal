@@ -267,16 +267,16 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                   <Button
                     className="pokt-button-outline"
                     color="blue"
-                    variant="subtle"
                     size="sm"
-                    onClick={() => {
-                      setWhitelistUserAgents((current) => removeFromArray(item, current))
-                    }}
                     sx={(theme) => ({
                       ".mantine-Button-inner svg": {
                         fill: theme.colors.blue[5],
                       },
                     })}
+                    variant="subtle"
+                    onClick={() => {
+                      setWhitelistUserAgents((current) => removeFromArray(item, current))
+                    }}
                   >
                     <IconDeleteAlt />
                   </Button>
@@ -302,8 +302,8 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             <Button
               aria-label={t.security.OriginAria}
               size="sm"
-              variant="filled"
               type="button"
+              variant="filled"
               onClick={() => {
                 if (whitelistOriginsElement !== "") {
                   setWhitelistOrigins(
@@ -324,16 +324,16 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                   <Button
                     className="pokt-button-outline"
                     color="blue"
-                    variant="subtle"
                     size="sm"
-                    onClick={() => {
-                      setWhitelistOrigins((current) => removeFromArray(item, current))
-                    }}
                     sx={(theme) => ({
                       ".mantine-Button-inner svg": {
                         fill: theme.colors.blue[5],
                       },
                     })}
+                    variant="subtle"
+                    onClick={() => {
+                      setWhitelistOrigins((current) => removeFromArray(item, current))
+                    }}
                   >
                     <IconDeleteAlt />
                   </Button>

@@ -31,18 +31,20 @@ export default function AppEndpointUrl({
   return (
     <div className="pokt-app-endpoint-url">
       <Badge
-        leftSection={
-          <img
-            alt={chain.description || ""}
-            height={16}
-            src={getImageForChain(chain.description || "")}
-          />
-        }
-        color="gray"
         fullWidth
+        color="gray"
+        leftSection={
+          getImageForChain(chain.description || "") ? (
+            <img
+              alt={chain.description || ""}
+              height={16}
+              src={getImageForChain(chain.description || "")}
+            />
+          ) : null
+        }
+        p="12px 0"
         variant="outline"
         w={100}
-        p="12px 0"
       >
         {chain.description?.substring(0, 3).toUpperCase()}
       </Badge>
@@ -52,14 +54,14 @@ export default function AppEndpointUrl({
           <Button
             aria-label="delete"
             className="pokt-button-outline"
-            variant="subtle"
-            onClick={handleRemove}
             size="sm"
             sx={(theme) => ({
               ".mantine-Button-inner svg": {
                 fill: theme.colors.blue[5],
               },
             })}
+            variant="subtle"
+            onClick={handleRemove}
           >
             <IconDeleteAlt />
           </Button>

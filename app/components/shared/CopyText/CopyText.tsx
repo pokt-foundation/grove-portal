@@ -1,7 +1,7 @@
 import { Button, IconCopy, theme } from "@pokt-foundation/pocket-blocks"
-import { useClipboard } from "~/hooks/useClipboard"
-import Checkmark from "../Icons/Checkmark"
 import { ReactNode } from "react"
+import Checkmark from "../Icons/Checkmark"
+import { useClipboard } from "~/hooks/useClipboard"
 
 type CopyTextProps = {
   text: string | undefined
@@ -13,15 +13,15 @@ export default function CopyText({ children, text }: CopyTextProps) {
 
   return (
     <Button
+      aria-label="Click to copy"
       className="pokt-button-outline"
       color="blue"
-      variant="outline"
-      aria-label="Click to copy"
-      tabIndex={0}
-      onClick={() => clipboard.copy(text)}
       sx={{
         padding: "0",
       }}
+      tabIndex={0}
+      variant="outline"
+      onClick={() => clipboard.copy(text)}
     >
       {children}
       {clipboard.copied ? <Checkmark /> : <IconCopy fill={theme.white} />}

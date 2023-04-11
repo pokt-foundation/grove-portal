@@ -12,11 +12,11 @@ import ChainWithImage, {
 import { Card, links as CardLinks } from "~/components/shared/Card"
 import CopyText from "~/components/shared/CopyText"
 import HelpTooltip from "~/components/shared/HelpTooltip"
+import ExternalArrow from "~/components/shared/Icons/ExternalArrow"
 import TextInput from "~/components/shared/TextInput"
 import { useUser } from "~/context/UserContext"
 import { Blockchain, BlockchainsQuery, EndpointQuery } from "~/models/portal/sdk"
 import { ChainMetadata, prefixFromChainId } from "~/utils/chainUtils"
-import ExternalArrow from "~/components/shared/Icons/ExternalArrow"
 
 /* c8 ignore start */
 export const links = () => {
@@ -200,7 +200,7 @@ export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) 
                 />
               </Grid>
               <Button className="pokt-button-outline" color="blue" variant="outline">
-                <Text color={theme.white} fz="sm" fw="normal" mr="0.5em">
+                <Text color={theme.white} fw="normal" fz="sm" mr="0.5em">
                   <a
                     href="https://www.covalenthq.com/docs/api/"
                     rel="noreferrer"
@@ -214,29 +214,29 @@ export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) 
             </Grid>
             <TextInput value={"https://api.covalenthq.com/v1"}>
               <CopyText text={String("https://api.covalenthq.com/v1")}>
-                <Text color={theme.white} fz="sm" fw="normal" mr="0.5em">
+                <Text color={theme.white} fw="normal" fz="sm" mr="0.5em">
                   Copy
                 </Text>
               </CopyText>
             </TextInput>
-            <Text color={theme.white} fz="sm" fw="normal" mb="0">
+            <Text color={theme.white} fw="normal" fz="sm" mb="0">
               This endpoint supports Ethereum, Polygon, BSC and more. For a full list,
               please{" "}
               <a
                 className="link"
                 href="https://docs.pokt.network/supported-blockchains/"
-                target="_blank"
+                rel="noreferrer" target="_blank"
               >
                 review the docs
               </a>
               .
             </Text>
-            <Text color={theme.white} fz="sm" fw="normal" mt="0">
+            <Text color={theme.white} fw="normal" fz="sm" mt="0">
               How was your experience?{" "}
               <a
                 className="link"
                 href="https://docs.pokt.network/supported-blockchains/"
-                target="_blank"
+                rel="noreferrer" target="_blank"
               >
                 Tell us here
               </a>

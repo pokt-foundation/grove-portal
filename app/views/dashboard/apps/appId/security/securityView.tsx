@@ -6,6 +6,7 @@ import {
   Select,
   Group,
   IconDeleteAlt,
+  useMantineTheme,
 } from "@pokt-foundation/pocket-blocks"
 import { useFetcher, useNavigation } from "@remix-run/react"
 import React, { useState, useMemo, forwardRef, useRef } from "react"
@@ -60,6 +61,8 @@ SelectItem.displayName = "SelectItem"
 
 export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps) => {
   const navigation = useNavigation()
+
+  const theme = useMantineTheme()
 
   type FormatData = {
     id: string
@@ -168,17 +171,6 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
         <Card>
           <div className="pokt-card-header">
             <h3>{t.security.headings.approvedChains}</h3>
-            {/* <ChainsDropdown
-              aria-label={t.security.chainsDropdownAria}
-              blockchains={blockchains}
-              defaultText={t.security.defaultSelectChainText}
-              handleChainClick={(val) => {
-                setWhitelistBlockchains(addIfMissing(val, whitelistBlockchains))
-              }}
-              icon={true}
-              id="whitelistBlockchainsDropdown"
-              selectedChains={[""]}
-            /> */}
             <Select
               ref={approvedChainsSelectRef}
               searchable
@@ -268,17 +260,12 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                     className="pokt-button-outline"
                     color="blue"
                     size="sm"
-                    sx={(theme) => ({
-                      ".mantine-Button-inner svg": {
-                        fill: theme.colors.blue[5],
-                      },
-                    })}
                     variant="subtle"
                     onClick={() => {
                       setWhitelistUserAgents((current) => removeFromArray(item, current))
                     }}
                   >
-                    <IconDeleteAlt />
+                    <IconDeleteAlt color={theme.colors.blue[5]} />
                   </Button>
                 </TextInput>
                 <input name="whitelistUserAgents" type="hidden" value={item} />
@@ -325,17 +312,12 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                     className="pokt-button-outline"
                     color="blue"
                     size="sm"
-                    sx={(theme) => ({
-                      ".mantine-Button-inner svg": {
-                        fill: theme.colors.blue[5],
-                      },
-                    })}
                     variant="subtle"
                     onClick={() => {
                       setWhitelistOrigins((current) => removeFromArray(item, current))
                     }}
                   >
-                    <IconDeleteAlt />
+                    <IconDeleteAlt color={theme.colors.blue[5]} />
                   </Button>
                 </TextInput>
                 <input name="whitelistOrigins" type="hidden" value={item} />

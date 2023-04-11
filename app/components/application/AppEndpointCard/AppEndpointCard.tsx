@@ -1,5 +1,11 @@
-import { Flex, Grid, useMantineTheme } from "@mantine/core"
-import { Anchor, Box, Button, Text } from "@pokt-foundation/pocket-blocks"
+import { Flex, Grid } from "@mantine/core"
+import {
+  Anchor,
+  Box,
+  Button,
+  Text,
+  useMantineTheme,
+} from "@pokt-foundation/pocket-blocks"
 import { useEffect, useMemo } from "react"
 import ChainsDropdown from "../ChainsDropdown"
 import styles from "./styles.css"

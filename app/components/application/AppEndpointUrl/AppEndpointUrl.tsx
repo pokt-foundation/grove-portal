@@ -1,4 +1,9 @@
-import { Badge, Button, IconDeleteAlt, Text, theme } from "@pokt-foundation/pocket-blocks"
+import {
+  Badge,
+  Button,
+  IconDeleteAlt,
+  useMantineTheme,
+} from "@pokt-foundation/pocket-blocks"
 import styles from "./styles.css"
 import CopyText from "~/components/shared/CopyText/CopyText"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
@@ -27,6 +32,7 @@ export default function AppEndpointUrl({
   if (!chain) {
     return <></>
   }
+  const theme = useMantineTheme()
 
   return (
     <div className="pokt-app-endpoint-url">
@@ -55,15 +61,11 @@ export default function AppEndpointUrl({
             aria-label="delete"
             className="pokt-button-outline"
             size="sm"
-            sx={(theme) => ({
-              ".mantine-Button-inner svg": {
-                fill: theme.colors.blue[5],
-              },
-            })}
+            color={theme.colors.blue[5]}
             variant="subtle"
             onClick={handleRemove}
           >
-            <IconDeleteAlt />
+            <IconDeleteAlt color={theme.colors.blue[5]} />
           </Button>
         )}
       </TextInput>

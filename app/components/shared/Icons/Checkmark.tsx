@@ -1,4 +1,4 @@
-const Checkmark = () => (
+const Checkmark = ({ fill }: { fill: string }) => (
   <svg
     fill="none"
     height="21"
@@ -8,7 +8,7 @@ const Checkmark = () => (
   >
     <path
       d="M16.6666 5.04785L7.49998 14.2145L3.33331 10.0479"
-      stroke="#FAFAFA"
+      stroke={fill}
       stroke-linecap="round"
       stroke-linejoin="round"
       stroke-width="1.75"

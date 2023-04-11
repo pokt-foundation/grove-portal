@@ -6,16 +6,11 @@ import {
 } from "@pokt-foundation/pocket-blocks"
 import clsx from "clsx"
 import styles from "./styles.css"
-import { links as CopyTextIconLinks } from "~/components/shared/CopyTextIcon"
 import { links as RevealIconLinks } from "~/components/shared/RevealIcon"
 
 /* c8 ignore start */
 export const links = () => {
-  return [
-    ...CopyTextIconLinks(),
-    ...RevealIconLinks(),
-    { rel: "stylesheet", href: styles },
-  ]
+  return [...RevealIconLinks(), { rel: "stylesheet", href: styles }]
 }
 /* c8 ignore stop */
 

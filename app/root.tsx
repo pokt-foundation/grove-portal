@@ -135,6 +135,27 @@ const WithProviders = ({ children }: { children: React.ReactNode }) => {
               },
             }),
           },
+          TextInput: {
+            styles: {
+              input: {
+                backgroundColor: "transparent",
+              },
+            },
+          },
+          Textarea: {
+            styles: {
+              input: {
+                backgroundColor: "transparent",
+              },
+            },
+          },
+          MultiSelect: {
+            styles: {
+              input: {
+                backgroundColor: "transparent",
+              },
+            },
+          },
         },
       }}
     >
@@ -179,7 +200,6 @@ const Document = ({ children, title }: { children: React.ReactNode; title?: stri
           })}
         />
         <Meta />
-        <title>{title}</title>
         <Links />
       </head>
       <body>

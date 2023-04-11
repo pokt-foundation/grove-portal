@@ -7,10 +7,11 @@ import Modal, { links as ModalLinks } from "~/components/shared/Modal"
 import { useTranslate } from "~/context/TranslateContext"
 import styles from "~/styles/landing.css"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
+import { seo_title_append } from "~/utils/meta"
 
 export const meta: MetaFunction = () => {
   return {
-    title: "Pocket Network Portal | POKT",
+    title: `Pocket Network Portal ${seo_title_append}`,
   }
 }
 

@@ -1,0 +1,5 @@
+mutation createContactSalesFormsItem($data: create_contact_sales_forms_input!) {
+  create_contact_sales_forms_item(data: $data) {
+    id
+  }
+}

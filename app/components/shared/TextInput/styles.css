@@ -19,7 +19,6 @@
   border: 1px solid var(--mantine-color-navy-4);
   border-radius: 4px;
   font-size: 0.75rem;
-  padding-right: 20%;
 }
 
 .pokt-text-input.right-section input {

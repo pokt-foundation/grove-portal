@@ -13,10 +13,6 @@ import styles from "./styles.css"
 import AppEndpointUrl, {
   links as AppEndpointUrlLinks,
 } from "~/components/application/AppEndpointUrl"
-import { links as ChainsDropdownLinks } from "~/components/application/ChainsDropdown/ChainsDropdown"
-import ChainWithImage, {
-  links as ChainWithImageLinks,
-} from "~/components/application/ChainWithImage"
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import CopyText from "~/components/shared/CopyText"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
@@ -35,9 +31,7 @@ export const links = () => {
   return [
     ...CardLinks(),
     ...TextInputLinks(),
-    ...ChainsDropdownLinks(),
     ...AppEndpointUrlLinks(),
-    ...ChainWithImageLinks(),
     { rel: "stylesheet", href: styles },
   ]
 }
@@ -56,7 +50,7 @@ const SelectItem = forwardRef<HTMLDivElement, { label: string; value: string }>(
   ({ label, ...others }, ref) => (
     <div ref={ref} {...others}>
       <Group noWrap>
-        <ChainWithImage chain={label} withIcon={false} />
+        <Text>{label}</Text>
       </Group>
     </div>
   ),
@@ -252,6 +246,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
               aria-label={t.security.userAgentAria}
               size="sm"
               type="button"
+              variant="filled"
               onClick={() => {
                 if (whitelistUserAgentsElement !== "") {
                   setWhitelistUserAgents(
@@ -272,12 +267,18 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                   <Button
                     className="pokt-button-outline"
                     color="blue"
-                    variant="outline"
+                    variant="subtle"
+                    size="sm"
                     onClick={() => {
                       setWhitelistUserAgents((current) => removeFromArray(item, current))
                     }}
+                    sx={(theme) => ({
+                      ".mantine-Button-inner svg": {
+                        fill: theme.colors.blue[5],
+                      },
+                    })}
                   >
-                    <IconDeleteAlt fill="var(--color-white-light)" />
+                    <IconDeleteAlt />
                   </Button>
                 </TextInput>
                 <input name="whitelistUserAgents" type="hidden" value={item} />
@@ -301,6 +302,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             <Button
               aria-label={t.security.OriginAria}
               size="sm"
+              variant="filled"
               type="button"
               onClick={() => {
                 if (whitelistOriginsElement !== "") {
@@ -322,12 +324,18 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                   <Button
                     className="pokt-button-outline"
                     color="blue"
-                    variant="outline"
+                    variant="subtle"
+                    size="sm"
                     onClick={() => {
                       setWhitelistOrigins((current) => removeFromArray(item, current))
                     }}
+                    sx={(theme) => ({
+                      ".mantine-Button-inner svg": {
+                        fill: theme.colors.blue[5],
+                      },
+                    })}
                   >
-                    <IconDeleteAlt fill="var(--color-white-light)" />
+                    <IconDeleteAlt />
                   </Button>
                 </TextInput>
                 <input name="whitelistOrigins" type="hidden" value={item} />
@@ -378,6 +386,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
               aria-label={t.security.contractAria}
               size="sm"
               type="button"
+              variant="filled"
               onClick={() => {
                 if (whitelistContractsInput === "" || whitelistContractsDropdown === "") {
                   setWhitelistContractsError(true)
@@ -476,6 +485,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
               aria-label={t.security.methodAria}
               size="sm"
               type="button"
+              variant="filled"
               onClick={() => {
                 if (whitelistMethodsInput === "" || whitelistMethodsDropdown === "") {
                   setWhitelistMethodsError(true)

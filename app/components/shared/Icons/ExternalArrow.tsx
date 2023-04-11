@@ -1,4 +1,4 @@
-const ExternalArrow = () => (
+const ExternalArrow = ({ fill }: { fill: string | undefined }) => (
   <svg
     fill="none"
     height="21"
@@ -8,14 +8,14 @@ const ExternalArrow = () => (
   >
     <path
       d="M5.8335 14.2144L14.1668 5.8811"
-      stroke="#FAFAFA"
+      stroke={fill}
       stroke-linecap="round"
       stroke-linejoin="round"
       stroke-width="1.75"
     />
     <path
       d="M5.8335 5.8811H14.1668V14.2144"
-      stroke="#FAFAFA"
+      stroke={fill}
       stroke-linecap="round"
       stroke-linejoin="round"
       stroke-width="2"

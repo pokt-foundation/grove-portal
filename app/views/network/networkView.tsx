@@ -1,9 +1,6 @@
-import { Card, Grid } from "@pokt-foundation/pocket-blocks"
+import { Card, Grid, Text } from "@pokt-foundation/pocket-blocks"
 import { Transition } from "@remix-run/react/dist/transition"
 import styles from "./styles.css"
-import ChainWithImage, {
-  links as ChainWithImageLinks,
-} from "~/components/application/ChainWithImage"
 import FeedbackCard, {
   links as FeedbackCardLinks,
 } from "~/components/application/FeedbackCard"
@@ -14,9 +11,6 @@ import NetworkRelayPerformanceCard, {
   links as NetworkRelayPerformanceCardLinks,
   numbersFormatter,
 } from "~/components/application/NetworkRelayPerformanceCard"
-// import NetworkSuccessRateCard, {
-//   links as NetworkSuccessRateCardLinks,
-// } from "~/components/application/NetworkSuccessRateCard"
 import NetworkSummaryCard, {
   links as NetworkSummaryCardLinks,
 } from "~/components/application/NetworkSummaryCard"
@@ -26,7 +20,6 @@ import UsageChartCard, {
 import Loader, { links as LoaderLinks } from "~/components/shared/Loader"
 import Table, { links as TableLinks } from "~/components/shared/Table"
 import { NetworkLoaderData } from "~/routes/network"
-import { getServiceLevelByChain } from "~/utils/chainUtils"
 
 export const links = () => {
   return [
@@ -36,7 +29,6 @@ export const links = () => {
     ...NetworkRelayPerformanceCardLinks(),
     ...UsageChartCardLinks(),
     ...TableLinks(),
-    ...ChainWithImageLinks(),
     ...FeedbackCardLinks(),
     ...LoaderLinks(),
     { rel: "stylesheet", href: styles },
@@ -101,9 +93,7 @@ export default function NetworkView({
                     id: chain.id,
                     network: {
                       value: `${chain.description}`,
-                      element: (
-                        <ChainWithImage chain={chain.description} withIcon={false} />
-                      ),
+                      element: <Text>{chain.description}</Text>,
                     },
                     chainId: chain.id,
                     traffic: numbersFormatter.format(

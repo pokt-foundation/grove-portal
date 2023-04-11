@@ -1,10 +1,10 @@
-import { Button, IconDeleteAlt, Text, theme } from "@pokt-foundation/pocket-blocks"
+import { Badge, Button, IconDeleteAlt, Text, theme } from "@pokt-foundation/pocket-blocks"
 import styles from "./styles.css"
-import ChainWithImage from "~/components/application/ChainWithImage"
 import CopyText from "~/components/shared/CopyText/CopyText"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { InputProps } from "~/components/shared/TextInput"
 import { Blockchain } from "~/models/portal/sdk"
+import { getImageForChain } from "~/utils/known-chains/known-chains"
 
 /* c8 ignore start */
 export const links = () => {
@@ -30,24 +30,38 @@ export default function AppEndpointUrl({
 
   return (
     <div className="pokt-app-endpoint-url">
-      <div className="pokt-app-endpoint-url-abbrv">
-        <ChainWithImage chain={chain.description} label={chain.ticker} />
-      </div>
+      <Badge
+        leftSection={
+          <img
+            alt={chain.description || ""}
+            height={16}
+            src={getImageForChain(chain.description || "")}
+          />
+        }
+        color="gray"
+        fullWidth
+        variant="outline"
+        w={100}
+        p="12px 0"
+      >
+        {chain.description?.substring(0, 3).toUpperCase()}
+      </Badge>
       <TextInput {...props}>
-        <CopyText text={String(props.value)}>
-          <Text color={theme.white} fw="normal" fz="sm" mr="0.5em">
-            Copy
-          </Text>
-        </CopyText>
+        <CopyText text={String(props.value)} />
         {hasDelete && (
           <Button
             aria-label="delete"
             className="pokt-button-outline"
-            color="blue"
-            variant="outline"
+            variant="subtle"
             onClick={handleRemove}
+            size="sm"
+            sx={(theme) => ({
+              ".mantine-Button-inner svg": {
+                fill: theme.colors.blue[5],
+              },
+            })}
           >
-            <IconDeleteAlt fill={theme.white} />
+            <IconDeleteAlt />
           </Button>
         )}
       </TextInput>

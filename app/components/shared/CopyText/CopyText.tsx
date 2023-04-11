@@ -8,23 +8,24 @@ type CopyTextProps = {
   children?: ReactNode
 }
 
-export default function CopyText({ children, text }: CopyTextProps) {
+export default function CopyText({ text }: CopyTextProps) {
   const clipboard = useClipboard({ timeout: 1500 })
 
   return (
     <Button
       aria-label="Click to copy"
       className="pokt-button-outline"
-      color="blue"
-      sx={{
-        padding: "0",
-      }}
+      size="sm"
+      sx={(theme) => ({
+        ".mantine-Button-inner svg": {
+          fill: theme.colors.blue[5],
+        },
+      })}
       tabIndex={0}
-      variant="outline"
+      variant="subtle"
       onClick={() => clipboard.copy(text)}
     >
-      {children}
-      {clipboard.copied ? <Checkmark /> : <IconCopy fill={theme.white} />}
+      {clipboard.copied ? <Checkmark /> : <IconCopy />}
     </Button>
   )
 }

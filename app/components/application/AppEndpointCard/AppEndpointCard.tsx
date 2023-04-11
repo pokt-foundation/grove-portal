@@ -1,14 +1,11 @@
-import { Grid } from "@mantine/core"
-import { Anchor, Box, Button, Text, theme } from "@pokt-foundation/pocket-blocks"
+import { Flex, Grid, useMantineTheme } from "@mantine/core"
+import { Anchor, Box, Button, Text } from "@pokt-foundation/pocket-blocks"
 import { useEffect, useMemo } from "react"
-import ChainsDropdown, { links as ChainsDropdownLinks } from "../ChainsDropdown"
+import ChainsDropdown from "../ChainsDropdown"
 import styles from "./styles.css"
 import AppEndpointUrl, {
   links as AppEndpointUrlLinks,
 } from "~/components/application/AppEndpointUrl"
-import ChainWithImage, {
-  links as ChainWithImageLinks,
-} from "~/components/application/ChainWithImage"
 import { Card, links as CardLinks } from "~/components/shared/Card"
 import CopyText from "~/components/shared/CopyText"
 import HelpTooltip from "~/components/shared/HelpTooltip"
@@ -20,13 +17,7 @@ import { ChainMetadata, prefixFromChainId } from "~/utils/chainUtils"
 
 /* c8 ignore start */
 export const links = () => {
-  return [
-    ...CardLinks(),
-    ...ChainsDropdownLinks(),
-    ...ChainWithImageLinks(),
-    ...AppEndpointUrlLinks(),
-    { rel: "stylesheet", href: styles },
-  ]
+  return [...CardLinks(), ...AppEndpointUrlLinks(), { rel: "stylesheet", href: styles }]
 }
 /* c8 ignore stop */
 
@@ -37,6 +28,7 @@ interface AppEndpointProps {
 
 export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) {
   const user = useUser()
+  const theme = useMantineTheme()
   const chains = useMemo(
     () =>
       user.data?.preferences?.endpoints
@@ -145,7 +137,7 @@ export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) 
                 }
               />
             ) : (
-              <ChainWithImage chain={chainDescription} />
+              <Text>{chainDescription}</Text>
             )}
           </div>
         </div>
@@ -194,55 +186,40 @@ export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) 
                   (powered by Covalent)
                 </Text>
                 <HelpTooltip
-                  label={
-                    "The following API key can be used to authenticate against the Covalent API. When authenticating, use the API key as the username and a blank password."
-                  }
+                  label={"This endpoint supports Ethereum, Polygon, BSC and more."}
                 />
               </Grid>
               <Anchor href="https://www.covalenthq.com/docs/api/" target="_blank">
                 <Button className="pokt-button-outline" color="blue" variant="outline">
-                  <Text color={theme.white} fw="normal" fz="sm" mr="0.5em">
+                  <Text fw="normal" fz="sm" mr="0.5em">
                     Data API Docs
                   </Text>
-                  <ExternalArrow />
+                  <ExternalArrow fill={theme?.colors?.blue[5]} />
                 </Button>
               </Anchor>
             </Grid>
-            <TextInput
-              value={`https://api.covalenthq.com/v1${
-                app.integrations.covalentAPIKeyPaid || app.integrations.covalentAPIKeyFree
-              }`}
-            >
-              <CopyText text={String("https://api.covalenthq.com/v1")}>
-                <Text color={theme.white} fw="normal" fz="sm" mr="0.5em">
-                  Copy
-                </Text>
-              </CopyText>
-            </TextInput>
+            <Flex direction="column" gap="1em">
+              <TextInput label="URL" mb="1em" value="https://api.covalenthq.com/v1">
+                <CopyText text={String("https://api.covalenthq.com/v1")} />
+              </TextInput>
+              <TextInput
+                label="API Key"
+                value={
+                  app.integrations.covalentAPIKeyPaid ||
+                  app.integrations.covalentAPIKeyFree
+                }
+              >
+                <CopyText
+                  text={String(
+                    app.integrations.covalentAPIKeyPaid ||
+                      app.integrations.covalentAPIKeyFree,
+                  )}
+                />
+              </TextInput>
+            </Flex>
             <Text color={theme.white} fw="normal" fz="sm" mb="0">
-              This endpoint supports Ethereum, Polygon, BSC and more. For a full list,
-              please{" "}
-              <Anchor
-                className="link"
-                href="https://docs.pokt.network/supported-blockchains/"
-                rel="noreferrer"
-                target="_blank"
-              >
-                review the docs
-              </Anchor>
-              .
-            </Text>
-            <Text color={theme.white} fw="normal" fz="sm" mt="0">
-              How was your experience?{" "}
-              <Anchor
-                className="link"
-                href="https://docs.pokt.network/supported-blockchains/"
-                rel="noreferrer"
-                target="_blank"
-              >
-                Tell us here
-              </Anchor>
-              .
+              The following API key can be used to authenticate against the Covalent API.
+              When authenticating, use the API key as the username and a blank password.
             </Text>
           </Box>
         </Grid>

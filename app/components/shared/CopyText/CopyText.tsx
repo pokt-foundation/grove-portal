@@ -16,8 +16,8 @@ export default function CopyText({ text }: CopyTextProps) {
     <Button
       aria-label="Click to copy"
       className="pokt-button-outline"
-      size="sm"
       color={theme.colors.blue[5]}
+      size="sm"
       tabIndex={0}
       variant="subtle"
       onClick={() => clipboard.copy(text)}

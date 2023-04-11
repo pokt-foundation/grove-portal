@@ -29,10 +29,11 @@ export default function AppEndpointUrl({
   hasDelete,
   ...props
 }: AppEndpointUrlProp) {
+  const theme = useMantineTheme()
+
   if (!chain) {
     return <></>
   }
-  const theme = useMantineTheme()
 
   return (
     <div className="pokt-app-endpoint-url">
@@ -60,8 +61,8 @@ export default function AppEndpointUrl({
           <Button
             aria-label="delete"
             className="pokt-button-outline"
-            size="sm"
             color={theme.colors.blue[5]}
+            size="sm"
             variant="subtle"
             onClick={handleRemove}
           >

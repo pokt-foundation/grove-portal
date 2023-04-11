@@ -1,4 +1,4 @@
-import { Button, IconDeleteAlt } from "@pokt-foundation/pocket-blocks"
+import { Button, IconDeleteAlt, Text, theme } from "@pokt-foundation/pocket-blocks"
 import styles from "./styles.css"
 import ChainWithImage from "~/components/application/ChainWithImage"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
@@ -47,7 +47,7 @@ export default function AppEndpointUrl({
             variant="outline"
             onClick={handleRemove}
           >
-            <IconDeleteAlt fill="var(--color-white-light)" />
+            <IconDeleteAlt fill={theme.white} />
           </Button>
         )}
       </TextInput>

@@ -224,8 +224,9 @@ export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) 
               </TextInput>
             </Flex>
             <Text color={theme.white} fw="normal" fz="sm" mb="0">
-              The following API key can be used to authenticate against the Covalent API.
-              When authenticating, use the API key as the username and a blank password.
+              The following API key can be uses to authenticate against the Covalent API.
+              When authenticating, add the API key using the x-api-key header to the
+              request.
             </Text>
           </Box>
         </Grid>

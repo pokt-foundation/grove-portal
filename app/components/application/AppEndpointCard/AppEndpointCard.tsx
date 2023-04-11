@@ -208,7 +208,11 @@ export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) 
                 </Button>
               </Anchor>
             </Grid>
-            <TextInput value={"https://api.covalenthq.com/v1"}>
+            <TextInput
+              value={`https://api.covalenthq.com/v1${
+                app.integrations.covalentAPIKeyPaid || app.integrations.covalentAPIKeyFree
+              }`}
+            >
               <CopyText text={String("https://api.covalenthq.com/v1")}>
                 <Text color={theme.white} fw="normal" fz="sm" mr="0.5em">
                   Copy

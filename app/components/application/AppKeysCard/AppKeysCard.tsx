@@ -32,7 +32,7 @@ export default function AppKeysCard({
     <div className="pokt-app-keys">
       <Card>
         <Text mb={0}>Portal ID</Text>
-        <TextInput aria-label="Portal ID" readOnly value={id}>
+        <TextInput readOnly aria-label="Portal ID" value={id}>
           <CopyText text={String(id)} />
         </TextInput>
         {secret && !isMember && (
@@ -40,8 +40,8 @@ export default function AppKeysCard({
             <Space h="sm" />
             <Text mb={0}>Secret Key</Text>
             <TextInput
-              aria-label="Secret Key"
               readOnly
+              aria-label="Secret Key"
               rightSection={
                 <RevealIcon
                   revealed={secretHidden}
@@ -60,8 +60,8 @@ export default function AppKeysCard({
             <Space h="sm" />
             <Text mb={0}>Public Key</Text>
             <TextInput
-              aria-label="Public Key"
               readOnly
+              aria-label="Public Key"
               rightSection={
                 <RevealIcon
                   revealed={publicKeyHidden}

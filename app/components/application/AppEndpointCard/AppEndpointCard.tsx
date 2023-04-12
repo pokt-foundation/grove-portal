@@ -156,13 +156,12 @@ export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) 
                 ref={addNewChainSelectRef}
                 searchable
                 aria-label="Add new"
-                placeholder="Add new"
-                itemComponent={SelectItem}
                 data={selectChainData}
+                itemComponent={SelectItem}
+                placeholder="Add new"
                 rightSection={
-                  <IconPlus fill={theme.colors.blue[5]} width={18} height={18} />
+                  <IconPlus fill={theme.colors.blue[5]} height={18} width={18} />
                 }
-                onChange={handleAddToStoredChains}
                 size="xs"
                 sx={(theme) => ({
                   ".mantine-Select-dropdown": {
@@ -178,6 +177,7 @@ export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) 
                     fontSize: "12px",
                   },
                 })}
+                onChange={handleAddToStoredChains}
               />
             ) : (
               <Text>{chainDescription}</Text>
@@ -227,7 +227,7 @@ export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) 
                 <Text fw="normal" fz="xs" mr="0.5em">
                   Data API Docs
                 </Text>
-                <IconArrowUpRight fill={theme?.colors?.blue[5]} width={18} height={18} />
+                <IconArrowUpRight fill={theme?.colors?.blue[5]} height={18} width={18} />
               </Button>
             </Anchor>
           </Grid>

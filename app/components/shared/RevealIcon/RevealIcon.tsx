@@ -16,13 +16,13 @@ export default function RevealIcon({ revealed, setRevealed }: RevealIconProps) {
   return (
     <Button
       aria-label={`Click to ${revealed ? "show" : "hide"} value`}
-      tabIndex={0}
-      onClick={setRevealed}
       size="xs"
+      tabIndex={0}
       variant="subtle"
+      onClick={setRevealed}
     >
       {revealed ? (
-        <IconEyeOn cursor="pointer" fill={theme.colors.blue[5]} width={18} height={18} />
+        <IconEyeOn cursor="pointer" fill={theme.colors.blue[5]} height={18} width={18} />
       ) : (
         <IconEyeOff cursor="pointer" fill={theme.colors.blue[5]} height={18} width={18} />
       )}

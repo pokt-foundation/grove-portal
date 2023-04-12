@@ -30,9 +30,9 @@ export default function TextInput({
     >
       <MantineTextInput
         rightSection={props.rightSection}
+        rightSectionWidth="3.5em"
         size={props.size ?? "sm"}
         variant={props.variant ?? "filled"}
-        rightSectionWidth="3.5em"
         {...props}
         sx={{
           backgroundColor: theme.colors.navy ? theme.colors.navy[6] : "blue",

@@ -68,7 +68,7 @@ export default function AppEndpointUrl({
             variant="subtle"
             onClick={handleRemove}
           >
-            <IconDeleteAlt color={theme.colors.blue[5]} width={18} height={18} />
+            <IconDeleteAlt color={theme.colors.blue[5]} height={18} width={18} />
           </Button>
         )}
       </TextInput>

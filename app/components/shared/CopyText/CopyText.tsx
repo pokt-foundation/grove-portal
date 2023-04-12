@@ -26,9 +26,9 @@ export default function CopyText({ text }: CopyTextProps) {
       onClick={() => clipboard.copy(text)}
     >
       {clipboard.copied ? (
-        <IconCheck fill={theme.colors.blue[5]} width={18} height={18} />
+        <IconCheck fill={theme.colors.blue[5]} height={18} width={18} />
       ) : (
-        <IconCopy color={theme.colors.blue[5]} width={18} height={18} />
+        <IconCopy color={theme.colors.blue[5]} height={18} width={18} />
       )}
     </Button>
   )

@@ -50,6 +50,9 @@ export default function AppEndpointUrl({
           ) : null
         }
         p="12px 0"
+        sx={{
+          borderRadius: "8px",
+        }}
         variant="outline"
         w={100}
       >
@@ -60,13 +63,12 @@ export default function AppEndpointUrl({
         {hasDelete && (
           <Button
             aria-label="delete"
-            className="pokt-button-outline"
             color={theme.colors.blue[5]}
-            size="sm"
+            size="xs"
             variant="subtle"
             onClick={handleRemove}
           >
-            <IconDeleteAlt color={theme.colors.blue[5]} />
+            <IconDeleteAlt color={theme.colors.blue[5]} width={18} height={18} />
           </Button>
         )}
       </TextInput>

@@ -1,4 +1,4 @@
-import { Button, Space } from "@pokt-foundation/pocket-blocks"
+import { Space, Text } from "@pokt-foundation/pocket-blocks"
 import { useState } from "react"
 import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/shared/Card"
@@ -31,15 +31,17 @@ export default function AppKeysCard({
   return (
     <div className="pokt-app-keys">
       <Card>
-        <TextInput readOnly label="Portal ID" value={id}>
+        <Text mb={0}>Portal ID</Text>
+        <TextInput aria-label="Portal ID" readOnly value={id}>
           <CopyText text={String(id)} />
         </TextInput>
         {secret && !isMember && (
           <>
             <Space h="sm" />
+            <Text mb={0}>Secret Key</Text>
             <TextInput
+              aria-label="Secret Key"
               readOnly
-              label="Secret Key"
               rightSection={
                 <RevealIcon
                   revealed={secretHidden}
@@ -56,9 +58,10 @@ export default function AppKeysCard({
         {publicKey && (
           <>
             <Space h="sm" />
+            <Text mb={0}>Public Key</Text>
             <TextInput
+              aria-label="Public Key"
               readOnly
-              label="Public Key"
               rightSection={
                 <RevealIcon
                   revealed={publicKeyHidden}

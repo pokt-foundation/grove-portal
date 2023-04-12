@@ -159,8 +159,11 @@ export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) 
                 placeholder="Add new"
                 itemComponent={SelectItem}
                 data={selectChainData}
-                rightSection={<IconPlus fill={theme.colors.blue[5]} />}
+                rightSection={
+                  <IconPlus fill={theme.colors.blue[5]} width={18} height={18} />
+                }
                 onChange={handleAddToStoredChains}
+                size="xs"
                 sx={(theme) => ({
                   ".mantine-Select-dropdown": {
                     backgroundColor: "#0f161d",
@@ -198,7 +201,8 @@ export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) 
             )
           })}
         <Grid
-          align="start"
+          align="center"
+          dir="column"
           justify="space-between"
           sx={{
             margin: "2em 0 0",
@@ -206,57 +210,46 @@ export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) 
             borderTop: "1px solid #2F373E",
           }}
         >
-          <Box
-            sx={{
-              width: "100%",
-            }}
-          >
-            <Grid
-              align="center"
-              justify="space-between"
-              sx={{
-                margin: "0 0 2em 0",
-              }}
+          <Grid align="center" justify="space-between" m={0} w="100%">
+            <Group spacing={4}>
+              <Text size="lg" weight={600}>
+                Your Data API
+              </Text>
+              <Text size="sm" weight={400}>
+                (powered by Covalent)
+              </Text>
+              <HelpTooltip
+                label={"This endpoint supports Ethereum, Polygon, BSC and more."}
+              />
+            </Group>
+            <Anchor href="https://www.covalenthq.com/docs/api/" target="_blank">
+              <Button size="xs" variant="outline">
+                <Text fw="normal" fz="xs" mr="0.5em">
+                  Data API Docs
+                </Text>
+                <IconArrowUpRight fill={theme?.colors?.blue[5]} width={18} height={18} />
+              </Button>
+            </Anchor>
+          </Grid>
+          <Box>
+            <Text mb={0}>URL</Text>
+            <TextInput value="https://api.covalenthq.com/v1">
+              <CopyText text={String("https://api.covalenthq.com/v1")} />
+            </TextInput>
+            <Text mb={0}>API Key</Text>
+            <TextInput
+              mt="0.5em"
+              value={
+                app.integrations.covalentAPIKeyPaid || app.integrations.covalentAPIKeyFree
+              }
             >
-              <Grid align="center" m={0}>
-                <Text m="0 0.5em 0 0" size="lg" weight={600}>
-                  Your Data API
-                </Text>
-                <Text m="0 0.5em 0 0" size="sm" weight={400}>
-                  (powered by Covalent)
-                </Text>
-                <HelpTooltip
-                  label={"This endpoint supports Ethereum, Polygon, BSC and more."}
-                />
-              </Grid>
-              <Anchor href="https://www.covalenthq.com/docs/api/" target="_blank">
-                <Button className="pokt-button-outline" color="blue" variant="outline">
-                  <Text fw="normal" fz="sm" mr="0.5em">
-                    Data API Docs
-                  </Text>
-                  <ExternalArrow fill={theme?.colors?.blue[5]} />
-                </Button>
-              </Anchor>
-            </Grid>
-            <Box>
-              <TextInput label="URL" mb="1em" value="https://api.covalenthq.com/v1">
-                <CopyText text={String("https://api.covalenthq.com/v1")} />
-              </TextInput>
-              <TextInput
-                label="API Key"
-                value={
+              <CopyText
+                text={String(
                   app.integrations.covalentAPIKeyPaid ||
-                  app.integrations.covalentAPIKeyFree
-                }
-              >
-                <CopyText
-                  text={String(
-                    app.integrations.covalentAPIKeyPaid ||
-                      app.integrations.covalentAPIKeyFree,
-                  )}
-                />
-              </TextInput>
-            </Box>
+                    app.integrations.covalentAPIKeyFree,
+                )}
+              />
+            </TextInput>
             <Text color={theme.white} fw="normal" fz="sm" mb="0">
               The following API key can be uses to authenticate against the Covalent API.
               When authenticating, add the API key using the x-api-key header to the

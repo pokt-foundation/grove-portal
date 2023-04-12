@@ -1,13 +1,14 @@
-import { Flex, Grid } from "@mantine/core"
 import {
   Anchor,
   Box,
   Button,
   Text,
   useMantineTheme,
+  Grid,
+  Group,
+  Select,
 } from "@pokt-foundation/pocket-blocks"
-import { useEffect, useMemo } from "react"
-import ChainsDropdown from "../ChainsDropdown"
+import { forwardRef, useEffect, useMemo, useRef } from "react"
 import styles from "./styles.css"
 import AppEndpointUrl, {
   links as AppEndpointUrlLinks,
@@ -20,6 +21,7 @@ import TextInput from "~/components/shared/TextInput"
 import { useUser } from "~/context/UserContext"
 import { Blockchain, BlockchainsQuery, EndpointQuery } from "~/models/portal/sdk"
 import { ChainMetadata, prefixFromChainId } from "~/utils/chainUtils"
+import IconPlus from "~/components/shared/Icons/IconPlus"
 
 /* c8 ignore start */
 export const links = () => {
@@ -31,6 +33,18 @@ interface AppEndpointProps {
   app: EndpointQuery["endpoint"]
   blockchains: BlockchainsQuery["blockchains"]
 }
+
+const SelectItem = forwardRef<HTMLDivElement, { label: string; value: string }>(
+  ({ label, ...others }, ref) => (
+    <div ref={ref} {...others}>
+      <Group noWrap>
+        <Text>{label}</Text>
+      </Group>
+    </div>
+  ),
+)
+
+SelectItem.displayName = "SelectItem"
 
 export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) {
   const user = useUser()
@@ -113,6 +127,25 @@ export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) 
     }
   }
 
+  const addNewChainSelectRef = useRef<HTMLInputElement>(null)
+
+  const selectChainData = useMemo(() => {
+    return blockchains
+      .map((chain) => ({
+        label: chain?.description ?? "",
+        value: chain?.id ?? "",
+      }))
+      .sort((a, b) => {
+        if (a.label < b.label) {
+          return -1
+        }
+        if (a.label > b.label) {
+          return 1
+        }
+        return 0
+      })
+  }, [blockchains])
+
   return (
     <div className="pokt-app-endpoint">
       <Card>
@@ -120,27 +153,29 @@ export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) 
           <h3>Endpoint</h3>
           <div>
             {app.gigastake ? (
-              <ChainsDropdown
-                blockchains={blockchains.sort(function (a, b) {
-                  if (a?.description && b?.description) {
-                    if (a.description < b.description) {
-                      return -1
-                    }
-                    if (a.description > b.description) {
-                      return 1
-                    }
-                  }
-                  return 0
+              <Select
+                ref={addNewChainSelectRef}
+                searchable
+                aria-label="Add new"
+                placeholder="Add new"
+                itemComponent={SelectItem}
+                data={selectChainData}
+                rightSection={<IconPlus fill={theme.colors.blue[5]} />}
+                onChange={handleAddToStoredChains}
+                sx={(theme) => ({
+                  ".mantine-Select-dropdown": {
+                    backgroundColor: "#0f161d",
+                  },
+                  ".mantine-Select-input": {
+                    backgroundColor: "transparent",
+                    borderColor: theme.colors.blue[5],
+                  },
+                  ".mantine-Select-input::placeholder": {
+                    color: theme.colors.blue[5],
+                    fontWeight: 600,
+                    fontSize: "12px",
+                  },
                 })}
-                defaultText="Add New"
-                handleChainClick={handleAddToStoredChains}
-                icon={true}
-                selectedChains={
-                  user.data?.preferences.endpoints &&
-                  user.data?.preferences.endpoints[app.id]
-                    ? user.data?.preferences.endpoints[app.id]
-                    : ["0021"]
-                }
               />
             ) : (
               <Text>{chainDescription}</Text>
@@ -204,7 +239,7 @@ export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) 
                 </Button>
               </Anchor>
             </Grid>
-            <Flex direction="column" gap="1em">
+            <Box>
               <TextInput label="URL" mb="1em" value="https://api.covalenthq.com/v1">
                 <CopyText text={String("https://api.covalenthq.com/v1")} />
               </TextInput>
@@ -222,7 +257,7 @@ export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) 
                   )}
                 />
               </TextInput>
-            </Flex>
+            </Box>
             <Text color={theme.white} fw="normal" fz="sm" mb="0">
               The following API key can be uses to authenticate against the Covalent API.
               When authenticating, add the API key using the x-api-key header to the

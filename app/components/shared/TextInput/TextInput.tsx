@@ -1,18 +1,9 @@
 import {
-  Button,
-  IconDeleteAlt,
+  Grid,
   TextInput as MantineTextInput,
   TextInputProps,
+  useMantineTheme,
 } from "@pokt-foundation/pocket-blocks"
-import clsx from "clsx"
-import styles from "./styles.css"
-import { links as RevealIconLinks } from "~/components/shared/RevealIcon"
-
-/* c8 ignore start */
-export const links = () => {
-  return [...RevealIconLinks(), { rel: "stylesheet", href: styles }]
-}
-/* c8 ignore stop */
 
 export type InputProps = TextInputProps & {
   revealed?: boolean
@@ -26,19 +17,35 @@ export default function TextInput({
   children,
   ...props
 }: InputProps) {
+  const theme = useMantineTheme()
   return (
-    <div className="pokt-text-wrapper">
+    <Grid
+      align="center"
+      justify="space-between"
+      m={0}
+      sx={{
+        gap: ".5em",
+      }}
+      w="100%"
+    >
       <MantineTextInput
-        className={clsx({
-          "pokt-text-input": true,
-          "right-section": props.rightSection,
-        })}
         rightSection={props.rightSection}
-        size={props.size ?? "md"}
-        variant={props.variant ?? "unstyled"}
+        size={props.size ?? "sm"}
+        variant={props.variant ?? "filled"}
+        rightSectionWidth="3.5em"
         {...props}
+        sx={{
+          backgroundColor: theme.colors.navy ? theme.colors.navy[6] : "blue",
+          flexGrow: 1,
+          marginBottom: 0,
+
+          ".mantine-TextInput-input": {
+            padding: props.rightSection ? ".5em 5em .5em .5em" : ".5em",
+            fontSize: "0.75em",
+          },
+        }}
       />
       {children}
-    </div>
+    </Grid>
   )
 }

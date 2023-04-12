@@ -7,6 +7,8 @@ import {
   Grid,
   Group,
   Select,
+  IconArrowUpRight,
+  IconPlus,
 } from "@pokt-foundation/pocket-blocks"
 import { forwardRef, useEffect, useMemo, useRef } from "react"
 import styles from "./styles.css"
@@ -16,12 +18,10 @@ import AppEndpointUrl, {
 import { Card, links as CardLinks } from "~/components/shared/Card"
 import CopyText from "~/components/shared/CopyText"
 import HelpTooltip from "~/components/shared/HelpTooltip"
-import ExternalArrow from "~/components/shared/Icons/ExternalArrow"
 import TextInput from "~/components/shared/TextInput"
 import { useUser } from "~/context/UserContext"
 import { Blockchain, BlockchainsQuery, EndpointQuery } from "~/models/portal/sdk"
 import { ChainMetadata, prefixFromChainId } from "~/utils/chainUtils"
-import IconPlus from "~/components/shared/Icons/IconPlus"
 
 /* c8 ignore start */
 export const links = () => {

@@ -12,13 +12,13 @@ import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/shared/Card"
 import CopyText from "~/components/shared/CopyText"
 import RevealIcon from "~/components/shared/RevealIcon"
-import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
+import TextInput from "~/components/shared/TextInput"
 import { useTranslate } from "~/context/TranslateContext"
 import { ProcessedEndpoint } from "~/models/portal/sdk"
 
 /* c8 ignore start */
 export const links = () => {
-  return [...CardLinks(), ...TextInputLinks(), { rel: "stylesheet", href: styles }]
+  return [...CardLinks(), { rel: "stylesheet", href: styles }]
 }
 /* c8 ignore stop */
 
@@ -101,7 +101,7 @@ export default function AppAddressCard({ apps }: AppAddressCardProps) {
                     type={hiddenIds.includes(appId) ? "password" : "text"}
                     value={appId}
                   >
-                    <Button color="blue" variant="outline">
+                    <Button variant="outline">
                       <CopyText text={String(appId)} />
                     </Button>
                   </TextInput>

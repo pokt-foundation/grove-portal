@@ -11,7 +11,6 @@ import {
   IconPlus,
 } from "@pokt-foundation/pocket-blocks"
 import { forwardRef, useEffect, useMemo, useRef } from "react"
-import styles from "./styles.css"
 import AppEndpointUrl, {
   links as AppEndpointUrlLinks,
 } from "~/components/application/AppEndpointUrl"
@@ -25,7 +24,7 @@ import { ChainMetadata, prefixFromChainId } from "~/utils/chainUtils"
 
 /* c8 ignore start */
 export const links = () => {
-  return [...CardLinks(), ...AppEndpointUrlLinks(), { rel: "stylesheet", href: styles }]
+  return [...CardLinks(), ...AppEndpointUrlLinks()]
 }
 /* c8 ignore stop */
 

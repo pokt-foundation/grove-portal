@@ -16,7 +16,7 @@ import AppEndpointUrl, {
 } from "~/components/application/AppEndpointUrl"
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import CopyText from "~/components/shared/CopyText"
-import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
+import TextInput from "~/components/shared/TextInput"
 import { useTranslate } from "~/context/TranslateContext"
 import {
   BlockchainsQuery,
@@ -29,12 +29,7 @@ import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 
 /* c8 ignore start */
 export const links = () => {
-  return [
-    ...CardLinks(),
-    ...TextInputLinks(),
-    ...AppEndpointUrlLinks(),
-    { rel: "stylesheet", href: styles },
-  ]
+  return [...CardLinks(), ...AppEndpointUrlLinks(), { rel: "stylesheet", href: styles }]
 }
 /* c8 ignore stop */
 
@@ -257,8 +252,6 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                 <TextInput readOnly value={item}>
                   <CopyText text={String(item)} />
                   <Button
-                    className="pokt-button-outline"
-                    color="blue"
                     size="sm"
                     variant="subtle"
                     onClick={() => {
@@ -309,8 +302,6 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                 <TextInput readOnly value={item}>
                   <CopyText text={String(item)} />
                   <Button
-                    className="pokt-button-outline"
-                    color="blue"
                     size="sm"
                     variant="subtle"
                     onClick={() => {

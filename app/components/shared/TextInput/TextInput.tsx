@@ -30,7 +30,7 @@ export default function TextInput({
     >
       <MantineTextInput
         rightSection={props.rightSection}
-        rightSectionWidth="3.5em"
+        rightSectionWidth="2.5em"
         size={props.size ?? "sm"}
         variant={props.variant ?? "filled"}
         {...props}

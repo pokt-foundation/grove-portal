@@ -6,15 +6,14 @@ import {
   useMantineTheme,
   Grid,
   Group,
-  Select,
   IconArrowUpRight,
-  IconPlus,
 } from "@pokt-foundation/pocket-blocks"
-import { forwardRef, useEffect, useMemo, useRef } from "react"
+import { useEffect, useMemo } from "react"
 import AppEndpointUrl, {
   links as AppEndpointUrlLinks,
 } from "~/components/application/AppEndpointUrl"
 import { Card, links as CardLinks } from "~/components/shared/Card"
+import ChainsDropdown from "~/components/shared/ChainsDropdown/ChainsDropdown"
 import CopyText from "~/components/shared/CopyText"
 import HelpTooltip from "~/components/shared/HelpTooltip"
 import TextInput from "~/components/shared/TextInput"
@@ -32,18 +31,6 @@ interface AppEndpointProps {
   app: EndpointQuery["endpoint"]
   blockchains: BlockchainsQuery["blockchains"]
 }
-
-const SelectItem = forwardRef<HTMLDivElement, { label: string; value: string }>(
-  ({ label, ...others }, ref) => (
-    <div ref={ref} {...others}>
-      <Group noWrap>
-        <Text>{label}</Text>
-      </Group>
-    </div>
-  ),
-)
-
-SelectItem.displayName = "SelectItem"
 
 export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) {
   const user = useUser()
@@ -126,25 +113,6 @@ export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) 
     }
   }
 
-  const addNewChainSelectRef = useRef<HTMLInputElement>(null)
-
-  const selectChainData = useMemo(() => {
-    return blockchains
-      .map((chain) => ({
-        label: chain?.description ?? "",
-        value: chain?.id ?? "",
-      }))
-      .sort((a, b) => {
-        if (a.label < b.label) {
-          return -1
-        }
-        if (a.label > b.label) {
-          return 1
-        }
-        return 0
-      })
-  }, [blockchains])
-
   return (
     <div className="pokt-app-endpoint">
       <Card>
@@ -152,33 +120,7 @@ export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) 
           <h3>Endpoint</h3>
           <div>
             {app.gigastake ? (
-              <Select
-                ref={addNewChainSelectRef}
-                searchable
-                aria-label="Add new"
-                data={selectChainData}
-                itemComponent={SelectItem}
-                placeholder="Add new"
-                rightSection={
-                  <IconPlus fill={theme.colors.blue[5]} height={18} width={18} />
-                }
-                size="xs"
-                sx={(theme) => ({
-                  ".mantine-Select-dropdown": {
-                    backgroundColor: "#0f161d",
-                  },
-                  ".mantine-Select-input": {
-                    backgroundColor: "transparent",
-                    borderColor: theme.colors.blue[5],
-                  },
-                  ".mantine-Select-input::placeholder": {
-                    color: theme.colors.blue[5],
-                    fontWeight: 600,
-                    fontSize: "12px",
-                  },
-                })}
-                onChange={handleAddToStoredChains}
-              />
+              <ChainsDropdown chains={blockchains} onChange={handleAddToStoredChains} />
             ) : (
               <Text>{chainDescription}</Text>
             )}

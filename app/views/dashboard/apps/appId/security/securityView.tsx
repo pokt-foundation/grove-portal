@@ -3,13 +3,12 @@ import {
   Text,
   Switch,
   Loader,
-  Select,
   Group,
   IconDeleteAlt,
   useMantineTheme,
 } from "@pokt-foundation/pocket-blocks"
 import { useFetcher, useNavigation } from "@remix-run/react"
-import React, { useState, useMemo, forwardRef, useRef } from "react"
+import React, { useState, forwardRef } from "react"
 import styles from "./styles.css"
 import AppEndpointUrl, {
   links as AppEndpointUrlLinks,
@@ -26,6 +25,7 @@ import {
 } from "~/models/portal/sdk"
 import { Blockchain, EndpointQuery } from "~/models/portal/sdk"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
+import ChainsDropdown from "~/components/shared/ChainsDropdown/ChainsDropdown"
 
 /* c8 ignore start */
 export const links = () => {
@@ -82,8 +82,6 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
     }, [])
   }
 
-  const approvedChainsSelectRef = useRef<HTMLInputElement>(null)
-
   const { t } = useTranslate()
   const securityAction = useFetcher()
 
@@ -137,13 +135,6 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
     return arr.filter((obj) => (!obj[field].includes(item) ? obj : null))
   }
 
-  const selectChainData = useMemo(() => {
-    return blockchains.map((chain) => ({
-      label: chain?.description ?? "",
-      value: chain?.id ?? "",
-    }))
-  }, [blockchains])
-
   return (
     <div className="security">
       <securityAction.Form action="/api/securitySettings" method="post">
@@ -166,31 +157,10 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
         <Card>
           <div className="pokt-card-header">
             <h3>{t.security.headings.approvedChains}</h3>
-            <Select
-              ref={approvedChainsSelectRef}
-              searchable
-              aria-label={t.security.chainsDropdownAria}
-              data={selectChainData}
-              itemComponent={SelectItem}
-              placeholder={t.security.defaultSelectChainText}
-              sx={(theme) => ({
-                ".mantine-Select-dropdown": {
-                  backgroundColor: "#0f161d",
-                },
-                ".mantine-Select-input": {
-                  backgroundColor: "transparent",
-                  borderColor: theme.colors.blue[5],
-                },
-                ".mantine-Select-input::placeholder": {
-                  color: theme.colors.blue[5],
-                  fontWeight: 600,
-                  fontSize: "12px",
-                },
-              })}
-              onChange={(val) => {
-                if (val) {
-                  setWhitelistBlockchains(addIfMissing(val, whitelistBlockchains))
-                }
+            <ChainsDropdown
+              chains={blockchains}
+              onChange={(val: string) => {
+                setWhitelistBlockchains(addIfMissing(val, whitelistBlockchains))
               }}
             />
           </div>
@@ -321,31 +291,9 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             <h3>{t.security.headings.contracts}</h3>
           </div>
           <div className="flexGrowRow">
-            <Select
-              searchable
-              aria-label={t.security.headings.contracts}
-              data={selectChainData}
-              itemComponent={SelectItem}
-              placeholder={t.security.defaultSelectChainText}
-              sx={(theme) => ({
-                ".mantine-Select-dropdown": {
-                  backgroundColor: "#0f161d",
-                },
-                ".mantine-Select-input": {
-                  backgroundColor: "transparent",
-                  borderColor: theme.colors.blue[5],
-                },
-                ".mantine-Select-input::placeholder": {
-                  color: theme.colors.blue[5],
-                  fontWeight: 600,
-                  fontSize: "12px",
-                },
-              })}
-              onChange={(val) => {
-                if (val) {
-                  setWhitelistContractsDropdown(val)
-                }
-              }}
+            <ChainsDropdown
+              chains={blockchains}
+              onChange={(val: string) => setWhitelistContractsDropdown(val)}
             />
             <input
               className="grow userInputs"
@@ -419,31 +367,9 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             <h3>{t.security.headings.methods}</h3>
           </div>
           <div className="flexGrowRow">
-            <Select
-              searchable
-              aria-label={t.security.headings.methods}
-              data={selectChainData}
-              itemComponent={SelectItem}
-              placeholder={t.security.defaultSelectChainText}
-              sx={(theme) => ({
-                ".mantine-Select-dropdown": {
-                  backgroundColor: "#0f161d",
-                },
-                ".mantine-Select-input": {
-                  backgroundColor: "transparent",
-                  borderColor: theme.colors.blue[5],
-                },
-                ".mantine-Select-input::placeholder": {
-                  color: theme.colors.blue[5],
-                  fontWeight: 600,
-                  fontSize: "12px",
-                },
-              })}
-              onChange={(val) => {
-                if (val) {
-                  setWhitelistMethodsDropdown(val)
-                }
-              }}
+            <ChainsDropdown
+              chains={blockchains}
+              onChange={(val: string) => setWhitelistMethodsDropdown(val)}
             />
 
             <input

@@ -175,8 +175,8 @@ export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) 
           </Grid>
           <Box>
             <Text mb={0}>URL</Text>
-            <TextInput value="https://api.covalenthq.com/v1">
-              <CopyText text={String("https://api.covalenthq.com/v1")} />
+            <TextInput value="https://services.portal.pokt.network/indexing">
+              <CopyText text={String("https://services.portal.pokt.network/indexing")} />
             </TextInput>
             <Text mb={0}>API Key</Text>
             <TextInput
@@ -192,7 +192,7 @@ export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) 
                 )}
               />
             </TextInput>
-            <Text color={theme.white} fw="normal" fz="sm" mb="0">
+            <Text fz="sm" mb="0">
               The following API key can be uses to authenticate against the Covalent API.
               When authenticating, add the API key using the x-api-key header to the
               request.

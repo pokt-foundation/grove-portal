@@ -58,7 +58,9 @@ const ChainsDropdown = ({
       data={selectChainData}
       itemComponent={SelectItem}
       placeholder="Add new"
-      rightSection={<IconSearch fill={theme.colors.blue[5]} height={18} width={18} />}
+      icon={<IconSearch fill={theme.colors.blue[5]} height={18} width={18} />}
+      rightSection={<></>}
+      rightSectionWidth={0}
       size="xs"
       sx={(theme: MantineTheme) => ({
         ".mantine-Select-dropdown": {

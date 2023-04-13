@@ -93,7 +93,7 @@ export default function NetworkView({
                     id: chain.id,
                     network: {
                       value: `${chain.description}`,
-                      element: <Text>{chain.description}</Text>,
+                      element: <Text m={0}>{chain.description}</Text>,
                     },
                     chainId: chain.id,
                     traffic: numbersFormatter.format(

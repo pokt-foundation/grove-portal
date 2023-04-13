@@ -1,15 +1,11 @@
-import {
-  Badge,
-  Button,
-  IconDeleteAlt,
-  useMantineTheme,
-} from "@pokt-foundation/pocket-blocks"
+import { Badge, useMantineTheme } from "@pokt-foundation/pocket-blocks"
 import styles from "./styles.css"
 import CopyText from "~/components/shared/CopyText/CopyText"
 import TextInput from "~/components/shared/TextInput"
 import { InputProps } from "~/components/shared/TextInput"
 import { Blockchain } from "~/models/portal/sdk"
 import { getImageForChain } from "~/utils/known-chains/known-chains"
+import Delete from "~/components/shared/Delete/Delete"
 
 /* c8 ignore start */
 export const links = () => {
@@ -60,17 +56,7 @@ export default function AppEndpointUrl({
       </Badge>
       <TextInput {...props}>
         <CopyText text={String(props.value)} />
-        {hasDelete && (
-          <Button
-            aria-label="delete"
-            color={theme.colors.blue[5]}
-            size="xs"
-            variant="subtle"
-            onClick={handleRemove}
-          >
-            <IconDeleteAlt color={theme.colors.blue[5]} height={18} width={18} />
-          </Button>
-        )}
+        {hasDelete && <Delete onDelete={handleRemove} />}
       </TextInput>
     </div>
   )

@@ -1,4 +1,4 @@
-import { Button, Text, IconDeleteAlt } from "@pokt-foundation/pocket-blocks"
+import { Button, Text, useMantineTheme } from "@pokt-foundation/pocket-blocks"
 import { Form, useFetcher } from "@remix-run/react"
 import { useEffect, useState } from "react"
 import styles from "./styles.css"
@@ -10,6 +10,7 @@ import { Stripe } from "~/models/stripe/stripe.server"
 import { StripeDeleteActionData } from "~/routes/api/stripe/subscription"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { isPaidPlan } from "~/utils/utils"
+import Delete from "~/components/shared/Delete/Delete"
 
 /* c8 ignore next */
 export const links = () => {
@@ -39,6 +40,7 @@ export default function StopRemoveApp({
   const [showStopModal, setShowStopModal] = useState(false)
   const [removeAppOpened, setRemoveAppOpened] = useState(false)
   const subscriptionFetcher = useFetcher()
+  const theme = useMantineTheme()
 
   useEffect(() => {
     const data = subscriptionFetcher.data as StripeDeleteActionData
@@ -54,16 +56,16 @@ export default function StopRemoveApp({
     <>
       {isPaidPlan(planType) && subscription ? (
         <>
-          <Button
-            fullWidth
-            color="gray"
-            leftIcon={<IconDeleteAlt height={18} width={18} />}
-            size="xs"
-            variant="outline"
-            onClick={() => setShowStopModal(true)}
+          <Delete
+            buttonProps={{
+              fullWidth: true,
+              iconFill: theme.colors.blue[5],
+              variant: "outline",
+            }}
+            onDelete={() => setShowStopModal(true)}
           >
             {t.common.StopSubscription}
-          </Button>
+          </Delete>
           <Modal
             opened={showStopModal}
             title={t.stopRemoveApp.stopSubscriptionTitle}
@@ -93,16 +95,16 @@ export default function StopRemoveApp({
         </>
       ) : (
         <div className="pokt-app-remove">
-          <Button
-            fullWidth
-            color="gray"
-            leftIcon={<IconDeleteAlt height={18} width={18} />}
-            size="xs"
-            variant="outline"
-            onClick={() => setRemoveAppOpened(true)}
+          <Delete
+            buttonProps={{
+              fullWidth: true,
+              iconFill: theme.colors.blue[5],
+              variant: "outline",
+            }}
+            onDelete={() => setRemoveAppOpened(true)}
           >
             {t.stopRemoveApp.removeApp}
-          </Button>
+          </Delete>
           <Modal
             opened={removeAppOpened}
             title={t.stopRemoveApp.removeAppTitle}

@@ -63,7 +63,7 @@ const ChainsDropdown = ({
       size="xs"
       sx={(theme: MantineTheme) => ({
         ".mantine-Select-dropdown": {
-          backgroundColor: theme.colors.navy[6],
+          backgroundColor: theme.colors.navy ? theme.colors.navy[6] : "black",
         },
         ".mantine-Select-input": {
           backgroundColor: "transparent",

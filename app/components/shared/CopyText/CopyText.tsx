@@ -19,16 +19,17 @@ export default function CopyText({ text }: CopyTextProps) {
   return (
     <Button
       aria-label="Click to copy"
-      color={theme.colors.blue[5]}
+      color={theme.colors.gray[6]}
       size="xs"
       tabIndex={0}
       variant="subtle"
       onClick={() => clipboard.copy(text)}
+      p="0 .5em"
     >
       {clipboard.copied ? (
-        <IconCheck fill={theme.colors.blue[5]} height={18} width={18} />
+        <IconCheck fill={theme.colors.gray[6]} height={18} width={18} />
       ) : (
-        <IconCopy color={theme.colors.blue[5]} height={18} width={18} />
+        <IconCopy fill={theme.colors.gray[6]} height={18} width={18} />
       )}
     </Button>
   )

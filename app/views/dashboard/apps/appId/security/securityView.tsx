@@ -4,7 +4,6 @@ import {
   Switch,
   Loader,
   Group,
-  IconDeleteAlt,
   useMantineTheme,
 } from "@pokt-foundation/pocket-blocks"
 import { useFetcher, useNavigation } from "@remix-run/react"
@@ -26,6 +25,7 @@ import {
 import { Blockchain, EndpointQuery } from "~/models/portal/sdk"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import ChainsDropdown from "~/components/shared/ChainsDropdown/ChainsDropdown"
+import Delete from "~/components/shared/Delete/Delete"
 
 /* c8 ignore start */
 export const links = () => {
@@ -151,7 +151,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             />
           </div>
           <div>
-            <Text size="sm">{t.security.secretKeyText}</Text>
+            <Text size="xs">{t.security.secretKeyText}</Text>
           </div>
         </Card>
         <Card>
@@ -201,7 +201,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             />
             <Button
               aria-label={t.security.userAgentAria}
-              size="sm"
+              size="xs"
               type="button"
               variant="filled"
               onClick={() => {
@@ -221,15 +221,11 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
               <div key={item} className="list">
                 <TextInput readOnly value={item}>
                   <CopyText text={String(item)} />
-                  <Button
-                    size="sm"
-                    variant="subtle"
-                    onClick={() => {
+                  <Delete
+                    onDelete={() => {
                       setWhitelistUserAgents((current) => removeFromArray(item, current))
                     }}
-                  >
-                    <IconDeleteAlt color={theme.colors.blue[5]} />
-                  </Button>
+                  />
                 </TextInput>
                 <input name="whitelistUserAgents" type="hidden" value={item} />
               </div>
@@ -251,7 +247,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             />
             <Button
               aria-label={t.security.OriginAria}
-              size="sm"
+              size="xs"
               type="button"
               variant="filled"
               onClick={() => {
@@ -271,15 +267,11 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
               <div key={item} className="list">
                 <TextInput readOnly value={item}>
                   <CopyText text={String(item)} />
-                  <Button
-                    size="sm"
-                    variant="subtle"
-                    onClick={() => {
+                  <Delete
+                    onDelete={() => {
                       setWhitelistOrigins((current) => removeFromArray(item, current))
                     }}
-                  >
-                    <IconDeleteAlt color={theme.colors.blue[5]} />
-                  </Button>
+                  />
                 </TextInput>
                 <input name="whitelistOrigins" type="hidden" value={item} />
               </div>
@@ -305,7 +297,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             />
             <Button
               aria-label={t.security.contractAria}
-              size="sm"
+              size="xs"
               type="button"
               variant="filled"
               onClick={() => {
@@ -382,7 +374,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             />
             <Button
               aria-label={t.security.methodAria}
-              size="sm"
+              size="xs"
               type="button"
               variant="filled"
               onClick={() => {
@@ -445,7 +437,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
           }}
         >
           {t.common.save}
-          {navigation.state !== "idle" && <Loader color="black" ml={8} size="sm" />}
+          {navigation.state !== "idle" && <Loader color="black" ml={8} size="xs" />}
         </Button>
       </securityAction.Form>
     </div>

@@ -166,7 +166,7 @@ export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) 
             </Group>
             <Anchor href="https://www.covalenthq.com/docs/api/" target="_blank">
               <Button size="xs" variant="outline">
-                <Text fw="normal" fz="xs" mr="0.5em">
+                <Text fz="xs" mr="0.5em">
                   Data API Docs
                 </Text>
                 <IconArrowUpRight fill={theme?.colors?.blue[5]} height={18} width={18} />

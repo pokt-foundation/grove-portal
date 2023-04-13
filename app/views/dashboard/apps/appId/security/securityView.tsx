@@ -13,7 +13,9 @@ import AppEndpointUrl, {
   links as AppEndpointUrlLinks,
 } from "~/components/application/AppEndpointUrl"
 import Card, { links as CardLinks } from "~/components/shared/Card"
+import ChainsDropdown from "~/components/shared/ChainsDropdown/ChainsDropdown"
 import CopyText from "~/components/shared/CopyText"
+import Delete from "~/components/shared/Delete/Delete"
 import TextInput from "~/components/shared/TextInput"
 import { useTranslate } from "~/context/TranslateContext"
 import {
@@ -24,8 +26,6 @@ import {
 } from "~/models/portal/sdk"
 import { Blockchain, EndpointQuery } from "~/models/portal/sdk"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
-import ChainsDropdown from "~/components/shared/ChainsDropdown/ChainsDropdown"
-import Delete from "~/components/shared/Delete/Delete"
 
 /* c8 ignore start */
 export const links = () => {

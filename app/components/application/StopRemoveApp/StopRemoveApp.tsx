@@ -2,6 +2,7 @@ import { Button, Text, useMantineTheme } from "@pokt-foundation/pocket-blocks"
 import { Form, useFetcher } from "@remix-run/react"
 import { useEffect, useState } from "react"
 import styles from "./styles.css"
+import Delete from "~/components/shared/Delete/Delete"
 import Modal, { links as ModalLinks, ModalCTA } from "~/components/shared/Modal"
 import { useTranslate } from "~/context/TranslateContext"
 import { PayPlanType } from "~/models/portal/sdk"
@@ -10,7 +11,6 @@ import { Stripe } from "~/models/stripe/stripe.server"
 import { StripeDeleteActionData } from "~/routes/api/stripe/subscription"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { isPaidPlan } from "~/utils/utils"
-import Delete from "~/components/shared/Delete/Delete"
 
 /* c8 ignore next */
 export const links = () => {

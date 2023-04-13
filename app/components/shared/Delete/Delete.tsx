@@ -22,10 +22,6 @@ const Delete = ({
   return (
     <Button
       aria-label="delete"
-      size={buttonProps?.size ?? "xs"}
-      p={buttonProps?.p ?? "0 .5em"}
-      variant={buttonProps?.variant ?? "subtle"}
-      onClick={onDelete}
       leftIcon={
         <IconDeleteAlt
           fill={buttonProps?.iconFill ?? theme.colors.gray[6]}
@@ -33,11 +29,15 @@ const Delete = ({
           width={buttonProps?.iconWidth ?? 18}
         />
       }
+      p={buttonProps?.p ?? "0 .5em"}
+      size={buttonProps?.size ?? "xs"}
       sx={{
         ".mantine-Button-icon": {
           marginRight: children ? "1em" : 0,
         },
       }}
+      variant={buttonProps?.variant ?? "subtle"}
+      onClick={onDelete}
       {...buttonProps}
     >
       {children}

@@ -1,11 +1,11 @@
 import { Badge, useMantineTheme } from "@pokt-foundation/pocket-blocks"
 import styles from "./styles.css"
 import CopyText from "~/components/shared/CopyText/CopyText"
+import Delete from "~/components/shared/Delete/Delete"
 import TextInput from "~/components/shared/TextInput"
 import { InputProps } from "~/components/shared/TextInput"
 import { Blockchain } from "~/models/portal/sdk"
 import { getImageForChain } from "~/utils/known-chains/known-chains"
-import Delete from "~/components/shared/Delete/Delete"
 
 /* c8 ignore start */
 export const links = () => {

@@ -2,7 +2,6 @@ import {
   Group,
   IconPlus,
   MantineTheme,
-  SelectItem,
   Select,
   Text,
   useMantineTheme,
@@ -14,7 +13,7 @@ const SelectItem = forwardRef<HTMLDivElement, { label: string; value: string }>(
   ({ label, ...others }, ref) => (
     <div ref={ref} {...others}>
       <Group noWrap>
-        <Text size="xs" m={0}>
+        <Text m={0} size="xs">
           {label}
         </Text>
       </Group>

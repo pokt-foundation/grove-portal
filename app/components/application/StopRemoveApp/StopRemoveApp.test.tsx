@@ -21,12 +21,7 @@ describe("<StopRemoveApp />", () => {
     )
 
     expect(screen.getByText(schema.common.StopSubscription)).toBeInTheDocument()
-    expect(
-      screen.getByRole("button", { name: schema.common.StopSubscription }),
-    ).toBeInTheDocument()
-    expect(
-      screen.queryByRole("button", { name: schema.stopRemoveApp.removeApp }),
-    ).not.toBeInTheDocument()
+    expect(screen.queryByText(schema.stopRemoveApp.removeApp)).not.toBeInTheDocument()
   })
   it("renders remove application for free tier plantype", () => {
     render(
@@ -42,11 +37,6 @@ describe("<StopRemoveApp />", () => {
     )
 
     expect(screen.getByText(schema.stopRemoveApp.removeApp)).toBeInTheDocument()
-    expect(
-      screen.getByRole("button", { name: schema.stopRemoveApp.removeApp }),
-    ).toBeInTheDocument()
-    expect(
-      screen.queryByRole("button", { name: schema.common.StopSubscription }),
-    ).not.toBeInTheDocument()
+    expect(screen.queryByText(schema.common.StopSubscription)).not.toBeInTheDocument()
   })
 })

@@ -1,7 +1,4 @@
-import {
-  PlasmicRootProvider,
-  PlasmicComponent,
-} from "@plasmicapp/loader-react"
+import { PlasmicRootProvider, PlasmicComponent } from "@plasmicapp/loader-react"
 import { json } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
 import { PLASMIC } from "../plasmic-init"

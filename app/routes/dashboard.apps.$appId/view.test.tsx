@@ -32,7 +32,9 @@ describe("<AppIdLayoutView />", () => {
         subscription={subscription}
         updatePlanFetcher={updatePlanFetcherMock}
         user={profileMockData}
-      />,
+      >
+        <div>Test Outlet</div>
+      </AppIdLayoutView>,
     )
 
     expect(
@@ -48,7 +50,9 @@ describe("<AppIdLayoutView />", () => {
         subscription={subscription}
         updatePlanFetcher={updatePlanFetcherMock}
         user={profileMockData}
-      />,
+      >
+        <div>Test Outlet</div>
+      </AppIdLayoutView>,
     )
 
     expect(screen.getByRole("dialog", { name: /congratulations/i })).toBeInTheDocument()
@@ -62,7 +66,9 @@ describe("<AppIdLayoutView />", () => {
         subscription={subscription}
         updatePlanFetcher={updatePlanFetcherMock}
         user={profileMockData}
-      />,
+      >
+        <div>Test Outlet</div>
+      </AppIdLayoutView>,
     )
 
     expect(
@@ -88,7 +94,9 @@ describe("<AppIdLayoutView />", () => {
         subscription={subscription}
         updatePlanFetcher={updatePlanFetcherMock}
         user={profileMockData}
-      />,
+      >
+        <div>Test Outlet</div>
+      </AppIdLayoutView>,
     )
 
     expect(
@@ -114,7 +122,9 @@ describe("<AppIdLayoutView />", () => {
         subscription={subscription}
         updatePlanFetcher={updatePlanFetcherMock}
         user={profileMockData}
-      />,
+      >
+        <div>Test Outlet</div>
+      </AppIdLayoutView>,
     )
 
     expect(

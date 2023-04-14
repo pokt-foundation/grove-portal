@@ -93,7 +93,7 @@ export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) 
       return
     if (user.data?.preferences?.endpoints[app.id].includes(chain)) {
       const restOfEndpoints = user.data?.preferences?.endpoints[app.id].filter(
-        (e) => e !== chain,
+        (e: string) => e !== chain,
       )
       user.submit(
         {

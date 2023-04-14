@@ -2,7 +2,7 @@ import { UserLB } from "@pokt-foundation/portal-types"
 import { SubmitFunction, useFetcher } from "@remix-run/react"
 import React, { useContext, useEffect, useMemo } from "react"
 import { Language } from "~/context/TranslateContext"
-import { UserLoaderActionData } from "~/routes/api.user"
+import { UserLoaderActionData } from "~/routes/api.user/route"
 
 export const defaultUserPreference = {
   language: "en" as Language,

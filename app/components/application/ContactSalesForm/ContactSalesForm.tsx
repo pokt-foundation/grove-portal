@@ -10,7 +10,7 @@ import { useEffect, useRef } from "react"
 import styles from "./styles.css"
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import { useTranslate } from "~/context/TranslateContext"
-import { ContactSalesLoaderData } from "~/routes/contact-sales"
+import { ContactSalesLoaderData } from "~/routes/_landing.($lang).contact-sales/route"
 
 /* c8 ignore start */
 export const links = () => {

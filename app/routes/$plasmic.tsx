@@ -30,9 +30,14 @@ export const meta: MetaFunction = ({ data }) => {
   }
 }
 
-export const loader: LoaderFunction = async () => {
+export const loader: LoaderFunction = async ({ params }) => {
+  console.log(params.plasmic)
   try {
-    const plasmicData = await PLASMIC.fetchComponentData("Homepage")
+    if (typeof params.plasmic !== "string") {
+      throw new Error("Page slug must be a strong")
+    }
+
+    const plasmicData = await PLASMIC.fetchComponentData(params.plasmic)
 
     if (!plasmicData || plasmicData.entryCompMetas.length === 0) {
       throw new Error("Unable to load page")
@@ -48,7 +53,7 @@ export const loader: LoaderFunction = async () => {
   } catch (e) {
     throw new Response("Not Found", {
       status: 404,
-      statusText: "Cannot find home page",
+      statusText: params.plasmic,
     })
   }
 }

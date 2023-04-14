@@ -141,7 +141,9 @@ describe("<AppIdLayoutView />", () => {
         subscription={subscription}
         updatePlanFetcher={updatePlanFetcherMock}
         user={profileMockData}
-      />,
+      >
+        <div>Test Outlet</div>
+      </AppIdLayoutView>,
     )
 
     expect(
@@ -170,7 +172,9 @@ describe("<AppIdLayoutView />", () => {
         subscription={subscription}
         updatePlanFetcher={updatePlanFetcherMock}
         user={profileMockData}
-      />,
+      >
+        <div>Test Outlet</div>
+      </AppIdLayoutView>,
     )
 
     expect(
@@ -187,7 +191,9 @@ describe("<AppIdLayoutView />", () => {
         subscription={subscription}
         updatePlanFetcher={updatePlanFetcherMock}
         user={profileMockData}
-      />,
+      >
+        <div>Test Outlet</div>
+      </AppIdLayoutView>,
     )
 
     expect(
@@ -205,7 +211,9 @@ describe("<AppIdLayoutView />", () => {
         subscription={subscription}
         updatePlanFetcher={updatePlanFetcherMock}
         user={profileMockData}
-      />,
+      >
+        <div>Test Outlet</div>
+      </AppIdLayoutView>,
     )
 
     expect(
@@ -225,7 +233,9 @@ describe("<AppIdLayoutView />", () => {
         subscription={subscription}
         updatePlanFetcher={updatePlanFetcherMock}
         user={profileMockData}
-      />,
+      >
+        <div>Test Outlet</div>
+      </AppIdLayoutView>,
     )
 
     expect(

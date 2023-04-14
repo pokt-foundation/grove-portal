@@ -1,10 +1,21 @@
 import { LoaderFunction, MetaFunction, json, redirect } from "@remix-run/node"
-import { useCatch, useFetcher, useLoaderData, useSearchParams } from "@remix-run/react"
+import {
+  Outlet,
+  useCatch,
+  useFetcher,
+  useLoaderData,
+  useSearchParams,
+} from "@remix-run/react"
 import { Auth0Profile } from "remix-auth-auth0"
 import invariant from "tiny-invariant"
 import AppIdLayoutView, { links as AppIdLayoutViewLinks } from "./view"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { BlockchainsQuery, EndpointQuery, PayPlanType } from "~/models/portal/sdk"
+import {
+  BlockchainsQuery,
+  EndpointQuery,
+  PayPlanType,
+  ProcessedEndpoint,
+} from "~/models/portal/sdk"
 import {
   getRelays,
   getRelaysPerPeriod,
@@ -78,11 +89,8 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   const endpoint = endpointRes?.endpoint
   invariant(endpoint, "app id not found")
 
-  const subscription = await getSubscription(
-    user.profile.emails[0].value,
-    endpoint.id,
-    userId,
-  )
+  const uEmail = user?.profile?._json?.email ?? ""
+  const subscription = await getSubscription(uEmail, endpoint.id, userId)
 
   const dailyNetworkRelaysPerWeek = await getRelaysPerPeriod("endpoints", 7, endpoint.id)
   const { blockchains } = await portal.blockchains({ active: true })
@@ -104,8 +112,18 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   })
 }
 
+export type AppIdOutletContext = AppIdLoaderData
+
 export default function AppIdLayout() {
-  const { endpoint, subscription, user } = useLoaderData() as AppIdLoaderData
+  const {
+    blockchains,
+    endpoint,
+    subscription,
+    user,
+    relaysToday,
+    relaysYesterday,
+    dailyNetworkRelaysPerWeek,
+  } = useLoaderData() as AppIdLoaderData
   const [searchParams, setSearchParams] = useSearchParams()
   const updatePlanFetcher = useFetcher()
 
@@ -117,7 +135,19 @@ export default function AppIdLayout() {
       subscription={subscription}
       updatePlanFetcher={updatePlanFetcher}
       user={user}
-    />
+    >
+      <Outlet
+        context={{
+          blockchains,
+          endpoint,
+          relaysToday,
+          relaysYesterday,
+          dailyNetworkRelaysPerWeek,
+          subscription,
+          user,
+        }}
+      />
+    </AppIdLayoutView>
   )
 }
 

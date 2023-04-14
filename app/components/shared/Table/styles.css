@@ -39,11 +39,12 @@
 }
 
 .pokt-table tbody tr {
-  border-bottom: 1px solid rgb(9, 24, 40);
-  transition: border-color 0.3s ease-in-out;
+  border-bottom: 1px solid var(--mantine-color-navy-6);
+  transition: background-color 0.3s ease-in-out;
+  border-radius: 8px;
 }
 .pokt-table tbody tr:hover {
-  border-color: var(--mantine-color-blue-6);
+  background-color: var(--mantine-color-navy-6);
 }
 
 .pokt-table tbody tr td {

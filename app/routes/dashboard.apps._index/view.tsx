@@ -12,8 +12,8 @@ import {
   Grid,
   Group,
 } from "@pokt-foundation/pocket-blocks"
-import { Form, Link, useActionData, useSubmit } from "@remix-run/react"
-import { useEffect, useMemo, useRef, useState } from "react"
+import { Form, Link, useActionData } from "@remix-run/react"
+import { useEffect, useMemo, useState } from "react"
 import { Auth0Profile } from "remix-auth-auth0"
 import styles from "./styles.css"
 import UsageChartCard, {
@@ -268,19 +268,11 @@ export const AppsView = ({
                     action: {
                       value: "",
                       element: (
-                        <>
-                          {app.users.map(
-                            (user) =>
-                              user.email === profile?._json?.email &&
-                              user?.accepted && (
-                                <Box key={app.id} sx={{ textAlign: "right" }}>
-                                  <Link to={app.id}>
-                                    <IconCaretRight className="pokt-icon" />
-                                  </Link>
-                                </Box>
-                              ),
-                          )}
-                        </>
+                        <Box sx={{ textAlign: "right" }}>
+                          <Link to={app.id}>
+                            <IconCaretRight className="pokt-icon" />
+                          </Link>
+                        </Box>
                       ),
                     },
                   }))}
@@ -316,11 +308,15 @@ export const AppsView = ({
                       id: team.id,
                       app: {
                         value: team.name,
-                        element: <Link to={team.id.toString()}>{team.name}</Link>,
+                        element: userDataByEndpoint[idx]?.accepted ? (
+                          <Link to={team.id.toString()}>{team.name}</Link>
+                        ) : (
+                          <Text>{team.name}</Text>
+                        ),
                       },
                       inviteStatus: {
                         value: userDataByEndpoint[idx]?.accepted ? "Accepted" : "Pending",
-                        element: (
+                        element: userDataByEndpoint[idx]?.accepted ? (
                           <Link to={team.id.toString()}>
                             <Badge
                               color={
@@ -331,6 +327,13 @@ export const AppsView = ({
                               {userDataByEndpoint[idx]?.accepted ? "Accepted" : "Pending"}
                             </Badge>
                           </Link>
+                        ) : (
+                          <Badge
+                            color={userDataByEndpoint[idx]?.accepted ? "green" : "orange"}
+                            variant="outline"
+                          >
+                            {userDataByEndpoint[idx]?.accepted ? "Accepted" : "Pending"}
+                          </Badge>
                         ),
                       },
                       role: {
@@ -360,7 +363,12 @@ export const AppsView = ({
                                   <IconMoreVertical />
                                 </Anchor>
                               </Menu.Target>
-                              <Menu.Dropdown className="dropdown-teams__content">
+                              <Menu.Dropdown
+                                sx={{
+                                  minWidth: "unset",
+                                  width: "unset",
+                                }}
+                              >
                                 {userDataByEndpoint[idx]?.accepted ? (
                                   <Menu.Item>
                                     <Link to={team.id.toString()}>View App</Link>
@@ -371,7 +379,9 @@ export const AppsView = ({
                                       className="apps-dropdown-accept-invite-form"
                                       method="post"
                                     >
-                                      <Button type="submit">Accept Invite</Button>
+                                      <Button size="sm" type="submit">
+                                        Accept Invite
+                                      </Button>
                                       <input name="type" type="hidden" value="accept" />
                                       <input name="email" type="hidden" value={uEmail} />
                                       <input name="appId" type="hidden" value={team.id} />
@@ -431,7 +441,7 @@ export const AppsView = ({
       <Modal
         opened={isDeleteModalOptions.isOpen}
         padding={20}
-        title="Deleting an user"
+        title="Deleting a user"
         onClose={() => {
           setAppToDeleteID("")
           setIsDeleteModalOptions((prevOptions) => ({ ...prevOptions, isOpen: false }))

@@ -1,6 +1,6 @@
 import { useFetcher } from "@remix-run/react"
 import React, { Dispatch, useContext, useEffect, useMemo } from "react"
-import { FeatureFlagsLoaderActionData } from "~/routes/api.settings.feature-flag"
+import { FeatureFlagsLoaderActionData } from "~/routes/api.admin.settings.feature-flag/route"
 
 export interface FeatureFlags {
   MULTI_LANGUAGE: string
@@ -26,6 +26,8 @@ const FeatureFlagsContext = React.createContext<IFeatureFlagsContext>({
   submit: () => {},
 })
 
+const apiPath = "/api/admin/settings/feature-flag"
+
 export function useFeatureFlags() {
   const context = useContext(FeatureFlagsContext)
 
@@ -45,14 +47,14 @@ const FeatureFlagsContextProvider = ({ children }: { children: React.ReactNode }
 
   const submit = (formData: Partial<FeatureFlags>) => {
     fetcher.submit(formData, {
-      action: "/api/featureflags",
+      action: apiPath,
       method: "post",
     })
   }
 
   useEffect(() => {
     if (fetcher.type === "init") {
-      fetcher.load("/api/featureflags")
+      fetcher.load(apiPath)
     }
   }, [fetcher])
 

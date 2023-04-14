@@ -1,21 +1,18 @@
 import { Anchor } from "@pokt-foundation/pocket-blocks"
 import { ActionFunction, LinksFunction, json } from "@remix-run/node"
-import { useCatch } from "@remix-run/react"
+import { useCatch, useOutletContext } from "@remix-run/react"
 import { useEffect } from "react"
 import invariant from "tiny-invariant"
+import { AppIdOutletContext } from "../dashboard.apps.$appId/route"
 import styles from "./styles.css"
 import NotificationsAlertForm, {
   links as NotificationsAlertFormLinks,
 } from "~/components/application/NotificationsAlertForm/NotificationsAlertForm"
-// import NotificationsWeeklyBandwidthUsageCard, {
-//   links as NotificationsWeeklyBandwidthUsageCardLinks,
-// } from "~/components/application/NotificationsWeeklyBandwidthUsageCard"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { requireUser } from "~/utils/session.server"
 
 export const links: LinksFunction = () => [
-  // ...NotificationsWeeklyBandwidthUsageCardLinks(),
   ...NotificationsAlertFormLinks(),
   {
     rel: "stylesheet",
@@ -60,9 +57,11 @@ export default function AppNotifications() {
     trackEvent(AmplitudeEvents.NotificationDetailsView)
   }, [])
 
+  const { endpoint } = useOutletContext<AppIdOutletContext>()
+
   return (
     <section className="pokt-network-app-notifications">
-      <NotificationsAlertForm />
+      <NotificationsAlertForm endpoint={endpoint} />
       {/* <NotificationsWeeklyBandwidthUsageCard /> */}
       <p className="pokt-network-app-notifications-p">
         If you need more relays for your application or you are looking to stake your own

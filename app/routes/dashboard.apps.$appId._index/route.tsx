@@ -3,8 +3,9 @@ import { MetaFunction } from "@remix-run/node"
 // import AppLatencyCard, {
 //   links as AppLatencyCardLinks,
 // } from "~/components/application/AppLatencyCard"
+import { useOutletContext } from "@remix-run/react"
 import { useMemo, useEffect } from "react"
-import { AppIdLoaderData } from "../dashboard.apps.$appId/route"
+import { AppIdOutletContext } from "../dashboard.apps.$appId/route"
 import AppEndpointCard, {
   links as AppEndpointCardLinks,
 } from "~/components/application/AppEndpointCard"
@@ -23,7 +24,6 @@ import UsageChartCard, {
 } from "~/components/application/UsageChartCard"
 import { useFeatureFlags } from "~/context/FeatureFlagContext"
 import { useTranslate } from "~/context/TranslateContext"
-import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 
 export const links = () => {
@@ -45,8 +45,13 @@ export const meta: MetaFunction = () => {
 }
 
 export const Application = () => {
-  const appIdRoute = useMatchesRoute("routes/dashboard/apps/$appId")
-  const appIdData = appIdRoute?.data as AppIdLoaderData
+  const {
+    blockchains,
+    endpoint,
+    relaysToday,
+    relaysYesterday,
+    dailyNetworkRelaysPerWeek,
+  } = useOutletContext<AppIdOutletContext>()
   const { t } = useTranslate()
   const { flags } = useFeatureFlags()
 
@@ -55,55 +60,55 @@ export const Application = () => {
   }, [])
 
   const exceedsMaxRelays = useMemo(() => {
-    if (appIdData.endpoint.appLimits.dailyLimit === 0) {
+    if (endpoint.appLimits.dailyLimit === 0) {
       return false
     }
 
-    return appIdData.relaysToday.Count.Total >= appIdData.endpoint.appLimits.dailyLimit
-  }, [appIdData])
+    return relaysToday.Count.Total >= endpoint.appLimits.dailyLimit
+  }, [endpoint, relaysToday])
 
   const allZeros = () => {
     let relays = 0
-    relays += appIdData.relaysToday.Count.Total
-    relays += appIdData.relaysYesterday.Count.Total
-    for (let i = 0; i < appIdData.dailyNetworkRelaysPerWeek.length; i += 1) {
-      relays += appIdData.dailyNetworkRelaysPerWeek[i].Count.Total
+    relays += relaysToday.Count.Total
+    relays += relaysYesterday.Count.Total
+    for (let i = 0; i < dailyNetworkRelaysPerWeek.length; i += 1) {
+      relays += dailyNetworkRelaysPerWeek[i].Count.Total
     }
     return relays
   }
 
   const totalRelaysForTheWeek = useMemo(() => {
-    return appIdData.dailyNetworkRelaysPerWeek.reduce((prev, curr) => {
+    return dailyNetworkRelaysPerWeek.reduce((prev, curr) => {
       return prev + curr.Count.Success
     }, 0)
-  }, [appIdData.dailyNetworkRelaysPerWeek])
+  }, [dailyNetworkRelaysPerWeek])
 
   return (
     <>
       {exceedsMaxRelays && <AppOverLimitCard exceedsMaxRelays={exceedsMaxRelays} />}
-      {appIdData.endpoint && (
+      {endpoint && (
         <section>
-          <AppEndpointCard app={appIdData.endpoint} blockchains={appIdData.blockchains} />
+          <AppEndpointCard app={endpoint} blockchains={blockchains} />
         </section>
       )}
       <Grid gutter={32}>
         <Grid.Col sm={6}>
-          {appIdData.relaysToday.Count && (
+          {relaysToday.Count && (
             <section>
               <AppUsageCurrentCard
                 averageRelays={totalRelaysForTheWeek / 7}
-                maxDailyRelays={appIdData.endpoint.appLimits.dailyLimit}
-                totalRelays={appIdData.relaysToday.Count.Success}
+                maxDailyRelays={endpoint.appLimits.dailyLimit}
+                totalRelays={relaysToday.Count.Success}
               />
             </section>
           )}
         </Grid.Col>
         <Grid.Col sm={6}>
-          {appIdData.relaysToday.Count && appIdData.relaysYesterday.Count && (
+          {relaysToday.Count && relaysYesterday.Count && (
             <section>
               <AppRequestsRateCard
-                currentRelays={appIdData.relaysToday.Count}
-                previousRelays={appIdData.relaysYesterday.Count}
+                currentRelays={relaysToday.Count}
+                previousRelays={relaysYesterday.Count}
               />
             </section>
           )}
@@ -114,11 +119,11 @@ export const Application = () => {
           <AppLatencyCard hourlyLatency={data.hourlyLatency.hourly_latency} />
         </section>
       )} */}
-      {appIdData.dailyNetworkRelaysPerWeek && (
+      {dailyNetworkRelaysPerWeek && (
         <section>
           <UsageChartCard
             emptyLabel="Your application does not have relay data yet."
-            relays={appIdData.dailyNetworkRelaysPerWeek}
+            relays={dailyNetworkRelaysPerWeek}
           />
         </section>
       )}

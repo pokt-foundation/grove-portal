@@ -1,7 +1,7 @@
 import { MetaFunction } from "@remix-run/node"
-import { useParams } from "@remix-run/react"
+import { useOutletContext, useParams } from "@remix-run/react"
 import { useEffect } from "react"
-import { AppIdLoaderData } from "../dashboard.apps.$appId/route"
+import { AppIdLoaderData, AppIdOutletContext } from "../dashboard.apps.$appId/route"
 import SecurityView, { links as SecurityViewLinks } from "./view"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
@@ -17,14 +17,13 @@ export const links = () => {
 }
 
 export const AppSecurity = () => {
-  const appIDRoute = useMatchesRoute("routes/dashboard/apps/$appId")
   const params = useParams()
 
   useEffect(() => {
     trackEvent(AmplitudeEvents.SecurityDetailsView)
   }, [])
 
-  const { endpoint, blockchains } = appIDRoute?.data as AppIdLoaderData
+  const { blockchains, endpoint } = useOutletContext<AppIdOutletContext>()
 
   return (
     <SecurityView appId={params.appId} blockchains={blockchains} endpoint={endpoint} />

@@ -15,7 +15,7 @@ import {
   useActionData,
   useFetcher,
   useLoaderData,
-  useTransition,
+  useNavigation,
 } from "@remix-run/react"
 import { Transition } from "@remix-run/react/dist/transition"
 import clsx from "clsx"
@@ -106,7 +106,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
     transferOwnership: false,
   })
 
-  const transition = useTransition()
+  const navigation = useNavigation()
   const actionData = useActionData<ActionData>()
   const { profile } = useLoaderData<TeamLoaderData>()
   const inviteFetcher = useFetcher()
@@ -123,13 +123,6 @@ function TeamView({ state, endpoint }: TeamViewProps) {
       },
     )
   }
-
-  const userRole = useMemo(() => {
-    return (
-      endpoint?.users?.find(({ email }) => email === profile?._json?.email)?.roleName ??
-      RoleName.Member
-    )
-  }, [endpoint])
 
   const isAdminUser = useMemo(
     () =>
@@ -149,11 +142,8 @@ function TeamView({ state, endpoint }: TeamViewProps) {
 
   const isMember = !isAdminUser && !isOwnerUser
 
-  const handleUpdateRoleSubmit = (
-    email: string,
-    roleName: RoleName,
-    transferOwnership: boolean = false,
-  ) => {
+  const handleUpdateRoleSubmit = (email: string, roleName: RoleName) => {
+    const transferOwnership: boolean = roleName === RoleName.Owner
     setUpdateRoleModalData({
       email,
       roleName,
@@ -230,6 +220,13 @@ function TeamView({ state, endpoint }: TeamViewProps) {
         setInviteEmail("")
       } else if (actionData.type === "updateRole") {
         if (actionData.error) {
+          setNotificationMessageProps({
+            type: "error",
+            isActive: true,
+            title: "Ownership transfer failed",
+            description:
+              "The user has already reached the maximum number of applications that can be owned.",
+          })
           return
         }
 
@@ -301,7 +298,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
                 Cancel
               </Button>
               <Button
-                disabled={transition.state === "submitting" || inviteEmail === ""}
+                disabled={navigation.state === "submitting" || inviteEmail === ""}
                 name="type"
                 size="sm"
                 type="submit"
@@ -331,24 +328,18 @@ function TeamView({ state, endpoint }: TeamViewProps) {
               role: {
                 element: (
                   <div className="list__role">
-                    {isOwnerUser || (isAdminUser && roleName !== RoleName.Owner) ? (
-                      <Select
-                        data={getRolesSelectData}
-                        defaultValue={roleName}
-                        onChange={(value) =>
-                          handleUpdateRoleSubmit(email, value as RoleName)
-                        }
-                      />
-                    ) : (
-                      <Text
-                        sx={{
-                          textTransform: "lowercase",
-                          "&:first-letter": { textTransform: "uppercase" },
-                        }}
-                      >
-                        {roleName}
-                      </Text>
-                    )}
+                    <Select
+                      data={getRolesSelectData}
+                      defaultValue={roleName}
+                      // make the select disabled if:
+                      // * the list user is the app owner
+                      // * the list user hasn't accepted yet
+                      // * the logged user is only a member
+                      disabled={roleName === RoleName.Owner || !accepted || isMember}
+                      onChange={(value) =>
+                        handleUpdateRoleSubmit(email, value as RoleName)
+                      }
+                    />
                   </div>
                 ),
                 value: "Role",
@@ -366,7 +357,13 @@ function TeamView({ state, endpoint }: TeamViewProps) {
                           </Menu.Target>
                           <Menu.Dropdown className="dropdown-teams__content">
                             {!accepted && (isOwnerUser || isAdminUser) && (
-                              <Menu.Item>Send new Invite</Menu.Item>
+                              <Menu.Item
+                                onClick={() =>
+                                  handleResendInviteEmail(email, endpoint.name)
+                                }
+                              >
+                                Send new Invite
+                              </Menu.Item>
                             )}
                             <Menu.Item
                               color="green"
@@ -400,8 +397,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
           label="Users"
           paginate={endpoint.users.length > 10 ? { perPage: 10 } : undefined}
           rightComponent={
-            isOwnerUser ||
-            (isAdminUser && (
+            isOwnerUser || isAdminUser ? (
               <Button
                 rightIcon={<IconPlus height={18} width={18} />}
                 size="xs"
@@ -410,7 +406,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
               >
                 Invite new user
               </Button>
-            ))
+            ) : null
           }
         />
       </Card>
@@ -418,7 +414,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
         opened={confirmationModalProps.isActive}
         padding={20}
         size={429}
-        title="Deleting an user"
+        title="Deleting a user"
         onClose={() => {
           setConfirmationModalProps({ ...confirmationModalProps, isActive: false })
         }}

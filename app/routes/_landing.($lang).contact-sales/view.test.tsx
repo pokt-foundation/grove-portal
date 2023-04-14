@@ -2,10 +2,16 @@ import { expect } from "vitest"
 import ContactSalesView from "./view"
 import { render, screen } from "test/helpers"
 import schema from "~/locales/en"
+import { blockchains } from "~/models/portal/portal.data"
 
 describe("<ContactSalesView />", () => {
   it("renders", () => {
-    render(<ContactSalesView result="success" />)
+    render(
+      <ContactSalesView
+        actionData={{ result: "success" }}
+        loaderData={{ blockchains: blockchains }}
+      />,
+    )
 
     expect(
       screen.getByRole("heading", {
@@ -15,7 +21,12 @@ describe("<ContactSalesView />", () => {
   })
 
   it("renders success modal when submission is successful", () => {
-    render(<ContactSalesView result="success" />)
+    render(
+      <ContactSalesView
+        actionData={{ result: "success" }}
+        loaderData={{ blockchains: blockchains }}
+      />,
+    )
 
     expect(screen.getByRole("heading", { name: /Form Submitted/i })).toBeInTheDocument()
     expect(screen.getByRole("button", { name: /Done/i })).toBeInTheDocument()
@@ -24,11 +35,14 @@ describe("<ContactSalesView />", () => {
   it("renders failure modal when submission fails", () => {
     render(
       <ContactSalesView
-        error={{
-          error: true,
-          data: "Something went wrong!",
+        actionData={{
+          error: {
+            error: true,
+            data: "Something went wrong!",
+          },
+          result: "error",
         }}
-        result="error"
+        loaderData={{ blockchains: blockchains }}
       />,
     )
 

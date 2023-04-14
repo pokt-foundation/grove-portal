@@ -7,7 +7,7 @@ import { useTranslate } from "~/context/TranslateContext"
 import { PayPlanType } from "~/models/portal/sdk"
 import { ProcessedEndpoint } from "~/models/portal/sdk"
 import { Stripe } from "~/models/stripe/stripe.server"
-import { StripeDeleteActionData } from "~/routes/api.stripe.subscription"
+import { StripeDeleteActionData } from "~/routes/api.stripe.subscription/route"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { isPaidPlan } from "~/utils/utils"
 
@@ -23,6 +23,7 @@ interface StopRemoveAppProps {
   planType: PayPlanType
   subscription?: Stripe.Subscription
   isMember: boolean
+  isAdmin: boolean
 }
 
 export default function StopRemoveApp({
@@ -32,6 +33,7 @@ export default function StopRemoveApp({
   planType,
   subscription,
   isMember,
+  isAdmin,
 }: StopRemoveAppProps) {
   const { t } = useTranslate()
   const [showStopModal, setShowStopModal] = useState(false)
@@ -46,6 +48,7 @@ export default function StopRemoveApp({
   }, [appId, subscriptionFetcher])
 
   if (isMember) return <></>
+  if (isAdmin) return <></>
 
   return (
     <>
@@ -121,7 +124,7 @@ export default function StopRemoveApp({
               <Button variant="outline" onClick={() => setRemoveAppOpened(false)}>
                 {t.common.cancel}
               </Button>
-              <Form action={`/dashboard/apps/${appId}/remove`} method="post">
+              <Form action={`/api.${appId}.remove`} method="post">
                 <Button
                   type="submit"
                   onClick={() => {

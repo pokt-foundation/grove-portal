@@ -60,6 +60,10 @@ export const endpoint: ProcessedEndpoint = {
       roleName: RoleName.Admin,
     },
   ],
+  integrations: {
+    covalentAPIKeyFree: "",
+    covalentAPIKeyPaid: "",
+  },
 }
 
 export const endpoints: EndpointsQuery = {

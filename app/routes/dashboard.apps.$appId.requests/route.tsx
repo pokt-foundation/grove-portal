@@ -1,9 +1,9 @@
 import { UserLBOriginBucket } from "@pokt-foundation/portal-types"
 import { json, LoaderFunction, MetaFunction } from "@remix-run/node"
-import { useLoaderData } from "@remix-run/react"
+import { useLoaderData, useOutletContext } from "@remix-run/react"
 import { useEffect } from "react"
 import invariant from "tiny-invariant"
-import { AppIdLoaderData } from "../dashboard.apps.$appId/route"
+import { AppIdLoaderData, AppIdOutletContext } from "../dashboard.apps.$appId/route"
 import styles from "./styles.css"
 import AppRequestsByOriginCard, {
   links as AppRequestsByOriginCardLinks,
@@ -85,8 +85,7 @@ export const loader: LoaderFunction = async ({ request, params, context }) => {
 export default function AppIdRequests() {
   const { originClassification, errorMetrics } =
     useLoaderData() as AppIdRequestsLoaderData
-  const appIdIndexRoute = useMatchesRoute("routes/dashboard/apps/$appId")
-  const appIdData = appIdIndexRoute?.data as AppIdLoaderData
+  const { relaysToday, relaysYesterday } = useOutletContext<AppIdOutletContext>()
 
   useEffect(() => {
     trackEvent(AmplitudeEvents.RequestDetailsView)
@@ -94,18 +93,18 @@ export default function AppIdRequests() {
 
   return (
     <>
-      {appIdData.relaysToday.Count && appIdData.relaysYesterday.Count && (
+      {relaysToday.Count && relaysYesterday.Count && (
         <section>
           <AppRequestsRateCard
-            currentRelays={appIdData.relaysToday.Count}
-            previousRelays={appIdData.relaysYesterday.Count}
+            currentRelays={relaysToday.Count}
+            previousRelays={relaysYesterday.Count}
           />
         </section>
       )}
-      {appIdData.relaysToday.Count && originClassification && (
+      {relaysToday.Count && originClassification && (
         <section>
           <AppRequestsByOriginCard
-            totalRelays={appIdData.relaysToday.Count.Total}
+            totalRelays={relaysToday.Count.Total}
             usagePerOrigin={originClassification}
           />
         </section>

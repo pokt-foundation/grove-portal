@@ -1,7 +1,7 @@
 import { Button, Grid } from "@pokt-foundation/pocket-blocks"
 import { json, LoaderFunction } from "@remix-run/node"
-import { Link, Outlet, useLoaderData, useTransition } from "@remix-run/react"
-import { PocketUser } from "../api.user"
+import { Link, Outlet, useLoaderData, useNavigation } from "@remix-run/react"
+import { PocketUser } from "../api.user/route"
 import styles from "./styles.css"
 import FeedbackCard, {
   links as FeedbackCardLinks,
@@ -67,8 +67,8 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export const Apps = () => {
   const { endpoints, isEnterprise } = useLoaderData() as AllAppsLoaderData
-  const appIdRoute = useMatchesRoute("routes/dashboard/apps/$appId")
-  const { state } = useTransition()
+  const appIdRoute = useMatchesRoute("routes/dashboard.apps.$appId")
+  const navigation = useNavigation()
 
   const userAppsStatus: CardListItem[] = [
     {
@@ -85,7 +85,7 @@ export const Apps = () => {
     return (
       <Grid gutter={32}>
         <Grid.Col md={8}>
-          {state === "loading" && <Loader />}
+          {navigation.state === "loading" && <Loader />}
           <Outlet context={{ endpoints: endpoints }} />
         </Grid.Col>
         <Grid.Col md={4}>

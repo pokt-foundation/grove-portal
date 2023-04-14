@@ -1,9 +1,10 @@
 import { Button, Card, Text, Switch } from "@pokt-foundation/pocket-blocks"
 import { LinksFunction } from "@remix-run/node"
-import { Form, useTransition } from "@remix-run/react"
+import { Form, useNavigation } from "@remix-run/react"
 import styles from "./styles.css"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
-import { AppIdLoaderData } from "~/routes/dashboard.apps.$appId/route"
+import { ProcessedEndpoint } from "~/models/portal/sdk"
+import { AppIdLoaderData, AppIdOutletContext } from "~/routes/dashboard.apps.$appId/route"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { formatNumberToSICompact } from "~/utils/formattingUtils"
 import { FREE_TIER_MAX_RELAYS } from "~/utils/pocketUtils"
@@ -57,11 +58,14 @@ function backgroundColor(usageLevel: string): string {
   }
 }
 
-export default function NotificationsAlertForm() {
-  const { state } = useTransition()
-  const appIdRoute = useMatchesRoute("routes/dashboard/apps/$appId")
-  const appIdData = appIdRoute?.data as AppIdLoaderData
-  const { endpoint } = appIdData
+type NotificationsAlertFormProps = {
+  endpoint: AppIdOutletContext["endpoint"]
+}
+
+export default function NotificationsAlertForm({
+  endpoint,
+}: NotificationsAlertFormProps) {
+  const navigation = useNavigation()
   const { notificationSettings } = endpoint
 
   return (
@@ -104,13 +108,17 @@ export default function NotificationsAlertForm() {
           <div className="pokt-network-notifications-alert-btn-container">
             <Button
               className="pokt-network-notifications-submit-btn"
-              disabled={state === "loading" || state === "submitting"}
+              disabled={
+                navigation.state === "loading" || navigation.state === "submitting"
+              }
               type="submit"
               onClick={() => {
                 trackEvent(AmplitudeEvents.NotificationSettingsChange)
               }}
             >
-              {state === "loading" || state === "submitting" ? state : "Save Changes"}
+              {navigation.state === "loading" || navigation.state === "submitting"
+                ? navigation.state
+                : "Save Changes"}
             </Button>
           </div>
           <Text mt={16} size="xs">

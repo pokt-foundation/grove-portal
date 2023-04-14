@@ -9,6 +9,7 @@ import LegacyBannerCard, {
 } from "./components/LegacyBannerCard"
 import StopRemoveApp, { links as StopRemoveAppLinks } from "./components/StopRemoveApp"
 import styles from "./styles.css"
+import AppName from "~/components/application/AppName"
 import AppPlanDetails, {
   links as AppPlanDetailsLinks,
 } from "~/components/application/AppPlanDetails"
@@ -52,6 +53,7 @@ type AppIdLayoutViewProps = {
   subscription: Stripe.Subscription | undefined
   updatePlanFetcher: FetcherWithComponents<any>
   user: Auth0Profile
+  children: React.ReactNode
 }
 
 export default function AppIdLayoutView({
@@ -61,6 +63,7 @@ export default function AppIdLayoutView({
   subscription,
   updatePlanFetcher,
   user,
+  children,
 }: AppIdLayoutViewProps) {
   const { t } = useTranslate()
   const { flags } = useFeatureFlags()
@@ -184,6 +187,7 @@ export default function AppIdLayoutView({
 
   const role = endpoint?.users.find((u) => u.email === user._json?.email)?.roleName
   const isMember = role === RoleName.Member
+  const isAdmin = role === RoleName.Admin
 
   return (
     <div className="pokt-appid-layout-view">
@@ -192,7 +196,7 @@ export default function AppIdLayoutView({
           {endpoint && (
             <Grid.Col xs={12}>
               <div>
-                <h1 style={{ marginTop: 0 }}>{endpoint.name}</h1>
+                <AppName id={endpoint.id} name={endpoint.name} />
                 <Nav
                   dropdown
                   appId={endpoint.id}
@@ -207,7 +211,7 @@ export default function AppIdLayoutView({
             getRequiredClientEnvVar("FLAG_LEGACY_MESSAGING") === "true" && (
               <LegacyBannerCard />
             )}
-          <Outlet />
+          {children}
         </Grid.Col>
         <Grid.Col md={4}>
           {endpoint && (
@@ -245,6 +249,7 @@ export default function AppIdLayoutView({
                 <StopRemoveApp
                   appId={endpoint.id}
                   apps={endpoint.apps}
+                  isAdmin={isAdmin}
                   isMember={isMember}
                   name={endpoint.name}
                   planType={endpoint.appLimits.planType}

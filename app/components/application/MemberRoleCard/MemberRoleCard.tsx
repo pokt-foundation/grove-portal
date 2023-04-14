@@ -16,8 +16,18 @@ const MemberRole = ({ role }: MemberRoleProps) => {
   return (
     <Card>
       <Group position="apart">
-        <Text>Role</Text>
-        <Text>{role}</Text>
+        <Text m={0}>Role</Text>
+        <Text
+          m={0}
+          sx={{
+            textTransform: "lowercase",
+            "&::first-letter": {
+              textTransform: "uppercase",
+            },
+          }}
+        >
+          {role}
+        </Text>
       </Group>
     </Card>
   )

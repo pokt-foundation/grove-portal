@@ -1,8 +1,8 @@
 import { ActionFunction, json, LoaderFunction, redirect } from "@remix-run/node"
-import { useCatch, useTransition } from "@remix-run/react"
+import { useCatch, useNavigation, useOutletContext } from "@remix-run/react"
 import { Auth0Profile } from "remix-auth-auth0"
 import invariant from "tiny-invariant"
-import { AppIdLoaderData } from "../dashboard.apps.$appId/route"
+import { AppIdLoaderData, AppIdOutletContext } from "../dashboard.apps.$appId/route"
 import TeamView, { links as TeamViewLinks } from "./view"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { initPortalClient } from "~/models/portal/portal.server"
@@ -81,7 +81,7 @@ export const action: ActionFunction = async ({ request, params }) => {
       const { createEndpointUser } = await portal.createEndpointUser({
         endpointID: appId,
         input: {
-          email,
+          email: email.toLowerCase(),
           roleName: roleName === "ADMIN" ? RoleName.Admin : RoleName.Member,
         },
       })
@@ -150,7 +150,7 @@ export const action: ActionFunction = async ({ request, params }) => {
       }
 
       if (!updateEndpointUserRole) {
-        throw new Error("Erorr updating user role")
+        throw new Error("Error updating user role")
       }
 
       return json<ActionData>({
@@ -169,11 +169,10 @@ export const action: ActionFunction = async ({ request, params }) => {
 }
 
 export default function Team() {
-  const appIDRoute = useMatchesRoute("routes/dashboard/apps/$appId")
-  const { state } = useTransition()
-  const { endpoint } = appIDRoute?.data as AppIdLoaderData
+  const navigation = useNavigation()
+  const { endpoint } = useOutletContext<AppIdOutletContext>()
 
-  return <TeamView endpoint={endpoint} state={state} />
+  return <TeamView endpoint={endpoint} state={navigation.state} />
 }
 
 export const CatchBoundary = () => {

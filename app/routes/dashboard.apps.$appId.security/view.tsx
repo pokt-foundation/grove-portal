@@ -1,6 +1,13 @@
-import { Button, Text, Switch, Loader } from "@pokt-foundation/pocket-blocks"
-import { useFetcher, useTransition } from "@remix-run/react"
-import React, { useState } from "react"
+import {
+  Button,
+  Text,
+  Switch,
+  Loader,
+  Select,
+  Group,
+} from "@pokt-foundation/pocket-blocks"
+import { useFetcher, useNavigation } from "@remix-run/react"
+import React, { useState, useMemo, forwardRef, useRef } from "react"
 import styles from "./styles.css"
 import AppEndpointUrl, {
   links as AppEndpointUrlLinks,
@@ -8,6 +15,9 @@ import AppEndpointUrl, {
 import ChainsDropdown, {
   links as ChainsDropdownLinks,
 } from "~/components/application/ChainsDropdown/ChainsDropdown"
+import ChainWithImage, {
+  links as ChainWithImageLinks,
+} from "~/components/application/ChainWithImage"
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { useTranslate } from "~/context/TranslateContext"
@@ -19,7 +29,6 @@ import {
 } from "~/models/portal/sdk"
 import { Blockchain, EndpointQuery } from "~/models/portal/sdk"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
-import { CHAIN_ID_PREFIXES } from "~/utils/chainUtils"
 
 /* c8 ignore start */
 export const links = () => {
@@ -28,6 +37,7 @@ export const links = () => {
     ...TextInputLinks(),
     ...ChainsDropdownLinks(),
     ...AppEndpointUrlLinks(),
+    ...ChainWithImageLinks(),
     { rel: "stylesheet", href: styles },
   ]
 }
@@ -42,8 +52,20 @@ type SecurityViewProps = {
 type WhitelistContractType = Pick<WhitelistContracts, "blockchainID" | "contracts">
 type WhitelistMethodType = Pick<WhitelistMethods, "blockchainID" | "methods">
 
+const SelectItem = forwardRef<HTMLDivElement, { label: string; value: string }>(
+  ({ label, ...others }, ref) => (
+    <div ref={ref} {...others}>
+      <Group noWrap>
+        <ChainWithImage chain={label} withIcon={false} />
+      </Group>
+    </div>
+  ),
+)
+
+SelectItem.displayName = "SelectItem"
+
 export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps) => {
-  const transition = useTransition()
+  const navigation = useNavigation()
 
   type FormatData = {
     id: string
@@ -67,6 +89,8 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
       return [...prev, ...subArray]
     }, [])
   }
+
+  const approvedChainsSelectRef = useRef<HTMLInputElement>(null)
 
   const { t } = useTranslate()
   const securityAction = useFetcher()
@@ -117,14 +141,16 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
     return [...arr, item]
   }
 
-  const getChainName = (key: string) => {
-    const value = CHAIN_ID_PREFIXES.get(key)
-    return value?.name || "Undefined"
-  }
-
   const removeFromArrayByValue = (item: string, field: string, arr: any[]) => {
     return arr.filter((obj) => (!obj[field].includes(item) ? obj : null))
   }
+
+  const selectChainData = useMemo(() => {
+    return blockchains.map((chain) => ({
+      label: chain?.description ?? "",
+      value: chain?.id ?? "",
+    }))
+  }, [blockchains])
 
   return (
     <div className="security">
@@ -148,7 +174,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
         <Card>
           <div className="pokt-card-header">
             <h3>{t.security.headings.approvedChains}</h3>
-            <ChainsDropdown
+            {/* <ChainsDropdown
               aria-label={t.security.chainsDropdownAria}
               blockchains={blockchains}
               defaultText={t.security.defaultSelectChainText}
@@ -156,7 +182,35 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                 setWhitelistBlockchains(addIfMissing(val, whitelistBlockchains))
               }}
               icon={true}
+              id="whitelistBlockchainsDropdown"
               selectedChains={[""]}
+            /> */}
+            <Select
+              ref={approvedChainsSelectRef}
+              searchable
+              aria-label={t.security.chainsDropdownAria}
+              data={selectChainData}
+              itemComponent={SelectItem}
+              placeholder={t.security.defaultSelectChainText}
+              sx={(theme) => ({
+                ".mantine-Select-dropdown": {
+                  backgroundColor: "#0f161d",
+                },
+                ".mantine-Select-input": {
+                  backgroundColor: "transparent",
+                  borderColor: theme.colors.blue[5],
+                },
+                ".mantine-Select-input::placeholder": {
+                  color: theme.colors.blue[5],
+                  fontWeight: 600,
+                  fontSize: "12px",
+                },
+              })}
+              onChange={(val) => {
+                if (val) {
+                  setWhitelistBlockchains(addIfMissing(val, whitelistBlockchains))
+                }
+              }}
             />
           </div>
           {whitelistBlockchains.map((item: string) => {
@@ -167,12 +221,13 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
               <React.Fragment key={item}>
                 <AppEndpointUrl
                   key={item}
+                  readOnly
                   chain={blockchain}
                   handleRemove={() => {
                     setWhitelistBlockchains((current) => removeFromArray(item, current))
                   }}
                   hasDelete={true}
-                  value={appId ?? ""}
+                  value={blockchain?.description ?? ""}
                 />
                 <input name="whitelistBlockchains" type="hidden" value={item} />
               </React.Fragment>
@@ -277,17 +332,31 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             <h3>{t.security.headings.contracts}</h3>
           </div>
           <div className="flexGrowRow">
-            <ChainsDropdown
-              blockchains={blockchains}
-              defaultText={
-                whitelistContractsDropdown !== ""
-                  ? getChainName(whitelistContractsDropdown)
-                  : t.security.defaultSelectChainText
-              }
-              handleChainClick={(val) => {
-                setWhitelistContractsDropdown(val)
+            <Select
+              searchable
+              aria-label={t.security.headings.contracts}
+              data={selectChainData}
+              itemComponent={SelectItem}
+              placeholder={t.security.defaultSelectChainText}
+              sx={(theme) => ({
+                ".mantine-Select-dropdown": {
+                  backgroundColor: "#0f161d",
+                },
+                ".mantine-Select-input": {
+                  backgroundColor: "transparent",
+                  borderColor: theme.colors.blue[5],
+                },
+                ".mantine-Select-input::placeholder": {
+                  color: theme.colors.blue[5],
+                  fontWeight: 600,
+                  fontSize: "12px",
+                },
+              })}
+              onChange={(val) => {
+                if (val) {
+                  setWhitelistContractsDropdown(val)
+                }
               }}
-              selectedChains={[""]}
             />
             <input
               className="grow userInputs"
@@ -361,19 +430,33 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             <h3>{t.security.headings.methods}</h3>
           </div>
           <div className="flexGrowRow">
-            <ChainsDropdown
-              blockchains={blockchains}
-              defaultText={
-                whitelistMethodsDropdown !== ""
-                  ? getChainName(whitelistMethodsDropdown)
-                  : t.security.defaultSelectChainText
-              }
-              handleChainClick={(val) => {
-                setWhitelistMethodsDropdown(val)
+            <Select
+              searchable
+              aria-label={t.security.headings.methods}
+              data={selectChainData}
+              itemComponent={SelectItem}
+              placeholder={t.security.defaultSelectChainText}
+              sx={(theme) => ({
+                ".mantine-Select-dropdown": {
+                  backgroundColor: "#0f161d",
+                },
+                ".mantine-Select-input": {
+                  backgroundColor: "transparent",
+                  borderColor: theme.colors.blue[5],
+                },
+                ".mantine-Select-input::placeholder": {
+                  color: theme.colors.blue[5],
+                  fontWeight: 600,
+                  fontSize: "12px",
+                },
+              })}
+              onChange={(val) => {
+                if (val) {
+                  setWhitelistMethodsDropdown(val)
+                }
               }}
-              icon={false}
-              selectedChains={[""]}
             />
+
             <input
               className="grow userInputs"
               name="whitelistMethodsInput"
@@ -447,7 +530,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
           }}
         >
           {t.common.save}
-          {transition.state !== "idle" && <Loader color="black" ml={8} size="sm" />}
+          {navigation.state !== "idle" && <Loader color="black" ml={8} size="sm" />}
         </Button>
       </securityAction.Form>
     </div>

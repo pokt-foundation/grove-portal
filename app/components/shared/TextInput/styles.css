@@ -21,7 +21,7 @@
   font-size: 0.75rem;
 }
 .pokt-text-input.right-section input {
-  padding-right: 32px;
+  padding-right: 64px;
 }
 
 .pokt-text-input label {
@@ -29,15 +29,19 @@
 }
 
 .pokt-text-input .pokt-text-input-copy {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   color: var(--mantine-color-blue-6);
   cursor: pointer;
 }
 
+.pokt-text-input svg {
+  background-color: var(--mantine-color-navy-6);
+}
+
 .pokt-text-input .pokt-text-input-copy svg {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
 }
 
 .pokt-text-delete {
@@ -45,8 +49,8 @@
 }
 
 .pokt-text-delete svg {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
 }
 
 .pokt-text-input .mantine-TextInput-rightSection {

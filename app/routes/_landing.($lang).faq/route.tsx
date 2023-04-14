@@ -1,13 +1,20 @@
-import { json, LinksFunction, LoaderFunction } from "@remix-run/node"
+import { json, LinksFunction, LoaderFunction, MetaFunction } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
 import { useMemo } from "react"
 import FaqsView, { links as FaqsViewLinks } from "./view"
 import { initCmsClient } from "~/models/cms/cms.server"
 import { getQuestionsQuery } from "~/models/cms/sdk"
+import { seo_title_append } from "~/utils/meta"
 import { groupBy } from "~/utils/utils"
 
 export const links: LinksFunction = () => {
   return [...FaqsViewLinks()]
+}
+
+export const meta: MetaFunction = () => {
+  return {
+    title: `Frequently Asked Questions ${seo_title_append}`,
+  }
 }
 
 type LoaderData = {

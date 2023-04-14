@@ -44,21 +44,6 @@ export default function AppPlanDetails({
       <Card>
         <div className="pokt-card-header">
           <h3>Plan</h3>
-          {!subscription && (isFreePlan(planType) || isLegacyPlan(planType)) && (
-            <Button
-              className={clsx("pokt-button", {
-                disabled: flags.STRIPE_PAYMENT === "false",
-              })}
-              component={Link}
-              disabled={flags.STRIPE_PAYMENT === "false"}
-              size="xs"
-              to={stripe}
-              variant="outline"
-            >
-              {/* {t.AppPlanDetails.upgrade} */}
-              Upgrade
-            </Button>
-          )}
           {subscription && subscription.cancel_at_period_end && (
             <subscriptionFetcher.Form action="/api/stripe/subscription" method="post">
               <input hidden name="app-id" value={id} />
@@ -90,6 +75,22 @@ export default function AppPlanDetails({
             },
           ]}
         />
+        {!subscription && (isFreePlan(planType) || isLegacyPlan(planType)) && (
+          <Button
+            fullWidth
+            className={clsx("pokt-button", {
+              disabled: flags.STRIPE_PAYMENT === "false",
+            })}
+            component={Link}
+            disabled={flags.STRIPE_PAYMENT === "false"}
+            mt={16}
+            size="xs"
+            to={stripe}
+            variant="outline"
+          >
+            {t.AppPlanDetails.upgrade}
+          </Button>
+        )}
       </Card>
     </div>
   )

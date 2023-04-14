@@ -114,7 +114,7 @@ export const action: ActionFunction = async ({ request }) => {
   }
 }
 
-export const Apps = (props: unknown) => {
+export const Apps = () => {
   const { endpoints } = useOutletContext<AllAppsOutletContext>()
   const { dailyNetworkRelaysPerWeek, userId, profile } = useLoaderData() as AppsLoaderData
   const [searchParams] = useSearchParams()

@@ -85,15 +85,17 @@ export default function AppRequestsErrorsCard({ errorMetrics }: RequestsErrorsCa
   return (
     <div className="pokt-app-requests-by-origin">
       {tableData ? (
-        <Table
-          search
-          columns={t.AppRequestsErrorsCard.columns}
-          data={tableData}
-          label={t.AppRequestsErrorsCard.label}
-          paginate={{
-            perPage: 5,
-          }}
-        />
+        <Card>
+          <Table
+            search
+            columns={t.AppRequestsErrorsCard.columns}
+            data={tableData}
+            label={t.AppRequestsErrorsCard.label}
+            paginate={{
+              perPage: 5,
+            }}
+          />
+        </Card>
       ) : (
         <div className="pokt-table pokt-table-empty">
           <Card>

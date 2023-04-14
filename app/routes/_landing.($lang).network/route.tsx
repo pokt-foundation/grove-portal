@@ -1,5 +1,5 @@
 import { LoaderFunction, json, MetaFunction } from "@remix-run/node"
-import { useLoaderData, useTransition } from "@remix-run/react"
+import { useLoaderData, useNavigation } from "@remix-run/react"
 import { useEffect } from "react"
 import NetworkView, { links as NetworkViewLinks } from "./view"
 import { Block } from "~/models/indexer/sdk"
@@ -14,6 +14,7 @@ import {
 } from "~/models/relaymeter/relaymeter.server"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { dayjs } from "~/utils/dayjs"
+import { seo_title_append } from "~/utils/meta"
 
 export const links = () => {
   return [...NetworkViewLinks()]
@@ -21,7 +22,7 @@ export const links = () => {
 
 export const meta: MetaFunction = () => {
   return {
-    title: "Pocket Network Summary | POKT",
+    title: `Pocket Network Summary ${seo_title_append}`,
   }
 }
 
@@ -131,7 +132,7 @@ export default function Index() {
     poktscanLatestBlock,
     poktscanChains,
   } = useLoaderData() as NetworkLoaderData
-  const { state } = useTransition()
+  const navigation = useNavigation()
 
   useEffect(() => {
     trackEvent(AmplitudeEvents.NetworkView)
@@ -145,7 +146,7 @@ export default function Index() {
       monthlyNetworkRelays={monthlyNetworkRelays}
       poktscanChains={poktscanChains}
       poktscanLatestBlock={poktscanLatestBlock}
-      state={state}
+      state={navigation.state}
       weeklyNetworkRelays={weeklyNetworkRelays}
     />
   )

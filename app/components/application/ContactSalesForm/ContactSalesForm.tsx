@@ -1,16 +1,21 @@
-import { Button, Grid } from "@pokt-foundation/pocket-blocks"
-import { Form, useTransition } from "@remix-run/react"
+import {
+  Button,
+  Grid,
+  MultiSelect,
+  Textarea,
+  TextInput,
+} from "@pokt-foundation/pocket-blocks"
+import { Form, useNavigation } from "@remix-run/react"
 import { useEffect, useRef } from "react"
 import styles from "./styles.css"
 import Card, { links as CardLinks } from "~/components/shared/Card"
-import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { useTranslate } from "~/context/TranslateContext"
+import { ContactSalesLoaderData } from "~/routes/contact-sales"
 
 /* c8 ignore start */
 export const links = () => {
   return [
     ...CardLinks(),
-    ...TextInputLinks(),
     {
       rel: "stylesheet",
       href: styles,
@@ -19,17 +24,21 @@ export const links = () => {
 }
 /* c8 ignore stop */
 
-export default function ContactSalesForm() {
+type ContactSalesFormProps = {
+  loaderData: ContactSalesLoaderData
+}
+
+export default function ContactSalesForm({ loaderData }: ContactSalesFormProps) {
   const { t } = useTranslate()
   const formRef = useRef<HTMLFormElement>(null)
-  let transition = useTransition()
+  const navigation = useNavigation()
 
   const formFields: Array<{
     label: string
     name: string
     placeholder: string
     size?: number
-    component: "input" | "textarea"
+    component: "input" | "textarea" | "select"
     type?: "number" | "search" | "text" | "password" | "email" | "tel" | "url" | undefined
     required: boolean
   }> = [
@@ -53,6 +62,7 @@ export default function ContactSalesForm() {
       label: t.ContactSalesForm.email.label,
       name: "email",
       placeholder: t.ContactSalesForm.email.placeholder,
+      size: 6,
       component: "input",
       type: "email",
       required: true,
@@ -61,6 +71,7 @@ export default function ContactSalesForm() {
       label: t.ContactSalesForm.company.label,
       name: "company",
       placeholder: t.ContactSalesForm.company.placeholder,
+      size: 6,
       component: "input",
       required: false,
     },
@@ -68,7 +79,7 @@ export default function ContactSalesForm() {
       label: t.ContactSalesForm.chains.label,
       name: "protocol-chains",
       placeholder: t.ContactSalesForm.chains.placeholder,
-      component: "textarea",
+      component: "select",
       required: true,
     },
     {
@@ -89,8 +100,8 @@ export default function ContactSalesForm() {
   ]
 
   useEffect(() => {
-    if (transition.type === "actionSubmission") formRef.current?.reset()
-  }, [transition.type])
+    if (navigation.state === "submitting") formRef.current?.reset()
+  }, [navigation.state])
 
   return (
     <div className="contact-sales-form-container">
@@ -110,33 +121,65 @@ export default function ContactSalesForm() {
                 <Grid.Col
                   key={name}
                   className="contact-sales-form-grid-col"
-                  md={size ?? 12}
+                  sm={size ?? 12}
                 >
                   {component === "input" && (
-                    <>
-                      <label className="label" htmlFor={name}>
-                        {label} {required && <span className="required-field">*</span>}
-                      </label>
-                      <TextInput
-                        className="input"
-                        name={name}
-                        placeholder={placeholder}
-                        required={required}
-                        type={type}
-                      />
-                    </>
+                    <TextInput
+                      className="input"
+                      label={label}
+                      name={name}
+                      placeholder={placeholder}
+                      required={required}
+                      type={type}
+                    />
                   )}
                   {component === "textarea" && (
+                    <Textarea
+                      className="textarea"
+                      label={label}
+                      name={name}
+                      placeholder={placeholder}
+                      required={required}
+                    />
+                  )}
+                  {component === "select" && (
                     <>
-                      <label className="label" htmlFor={name}>
-                        {label} {required && <span className="required-field">*</span>}
-                      </label>
-                      <textarea
-                        className="textarea"
-                        name={name}
-                        placeholder={placeholder}
-                        required={required}
-                      />
+                      {loaderData.blockchains ? (
+                        <MultiSelect
+                          searchable
+                          aria-label={t.security.chainsDropdownAria}
+                          data={loaderData.blockchains.map((chain) => ({
+                            label: String(chain.description),
+                            value: String(chain.description),
+                          }))}
+                          label={label}
+                          name={name}
+                          placeholder={placeholder}
+                          required={required}
+                          sx={(theme) => ({
+                            ".mantine-Select-dropdown": {
+                              backgroundColor: "#0f161d",
+                            },
+                            ".mantine-Select-input": {
+                              backgroundColor: "transparent",
+                              borderColor: theme.colors.blue[5],
+                            },
+                            ".mantine-Select-input::placeholder": {
+                              color: theme.colors.blue[5],
+                              fontWeight: 600,
+                              fontSize: "12px",
+                            },
+                          })}
+                        />
+                      ) : (
+                        <Textarea
+                          className="textarea"
+                          label={label}
+                          name={name}
+                          placeholder={placeholder}
+                          required={required}
+                        />
+                      )}
                     </>
                   )}
                 </Grid.Col>
@@ -148,12 +191,13 @@ export default function ContactSalesForm() {
             <Button
               className="pokt-button button"
               disabled={
-                transition.state === "loading" || transition.state === "submitting"
+                navigation.state === "loading" || navigation.state === "submitting"
               }
+              size="sm"
               type="submit"
               variant="filled"
             >
-              {transition.state === "loading" || transition.state === "submitting"
+              {navigation.state === "loading" || navigation.state === "submitting"
                 ? t.ContactSalesForm.submitting
                 : t.ContactSalesForm.submit}
             </Button>

@@ -101,7 +101,9 @@ export default function NetworkView({
                     id: chain.id,
                     network: {
                       value: `${chain.description}`,
-                      element: <ChainWithImage chain={chain.description} />,
+                      element: (
+                        <ChainWithImage chain={chain.description} withIcon={false} />
+                      ),
                     },
                     chainId: chain.id,
                     traffic: numbersFormatter.format(

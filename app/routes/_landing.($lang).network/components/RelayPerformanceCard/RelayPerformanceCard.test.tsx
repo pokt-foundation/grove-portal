@@ -1,15 +1,13 @@
 import { expect } from "vitest"
-import NetworkRelayPerformanceCard, {
-  numbersFormatter,
-} from "./NetworkRelayPerformanceCard"
+import RelayPerformanceCard, { numbersFormatter } from "./RelayPerformanceCard"
 import { render, screen } from "test/helpers"
 import { month, today, week } from "~/models/relaymeter/relaymeter.data"
 
-describe("<NetworkRelayPerformanceCard />", () => {
+describe("<RelayPerformanceCard />", () => {
   it("renders card and props", () => {
     const heading = /relay performance/i
 
-    render(<NetworkRelayPerformanceCard month={month} today={today} week={week} />)
+    render(<RelayPerformanceCard month={month} today={today} week={week} />)
 
     expect(screen.getByRole("heading", { name: heading })).toBeInTheDocument()
     expect(screen.getByRole("heading", { name: /today/i })).toBeInTheDocument()

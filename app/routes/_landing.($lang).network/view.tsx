@@ -1,5 +1,13 @@
 import { Card, Grid } from "@pokt-foundation/pocket-blocks"
 import { Transition } from "@remix-run/react/dist/transition"
+import PoktScanLatestBlockCard, {
+  links as PoktScanLatestBlockCardLinks,
+} from "./components/PoktScanLatestBlockCard"
+import RelayPerformanceCard, {
+  links as RelayPerformanceCardLinks,
+  numbersFormatter,
+} from "./components/RelayPerformanceCard"
+import SummaryCard, { links as SummaryCardLinks } from "./components/SummaryCard"
 import styles from "./styles.css"
 import ChainWithImage, {
   links as ChainWithImageLinks,
@@ -7,33 +15,18 @@ import ChainWithImage, {
 import FeedbackCard, {
   links as FeedbackCardLinks,
 } from "~/components/application/FeedbackCard"
-import NetworkPoktScanLatestBlockCard, {
-  links as NetworkPoktScanLatestBlockCardLinks,
-} from "~/components/application/NetworkPoktScanLatestBlockCard"
-import NetworkRelayPerformanceCard, {
-  links as NetworkRelayPerformanceCardLinks,
-  numbersFormatter,
-} from "~/components/application/NetworkRelayPerformanceCard"
-// import NetworkSuccessRateCard, {
-//   links as NetworkSuccessRateCardLinks,
-// } from "~/components/application/NetworkSuccessRateCard"
-import NetworkSummaryCard, {
-  links as NetworkSummaryCardLinks,
-} from "~/components/application/NetworkSummaryCard"
 import UsageChartCard, {
   links as UsageChartCardLinks,
 } from "~/components/application/UsageChartCard"
 import Loader, { links as LoaderLinks } from "~/components/shared/Loader"
 import Table, { links as TableLinks } from "~/components/shared/Table"
 import { NetworkLoaderData } from "~/routes/_landing.($lang).network/route"
-import { getServiceLevelByChain } from "~/utils/chainUtils"
 
 export const links = () => {
   return [
-    ...NetworkSummaryCardLinks(),
-    ...NetworkPoktScanLatestBlockCardLinks(),
-    // ...NetworkSuccessRateCardLinks(),
-    ...NetworkRelayPerformanceCardLinks(),
+    ...SummaryCardLinks(),
+    ...PoktScanLatestBlockCardLinks(),
+    ...RelayPerformanceCardLinks(),
     ...UsageChartCardLinks(),
     ...TableLinks(),
     ...ChainWithImageLinks(),
@@ -65,21 +58,21 @@ export default function NetworkView({
           <section>
             <Grid gutter={32}>
               <Grid.Col sm={4}>
-                <NetworkSummaryCard
+                <SummaryCard
                   imgSrc="/networkSummaryNodes.png"
                   subtitle="7000+"
                   title="Nodes Staked"
                 />
               </Grid.Col>
               <Grid.Col sm={4}>
-                <NetworkSummaryCard
+                <SummaryCard
                   imgSrc="/networkSummaryApps.png"
                   subtitle="2000+"
                   title="Apps Staked"
                 />
               </Grid.Col>
               <Grid.Col sm={4}>
-                <NetworkSummaryCard
+                <SummaryCard
                   imgSrc="/networkSummaryNetworks.png"
                   subtitle={String(blockchains ? blockchains.length : 0)}
                   title="Networks"
@@ -120,7 +113,7 @@ export default function NetworkView({
         </Grid.Col>
         <Grid.Col md={4}>
           <section>
-            <NetworkRelayPerformanceCard
+            <RelayPerformanceCard
               month={monthlyNetworkRelays}
               today={dailyNetworkRelays}
               week={weeklyNetworkRelays}
@@ -128,7 +121,7 @@ export default function NetworkView({
           </section>
           {poktscanLatestBlock && (
             <section>
-              <NetworkPoktScanLatestBlockCard latestBlock={poktscanLatestBlock} />
+              <PoktScanLatestBlockCard latestBlock={poktscanLatestBlock} />
             </section>
           )}
           <section>

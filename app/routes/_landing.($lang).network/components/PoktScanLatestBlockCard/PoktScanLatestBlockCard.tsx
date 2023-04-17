@@ -26,7 +26,7 @@ function appendZeroToTime(time: string) {
   return time.length < 2 ? `0${time}` : time
 }
 
-export default function LatestBlock({ latestBlock }: LatestBlockProps) {
+export default function PoktScanLatestBlock({ latestBlock }: LatestBlockProps) {
   if (!latestBlock) {
     return null
   }

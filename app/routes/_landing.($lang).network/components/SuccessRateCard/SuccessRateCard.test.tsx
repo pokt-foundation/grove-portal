@@ -1,11 +1,11 @@
 import { expect } from "vitest"
-import NetworkSuccessRateCard from "./NetworkSuccessRateCard"
+import SuccessRateCard from "./SuccessRateCard"
 import { render, screen } from "test/helpers"
 import { month } from "~/models/relaymeter/relaymeter.data"
 
-describe("<NetworkSuccessRateCard />", () => {
+describe("<SuccessRateCard />", () => {
   it("renders card and props", () => {
-    render(<NetworkSuccessRateCard relays={month} />)
+    render(<SuccessRateCard relays={month} />)
 
     expect(
       screen.getByRole("heading", {

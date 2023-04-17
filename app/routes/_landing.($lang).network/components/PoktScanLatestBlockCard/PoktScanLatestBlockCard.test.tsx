@@ -1,11 +1,11 @@
 import { expect } from "vitest"
-import NetworkPoktScanLatestBlockCard, { getList } from "./NetworkPoktScanLatestBlockCard"
+import PoktScanLatestBlockCard, { getList } from "./PoktScanLatestBlockCard"
 import { render, screen } from "test/helpers"
 import { latestBlock } from "~/models/poktscan/poktscan.data"
 
-describe("<NetworkPoktScanLatestBlockCard />", () => {
+describe("<PoktScanLatestBlockCard />", () => {
   it("renders card and latest block details", () => {
-    render(<NetworkPoktScanLatestBlockCard latestBlock={latestBlock} />)
+    render(<PoktScanLatestBlockCard latestBlock={latestBlock} />)
     const list = getList(latestBlock)
 
     const header = /latest block/i

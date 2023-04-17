@@ -20,7 +20,7 @@ export const numbersFormatter = Intl.NumberFormat("en", {
   maximumFractionDigits: 2,
 })
 
-export default function NetworkSuccessRateCard({
+export default function RelayPerformanceCard({
   today,
   week,
   month,

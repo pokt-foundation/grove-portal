@@ -8,11 +8,11 @@ export const links = () => {
 }
 /* c8 ignore stop */
 
-interface NetworkSuccessRateCardProps {
+interface SuccessRateCardProps {
   relays: RelayMetric
 }
 
-export default function NetworkSuccessRateCard({ relays }: NetworkSuccessRateCardProps) {
+export default function SuccessRateCard({ relays }: SuccessRateCardProps) {
   const theme = useMantineTheme()
   return (
     <div className="pokt-network-success-rate">

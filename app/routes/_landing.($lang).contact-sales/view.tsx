@@ -3,8 +3,8 @@ import { useEffect, useState } from "react"
 import styles from "./styles.css"
 import ContactSalesForm, {
   links as ContactSalesFormLinks,
-} from "~/components/application/ContactSalesForm"
-import Modal, { links as ModalLinks } from "~/components/shared/Modal"
+} from "~/components/ContactSalesForm"
+import Modal, { links as ModalLinks } from "~/components/Modal"
 import { useTranslate } from "~/context/TranslateContext"
 import {
   ContactSalesActionData,

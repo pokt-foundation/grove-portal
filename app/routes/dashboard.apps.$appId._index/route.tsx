@@ -1,35 +1,29 @@
 import { Grid } from "@pokt-foundation/pocket-blocks"
 import { MetaFunction } from "@remix-run/node"
-// import AppLatencyCard, {
-//   links as AppLatencyCardLinks,
-// } from "~/components/application/AppLatencyCard"
 import { useOutletContext } from "@remix-run/react"
 import { useMemo, useEffect } from "react"
-import { AppIdOutletContext } from "../dashboard.apps.$appId/route"
 import AppEndpointCard, {
   links as AppEndpointCardLinks,
-} from "~/components/application/AppEndpointCard"
+} from "~/components/AppEndpointCard/AppEndpointCard"
 import AppOverLimitCard, {
   links as AppOverLimitCardLinks,
-} from "~/components/application/AppOverSessionLimitCard/AppOverSessionLimitCard"
-import AppRequestsRateCard, {
-  links as AppRequestsRateCardLinks,
-} from "~/components/application/AppRequestsRateCard"
+} from "~/components/AppOverSessionLimitCard"
 import AppUsageCurrentCard, {
   links as AppUsageCurrentCardLinks,
-} from "~/components/application/AppUsageCurrentCard"
-import BannerCard, { links as BannerCardLinks } from "~/components/application/BannerCard"
-import UsageChartCard, {
-  links as UsageChartCardLinks,
-} from "~/components/application/UsageChartCard"
+} from "~/components/AppUsageCurrentCard"
+import BannerCard, { links as BannerCardLinks } from "~/components/BannerCard"
+import UsageChartCard, { links as UsageChartCardLinks } from "~/components/UsageChartCard"
 import { useFeatureFlags } from "~/context/FeatureFlagContext"
 import { useTranslate } from "~/context/TranslateContext"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
+import { AppIdOutletContext } from "../dashboard.apps.$appId/route"
+import AppRequestsRateCard, {
+  links as AppRequestsRateCardLinks,
+} from "~/components/AppRequestsRateCard"
 
 export const links = () => {
   return [
     ...AppEndpointCardLinks(),
-    // ...AppLatencyCardLinks(),
     ...AppUsageCurrentCardLinks(),
     ...AppRequestsRateCardLinks(),
     ...AppOverLimitCardLinks(),
@@ -78,9 +72,12 @@ export const Application = () => {
   }
 
   const totalRelaysForTheWeek = useMemo(() => {
-    return dailyNetworkRelaysPerWeek.reduce((prev, curr) => {
-      return prev + curr.Count.Success
-    }, 0)
+    return dailyNetworkRelaysPerWeek.reduce(
+      (prev: any, curr: { Count: { Success: any } }) => {
+        return prev + curr.Count.Success
+      },
+      0,
+    )
   }, [dailyNetworkRelaysPerWeek])
 
   return (
@@ -114,11 +111,6 @@ export const Application = () => {
           )}
         </Grid.Col>
       </Grid>
-      {/* {data.hourlyLatency && (
-        <section>
-          <AppLatencyCard hourlyLatency={data.hourlyLatency.hourly_latency} />
-        </section>
-      )} */}
       {dailyNetworkRelaysPerWeek && (
         <section>
           <UsageChartCard

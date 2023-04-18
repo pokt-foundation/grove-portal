@@ -1,10 +1,10 @@
 import styles from "./styles.css"
-import { Card, links as CardLinks } from "~/components/shared/Card"
+import { Card, links as CardLinks } from "~/components/Card"
 import CardList, {
   CardListItem,
   links as CardListLinks,
-} from "~/components/shared/CardList"
-import PoweredBy, { links as PoweredByLinks } from "~/components/shared/PoweredBy"
+} from "~/components/CardList"
+import PoweredBy, { links as PoweredByLinks } from "~/components/PoweredBy"
 import { GetHighestBlockQuery } from "~/models/poktscan/sdk"
 
 /* c8 ignore start */

@@ -2,7 +2,7 @@ import { Button, Collapse, Text, IconInfo } from "@pokt-foundation/pocket-blocks
 import clsx from "clsx"
 import { useMemo } from "react"
 import styles from "./styles.css"
-import { Card, links as CardLinks } from "~/components/shared/Card"
+import { Card, links as CardLinks } from "~/components/Card"
 import { useTranslate } from "~/context/TranslateContext"
 import { useUser } from "~/context/UserContext"
 

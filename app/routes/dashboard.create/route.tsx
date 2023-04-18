@@ -12,15 +12,15 @@ import invariant from "tiny-invariant"
 import styles from "./styles.css"
 import AppPlansOverview, {
   links as AppPlansOverviewLinks,
-} from "~/components/application/AppPlansOverview"
+} from "~/routes/dashboard.apps.$appId/components/AppPlansOverview"
 import AppRadioCards, {
   links as AppRadioCardsLinks,
-} from "~/components/application/AppRadioCards"
+} from "~/routes/dashboard.apps.$appId/components/AppRadioCards"
 import CalculateYourPricing, {
   links as CalculateYourPricingLinks,
-} from "~/components/application/CalculateYourPricing/CalculateYourPricing"
-import Card, { links as CardLinks } from "~/components/shared/Card"
-import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
+} from "~/components/CalculateYourPricing/CalculateYourPricing"
+import Card, { links as CardLinks } from "~/components/Card"
+import TextInput, { links as TextInputLinks } from "~/components/TextInput"
 import { useFeatureFlags } from "~/context/FeatureFlagContext"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { PayPlanType } from "~/models/portal/sdk"

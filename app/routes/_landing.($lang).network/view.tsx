@@ -11,15 +11,15 @@ import SummaryCard, { links as SummaryCardLinks } from "./components/SummaryCard
 import styles from "./styles.css"
 import ChainWithImage, {
   links as ChainWithImageLinks,
-} from "~/components/application/ChainWithImage"
+} from "~/components/ChainWithImage"
 import FeedbackCard, {
   links as FeedbackCardLinks,
-} from "~/components/application/FeedbackCard"
+} from "~/routes/_landing.($lang).network/components/FeedbackCard"
 import UsageChartCard, {
   links as UsageChartCardLinks,
-} from "~/components/application/UsageChartCard"
-import Loader, { links as LoaderLinks } from "~/components/shared/Loader"
-import Table, { links as TableLinks } from "~/components/shared/Table"
+} from "~/components/UsageChartCard"
+import Loader, { links as LoaderLinks } from "~/components/Loader"
+import Table, { links as TableLinks } from "~/components/Table"
 import { NetworkLoaderData } from "~/routes/_landing.($lang).network/route"
 
 export const links = () => {

@@ -9,17 +9,11 @@ import {
 import { useFetcher, useNavigation } from "@remix-run/react"
 import React, { useState, useMemo, forwardRef, useRef } from "react"
 import styles from "./styles.css"
-import AppEndpointUrl, {
-  links as AppEndpointUrlLinks,
-} from "~/components/application/AppEndpointUrl"
-import ChainsDropdown, {
-  links as ChainsDropdownLinks,
-} from "~/components/application/ChainsDropdown/ChainsDropdown"
-import ChainWithImage, {
-  links as ChainWithImageLinks,
-} from "~/components/application/ChainWithImage"
-import Card, { links as CardLinks } from "~/components/shared/Card"
-import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
+import AppEndpointUrl, { links as AppEndpointUrlLinks } from "~/components/AppEndpointUrl"
+import { links as ChainsDropdownLinks } from "~/components/ChainsDropdown/ChainsDropdown"
+import ChainWithImage, { links as ChainWithImageLinks } from "~/components/ChainWithImage"
+import Card, { links as CardLinks } from "~/components/Card"
+import TextInput, { links as TextInputLinks } from "~/components/TextInput"
 import { useTranslate } from "~/context/TranslateContext"
 import {
   BlockchainsQuery,

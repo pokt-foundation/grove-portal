@@ -9,8 +9,8 @@ import {
 import clsx from "clsx"
 import { useState } from "react"
 import styles from "./styles.css"
-import { Card, links as CardLinks } from "~/components/shared/Card"
-import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
+import { Card, links as CardLinks } from "~/components/Card"
+import TextInput, { links as TextInputLinks } from "~/components/TextInput"
 import { useTranslate } from "~/context/TranslateContext"
 import { ProcessedEndpoint } from "~/models/portal/sdk"
 

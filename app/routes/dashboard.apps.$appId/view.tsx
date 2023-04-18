@@ -9,18 +9,18 @@ import LegacyBannerCard, {
 } from "./components/LegacyBannerCard"
 import StopRemoveApp, { links as StopRemoveAppLinks } from "./components/StopRemoveApp"
 import styles from "./styles.css"
-import AppName from "~/components/application/AppName"
+import AppName from "~/components/AppName"
 import AppPlanDetails, {
   links as AppPlanDetailsLinks,
-} from "~/components/application/AppPlanDetails"
+} from "~/routes/dashboard.apps.$appId/components/AppPlanDetails"
 import FeedbackCard, {
   links as FeedbackCardLinks,
-} from "~/components/application/FeedbackCard"
+} from "~/routes/_landing.($lang).network/components/FeedbackCard"
 import MemberRoleCard, {
   links as MemberRoleCardLinks,
-} from "~/components/application/MemberRoleCard"
-import Modal, { links as ModalLinks, ModalCTA } from "~/components/shared/Modal"
-import Nav, { links as NavLinks } from "~/components/shared/Nav"
+} from "~/routes/dashboard.apps.$appId/components/MemberRoleCard"
+import Modal, { links as ModalLinks, ModalCTA } from "~/components/Modal"
+import Nav, { links as NavLinks } from "~/components/Nav"
 import { useFeatureFlags } from "~/context/FeatureFlagContext"
 import { useTranslate } from "~/context/TranslateContext"
 import { EndpointQuery, PayPlanType, RoleName } from "~/models/portal/sdk"

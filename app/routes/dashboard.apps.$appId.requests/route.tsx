@@ -7,13 +7,13 @@ import { AppIdLoaderData, AppIdOutletContext } from "../dashboard.apps.$appId/ro
 import styles from "./styles.css"
 import AppRequestsByOriginCard, {
   links as AppRequestsByOriginCardLinks,
-} from "~/components/application/AppRequestsByOriginCard"
+} from "~/components/AppRequestsByOriginCard"
 import AppRequestsErrorsCard, {
   links as AppRequestsErrorsCardLinks,
-} from "~/components/application/AppRequestsErrorsCard"
+} from "~/components/AppRequestsErrorsCard"
 import AppRequestsRateCard, {
   links as AppRequestsRateCardLinks,
-} from "~/components/application/AppRequestsRateCard"
+} from "~/components/AppRequestsRateCard"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { ErrorMetric, getErrorMetrics } from "~/models/errormetrics/errormetrics.server"
 // import { getLBOriginClassification } from "~/models/portal.server"

@@ -2,10 +2,10 @@ import { Button, Card } from "@pokt-foundation/pocket-blocks"
 import { Form, useLocation } from "@remix-run/react"
 import AppPlanLatestInvoiceCard, {
   links as AppPlanLatestInvoiceCardLinks,
-} from "~/components/application/AppPlanLatestInvoiceCard"
+} from "~/routes/dashboard.apps.$appId/components/AppPlanLatestInvoiceCard"
 import AppPlanOverviewCard, {
   links as AppPlanOverviewCardLinks,
-} from "~/components/application/AppPlanOverviewCard"
+} from "~/routes/dashboard.apps.$appId/components/AppPlanOverviewCard"
 import { useTranslate } from "~/context/TranslateContext"
 import { AppPlanLoaderData } from "~/routes/dashboard.apps.$appId.plan/route"
 

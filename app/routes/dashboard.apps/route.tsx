@@ -5,13 +5,13 @@ import { PocketUser } from "../api.user/route"
 import styles from "./styles.css"
 import FeedbackCard, {
   links as FeedbackCardLinks,
-} from "~/components/application/FeedbackCard"
-import Card, { links as CardLinks } from "~/components/shared/Card"
+} from "~/routes/_landing.($lang).network/components/FeedbackCard"
+import Card, { links as CardLinks } from "~/components/Card"
 import CardList, {
   CardListItem,
   links as CardListLinks,
-} from "~/components/shared/CardList"
-import Loader, { links as LoaderLinks } from "~/components/shared/Loader"
+} from "~/components/CardList"
+import Loader, { links as LoaderLinks } from "~/components/Loader"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { EndpointsQuery } from "~/models/portal/sdk"

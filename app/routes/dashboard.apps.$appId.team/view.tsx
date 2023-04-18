@@ -21,9 +21,6 @@ import { Transition } from "@remix-run/react/dist/transition"
 import clsx from "clsx"
 import { useEffect, useMemo, useState } from "react"
 import styles from "./styles.css"
-import AppRadioCards, {
-  links as AppRadioCardsLinks,
-} from "~/routes/dashboard.apps.$appId/components/AppRadioCards"
 import Card from "~/components/Card"
 import ErrorIcon from "~/components/Icons/ErrorIcon"
 import Loader, { links as LoaderLinks } from "~/components/Loader"
@@ -35,6 +32,9 @@ import NotificationMessage, {
 import Table, { links as TableLinks } from "~/components/Table"
 import TextInput, { links as TextInputLinks } from "~/components/TextInput"
 import { EndpointQuery, RoleName } from "~/models/portal/sdk"
+import AppRadioCards, {
+  links as AppRadioCardsLinks,
+} from "~/routes/dashboard.apps.$appId/components/AppRadioCards"
 import { ActionData, TeamLoaderData } from "~/routes/dashboard.apps.$appId.team/route"
 
 export const links = () => {

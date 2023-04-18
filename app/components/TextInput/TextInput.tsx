@@ -6,9 +6,7 @@ import {
 } from "@pokt-foundation/pocket-blocks"
 import clsx from "clsx"
 import styles from "./styles.css"
-import CopyTextIcon, {
-  links as CopyTextIconLinks,
-} from "~/components/CopyTextIcon"
+import CopyTextIcon, { links as CopyTextIconLinks } from "~/components/CopyTextIcon"
 import RevealIcon, { links as RevealIconLinks } from "~/components/RevealIcon"
 
 /* c8 ignore start */

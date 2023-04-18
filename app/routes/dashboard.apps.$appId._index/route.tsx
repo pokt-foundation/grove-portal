@@ -2,12 +2,16 @@ import { Grid } from "@pokt-foundation/pocket-blocks"
 import { MetaFunction } from "@remix-run/node"
 import { useOutletContext } from "@remix-run/react"
 import { useMemo, useEffect } from "react"
+import { AppIdOutletContext } from "../dashboard.apps.$appId/route"
 import AppEndpointCard, {
   links as AppEndpointCardLinks,
 } from "~/components/AppEndpointCard/AppEndpointCard"
 import AppOverLimitCard, {
   links as AppOverLimitCardLinks,
 } from "~/components/AppOverSessionLimitCard"
+import AppRequestsRateCard, {
+  links as AppRequestsRateCardLinks,
+} from "~/components/AppRequestsRateCard"
 import AppUsageCurrentCard, {
   links as AppUsageCurrentCardLinks,
 } from "~/components/AppUsageCurrentCard"
@@ -16,10 +20,6 @@ import UsageChartCard, { links as UsageChartCardLinks } from "~/components/Usage
 import { useFeatureFlags } from "~/context/FeatureFlagContext"
 import { useTranslate } from "~/context/TranslateContext"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
-import { AppIdOutletContext } from "../dashboard.apps.$appId/route"
-import AppRequestsRateCard, {
-  links as AppRequestsRateCardLinks,
-} from "~/components/AppRequestsRateCard"
 
 export const links = () => {
   return [

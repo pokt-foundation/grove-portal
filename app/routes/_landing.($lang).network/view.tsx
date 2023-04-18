@@ -9,17 +9,13 @@ import RelayPerformanceCard, {
 } from "./components/RelayPerformanceCard"
 import SummaryCard, { links as SummaryCardLinks } from "./components/SummaryCard"
 import styles from "./styles.css"
-import ChainWithImage, {
-  links as ChainWithImageLinks,
-} from "~/components/ChainWithImage"
+import ChainWithImage, { links as ChainWithImageLinks } from "~/components/ChainWithImage"
+import Loader, { links as LoaderLinks } from "~/components/Loader"
+import Table, { links as TableLinks } from "~/components/Table"
+import UsageChartCard, { links as UsageChartCardLinks } from "~/components/UsageChartCard"
 import FeedbackCard, {
   links as FeedbackCardLinks,
 } from "~/routes/_landing.($lang).network/components/FeedbackCard"
-import UsageChartCard, {
-  links as UsageChartCardLinks,
-} from "~/components/UsageChartCard"
-import Loader, { links as LoaderLinks } from "~/components/Loader"
-import Table, { links as TableLinks } from "~/components/Table"
 import { NetworkLoaderData } from "~/routes/_landing.($lang).network/route"
 
 export const links = () => {

@@ -16,20 +16,20 @@ import { Form, Link, useActionData } from "@remix-run/react"
 import { useEffect, useMemo, useState } from "react"
 import { Auth0Profile } from "remix-auth-auth0"
 import styles from "./styles.css"
+import Card, { links as CardLinks } from "~/components/Card"
+import ErrorIcon from "~/components/Icons/ErrorIcon"
+import Modal, { links as ModalLinks } from "~/components/Modal"
+import NotificationMessage, {
+  NotificationType,
+  links as NotificationMessageLinks,
+} from "~/components/NotificationMessage"
+import Table, { links as TableLinks } from "~/components/Table"
+import UsageChartCard, { links as UsageCardLinks } from "~/components/UsageChartCard"
 import { EndpointsQuery, ProcessedEndpoint } from "~/models/portal/sdk"
 import { RelayMetric } from "~/models/relaymeter/relaymeter.server"
 import { dayjs } from "~/utils/dayjs"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 import { getPlanName } from "~/utils/utils"
-import ErrorIcon from "~/components/Icons/ErrorIcon"
-import NotificationMessage, {
-  NotificationType,
-  links as NotificationMessageLinks,
-} from "~/components/NotificationMessage"
-import UsageChartCard, { links as UsageCardLinks } from "~/components/UsageChartCard"
-import Table, { links as TableLinks } from "~/components/Table"
-import Card, { links as CardLinks } from "~/components/Card"
-import Modal, { links as ModalLinks } from "~/components/Modal"
 
 /* c8 ignore start */
 export const links = () => {

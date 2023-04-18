@@ -5,10 +5,10 @@ import { useEffect } from "react"
 import invariant from "tiny-invariant"
 import { AppIdOutletContext } from "../dashboard.apps.$appId/route"
 import styles from "./styles.css"
+import { initPortalClient } from "~/models/portal/portal.server"
 import NotificationsAlertForm, {
   links as NotificationsAlertFormLinks,
 } from "~/routes/dashboard.apps.$appId.notifications/components/NotificationsAlertForm/NotificationsAlertForm"
-import { initPortalClient } from "~/models/portal/portal.server"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { requireUser } from "~/utils/session.server"
 

@@ -1,9 +1,6 @@
 import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/Card"
-import CardList, {
-  CardListItem,
-  links as CardListLinks,
-} from "~/components/CardList"
+import CardList, { CardListItem, links as CardListLinks } from "~/components/CardList"
 import PoweredBy, { links as PoweredByLinks } from "~/components/PoweredBy"
 import { GetHighestBlockQuery } from "~/models/poktscan/sdk"
 

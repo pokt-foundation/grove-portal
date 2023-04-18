@@ -1,7 +1,7 @@
 import { PlasmicRootProvider, PlasmicComponent } from "@plasmicapp/loader-react"
 import { json } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
-import { PLASMIC } from "../plasmic-init"
+import { PLASMIC } from "~/models/plasmic/plasmic"
 
 export const loader = async () => {
   const plasmicData = await PLASMIC.fetchComponentData("Homepage")

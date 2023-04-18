@@ -1,5 +1,4 @@
 import {
-  initPlasmicLoader,
   PlasmicRootProvider,
   PlasmicComponent,
   ComponentRenderData,
@@ -31,7 +30,6 @@ export const meta: MetaFunction = ({ data }) => {
 }
 
 export const loader: LoaderFunction = async ({ params }) => {
-  console.log(params.plasmic)
   try {
     if (typeof params.plasmic !== "string") {
       throw new Error("Page slug must be a strong")

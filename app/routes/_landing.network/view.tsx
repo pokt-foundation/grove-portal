@@ -15,8 +15,8 @@ import Table, { links as TableLinks } from "~/components/Table"
 import UsageChartCard, { links as UsageChartCardLinks } from "~/components/UsageChartCard"
 import FeedbackCard, {
   links as FeedbackCardLinks,
-} from "~/routes/_landing.($lang).network/components/FeedbackCard"
-import { NetworkLoaderData } from "~/routes/_landing.($lang).network/route"
+} from "~/routes/_landing.network/components/FeedbackCard"
+import { NetworkLoaderData } from "~/routes/_landing.network/route"
 
 export const links = () => {
   return [

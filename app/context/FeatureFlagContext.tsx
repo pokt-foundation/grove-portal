@@ -53,7 +53,7 @@ const FeatureFlagsContextProvider = ({ children }: { children: React.ReactNode }
   }
 
   useEffect(() => {
-    if (fetcher.type === "init") {
+    if (fetcher.state === "idle" && fetcher.data === undefined) {
       fetcher.load(apiPath)
     }
   }, [fetcher])

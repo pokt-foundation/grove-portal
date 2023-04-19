@@ -2,7 +2,7 @@ import { useMemo } from "react"
 import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/Card"
 import CardList, { CardListItem, links as CardListLinks } from "~/components/CardList"
-import { LatestBlockType } from "~/routes/_landing.($lang).network/route"
+import { LatestBlockType } from "~/routes/_landing.network/route"
 
 /* c8 ignore start */
 export const links = () => {

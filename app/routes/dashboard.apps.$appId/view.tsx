@@ -18,7 +18,7 @@ import { EndpointQuery, PayPlanType, RoleName } from "~/models/portal/sdk"
 import { Stripe } from "~/models/stripe/stripe.server"
 import FeedbackCard, {
   links as FeedbackCardLinks,
-} from "~/routes/_landing.($lang).network/components/FeedbackCard"
+} from "~/routes/_landing.network/components/FeedbackCard"
 import AppPlanDetails, {
   links as AppPlanDetailsLinks,
 } from "~/routes/dashboard.apps.$appId/components/AppPlanDetails"

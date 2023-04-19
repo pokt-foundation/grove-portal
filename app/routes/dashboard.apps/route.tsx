@@ -11,7 +11,7 @@ import { initPortalClient } from "~/models/portal/portal.server"
 import { EndpointsQuery } from "~/models/portal/sdk"
 import FeedbackCard, {
   links as FeedbackCardLinks,
-} from "~/routes/_landing.($lang).network/components/FeedbackCard"
+} from "~/routes/_landing.network/components/FeedbackCard"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 import { MAX_USER_APPS } from "~/utils/pocketUtils"
 import {

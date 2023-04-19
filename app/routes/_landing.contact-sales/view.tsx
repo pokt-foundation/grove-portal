@@ -9,7 +9,7 @@ import { useTranslate } from "~/context/TranslateContext"
 import {
   ContactSalesActionData,
   ContactSalesLoaderData,
-} from "~/routes/_landing.($lang).contact-sales/route"
+} from "~/routes/_landing.contact-sales/route"
 
 /* c8 ignore start */
 export const links = () => {

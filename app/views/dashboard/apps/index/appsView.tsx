@@ -21,6 +21,9 @@ import UsageChartCard, {
 } from "~/components/application/UsageChartCard"
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import ErrorIcon from "~/components/shared/Icons/ErrorIcon"
+import MaintenanceNotification, {
+  links as MaintenanceNotificationLinks,
+} from "~/components/shared/MaintenanceNotification/MaintenanceNotification"
 import Modal, { links as ModalLinks } from "~/components/shared/Modal"
 import NotificationMessage, {
   links as NotificationMessageLinks,
@@ -31,10 +34,7 @@ import { EndpointsQuery, ProcessedEndpoint } from "~/models/portal/sdk"
 import { RelayMetric } from "~/models/relaymeter/relaymeter.server"
 import { dayjs } from "~/utils/dayjs"
 import { getRequiredClientEnvVar } from "~/utils/environment"
-import { getClientEnv } from "~/utils/environment.server"
 import { getPlanName } from "~/utils/utils"
-
-const MAINTENANCE_MODE = getClientEnv().FLAG_MAINTENANCE_MODE
 
 /* c8 ignore start */
 export const links = () => {
@@ -44,6 +44,7 @@ export const links = () => {
     ...UsageCardLinks(),
     ...ModalLinks(),
     ...NotificationMessageLinks(),
+    ...MaintenanceNotificationLinks(),
     { rel: "stylesheet", href: styles },
   ]
 }
@@ -97,6 +98,12 @@ export const AppsView = ({
   const [appTodeleteID, setAppToDeleteID] = useState("")
   const actionData = useActionData()
 
+  const handleLocallyAcceptInvite = (id: string) => {
+    setPendingEndpoints((endpoints) =>
+      endpoints ? endpoints.filter((e) => e && e.id !== id) : null,
+    )
+  }
+
   useEffect(() => {
     const error = searchParams.get("error")
     if (error === "true") {
@@ -133,12 +140,6 @@ export const AppsView = ({
       setOptionsEndpointId(pendingEndpoints[0]?.id || "")
     }
   }, [pendingEndpoints])
-
-  const handleLocallyAcceptInvite = (id: string) => {
-    setPendingEndpoints((endpoints) =>
-      endpoints ? endpoints.filter((e) => e && e.id !== id) : null,
-    )
-  }
 
   useEffect(() => {
     if (actionData) {
@@ -180,25 +181,10 @@ export const AppsView = ({
 
   return (
     <div className="pokt-apps-view">
-      {MAINTENANCE_MODE && (
-        <NotificationMessage
-          isActive
-          withCloseButton
-          css={{
-            marginBottom: "2em",
-          }}
-          title="Scheduled Maintenance Notice"
-          type="info"
-        >
-          <Text color="white" size="sm">
-            Our platform will be undergoing scheduled maintenance on 4/24/2023 at 12PM
-            EST. During this time, the Portal UI will be temporarily unavailable, and
-            users will not be able to create or edit applications, adjust security
-            settings or pay plans. However, all relay requests will continue to be
-            processed as usual.
-          </Text>
-        </NotificationMessage>
-      )}
+      <MaintenanceNotification
+        // maintenanceMode={!!getRequiredClientEnvVar("FLAG_MAINTENANCE_MODE")}
+        maintenanceMode={true}
+      />
       {notificationMessageProps.isActive && (
         <section>
           <div style={{ width: "100%", marginBottom: "1em" }}>

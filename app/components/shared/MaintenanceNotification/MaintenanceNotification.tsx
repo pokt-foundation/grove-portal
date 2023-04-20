@@ -12,9 +12,10 @@ export const links = () => {
 
 interface MaintenanceNotificationProps {
   maintenanceMode: boolean
+  css?: React.CSSProperties
 }
 
-function MaintenanceNotification({ maintenanceMode }: MaintenanceNotificationProps) {
+function MaintenanceNotification({ maintenanceMode, css }: MaintenanceNotificationProps) {
   const [isMaintenanceNotificationActive, setIsMaintenanceNotificationActive] =
     useState(true)
 
@@ -36,9 +37,7 @@ function MaintenanceNotification({ maintenanceMode }: MaintenanceNotificationPro
     <NotificationMessage
       withCloseButton
       closeButtonLabel="maintenance notification close button"
-      css={{
-        marginBottom: "2em",
-      }}
+      css={css}
       isActive={isMaintenanceNotificationActive}
       title="Scheduled Maintenance Notice"
       type="info"

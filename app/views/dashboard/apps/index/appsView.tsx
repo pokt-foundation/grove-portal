@@ -182,6 +182,9 @@ export const AppsView = ({
   return (
     <div className="pokt-apps-view">
       <MaintenanceNotification
+        css={{
+          marginBottom: "2em",
+        }}
         maintenanceMode={!!getRequiredClientEnvVar("FLAG_MAINTENANCE_MODE")}
       />
       {notificationMessageProps.isActive && (

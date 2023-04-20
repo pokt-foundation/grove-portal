@@ -61,9 +61,11 @@ export default function NetworkView({
     <>
       {state === "loading" && <Loader />}
       <Grid gutter={32}>
-        <MaintenanceNotification
-          maintenanceMode={!!getRequiredClientEnvVar("FLAG_MAINTENANCE_MODE")}
-        />
+        <Grid.Col>
+          <MaintenanceNotification
+            maintenanceMode={!!getRequiredClientEnvVar("FLAG_MAINTENANCE_MODE")}
+          />
+        </Grid.Col>
         <Grid.Col md={8}>
           <section>
             <Grid gutter={32}>

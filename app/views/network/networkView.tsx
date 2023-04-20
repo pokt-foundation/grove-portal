@@ -1,4 +1,4 @@
-import { Card, Grid } from "@pokt-foundation/pocket-blocks"
+import { Card, Grid, Text } from "@pokt-foundation/pocket-blocks"
 import { Transition } from "@remix-run/react/dist/transition"
 import styles from "./styles.css"
 import ChainWithImage, {
@@ -14,9 +14,6 @@ import NetworkRelayPerformanceCard, {
   links as NetworkRelayPerformanceCardLinks,
   numbersFormatter,
 } from "~/components/application/NetworkRelayPerformanceCard"
-// import NetworkSuccessRateCard, {
-//   links as NetworkSuccessRateCardLinks,
-// } from "~/components/application/NetworkSuccessRateCard"
 import NetworkSummaryCard, {
   links as NetworkSummaryCardLinks,
 } from "~/components/application/NetworkSummaryCard"
@@ -24,15 +21,17 @@ import UsageChartCard, {
   links as UsageChartCardLinks,
 } from "~/components/application/UsageChartCard"
 import Loader, { links as LoaderLinks } from "~/components/shared/Loader"
+import NotificationMessage from "~/components/shared/NotificationMessage"
 import Table, { links as TableLinks } from "~/components/shared/Table"
 import { NetworkLoaderData } from "~/routes/network"
-import { getServiceLevelByChain } from "~/utils/chainUtils"
+import { getClientEnv } from "~/utils/environment.server"
+
+const MAINTENANCE_MODE = getClientEnv().FLAG_MAINTENANCE_MODE
 
 export const links = () => {
   return [
     ...NetworkSummaryCardLinks(),
     ...NetworkPoktScanLatestBlockCardLinks(),
-    // ...NetworkSuccessRateCardLinks(),
     ...NetworkRelayPerformanceCardLinks(),
     ...UsageChartCardLinks(),
     ...TableLinks(),
@@ -61,6 +60,25 @@ export default function NetworkView({
     <>
       {state === "loading" && <Loader />}
       <Grid gutter={32}>
+        {MAINTENANCE_MODE && (
+          <NotificationMessage
+            isActive
+            withCloseButton
+            css={{
+              marginBottom: "2em",
+            }}
+            title="Scheduled Maintenance Notice"
+            type="info"
+          >
+            <Text color="white" size="sm">
+              Our platform will be undergoing scheduled maintenance on 4/24/2023 at 12PM
+              EST. During this time, the Portal UI will be temporarily unavailable, and
+              users will not be able to create or edit applications, adjust security
+              settings or pay plans. However, all relay requests will continue to be
+              processed as usual.
+            </Text>
+          </NotificationMessage>
+        )}
         <Grid.Col md={8}>
           <section>
             <Grid gutter={32}>

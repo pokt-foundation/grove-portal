@@ -31,7 +31,10 @@ import { EndpointsQuery, ProcessedEndpoint } from "~/models/portal/sdk"
 import { RelayMetric } from "~/models/relaymeter/relaymeter.server"
 import { dayjs } from "~/utils/dayjs"
 import { getRequiredClientEnvVar } from "~/utils/environment"
+import { getClientEnv } from "~/utils/environment.server"
 import { getPlanName } from "~/utils/utils"
+
+const MAINTENANCE_MODE = getClientEnv().FLAG_MAINTENANCE_MODE
 
 /* c8 ignore start */
 export const links = () => {
@@ -177,6 +180,25 @@ export const AppsView = ({
 
   return (
     <div className="pokt-apps-view">
+      {MAINTENANCE_MODE && (
+        <NotificationMessage
+          isActive
+          withCloseButton
+          css={{
+            marginBottom: "2em",
+          }}
+          title="Scheduled Maintenance Notice"
+          type="info"
+        >
+          <Text color="white" size="sm">
+            Our platform will be undergoing scheduled maintenance on 4/24/2023 at 12PM
+            EST. During this time, the Portal UI will be temporarily unavailable, and
+            users will not be able to create or edit applications, adjust security
+            settings or pay plans. However, all relay requests will continue to be
+            processed as usual.
+          </Text>
+        </NotificationMessage>
+      )}
       {notificationMessageProps.isActive && (
         <section>
           <div style={{ width: "100%", marginBottom: "1em" }}>

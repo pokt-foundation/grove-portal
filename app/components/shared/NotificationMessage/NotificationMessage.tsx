@@ -1,6 +1,6 @@
 import { Alert, AlertProps } from "@pokt-foundation/pocket-blocks"
 import clsx from "clsx"
-import { useMemo } from "react"
+import React, { useMemo } from "react"
 import ErrorIcon from "../Icons/ErrorIcon"
 import InfoIcon from "../Icons/InfoIcon"
 import SuccessIcon from "../Icons/SuccessIcon"
@@ -23,7 +23,8 @@ export interface NotificationType {
 type NotificationMessageProps = AlertProps & {
   type: NotificationMessageType
   isActive: boolean
-  children: React.ReactNode | React.ReactChildren
+  children: React.ReactNode | typeof React.Children
+  css?: React.CSSProperties
 }
 
 type NotificationMessageType = "success" | "info" | "warning" | "error" | "options"
@@ -47,6 +48,7 @@ const NotificationMessage = ({
   type,
   isActive,
   children,
+  css,
   ...props
 }: NotificationMessageProps) => {
   const color = useMemo(() => {
@@ -70,15 +72,16 @@ const NotificationMessage = ({
         active: isActive,
         [type]: true,
       })}
+      style={css}
     >
       <Alert
         className="pokt-alert"
         color={color}
         icon={<NotificationMessageIcon type={type} />}
-        sx={(theme) => ({
+        sx={{
           width: "100%",
           borderRadius: "8px",
-        })}
+        }}
         variant="outline"
         {...props}
       >

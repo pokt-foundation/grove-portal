@@ -24,6 +24,7 @@ process.env.AUTH0_AUDIENCE = "mock"
 process.env.AUTH0_SCOPE = "mock"
 process.env.VERCEL_URL = "localhost:3001"
 process.env.GODMODE_ACCOUNTS = "god"
+process.env.FLAG_MAINTENANCE_MODE = "true"
 
 // CLIENT VARIABLE MOCKS:
 // reference through ENV varibale not process.env

@@ -11,7 +11,7 @@ export const links = () => {
 }
 
 interface MaintenanceNotificationProps {
-  maintenanceMode: boolean
+  maintenanceMode: string
   css?: React.CSSProperties
 }
 
@@ -31,7 +31,7 @@ function MaintenanceNotification({ maintenanceMode, css }: MaintenanceNotificati
     }
   }, [])
 
-  if (!maintenanceMode) return null
+  if (maintenanceMode === "false") return null
 
   return (
     <NotificationMessage

@@ -63,7 +63,7 @@ export default function NetworkView({
       <Grid gutter={32}>
         <Grid.Col>
           <MaintenanceNotification
-            maintenanceMode={!!getRequiredClientEnvVar("FLAG_MAINTENANCE_MODE")}
+            maintenanceMode={getRequiredClientEnvVar("FLAG_MAINTENANCE_MODE")}
           />
         </Grid.Col>
         <Grid.Col md={8}>

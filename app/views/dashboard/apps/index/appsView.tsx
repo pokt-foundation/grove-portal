@@ -185,7 +185,7 @@ export const AppsView = ({
         css={{
           marginBottom: "2em",
         }}
-        maintenanceMode={!!getRequiredClientEnvVar("FLAG_MAINTENANCE_MODE")}
+        maintenanceMode={getRequiredClientEnvVar("FLAG_MAINTENANCE_MODE")}
       />
       {notificationMessageProps.isActive && (
         <section>

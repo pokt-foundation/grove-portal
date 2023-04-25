@@ -1,7 +1,7 @@
 import { UserLBOriginBucket } from "@pokt-foundation/portal-types"
 import { useMemo } from "react"
 import styles from "./styles.css"
-import Table, { links as TableLinks } from "~/components/shared/Table"
+import Table, { links as TableLinks } from "~/components/Table"
 import { useTranslate } from "~/context/TranslateContext"
 
 /* c8 ignore start */

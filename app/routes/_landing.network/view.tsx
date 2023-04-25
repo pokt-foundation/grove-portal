@@ -18,11 +18,11 @@ import FeedbackCard, {
 import UsageChartCard, {
   links as UsageChartCardLinks,
 } from "~/components/application/UsageChartCard"
-import Loader, { links as LoaderLinks } from "~/components/shared/Loader"
+import Loader, { links as LoaderLinks } from "~/components/Loader"
 import MaintenanceNotification, {
   links as MaintenanceNotificationLinks,
-} from "~/components/shared/MaintenanceNotification/MaintenanceNotification"
-import Table, { links as TableLinks } from "~/components/shared/Table"
+} from "~/components/MaintenanceNotification/MaintenanceNotification"
+import Table, { links as TableLinks } from "~/components/Table"
 import { NetworkLoaderData } from "~/routes/_landing.network/route"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 

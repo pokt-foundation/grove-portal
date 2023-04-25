@@ -1,11 +1,11 @@
 import { Button, Group } from "@pokt-foundation/pocket-blocks"
 import { Form, useLocation } from "@remix-run/react"
 import styles from "./styles.css"
-import { Card, links as CardLinks } from "~/components/shared/Card"
+import { Card, links as CardLinks } from "~/components/Card"
 import CardList, {
   CardListItem,
   links as CardListLinks,
-} from "~/components/shared/CardList"
+} from "~/components/CardList"
 import { useTranslate } from "~/context/TranslateContext"
 import { Stripe } from "~/models/stripe/stripe.server"
 import { dayjs } from "~/utils/dayjs"

@@ -1,10 +1,10 @@
 import { Button, Group } from "@pokt-foundation/pocket-blocks"
 import styles from "./styles.css"
-import { Card, links as CardLinks } from "~/components/shared/Card"
+import { Card, links as CardLinks } from "~/components/Card"
 import CardList, {
   CardListItem,
   links as CardListLinks,
-} from "~/components/shared/CardList"
+} from "~/components/CardList"
 import { useTranslate } from "~/context/TranslateContext"
 import { RelayMetric } from "~/models/relaymeter/relaymeter.server"
 import { Stripe } from "~/models/stripe/stripe.server"

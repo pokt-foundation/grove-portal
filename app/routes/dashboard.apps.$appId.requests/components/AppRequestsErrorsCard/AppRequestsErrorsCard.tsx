@@ -6,11 +6,11 @@ import {
 } from "@pokt-foundation/pocket-blocks"
 import { useMemo } from "react"
 import styles from "./styles.css"
-import Card, { links as CardLinks } from "~/components/shared/Card"
+import Card, { links as CardLinks } from "~/components/Card"
 import CopyTextIcon, {
   links as CopyTextIconLinks,
-} from "~/components/shared/CopyTextIcon"
-import Table, { links as TableLinks } from "~/components/shared/Table"
+} from "~/components/CopyTextIcon"
+import Table, { links as TableLinks } from "~/components/Table"
 import { useTranslate } from "~/context/TranslateContext"
 import { ErrorMetric } from "~/models/errormetrics/errormetrics.server"
 

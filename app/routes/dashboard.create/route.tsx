@@ -19,8 +19,8 @@ import AppRadioCards, {
 import CalculateYourPricing, {
   links as CalculateYourPricingLinks,
 } from "./components/CalculateYourPricing/CalculateYourPricing"
-import Card, { links as CardLinks } from "~/components/shared/Card"
-import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
+import Card, { links as CardLinks } from "~/components/Card"
+import TextInput, { links as TextInputLinks } from "~/components/TextInput"
 import { useFeatureFlags } from "~/context/FeatureFlagContext"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { PayPlanType } from "~/models/portal/sdk"

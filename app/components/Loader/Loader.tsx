@@ -1,7 +1,7 @@
 import styles from "./styles.css"
 import AnimatedLogo, {
   links as AnimatedLogoLinks,
-} from "~/components/shared/AnimatedLogo"
+} from "~/components/AnimatedLogo"
 
 /* c8 ignore start */
 export const links = () => {

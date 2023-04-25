@@ -16,8 +16,8 @@ import { links as ChainsDropdownLinks } from "~/components/application/ChainsDro
 import ChainWithImage, {
   links as ChainWithImageLinks,
 } from "~/components/application/ChainWithImage"
-import Card, { links as CardLinks } from "~/components/shared/Card"
-import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
+import Card, { links as CardLinks } from "~/components/Card"
+import TextInput, { links as TextInputLinks } from "~/components/TextInput"
 import { useTranslate } from "~/context/TranslateContext"
 import {
   BlockchainsQuery,

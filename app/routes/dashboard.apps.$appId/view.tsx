@@ -17,8 +17,8 @@ import FeedbackCard, {
   links as FeedbackCardLinks,
 } from "~/components/application/FeedbackCard"
 import MemberRoleCard, { links as MemberRoleCardLinks } from "./components/MemberRoleCard"
-import Modal, { links as ModalLinks, ModalCTA } from "~/components/shared/Modal"
-import Nav, { links as NavLinks } from "~/components/shared/Nav"
+import Modal, { links as ModalLinks, ModalCTA } from "~/components/Modal"
+import Nav, { links as NavLinks } from "~/components/Nav"
 import { useFeatureFlags } from "~/context/FeatureFlagContext"
 import { useTranslate } from "~/context/TranslateContext"
 import { EndpointQuery, PayPlanType, RoleName } from "~/models/portal/sdk"

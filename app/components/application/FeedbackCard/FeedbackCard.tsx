@@ -1,6 +1,6 @@
 import styles from "./styles.css"
-import Card, { links as CardLinks } from "~/components/shared/Card"
-import IconDiscord from "~/components/shared/Icons/IconDiscord"
+import Card, { links as CardLinks } from "~/components/Card"
+import IconDiscord from "~/components/Icons/IconDiscord"
 import { useTranslate } from "~/context/TranslateContext"
 
 /* c8 ignore start */

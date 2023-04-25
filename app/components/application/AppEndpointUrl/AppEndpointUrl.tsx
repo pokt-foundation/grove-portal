@@ -1,7 +1,7 @@
 import styles from "./styles.css"
 import ChainWithImage from "~/components/application/ChainWithImage"
-import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
-import { InputProps } from "~/components/shared/TextInput"
+import TextInput, { links as TextInputLinks } from "~/components/TextInput"
+import { InputProps } from "~/components/TextInput"
 import { Blockchain } from "~/models/portal/sdk"
 
 /* c8 ignore start */

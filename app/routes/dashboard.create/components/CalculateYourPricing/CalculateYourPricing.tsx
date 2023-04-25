@@ -1,8 +1,8 @@
 import { Button, useMantineTheme } from "@pokt-foundation/pocket-blocks"
 import React, { useMemo, useState } from "react"
 import styles from "./styles.css"
-import Modal, { links as ModalLinks, ModalCTA } from "~/components/shared/Modal"
-import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
+import Modal, { links as ModalLinks, ModalCTA } from "~/components/Modal"
+import TextInput, { links as TextInputLinks } from "~/components/TextInput"
 import { useTranslate } from "~/context/TranslateContext"
 import { FREE_TIER_MAX_RELAYS } from "~/utils/pocketUtils"
 

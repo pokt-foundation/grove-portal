@@ -8,7 +8,7 @@ import {
 import { Form, useNavigation } from "@remix-run/react"
 import { useEffect, useRef } from "react"
 import styles from "./styles.css"
-import Card, { links as CardLinks } from "~/components/shared/Card"
+import Card, { links as CardLinks } from "~/components/Card"
 import { useTranslate } from "~/context/TranslateContext"
 import { ContactSalesLoaderData } from "~/routes/_landing.contact-sales/route"
 

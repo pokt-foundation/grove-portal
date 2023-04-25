@@ -19,17 +19,17 @@ import styles from "./styles.css"
 import UsageChartCard, {
   links as UsageCardLinks,
 } from "~/components/application/UsageChartCard"
-import Card, { links as CardLinks } from "~/components/shared/Card"
-import ErrorIcon from "~/components/shared/Icons/ErrorIcon"
+import Card, { links as CardLinks } from "~/components/Card"
+import ErrorIcon from "~/components/Icons/ErrorIcon"
 import MaintenanceNotification, {
   links as MaintenanceNotificationLinks,
-} from "~/components/shared/MaintenanceNotification/MaintenanceNotification"
-import Modal, { links as ModalLinks } from "~/components/shared/Modal"
+} from "~/components/MaintenanceNotification/MaintenanceNotification"
+import Modal, { links as ModalLinks } from "~/components/Modal"
 import NotificationMessage, {
   links as NotificationMessageLinks,
   NotificationType,
-} from "~/components/shared/NotificationMessage"
-import Table, { links as TableLinks } from "~/components/shared/Table"
+} from "~/components/NotificationMessage"
+import Table, { links as TableLinks } from "~/components/Table"
 import { EndpointsQuery, ProcessedEndpoint } from "~/models/portal/sdk"
 import { RelayMetric } from "~/models/relaymeter/relaymeter.server"
 import { dayjs } from "~/utils/dayjs"

@@ -6,7 +6,7 @@ import {
 } from "@pokt-foundation/pocket-blocks"
 import { useMemo } from "react"
 import styles from "./styles.css"
-import { Card, links as CardLinks } from "~/components/shared/Card"
+import { Card, links as CardLinks } from "~/components/Card"
 import { RelayMetric } from "~/models/relaymeter/relaymeter.server"
 import { dayjs } from "~/utils/dayjs"
 

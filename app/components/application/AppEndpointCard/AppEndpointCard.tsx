@@ -7,7 +7,7 @@ import AppEndpointUrl, {
 import ChainWithImage, {
   links as ChainWithImageLinks,
 } from "~/components/application/ChainWithImage"
-import { Card, links as CardLinks } from "~/components/shared/Card"
+import { Card, links as CardLinks } from "~/components/Card"
 import { useUser } from "~/context/UserContext"
 import { Blockchain, BlockchainsQuery, EndpointQuery } from "~/models/portal/sdk"
 import { ChainMetadata, prefixFromChainId } from "~/utils/chainUtils"

@@ -3,7 +3,7 @@ import { json, LinksFunction, LoaderFunction, MetaFunction } from "@remix-run/no
 import { useLoaderData } from "@remix-run/react"
 import { getMDXComponent } from "mdx-bundler/client"
 import { useEffect, useMemo } from "react"
-import Remark, { links as RemarkLinks } from "~/components/shared/Remark"
+import Remark, { links as RemarkLinks } from "~/components/Remark"
 import { initCmsClient } from "~/models/cms/cms.server"
 import { getDocsQuery } from "~/models/cms/sdk"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"

@@ -5,7 +5,7 @@ import ChainWithImage, { links as ChainWithImageLinks } from "../ChainWithImage"
 // import Dropdown, {
 //   links as DropdownLinks,
 // } from "~/components/shared/Dropdown"
-import TextInput from "~/components/shared/TextInput"
+import TextInput from "~/components/TextInput"
 import { BlockchainsQuery } from "~/models/portal/sdk"
 
 /* c8 ignore start */

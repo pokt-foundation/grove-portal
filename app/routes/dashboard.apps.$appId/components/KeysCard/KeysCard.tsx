@@ -1,8 +1,8 @@
 import { Space } from "@pokt-foundation/pocket-blocks"
 import { useState } from "react"
 import styles from "./styles.css"
-import { Card, links as CardLinks } from "~/components/Card"
-import TextInput, { links as TextInputLinks } from "~/components/TextInput"
+import { Card, links as CardLinks } from "~/components/shared/Card"
+import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 
 /* c8 ignore start */
 export const links = () => {

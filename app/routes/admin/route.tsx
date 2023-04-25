@@ -4,7 +4,7 @@ import { NavLink, Outlet } from "@remix-run/react"
 import clsx from "clsx"
 import { Auth0Profile } from "remix-auth-auth0"
 import styles from "./styles.css"
-import Card, { links as CardLinks } from "~/components/Card"
+import Card, { links as CardLinks } from "~/components/shared/Card"
 import { requireAdmin } from "~/utils/session.server"
 
 export const links: LinksFunction = () => [

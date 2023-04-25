@@ -1,7 +1,10 @@
 import { useMemo } from "react"
 import styles from "./styles.css"
-import { Card, links as CardLinks } from "~/components/Card"
-import CardList, { CardListItem, links as CardListLinks } from "~/components/CardList"
+import { Card, links as CardLinks } from "~/components/shared/Card"
+import CardList, {
+  CardListItem,
+  links as CardListLinks,
+} from "~/components/shared/CardList"
 import { LatestBlockType } from "~/routes/_landing.network/route"
 
 /* c8 ignore start */

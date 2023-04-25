@@ -9,22 +9,22 @@ import LegacyBannerCard, {
 } from "./components/LegacyBannerCard"
 import StopRemoveApp, { links as StopRemoveAppLinks } from "./components/StopRemoveApp"
 import styles from "./styles.css"
-import AppName from "~/components/AppName"
-import Modal, { links as ModalLinks, ModalCTA } from "~/components/Modal"
-import Nav, { links as NavLinks } from "~/components/Nav"
+import AppName from "~/components/application/AppName"
+import AppPlanDetails, {
+  links as AppPlanDetailsLinks,
+} from "~/components/application/AppPlanDetails"
+import FeedbackCard, {
+  links as FeedbackCardLinks,
+} from "~/components/application/FeedbackCard"
+import MemberRoleCard, {
+  links as MemberRoleCardLinks,
+} from "~/components/application/MemberRoleCard"
+import Modal, { links as ModalLinks, ModalCTA } from "~/components/shared/Modal"
+import Nav, { links as NavLinks } from "~/components/shared/Nav"
 import { useFeatureFlags } from "~/context/FeatureFlagContext"
 import { useTranslate } from "~/context/TranslateContext"
 import { EndpointQuery, PayPlanType, RoleName } from "~/models/portal/sdk"
 import { Stripe } from "~/models/stripe/stripe.server"
-import FeedbackCard, {
-  links as FeedbackCardLinks,
-} from "~/routes/_landing.network/components/FeedbackCard"
-import AppPlanDetails, {
-  links as AppPlanDetailsLinks,
-} from "~/routes/dashboard.apps.$appId/components/AppPlanDetails"
-import MemberRoleCard, {
-  links as MemberRoleCardLinks,
-} from "~/routes/dashboard.apps.$appId/components/MemberRoleCard"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 import { getPlanName } from "~/utils/utils"

@@ -1,6 +1,9 @@
 import { LoaderFunction, MetaFunction } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
-import NotFound404, { seo_404_description, seo_404_title } from "~/components/NotFound404"
+import NotFound404, {
+  seo_404_description,
+  seo_404_title,
+} from "~/components/shared/NotFound404"
 import { seo_title_append } from "~/utils/meta"
 
 type LoaderData = {

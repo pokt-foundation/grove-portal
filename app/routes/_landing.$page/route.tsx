@@ -1,7 +1,10 @@
 import { json, LoaderFunction, MetaFunction } from "@remix-run/node"
 import { useCatch, useLoaderData } from "@remix-run/react"
-import NotFound404, { seo_404_title, seo_404_description } from "~/components/NotFound404"
-import Remark from "~/components/Remark"
+import NotFound404, {
+  seo_404_title,
+  seo_404_description,
+} from "~/components/shared/NotFound404"
+import Remark from "~/components/shared/Remark"
 import { initCmsClient } from "~/models/cms/cms.server"
 import { seo_title_append } from "~/utils/meta"
 

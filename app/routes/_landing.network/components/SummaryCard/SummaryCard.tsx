@@ -1,5 +1,5 @@
 import styles from "./styles.css"
-import { Card, links as CardLinks } from "~/components/Card"
+import { Card, links as CardLinks } from "~/components/shared/Card"
 
 /* c8 ignore start */
 export const links = () => {

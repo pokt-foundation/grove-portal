@@ -16,15 +16,17 @@ import { Form, Link, useActionData } from "@remix-run/react"
 import { useEffect, useMemo, useState } from "react"
 import { Auth0Profile } from "remix-auth-auth0"
 import styles from "./styles.css"
-import Card, { links as CardLinks } from "~/components/Card"
-import ErrorIcon from "~/components/Icons/ErrorIcon"
-import Modal, { links as ModalLinks } from "~/components/Modal"
+import UsageChartCard, {
+  links as UsageCardLinks,
+} from "~/components/application/UsageChartCard"
+import Card, { links as CardLinks } from "~/components/shared/Card"
+import ErrorIcon from "~/components/shared/Icons/ErrorIcon"
+import Modal, { links as ModalLinks } from "~/components/shared/Modal"
 import NotificationMessage, {
-  NotificationType,
   links as NotificationMessageLinks,
-} from "~/components/NotificationMessage"
-import Table, { links as TableLinks } from "~/components/Table"
-import UsageChartCard, { links as UsageCardLinks } from "~/components/UsageChartCard"
+  NotificationType,
+} from "~/components/shared/NotificationMessage"
+import Table, { links as TableLinks } from "~/components/shared/Table"
 import { EndpointsQuery, ProcessedEndpoint } from "~/models/portal/sdk"
 import { RelayMetric } from "~/models/relaymeter/relaymeter.server"
 import { dayjs } from "~/utils/dayjs"

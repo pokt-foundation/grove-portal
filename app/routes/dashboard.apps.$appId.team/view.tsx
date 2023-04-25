@@ -21,21 +21,21 @@ import { Transition } from "@remix-run/react/dist/transition"
 import clsx from "clsx"
 import { useEffect, useMemo, useState } from "react"
 import styles from "./styles.css"
-import Card from "~/components/Card"
-import ErrorIcon from "~/components/Icons/ErrorIcon"
-import Loader, { links as LoaderLinks } from "~/components/Loader"
-import Modal from "~/components/Modal"
+import AppRadioCards, {
+  links as AppRadioCardsLinks,
+} from "~/components/application/AppRadioCards"
+import Card from "~/components/shared/Card"
+import ErrorIcon from "~/components/shared/Icons/ErrorIcon"
+import Loader, { links as LoaderLinks } from "~/components/shared/Loader"
+import Modal from "~/components/shared/Modal"
 import NotificationMessage, {
   links as NotificationMessageLinks,
   NotificationType,
-} from "~/components/NotificationMessage"
-import Table, { links as TableLinks } from "~/components/Table"
-import TextInput, { links as TextInputLinks } from "~/components/TextInput"
+} from "~/components/shared/NotificationMessage"
+import Table, { links as TableLinks } from "~/components/shared/Table"
+import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { EndpointQuery, RoleName } from "~/models/portal/sdk"
-import AppRadioCards, {
-  links as AppRadioCardsLinks,
-} from "~/routes/dashboard.apps.$appId/components/AppRadioCards"
-import { ActionData, TeamLoaderData } from "~/routes/dashboard.apps.$appId.team/route"
+import { ActionData, TeamLoaderData } from "./route"
 
 export const links = () => {
   return [

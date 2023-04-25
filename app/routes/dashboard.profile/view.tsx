@@ -4,8 +4,8 @@ import { Form } from "@remix-run/react"
 import { useEffect, useState } from "react"
 import { Auth0Profile } from "remix-auth-auth0"
 import styles from "./styles.css"
-import Modal, { links as ModalLinks } from "~/components/Modal"
-import TextInput, { links as TextInputLinks } from "~/components/TextInput"
+import Modal, { links as ModalLinks } from "~/components/shared/Modal"
+import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 
 export const SUCCESSFUL_CHANGE_PASSWORD_MSG =
   "We've just sent you an email to reset your password."

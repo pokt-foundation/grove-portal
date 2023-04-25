@@ -1,8 +1,8 @@
 import { Accordion } from "@pokt-foundation/pocket-blocks"
 import { LinksFunction } from "@remix-run/node"
 import styles from "./styles.css"
-import Remark, { links as RemarkLinks } from "~/components/Remark"
-import Text, { links as TextLinks } from "~/components/Text"
+import Remark, { links as RemarkLinks } from "~/components/shared/Remark"
+import Text, { links as TextLinks } from "~/components/shared/Text"
 import { useTranslate } from "~/context/TranslateContext"
 import { questions } from "~/models/cms/sdk"
 

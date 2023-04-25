@@ -2,8 +2,8 @@ import { Button, Container, Select } from "@pokt-foundation/pocket-blocks"
 import { LinksFunction } from "@remix-run/node"
 import { useFetcher } from "@remix-run/react"
 import { useState } from "react"
-import Card, { links as CardLinks } from "~/components/Card"
-import TextInput, { links as TextInputLinks } from "~/components/TextInput"
+import Card, { links as CardLinks } from "~/components/shared/Card"
+import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { PayPlanType } from "~/models/portal/sdk"
 
 export const links: LinksFunction = () => [...CardLinks(), ...TextInputLinks()]

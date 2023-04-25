@@ -16,7 +16,7 @@ export const links = () => {
 }
 /* c8 ignore stop */
 
-interface PlanLatestInvoiceCardProps {
+interface AppPlanOverviewCardProps {
   subscription: Stripe.Subscription
   usageRecords: Stripe.ApiList<Stripe.UsageRecordSummary>
 }
@@ -24,7 +24,7 @@ interface PlanLatestInvoiceCardProps {
 export default function AppPlanOverviewCard({
   subscription,
   usageRecords,
-}: PlanLatestInvoiceCardProps) {
+}: AppPlanOverviewCardProps) {
   const { t } = useTranslate()
   const location = useLocation()
 

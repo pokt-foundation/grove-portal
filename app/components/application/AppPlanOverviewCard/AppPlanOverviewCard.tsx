@@ -21,7 +21,7 @@ interface PlanLatestInvoiceCardProps {
   usageRecords: Stripe.ApiList<Stripe.UsageRecordSummary>
 }
 
-export default function AppPlanLatestInvoiceCard({
+export default function AppPlanOverviewCard({
   subscription,
   usageRecords,
 }: PlanLatestInvoiceCardProps) {

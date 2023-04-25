@@ -9,7 +9,7 @@ export const links = () => {
 }
 /* c8 ignore stop */
 
-export default function FeedbackBox({ className }: { className?: string }) {
+export default function FeedbackCard({ className }: { className?: string }) {
   const {
     t: { feedback },
   } = useTranslate()

@@ -54,13 +54,13 @@ export default function AppRequestsRateCard({
 
   const getItemColor = (successRateDelta: string | number) => {
     if (Math.abs(successRateDelta as number) === 0) return undefined
-    if (successRateDelta > 0) return "success"
+    if (parseInt(successRateDelta.toString()) > 0) return "success"
     return "error"
   }
 
   const getItemIcon = (successRateDelta: string | number) => {
     if (Math.abs(successRateDelta as number) === 0) return undefined
-    if (successRateDelta > 0) return ArrowSuccess
+    if (parseInt(successRateDelta.toString()) > 0) return ArrowSuccess
     return ArrowError
   }
 

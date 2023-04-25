@@ -2,7 +2,6 @@ import { LoaderFunction, json, MetaFunction } from "@remix-run/node"
 import { useLoaderData, useNavigation } from "@remix-run/react"
 import { useEffect } from "react"
 import NetworkView, { links as NetworkViewLinks } from "./view"
-import { Block } from "~/models/indexer/sdk"
 import { initPoktScanClient } from "~/models/poktscan/poktscan.server"
 import { GetChainsTotalsQuery, GetHighestBlockQuery } from "~/models/poktscan/sdk"
 import { initPortalClient } from "~/models/portal/portal.server"
@@ -24,15 +23,6 @@ export const meta: MetaFunction = () => {
   return {
     title: `Pocket Network Summary ${seo_title_append}`,
   }
-}
-
-export type LatestBlockType = Block & {
-  // took: number
-  total_accounts: number
-  total_apps: number
-  total_nodes: number
-  // total_relays_completed: number
-  total_txs: number
 }
 
 export type NetworkLoaderData = {

@@ -12,13 +12,13 @@ import invariant from "tiny-invariant"
 import styles from "./styles.css"
 import AppPlansOverview, {
   links as AppPlansOverviewLinks,
-} from "~/components/application/AppPlansOverview"
+} from "./components/AppPlansOverview"
 import AppRadioCards, {
   links as AppRadioCardsLinks,
 } from "~/components/application/AppRadioCards"
 import CalculateYourPricing, {
   links as CalculateYourPricingLinks,
-} from "~/components/application/CalculateYourPricing/CalculateYourPricing"
+} from "./components/CalculateYourPricing/CalculateYourPricing"
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
 import { useFeatureFlags } from "~/context/FeatureFlagContext"

@@ -3,13 +3,10 @@ import { useEffect, useState } from "react"
 import styles from "./styles.css"
 import ContactSalesForm, {
   links as ContactSalesFormLinks,
-} from "~/components/application/ContactSalesForm"
+} from "./components/ContactSalesForm"
 import Modal, { links as ModalLinks } from "~/components/shared/Modal"
 import { useTranslate } from "~/context/TranslateContext"
-import {
-  ContactSalesActionData,
-  ContactSalesLoaderData,
-} from "~/routes/_landing.contact-sales/route"
+import { ContactSalesActionData, ContactSalesLoaderData } from "./route"
 
 /* c8 ignore start */
 export const links = () => {

@@ -16,9 +16,7 @@ import AppPlanDetails, {
 import FeedbackCard, {
   links as FeedbackCardLinks,
 } from "~/components/application/FeedbackCard"
-import MemberRoleCard, {
-  links as MemberRoleCardLinks,
-} from "~/components/application/MemberRoleCard"
+import MemberRoleCard, { links as MemberRoleCardLinks } from "./components/MemberRoleCard"
 import Modal, { links as ModalLinks, ModalCTA } from "~/components/shared/Modal"
 import Nav, { links as NavLinks } from "~/components/shared/Nav"
 import { useFeatureFlags } from "~/context/FeatureFlagContext"

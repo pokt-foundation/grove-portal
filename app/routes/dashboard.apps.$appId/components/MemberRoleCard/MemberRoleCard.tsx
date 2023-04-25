@@ -1,5 +1,5 @@
 import { Group, Text } from "@pokt-foundation/pocket-blocks"
-import Card from "../../shared/Card"
+import Card from "../../../../components/shared/Card"
 import styles from "./styles.css"
 import { RoleName } from "~/models/portal/sdk"
 

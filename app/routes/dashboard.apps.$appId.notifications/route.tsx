@@ -8,7 +8,7 @@ import styles from "./styles.css"
 import { initPortalClient } from "~/models/portal/portal.server"
 import NotificationsAlertForm, {
   links as NotificationsAlertFormLinks,
-} from "~/components/application/NotificationsAlertForm/NotificationsAlertForm"
+} from "./components/NotificationsAlertForm/NotificationsAlertForm"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { requireUser } from "~/utils/session.server"
 

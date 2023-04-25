@@ -3,11 +3,11 @@ import { Form, useLocation } from "@remix-run/react"
 import { useTranslate } from "~/context/TranslateContext"
 import AppPlanLatestInvoiceCard, {
   links as AppPlanLatestInvoiceCardLinks,
-} from "~/components/application/AppPlanLatestInvoiceCard"
+} from "./components/AppPlanLatestInvoiceCard"
 import AppPlanOverviewCard, {
   links as AppPlanOverviewCardLinks,
-} from "~/components/application/AppPlanOverviewCard"
-import { AppPlanLoaderData } from "~/routes/dashboard.apps.$appId.plan/route"
+} from "./components/AppPlanOverviewCard"
+import { AppPlanLoaderData } from "./route"
 
 /* c8 ignore start */
 export const links = () => {

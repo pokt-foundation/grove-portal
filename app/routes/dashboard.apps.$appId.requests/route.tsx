@@ -3,20 +3,18 @@ import { json, LoaderFunction, MetaFunction } from "@remix-run/node"
 import { useLoaderData, useOutletContext } from "@remix-run/react"
 import { useEffect } from "react"
 import invariant from "tiny-invariant"
-import { AppIdLoaderData, AppIdOutletContext } from "../dashboard.apps.$appId/route"
+import { AppIdOutletContext } from "../dashboard.apps.$appId/route"
 import styles from "./styles.css"
 import AppRequestsByOriginCard, {
   links as AppRequestsByOriginCardLinks,
-} from "~/components/application/AppRequestsByOriginCard"
+} from "./components/AppRequestsByOriginCard"
 import AppRequestsErrorsCard, {
   links as AppRequestsErrorsCardLinks,
-} from "~/components/application/AppRequestsErrorsCard"
+} from "./components/AppRequestsErrorsCard"
 import AppRequestsRateCard, {
   links as AppRequestsRateCardLinks,
 } from "~/components/application/AppRequestsRateCard"
-import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { ErrorMetric, getErrorMetrics } from "~/models/errormetrics/errormetrics.server"
-// import { getLBOriginClassification } from "~/models/portal.server"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { requireUser } from "~/utils/session.server"
@@ -63,8 +61,6 @@ export const loader: LoaderFunction = async ({ request, params, context }) => {
     }
 
     errorMetrics = await getErrorMetrics(publicKeys)
-    // const originResponse = await getLBOriginClassification(params.appId, request)
-    // originClassification = originResponse.origin_classification
   } catch (error) {}
 
   return json<AppIdRequestsLoaderData>(

@@ -3,7 +3,6 @@ import { json, LinksFunction, LoaderFunction, MetaFunction } from "@remix-run/no
 import { useLoaderData } from "@remix-run/react"
 import { getMDXComponent } from "mdx-bundler/client"
 import { useEffect, useMemo } from "react"
-import styles from "./styles.css"
 import Remark, { links as RemarkLinks } from "~/components/shared/Remark"
 import { initCmsClient } from "~/models/cms/cms.server"
 import { getDocsQuery } from "~/models/cms/sdk"
@@ -17,7 +16,7 @@ export const meta: MetaFunction = ({ params }) => {
 }
 
 export const links: LinksFunction = () => {
-  return [...RemarkLinks(), { rel: "stylesheet", href: styles }]
+  return [...RemarkLinks()]
 }
 
 type DocLoaderData = {

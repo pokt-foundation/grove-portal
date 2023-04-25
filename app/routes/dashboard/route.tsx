@@ -1,7 +1,7 @@
 import { Box, Button, Center, Group, Text, Title } from "@pokt-foundation/pocket-blocks"
 import { LinksFunction, LoaderFunction } from "@remix-run/node"
 import { Outlet, useCatch, Link } from "@remix-run/react"
-import styles from "~/styles/dashboard.css"
+import styles from "./styles.css"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 import { requireUserProfile } from "~/utils/session.server"
 

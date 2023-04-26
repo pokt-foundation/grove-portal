@@ -1,7 +1,5 @@
 import styles from "./styles.css"
-import AnimatedLogo, {
-  links as AnimatedLogoLinks,
-} from "~/components/AnimatedLogo"
+import AnimatedLogo, { links as AnimatedLogoLinks } from "~/components/AnimatedLogo"
 
 /* c8 ignore start */
 export const links = () => {

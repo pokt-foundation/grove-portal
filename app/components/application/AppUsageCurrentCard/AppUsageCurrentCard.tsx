@@ -2,10 +2,7 @@ import { Grid } from "@pokt-foundation/pocket-blocks"
 import { UserLBTotalRelaysResponse } from "@pokt-foundation/portal-types"
 import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/Card"
-import CardList, {
-  CardListItem,
-  links as CardListLinks,
-} from "~/components/CardList"
+import CardList, { CardListItem, links as CardListLinks } from "~/components/CardList"
 import { useTranslate } from "~/context/TranslateContext"
 import { commify } from "~/utils/formattingUtils"
 

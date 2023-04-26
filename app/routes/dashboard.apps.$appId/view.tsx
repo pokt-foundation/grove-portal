@@ -7,6 +7,7 @@ import KeysCard, { links as KeysCardLinks } from "./components/KeysCard"
 import LegacyBannerCard, {
   links as LegacyBannerCardLinks,
 } from "./components/LegacyBannerCard"
+import MemberRoleCard, { links as MemberRoleCardLinks } from "./components/MemberRoleCard"
 import StopRemoveApp, { links as StopRemoveAppLinks } from "./components/StopRemoveApp"
 import styles from "./styles.css"
 import AppName from "~/components/application/AppName"
@@ -16,7 +17,6 @@ import AppPlanDetails, {
 import FeedbackCard, {
   links as FeedbackCardLinks,
 } from "~/components/application/FeedbackCard"
-import MemberRoleCard, { links as MemberRoleCardLinks } from "./components/MemberRoleCard"
 import Modal, { links as ModalLinks, ModalCTA } from "~/components/Modal"
 import Nav, { links as NavLinks } from "~/components/Nav"
 import { useFeatureFlags } from "~/context/FeatureFlagContext"

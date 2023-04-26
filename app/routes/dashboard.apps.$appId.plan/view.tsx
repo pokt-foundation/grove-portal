@@ -1,6 +1,5 @@
 import { Button, Card } from "@pokt-foundation/pocket-blocks"
 import { Form, useLocation } from "@remix-run/react"
-import { useTranslate } from "~/context/TranslateContext"
 import AppPlanLatestInvoiceCard, {
   links as AppPlanLatestInvoiceCardLinks,
 } from "./components/AppPlanLatestInvoiceCard"
@@ -8,6 +7,7 @@ import AppPlanOverviewCard, {
   links as AppPlanOverviewCardLinks,
 } from "./components/AppPlanOverviewCard"
 import { AppPlanLoaderData } from "./route"
+import { useTranslate } from "~/context/TranslateContext"
 
 /* c8 ignore start */
 export const links = () => {

@@ -1,7 +1,7 @@
 import { Button, IconPlus, Menu, MenuProps } from "@pokt-foundation/pocket-blocks"
 import React, { SyntheticEvent, useState } from "react"
-import styles from "./styles.css"
 import ChainWithImage, { links as ChainWithImageLinks } from "../ChainWithImage"
+import styles from "./styles.css"
 // import Dropdown, {
 //   links as DropdownLinks,
 // } from "~/components/shared/Dropdown"

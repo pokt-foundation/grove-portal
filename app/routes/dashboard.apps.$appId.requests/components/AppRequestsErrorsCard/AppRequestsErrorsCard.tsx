@@ -7,9 +7,7 @@ import {
 import { useMemo } from "react"
 import styles from "./styles.css"
 import Card, { links as CardLinks } from "~/components/Card"
-import CopyTextIcon, {
-  links as CopyTextIconLinks,
-} from "~/components/CopyTextIcon"
+import CopyTextIcon, { links as CopyTextIconLinks } from "~/components/CopyTextIcon"
 import Table, { links as TableLinks } from "~/components/Table"
 import { useTranslate } from "~/context/TranslateContext"
 import { ErrorMetric } from "~/models/errormetrics/errormetrics.server"

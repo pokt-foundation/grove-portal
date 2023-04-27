@@ -46,11 +46,5 @@ describe("landing page tests", () => {
       .findByRole("navigation")
       .findByRole("link", { name: /discord/i })
       .should("have.attr", "href", "https://discord.gg/pokt")
-
-    // should find FAQs link and take you to the FAQs page
-    cy.findByRole("banner")
-      .findByRole("navigation")
-      .findByRole("link", { name: /faqs/i })
-      .should("have.attr", "href", "/faq")
   })
 })

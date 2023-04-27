@@ -6,7 +6,6 @@ import {
   createEmotionCache,
   Global,
   IconBookOpen,
-  IconCircleQuestion,
   IconMail,
   MantineProvider,
   theme,
@@ -240,12 +239,6 @@ export default function App() {
         external: true,
         label: t.dashboard.routes.docs,
         icon: IconBookOpen,
-        protected: Protected.Public,
-      },
-      {
-        to: "/faq",
-        label: "FAQs",
-        icon: IconCircleQuestion,
         protected: Protected.Public,
       },
       {

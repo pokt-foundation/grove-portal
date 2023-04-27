@@ -1,5 +1,4 @@
 import {
-  initPlasmicLoader,
   PlasmicRootProvider,
   PlasmicComponent,
   ComponentRenderData,

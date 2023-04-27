@@ -29,7 +29,7 @@ import analyticsInit from "./utils/analytics"
 import { authenticator } from "./utils/auth.server"
 import Footer, { links as FooterLinks } from "~/components/shared/Footer"
 import Header, { links as HeaderLinks } from "~/components/shared/Header"
-import { IconApp, IconNetwork } from "~/components/shared/Icons"
+import { IconApp } from "~/components/shared/Icons"
 import Nav, { links as NavLinks } from "~/components/shared/Nav"
 import { FeatureFlagsContextProvider } from "~/context/FeatureFlagContext"
 import { TranslateContextProvider, useTranslate } from "~/context/TranslateContext"
@@ -229,13 +229,6 @@ export default function App() {
     }
 
     const allRoutes = [
-      {
-        to: "/network",
-        label: "Network",
-        icon: IconNetwork,
-        end: true,
-        protected: Protected.Public,
-      },
       {
         to: "/dashboard/apps",
         label: t.dashboard.routes.apps,

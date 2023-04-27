@@ -1,9 +1,0 @@
-schema: ${INDEXER_API_URL}
-documents: "./app/models/indexer/*.graphqls"
-generates:
-  ./app/models/indexer/sdk.ts:
-    overwrite: true
-    plugins:
-      - "typescript"
-      - "typescript-operations"
-      - "typescript-graphql-request"

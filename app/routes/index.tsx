@@ -78,7 +78,6 @@ export const CatchBoundary = () => {
 export const ErrorBoundary = ({ error }: { error: Error }) => {
   return (
     <div>
-      <h1>WTF IS GOING OG!!!</h1>
       <p>{error.name}</p>
       <p>{error.message}</p>
       <p>{error?.stack}</p>

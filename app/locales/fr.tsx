@@ -86,7 +86,7 @@ const schema = {
             over its daily relay limit. All surplus relays are served by our backup
             infrastructure, ensuring no service interruptions. This is only a temporary
             measure so you should{" "}
-            <a href="https://discord.gg/pokt">reach out to our team</a> if you need more
+            <a href="https://discord.gg/portal-rpc">reach out to our team</a> if you need more
             relays.
           </>
         ),
@@ -97,7 +97,7 @@ const schema = {
           <>
             Pocket Network is expandable, and is continually adding support for new
             chains. Community members can advocate for chains to be considered by{" "}
-            <a href="https://discord.gg/pokt">reaching out on Discord</a> and posting a
+            <a href="https://discord.gg/portal-rpc">reaching out on Discord</a> and posting a
             suggestion to our team.
           </>
         ),
@@ -459,7 +459,7 @@ const schema = {
           className="pokt-link"
           rel="noreferrer"
           target="_blank"
-          to="https://discord.gg/pokt"
+          to="https://discord.gg/portal-rpc"
         >
           {" "}
           Discord{" "}

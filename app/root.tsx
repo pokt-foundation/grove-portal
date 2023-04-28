@@ -20,6 +20,7 @@ import {
   ScrollRestoration,
   useCatch,
   useLoaderData,
+  useLocation,
   useSearchParams,
 } from "@remix-run/react"
 import React, { useEffect, useMemo } from "react"
@@ -214,6 +215,8 @@ const Document = ({ children, title }: { children: React.ReactNode; title?: stri
 export default function App() {
   const { ENV, user } = useLoaderData<RootLoaderData>()
   const { t } = useTranslate()
+  let { pathname } = useLocation()
+  const isDashboard = useMemo(() => pathname.includes("/dashboard/"), [pathname])
 
   useEffect(() => {
     analyticsInit({ id: user?.id ?? "" })
@@ -260,24 +263,30 @@ export default function App() {
   }, [t, user])
 
   return (
-    <WithProviders>
-      <Document>
-        <Header user={user}>
-          <Nav ariaLabel="Main" routes={routes} />
-        </Header>
-        <main>
-          <Container className="container" size="lg">
-            <Outlet />
-          </Container>
-        </main>
-        <Footer />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `window.ENV = ${JSON.stringify(ENV)};`,
-          }}
-        />
-      </Document>
-    </WithProviders>
+    <>
+      {isDashboard ? (
+        <WithProviders>
+          <Document>
+            <Header user={user}>
+              <Nav ariaLabel="Main" routes={routes} />
+            </Header>
+            <main>
+              <Container className="container" size="lg">
+                <Outlet />
+              </Container>
+            </main>
+            <Footer />
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `window.ENV = ${JSON.stringify(ENV)};`,
+              }}
+            />
+          </Document>
+        </WithProviders>
+      ) : (
+        <Outlet />
+      )}
+    </>
   )
 }
 

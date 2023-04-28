@@ -66,7 +66,6 @@ export default function Page() {
   )
 }
 
-// handles 404
 export const CatchBoundary = () => {
   const caught = useCatch()
 
@@ -74,4 +73,15 @@ export const CatchBoundary = () => {
     return <NotFound404 />
   }
   throw new Error(`Unexpected caught response with status: ${caught.status}`)
+}
+
+export const ErrorBoundary = ({ error }: { error: Error }) => {
+  return (
+    <div>
+      <h1>WTF IS GOING OG!!!</h1>
+      <p>{error.name}</p>
+      <p>{error.message}</p>
+      <p>{error?.stack}</p>
+    </div>
+  )
 }

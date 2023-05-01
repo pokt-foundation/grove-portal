@@ -21,6 +21,9 @@ import UsageChartCard, {
 } from "~/components/application/UsageChartCard"
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import ErrorIcon from "~/components/shared/Icons/ErrorIcon"
+import MaintenanceNotification, {
+  links as MaintenanceNotificationLinks,
+} from "~/components/shared/MaintenanceNotification/MaintenanceNotification"
 import Modal, { links as ModalLinks } from "~/components/shared/Modal"
 import NotificationMessage, {
   links as NotificationMessageLinks,
@@ -41,6 +44,7 @@ export const links = () => {
     ...UsageCardLinks(),
     ...ModalLinks(),
     ...NotificationMessageLinks(),
+    ...MaintenanceNotificationLinks(),
     { rel: "stylesheet", href: styles },
   ]
 }
@@ -94,6 +98,12 @@ export const AppsView = ({
   const [appTodeleteID, setAppToDeleteID] = useState("")
   const actionData = useActionData()
 
+  const handleLocallyAcceptInvite = (id: string) => {
+    setPendingEndpoints((endpoints) =>
+      endpoints ? endpoints.filter((e) => e && e.id !== id) : null,
+    )
+  }
+
   useEffect(() => {
     const error = searchParams.get("error")
     if (error === "true") {
@@ -130,12 +140,6 @@ export const AppsView = ({
       setOptionsEndpointId(pendingEndpoints[0]?.id || "")
     }
   }, [pendingEndpoints])
-
-  const handleLocallyAcceptInvite = (id: string) => {
-    setPendingEndpoints((endpoints) =>
-      endpoints ? endpoints.filter((e) => e && e.id !== id) : null,
-    )
-  }
 
   useEffect(() => {
     if (actionData) {
@@ -177,6 +181,12 @@ export const AppsView = ({
 
   return (
     <div className="pokt-apps-view">
+      <MaintenanceNotification
+        css={{
+          marginBottom: "2em",
+        }}
+        maintenanceMode={getRequiredClientEnvVar("FLAG_MAINTENANCE_MODE")}
+      />
       {notificationMessageProps.isActive && (
         <section>
           <div style={{ width: "100%", marginBottom: "1em" }}>

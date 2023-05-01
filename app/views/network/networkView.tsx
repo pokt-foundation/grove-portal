@@ -18,19 +18,23 @@ import UsageChartCard, {
   links as UsageChartCardLinks,
 } from "~/components/application/UsageChartCard"
 import Loader, { links as LoaderLinks } from "~/components/shared/Loader"
+import MaintenanceNotification, {
+  links as MaintenanceNotificationLinks,
+} from "~/components/shared/MaintenanceNotification/MaintenanceNotification"
 import Table, { links as TableLinks } from "~/components/shared/Table"
 import { NetworkLoaderData } from "~/routes/network"
+import { getRequiredClientEnvVar } from "~/utils/environment"
 
 export const links = () => {
   return [
     ...NetworkSummaryCardLinks(),
     ...NetworkPoktScanLatestBlockCardLinks(),
-    // ...NetworkSuccessRateCardLinks(),
     ...NetworkRelayPerformanceCardLinks(),
     ...UsageChartCardLinks(),
     ...TableLinks(),
     ...FeedbackCardLinks(),
     ...LoaderLinks(),
+    ...MaintenanceNotificationLinks(),
     { rel: "stylesheet", href: styles },
   ]
 }
@@ -53,6 +57,11 @@ export default function NetworkView({
     <>
       {state === "loading" && <Loader />}
       <Grid gutter={32}>
+        <Grid.Col>
+          <MaintenanceNotification
+            maintenanceMode={getRequiredClientEnvVar("FLAG_MAINTENANCE_MODE")}
+          />
+        </Grid.Col>
         <Grid.Col md={8}>
           <section>
             <Grid gutter={32}>

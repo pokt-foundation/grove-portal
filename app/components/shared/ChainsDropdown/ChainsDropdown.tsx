@@ -56,9 +56,9 @@ const ChainsDropdown = ({
       searchable
       aria-label="Add new"
       data={selectChainData}
+      icon={<IconSearch fill={theme.colors.blue[5]} height={18} width={18} />}
       itemComponent={SelectItem}
       placeholder="Add new"
-      icon={<IconSearch fill={theme.colors.blue[5]} height={18} width={18} />}
       rightSection={<></>}
       rightSectionWidth={0}
       size="xs"

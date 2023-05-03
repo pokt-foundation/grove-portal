@@ -70,8 +70,7 @@ export default function AppKeysCard({ id, name }: AppNameProps) {
         sx={{
           display: "flex",
           alignItems: "center",
-          justifyContent: "space-between",
-          gap: "32px",
+          gap: "16px",
         }}
       >
         <h1 hidden={editing} style={{ margin: 0 }}>
@@ -81,7 +80,6 @@ export default function AppKeysCard({ id, name }: AppNameProps) {
           <TextInput
             defaultValue={nameState}
             size="lg"
-            sx={{ flexGrow: 1 }}
             onChange={(e) => setNameState(e.currentTarget.value)}
           />
         )}

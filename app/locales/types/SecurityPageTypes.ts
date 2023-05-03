@@ -19,4 +19,9 @@ export type SecurityPageViewTypes = {
   methodAria: string
   methodError: string
   secretKeyText: string
+  approvedChainsText: string
+  whitelistUserAgentsText: string
+  whitelistOriginsText: string
+  whitelistContractsText: string
+  whitelistMethodsText: string
 }

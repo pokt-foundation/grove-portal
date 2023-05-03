@@ -173,6 +173,7 @@ const schema = {
     heartImageAlt: "heart image",
     clickOpen: "Click to open feedback box",
     clickClose: "Click to close feedback box",
+    discordAriaLabel: "Click to share feedback with the Pokt Team in discord",
   },
   dashboard: {
     routes: {

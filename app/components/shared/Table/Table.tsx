@@ -57,6 +57,10 @@ type TableDataArray = [
   ),
 ]
 
+const renderTableCell = ([key, value]: TableDataArray) => (
+  <td key={key}>{typeof value === "object" ? value.element : value}</td>
+)
+
 export const Table = <T extends IdObj>({
   data,
   columns = Object.keys(data[0]) as (keyof T)[],
@@ -150,37 +154,24 @@ export const Table = <T extends IdObj>({
             <tbody>
               {paginatedData.length > 0 ? (
                 paginatedData.map((item) => {
+                  const { id, ...itemData } = item
+                  const tableData = Object.entries(itemData)
+
                   return (
-                    <>
+                    <tr key={item.id}>
                       {rowAsLink ? (
-                        <tr key={item.id}>
-                          <Link
-                            style={{
-                              display: "contents",
-                            }}
-                            to={`${item.id}`}
-                          >
-                            {Object.entries(removeIdFromObject(item)).map(
-                              ([key, value]: TableDataArray) => (
-                                <td key={key}>
-                                  {typeof value === "object" ? value.element : value}
-                                </td>
-                              ),
-                            )}
-                          </Link>
-                        </tr>
+                        <Link
+                          style={{
+                            display: "contents",
+                          }}
+                          to={`${item.id}`}
+                        >
+                          {tableData.map(renderTableCell)}
+                        </Link>
                       ) : (
-                        <tr key={item.id}>
-                          {Object.entries(removeIdFromObject(item)).map(
-                            ([key, value]: TableDataArray) => (
-                              <td key={key}>
-                                {typeof value === "object" ? value.element : value}
-                              </td>
-                            ),
-                          )}
-                        </tr>
+                        tableData.map(renderTableCell)
                       )}
-                    </>
+                    </tr>
                   )
                 })
               ) : (

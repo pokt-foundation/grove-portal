@@ -1,4 +1,3 @@
-import { useState } from "react"
 import styles from "./styles.css"
 import Card, { links as CardLinks } from "~/components/shared/Card"
 import IconDiscord from "~/components/shared/Icons/IconDiscord"
@@ -14,33 +13,20 @@ export default function FeedbackBox({ className }: { className?: string }) {
   const {
     t: { feedback },
   } = useTranslate()
-  const [hovered, setHovered] = useState<boolean>(false)
-
-  const handleMouseEnter = () => {
-    setHovered(true)
-  }
-
-  const handleMouseLeave = () => {
-    setHovered(false)
-  }
 
   return (
     <a
-      aria-label="Click to share feedback with the Pokt Team in discord"
+      aria-label={feedback.discordAriaLabel}
       href="https://discord.gg/portal-rpc"
       rel="noreferrer"
       target="_blank"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
     >
       <Card
-        sx={
-          hovered
-            ? {
-                backgroundColor: "var(--mantine-color-navy-6)",
-              }
-            : {}
-        }
+        sx={{
+          "&:hover": {
+            backgroundColor: "var(--mantine-color-navy-6)",
+          },
+        }}
       >
         <div className="feedback box">
           <div className="top">

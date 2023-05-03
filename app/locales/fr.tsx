@@ -162,6 +162,7 @@ const schema = {
     heartImageAlt: "heart image -fr",
     clickOpen: "Click to open feedback box -fr",
     clickClose: "Click to close feedback box -fr",
+    discordAriaLabel: "Click to share feedback with the Pokt Team in discord -fr",
   },
   dashboard: {
     routes: {
@@ -418,7 +419,8 @@ const schema = {
     whitelistUserAgentsText:
       "Limits requests to only the HTTP User-Agents specified. If nothing is specified, all User-Agents will be accepted -fr.",
     whitelistOriginsText: "Limits requests to only the HTTP Origins specified -fr.",
-    whitelistContractsText: "Limits requests to the smart contract addresses specified -fr.",
+    whitelistContractsText:
+      "Limits requests to the smart contract addresses specified -fr.",
     whitelistMethodsText: "Limits requests to use specific RPC methods -fr.",
   },
   stopRemoveApp: {

@@ -45,6 +45,7 @@ export function render(ui: React.ReactElement, options?: RenderOptions) {
       v2_errorBoundary: false,
       v2_meta: false,
       v2_routeConvention: false,
+      v2_normalizeFormMethod: false,
     },
   }
 

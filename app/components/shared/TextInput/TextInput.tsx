@@ -1,87 +1,51 @@
 import {
-  Button,
-  IconDeleteAlt,
+  Grid,
   TextInput as MantineTextInput,
   TextInputProps,
+  useMantineTheme,
 } from "@pokt-foundation/pocket-blocks"
-import clsx from "clsx"
-import styles from "./styles.css"
-import CopyTextIcon, {
-  links as CopyTextIconLinks,
-} from "~/components/shared/CopyTextIcon"
-import RevealIcon, { links as RevealIconLinks } from "~/components/shared/RevealIcon"
-
-/* c8 ignore start */
-export const links = () => {
-  return [
-    ...CopyTextIconLinks(),
-    ...RevealIconLinks(),
-    { rel: "stylesheet", href: styles },
-  ]
-}
-/* c8 ignore stop */
 
 export type InputProps = TextInputProps & {
-  copy?: boolean
   revealed?: boolean
-  hasDelete?: boolean
-  iconPadding?: boolean
-  handleRemove?: () => void
   setRevealed?: () => void
+  children?: React.ReactNode
 }
 
 export default function TextInput({
-  copy = false,
   revealed = false,
-  hasDelete = false,
-  iconPadding = false,
-  handleRemove = () => {},
   setRevealed,
+  children,
   ...props
 }: InputProps) {
-  const hasRightSection =
-    Boolean(props.rightSection) || Boolean(copy) || Boolean(setRevealed)
-
-  let rightSection = props.rightSection
-
-  if (!rightSection && copy && setRevealed) {
-    // hidden and copy icons
-    rightSection = (
-      <>
-        <RevealIcon revealed={revealed} setRevealed={setRevealed} />
-        <CopyTextIcon text={String(props.value)} />
-      </>
-    )
-  } else if (!rightSection && !copy && setRevealed) {
-    // only revealed icon
-    rightSection = <RevealIcon revealed={revealed} setRevealed={setRevealed} />
-  } else if (!rightSection && copy && !setRevealed) {
-    // only copy icon
-    rightSection = <CopyTextIcon text={String(props.value)} />
-  }
-
+  const theme = useMantineTheme()
   return (
-    <div className="pokt-text">
+    <Grid
+      align="center"
+      justify="space-between"
+      m={0}
+      sx={{
+        gap: ".5em",
+      }}
+      w="100%"
+    >
       <MantineTextInput
-        className={clsx({
-          "pokt-text-input": true,
-          "right-section": Boolean(hasRightSection),
-          iconPadding: iconPadding,
-        })}
-        rightSection={rightSection}
+        rightSection={props.rightSection}
+        rightSectionWidth="2.5em"
+        size={props.size ?? "sm"}
+        variant={props.variant ?? "filled"}
         {...props}
+        sx={{
+          backgroundColor: theme.colors.navy ? theme.colors.navy[6] : "blue",
+          flexGrow: 1,
+          marginBottom: 0,
+
+          ".mantine-TextInput-input": {
+            padding: props.rightSection ? ".5em 5em .5em .5em" : ".5em",
+            fontSize: "0.75em",
+          },
+        }}
       />
-      {hasDelete && (
-        <Button
-          className="pokt-text-delete"
-          color="gray"
-          size="sm"
-          variant="light"
-          onClick={handleRemove}
-        >
-          <IconDeleteAlt />
-        </Button>
-      )}
-    </div>
+      {children}
+    </Grid>
   )
 }

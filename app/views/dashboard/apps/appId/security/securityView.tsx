@@ -3,23 +3,20 @@ import {
   Text,
   Switch,
   Loader,
-  Select,
   Group,
+  useMantineTheme,
 } from "@pokt-foundation/pocket-blocks"
 import { useFetcher, useNavigation } from "@remix-run/react"
-import React, { useState, useMemo, forwardRef, useRef } from "react"
+import React, { useState, forwardRef } from "react"
 import styles from "./styles.css"
 import AppEndpointUrl, {
   links as AppEndpointUrlLinks,
 } from "~/components/application/AppEndpointUrl"
-import ChainsDropdown, {
-  links as ChainsDropdownLinks,
-} from "~/components/application/ChainsDropdown/ChainsDropdown"
-import ChainWithImage, {
-  links as ChainWithImageLinks,
-} from "~/components/application/ChainWithImage"
 import Card, { links as CardLinks } from "~/components/shared/Card"
-import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
+import ChainsDropdown from "~/components/shared/ChainsDropdown/ChainsDropdown"
+import CopyText from "~/components/shared/CopyText"
+import Delete from "~/components/shared/Delete/Delete"
+import TextInput from "~/components/shared/TextInput"
 import { useTranslate } from "~/context/TranslateContext"
 import {
   BlockchainsQuery,
@@ -32,14 +29,7 @@ import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 
 /* c8 ignore start */
 export const links = () => {
-  return [
-    ...CardLinks(),
-    ...TextInputLinks(),
-    ...ChainsDropdownLinks(),
-    ...AppEndpointUrlLinks(),
-    ...ChainWithImageLinks(),
-    { rel: "stylesheet", href: styles },
-  ]
+  return [...CardLinks(), ...AppEndpointUrlLinks(), { rel: "stylesheet", href: styles }]
 }
 /* c8 ignore stop */
 
@@ -56,7 +46,7 @@ const SelectItem = forwardRef<HTMLDivElement, { label: string; value: string }>(
   ({ label, ...others }, ref) => (
     <div ref={ref} {...others}>
       <Group noWrap>
-        <ChainWithImage chain={label} withIcon={false} />
+        <Text>{label}</Text>
       </Group>
     </div>
   ),
@@ -66,6 +56,8 @@ SelectItem.displayName = "SelectItem"
 
 export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps) => {
   const navigation = useNavigation()
+
+  const theme = useMantineTheme()
 
   type FormatData = {
     id: string
@@ -89,8 +81,6 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
       return [...prev, ...subArray]
     }, [])
   }
-
-  const approvedChainsSelectRef = useRef<HTMLInputElement>(null)
 
   const { t } = useTranslate()
   const securityAction = useFetcher()
@@ -145,13 +135,6 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
     return arr.filter((obj) => (!obj[field].includes(item) ? obj : null))
   }
 
-  const selectChainData = useMemo(() => {
-    return blockchains.map((chain) => ({
-      label: chain?.description ?? "",
-      value: chain?.id ?? "",
-    }))
-  }, [blockchains])
-
   return (
     <div className="security">
       <securityAction.Form action="/api/securitySettings" method="post">
@@ -168,51 +151,21 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             />
           </div>
           <div>
-            <Text size="sm">{t.security.secretKeyText}</Text>
+            <Text size="xs">{t.security.secretKeyText}</Text>
           </div>
         </Card>
         <Card>
           <div className="pokt-card-header">
             <h3>{t.security.headings.approvedChains}</h3>
-            {/* <ChainsDropdown
-              aria-label={t.security.chainsDropdownAria}
-              blockchains={blockchains}
-              defaultText={t.security.defaultSelectChainText}
-              handleChainClick={(val) => {
+            <ChainsDropdown
+              chains={blockchains}
+              onChange={(val: string) => {
                 setWhitelistBlockchains(addIfMissing(val, whitelistBlockchains))
-              }}
-              icon={true}
-              id="whitelistBlockchainsDropdown"
-              selectedChains={[""]}
-            /> */}
-            <Select
-              ref={approvedChainsSelectRef}
-              searchable
-              aria-label={t.security.chainsDropdownAria}
-              data={selectChainData}
-              itemComponent={SelectItem}
-              placeholder={t.security.defaultSelectChainText}
-              sx={(theme) => ({
-                ".mantine-Select-dropdown": {
-                  backgroundColor: "#0f161d",
-                },
-                ".mantine-Select-input": {
-                  backgroundColor: "transparent",
-                  borderColor: theme.colors.blue[5],
-                },
-                ".mantine-Select-input::placeholder": {
-                  color: theme.colors.blue[5],
-                  fontWeight: 600,
-                  fontSize: "12px",
-                },
-              })}
-              onChange={(val) => {
-                if (val) {
-                  setWhitelistBlockchains(addIfMissing(val, whitelistBlockchains))
-                }
               }}
             />
           </div>
+          <Text size="sm">{t.security.approvedChainsText}</Text>
+
           {whitelistBlockchains.map((item: string) => {
             const blockchain: Blockchain | undefined | null = blockchains.find(
               (c) => c?.id === item,
@@ -238,6 +191,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
           <div className="pokt-card-header">
             <h3>{t.security.headings.userAgents}</h3>
           </div>
+          <Text size="sm">{t.security.whitelistUserAgentsText}</Text>
           <div className="flexGrowRow">
             <TextInput
               id="userAgents"
@@ -250,8 +204,9 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             />
             <Button
               aria-label={t.security.userAgentAria}
-              size="sm"
+              size="xs"
               type="button"
+              variant="filled"
               onClick={() => {
                 if (whitelistUserAgentsElement !== "") {
                   setWhitelistUserAgents(
@@ -267,15 +222,14 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
           <div>
             {whitelistUserAgents.map((item: string) => (
               <div key={item} className="list">
-                <TextInput
-                  copy
-                  readOnly
-                  handleRemove={() => {
-                    setWhitelistUserAgents((current) => removeFromArray(item, current))
-                  }}
-                  hasDelete={true}
-                  value={item}
-                />
+                <TextInput readOnly value={item}>
+                  <CopyText text={String(item)} />
+                  <Delete
+                    onDelete={() => {
+                      setWhitelistUserAgents((current) => removeFromArray(item, current))
+                    }}
+                  />
+                </TextInput>
                 <input name="whitelistUserAgents" type="hidden" value={item} />
               </div>
             ))}
@@ -285,6 +239,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
           <div className="pokt-card-header">
             <h3>{t.security.headings.origins}</h3>
           </div>
+          <Text size="sm">{t.security.whitelistOriginsText}</Text>
           <div className="flexGrowRow">
             <TextInput
               id="userOrigins"
@@ -296,8 +251,9 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             />
             <Button
               aria-label={t.security.OriginAria}
-              size="sm"
+              size="xs"
               type="button"
+              variant="filled"
               onClick={() => {
                 if (whitelistOriginsElement !== "") {
                   setWhitelistOrigins(
@@ -313,15 +269,14 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
           <div>
             {whitelistOrigins.map((item: string) => (
               <div key={item} className="list">
-                <TextInput
-                  copy
-                  readOnly
-                  handleRemove={() => {
-                    setWhitelistOrigins((current) => removeFromArray(item, current))
-                  }}
-                  hasDelete={true}
-                  value={item}
-                />
+                <TextInput readOnly value={item}>
+                  <CopyText text={String(item)} />
+                  <Delete
+                    onDelete={() => {
+                      setWhitelistOrigins((current) => removeFromArray(item, current))
+                    }}
+                  />
+                </TextInput>
                 <input name="whitelistOrigins" type="hidden" value={item} />
               </div>
             ))}
@@ -331,32 +286,11 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
           <div className="pokt-card-header">
             <h3>{t.security.headings.contracts}</h3>
           </div>
+          <Text size="sm">{t.security.whitelistContractsText}</Text>
           <div className="flexGrowRow">
-            <Select
-              searchable
-              aria-label={t.security.headings.contracts}
-              data={selectChainData}
-              itemComponent={SelectItem}
-              placeholder={t.security.defaultSelectChainText}
-              sx={(theme) => ({
-                ".mantine-Select-dropdown": {
-                  backgroundColor: "#0f161d",
-                },
-                ".mantine-Select-input": {
-                  backgroundColor: "transparent",
-                  borderColor: theme.colors.blue[5],
-                },
-                ".mantine-Select-input::placeholder": {
-                  color: theme.colors.blue[5],
-                  fontWeight: 600,
-                  fontSize: "12px",
-                },
-              })}
-              onChange={(val) => {
-                if (val) {
-                  setWhitelistContractsDropdown(val)
-                }
-              }}
+            <ChainsDropdown
+              chains={blockchains}
+              onChange={(val: string) => setWhitelistContractsDropdown(val)}
             />
             <input
               className="grow userInputs"
@@ -368,8 +302,9 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             />
             <Button
               aria-label={t.security.contractAria}
-              size="sm"
+              size="xs"
               type="button"
+              variant="filled"
               onClick={() => {
                 if (whitelistContractsInput === "" || whitelistContractsDropdown === "") {
                   setWhitelistContractsError(true)
@@ -403,7 +338,6 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
               return (
                 <div key={`${item.id} ${item.inputValue}`} className="list">
                   <AppEndpointUrl
-                    copy
                     hasDelete
                     readOnly
                     chain={blockchain}
@@ -429,32 +363,11 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
           <div className="pokt-card-header">
             <h3>{t.security.headings.methods}</h3>
           </div>
+          <Text size="sm">{t.security.whitelistMethodsText}</Text>
           <div className="flexGrowRow">
-            <Select
-              searchable
-              aria-label={t.security.headings.methods}
-              data={selectChainData}
-              itemComponent={SelectItem}
-              placeholder={t.security.defaultSelectChainText}
-              sx={(theme) => ({
-                ".mantine-Select-dropdown": {
-                  backgroundColor: "#0f161d",
-                },
-                ".mantine-Select-input": {
-                  backgroundColor: "transparent",
-                  borderColor: theme.colors.blue[5],
-                },
-                ".mantine-Select-input::placeholder": {
-                  color: theme.colors.blue[5],
-                  fontWeight: 600,
-                  fontSize: "12px",
-                },
-              })}
-              onChange={(val) => {
-                if (val) {
-                  setWhitelistMethodsDropdown(val)
-                }
-              }}
+            <ChainsDropdown
+              chains={blockchains}
+              onChange={(val: string) => setWhitelistMethodsDropdown(val)}
             />
 
             <input
@@ -467,8 +380,9 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             />
             <Button
               aria-label={t.security.methodAria}
-              size="sm"
+              size="xs"
               type="button"
+              variant="filled"
               onClick={() => {
                 if (whitelistMethodsInput === "" || whitelistMethodsDropdown === "") {
                   setWhitelistMethodsError(true)
@@ -500,7 +414,6 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
               return (
                 <div key={`${item.id} ${item.inputValue}`} className="list">
                   <AppEndpointUrl
-                    copy
                     hasDelete
                     readOnly
                     chain={blockchain}
@@ -530,7 +443,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
           }}
         >
           {t.common.save}
-          {navigation.state !== "idle" && <Loader color="black" ml={8} size="sm" />}
+          {navigation.state !== "idle" && <Loader color="black" ml={8} size="xs" />}
         </Button>
       </securityAction.Form>
     </div>

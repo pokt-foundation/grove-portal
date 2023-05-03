@@ -2,6 +2,7 @@
   --tooltip-size: 16px;
   width: var(--tooltip-size);
   height: var(--tooltip-size);
+  display: flex;
 }
 
 .pokt-help button {

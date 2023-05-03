@@ -57,7 +57,7 @@ describe("<AppEndpointCard />", () => {
       </UserContext.Provider>,
     )
 
-    const button = screen.getByRole("button", { name: /add new/i })
+    const button = screen.getByLabelText(/add new/i)
     expect(button).toBeInTheDocument()
   })
 })

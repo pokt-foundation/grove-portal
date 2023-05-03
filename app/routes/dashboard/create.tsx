@@ -19,7 +19,7 @@ import CalculateYourPricing, {
   links as CalculateYourPricingLinks,
 } from "~/components/application/CalculateYourPricing/CalculateYourPricing"
 import Card, { links as CardLinks } from "~/components/shared/Card"
-import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
+import TextInput from "~/components/shared/TextInput"
 import { useFeatureFlags } from "~/context/FeatureFlagContext"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { PayPlanType } from "~/models/portal/sdk"
@@ -41,7 +41,6 @@ export const meta: MetaFunction = () => {
 export const links = () => {
   return [
     ...CardLinks(),
-    ...TextInputLinks(),
     ...AppPlansOverviewLinks(),
     ...AppRadioCardsLinks(),
     ...CalculateYourPricingLinks(),

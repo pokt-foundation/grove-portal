@@ -4,7 +4,7 @@ import AppEndpointUrl, {
   links as AppEndpointUrlLinks,
 } from "~/components/application/AppEndpointUrl"
 import { Card, links as CardLinks } from "~/components/Card"
-import ChainsDropdown from "~/components/shared/ChainsDropdown/ChainsDropdown"
+import ChainsDropdown from "~/components/ChainsDropdown/ChainsDropdown"
 import { useUser } from "~/context/UserContext"
 import { Blockchain, BlockchainsQuery, EndpointQuery } from "~/models/portal/sdk"
 import { ChainMetadata, prefixFromChainId } from "~/utils/chainUtils"

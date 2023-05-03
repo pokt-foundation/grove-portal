@@ -24,7 +24,12 @@ export const CardList = ({ items }: CardListProps) => {
   return (
     <List className="pokt-card-list">
       {items.map((item) => (
-        <Grid key={item.label}>
+        <Grid
+          key={item.label}
+          sx={{
+            alignItems: "center",
+          }}
+        >
           <Grid.Col span={6}>
             <div className="pokt-list-label">
               <p>{item.label}</p>

@@ -1,12 +1,14 @@
-import { Space } from "@pokt-foundation/pocket-blocks"
+import { Space, Text } from "@pokt-foundation/pocket-blocks"
 import { useState } from "react"
 import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/Card"
-import TextInput, { links as TextInputLinks } from "~/components/TextInput"
+import CopyText from "~/components/CopyText"
+import RevealIcon from "~/components/RevealIcon"
+import TextInput from "~/components/TextInput"
 
 /* c8 ignore start */
 export const links = () => {
-  return [...CardLinks(), ...TextInputLinks(), { rel: "stylesheet", href: styles }]
+  return [...CardLinks(), { rel: "stylesheet", href: styles }]
 }
 /* c8 ignore stop */
 
@@ -24,34 +26,48 @@ export default function KeysCard({ id, secret, publicKey, isMember }: AppKeysCar
   return (
     <div className="pokt-app-keys">
       <Card>
-        <TextInput copy readOnly label="Portal ID" value={id} />
+        <Text mb={0}>Portal ID</Text>
+        <TextInput readOnly aria-label="Portal ID" value={id}>
+          <CopyText text={String(id)} />
+        </TextInput>
         {secret && !isMember && (
           <>
             <Space h="sm" />
+            <Text mb={0}>Secret Key</Text>
             <TextInput
-              copy
               readOnly
-              label="Secret Key"
-              revealed={secretHidden}
-              setRevealed={() => setSecretHidden(!secretHidden)}
+              aria-label="Secret Key"
+              rightSection={
+                <RevealIcon
+                  revealed={secretHidden}
+                  setRevealed={() => setSecretHidden(!secretHidden)}
+                />
+              }
               type={secretHidden ? "password" : "text"}
               value={secret}
-            />
+            >
+              <CopyText text={String(secret)} />
+            </TextInput>
           </>
         )}
         {publicKey && (
           <>
             <Space h="sm" />
+            <Text mb={0}>Public Key</Text>
             <TextInput
-              copy
-              iconPadding
               readOnly
-              label="Public Key"
-              revealed={publicKeyHidden}
-              setRevealed={() => setPublicKeyHidden(!publicKeyHidden)}
+              aria-label="Public Key"
+              rightSection={
+                <RevealIcon
+                  revealed={publicKeyHidden}
+                  setRevealed={() => setPublicKeyHidden(!publicKeyHidden)}
+                />
+              }
               type={publicKeyHidden ? "password" : "text"}
               value={publicKey}
-            />
+            >
+              <CopyText text={String(publicKey)} />
+            </TextInput>
           </>
         )}
       </Card>

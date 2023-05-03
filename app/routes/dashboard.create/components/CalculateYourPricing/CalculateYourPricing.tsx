@@ -2,7 +2,7 @@ import { Button, useMantineTheme } from "@pokt-foundation/pocket-blocks"
 import React, { useMemo, useState } from "react"
 import styles from "./styles.css"
 import Modal, { links as ModalLinks, ModalCTA } from "~/components/Modal"
-import TextInput, { links as TextInputLinks } from "~/components/TextInput"
+import TextInput from "~/components/TextInput"
 import { useTranslate } from "~/context/TranslateContext"
 import { FREE_TIER_MAX_RELAYS } from "~/utils/pocketUtils"
 
@@ -12,7 +12,6 @@ const DAYS_IN_EACH_MONTH = 30.41
 /* c8 ignore start */
 export const links = () => {
   return [
-    ...TextInputLinks(),
     ...ModalLinks(),
     {
       rel: "stylesheet",

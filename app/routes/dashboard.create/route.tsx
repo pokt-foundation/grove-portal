@@ -12,15 +12,15 @@ import invariant from "tiny-invariant"
 import AppPlansOverview, {
   links as AppPlansOverviewLinks,
 } from "./components/AppPlansOverview"
-import CalculateYourPricing, {
-  links as CalculateYourPricingLinks,
-} from "./components/CalculateYourPricing/CalculateYourPricing"
 import styles from "./styles.css"
 import AppRadioCards, {
   links as AppRadioCardsLinks,
 } from "~/components/application/AppRadioCards"
+import CalculateYourPricing, {
+  links as CalculateYourPricingLinks,
+} from "./components/CalculateYourPricing/CalculateYourPricing"
 import Card, { links as CardLinks } from "~/components/Card"
-import TextInput, { links as TextInputLinks } from "~/components/TextInput"
+import TextInput from "~/components/TextInput"
 import { useFeatureFlags } from "~/context/FeatureFlagContext"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { PayPlanType } from "~/models/portal/sdk"
@@ -41,7 +41,6 @@ export const meta: MetaFunction = () => {
 export const links = () => {
   return [
     ...CardLinks(),
-    ...TextInputLinks(),
     ...AppPlansOverviewLinks(),
     ...AppRadioCardsLinks(),
     ...CalculateYourPricingLinks(),

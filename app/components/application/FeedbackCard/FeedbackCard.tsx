@@ -15,34 +15,40 @@ export default function FeedbackCard({ className }: { className?: string }) {
   } = useTranslate()
 
   return (
-    <Card>
-      <div className="feedback box">
-        <div className="top">
-          <div className="row">
-            <div className="spaceholder">
-              <img
-                alt={feedback.feedbackShareAltText}
-                aria-hidden="true"
-                className="image"
-                src="/share-feedback.svg"
-              />
+    <a
+      aria-label={feedback.discordAriaLabel}
+      href="https://discord.gg/portal-rpc"
+      rel="noreferrer"
+      target="_blank"
+    >
+      <Card
+        sx={{
+          "&:hover": {
+            backgroundColor: "var(--mantine-color-navy-6)",
+          },
+        }}
+      >
+        <div className="feedback box">
+          <div className="top">
+            <div className="row">
+              <div className="spaceholder">
+                <img
+                  alt={feedback.feedbackShareAltText}
+                  aria-hidden="true"
+                  className="image"
+                  src="/share-feedback.svg"
+                />
+              </div>
+              <div>
+                <h3 className="title">{feedback.feedbackTitle}</h3>
+                <p className="bodytext">{feedback.feedbackSubText}</p>
+              </div>
             </div>
-            <div>
-              <h3 className="title">{feedback.feedbackTitle}</h3>
-              <p className="bodytext">{feedback.feedbackSubText}</p>
-            </div>
+
+            <IconDiscord className="discord-icon" />
           </div>
-          <a
-            aria-label="Click to share feedback with the Pokt Team in discord"
-            className="discord-icon"
-            href="https://discord.gg/pokt"
-            rel="noreferrer"
-            target="_blank"
-          >
-            <IconDiscord />
-          </a>
         </div>
-      </div>
-    </Card>
+      </Card>
+    </a>
   )
 }

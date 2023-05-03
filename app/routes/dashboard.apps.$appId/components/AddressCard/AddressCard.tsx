@@ -10,13 +10,15 @@ import clsx from "clsx"
 import { useState } from "react"
 import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/Card"
-import TextInput, { links as TextInputLinks } from "~/components/TextInput"
+import CopyText from "~/components/CopyText"
+import RevealIcon from "~/components/RevealIcon"
+import TextInput from "~/components/TextInput"
 import { useTranslate } from "~/context/TranslateContext"
 import { ProcessedEndpoint } from "~/models/portal/sdk"
 
 /* c8 ignore start */
 export const links = () => {
-  return [...CardLinks(), ...TextInputLinks(), { rel: "stylesheet", href: styles }]
+  return [...CardLinks(), { rel: "stylesheet", href: styles }]
 }
 /* c8 ignore stop */
 
@@ -53,22 +55,24 @@ export default function AddressCard({ apps }: AppAddressCardProps) {
             appId ? (
               <TextInput
                 key={appId}
-                copy
                 readOnly
-                revealed={hiddenIds.includes(appId)}
-                setRevealed={() =>
-                  setHiddenIds(
-                    hiddenIds.includes(appId)
-                      ? hiddenIds.filter((app) => app !== appId)
-                      : [...hiddenIds, appId],
-                  )
+                rightSection={
+                  <RevealIcon
+                    revealed={hiddenIds.includes(appId)}
+                    setRevealed={() =>
+                      setHiddenIds(
+                        hiddenIds.includes(appId)
+                          ? hiddenIds.filter((app) => app !== appId)
+                          : [...hiddenIds, appId],
+                      )
+                    }
+                  />
                 }
-                // Check either if the appId is or isn't included in the hiddenIds array,
-                // if it is, remove it
-                // if it's not, add it
                 type={hiddenIds.includes(appId) ? "password" : "text"}
                 value={appId}
-              />
+              >
+                <CopyText text={String(appId)} />
+              </TextInput>
             ) : null,
           )
         ) : (
@@ -81,22 +85,26 @@ export default function AddressCard({ apps }: AppAddressCardProps) {
                 appId ? (
                   <TextInput
                     key={appId}
-                    copy
                     readOnly
-                    revealed={hiddenIds.includes(appId)}
-                    setRevealed={() =>
-                      setHiddenIds(
-                        hiddenIds.includes(appId)
-                          ? hiddenIds.filter((app) => app !== appId)
-                          : [...hiddenIds, appId],
-                      )
+                    rightSection={
+                      <RevealIcon
+                        revealed={hiddenIds.includes(appId)}
+                        setRevealed={() =>
+                          setHiddenIds(
+                            hiddenIds.includes(appId)
+                              ? hiddenIds.filter((app) => app !== appId)
+                              : [...hiddenIds, appId],
+                          )
+                        }
+                      />
                     }
-                    // Check either if the appId is or isn't included in the hiddenIds array,
-                    // if it is, remove it
-                    // if it's not, add it
                     type={hiddenIds.includes(appId) ? "password" : "text"}
                     value={appId}
-                  />
+                  >
+                    <Button variant="outline">
+                      <CopyText text={String(appId)} />
+                    </Button>
+                  </TextInput>
                 ) : null,
               )}
             </Collapse>

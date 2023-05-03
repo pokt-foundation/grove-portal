@@ -1,4 +1,4 @@
-import { Card, Grid } from "@pokt-foundation/pocket-blocks"
+import { Card, Grid, Text } from "@pokt-foundation/pocket-blocks"
 import { Transition } from "@remix-run/react/dist/transition"
 import PoktScanLatestBlockCard, {
   links as PoktScanLatestBlockCardLinks,
@@ -9,9 +9,6 @@ import RelayPerformanceCard, {
 } from "./components/RelayPerformanceCard"
 import SummaryCard, { links as SummaryCardLinks } from "./components/SummaryCard"
 import styles from "./styles.css"
-import ChainWithImage, {
-  links as ChainWithImageLinks,
-} from "~/components/application/ChainWithImage"
 import FeedbackCard, {
   links as FeedbackCardLinks,
 } from "~/components/application/FeedbackCard"
@@ -33,7 +30,6 @@ export const links = () => {
     ...RelayPerformanceCardLinks(),
     ...UsageChartCardLinks(),
     ...TableLinks(),
-    ...ChainWithImageLinks(),
     ...FeedbackCardLinks(),
     ...LoaderLinks(),
     ...MaintenanceNotificationLinks(),
@@ -104,9 +100,7 @@ export default function NetworkView({
                     id: chain.id,
                     network: {
                       value: `${chain.description}`,
-                      element: (
-                        <ChainWithImage chain={chain.description} withIcon={false} />
-                      ),
+                      element: <Text m={0}>{chain.description}</Text>,
                     },
                     chainId: chain.id,
                     traffic: numbersFormatter.format(

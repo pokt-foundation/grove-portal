@@ -34,13 +34,12 @@ import NotificationMessage, {
   NotificationType,
 } from "~/components/NotificationMessage"
 import Table, { links as TableLinks } from "~/components/Table"
-import TextInput, { links as TextInputLinks } from "~/components/TextInput"
+import TextInput from "~/components/TextInput"
 import { EndpointQuery, RoleName } from "~/models/portal/sdk"
 
 export const links = () => {
   return [
     ...AppRadioCardsLinks(),
-    ...TextInputLinks(),
     ...LoaderLinks(),
     ...TableLinks(),
     ...NotificationMessageLinks(),

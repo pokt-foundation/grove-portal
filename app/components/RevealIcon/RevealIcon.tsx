@@ -1,11 +1,9 @@
-import { IconEyeOn, IconEyeOff } from "@pokt-foundation/pocket-blocks"
-import styles from "./styles.css"
-
-/* c8 ignore start */
-export const links = () => {
-  return [{ rel: "stylesheet", href: styles }]
-}
-/* c8 ignore stop */
+import {
+  IconEyeOn,
+  IconEyeOff,
+  useMantineTheme,
+  Button,
+} from "@pokt-foundation/pocket-blocks"
 
 type RevealIconProps = {
   revealed: boolean
@@ -13,18 +11,22 @@ type RevealIconProps = {
 }
 
 export default function RevealIcon({ revealed, setRevealed }: RevealIconProps) {
+  const theme = useMantineTheme()
+
   return (
-    <span
+    <Button
       aria-label={`Click to ${revealed ? "show" : "hide"} value`}
-      className="pokt-reveal"
+      p="0 .5em"
+      size="xs"
       tabIndex={0}
+      variant="subtle"
       onClick={setRevealed}
     >
       {revealed ? (
-        <IconEyeOn fill="var(--mantine-color-blue-6)" />
+        <IconEyeOn cursor="pointer" fill={theme.colors.gray[6]} height={18} width={18} />
       ) : (
-        <IconEyeOff fill="var(--mantine-color-blue-6)" />
+        <IconEyeOff cursor="pointer" fill={theme.colors.gray[6]} height={18} width={18} />
       )}
-    </span>
+    </Button>
   )
 }

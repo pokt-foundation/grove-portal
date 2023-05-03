@@ -3,10 +3,10 @@ import { LinksFunction } from "@remix-run/node"
 import { useFetcher } from "@remix-run/react"
 import { useState } from "react"
 import Card, { links as CardLinks } from "~/components/Card"
-import TextInput, { links as TextInputLinks } from "~/components/TextInput"
+import TextInput from "~/components/TextInput"
 import { PayPlanType } from "~/models/portal/sdk"
 
-export const links: LinksFunction = () => [...CardLinks(), ...TextInputLinks()]
+export const links: LinksFunction = () => [...CardLinks()]
 
 export default function CustomPayPlan() {
   const [selectedPlanType, setSelectedPlanType] = useState<string | null>(null)

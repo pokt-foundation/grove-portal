@@ -7,19 +7,14 @@ import {
 import { useMemo } from "react"
 import styles from "./styles.css"
 import Card, { links as CardLinks } from "~/components/Card"
-import CopyTextIcon, { links as CopyTextIconLinks } from "~/components/CopyTextIcon"
+import CopyText from "~/components/CopyText"
 import Table, { links as TableLinks } from "~/components/Table"
 import { useTranslate } from "~/context/TranslateContext"
 import { ErrorMetric } from "~/models/errormetrics/errormetrics.server"
 
 /* c8 ignore start */
 export const links = () => {
-  return [
-    ...TableLinks(),
-    ...CopyTextIconLinks(),
-    ...CardLinks(),
-    { rel: "stylesheet", href: styles },
-  ]
+  return [...TableLinks(), ...CardLinks(), { rel: "stylesheet", href: styles }]
 }
 /* c8 ignore stop */
 
@@ -46,7 +41,7 @@ export default function AppRequestsErrorsCard({ errorMetrics }: RequestsErrorsCa
                 <p className="pokt-table-ellipsis">
                   {error?.message ? error.message : "null"}
                 </p>
-                <CopyTextIcon text={error?.message ? error.message : "null"} />
+                <CopyText text={error?.message ? error.message : "null"} />
               </Group>
             ),
           },
@@ -55,7 +50,7 @@ export default function AppRequestsErrorsCard({ errorMetrics }: RequestsErrorsCa
             element: (
               <Group>
                 <p className="pokt-table-ellipsis">{error.nodepublickey}</p>
-                <CopyTextIcon text={error.nodepublickey} />
+                <CopyText text={error.nodepublickey} />
               </Group>
             ),
           },

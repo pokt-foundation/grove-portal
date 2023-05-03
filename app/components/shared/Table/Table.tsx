@@ -112,11 +112,6 @@ export const Table = <T extends IdObj>({
     setPage(newPage)
   }
 
-  const removeIdFromObject = (obj: Partial<T>): Omit<Partial<T>, "id"> => {
-    delete obj.id
-    return obj
-  }
-
   return (
     <div className="pokt-table">
       <Box>
@@ -158,13 +153,13 @@ export const Table = <T extends IdObj>({
                   const tableData = Object.entries(itemData)
 
                   return (
-                    <tr key={item.id}>
+                    <tr key={id}>
                       {rowAsLink ? (
                         <Link
                           style={{
                             display: "contents",
                           }}
-                          to={`${item.id}`}
+                          to={`${id}`}
                         >
                           {tableData.map(renderTableCell)}
                         </Link>

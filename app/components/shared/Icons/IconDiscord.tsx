@@ -2,11 +2,13 @@ interface IconDiscordProps {
   fill?: string
   height?: number
   width?: number
+  className?: string
 }
 
-function IconDiscord({ fill, height, width }: IconDiscordProps) {
+function IconDiscord({ fill, height, width, className }: IconDiscordProps) {
   return (
     <svg
+      className={className}
       fill="none"
       height={height ?? "34"}
       viewBox="0 0 71 60"

@@ -49,7 +49,7 @@ export const Footer = () => {
             </Anchor>
             <Anchor
               aria-label="Discord"
-              href="https://discord.gg/pokt"
+              href="https://discord.gg/portal-rpc"
               rel="noreferrer"
               target="_blank"
             >

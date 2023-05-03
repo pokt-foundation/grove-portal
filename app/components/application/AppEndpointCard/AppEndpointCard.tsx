@@ -1,7 +1,4 @@
-import {
-  Text,
-  useMantineTheme,
-} from "@pokt-foundation/pocket-blocks"
+import { Text } from "@pokt-foundation/pocket-blocks"
 import { useEffect, useMemo } from "react"
 import AppEndpointUrl, {
   links as AppEndpointUrlLinks,
@@ -25,7 +22,6 @@ interface AppEndpointProps {
 
 export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) {
   const user = useUser()
-  const theme = useMantineTheme()
   const chains = useMemo(
     () =>
       user.data?.preferences?.endpoints
@@ -133,7 +129,6 @@ export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) 
               />
             )
           })}
-        
       </Card>
     </div>
   )

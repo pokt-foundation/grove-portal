@@ -1,10 +1,9 @@
-import { Button, Text, Title } from "@pokt-foundation/pocket-blocks"
+import { Button } from "@pokt-foundation/pocket-blocks"
 import { Link, useFetcher } from "@remix-run/react"
 import clsx from "clsx"
 import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/shared/Card"
 import CardList, { links as CardListLinks } from "~/components/shared/CardList"
-import HelpTooltip from "~/components/shared/HelpTooltip"
 import { useFeatureFlags } from "~/context/FeatureFlagContext"
 import { useTranslate } from "~/context/TranslateContext"
 import { PayPlanType } from "~/models/portal/sdk"
@@ -86,7 +85,6 @@ export default function AppPlanDetails({
             mt={16}
             size="xs"
             to={stripe}
-            variant="outline"
           >
             {t.AppPlanDetails.upgrade}
           </Button>

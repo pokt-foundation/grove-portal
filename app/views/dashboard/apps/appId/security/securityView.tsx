@@ -164,6 +164,8 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
               }}
             />
           </div>
+          <Text size="sm">{t.security.approvedChainsText}</Text>
+
           {whitelistBlockchains.map((item: string) => {
             const blockchain: Blockchain | undefined | null = blockchains.find(
               (c) => c?.id === item,
@@ -189,6 +191,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
           <div className="pokt-card-header">
             <h3>{t.security.headings.userAgents}</h3>
           </div>
+          <Text size="sm">{t.security.whitelistUserAgentsText}</Text>
           <div className="flexGrowRow">
             <TextInput
               id="userAgents"
@@ -236,6 +239,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
           <div className="pokt-card-header">
             <h3>{t.security.headings.origins}</h3>
           </div>
+          <Text size="sm">{t.security.whitelistOriginsText}</Text>
           <div className="flexGrowRow">
             <TextInput
               id="userOrigins"
@@ -282,6 +286,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
           <div className="pokt-card-header">
             <h3>{t.security.headings.contracts}</h3>
           </div>
+          <Text size="sm">{t.security.whitelistContractsText}</Text>
           <div className="flexGrowRow">
             <ChainsDropdown
               chains={blockchains}
@@ -358,6 +363,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
           <div className="pokt-card-header">
             <h3>{t.security.headings.methods}</h3>
           </div>
+          <Text size="sm">{t.security.whitelistMethodsText}</Text>
           <div className="flexGrowRow">
             <ChainsDropdown
               chains={blockchains}

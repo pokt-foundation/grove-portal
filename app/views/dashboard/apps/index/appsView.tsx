@@ -256,6 +256,7 @@ export const AppsView = ({
             <Tabs.Panel value="applications">
               {endpoints && endpoints.owner.length > 0 ? (
                 <Table
+                  rowAsLink
                   columns={["App", "Created", "Plan", ""]}
                   data={(endpoints.owner as ProcessedEndpoint[]).map((app) => ({
                     id: app.id,

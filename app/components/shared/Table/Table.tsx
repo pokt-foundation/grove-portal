@@ -7,6 +7,7 @@ import {
   TextInput,
   Box,
 } from "@pokt-foundation/pocket-blocks"
+import { Link } from "@remix-run/react"
 import { useMemo, useState } from "react"
 import styles from "./styles.css"
 import { useTranslate } from "~/context/TranslateContext"
@@ -25,6 +26,7 @@ interface TableProps<T> {
   search?: boolean | any[]
   rightComponent?: React.ReactNode
   subHeader?: React.ReactNode
+  rowAsLink?: boolean
 }
 
 interface PaginateProps {
@@ -55,6 +57,10 @@ type TableDataArray = [
   ),
 ]
 
+const renderTableCell = ([key, value]: TableDataArray) => (
+  <td key={key}>{typeof value === "object" ? value.element : value}</td>
+)
+
 export const Table = <T extends IdObj>({
   data,
   columns = Object.keys(data[0]) as (keyof T)[],
@@ -63,6 +69,7 @@ export const Table = <T extends IdObj>({
   search = false,
   rightComponent,
   subHeader,
+  rowAsLink = false,
 }: TableProps<T>) => {
   const { t } = useTranslate()
   const [searchTerm, setSearchTerm] = useState("")
@@ -105,11 +112,6 @@ export const Table = <T extends IdObj>({
     setPage(newPage)
   }
 
-  const removeIdFromObject = (obj: Partial<T>): Omit<Partial<T>, "id"> => {
-    delete obj.id
-    return obj
-  }
-
   return (
     <div className="pokt-table">
       <Box>
@@ -146,17 +148,27 @@ export const Table = <T extends IdObj>({
             </thead>
             <tbody>
               {paginatedData.length > 0 ? (
-                paginatedData.map((item) => (
-                  <tr key={item.id}>
-                    {Object.entries(removeIdFromObject(item)).map(
-                      ([key, value]: TableDataArray) => (
-                        <td key={key}>
-                          {typeof value === "object" ? value.element : value}
-                        </td>
-                      ),
-                    )}
-                  </tr>
-                ))
+                paginatedData.map((item) => {
+                  const { id, ...itemData } = item
+                  const tableData = Object.entries(itemData)
+
+                  return (
+                    <tr key={id}>
+                      {rowAsLink ? (
+                        <Link
+                          style={{
+                            display: "contents",
+                          }}
+                          to={`${id}`}
+                        >
+                          {tableData.map(renderTableCell)}
+                        </Link>
+                      ) : (
+                        tableData.map(renderTableCell)
+                      )}
+                    </tr>
+                  )
+                })
               ) : (
                 <tr>
                   <td className="empty-search" colSpan={Object.keys(data[0]).length}>

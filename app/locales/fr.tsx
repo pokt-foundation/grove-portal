@@ -86,8 +86,8 @@ const schema = {
             over its daily relay limit. All surplus relays are served by our backup
             infrastructure, ensuring no service interruptions. This is only a temporary
             measure so you should{" "}
-            <a href="https://discord.gg/pokt">reach out to our team</a> if you need more
-            relays.
+            <a href="https://discord.gg/portal-rpc">reach out to our team</a> if you need
+            more relays.
           </>
         ),
       },
@@ -97,8 +97,8 @@ const schema = {
           <>
             Pocket Network is expandable, and is continually adding support for new
             chains. Community members can advocate for chains to be considered by{" "}
-            <a href="https://discord.gg/pokt">reaching out on Discord</a> and posting a
-            suggestion to our team.
+            <a href="https://discord.gg/portal-rpc">reaching out on Discord</a> and
+            posting a suggestion to our team.
           </>
         ),
       },
@@ -162,6 +162,7 @@ const schema = {
     heartImageAlt: "heart image -fr",
     clickOpen: "Click to open feedback box -fr",
     clickClose: "Click to close feedback box -fr",
+    discordAriaLabel: "Click to share feedback with the Pokt Team in discord -fr",
   },
   dashboard: {
     routes: {
@@ -414,6 +415,13 @@ const schema = {
       "You must select a chain and have a value to add to methods whitelist. -fr",
     secretKeyText:
       "To maximize the security of your application, you should activate the private secret key for all requests and enable the use of whitelist user agents and origins. -fr",
+    approvedChainsText: "Limits the Endpoints to be used only with specific chains.",
+    whitelistUserAgentsText:
+      "Limits requests to only the HTTP User-Agents specified. If nothing is specified, all User-Agents will be accepted -fr.",
+    whitelistOriginsText: "Limits requests to only the HTTP Origins specified -fr.",
+    whitelistContractsText:
+      "Limits requests to the smart contract addresses specified -fr.",
+    whitelistMethodsText: "Limits requests to use specific RPC methods -fr.",
   },
   stopRemoveApp: {
     stopSubscriptionTitle: "This will stop your subscription! -fr",
@@ -459,7 +467,7 @@ const schema = {
           className="pokt-link"
           rel="noreferrer"
           target="_blank"
-          to="https://discord.gg/pokt"
+          to="https://discord.gg/portal-rpc"
         >
           {" "}
           Discord{" "}

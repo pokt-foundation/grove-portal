@@ -91,6 +91,7 @@ interface TranslationData {
     heartImageAlt: string
     clickOpen: string
     clickClose: string
+    discordAriaLabel: string
   }
   dashboard: {
     routes: {

@@ -14,18 +14,6 @@
   margin-bottom: 0;
 }
 
-.pokt-app-endpoint-url-abbrv {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 80px;
-  height: 40px;
-  padding: 8px;
-  border: 1px solid var(--mantine-color-white);
-  border-radius: 4px;
-  font-size: 0.5rem;
-}
-
 .pokt-app-endpoint-url-delete {
   padding: 0 8px;
 }

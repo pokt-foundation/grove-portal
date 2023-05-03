@@ -1,26 +1,17 @@
+import { Text } from "@pokt-foundation/pocket-blocks"
 import { useEffect, useMemo } from "react"
-import ChainsDropdown, { links as ChainsDropdownLinks } from "../ChainsDropdown"
-import styles from "./styles.css"
 import AppEndpointUrl, {
   links as AppEndpointUrlLinks,
 } from "~/components/application/AppEndpointUrl"
-import ChainWithImage, {
-  links as ChainWithImageLinks,
-} from "~/components/application/ChainWithImage"
 import { Card, links as CardLinks } from "~/components/shared/Card"
+import ChainsDropdown from "~/components/shared/ChainsDropdown/ChainsDropdown"
 import { useUser } from "~/context/UserContext"
 import { Blockchain, BlockchainsQuery, EndpointQuery } from "~/models/portal/sdk"
 import { ChainMetadata, prefixFromChainId } from "~/utils/chainUtils"
 
 /* c8 ignore start */
 export const links = () => {
-  return [
-    ...CardLinks(),
-    ...ChainsDropdownLinks(),
-    ...ChainWithImageLinks(),
-    ...AppEndpointUrlLinks(),
-    { rel: "stylesheet", href: styles },
-  ]
+  return [...CardLinks(), ...AppEndpointUrlLinks()]
 }
 /* c8 ignore stop */
 
@@ -116,30 +107,9 @@ export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) 
           <h3>Endpoint</h3>
           <div>
             {app.gigastake ? (
-              <ChainsDropdown
-                blockchains={blockchains.sort(function (a, b) {
-                  if (a?.description && b?.description) {
-                    if (a.description < b.description) {
-                      return -1
-                    }
-                    if (a.description > b.description) {
-                      return 1
-                    }
-                  }
-                  return 0
-                })}
-                defaultText="Add New"
-                handleChainClick={handleAddToStoredChains}
-                icon={true}
-                selectedChains={
-                  user.data?.preferences.endpoints &&
-                  user.data?.preferences.endpoints[app.id]
-                    ? user.data?.preferences.endpoints[app.id]
-                    : ["0021"]
-                }
-              />
+              <ChainsDropdown chains={blockchains} onChange={handleAddToStoredChains} />
             ) : (
-              <ChainWithImage chain={chainDescription} />
+              <Text>{chainDescription}</Text>
             )}
           </div>
         </div>

@@ -33,14 +33,13 @@ import NotificationMessage, {
   NotificationType,
 } from "~/components/shared/NotificationMessage"
 import Table, { links as TableLinks } from "~/components/shared/Table"
-import TextInput, { links as TextInputLinks } from "~/components/shared/TextInput"
+import TextInput from "~/components/shared/TextInput"
 import { EndpointQuery, RoleName } from "~/models/portal/sdk"
 import { ActionData, TeamLoaderData } from "~/routes/dashboard/apps/$appId/team"
 
 export const links = () => {
   return [
     ...AppRadioCardsLinks(),
-    ...TextInputLinks(),
     ...LoaderLinks(),
     ...TableLinks(),
     ...NotificationMessageLinks(),

@@ -35,13 +35,17 @@ export default function TextInput({
         variant={props.variant ?? "filled"}
         {...props}
         sx={{
-          backgroundColor: theme.colors.navy ? theme.colors.navy[6] : "blue",
           flexGrow: 1,
           marginBottom: 0,
 
           ".mantine-TextInput-input": {
             padding: props.rightSection ? ".5em 5em .5em .5em" : ".5em",
             fontSize: "0.75em",
+            backgroundColor: theme.colors.navy ? theme.colors.navy[6] : "blue",
+          },
+          ".mantine-TextInput-label": {
+            fontWeight: 600,
+            fontSize: "1em",
           },
         }}
       />

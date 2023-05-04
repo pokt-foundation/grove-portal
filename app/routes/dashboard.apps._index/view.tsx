@@ -250,7 +250,9 @@ export const AppsView = ({
               <Tabs.Tab value="applications">My Applications</Tabs.Tab>
               {notOwnerEndpoints &&
                 notOwnerEndpoints.length > 0 &&
-                userDataByEndpoint.length > 0 && <Tabs.Tab value="teams">My Teams</Tabs.Tab>}
+                userDataByEndpoint.length > 0 && (
+                  <Tabs.Tab value="teams">My Teams</Tabs.Tab>
+                )}
             </Tabs.List>
 
             <Tabs.Panel value="applications">

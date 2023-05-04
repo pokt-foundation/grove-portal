@@ -6,7 +6,7 @@ import {
   MetaFunction,
   redirect,
 } from "@remix-run/node"
-import { Form, useLoaderData, useActionData, useNavigation } from "@remix-run/react"
+import { Form, useLoaderData, useActionData, useNavigation, Link } from "@remix-run/react"
 import { useEffect, useMemo, useState } from "react"
 import invariant from "tiny-invariant"
 import AppPlansOverview, {
@@ -220,10 +220,9 @@ export default function CreateApp() {
           <Text className="termsOfUseText" mb={16} mt={32} size="xs">
             By using this application, you agree to our{" "}
             <Anchor
-              href="https://www.pokt.network/site-terms-of-use"
-              rel="noreferrer"
+              component={Link}
               target="_blank"
-              variant="text"
+              to="/terms-and-conditions"
             >
               Terms of Use
             </Anchor>

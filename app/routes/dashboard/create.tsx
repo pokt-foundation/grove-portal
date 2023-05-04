@@ -219,11 +219,7 @@ export default function CreateApp() {
           </Button>
           <Text className="termsOfUseText" mb={16} mt={32} size="xs">
             By using this application, you agree to our{" "}
-            <Anchor
-              component={Link}
-              target="_blank"
-              to="/terms-and-conditions"
-            >
+            <Anchor component={Link} target="_blank" to="/terms-and-conditions">
               Terms of Use
             </Anchor>
             .

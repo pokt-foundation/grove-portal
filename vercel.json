@@ -2,7 +2,6 @@
   "build": {
     "env": {
       "ENABLE_FILE_SYSTEM_API": "1"
-    },
-    "command": "pnpm install -g vercel@28.15.3 && vercel"
+    }
   }
 }

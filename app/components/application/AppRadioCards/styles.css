@@ -52,7 +52,8 @@
 .radio-card-grid .radio-card p {
   color: var(--color-white-main);
 }
-*/ label.mantine-Radio-label {
+
+label.mantine-Radio-label {
   color: var(--mantine-color-white);
 }
 

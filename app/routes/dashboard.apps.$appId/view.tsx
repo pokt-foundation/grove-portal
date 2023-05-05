@@ -183,6 +183,27 @@ export default function AppIdLayoutView({
     }
   }, [endpoint, subscription, updatePlanFetcher])
 
+  useEffect(() => {
+    // update plan type to paid if plan is free and there is a subscription
+    if (
+      endpoint?.appLimits.planType === PayPlanType.FreetierV0 &&
+      subscription &&
+      updatePlanFetcher.state !== "submitting" &&
+      updatePlanFetcher.state !== "loading"
+    ) {
+      updatePlanFetcher.submit(
+        {
+          id: endpoint.id,
+          type: PayPlanType.PayAsYouGoV0,
+        },
+        {
+          action: "/api/updatePlan",
+          method: "post",
+        },
+      )
+    }
+  }, [endpoint, subscription, updatePlanFetcher])
+
   const role = endpoint?.users.find((u) => u.email === user._json?.email)?.roleName
   const isMember = role === RoleName.Member
   const isAdmin = role === RoleName.Admin

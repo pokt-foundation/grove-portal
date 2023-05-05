@@ -11,7 +11,7 @@ module.exports = {
   serverDependenciesToBundle: [/.*/],
   // appDirectory: "app",
   // assetsBuildDirectory: "public/build",
-  // serverBuildPath: "api/index.js",
+  serverBuildPath: "api/index.js",
   // publicPath: "/build/",
   // serverDependenciesToBundle: [
   //   "remark-gfm",

@@ -13,16 +13,6 @@ module.exports = {
   // assetsBuildDirectory: "public/build",
   serverBuildPath: "api/index.js",
   // publicPath: "/build/",
-  // serverDependenciesToBundle: [
-  //   "remark-gfm",
-  //   /micromark-.*/,
-  //   /mdast-.*/,
-  //   "ccount",
-  //   /unist-.*/,
-  //   "decode-named-character-reference",
-  //   "character-entities",
-  //   "markdown-table",
-  // ],
   future: {
     v2_routeConvention: true,
   },

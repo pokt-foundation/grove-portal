@@ -10,7 +10,7 @@ import {
 import clsx from "clsx"
 import { useState } from "react"
 import styles from "./styles.css"
-import { Card, links as CardLinks } from "~/components/shared/Card"
+import { Card, links as CardLinks } from "~/components/Card"
 
 /* c8 ignore start */
 export const links = () => {

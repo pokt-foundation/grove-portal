@@ -27,10 +27,10 @@ import React, { useEffect, useMemo } from "react"
 import { Auth0Profile } from "remix-auth-auth0"
 import analyticsInit from "./utils/analytics"
 import { authenticator } from "./utils/auth.server"
-import Footer, { links as FooterLinks } from "~/components/shared/Footer"
-import Header, { links as HeaderLinks } from "~/components/shared/Header"
-import { IconApp, IconNetwork } from "~/components/shared/Icons"
-import Nav, { links as NavLinks } from "~/components/shared/Nav"
+import Footer, { links as FooterLinks } from "~/components/Footer"
+import Header, { links as HeaderLinks } from "~/components/Header"
+import { IconApp, IconNetwork } from "~/components/Icons"
+import Nav, { links as NavLinks } from "~/components/Nav"
 import { FeatureFlagsContextProvider } from "~/context/FeatureFlagContext"
 import { TranslateContextProvider, useTranslate } from "~/context/TranslateContext"
 import { UserContextProvider } from "~/context/UserContext"
@@ -101,6 +101,7 @@ const WithProviders = ({ children }: { children: React.ReactNode }) => {
           Card: {
             styles: (theme) => ({
               root: {
+                padding: "32px",
                 backgroundColor:
                   theme.colorScheme === "dark"
                     ? theme.colors.navy[5]
@@ -243,8 +244,7 @@ export default function App() {
         protected: Protected.Public, // show this link to all. dashboard layout handles redirect to login.
       },
       {
-        to: "https://docs.pokt.network",
-        external: true,
+        to: "/docs",
         label: t.dashboard.routes.docs,
         icon: IconBookOpen,
         protected: Protected.Public,

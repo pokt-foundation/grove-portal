@@ -3,8 +3,8 @@ import { useEffect, useMemo } from "react"
 import AppEndpointUrl, {
   links as AppEndpointUrlLinks,
 } from "~/components/application/AppEndpointUrl"
-import { Card, links as CardLinks } from "~/components/shared/Card"
-import ChainsDropdown from "~/components/shared/ChainsDropdown/ChainsDropdown"
+import { Card, links as CardLinks } from "~/components/Card"
+import ChainsDropdown from "~/components/ChainsDropdown/ChainsDropdown"
 import { useUser } from "~/context/UserContext"
 import { Blockchain, BlockchainsQuery, EndpointQuery } from "~/models/portal/sdk"
 import { ChainMetadata, prefixFromChainId } from "~/utils/chainUtils"
@@ -84,7 +84,7 @@ export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) 
       return
     if (user.data?.preferences?.endpoints[app.id].includes(chain)) {
       const restOfEndpoints = user.data?.preferences?.endpoints[app.id].filter(
-        (e) => e !== chain,
+        (e: string) => e !== chain,
       )
       user.submit(
         {

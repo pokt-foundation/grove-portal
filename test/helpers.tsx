@@ -41,7 +41,7 @@ export function render(ui: React.ReactElement, options?: RenderOptions) {
       unstable_tailwind: false,
       v2_errorBoundary: false,
       v2_meta: false,
-      v2_routeConvention: false,
+      v2_routeConvention: true,
       v2_normalizeFormMethod: false,
     },
   }

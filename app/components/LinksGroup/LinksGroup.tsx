@@ -6,9 +6,17 @@ import {
   UnstyledButton,
   IconCaretRight,
   useMantineTheme,
+  MantineTheme,
 } from "@pokt-foundation/pocket-blocks"
 import { useLocation } from "@remix-run/react"
 import { useState } from "react"
+
+const getTextColor = (isActive: boolean, size: string = "", theme: MantineTheme) => {
+  if (isActive) {
+    return theme.colors.blue[5]
+  }
+  return size === "lg" ? "#fff" : theme.colors.navy[0]
+}
 
 interface LinksGroupProps {
   initiallyOpened?: boolean
@@ -43,11 +51,7 @@ const LinksGroup = ({
       p="10.5px 32px"
       sx={{
         backgroundColor: isActive ? theme.colors.navy[4] : "transparent",
-        color: isActive
-          ? theme.colors.blue[5]
-          : size === "lg"
-          ? "#fff"
-          : theme.colors.navy[0],
+        color: getTextColor(isActive, size, theme),
         fontSize: size === "lg" ? "18px" : "15px",
         fontWeight: size === "lg" ? "bold" : "normal",
 
@@ -78,11 +82,7 @@ const LinksGroup = ({
               m={0}
               p="16px 8px"
               sx={{
-                color: isActive
-                  ? theme.colors.blue[5]
-                  : size === "lg"
-                  ? "#fff"
-                  : theme.colors.navy[0],
+                color: getTextColor(isActive, size, theme),
                 fontSize: size === "lg" ? "18px" : "16px",
                 fontWeight: size === "lg" ? "bold" : "normal",
               }}

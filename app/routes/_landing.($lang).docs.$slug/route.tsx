@@ -41,7 +41,6 @@ export const loader: LoaderFunction = async ({ params }) => {
 export default function Docs() {
   const { data }: LoaderData = useLoaderData()
 
-  // Wrap this with Sidebar/Layout
   return (
     <Remark>
       {data &&

@@ -1,4 +1,3 @@
-import { useState } from "react"
 import {
   Group,
   Box,
@@ -9,6 +8,7 @@ import {
   useMantineTheme,
 } from "@pokt-foundation/pocket-blocks"
 import { useLocation } from "@remix-run/react"
+import { useState } from "react"
 
 interface LinksGroupProps {
   initiallyOpened?: boolean
@@ -38,8 +38,8 @@ const LinksGroup = ({
 
   const items = (hasLinks ? links : []).map((link) => (
     <Text
-      m={0}
       key={link.label}
+      m={0}
       p="10.5px 32px"
       sx={{
         backgroundColor: isActive ? theme.colors.navy[4] : "transparent",
@@ -93,11 +93,11 @@ const LinksGroup = ({
           {hasLinks && (
             <IconCaretRight
               height="18px"
-              width="18px"
               style={{
                 transform: opened ? "rotate(90deg)" : "rotate(0deg)",
                 transition: "transform 0.2s ease-in-out",
               }}
+              width="18px"
             />
           )}
         </Group>

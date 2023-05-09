@@ -244,7 +244,7 @@ export default function App() {
         protected: Protected.Public, // show this link to all. dashboard layout handles redirect to login.
       },
       {
-        to: "/en-US/docs",
+        to: "/docs",
         label: t.dashboard.routes.docs,
         icon: IconBookOpen,
         protected: Protected.Public,

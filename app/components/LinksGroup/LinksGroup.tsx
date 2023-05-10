@@ -20,6 +20,18 @@ const getTextColor: GetTextColor = (isActive, theme, size = "") => {
   return size === "lg" ? "#fff" : theme.colors.navy[0]
 }
 
+type GetFontSize = (nesting_level: number, size?: string) => string
+
+const getFontSize: GetFontSize = (nesting_level, size) => {
+  if (size && size === "lg") {
+    return "18px"
+  }
+  if (nesting_level) {
+    return "15px"
+  }
+  return "16px"
+}
+
 type LinkItemProps = {
   isActive: boolean
   label: string
@@ -43,7 +55,7 @@ const LinkItem = ({
     sx={{
       backgroundColor: isActive ? theme.colors.navy[4] : "transparent",
       color: getTextColor(isActive, theme, size),
-      fontSize: size === "lg" ? "18px" : nesting_level ? "15px" : "16px",
+      fontSize: getFontSize(nesting_level, size),
       fontWeight: size === "lg" ? "bold" : "normal",
       "&:hover": {
         backgroundColor: theme.colors.navy[4],

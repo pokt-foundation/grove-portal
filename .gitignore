@@ -1,6 +1,4 @@
-app/models/cms/sdk.ts
-app/models/portal/sdk.ts
-app/models/poktscan/sdk.ts
+**/sdk.ts
 
 node_modules
 

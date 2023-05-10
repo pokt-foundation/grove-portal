@@ -11,18 +11,55 @@ import {
 import { useLocation } from "@remix-run/react"
 import { useState } from "react"
 
-const getTextColor = (isActive: boolean, size: string = "", theme: MantineTheme) => {
+type GetTextColor = (isActive: boolean, theme: MantineTheme, size?: string) => string
+
+const getTextColor: GetTextColor = (isActive, theme, size = "") => {
   if (isActive) {
     return theme.colors.blue[5]
   }
   return size === "lg" ? "#fff" : theme.colors.navy[0]
 }
 
-interface LinksGroupProps {
+type LinkItemProps = {
+  isActive: boolean
+  label: string
+  link: string
+  nesting_level?: number
+  size?: string
+  theme: MantineTheme
+}
+
+const LinkItem = ({
+  isActive,
+  label,
+  link,
+  nesting_level = 0,
+  size,
+  theme,
+}: LinkItemProps) => (
+  <Text
+    m={0}
+    p={nesting_level ? `10.5px 0 10.5px ${nesting_level * 32}px` : "16px 8px"}
+    sx={{
+      backgroundColor: isActive ? theme.colors.navy[4] : "transparent",
+      color: getTextColor(isActive, theme, size),
+      fontSize: size === "lg" ? "18px" : nesting_level ? "15px" : "16px",
+      fontWeight: size === "lg" ? "bold" : "normal",
+      "&:hover": {
+        backgroundColor: theme.colors.navy[4],
+      },
+    }}
+  >
+    <a href={link}>{label}</a>
+  </Text>
+)
+
+export interface LinksGroupProps {
   initiallyOpened?: boolean
   label: string
   link: string
   links?: LinksGroupProps[]
+  nesting_level?: number
   size?: string
   slug: string
 }
@@ -32,6 +69,7 @@ const LinksGroup = ({
   label,
   link,
   links,
+  nesting_level,
   size,
   slug,
 }: LinksGroupProps) => {
@@ -44,29 +82,22 @@ const LinksGroup = ({
 
   const hasLinks = Array.isArray(links)
 
-  const items = (hasLinks ? links : []).map((link) => (
-    <Text
-      key={link.label}
-      m={0}
-      p="10.5px 32px"
-      sx={{
-        backgroundColor: isActive ? theme.colors.navy[4] : "transparent",
-        color: getTextColor(isActive, size, theme),
-        fontSize: size === "lg" ? "18px" : "15px",
-        fontWeight: size === "lg" ? "bold" : "normal",
-
-        "&:hover": {
-          backgroundColor: theme.colors.navy[4],
-        },
-      }}
-    >
-      <a href={link.link}>{link.label}</a>
-    </Text>
+  const items = (hasLinks ? links : []).map((linkItem) => (
+    <LinksGroup
+      key={linkItem.label}
+      initiallyOpened={linkItem.initiallyOpened}
+      label={linkItem.label}
+      link={linkItem.link}
+      links={linkItem.links}
+      nesting_level={linkItem.nesting_level}
+      size={size}
+      slug={linkItem.slug}
+    />
   ))
 
   return (
     <>
-      <UnstyledButton onClick={() => setOpened((opened) => !opened)}>
+      <UnstyledButton w="100%" onClick={() => setOpened((opened) => !opened)}>
         <Group
           position="apart"
           spacing={0}
@@ -78,20 +109,18 @@ const LinksGroup = ({
           }}
         >
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Text
-              m={0}
-              p="16px 8px"
-              sx={{
-                color: getTextColor(isActive, size, theme),
-                fontSize: size === "lg" ? "18px" : "16px",
-                fontWeight: size === "lg" ? "bold" : "normal",
-              }}
-            >
-              <a href={link}>{label}</a>
-            </Text>
+            <LinkItem
+              isActive={isActive}
+              label={label}
+              link={link}
+              nesting_level={nesting_level}
+              size={size}
+              theme={theme}
+            />
           </Box>
           {hasLinks && (
             <IconCaretRight
+              aria-label="caret-right"
               height="18px"
               style={{
                 transform: opened ? "rotate(90deg)" : "rotate(0deg)",

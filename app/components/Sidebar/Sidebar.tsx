@@ -1,7 +1,7 @@
 import { Grid, Navbar } from "@pokt-foundation/pocket-blocks"
-import LinksGroup from "../LinksGroup/LinksGroup"
+import LinksGroup, { LinksGroupProps } from "../LinksGroup/LinksGroup"
 
-const mockdata = [
+const mockdata: LinksGroupProps[] = [
   { label: "Introduction", link: "/", size: "lg", slug: "introduction" },
   { label: "What is the Portal?", link: "/", slug: "what-is-the-portal" },
   { label: "Supported Chains", link: "/", slug: "supported-chains" },
@@ -22,7 +22,22 @@ const mockdata = [
     label: "App Overview",
     initiallyOpened: true,
     link: "/",
-    links: [{ label: "Manage endpoints", link: "/", slug: "manage-endpoints" }],
+    links: [
+      {
+        label: "Manage endpoints",
+        link: "/",
+        nesting_level: 1,
+        slug: "manage-endpoints",
+        links: [
+          {
+            label: "Manage endpoints 1",
+            link: "/",
+            nesting_level: 2,
+            slug: "manage-endpoints-1",
+          },
+        ],
+      },
+    ],
     slug: "app-overview",
   },
   { label: "Requests", link: "/", slug: "requests" },

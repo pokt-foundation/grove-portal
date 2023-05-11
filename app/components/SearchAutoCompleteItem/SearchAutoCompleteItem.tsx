@@ -15,7 +15,7 @@ const SearchAutoCompleteItem = forwardRef<HTMLDivElement, ItemProps>(
             display: "flex",
             alignItems: "flex-start",
             flexDirection: "column",
-            justifyItems: "flex-start",
+            justifyContent: "flex-start",
             flexWrap: "wrap",
           }}
         >

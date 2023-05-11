@@ -284,7 +284,19 @@ export default function App() {
           </Document>
         </WithProviders>
       ) : (
-        <Outlet />
+        <html>
+          <head>
+            <StylesPlaceholder />
+            <Meta />
+            <Links />
+          </head>
+          <body>
+            <Outlet />
+            <ScrollRestoration />
+            <Scripts />
+            <LiveReload />
+          </body>
+        </html>
       )}
     </>
   )

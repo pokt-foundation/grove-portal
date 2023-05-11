@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px;
+  padding: 16px 72px;
   /* move color to mantine: var(--mantine-color-blue-9) */
   background-color: rgb(25, 36, 48);
   color: white;

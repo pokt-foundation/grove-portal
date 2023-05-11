@@ -57,6 +57,8 @@ const LinkItem = ({
       color: getTextColor(isActive, theme, size),
       fontSize: getFontSize(nesting_level, size),
       fontWeight: size === "lg" ? "bold" : "normal",
+      textTransform: "capitalize",
+
       "&:hover": {
         backgroundColor: theme.colors.navy[4],
       },

@@ -284,9 +284,9 @@ export default function App() {
         <main>
           <Container
             className="container"
-            size="lg"
             ml={location.pathname.includes("/docs") ? "0" : "auto"}
             pl={location.pathname.includes("/docs") ? "0" : "16px"}
+            size="lg"
           >
             <Outlet />
           </Container>

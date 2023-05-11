@@ -69,10 +69,11 @@ const LinkItem = ({
 )
 
 export interface LinksGroupProps {
+  id: string
   initiallyOpened?: boolean
   label: string
   link: string
-  links?: LinksGroupProps[]
+  links: LinksGroupProps[]
   nesting_level?: number
   size?: string
   slug: string
@@ -94,10 +95,11 @@ const LinksGroup = ({
 
   const theme = useMantineTheme()
 
-  const hasLinks = Array.isArray(links)
+  const hasLinks = links && links.length > 0
 
   const items = (hasLinks ? links : []).map((linkItem) => (
     <LinksGroup
+      id={linkItem.id}
       key={linkItem.label}
       initiallyOpened={linkItem.initiallyOpened}
       label={linkItem.label}

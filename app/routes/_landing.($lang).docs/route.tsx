@@ -30,30 +30,62 @@ export const loader: LoaderFunction = async ({ params }) => {
   }
 }
 
-const replaceAll = (str: string, find: string, replace: string) => {
-  return str.replace(new RegExp(find, "g"), replace)
-}
-
 export default function DocsLayout() {
   const { data }: LoaderData = useLoaderData()
   const [linksGroupItems, setLinksGroupItems] = useState<LinksGroupProps[]>([])
 
   useEffect(() => {
     if (data && data.length) {
-      setLinksGroupItems(
-        data.map((doc: documentation) => {
-          return {
-            label:
-              doc.translations && doc.translations[0]?.title
-                ? doc.translations[0].title
-                : "",
-            link: doc.slug ? doc.slug : "",
-            slug: doc.slug ? doc.slug : "",
-          }
-        }),
-      )
+      const organizedData = organizeData(data)
+      setLinksGroupItems(organizedData)
     }
   }, [data])
+
+  const findNestingLevel = (doc: documentation): number => {
+    if (!doc.parent) {
+      return 0
+    }
+    return 1 + findNestingLevel(doc.parent)
+  }
+
+  const organizeData = (docs: documentation[]): LinksGroupProps[] => {
+    let mappedDocs: LinksGroupProps[] = []
+
+    docs.forEach((doc) => {
+      if (doc.slug) {
+        mappedDocs.push({
+          id: doc.id,
+          label: doc.translations?.[0]?.title || "",
+          link: doc.slug,
+          slug: doc.slug,
+          links: [],
+        })
+      }
+    })
+
+    docs.forEach((doc) => {
+      if (doc.parent) {
+        let parentDoc = doc.parent
+        const parentInMap = mappedDocs.find((item) => item.id === parentDoc.id)
+        const docInMap = mappedDocs.find((item) => item.id === doc.id)
+
+        if (parentInMap && docInMap) {
+          const nesting_level = findNestingLevel(doc)
+          mappedDocs = mappedDocs.map((item) => {
+            if (item.id === parentDoc.id) {
+              return {
+                ...item,
+                links: [...item.links, { ...docInMap, nesting_level }],
+              }
+            }
+            return item
+          })
+        }
+      }
+    })
+
+    return mappedDocs
+  }
 
   return (
     <Grid

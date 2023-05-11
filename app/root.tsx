@@ -285,10 +285,8 @@ export default function App() {
           <Container
             className="container"
             size="lg"
-            sx={{
-              marginLeft: location.pathname.includes("/docs") ? "0" : "auto",
-              paddingLeft: location.pathname.includes("/docs") ? "0" : "16px",
-            }}
+            ml={location.pathname.includes("/docs") ? "0" : "auto"}
+            pl={location.pathname.includes("/docs") ? "0" : "16px"}
           >
             <Outlet />
           </Container>

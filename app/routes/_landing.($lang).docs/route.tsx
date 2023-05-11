@@ -17,7 +17,6 @@ export const loader: LoaderFunction = async ({ params }) => {
 
   try {
     const doc = await cms.getDocs({
-      // filter: { status: { _eq: "published" } },
       sort: ["id"],
       language: routelang,
     })
@@ -41,12 +40,14 @@ export default function DocsLayout() {
 
   useEffect(() => {
     if (data && data.length) {
-      console.log(data)
       setLinksGroupItems(
         data.map((doc: documentation) => {
           return {
-            label: doc.slug ? replaceAll(doc.slug, "-", " ") : "", // We might want to choose a different property for the label
-            link: doc.slug ? doc.slug : "", // Assuming the slug can be used as the link
+            label:
+              doc.translations && doc.translations[0]?.title
+                ? doc.translations[0].title
+                : "",
+            link: doc.slug ? doc.slug : "",
             slug: doc.slug ? doc.slug : "",
           }
         }),

@@ -7,6 +7,7 @@ import {
   IconCaretRight,
   useMantineTheme,
   MantineTheme,
+  List,
 } from "@pokt-foundation/pocket-blocks"
 import { useLocation } from "@remix-run/react"
 import { useState } from "react"
@@ -36,7 +37,7 @@ type LinkItemProps = {
   isActive: boolean
   label: string
   link: string
-  nesting_level?: number
+  nesting_level: number
   size?: string
   theme: MantineTheme
 }
@@ -45,7 +46,7 @@ const LinkItem = ({
   isActive,
   label,
   link,
-  nesting_level = 0,
+  nesting_level,
   size,
   theme,
 }: LinkItemProps) => (
@@ -53,15 +54,10 @@ const LinkItem = ({
     m={0}
     p={nesting_level ? `10.5px 0 10.5px ${nesting_level * 32}px` : "16px 8px"}
     sx={{
-      backgroundColor: isActive ? theme.colors.navy[4] : "transparent",
       color: getTextColor(isActive, theme, size),
       fontSize: getFontSize(nesting_level, size),
       fontWeight: size === "lg" ? "bold" : "normal",
       textTransform: "capitalize",
-
-      "&:hover": {
-        backgroundColor: theme.colors.navy[4],
-      },
     }}
   >
     <a href={link}>{label}</a>
@@ -84,7 +80,7 @@ const LinksGroup = ({
   label,
   link,
   links,
-  nesting_level,
+  nesting_level = 0,
   size,
   slug,
 }: LinksGroupProps) => {
@@ -105,26 +101,27 @@ const LinksGroup = ({
       label={linkItem.label}
       link={linkItem.link}
       links={linkItem.links}
-      nesting_level={linkItem.nesting_level}
-      size={size}
+      nesting_level={nesting_level + 1}
+      size={linkItem.size}
       slug={linkItem.slug}
     />
   ))
 
   return (
     <>
-      <UnstyledButton w="100%" onClick={() => setOpened((opened) => !opened)}>
-        <Group
-          position="apart"
-          spacing={0}
-          sx={{
-            backgroundColor: isActive ? theme.colors.navy[4] : "transparent",
-            "&:hover": {
-              backgroundColor: theme.colors.navy[4],
-            },
-          }}
-        >
-          <Box sx={{ display: "flex", alignItems: "center" }}>
+      <List.Item
+        sx={{
+          backgroundColor: isActive ? theme.colors.navy[4] : theme.colors.navy[7],
+          listStyle: "none",
+
+          "&:hover": {
+            backgroundColor: theme.colors.navy[4],
+          },
+        }}
+        w="100%"
+      >
+        <UnstyledButton onClick={() => setOpened((opened) => !opened)} w="100%">
+          <Group position="apart" spacing={0}>
             <LinkItem
               isActive={isActive}
               label={label}
@@ -133,20 +130,20 @@ const LinksGroup = ({
               size={size}
               theme={theme}
             />
-          </Box>
-          {hasLinks && (
-            <IconCaretRight
-              aria-label="caret-right"
-              height="18px"
-              style={{
-                transform: opened ? "rotate(90deg)" : "rotate(0deg)",
-                transition: "transform 0.2s ease-in-out",
-              }}
-              width="18px"
-            />
-          )}
-        </Group>
-      </UnstyledButton>
+            {hasLinks && (
+              <IconCaretRight
+                aria-label="caret-right"
+                height="18px"
+                style={{
+                  transform: opened ? "rotate(90deg)" : "rotate(0deg)",
+                  transition: "transform 0.2s ease-in-out",
+                }}
+                width="18px"
+              />
+            )}
+          </Group>
+        </UnstyledButton>
+      </List.Item>
       {hasLinks ? <Collapse in={opened}>{items}</Collapse> : null}
     </>
   )

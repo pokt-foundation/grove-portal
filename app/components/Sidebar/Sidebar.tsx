@@ -1,4 +1,4 @@
-import { Grid, Navbar } from "@pokt-foundation/pocket-blocks"
+import { List, Navbar, useMantineTheme } from "@pokt-foundation/pocket-blocks"
 import LinksGroup, { LinksGroupProps } from "../LinksGroup/LinksGroup"
 
 type SidebarProps = {
@@ -8,22 +8,20 @@ type SidebarProps = {
 export function Sidebar({ data }: SidebarProps) {
   const links = data.map((item) => <LinksGroup {...item} key={item.label} />)
 
+  const theme = useMantineTheme()
+
   return (
     <Navbar
-      bg="#0a0e13"
+      bg={theme.colors.navy[7]}
       height="unset"
-      p="16px 8px 48px 56px"
+      p="16px 8px 48px 0"
       width={{ sm: 300 }}
       withBorder={false}
     >
       <Navbar.Section grow>
-        <Grid
-          sx={{
-            flexDirection: "column",
-          }}
-        >
+        <List unstyled withPadding>
           {links}
-        </Grid>
+        </List>
       </Navbar.Section>
     </Navbar>
   )

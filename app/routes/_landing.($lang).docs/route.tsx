@@ -30,11 +30,7 @@ export const loader: LoaderFunction = async ({ params }) => {
   }
 }
 
-const findChildren = (
-  docId: string,
-  docs: documentation[],
-  level: number = 0,
-): LinksGroupProps[] => {
+const findChildren = (docId: string, docs: documentation[]): LinksGroupProps[] => {
   return docs
     .filter((doc) => doc.parent?.id === docId)
     .map((doc) => ({
@@ -42,8 +38,7 @@ const findChildren = (
       label: doc.translations?.[0]?.title || "",
       link: doc.slug || "",
       slug: doc.slug || "",
-      nesting_level: level,
-      links: findChildren(doc.id, docs, level + 1),
+      links: findChildren(doc.id, docs),
     }))
 }
 
@@ -55,8 +50,7 @@ const organizeData = (docs: documentation[]): LinksGroupProps[] => {
       label: doc.translations?.[0]?.title || "",
       link: doc.slug || "",
       slug: doc.slug || "",
-      nesting_level: 0,
-      links: findChildren(doc.id, docs, 1),
+      links: findChildren(doc.id, docs),
     }))
 }
 

@@ -1,5 +1,9 @@
+import { Box, Grid } from "@pokt-foundation/pocket-blocks"
 import { LoaderFunction, json } from "@remix-run/node"
 import { Outlet, useLoaderData } from "@remix-run/react"
+import { useEffect, useRef, useState } from "react"
+import { LinksGroupProps } from "~/components/LinksGroup/LinksGroup"
+import { Sidebar } from "~/components/Sidebar/Sidebar"
 import { initCmsClient } from "~/models/cms/cms.server"
 import { documentation } from "~/models/cms/sdk"
 
@@ -13,7 +17,6 @@ export const loader: LoaderFunction = async ({ params }) => {
 
   try {
     const doc = await cms.getDocs({
-      filter: { status: { _eq: "published" } },
       sort: ["id"],
       language: routelang,
     })
@@ -27,18 +30,58 @@ export const loader: LoaderFunction = async ({ params }) => {
   }
 }
 
+const findChildren = (docId: string, docs: documentation[]): LinksGroupProps[] => {
+  return docs
+    .filter((doc) => doc.parent?.id === docId)
+    .map((doc) => ({
+      id: doc.id,
+      label: doc.translations?.[0]?.title || "",
+      link: doc.slug || "",
+      slug: doc.slug || "",
+      links: findChildren(doc.id, docs),
+    }))
+}
+
+const organizeData = (docs: documentation[]): LinksGroupProps[] => {
+  return docs
+    .filter((doc) => !doc.parent)
+    .map((doc) => ({
+      id: doc.id,
+      label: doc.translations?.[0]?.title || "",
+      link: doc.slug || "",
+      slug: doc.slug || "",
+      links: findChildren(doc.id, docs),
+    }))
+}
+
 export default function DocsLayout() {
   const { data }: LoaderData = useLoaderData()
+  const [linksGroupItems, setLinksGroupItems] = useState<LinksGroupProps[]>([])
+  const organizeDataRef = useRef(organizeData)
 
-  // Wrap with Layout/Sidenar
+  useEffect(() => {
+    if (data && data.length) {
+      console.log(data)
+      const organizedData = organizeDataRef.current(data)
+      setLinksGroupItems(organizedData)
+    }
+  }, [data])
+
   return (
-    <div>
-      <ul>
-        {data.map((doc) => (
-          <li key={doc.id}>{doc && doc.translations && doc.translations[0]?.title}</li>
-        ))}
-      </ul>
-      <Outlet />
-    </div>
+    <Grid
+      gutter="md"
+      sx={{
+        alignItems: "flex-start",
+        flexWrap: "nowrap",
+        justifyContent: "flex-start",
+      }}
+    >
+      {linksGroupItems && linksGroupItems.length ? (
+        <Sidebar data={linksGroupItems} />
+      ) : null}
+      <Box ml="56px">
+        <Outlet />
+      </Box>
+    </Grid>
   )
 }

@@ -109,9 +109,7 @@ export default function DocsLayout() {
   }, [data])
 
   return (
-    <Grid
-      gutter="sm"
-    >
+    <Grid gutter="sm">
       <Grid.Col lg={2} md={12}>
         {linksGroupItems && linksGroupItems.length ? (
           <Sidebar data={linksGroupItems} />

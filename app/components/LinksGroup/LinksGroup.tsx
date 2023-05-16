@@ -54,22 +54,22 @@ const LinkItem = ({
 }: LinkItemProps) => (
   <Text
     color={getTextColor(isActive, theme, size)}
-    m={0}
     fs={getFontSize(size)}
     fw={size === "lg" ? "bold" : "normal"}
-    tt="capitalize"
+    m={0}
     sx={{
       flexGrow: 1,
     }}
+    tt="capitalize"
   >
     <Link
-      to={link}
       style={{
         display: "block",
         height: "100%",
         padding: nesting_level ? `10.5px 0 10.5px ${nesting_level * 32}px` : "16px 8px",
         width: "100%",
       }}
+      to={link}
     >
       {label}
     </Link>

@@ -20,7 +20,7 @@ export function Sidebar({ data }: SidebarProps) {
       width={{ sm: 300 }}
       withBorder={false}
     >
-      <Navbar.Section component={ScrollArea} grow pr="sm">
+      <Navbar.Section grow component={ScrollArea} pr="sm">
         <List unstyled withPadding>
           {links}
         </List>

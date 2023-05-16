@@ -1,4 +1,4 @@
-import { List, Navbar, useMantineTheme } from "@pokt-foundation/pocket-blocks"
+import { List, Navbar, ScrollArea, useMantineTheme } from "@pokt-foundation/pocket-blocks"
 import LinksGroup, { LinksGroupProps } from "../LinksGroup/LinksGroup"
 
 type SidebarProps = {
@@ -13,12 +13,14 @@ export function Sidebar({ data }: SidebarProps) {
   return (
     <Navbar
       bg={theme.colors.navy[7]}
-      height="unset"
+      height="800px"
       p="16px 8px 48px 0"
+      pos="sticky"
+      top="0"
       width={{ sm: 300 }}
       withBorder={false}
     >
-      <Navbar.Section grow>
+      <Navbar.Section component={ScrollArea} grow pr="sm">
         <List unstyled withPadding>
           {links}
         </List>

@@ -1,4 +1,4 @@
-import { Box, Grid } from "@pokt-foundation/pocket-blocks"
+import { Box, Grid, Flex } from "@pokt-foundation/pocket-blocks"
 import { LoaderFunction, json } from "@remix-run/node"
 import { Outlet, useLoaderData } from "@remix-run/react"
 import { useEffect, useRef, useState } from "react"
@@ -6,19 +6,20 @@ import { LinksGroupProps } from "~/components/LinksGroup/LinksGroup"
 import { Sidebar } from "~/components/Sidebar/Sidebar"
 import { initCmsClient } from "~/models/cms/cms.server"
 import { documentation } from "~/models/cms/sdk"
+import DocumentationSearch from "~/routes/_landing.($lang).docs/components"
 
 type LoaderData = {
   data: documentation[]
 }
 
 export const loader: LoaderFunction = async ({ params }) => {
-  const routelang = params.lang !== undefined ? params.lang : "en-US"
+  const routeLang = params.lang ?? "en-US"
   const cms = initCmsClient()
 
   try {
     const doc = await cms.getDocs({
       sort: ["id"],
-      language: routelang,
+      language: routeLang,
     })
 
     return json<LoaderData>({
@@ -61,27 +62,31 @@ export default function DocsLayout() {
 
   useEffect(() => {
     if (data && data.length) {
-      console.log(data)
       const organizedData = organizeDataRef.current(data)
       setLinksGroupItems(organizedData)
     }
   }, [data])
 
   return (
-    <Grid
-      gutter="md"
-      sx={{
-        alignItems: "flex-start",
-        flexWrap: "nowrap",
-        justifyContent: "flex-start",
-      }}
-    >
-      {linksGroupItems && linksGroupItems.length ? (
-        <Sidebar data={linksGroupItems} />
-      ) : null}
-      <Box ml="56px">
-        <Outlet />
-      </Box>
-    </Grid>
+    <Flex direction="column">
+      <Flex align="center" justify="flex-end" sx={{ zIndex: 1200 }}>
+        <DocumentationSearch />
+      </Flex>
+      <Grid
+        gutter="md"
+        sx={{
+          alignItems: "flex-start",
+          flexWrap: "nowrap",
+          justifyContent: "flex-start",
+        }}
+      >
+        {linksGroupItems && linksGroupItems.length ? (
+          <Sidebar data={linksGroupItems} />
+        ) : null}
+        <Box ml="56px">
+          <Outlet />
+        </Box>
+      </Grid>
+    </Flex>
   )
 }

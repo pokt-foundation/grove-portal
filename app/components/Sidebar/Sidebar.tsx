@@ -13,8 +13,8 @@ export function Sidebar({ data }: SidebarProps) {
   return (
     <Navbar
       bg={theme.colors.navy[7]}
-      height="800px"
-      p="16px 8px 48px 0"
+      height="calc(100vh - 144px)"
+      p="16px 8px 16px 0"
       pos="sticky"
       top="0"
       width={{ sm: 300 }}

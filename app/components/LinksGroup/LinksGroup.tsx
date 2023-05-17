@@ -37,25 +37,41 @@ const getFontSize: GetFontSize = (size) => {
 
 type LinkItemProps = {
   isActive: boolean
-  hasParent?: boolean
   label: string
   link: string
+  nesting_level: number
   size?: string
   theme: MantineTheme
 }
 
-const LinkItem = ({ isActive, hasParent, label, link, size, theme }: LinkItemProps) => (
+const LinkItem = ({
+  isActive,
+  label,
+  link,
+  nesting_level,
+  size,
+  theme,
+}: LinkItemProps) => (
   <Text
+    color={getTextColor(isActive, theme, size)}
+    fs={getFontSize(size)}
+    fw={size === "lg" ? "bold" : "normal"}
     m={0}
-    p={hasParent ? "10.5px 0 10.5px 32px" : "16px 8px"}
     sx={{
-      color: getTextColor(isActive, theme, size),
-      fontSize: getFontSize(size),
-      fontWeight: size === "lg" ? "bold" : "normal",
-      textTransform: "capitalize",
+      flexGrow: 1,
     }}
+    tt="capitalize"
   >
-    <Link prefetch="intent" to={link}>
+    <Link
+      prefetch="intent"
+      style={{
+        display: "block",
+        height: "100%",
+        padding: nesting_level ? `10.5px 0 10.5px ${nesting_level * 32}px` : "16px 8px",
+        width: "100%",
+      }}
+      to={link}
+    >
       {label}
     </Link>
   </Text>
@@ -63,21 +79,21 @@ const LinkItem = ({ isActive, hasParent, label, link, size, theme }: LinkItemPro
 
 export interface LinksGroupProps {
   id: string
-  hasParent?: boolean
   initiallyOpened?: boolean
   label: string
   link: string
   links: LinksGroupProps[]
+  nesting_level?: number
   size?: string
   slug: string
 }
 
 const LinksGroup = ({
   initiallyOpened,
-  hasParent,
   label,
   link,
   links,
+  nesting_level = 0,
   size,
   slug,
 }: LinksGroupProps) => {
@@ -91,19 +107,17 @@ const LinksGroup = ({
   const hasLinks = links && links.length > 0
 
   const items = (hasLinks ? links : []).map((linkItem) => (
-    <Box key={linkItem.label} w="100%">
-      <LinksGroup
-        key={linkItem.label}
-        hasParent
-        id={linkItem.id}
-        initiallyOpened={linkItem.initiallyOpened}
-        label={linkItem.label}
-        link={linkItem.link}
-        links={linkItem.links}
-        size="sm"
-        slug={linkItem.slug}
-      />
-    </Box>
+    <LinksGroup
+      key={linkItem.label}
+      id={linkItem.id}
+      initiallyOpened={linkItem.initiallyOpened}
+      label={linkItem.label}
+      link={linkItem.link}
+      links={linkItem.links}
+      nesting_level={nesting_level + 1}
+      size="sm"
+      slug={linkItem.slug}
+    />
   ))
 
   return (
@@ -122,10 +136,10 @@ const LinksGroup = ({
         <UnstyledButton w="100%" onClick={() => setOpened((opened) => !opened)}>
           <Group position="apart" spacing={0}>
             <LinkItem
-              hasParent={hasParent}
               isActive={isActive}
               label={label}
               link={link}
+              nesting_level={nesting_level}
               size={size}
               theme={theme}
             />
@@ -134,9 +148,10 @@ const LinksGroup = ({
                 aria-label="caret-right"
                 height="18px"
                 style={{
-                  transform: opened ? "rotate(90deg)" : "rotate(0deg)",
+                  marginRight: "8px",
                   transition: "transform 0.2s ease-in-out",
                 }}
+                transform={opened ? "rotate(90deg)" : "rotate(0deg)"}
                 width="18px"
               />
             )}

@@ -94,8 +94,8 @@ const LinksGroup = ({
     <Box key={linkItem.label} w="100%">
       <LinksGroup
         key={linkItem.label}
-        id={linkItem.id}
         hasParent
+        id={linkItem.id}
         initiallyOpened={linkItem.initiallyOpened}
         label={linkItem.label}
         link={linkItem.link}
@@ -122,8 +122,8 @@ const LinksGroup = ({
         <UnstyledButton w="100%" onClick={() => setOpened((opened) => !opened)}>
           <Group position="apart" spacing={0}>
             <LinkItem
-              isActive={isActive}
               hasParent={hasParent}
+              isActive={isActive}
               label={label}
               link={link}
               size={size}

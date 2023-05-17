@@ -108,9 +108,9 @@ const LinksGroup = ({
 
   const items = (hasLinks ? links : []).map((linkItem) => (
     <LinksGroup
+      key={linkItem.label}
       id={linkItem.id}
       initiallyOpened={linkItem.initiallyOpened}
-      key={linkItem.label}
       label={linkItem.label}
       link={linkItem.link}
       links={linkItem.links}

@@ -14,12 +14,12 @@ export function Sidebar({ data }: SidebarProps) {
     <Navbar
       bg={theme.colors.navy[7]}
       height="unset"
-      p="16px 8px 48px 0"
+      p="0 8px 48px 0"
       width={{ sm: 300 }}
       withBorder={false}
     >
       <Navbar.Section grow>
-        <List unstyled withPadding>
+        <List unstyled withPadding m={0}>
           {links}
         </List>
       </Navbar.Section>

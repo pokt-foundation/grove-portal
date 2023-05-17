@@ -1,6 +1,12 @@
-import { Box, Grid } from "@pokt-foundation/pocket-blocks"
+import {
+  Anchor,
+  Box,
+  Breadcrumbs,
+  Grid,
+  useMantineTheme,
+} from "@pokt-foundation/pocket-blocks"
 import { LoaderFunction, json } from "@remix-run/node"
-import { Outlet, useLoaderData } from "@remix-run/react"
+import { Outlet, useLoaderData, useMatches } from "@remix-run/react"
 import { useEffect, useRef, useState } from "react"
 import { LinksGroupProps } from "~/components/LinksGroup/LinksGroup"
 import { Sidebar } from "~/components/Sidebar/Sidebar"
@@ -54,14 +60,34 @@ const organizeData = (docs: documentation[]): LinksGroupProps[] => {
     }))
 }
 
+interface BreadcrumbNode {
+  link: string
+  name: string
+}
+
+function formatBreadcrumbs(matchesRoute: Array<{ pathname: string }>): BreadcrumbNode[] {
+  const { pathname } = matchesRoute[matchesRoute.length - 1]
+
+  const parts = pathname.split("/").filter(Boolean)
+
+  return parts.map((part, i) => ({
+    name: part,
+    link: `/${parts.slice(0, i + 1).join("/")}`,
+  }))
+}
+
 export default function DocsLayout() {
   const { data }: LoaderData = useLoaderData()
   const [linksGroupItems, setLinksGroupItems] = useState<LinksGroupProps[]>([])
   const organizeDataRef = useRef(organizeData)
 
+  const theme = useMantineTheme()
+
+  const matches = useMatches()
+  const breadcrumbsData = formatBreadcrumbs(matches || [])
+
   useEffect(() => {
     if (data && data.length) {
-      console.log(data)
       const organizedData = organizeDataRef.current(data)
       setLinksGroupItems(organizedData)
     }
@@ -80,6 +106,24 @@ export default function DocsLayout() {
         <Sidebar data={linksGroupItems} />
       ) : null}
       <Box ml="56px">
+        {breadcrumbsData && breadcrumbsData.length ? (
+          <Breadcrumbs>
+            {breadcrumbsData.map(({ name, link }, index) => (
+              <Anchor
+                href={link}
+                key={index}
+                sx={{
+                  color:
+                    index + 1 === breadcrumbsData.length
+                      ? theme.colors.blue[3]
+                      : theme.colors.gray[4],
+                }}
+              >
+                {name}
+              </Anchor>
+            ))}
+          </Breadcrumbs>
+        ) : null}
         <Outlet />
       </Box>
     </Grid>

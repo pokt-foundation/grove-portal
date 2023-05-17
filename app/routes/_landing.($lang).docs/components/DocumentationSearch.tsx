@@ -41,13 +41,15 @@ export const DocumentationSearch = () => {
 
   const searchResultsData = useMemo(() => {
     return searchResults.length > 0
-      ? searchResults.map((doc, i) => ({
-          ...doc,
-          value:
-            doc && doc.translations && doc.translations[0]?.title
-              ? doc?.translations[0]?.title
-              : doc.id,
-        }))
+      ? searchResults
+          .filter((doc) => doc?.translations && doc.translations.length > 0)
+          .map((doc, i) => ({
+            ...doc,
+            value:
+              doc && doc.translations && doc.translations[0]?.title
+                ? doc?.translations[0]?.title
+                : doc.id,
+          }))
       : []
   }, [searchResults])
 
@@ -62,10 +64,10 @@ export const DocumentationSearch = () => {
       limit={20}
       nothingFound={
         debouncedSearchTerm &&
-        fetcher.state !== "submitting" &&
+        fetcher.state === "idle" &&
         searchResultsData.length === 0 &&
         debouncedSearchTerm === searchTerm
-          ? "No results"
+          ? `No results found for “${searchTerm}”. Please Try again with a different keyword.`
           : ""
       }
       placeholder="Search"
@@ -84,12 +86,14 @@ export const DocumentationSearch = () => {
           width: "350px",
         },
       })}
+      value={searchTerm}
       onChange={(term) => {
         setSearchResults([])
         setSearchTerm(term)
       }}
       onItemSubmit={(item: AutocompleteItem) => {
         navigate(item.slug)
+        setSearchTerm("")
       }}
     />
   )

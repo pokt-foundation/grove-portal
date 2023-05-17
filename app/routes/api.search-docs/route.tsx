@@ -20,8 +20,7 @@ export const action: ActionFunction = async ({ request, params }) => {
     const doc = await cms.searchDocs({
       language: routeLang,
       search: searchTerm,
-      // TODO: Filter based on status once the directus content is ready
-      // filter: { status: { _eq: "published" } },
+      filter: { status: { _eq: "published" } },
     })
 
     return json<LoaderData>({

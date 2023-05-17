@@ -63,6 +63,7 @@ const LinkItem = ({
     tt="capitalize"
   >
     <Link
+      prefetch="intent"
       style={{
         display: "block",
         height: "100%",

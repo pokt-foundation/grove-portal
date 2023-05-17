@@ -4,6 +4,7 @@ import NotFound404 from "~/components/NotFound404"
 import Remark from "~/components/Remark"
 import { initCmsClient } from "~/models/cms/cms.server"
 import { documentation } from "~/models/cms/sdk"
+import { getClientEnv } from "~/utils/environment.server"
 
 type LoaderData = {
   data: documentation[]
@@ -12,10 +13,14 @@ type LoaderData = {
 export const loader: LoaderFunction = async ({ params }) => {
   const routelang = params.lang !== undefined ? params.lang : "en-US"
   const cms = initCmsClient()
+  const showOnlyPublished = getClientEnv().DOCS_STATUS === "published"
 
   try {
     const doc = await cms.getDocs({
-      filter: { status: { _eq: "published" }, slug: { _eq: params.slug } },
+      filter: {
+        slug: { _eq: params.slug },
+        ...(showOnlyPublished && { status: { _eq: "published" } }),
+      },
       sort: ["id"],
       language: routelang,
     })

@@ -1,12 +1,6 @@
-import {
-  Anchor,
-  Box,
-  Breadcrumbs,
-  Grid,
-  useMantineTheme,
-} from "@pokt-foundation/pocket-blocks"
+import { Box, Breadcrumbs, Grid, useMantineTheme } from "@pokt-foundation/pocket-blocks"
 import { LoaderFunction, json } from "@remix-run/node"
-import { Outlet, useLoaderData, useMatches } from "@remix-run/react"
+import { Link, Outlet, useLoaderData, useMatches } from "@remix-run/react"
 import { useEffect, useRef, useState } from "react"
 import { LinksGroupProps } from "~/components/LinksGroup/LinksGroup"
 import { Sidebar } from "~/components/Sidebar/Sidebar"
@@ -109,10 +103,10 @@ export default function DocsLayout() {
         {breadcrumbsData && breadcrumbsData.length ? (
           <Breadcrumbs>
             {breadcrumbsData.map(({ name, link }, index) => (
-              <Anchor
-                href={link}
+              <Link
                 key={index}
-                sx={{
+                to={link}
+                style={{
                   color:
                     index + 1 === breadcrumbsData.length
                       ? theme.colors.blue[3]
@@ -120,7 +114,7 @@ export default function DocsLayout() {
                 }}
               >
                 {name}
-              </Anchor>
+              </Link>
             ))}
           </Breadcrumbs>
         ) : null}

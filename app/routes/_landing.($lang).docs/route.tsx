@@ -1,6 +1,6 @@
-import { Breadcrumbs, Grid, useMantineTheme } from "@pokt-foundation/pocket-blocks"
+import { Grid, useMantineTheme } from "@pokt-foundation/pocket-blocks"
 import { LoaderFunction, json } from "@remix-run/node"
-import { Link, Outlet, useLoaderData, useLocation } from "@remix-run/react"
+import { Outlet, useLoaderData, useLocation } from "@remix-run/react"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { flattenTree, nextNodeInTree, organizeData } from "../../utils/docs"
 import DocsFooter from "./components/footer/footer"
@@ -9,6 +9,7 @@ import { Sidebar } from "~/components/Sidebar/Sidebar"
 import { initCmsClient } from "~/models/cms/cms.server"
 import { documentation } from "~/models/cms/sdk"
 import { getClientEnv } from "~/utils/environment.server"
+import DocsBreadcrumbs from "./components/Breadcrumbs/Breadcrumbs"
 
 type LoaderData = {
   data: documentation[]
@@ -37,20 +38,6 @@ export const loader: LoaderFunction = async ({ params }) => {
   }
 }
 
-interface BreadcrumbNode {
-  link: string
-  name: string
-}
-
-function formatBreadcrumbs(pathname: string): BreadcrumbNode[] {
-  const parts = pathname.split("/").filter(Boolean)
-
-  return parts.map((part, i) => ({
-    name: part,
-    link: `/${parts.slice(0, i + 1).join("/")}`,
-  }))
-}
-
 export default function DocsLayout() {
   const { data }: LoaderData = useLoaderData()
   const [linksGroupItems, setLinksGroupItems] = useState<LinksGroupProps[]>([])
@@ -64,8 +51,6 @@ export default function DocsLayout() {
   )
 
   const theme = useMantineTheme()
-
-  const breadcrumbsData = formatBreadcrumbs(location.pathname || "")
 
   useEffect(() => {
     if (data && data.length) {
@@ -82,25 +67,7 @@ export default function DocsLayout() {
         ) : null}
       </Grid.Col>
       <Grid.Col lg={8} md={12}>
-        {breadcrumbsData && breadcrumbsData.length ? (
-          <Breadcrumbs>
-            {breadcrumbsData.map(({ name, link }, index) => (
-              <Link
-                key={index}
-                prefetch="intent"
-                style={{
-                  color:
-                    index + 1 === breadcrumbsData.length
-                      ? theme.colors.blue[3]
-                      : theme.colors.gray[4],
-                }}
-                to={link}
-              >
-                {name}
-              </Link>
-            ))}
-          </Breadcrumbs>
-        ) : null}
+        <DocsBreadcrumbs />
         <Outlet />
         {nextDoc && <DocsFooter nextDoc={nextDoc} />}
       </Grid.Col>

@@ -1,11 +1,14 @@
-import { Box, Grid } from "@pokt-foundation/pocket-blocks"
+import { Grid } from "@pokt-foundation/pocket-blocks"
 import { LoaderFunction, json } from "@remix-run/node"
-import { Outlet, useLoaderData } from "@remix-run/react"
-import { useEffect, useRef, useState } from "react"
+import { Outlet, useLoaderData, useLocation } from "@remix-run/react"
+import { useEffect, useMemo, useRef, useState } from "react"
+import { flattenTree, nextNodeInTree, organizeData } from "../../utils/docs"
+import DocsFooter from "./components/footer/footer"
 import { LinksGroupProps } from "~/components/LinksGroup/LinksGroup"
 import { Sidebar } from "~/components/Sidebar/Sidebar"
 import { initCmsClient } from "~/models/cms/cms.server"
 import { documentation } from "~/models/cms/sdk"
+import { getClientEnv } from "~/utils/environment.server"
 
 type LoaderData = {
   data: documentation[]
@@ -14,9 +17,13 @@ type LoaderData = {
 export const loader: LoaderFunction = async ({ params }) => {
   const routelang = params.lang !== undefined ? params.lang : "en-US"
   const cms = initCmsClient()
+  const showOnlyPublished = getClientEnv().DOCS_STATUS === "published"
 
   try {
     const doc = await cms.getDocs({
+      filter: {
+        ...(showOnlyPublished && { status: { _eq: "published" } }),
+      },
       sort: ["id"],
       language: routelang,
     })
@@ -30,58 +37,36 @@ export const loader: LoaderFunction = async ({ params }) => {
   }
 }
 
-const findChildren = (docId: string, docs: documentation[]): LinksGroupProps[] => {
-  return docs
-    .filter((doc) => doc.parent?.id === docId)
-    .map((doc) => ({
-      id: doc.id,
-      label: doc.translations?.[0]?.title || "",
-      link: doc.slug || "",
-      slug: doc.slug || "",
-      links: findChildren(doc.id, docs),
-    }))
-}
-
-const organizeData = (docs: documentation[]): LinksGroupProps[] => {
-  return docs
-    .filter((doc) => !doc.parent)
-    .map((doc) => ({
-      id: doc.id,
-      label: doc.translations?.[0]?.title || "",
-      link: doc.slug || "",
-      slug: doc.slug || "",
-      links: findChildren(doc.id, docs),
-    }))
-}
-
 export default function DocsLayout() {
   const { data }: LoaderData = useLoaderData()
   const [linksGroupItems, setLinksGroupItems] = useState<LinksGroupProps[]>([])
   const organizeDataRef = useRef(organizeData)
+  const location = useLocation()
+
+  const flattenedTree = useMemo(() => flattenTree(linksGroupItems), [linksGroupItems])
+  const nextDoc = nextNodeInTree(
+    flattenedTree,
+    flattenedTree.find((ft) => location.pathname.includes(ft.slug)),
+  )
 
   useEffect(() => {
     if (data && data.length) {
-      console.log(data)
       const organizedData = organizeDataRef.current(data)
       setLinksGroupItems(organizedData)
     }
   }, [data])
 
   return (
-    <Grid
-      gutter="md"
-      sx={{
-        alignItems: "flex-start",
-        flexWrap: "nowrap",
-        justifyContent: "flex-start",
-      }}
-    >
-      {linksGroupItems && linksGroupItems.length ? (
-        <Sidebar data={linksGroupItems} />
-      ) : null}
-      <Box ml="56px">
+    <Grid gutter="sm">
+      <Grid.Col lg={2} md={12}>
+        {linksGroupItems && linksGroupItems.length ? (
+          <Sidebar data={linksGroupItems} />
+        ) : null}
+      </Grid.Col>
+      <Grid.Col lg={8} md={12}>
         <Outlet />
-      </Box>
+        {nextDoc && <DocsFooter nextDoc={nextDoc} />}
+      </Grid.Col>
     </Grid>
   )
 }

@@ -2,7 +2,6 @@ import { StylesPlaceholder } from "@mantine/remix"
 import {
   Alert,
   Center,
-  Container,
   createEmotionCache,
   Global,
   IconBookOpen,
@@ -21,7 +20,6 @@ import {
   ScrollRestoration,
   useCatch,
   useLoaderData,
-  useLocation,
   useSearchParams,
 } from "@remix-run/react"
 import React, { useEffect, useMemo } from "react"
@@ -217,7 +215,6 @@ const Document = ({ children, title }: { children: React.ReactNode; title?: stri
 export default function App() {
   const { ENV, user } = useLoaderData<RootLoaderData>()
   const { t } = useTranslate()
-  const location = useLocation()
 
   useEffect(() => {
     analyticsInit({ id: user?.id ?? "" })
@@ -282,14 +279,7 @@ export default function App() {
           <Nav ariaLabel="Main" routes={routes} />
         </Header>
         <main>
-          <Container
-            className="container"
-            ml={location.pathname.includes("/docs") ? "0" : "auto"}
-            pl={location.pathname.includes("/docs") ? "0" : "16px"}
-            size="lg"
-          >
-            <Outlet />
-          </Container>
+          <Outlet />
         </main>
         <Footer />
         <script

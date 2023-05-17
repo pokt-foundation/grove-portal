@@ -17,14 +17,10 @@ export const loader: LoaderFunction = async ({ params }) => {
 
   try {
     const doc = await cms.getDocs({
-      filter: showOnlyPublished
-        ? {
-            status: { _eq: "published" },
-            slug: { _eq: params.slug },
-          }
-        : {
-            slug: { _eq: params.slug },
-          },
+      filter: {
+        slug: { _eq: params.slug },
+        ...(showOnlyPublished && { status: { _eq: "published" } }),
+      },
       sort: ["id"],
       language: routelang,
     })

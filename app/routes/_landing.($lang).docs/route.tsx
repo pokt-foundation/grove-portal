@@ -1,6 +1,6 @@
 import { Breadcrumbs, Grid, useMantineTheme } from "@pokt-foundation/pocket-blocks"
 import { LoaderFunction, json } from "@remix-run/node"
-import { Link, Outlet, useLoaderData, useLocation, useMatches } from "@remix-run/react"
+import { Link, Outlet, useLoaderData, useLocation } from "@remix-run/react"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { flattenTree, nextNodeInTree, organizeData } from "../../utils/docs"
 import DocsFooter from "./components/footer/footer"
@@ -42,9 +42,7 @@ interface BreadcrumbNode {
   name: string
 }
 
-function formatBreadcrumbs(matchesRoute: Array<{ pathname: string }>): BreadcrumbNode[] {
-  const { pathname } = matchesRoute[matchesRoute.length - 1]
-
+function formatBreadcrumbs(pathname: string): BreadcrumbNode[] {
   const parts = pathname.split("/").filter(Boolean)
 
   return parts.map((part, i) => ({
@@ -67,8 +65,7 @@ export default function DocsLayout() {
 
   const theme = useMantineTheme()
 
-  const matches = useMatches()
-  const breadcrumbsData = formatBreadcrumbs(matches || [])
+  const breadcrumbsData = formatBreadcrumbs(location.pathname || "")
 
   useEffect(() => {
     if (data && data.length) {

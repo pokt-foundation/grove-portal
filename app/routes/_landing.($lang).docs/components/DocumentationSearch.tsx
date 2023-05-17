@@ -1,3 +1,4 @@
+import { useDebouncedValue } from "@mantine/hooks"
 import {
   Autocomplete,
   AutocompleteItem,
@@ -7,7 +8,6 @@ import {
 import { useFetcher, useNavigate } from "@remix-run/react"
 import { useEffect, useMemo, useState } from "react"
 import AutoCompleteSearchItem from "~/components/SearchAutoCompleteItem"
-import useDebounce from "~/hooks/useDebounce"
 import { documentation } from "~/models/cms/sdk"
 
 export const DocumentationSearch = () => {
@@ -16,8 +16,7 @@ export const DocumentationSearch = () => {
 
   const [searchTerm, setSearchTerm] = useState<string>("")
   const [searchResults, setSearchResults] = useState<documentation[]>([])
-
-  const debouncedSearchTerm = useDebounce<string>(searchTerm)
+  const [debouncedSearchTerm] = useDebouncedValue<string>(searchTerm, 500)
 
   useEffect(() => {
     if (
@@ -85,7 +84,6 @@ export const DocumentationSearch = () => {
           width: "350px",
         },
       })}
-      value={searchTerm}
       onChange={(term) => {
         setSearchResults([])
         setSearchTerm(term)

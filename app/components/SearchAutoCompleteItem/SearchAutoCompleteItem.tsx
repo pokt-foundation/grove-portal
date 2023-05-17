@@ -1,4 +1,5 @@
-import { Flex, SelectItemProps, Text } from "@pokt-foundation/pocket-blocks"
+import { Flex } from "@mantine/core"
+import { SelectItemProps, Text } from "@pokt-foundation/pocket-blocks"
 import { Link } from "@remix-run/react"
 import { forwardRef } from "react"
 import { documentation } from "~/models/cms/sdk"

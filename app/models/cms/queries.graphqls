@@ -85,10 +85,7 @@ query searchDocs(
     id
     slug
     status
-    translations(
-      filter: { languages_code: { _eq: $language } }
-      search: $search
-    ) {
+    translations(filter: { languages_code: { _eq: $language } }, search: $search) {
       id
       summary
       title

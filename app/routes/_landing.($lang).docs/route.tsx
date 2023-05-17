@@ -1,4 +1,5 @@
-import { Box, Grid, Flex } from "@pokt-foundation/pocket-blocks"
+import { Flex } from "@mantine/core"
+import { Box, Grid } from "@pokt-foundation/pocket-blocks"
 import { LoaderFunction, json } from "@remix-run/node"
 import { Outlet, useLoaderData } from "@remix-run/react"
 import { useEffect, useRef, useState } from "react"

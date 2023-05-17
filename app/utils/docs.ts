@@ -7,7 +7,7 @@ export const findChildren = (docId: string, docs: documentation[]): LinksGroupPr
     .map((doc) => ({
       id: doc.id,
       label: doc.translations?.[0]?.title || "",
-      link: doc.slug || "",
+      link: `${doc.parent?.slug}/${doc.slug}` || "",
       slug: doc.slug || "",
       links: findChildren(doc.id, docs),
       hasParent: true,

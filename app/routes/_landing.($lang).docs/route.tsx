@@ -1,4 +1,4 @@
-import { Box, Breadcrumbs, Grid, useMantineTheme } from "@pokt-foundation/pocket-blocks"
+import { Breadcrumbs, Grid, useMantineTheme } from "@pokt-foundation/pocket-blocks"
 import { LoaderFunction, json } from "@remix-run/node"
 import { Link, Outlet, useLoaderData, useLocation, useMatches } from "@remix-run/react"
 import { useEffect, useMemo, useRef, useState } from "react"
@@ -90,13 +90,14 @@ export default function DocsLayout() {
             {breadcrumbsData.map(({ name, link }, index) => (
               <Link
                 key={index}
-                to={link}
+                prefetch="intent"
                 style={{
                   color:
                     index + 1 === breadcrumbsData.length
                       ? theme.colors.blue[3]
                       : theme.colors.gray[4],
                 }}
+                to={link}
               >
                 {name}
               </Link>

@@ -100,9 +100,10 @@ const LinksGroup = ({
   const [opened, setOpened] = useState(initiallyOpened || false)
 
   const location = useLocation()
-  const isActive = location.pathname.includes(slug)
-
   const theme = useMantineTheme()
+  
+  const splittedPathname = location.pathname.split("/")
+  const isActive = splittedPathname[splittedPathname.length - 1].includes(slug)
 
   const hasLinks = links && links.length > 0
 

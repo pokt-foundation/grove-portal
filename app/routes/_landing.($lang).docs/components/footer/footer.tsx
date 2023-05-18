@@ -3,11 +3,11 @@ import { Divider, IconCaretRight } from "@pokt-foundation/pocket-blocks"
 import { Link } from "@remix-run/react"
 import { LinksGroupProps } from "~/components/LinksGroup/LinksGroup"
 
-interface DocsFooterprops {
+interface DocsFooterProps {
   nextDoc: LinksGroupProps
 }
 
-function DocsFooter({ nextDoc }: DocsFooterprops) {
+function DocsFooter({ nextDoc }: DocsFooterProps) {
   return (
     <Flex direction="column">
       <Divider color="gray" mb="sm" mt="xl" sx={{ borderTopWidth: "0.03rem" }} />

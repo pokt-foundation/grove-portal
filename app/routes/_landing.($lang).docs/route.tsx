@@ -1,4 +1,4 @@
-import { Grid } from "@pokt-foundation/pocket-blocks"
+import { Grid, useMantineTheme } from "@pokt-foundation/pocket-blocks"
 import { LoaderFunction, json } from "@remix-run/node"
 import { Outlet, useLoaderData, useLocation } from "@remix-run/react"
 import { useEffect, useMemo, useRef, useState } from "react"
@@ -9,6 +9,7 @@ import { Sidebar } from "~/components/Sidebar/Sidebar"
 import { initCmsClient } from "~/models/cms/cms.server"
 import { documentation } from "~/models/cms/sdk"
 import { getClientEnv } from "~/utils/environment.server"
+import DocsBreadcrumbs from "./components/Breadcrumbs/Breadcrumbs"
 
 type LoaderData = {
   data: documentation[]
@@ -49,6 +50,8 @@ export default function DocsLayout() {
     flattenedTree.find((ft) => location.pathname.includes(ft.slug)),
   )
 
+  const theme = useMantineTheme()
+
   useEffect(() => {
     if (data && data.length) {
       const organizedData = organizeDataRef.current(data)
@@ -64,6 +67,7 @@ export default function DocsLayout() {
         ) : null}
       </Grid.Col>
       <Grid.Col lg={8} md={12}>
+        <DocsBreadcrumbs />
         <Outlet />
         {nextDoc && <DocsFooter nextDoc={nextDoc} />}
       </Grid.Col>

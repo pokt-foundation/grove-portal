@@ -1,25 +1,52 @@
 import { Breadcrumbs, useMantineTheme } from "@pokt-foundation/pocket-blocks"
-import { Link, useLocation } from "@remix-run/react"
+import { Link, Location, useLocation } from "@remix-run/react"
+import { LinksGroupProps } from "~/components/LinksGroup/LinksGroup"
 
 interface BreadcrumbNode {
   link: string
   name: string
 }
 
-function formatBreadcrumbs(pathname: string): BreadcrumbNode[] {
-  const parts = pathname.split("/").filter(Boolean)
+function formatBreadcrumbs(
+  location: Location,
+  flattenedLinksTree: LinksGroupProps[],
+): BreadcrumbNode[] {
+  const parts = location.pathname.split("/")
+  parts.shift()
 
-  return parts.map((part, i) => ({
-    name: part,
-    link: `/${parts.slice(0, i + 1).join("/")}`,
-  }))
+  return parts.map((part) => {
+    const node = flattenedLinksTree.find((node) => node.slug === part)
+
+    if (node) {
+      return {
+        link: node.link,
+        name: node.label,
+      }
+    }
+
+    if (part === "docs") {
+      return {
+        link: "/docs",
+        name: "Documentation",
+      }
+    }
+
+    return {
+      link: part,
+      name: part,
+    }
+  })
 }
 
-const DocsBreadcrumbs = () => {
+interface DocsBreadcrumbsProps {
+  flattenedLinksTree: LinksGroupProps[]
+}
+
+const DocsBreadcrumbs = ({ flattenedLinksTree }: DocsBreadcrumbsProps) => {
   const location = useLocation()
   const theme = useMantineTheme()
 
-  const breadcrumbsData = formatBreadcrumbs(location.pathname || "")
+  const breadcrumbsData = formatBreadcrumbs(location, flattenedLinksTree)
   return breadcrumbsData && breadcrumbsData.length ? (
     <Breadcrumbs>
       {breadcrumbsData.map(({ name, link }, index) => (

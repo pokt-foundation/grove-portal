@@ -45,10 +45,13 @@ export default function DocsLayout() {
   const organizeDataRef = useRef(organizeData)
   const location = useLocation()
 
-  const flattenedTree = useMemo(() => flattenTree(linksGroupItems), [linksGroupItems])
+  const flattenedLinksTree = useMemo(
+    () => flattenTree(linksGroupItems),
+    [linksGroupItems],
+  )
   const nextDoc = nextNodeInTree(
-    flattenedTree,
-    flattenedTree.find((ft) => location.pathname.includes(ft.slug)),
+    flattenedLinksTree,
+    flattenedLinksTree.find((ft) => location.pathname.includes(ft.slug)),
   )
 
   useEffect(() => {
@@ -71,7 +74,7 @@ export default function DocsLayout() {
       }
     >
       <Flex direction="column" gap="sm" sx={{ maxWidth: "calc(100vw - 400px)" }}>
-        <DocsBreadcrumbs />
+        <DocsBreadcrumbs flattenedLinksTree={flattenedLinksTree} />
         <Outlet />
       </Flex>
     </AppShell>

@@ -97,11 +97,21 @@ const LinksGroup = ({
   size,
   slug,
 }: LinksGroupProps) => {
-  const [opened, setOpened] = useState(initiallyOpened || false)
-
   const location = useLocation()
+  const [opened, setOpened] = useState(() => {
+    if (initiallyOpened) {
+      return true
+    }
+
+    if (location.pathname.includes(slug)) {
+      return true
+    }
+
+    return false
+  })
+
   const theme = useMantineTheme()
-  
+
   const splittedPathname = location.pathname.split("/")
   const isActive = splittedPathname[splittedPathname.length - 1].includes(slug)
 
@@ -109,7 +119,7 @@ const LinksGroup = ({
 
   const items = (hasLinks ? links : []).map((linkItem) => (
     <LinksGroup
-      key={linkItem.label}
+      key={linkItem.id}
       id={linkItem.id}
       initiallyOpened={linkItem.initiallyOpened}
       label={linkItem.label}
@@ -150,9 +160,9 @@ const LinksGroup = ({
                 height="18px"
                 style={{
                   marginRight: "8px",
+                  transform: opened ? "rotate(90deg)" : "rotate(0deg)",
                   transition: "transform 0.2s ease-in-out",
                 }}
-                transform={opened ? "rotate(90deg)" : "rotate(0deg)"}
                 width="18px"
               />
             )}

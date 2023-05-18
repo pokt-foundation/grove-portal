@@ -9,6 +9,7 @@ import { LinksGroupProps } from "~/components/LinksGroup/LinksGroup"
 import { Sidebar } from "~/components/Sidebar/Sidebar"
 import { initCmsClient } from "~/models/cms/cms.server"
 import { documentation } from "~/models/cms/sdk"
+import DocumentationSearch from "~/routes/_landing.($lang).docs/components"
 import { flattenTree, nextNodeInTree, organizeData } from "~/utils/docs"
 import { getClientEnv } from "~/utils/environment.server"
 
@@ -17,7 +18,7 @@ type LoaderData = {
 }
 
 export const loader: LoaderFunction = async ({ params }) => {
-  const routelang = params.lang !== undefined ? params.lang : "en-US"
+  const routeLang = params.lang ?? "en-US"
   const cms = initCmsClient()
   const showOnlyPublished = getClientEnv().DOCS_STATUS === "published"
 
@@ -27,7 +28,7 @@ export const loader: LoaderFunction = async ({ params }) => {
         ...(showOnlyPublished && { status: { _eq: "published" } }),
       },
       sort: ["id"],
-      language: routelang,
+      language: routeLang,
     })
 
     return json<LoaderData>({
@@ -64,7 +65,9 @@ export default function DocsLayout() {
   return (
     <AppShell
       footer={nextDoc && <DocsFooter nextDoc={nextDoc} />}
-      header={<div>Search container goes here...</div>}
+      header={<Flex align="center" justify="flex-end" sx={{ zIndex: 1200 }}>
+        <DocumentationSearch />
+      </Flex>}
       navbar={
         <>
           {linksGroupItems && linksGroupItems.length && (

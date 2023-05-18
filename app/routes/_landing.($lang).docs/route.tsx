@@ -1,22 +1,24 @@
-import { Grid, useMantineTheme } from "@pokt-foundation/pocket-blocks"
+import { Flex } from "@mantine/core"
+import { AppShell } from "@pokt-foundation/pocket-blocks"
 import { LoaderFunction, json } from "@remix-run/node"
 import { Outlet, useLoaderData, useLocation } from "@remix-run/react"
 import { useEffect, useMemo, useRef, useState } from "react"
-import { flattenTree, nextNodeInTree, organizeData } from "../../utils/docs"
+import DocsBreadcrumbs from "./components/Breadcrumbs/Breadcrumbs"
 import DocsFooter from "./components/footer/footer"
 import { LinksGroupProps } from "~/components/LinksGroup/LinksGroup"
 import { Sidebar } from "~/components/Sidebar/Sidebar"
 import { initCmsClient } from "~/models/cms/cms.server"
 import { documentation } from "~/models/cms/sdk"
+import DocumentationSearch from "~/routes/_landing.($lang).docs/components"
+import { flattenTree, nextNodeInTree, organizeData } from "~/utils/docs"
 import { getClientEnv } from "~/utils/environment.server"
-import DocsBreadcrumbs from "./components/Breadcrumbs/Breadcrumbs"
 
 type LoaderData = {
   data: documentation[]
 }
 
 export const loader: LoaderFunction = async ({ params }) => {
-  const routelang = params.lang !== undefined ? params.lang : "en-US"
+  const routeLang = params.lang ?? "en-US"
   const cms = initCmsClient()
   const showOnlyPublished = getClientEnv().DOCS_STATUS === "published"
 
@@ -26,7 +28,7 @@ export const loader: LoaderFunction = async ({ params }) => {
         ...(showOnlyPublished && { status: { _eq: "published" } }),
       },
       sort: ["id"],
-      language: routelang,
+      language: routeLang,
     })
 
     return json<LoaderData>({
@@ -50,8 +52,6 @@ export default function DocsLayout() {
     flattenedTree.find((ft) => location.pathname.includes(ft.slug)),
   )
 
-  const theme = useMantineTheme()
-
   useEffect(() => {
     if (data && data.length) {
       const organizedData = organizeDataRef.current(data)
@@ -60,17 +60,23 @@ export default function DocsLayout() {
   }, [data])
 
   return (
-    <Grid gutter="sm">
-      <Grid.Col lg={2} md={12}>
-        {linksGroupItems && linksGroupItems.length ? (
-          <Sidebar data={linksGroupItems} />
-        ) : null}
-      </Grid.Col>
-      <Grid.Col lg={8} md={12}>
+    <AppShell
+      footer={nextDoc && <DocsFooter nextDoc={nextDoc} />}
+      header={<Flex align="center" justify="flex-end" sx={{ zIndex: 1200 }}>
+        <DocumentationSearch />
+      </Flex>}
+      navbar={
+        <>
+          {linksGroupItems && linksGroupItems.length && (
+            <Sidebar data={linksGroupItems} />
+          )}
+        </>
+      }
+    >
+      <Flex direction="column" gap="sm" sx={{ maxWidth: "calc(100vw - 400px)" }}>
         <DocsBreadcrumbs />
         <Outlet />
-        {nextDoc && <DocsFooter nextDoc={nextDoc} />}
-      </Grid.Col>
-    </Grid>
+      </Flex>
+    </AppShell>
   )
 }

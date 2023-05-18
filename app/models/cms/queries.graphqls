@@ -66,6 +66,33 @@ query getDocs(
   }
 }
 
+query searchDocs(
+  $filter: documentation_filter
+  $limit: Int
+  $offset: Int
+  $page: Int
+  $search: String
+  $sort: [String]
+  $language: String
+) {
+  documentation(
+    filter: $filter
+    limit: $limit
+    offset: $offset
+    page: $page
+    sort: $sort
+  ) {
+    id
+    slug
+    status
+    translations(filter: { languages_code: { _eq: $language } }, search: $search) {
+      id
+      summary
+      title
+    }
+  }
+}
+
 query getLegal($language: String) {
   legal_by_id(id: 1) {
     category {

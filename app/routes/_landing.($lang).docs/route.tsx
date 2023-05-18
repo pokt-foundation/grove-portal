@@ -9,7 +9,7 @@ import { LinksGroupProps } from "~/components/LinksGroup/LinksGroup"
 import { Sidebar } from "~/components/Sidebar/Sidebar"
 import { initCmsClient } from "~/models/cms/cms.server"
 import { documentation } from "~/models/cms/sdk"
-import DocumentationSearch from "~/routes/_landing.($lang).docs/components"
+import DocumentationSearch from "~/routes/_landing.($lang).docs/components/DocumentationSearch"
 import { flattenTree, nextNodeInTree, organizeData } from "~/utils/docs"
 import { getClientEnv } from "~/utils/environment.server"
 
@@ -62,9 +62,11 @@ export default function DocsLayout() {
   return (
     <AppShell
       footer={nextDoc && <DocsFooter nextDoc={nextDoc} />}
-      header={<Flex align="center" justify="flex-end" sx={{ zIndex: 1200 }}>
-        <DocumentationSearch />
-      </Flex>}
+      header={
+        <Flex align="center" justify="flex-end" sx={{ zIndex: 1200 }}>
+          <DocumentationSearch />
+        </Flex>
+      }
       navbar={
         <>
           {linksGroupItems && linksGroupItems.length && (

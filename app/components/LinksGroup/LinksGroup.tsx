@@ -36,6 +36,7 @@ const getFontSize: GetFontSize = (size) => {
 }
 
 type LinkItemProps = {
+  hasLinks: boolean
   isActive: boolean
   label: string
   link: string
@@ -45,6 +46,7 @@ type LinkItemProps = {
 }
 
 const LinkItem = ({
+  hasLinks,
   isActive,
   label,
   link,
@@ -62,18 +64,31 @@ const LinkItem = ({
     }}
     tt="capitalize"
   >
-    <Link
-      prefetch="intent"
-      style={{
-        display: "block",
-        height: "100%",
-        padding: nesting_level ? `10.5px 0 10.5px ${nesting_level * 32}px` : "16px 8px",
-        width: "100%",
-      }}
-      to={link}
-    >
-      {label}
-    </Link>
+    {!hasLinks ? (
+      <Link
+        prefetch="intent"
+        style={{
+          display: "block",
+          height: "100%",
+          padding: nesting_level ? `10.5px 0 10.5px ${nesting_level * 32}px` : "16px 8px",
+          width: "100%",
+        }}
+        to={link}
+      >
+        {label}
+      </Link>
+    ) : (
+      <Box
+        sx={{
+          display: "block",
+          height: "100%",
+          padding: nesting_level ? `10.5px 0 10.5px ${nesting_level * 32}px` : "16px 8px",
+          width: "100%",
+        }}
+      >
+        {label}
+      </Box>
+    )}
   </Text>
 )
 
@@ -112,8 +127,8 @@ const LinksGroup = ({
 
   const theme = useMantineTheme()
 
-  const splittedPathname = location.pathname.split("/")
-  const isActive = splittedPathname[splittedPathname.length - 1].includes(slug)
+  const splitPathname = location.pathname.split("/")
+  const isActive = splitPathname[splitPathname.length - 1].includes(slug)
 
   const hasLinks = links && links.length > 0
 
@@ -147,6 +162,7 @@ const LinksGroup = ({
         <UnstyledButton w="100%" onClick={() => setOpened((opened) => !opened)}>
           <Group position="apart" spacing={0}>
             <LinkItem
+              hasLinks={hasLinks}
               isActive={isActive}
               label={label}
               link={link}

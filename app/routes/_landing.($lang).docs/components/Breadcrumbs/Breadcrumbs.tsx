@@ -11,16 +11,16 @@ function formatBreadcrumbs(
   location: Location,
   flattenedLinksTree: LinksGroupProps[],
 ): BreadcrumbNode[] {
-  const parts = location.pathname.split("/")
-  parts.shift()
+  const locations = location.pathname.split("/")
+  locations.shift()
 
-  return parts.map((part) => {
-    const node = flattenedLinksTree.find((node) => node.slug === part)
+  return locations.map((part) => {
+    const linkNode = flattenedLinksTree.find((linkNode) => linkNode.slug === part)
 
-    if (node) {
+    if (linkNode) {
       return {
-        link: node.link,
-        name: node.label,
+        link: linkNode.link,
+        name: linkNode.label,
       }
     }
 

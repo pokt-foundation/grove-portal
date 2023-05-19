@@ -1,6 +1,6 @@
 import { Flex } from "@mantine/core"
 import { AppShell } from "@pokt-foundation/pocket-blocks"
-import { LoaderFunction, json } from "@remix-run/node"
+import { json, LoaderFunction } from "@remix-run/node"
 import { Outlet, useLoaderData, useLocation } from "@remix-run/react"
 import { useEffect, useMemo, useRef, useState } from "react"
 import DocsBreadcrumbs from "./components/Breadcrumbs/Breadcrumbs"
@@ -64,21 +64,24 @@ export default function DocsLayout() {
 
   return (
     <AppShell
-      footer={nextDoc && <DocsFooter nextDoc={nextDoc} />}
-      header={<Flex align="center" justify="flex-end" sx={{ zIndex: 1200 }}>
-        <DocumentationSearch />
-      </Flex>}
       navbar={
         <>
-          {linksGroupItems && linksGroupItems.length && (
+          {linksGroupItems && linksGroupItems.length ? (
             <Sidebar data={linksGroupItems} />
-          )}
+          ) : null}
         </>
       }
+      styles={() => ({
+        body: { overflowY: "hidden" },
+      })}
     >
       <Flex direction="column" gap="sm" sx={{ maxWidth: "calc(100vw - 400px)" }}>
+        <Flex align="center" justify="flex-end" sx={{ zIndex: 1200 }}>
+          <DocumentationSearch />
+        </Flex>
         <DocsBreadcrumbs flattenedLinksTree={flattenedLinksTree} />
         <Outlet />
+        {nextDoc && <DocsFooter nextDoc={nextDoc} />}
       </Flex>
     </AppShell>
   )

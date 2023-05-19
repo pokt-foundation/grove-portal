@@ -49,15 +49,14 @@ export function getNextAndPrevNodesInTree(
   if (!node || !nodes.length) return [null, null]
 
   const currentNodeIdx = nodes.findIndex((n) => n.id === node.id)
-  
+
   if (currentNodeIdx === -1) {
-    console.warn('Node not found in the array');
+    console.warn("Node not found in the array")
     return [null, null]
   }
 
-  const prevNode = currentNodeIdx > 0 ? nodes[currentNodeIdx - 1] : null;
-  const nextNode = currentNodeIdx < nodes.length - 1 ? nodes[currentNodeIdx + 1] : null;
+  const prevNode = currentNodeIdx > 0 ? nodes[currentNodeIdx - 1] : null
+  const nextNode = currentNodeIdx < nodes.length - 1 ? nodes[currentNodeIdx + 1] : null
 
   return [prevNode, nextNode]
 }
-

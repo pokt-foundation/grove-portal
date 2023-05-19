@@ -1,13 +1,13 @@
-import { Flex, MantineTheme, useMantineTheme } from "@mantine/core";
+import { Flex, MantineTheme, useMantineTheme } from "@mantine/core"
 import {
   Anchor,
   Divider,
   IconCaretLeft,
   IconCaretRight,
-} from "@pokt-foundation/pocket-blocks";
-import { Link, useLocation } from "@remix-run/react";
-import { LinksGroupProps } from "~/components/LinksGroup/LinksGroup";
-import { getNextAndPrevNodesInTree } from "~/utils/docs";
+} from "@pokt-foundation/pocket-blocks"
+import { Link, useLocation } from "@remix-run/react"
+import { LinksGroupProps } from "~/components/LinksGroup/LinksGroup"
+import { getNextAndPrevNodesInTree } from "~/utils/docs"
 
 interface DocsFooterProps {
   items: LinksGroupProps[]
@@ -17,7 +17,7 @@ const commonLinkStyles = (theme: MantineTheme) => ({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  padding: '0.625rem', 
+  padding: "0.625rem",
   width: "228px",
   color: "white",
   borderRadius: "0.5rem",
@@ -25,16 +25,16 @@ const commonLinkStyles = (theme: MantineTheme) => ({
     backgroundColor: theme.colors.navy[4],
     textDecoration: "none",
   },
-});
+})
 
 function DocsFooter({ items }: DocsFooterProps) {
   const theme = useMantineTheme()
-  const location = useLocation();
-  const lastPathPart = location.pathname.split("/").pop();
+  const location = useLocation()
+  const lastPathPart = location.pathname.split("/").pop()
   const [prev, next] = getNextAndPrevNodesInTree(
     items,
     items.find((ft) => lastPathPart === ft.slug),
-  );
+  )
 
   return (
     <Flex direction="column">
@@ -43,6 +43,7 @@ function DocsFooter({ items }: DocsFooterProps) {
         {prev && (
           <Anchor
             component={Link}
+            prefetch="intent"
             sx={commonLinkStyles(theme)}
             to={prev.link}
           >
@@ -51,18 +52,14 @@ function DocsFooter({ items }: DocsFooterProps) {
           </Anchor>
         )}
         {next && (
-          <Anchor
-            component={Link}
-            sx={commonLinkStyles}
-            to={next.link}
-          >
+          <Anchor component={Link} prefetch="intent" sx={commonLinkStyles} to={next.link}>
             {next.label}
             <IconCaretRight />
           </Anchor>
         )}
       </Flex>
     </Flex>
-  );
+  )
 }
 
-export default DocsFooter;
+export default DocsFooter

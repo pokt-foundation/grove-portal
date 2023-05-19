@@ -8,6 +8,7 @@ import {
   IconCircleQuestion,
   IconMail,
   MantineProvider,
+  MantineTheme,
   theme,
 } from "@pokt-foundation/pocket-blocks"
 import { LinksFunction, LoaderFunction, MetaFunction, json } from "@remix-run/node"
@@ -85,7 +86,7 @@ export const portalTheme = {
       },
     },
     Card: {
-      styles: (theme) => ({
+      styles: (theme: MantineTheme) => ({
         root: {
           padding: "32px",
           backgroundColor:
@@ -94,7 +95,7 @@ export const portalTheme = {
       }),
     },
     Tabs: {
-      styles: (theme) => ({
+      styles: (theme: MantineTheme) => ({
         tabsList: {
           borderBottom: "2px solid transparent",
           marginBottom: theme.spacing.md,

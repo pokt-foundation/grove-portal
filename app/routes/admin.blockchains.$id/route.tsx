@@ -8,8 +8,8 @@ import {
 } from "@pokt-foundation/pocket-blocks"
 import { json, LoaderFunction } from "@remix-run/node"
 import { Form, useLoaderData } from "@remix-run/react"
-import { getRequiredServerEnvVar } from "~/utils/environment"
 import { Blockchain } from "../admin.blockchains/route"
+import { getRequiredServerEnvVar } from "~/utils/environment"
 
 type LoaderData = {
   blockchain: Blockchain

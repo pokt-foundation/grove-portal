@@ -9,7 +9,7 @@ import { LinksGroupProps } from "~/components/LinksGroup/LinksGroup"
 import { Sidebar } from "~/components/Sidebar/Sidebar"
 import { initCmsClient } from "~/models/cms/cms.server"
 import { documentation } from "~/models/cms/sdk"
-import DocumentationSearch from "~/routes/_landing.($lang).docs/components"
+import DocumentationSearch from "~/routes/_landing.($lang).docs/components/DocumentationSearch"
 import { flattenTree, nextNodeInTree, organizeData } from "~/utils/docs"
 import { getClientEnv } from "~/utils/environment.server"
 

@@ -1,6 +1,14 @@
-query getHighestBlock {
-  highestBlock {
-    item {
+query getChainsTotals($start_date: String!, $end_date: String!) {
+  GetChainsRewardsBetweenDates(input: { start_date: $start_date, end_date: $end_date }) {
+    chain
+    total_relays
+    total_pokt
+  }
+}
+
+query getLatestBlock {
+  GetLatestBlock {
+    block {
       height
       time
       producer
@@ -11,18 +19,8 @@ query getHighestBlock {
       total_txs
       total_relays_completed
     }
-    validatorThreshold
-  }
-}
-query getChainsTotals($from: String!, $to: String!) {
-  getChainsTotals(from: $from, to: $to) {
-    chains {
-      chain
-      power
-      total_pokt
-      total_relays
+    validator_data {
+      validator_threshold
     }
-    total_pokt
-    total_relays
   }
 }

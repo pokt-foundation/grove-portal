@@ -42,14 +42,22 @@ export function flattenTree(tree: LinksGroupProps[]): LinksGroupProps[] {
   }
 }
 
-export function nextNodeInTree(
+export function getNextAndPrevNodesInTree(
   nodes: LinksGroupProps[],
   node: LinksGroupProps | undefined,
 ) {
-  if (!node) return
+  if (!node || !nodes.length) return [null, null]
 
-  const next = nodes.findIndex((n) => n.id === node.id)
-  if (next >= nodes.length - 1) return
+  const currentNodeIdx = nodes.findIndex((n) => n.id === node.id)
+  
+  if (currentNodeIdx === -1) {
+    console.warn('Node not found in the array');
+    return [null, null]
+  }
 
-  return nodes[next + 1]
+  const prevNode = currentNodeIdx > 0 ? nodes[currentNodeIdx - 1] : null;
+  const nextNode = currentNodeIdx < nodes.length - 1 ? nodes[currentNodeIdx + 1] : null;
+
+  return [prevNode, nextNode]
 }
+

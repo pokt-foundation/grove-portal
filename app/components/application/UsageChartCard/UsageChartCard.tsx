@@ -21,6 +21,7 @@ interface NetworkChardCardProps {
   title?: string
   detail?: string
   emptyLabel?: string
+  height?: string
 }
 
 export default function UsageChartCard({
@@ -28,6 +29,7 @@ export default function UsageChartCard({
   title = "Relay Count",
   detail = "last 7 Days",
   emptyLabel,
+  height = "200px",
 }: NetworkChardCardProps) {
   // const theme = useTheme()
 
@@ -72,8 +74,8 @@ export default function UsageChartCard({
           )}
           <Box
             sx={{
-              height: "200px",
-              maxHeight: "200px",
+              height: height,
+              maxHeight: height,
               width: "100%",
               color: theme.colorScheme === "dark" ? theme.white : theme.black,
             }}

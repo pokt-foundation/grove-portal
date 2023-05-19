@@ -26,10 +26,6 @@ import React, { useEffect, useMemo } from "react"
 import { Auth0Profile } from "remix-auth-auth0"
 import analyticsInit from "./utils/analytics"
 import { authenticator } from "./utils/auth.server"
-import Footer, { links as FooterLinks } from "~/components/Footer"
-import Header, { links as HeaderLinks } from "~/components/Header"
-import { IconApp, IconNetwork } from "~/components/Icons"
-import Nav, { links as NavLinks } from "~/components/Nav"
 import { FeatureFlagsContextProvider } from "~/context/FeatureFlagContext"
 import { TranslateContextProvider, useTranslate } from "~/context/TranslateContext"
 import { UserContextProvider } from "~/context/UserContext"
@@ -48,9 +44,6 @@ export const links: LinksFunction = () => {
       rel: "stylesheet",
       href: "https://fonts.googleapis.com/css2?family=Manrope:wght@400;700&display=swap",
     },
-    ...FooterLinks(),
-    ...HeaderLinks(),
-    ...NavLinks(),
   ]
 }
 
@@ -79,85 +72,85 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 createEmotionCache({ key: "pni" })
 
+export const portalTheme = {
+  ...theme,
+  primaryColor: "blue",
+  components: {
+    ...theme.components,
+    Paper: {
+      styles: {
+        root: {
+          overflow: "visible !important",
+        },
+      },
+    },
+    Card: {
+      styles: (theme) => ({
+        root: {
+          padding: "32px",
+          backgroundColor:
+            theme.colorScheme === "dark" ? theme.colors.navy[5] : theme.colors.gray[1],
+        },
+      }),
+    },
+    Tabs: {
+      styles: (theme) => ({
+        tabsList: {
+          borderBottom: "2px solid transparent",
+          marginBottom: theme.spacing.md,
+        },
+        tab: {
+          paddingRight: theme.spacing.xs,
+          paddingLeft: theme.spacing.xs,
+          transition: "border-color ease-in-out 0.3s, color ease-in-out 0.3s",
+          "&[data-active]": {
+            borderColor: theme.colors[theme.primaryColor][6],
+          },
+          "&:hover": {
+            backgroundColor: "transparent",
+            borderColor: "transparent",
+            color: theme.colors[theme.primaryColor][8],
+          },
+          "&[data-active]:hover": {
+            borderColor: theme.colors[theme.primaryColor][8],
+          },
+          "&:not(:last-child)": {
+            marginRight: theme.spacing.md,
+          },
+        },
+      }),
+    },
+    TextInput: {
+      styles: {
+        input: {
+          backgroundColor: "transparent",
+        },
+      },
+    },
+    Textarea: {
+      styles: {
+        input: {
+          backgroundColor: "transparent",
+        },
+      },
+    },
+    MultiSelect: {
+      styles: {
+        input: {
+          backgroundColor: "transparent",
+        },
+      },
+    },
+  },
+}
+
 const WithProviders = ({ children }: { children: React.ReactNode }) => {
   return (
     <MantineProvider
       withCSSVariables
       withGlobalStyles
       withNormalizeCSS
-      theme={{
-        ...theme,
-        primaryColor: "blue",
-        components: {
-          ...theme.components,
-          Paper: {
-            styles: {
-              root: {
-                overflow: "visible !important",
-              },
-            },
-          },
-          Card: {
-            styles: (theme) => ({
-              root: {
-                padding: "32px",
-                backgroundColor:
-                  theme.colorScheme === "dark"
-                    ? theme.colors.navy[5]
-                    : theme.colors.gray[1],
-              },
-            }),
-          },
-          Tabs: {
-            styles: (theme) => ({
-              tabsList: {
-                borderBottom: "2px solid transparent",
-                marginBottom: theme.spacing.md,
-              },
-              tab: {
-                paddingRight: theme.spacing.xs,
-                paddingLeft: theme.spacing.xs,
-                transition: "border-color ease-in-out 0.3s, color ease-in-out 0.3s",
-                "&[data-active]": {
-                  borderColor: theme.colors[theme.primaryColor][6],
-                },
-                "&:hover": {
-                  backgroundColor: "transparent",
-                  borderColor: "transparent",
-                  color: theme.colors[theme.primaryColor][8],
-                },
-                "&[data-active]:hover": {
-                  borderColor: theme.colors[theme.primaryColor][8],
-                },
-                "&:not(:last-child)": {
-                  marginRight: theme.spacing.md,
-                },
-              },
-            }),
-          },
-          TextInput: {
-            styles: {
-              input: {
-                backgroundColor: "transparent",
-              },
-            },
-          },
-          Textarea: {
-            styles: {
-              input: {
-                backgroundColor: "transparent",
-              },
-            },
-          },
-          MultiSelect: {
-            styles: {
-              input: {
-                backgroundColor: "transparent",
-              },
-            },
-          },
-        },
-      }}
+      theme={portalTheme}
     >
       <FeatureFlagsContextProvider>
         <UserContextProvider>
@@ -214,75 +207,15 @@ const Document = ({ children, title }: { children: React.ReactNode; title?: stri
 
 export default function App() {
   const { ENV, user } = useLoaderData<RootLoaderData>()
-  const { t } = useTranslate()
 
   useEffect(() => {
     analyticsInit({ id: user?.id ?? "" })
   }, [user])
 
-  const routes = useMemo(() => {
-    enum Protected {
-      Public = 0,
-      Private = 1,
-      PrivateAdmin = 2,
-      Admin = 3,
-    }
-
-    const allRoutes = [
-      {
-        to: "/network",
-        label: "Network",
-        icon: IconNetwork,
-        end: true,
-        protected: Protected.Public,
-      },
-      {
-        to: "/dashboard/apps",
-        label: t.dashboard.routes.apps,
-        icon: IconApp,
-        protected: Protected.Public, // show this link to all. dashboard layout handles redirect to login.
-      },
-      {
-        to: "https://docs.pokt.network/",
-        external: true,
-        label: t.dashboard.routes.docs,
-        icon: IconBookOpen,
-        protected: Protected.Public,
-      },
-      {
-        to: "/faq",
-        label: "FAQs",
-        icon: IconCircleQuestion,
-        protected: Protected.Public,
-      },
-      {
-        to: "https://support.pokt.network",
-        external: true,
-        label: "Support",
-        icon: IconMail,
-        protected: Protected.Public,
-      },
-    ]
-
-    let protectedLevel = Protected.Public
-
-    if (user) {
-      protectedLevel = Protected.Private
-    }
-
-    return allRoutes.filter((r) => r.protected <= protectedLevel)
-  }, [t, user])
-
   return (
     <WithProviders>
       <Document>
-        <Header user={user}>
-          <Nav ariaLabel="Main" routes={routes} />
-        </Header>
-        <main>
-          <Outlet />
-        </main>
-        <Footer />
+        <Outlet />
         <script
           dangerouslySetInnerHTML={{
             __html: `window.ENV = ${JSON.stringify(ENV)};`,

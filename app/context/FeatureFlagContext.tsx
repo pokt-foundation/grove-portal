@@ -10,10 +10,10 @@ export interface FeatureFlags {
 }
 
 export const defaultFeatureFlags = {
-  MULTI_LANGUAGE: ENV.FLAG_MULTI_LANGUAGE ?? "false",
-  STRIPE_PAYMENT: ENV.FLAG_STRIPE_PAYMENT || "true",
-  INFLUX_RELAY_ERROR: ENV.FLAG_INFLUX_RELAY_ERROR ?? "false",
-  ENTERPRISE: "false" || ENV.FLAG_ENTERPRISE, //change once enterprise is available
+  MULTI_LANGUAGE: "false",
+  STRIPE_PAYMENT: "true",
+  INFLUX_RELAY_ERROR: "false",
+  ENTERPRISE: "false", //change once enterprise is available
 }
 
 interface IFeatureFlagsContext {

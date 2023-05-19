@@ -1,17 +1,17 @@
-.admin-nav {
+.chains-nav {
   list-style-type: none;
   padding-left: 0;
 }
 
-.admin-nav .nav-link {
+.chains-nav .nav-link {
   display: block;
   padding: 8px;
 }
 
-.admin-nav .nav-link-active {
+.chains-nav .nav-link-active {
   color: var(--mantine-color-magenta-6);
 }
 
-.admin-nav .nav-link-active:hover {
+.chains-nav .nav-link-active:hover {
   color: var(--mantine-color-magenta-8);
 }

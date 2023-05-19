@@ -104,7 +104,7 @@ export default function NetworkView({
                     },
                     chainId: chain.id,
                     traffic: numbersFormatter.format(
-                      poktscanChains?.getChainsTotals.chains?.find(
+                      poktscanChains?.GetChainsRewardsBetweenDates?.find(
                         (c) => c && c.chain === chain.id,
                       )?.total_relays / 30,
                     ),

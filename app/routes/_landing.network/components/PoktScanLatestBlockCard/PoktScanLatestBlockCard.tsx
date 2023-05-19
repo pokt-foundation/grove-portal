@@ -2,7 +2,8 @@ import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/Card"
 import CardList, { CardListItem, links as CardListLinks } from "~/components/CardList"
 import PoweredBy, { links as PoweredByLinks } from "~/components/PoweredBy"
-import { GetHighestBlockQuery } from "~/models/poktscan/sdk"
+import { GetLatestBlockQuery } from "~/models/poktscan/sdk"
+import { uPoktToPokt } from "~/utils/pocketUtils"
 
 /* c8 ignore start */
 export const links = () => {
@@ -16,7 +17,7 @@ export const links = () => {
 /* c8 ignore stop */
 
 interface LatestBlockProps {
-  latestBlock: GetHighestBlockQuery
+  latestBlock: GetLatestBlockQuery
 }
 
 function appendZeroToTime(time: string) {
@@ -43,9 +44,11 @@ export default function PoktScanLatestBlock({ latestBlock }: LatestBlockProps) {
   )
 }
 
-export const getList = (latestBlock: GetHighestBlockQuery) => {
+export const getList = (latestBlock: GetLatestBlockQuery) => {
   const blockProducedDateInLocalTime = () => {
-    const blockProducedTimeInDate = new Date(String(latestBlock.highestBlock?.item?.time))
+    const blockProducedTimeInDate = new Date(
+      String(latestBlock.GetLatestBlock?.block.time),
+    )
     const hours = appendZeroToTime(blockProducedTimeInDate.getHours().toLocaleString())
     const minutes = appendZeroToTime(
       blockProducedTimeInDate.getMinutes().toLocaleString(),
@@ -57,7 +60,7 @@ export const getList = (latestBlock: GetHighestBlockQuery) => {
   return [
     {
       label: "Block",
-      value: `${latestBlock.highestBlock?.item?.height}`,
+      value: `${latestBlock.GetLatestBlock.block.height}`,
     },
     {
       label: "Time",
@@ -65,19 +68,21 @@ export const getList = (latestBlock: GetHighestBlockQuery) => {
     },
     {
       label: "Relays",
-      value: `${latestBlock.highestBlock?.item?.total_relays_completed}`,
+      value: `${latestBlock.GetLatestBlock.block.total_relays_completed}`,
     },
     {
       label: "Txs",
-      value: `${latestBlock.highestBlock?.item?.total_txs}`,
+      value: `${latestBlock.GetLatestBlock.block.total_txs}`,
     },
     {
       label: "Produced in",
-      value: `${latestBlock.highestBlock?.item?.took.toFixed(2)} min`,
+      value: `${latestBlock.GetLatestBlock.block.took.toFixed(2)} min`,
     },
     {
       label: "Validator Threshold",
-      value: `${latestBlock.highestBlock?.validatorThreshold?.toLocaleString()}`,
+      value: `${uPoktToPokt(
+        latestBlock.GetLatestBlock.validator_data?.validator_threshold,
+      ).toLocaleString()}`,
     },
   ]
 }

@@ -62,9 +62,11 @@ export default function DocsLayout() {
   return (
     <AppShell
       footer={nextDoc && <DocsFooter nextDoc={nextDoc} />}
-      header={<Flex align="center" justify="flex-end" sx={{ zIndex: 1200 }}>
-        <DocumentationSearch />
-      </Flex>}
+      header={
+        <Flex align="center" justify="flex-end" sx={{ zIndex: 1200 }}>
+          <DocumentationSearch />
+        </Flex>
+      }
       navbar={
         <>
           {linksGroupItems && linksGroupItems.length && (

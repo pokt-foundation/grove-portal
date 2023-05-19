@@ -42,9 +42,6 @@ export default function Analytics() {
         >
           <Title order={1}>Dashboard</Title>
           <Select
-            size="xs"
-            label="Time Period"
-            placeholder="Time Period"
             data={[
               {
                 value: "3",
@@ -60,6 +57,9 @@ export default function Analytics() {
               },
             ]}
             defaultValue={days ?? "7"}
+            label="Time Period"
+            placeholder="Time Period"
+            size="xs"
             onChange={(value) => {
               searchParams.set("days", value as string)
               setSearchParams(searchParams)
@@ -69,10 +69,10 @@ export default function Analytics() {
       </Grid.Col>
       <Grid.Col>
         <UsageChartCard
-          title="Network Relay Count"
           detail={`Last ${days ?? 7} days`}
-          relays={relays}
           height="400px"
+          relays={relays}
+          title="Network Relay Count"
         />
       </Grid.Col>
     </Grid>

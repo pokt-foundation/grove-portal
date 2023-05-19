@@ -10,7 +10,6 @@ import {
   Text,
   Burger,
   MediaQuery,
-  theme,
 } from "@pokt-foundation/pocket-blocks"
 import { NavLink, Link } from "@remix-run/react"
 import clsx from "clsx"
@@ -24,15 +23,51 @@ type ShellProps = {
 
 export default function Shell({ routes, children }: ShellProps) {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme()
-  const [prevRoutePath, setPrevRoutePath] = useState("")
   const [opened, setOpened] = useState(false)
 
   return (
     <AppShell
-      padding="md"
-      navbarOffsetBreakpoint="md"
+      header={
+        <Header height={60}>
+          <Group align="center" position="apart" px={20} sx={{ height: "100%" }}>
+            <div>
+              <MediaQuery largerThan="md" styles={{ display: "none" }}>
+                <Burger
+                  color={"gray"}
+                  mr="xl"
+                  opened={opened}
+                  size="sm"
+                  onClick={() => setOpened((o) => !o)}
+                />
+              </MediaQuery>
+              <Link to="/">
+                {colorScheme === "dark" ? (
+                  <img
+                    alt="pocket network"
+                    className="pokt-header-brand"
+                    height="25"
+                    loading="lazy"
+                    src="/pni_portal_logo_blue.svg"
+                  />
+                ) : (
+                  <img
+                    alt="pocket network"
+                    className="pokt-header-brand"
+                    height="25"
+                    loading="lazy"
+                    src="/pni_portal_logo_dark.svg"
+                  />
+                )}
+              </Link>
+            </div>
+            <ActionIcon size={30} variant="default" onClick={() => toggleColorScheme()}>
+              {colorScheme === "dark" ? <IconSun /> : <IconMoon />}
+            </ActionIcon>
+          </Group>
+        </Header>
+      }
       navbar={
-        <Navbar hiddenBreakpoint="md" hidden={!opened} width={{ base: 250 }} p="xs">
+        <Navbar hidden={!opened} hiddenBreakpoint="md" p="xs" width={{ base: 250 }}>
           <Navbar.Section grow mt="xs">
             {/* <Link to="">Back</Link> */}
             <ul className="admin-nav">
@@ -42,11 +77,10 @@ export default function Shell({ routes, children }: ShellProps) {
                     className={({ isActive }) =>
                       clsx("nav-link", { "nav-link-active": isActive })
                     }
-                    onClick={() => setPrevRoutePath(route.to)}
-                    end={route.to === "" ? true : false}
+                    end={route.to === ""}
                     to={route.to}
                   >
-                    <Text m="0" color={colorScheme === "dark" ? "light" : "dark"}>
+                    <Text color={colorScheme === "dark" ? "light" : "dark"} m="0">
                       {route.label}
                     </Text>
                   </NavLink>
@@ -56,45 +90,8 @@ export default function Shell({ routes, children }: ShellProps) {
           </Navbar.Section>
         </Navbar>
       }
-      header={
-        <Header height={60}>
-          <Group sx={{ height: "100%" }} px={20} position="apart" align="center">
-            <div>
-              <MediaQuery largerThan="md" styles={{ display: "none" }}>
-                <Burger
-                  opened={opened}
-                  onClick={() => setOpened((o) => !o)}
-                  size="sm"
-                  color={"gray"}
-                  mr="xl"
-                />
-              </MediaQuery>
-              <Link to="/">
-                {colorScheme === "dark" ? (
-                  <img
-                    alt="pocket network"
-                    className="pokt-header-brand"
-                    loading="lazy"
-                    src="/pni_portal_logo_blue.svg"
-                    height="25"
-                  />
-                ) : (
-                  <img
-                    alt="pocket network"
-                    className="pokt-header-brand"
-                    loading="lazy"
-                    src="/pni_portal_logo_dark.svg"
-                    height="25"
-                  />
-                )}
-              </Link>
-            </div>
-            <ActionIcon variant="default" onClick={() => toggleColorScheme()} size={30}>
-              {colorScheme === "dark" ? <IconSun /> : <IconMoon />}
-            </ActionIcon>
-          </Group>
-        </Header>
-      }
+      navbarOffsetBreakpoint="md"
+      padding="md"
       styles={(theme) => ({
         main: {
           backgroundColor:

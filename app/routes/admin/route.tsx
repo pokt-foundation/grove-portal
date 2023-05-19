@@ -6,12 +6,12 @@ import {
 } from "@pokt-foundation/pocket-blocks"
 import { LoaderFunction, json, LinksFunction } from "@remix-run/node"
 import { Outlet } from "@remix-run/react"
-import { Auth0Profile } from "remix-auth-auth0"
-import styles from "./styles.css"
-import { requireAdmin } from "~/utils/session.server"
-import Shell from "./components/Shell"
 import React, { useState } from "react"
+import { Auth0Profile } from "remix-auth-auth0"
+import Shell from "./components/Shell"
+import styles from "./styles.css"
 import { portalTheme } from "~/root"
+import { requireAdmin } from "~/utils/session.server"
 
 export const links: LinksFunction = () => [
   {

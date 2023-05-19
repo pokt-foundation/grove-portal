@@ -6,14 +6,14 @@ import {
 } from "@pokt-foundation/pocket-blocks"
 import { LinksFunction } from "@remix-run/node"
 import { Outlet, useCatch } from "@remix-run/react"
-import IconNetwork from "~/components/Icons/IconNetwork"
-import IconApp from "~/components/Icons/IconApp"
-import { useTranslate } from "~/context/TranslateContext"
 import { useMemo } from "react"
+import styles from "./styles.css"
 import Footer, { links as FooterLinks } from "~/components/Footer"
 import Header, { links as HeaderLinks } from "~/components/Header"
+import IconApp from "~/components/Icons/IconApp"
+import IconNetwork from "~/components/Icons/IconNetwork"
 import Nav, { links as NavLinks } from "~/components/Nav"
-import styles from "./styles.css"
+import { useTranslate } from "~/context/TranslateContext"
 
 export const links: LinksFunction = () => {
   return [

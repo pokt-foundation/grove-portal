@@ -18,8 +18,8 @@ import {
 } from "@remix-run/react"
 import clsx from "clsx"
 import { useEffect, useState } from "react"
-import { getRequiredServerEnvVar } from "~/utils/environment"
 import styles from "./styles.css"
+import { getRequiredServerEnvVar } from "~/utils/environment"
 
 export const links: LinksFunction = () => [
   {
@@ -28,8 +28,28 @@ export const links: LinksFunction = () => [
   },
 ]
 
+export type Blockchain = {
+  id: string
+  blockchain: string
+  active: boolean
+  description: string
+  altruist: string
+  chainID: string
+  blockchainAliases: string[]
+  redirects: {
+    alias: string
+    domain: string
+    loadBalancerID: string
+  }[]
+  syncCheckOptions: {
+    body: string
+    resultKey: string
+    allowance: number
+  }
+}
+
 type LoaderData = {
-  blockchains: unknown[]
+  blockchains: Blockchain[]
 }
 type Sort = "id" | "blockchain"
 type Filter = "all" | "active" | "inactive"
@@ -48,16 +68,16 @@ export const loader: LoaderFunction = async ({ request, params }) => {
         "Content-Type": "application/json",
       },
     })
-    let chains = await res.json()
+    let chains = (await res.json()) as Blockchain[]
     const sort = url.searchParams.get("sort")
     const filter = url.searchParams.get("filter")
 
     if (sort) {
-      chains = chains.sort((a, b) => (a[sort] > b[sort] ? 1 : -1))
+      chains = chains.sort((a: any, b: any) => (a[sort] > b[sort] ? 1 : -1))
     }
 
     if (filter && filter !== "all") {
-      const state = filter === "active" ? true : false
+      const state = filter === "active"
       chains = chains.filter((chain) => chain.active === state)
     }
 
@@ -88,9 +108,6 @@ export default function Analytics() {
           <Title order={1}>Blockchains</Title>
           <Group>
             <Select
-              size="xs"
-              label="Filter"
-              placeholder="Filter"
               data={[
                 {
                   value: "all",
@@ -106,6 +123,9 @@ export default function Analytics() {
                 },
               ]}
               defaultValue={searchParams.get("filter") ?? "all"}
+              label="Filter"
+              placeholder="Filter"
+              size="xs"
               onChange={(value) => {
                 searchParams.set("filter", value as string)
                 setSearchParams(searchParams)
@@ -113,9 +133,6 @@ export default function Analytics() {
             />
 
             <Select
-              size="xs"
-              label="Sort"
-              placeholder="Sort"
               data={[
                 {
                   value: "id",
@@ -127,6 +144,9 @@ export default function Analytics() {
                 },
               ]}
               defaultValue={searchParams.get("sort") ?? "id"}
+              label="Sort"
+              placeholder="Sort"
+              size="xs"
               onChange={(value) => {
                 searchParams.set("sort", value as string)
                 setSearchParams(searchParams)
@@ -135,16 +155,16 @@ export default function Analytics() {
           </Group>
         </Group>
       </Grid.Col>
-      <Grid.Col md={5} lg={4} xl={3}>
+      <Grid.Col lg={4} md={5} xl={3}>
         <MediaQuery largerThan="md" styles={{ display: "none" }}>
           <Select
-            label="Blockchains"
-            placeholder="Select a Blockchain"
             data={blockchains.map((chain) => ({
               value: chain.id,
               label: `${chain.id} ${chain.blockchain}`,
             }))}
             defaultValue={params.id}
+            label="Blockchains"
+            placeholder="Select a Blockchain"
             onChange={(value) => navigate(`/admin/blockchains/${value}`)}
           />
         </MediaQuery>
@@ -162,11 +182,11 @@ export default function Analytics() {
             {blockchains &&
               blockchains.map((chain) => (
                 <NavLink
+                  key={chain.id}
                   className={({ isActive }) =>
                     clsx("nav-link", { "nav-link-active": isActive })
                   }
                   to={`${chain.id}?${searchParams.toString()}`}
-                  key={chain.id}
                 >
                   <Group>
                     <Text m="0">{chain.id}</Text>
@@ -177,7 +197,7 @@ export default function Analytics() {
           </List>
         </MediaQuery>
       </Grid.Col>
-      <Grid.Col md={7} lg={8} xl={9}>
+      <Grid.Col lg={8} md={7} xl={9}>
         <Outlet />
       </Grid.Col>
     </Grid>

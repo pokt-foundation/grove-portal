@@ -1,7 +1,7 @@
 import { Flex } from "@mantine/core"
 import { AppShell } from "@pokt-foundation/pocket-blocks"
 import { json, LoaderFunction } from "@remix-run/node"
-import { Outlet, useLoaderData, useLocation } from "@remix-run/react"
+import { Outlet, useLoaderData } from "@remix-run/react"
 import { useEffect, useMemo, useRef, useState } from "react"
 import DocsBreadcrumbs from "./components/Breadcrumbs/Breadcrumbs"
 import DocsFooter from "./components/footer/footer"
@@ -10,7 +10,7 @@ import { Sidebar } from "~/components/Sidebar/Sidebar"
 import { initCmsClient } from "~/models/cms/cms.server"
 import { documentation } from "~/models/cms/sdk"
 import DocumentationSearch from "~/routes/_landing.($lang).docs/components"
-import { flattenTree, nextNodeInTree, organizeData } from "~/utils/docs"
+import { flattenTree, organizeData } from "~/utils/docs"
 import { getClientEnv } from "~/utils/environment.server"
 
 type LoaderData = {
@@ -44,16 +44,9 @@ export default function DocsLayout() {
   const { data }: LoaderData = useLoaderData()
   const [linksGroupItems, setLinksGroupItems] = useState<LinksGroupProps[]>([])
   const organizeDataRef = useRef(organizeData)
-  const location = useLocation()
-
   const flattenedLinksTree = useMemo(
     () => flattenTree(linksGroupItems),
     [linksGroupItems],
-  )
-  const splittedPath = location.pathname.split("/")
-  const nextDoc = nextNodeInTree(
-    flattenedLinksTree,
-    flattenedLinksTree.find((ft) => splittedPath[splittedPath.length - 1] === ft.slug),
   )
 
   useEffect(() => {
@@ -82,7 +75,7 @@ export default function DocsLayout() {
         </Flex>
         <DocsBreadcrumbs flattenedLinksTree={flattenedLinksTree} />
         <Outlet />
-        {nextDoc && <DocsFooter nextDoc={nextDoc} />}
+        <DocsFooter items={flattenedLinksTree} />
       </Flex>
     </AppShell>
   )

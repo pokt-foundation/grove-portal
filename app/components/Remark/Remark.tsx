@@ -1,10 +1,11 @@
+import { type LinksFunction } from "@remix-run/node"
 import ReactMarkdown, { Options } from "react-markdown"
 import rehypeRaw from "rehype-raw"
 import remarkGfm from "remark-gfm"
 import styles from "./styles.css"
 
 /* c8 ignore start */
-export const links = () => {
+export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: styles }]
 }
 /* c8 ignore stop */
@@ -23,7 +24,12 @@ export const Remark = (props: Options) => {
           </a>
         ),
         img: (props: any) => (
-          <img alt="pokt-remark" className="pokt-remark-img" {...props} />
+          <img
+            alt="pokt-remark"
+            className="pokt-remark-img"
+            style={{ width: "100%" }}
+            {...props}
+          />
         ),
       }}
       rehypePlugins={[rehypeRaw]}

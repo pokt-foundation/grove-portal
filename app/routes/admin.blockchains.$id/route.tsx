@@ -38,8 +38,6 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 export default function Analytics() {
   const { blockchain } = useLoaderData() as LoaderData
 
-  console.log(blockchain)
-
   return (
     <>
       <Group position="apart">
@@ -59,31 +57,26 @@ export default function Analytics() {
       <Card mb={32}>
         <Title order={4}>General</Title>
         <Form>
-          <TextInput defaultValue={blockchain.id} label="ID" mb={16} name="id" />
+          <TextInput value={blockchain.id} label="ID" mb={16} name="id" />
           <TextInput
-            defaultValue={blockchain.blockchain}
+            value={blockchain.blockchain}
             label="Blockchain"
             mb={16}
             name="blockchain"
           />
           <TextInput
-            defaultValue={blockchain.description}
+            value={blockchain.description}
             label="Description"
             mb={16}
             name="description"
           />
           <TextInput
-            defaultValue={blockchain.altruist}
+            value={blockchain.altruist}
             label="Altruist"
             mb={16}
             name="altruist"
           />
-          <TextInput
-            defaultValue={blockchain.chainID}
-            label="Chain ID"
-            mb={16}
-            name="chainID"
-          />
+          <TextInput value={blockchain.chainID} label="Chain ID" mb={16} name="chainID" />
           {/* <Button mt={16} size="sm">
             Save
           </Button> */}
@@ -95,12 +88,7 @@ export default function Analytics() {
           blockchain.blockchainAliases.map((alias) => (
             <Box mb={32}>
               <Form>
-                <TextInput
-                  defaultValue={alias}
-                  label="Alias"
-                  mb={16}
-                  name="redirect_alias"
-                />
+                <TextInput value={alias} label="Alias" mb={16} name="redirect_alias" />
                 {/* <Button mt={16} size="sm">
               Save
             </Button> */}
@@ -115,19 +103,19 @@ export default function Analytics() {
             <Box mb={32}>
               <Form>
                 <TextInput
-                  defaultValue={redirect.alias}
+                  value={redirect.alias}
                   label="Alias"
                   mb={16}
                   name="redirect_alias"
                 />
                 <TextInput
-                  defaultValue={redirect.domain}
+                  value={redirect.domain}
                   label="Domain"
                   mb={16}
                   name="redirect_domain"
                 />
                 <TextInput
-                  defaultValue={redirect.loadBalancerID}
+                  value={redirect.loadBalancerID}
                   label="Load Balancer ID"
                   mb={16}
                   name="redirect_loadBalancerID"
@@ -143,19 +131,19 @@ export default function Analytics() {
         <Title order={4}>Sync Check</Title>
         <Form>
           <TextInput
-            defaultValue={blockchain.syncCheckOptions.body}
+            value={blockchain.syncCheckOptions.body}
             label="Body"
             mb={16}
             name="syncCheckOptions_body"
           />
           <TextInput
-            defaultValue={blockchain.syncCheckOptions.resultKey}
+            value={blockchain.syncCheckOptions.resultKey}
             label="Result Key"
             mb={16}
             name="syncCheckOptions_resultKey"
           />
           <TextInput
-            defaultValue={blockchain.syncCheckOptions.allowance}
+            value={blockchain.syncCheckOptions.allowance}
             label="Allowance"
             mb={16}
             name="syncCheckOptions_allowance"

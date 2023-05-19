@@ -16,7 +16,6 @@ export const findChildren = (
         link: slugPath || "",
         slug: doc.slug || "",
         links: findChildren(doc.id, docs, slugPath),
-        hasParent: true,
       }
     })
 }
@@ -30,7 +29,6 @@ export const organizeData = (docs: documentation[]): LinksGroupProps[] => {
       link: doc.slug || "",
       slug: doc.slug || "",
       links: findChildren(doc.id, docs, doc.slug!),
-      hasParent: false,
     }))
 }
 

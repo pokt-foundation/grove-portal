@@ -36,6 +36,7 @@ const getFontSize: GetFontSize = (size) => {
 }
 
 type LinkItemProps = {
+  hasLinks: boolean
   isActive: boolean
   label: string
   link: string
@@ -45,6 +46,7 @@ type LinkItemProps = {
 }
 
 const LinkItem = ({
+  hasLinks,
   isActive,
   label,
   link,
@@ -62,18 +64,31 @@ const LinkItem = ({
     }}
     tt="capitalize"
   >
-    <Link
-      prefetch="intent"
-      style={{
-        display: "block",
-        height: "100%",
-        padding: nesting_level ? `10.5px 0 10.5px ${nesting_level * 32}px` : "16px 8px",
-        width: "100%",
-      }}
-      to={link}
-    >
-      {label}
-    </Link>
+    {!hasLinks ? (
+      <Link
+        prefetch="intent"
+        style={{
+          display: "block",
+          height: "100%",
+          padding: nesting_level ? `10.5px 0 10.5px ${nesting_level * 32}px` : "16px 8px",
+          width: "100%",
+        }}
+        to={link}
+      >
+        {label}
+      </Link>
+    ) : (
+      <Box
+        sx={{
+          display: "block",
+          height: "100%",
+          padding: nesting_level ? `10.5px 0 10.5px ${nesting_level * 32}px` : "16px 8px",
+          width: "100%",
+        }}
+      >
+        {label}
+      </Box>
+    )}
   </Text>
 )
 
@@ -97,18 +112,29 @@ const LinksGroup = ({
   size,
   slug,
 }: LinksGroupProps) => {
-  const [opened, setOpened] = useState(initiallyOpened || false)
-
   const location = useLocation()
-  const isActive = location.pathname.includes(slug)
+  const [opened, setOpened] = useState(() => {
+    if (initiallyOpened) {
+      return true
+    }
+
+    if (location.pathname.includes(slug)) {
+      return true
+    }
+
+    return false
+  })
 
   const theme = useMantineTheme()
+
+  const splitPathname = location.pathname.split("/")
+  const isActive = splitPathname[splitPathname.length - 1].includes(slug)
 
   const hasLinks = links && links.length > 0
 
   const items = (hasLinks ? links : []).map((linkItem) => (
     <LinksGroup
-      key={linkItem.label}
+      key={linkItem.id}
       id={linkItem.id}
       initiallyOpened={linkItem.initiallyOpened}
       label={linkItem.label}
@@ -136,6 +162,7 @@ const LinksGroup = ({
         <UnstyledButton w="100%" onClick={() => setOpened((opened) => !opened)}>
           <Group position="apart" spacing={0}>
             <LinkItem
+              hasLinks={hasLinks}
               isActive={isActive}
               label={label}
               link={link}
@@ -149,9 +176,9 @@ const LinksGroup = ({
                 height="18px"
                 style={{
                   marginRight: "8px",
+                  transform: opened ? "rotate(90deg)" : "rotate(0deg)",
                   transition: "transform 0.2s ease-in-out",
                 }}
-                transform={opened ? "rotate(90deg)" : "rotate(0deg)"}
                 width="18px"
               />
             )}

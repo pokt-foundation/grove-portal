@@ -14,12 +14,13 @@ export function Sidebar({ data }: SidebarProps) {
       withPadding
       m={0}
       sx={{
-        height: "calc(100vh - 144px)",
-        padding: "0 8px 48px 0",
+        height: "100vh",
+        padding: "0 8px 8px 0",
         width: 300,
         top: 0,
         position: "sticky",
         background: theme.colors.navy[7],
+        overflowY: "auto",
       }}
     >
       {data.map((item) => (

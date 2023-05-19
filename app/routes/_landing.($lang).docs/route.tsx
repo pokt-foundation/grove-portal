@@ -50,9 +50,10 @@ export default function DocsLayout() {
     () => flattenTree(linksGroupItems),
     [linksGroupItems],
   )
+  const splittedPath = location.pathname.split("/")
   const nextDoc = nextNodeInTree(
     flattenedLinksTree,
-    flattenedLinksTree.find((ft) => location.pathname.includes(ft.slug)),
+    flattenedLinksTree.find((ft) => splittedPath[splittedPath.length - 1] === ft.slug),
   )
 
   useEffect(() => {

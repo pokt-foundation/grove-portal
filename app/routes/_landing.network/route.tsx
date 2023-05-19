@@ -3,7 +3,7 @@ import { useLoaderData, useNavigation } from "@remix-run/react"
 import { useEffect } from "react"
 import NetworkView, { links as NetworkViewLinks } from "./view"
 import { initPoktScanClient } from "~/models/poktscan/poktscan.server"
-import { GetChainsTotalsQuery, GetHighestBlockQuery } from "~/models/poktscan/sdk"
+import { GetChainsTotalsQuery, GetLatestBlockQuery } from "~/models/poktscan/sdk"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { Blockchain } from "~/models/portal/sdk"
 import {
@@ -31,7 +31,7 @@ export type NetworkLoaderData = {
   dailyNetworkRelays: RelayMetric
   weeklyNetworkRelays: RelayMetric
   monthlyNetworkRelays: RelayMetric
-  poktscanLatestBlock: GetHighestBlockQuery | null
+  poktscanLatestBlock: GetLatestBlockQuery | null
   poktscanChains: GetChainsTotalsQuery | null
 }
 
@@ -43,21 +43,27 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   const poktscan = initPoktScanClient()
   const poktscanLatestBlock =
-    (await poktscan.getHighestBlock().catch((e) => {
+    (await poktscan.getLatestBlock().catch((e) => {
       console.log(e)
     })) ?? null
   const poktscanChains =
     (await poktscan
       .getChainsTotals({
-        from: dayjs()
+        start_date: dayjs()
           .utc()
           .hour(0)
           .minute(0)
           .second(0)
           .millisecond(0)
           .subtract(30, "day")
-          .format(),
-        to: dayjs().utc().hour(0).minute(0).second(0).millisecond(0).format(),
+          .format("YYYY-MM-DDTHH:mm:ss.SSSZ"),
+        end_date: dayjs()
+          .utc()
+          .hour(0)
+          .minute(0)
+          .second(0)
+          .millisecond(0)
+          .format("YYYY-MM-DDTHH:mm:ss.SSSZ"),
       })
       .catch((e) => {
         console.log(e)

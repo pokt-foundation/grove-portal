@@ -54,8 +54,6 @@ export const loader: LoaderFunction = async ({ params }) => {
 export default function Docs() {
   const { data }: LoaderData = useLoaderData()
 
-  console.log("data: ", data)
-
   return (
     <Remark>
       {data &&

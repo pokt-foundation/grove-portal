@@ -55,8 +55,23 @@ export function getNextAndPrevNodesInTree(
     return [null, null]
   }
 
-  const prevNode = currentNodeIdx > 0 ? nodes[currentNodeIdx - 1] : null
-  const nextNode = currentNodeIdx < nodes.length - 1 ? nodes[currentNodeIdx + 1] : null
+  let prevNode, nextNode;
+  
+  // Ensure previous node isn't a parent
+  for(let i = currentNodeIdx - 1; i >= 0; i--) {
+    if (!nodes[i].links || nodes[i].links.length === 0) {
+      prevNode = nodes[i];
+      break;
+    }
+  }
 
-  return [prevNode, nextNode]
+  // Ensure next node isn't a parent
+  for(let i = currentNodeIdx + 1; i < nodes.length; i++) {
+    if (!nodes[i].links || nodes[i].links.length === 0) {
+      nextNode = nodes[i];
+      break;
+    }
+  }
+  
+  return [prevNode || null, nextNode || null]
 }

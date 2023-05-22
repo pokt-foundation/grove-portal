@@ -1,4 +1,4 @@
-import { Flex, MantineTheme, useMantineTheme } from "@mantine/core"
+import { Flex, MantineTheme } from "@mantine/core"
 import {
   Anchor,
   Divider,
@@ -6,6 +6,7 @@ import {
   IconCaretRight,
 } from "@pokt-foundation/pocket-blocks"
 import { Link, useLocation } from "@remix-run/react"
+import { useMemo } from "react"
 import { LinksGroupProps } from "~/components/LinksGroup/LinksGroup"
 import { getNextAndPrevNodesInTree } from "~/utils/docs"
 
@@ -28,25 +29,30 @@ const commonLinkStyles = (theme: MantineTheme) => ({
 })
 
 function DocsFooter({ items }: DocsFooterProps) {
-  const theme = useMantineTheme()
   const location = useLocation()
   const lastPathPart = location.pathname.split("/").pop()
-  const [prev, next] = getNextAndPrevNodesInTree(
-    items,
-    items.find((ft) => lastPathPart === ft.slug),
+  const [prev, next] = useMemo(
+    () =>
+      getNextAndPrevNodesInTree(
+        items,
+        items.find((ft) => lastPathPart === ft.slug),
+      ),
+    [items, lastPathPart],
   )
+
+  let justify = "flex-end"
+  if (prev && next) {
+    justify = "space-between"
+  } else if (prev) {
+    justify = "flex-start"
+  }
 
   return (
     <Flex direction="column">
       <Divider color="gray" mb="sm" mt="xl" sx={{ borderTopWidth: "0.03rem" }} />
-      <Flex direction="row" justify="space-between">
+      <Flex direction="row" justify={justify}>
         {prev && (
-          <Anchor
-            component={Link}
-            prefetch="intent"
-            sx={commonLinkStyles(theme)}
-            to={prev.link}
-          >
+          <Anchor component={Link} prefetch="intent" sx={commonLinkStyles} to={prev.link}>
             <IconCaretLeft />
             {prev.label}
           </Anchor>

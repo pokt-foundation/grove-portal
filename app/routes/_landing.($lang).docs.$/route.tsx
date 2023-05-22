@@ -17,8 +17,7 @@ export const loader: LoaderFunction = async ({ params }) => {
   const showOnlyPublished = getClientEnv().DOCS_STATUS === "published"
   const splatParams = params["*"] as string
   invariant(typeof splatParams === "string", "Undefined splat route")
-  const splittedParams = splatParams.split("/")
-  const slug = splittedParams[splittedParams.length - 1]
+  const slug = splatParams.split("/").pop()
 
   try {
     const doc = await cms.getDocs({
@@ -30,11 +29,15 @@ export const loader: LoaderFunction = async ({ params }) => {
       language: routelang,
     })
 
+    const { translations } = doc.documentation[0]
+    if (!translations || !translations[0] || translations[0].body?.length === 0) {
+      throw new Error("Page must have markdown body")
+    }
+
     if (
-      doc.documentation[0].translations &&
-      typeof doc.documentation[0]?.translations[0]?.body !== "string" &&
-      typeof doc.documentation[0].translations[0]?.id !== "string" &&
-      typeof doc.documentation[0].translations[0]?.title !== "string"
+      typeof translations[0]?.body !== "string" &&
+      typeof translations[0]?.id !== "string" &&
+      typeof translations[0]?.title !== "string"
     ) {
       throw new Error("Page must have markdown body")
     }
@@ -44,12 +47,14 @@ export const loader: LoaderFunction = async ({ params }) => {
     })
   } catch (e) {
     console.error(`Docs error in ${params.slug}: `, e)
-    throw new Error(`Error: ${e}`)
+    throw e
   }
 }
 
 export default function Docs() {
   const { data }: LoaderData = useLoaderData()
+
+  console.log("data: ", data)
 
   return (
     <Remark>

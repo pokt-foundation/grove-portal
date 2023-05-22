@@ -30,7 +30,7 @@ export const loader: LoaderFunction = async ({ params }) => {
     })
 
     const { translations } = doc.documentation[0]
-    if (!translations || !translations[0] || translations[0].body?.length === 0) {
+    if (!translations || !translations[0] || translations[0].body?.trim().length === 0) {
       throw new Error("Page must have markdown body")
     }
 

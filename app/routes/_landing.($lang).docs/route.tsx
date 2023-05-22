@@ -25,7 +25,9 @@ export const loader: LoaderFunction = async ({ params }) => {
   try {
     const doc = await cms.getDocs({
       filter: {
-        ...(showOnlyPublished && { status: { _eq: "published" } }),
+        ...(showOnlyPublished
+          ? { status: { _eq: "published" } }
+          : { status: { _neq: "archived" } }),
       },
       sort: ["id"],
       language: routeLang,

@@ -13,25 +13,15 @@ type LoaderData = {
 }
 
 export const loader: LoaderFunction = async ({ params }) => {
-  console.log("HELLLLLLLO???????")
   const routeLang = params.lang !== undefined ? params.lang : "en-US"
   const cms = initCmsClient()
   const showOnlyPublished = getClientEnv().DOCS_STATUS === "published"
   const splatParams = params["*"] as string
   invariant(typeof splatParams === "string", "Undefined splat route")
-  const splittedParams = splatParams.split("/")
-  const slug = splittedParams[splittedParams.length - 1]
+  const slug = splatParams.split("/").pop()
+  invariant(typeof slug === "string", "Undefined splat route")
 
   try {
-    // const doc = await cms.getDocs({
-    //   filter: {
-    //     slug: { _eq: slug },
-    //     ...(showOnlyPublished && { status: { _eq: "published" } }),
-    //   },
-    //   sort: ["id"],
-    //   language: routelang,
-    // })
-
     const doc = await cms.getDocs({
       filter: {
         ...(showOnlyPublished && { status: { _eq: "published" } }),
@@ -39,17 +29,16 @@ export const loader: LoaderFunction = async ({ params }) => {
       sort: ["id"],
       language: routeLang,
     })
-    console.log("doc: ", doc)
+
     const currentDoc = doc.documentation.find((d) => d.slug?.includes(slug))
-    console.log("currentDoc: ", currentDoc)
     if (!currentDoc) {
       throw new Error("Page must have markdown body")
     }
 
-    const fmtDocData = organizeData([currentDoc])
-    console.log("fmtDocData: ", fmtDocData)
-    if (fmtDocData[0] && fmtDocData[0].links.length > 0) {
-      return redirect(fmtDocData[0].links[0].link)
+    const fmtDocData = organizeData(doc.documentation)
+    const slugFmtDocData = fmtDocData.find((d) => d.slug.includes(slug))
+    if (slugFmtDocData && slugFmtDocData.links.length > 0) {
+      return redirect(slugFmtDocData.links[0].link)
     }
 
     if (
@@ -72,7 +61,6 @@ export const loader: LoaderFunction = async ({ params }) => {
 
 export default function Docs() {
   const { data }: LoaderData = useLoaderData()
-  console.log("MOMENTO")
   return (
     <Remark>
       {data && data.translations && data.translations[0] && data.translations[0].body

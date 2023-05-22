@@ -5,16 +5,17 @@ import {
   IconCaretLeft,
   IconCaretRight,
 } from "@pokt-foundation/pocket-blocks"
-import { Link, useLocation } from "@remix-run/react"
+import { Link } from "@remix-run/react"
 import { useMemo } from "react"
 import { LinksGroupProps } from "~/components/LinksGroup/LinksGroup"
 import { getNextAndPrevNodesInTree } from "~/utils/docs"
 
 interface DocsFooterProps {
   items: LinksGroupProps[]
+  pathname: string
 }
 
-const commonLinkStyles = (theme: MantineTheme) => ({
+const commonLinkStyles = (_: MantineTheme) => ({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
@@ -23,14 +24,13 @@ const commonLinkStyles = (theme: MantineTheme) => ({
   color: "white",
   borderRadius: "0.5rem",
   "&:hover": {
-    backgroundColor: theme.colors.navy[4],
+    backgroundColor: "#192430",
     textDecoration: "none",
   },
 })
 
-function DocsFooter({ items }: DocsFooterProps) {
-  const location = useLocation()
-  const lastPathPart = location.pathname.split("/").pop()
+function DocsFooter({ items, pathname }: DocsFooterProps) {
+  const lastPathPart = pathname.split("/").pop()
   const [prev, next] = useMemo(
     () =>
       getNextAndPrevNodesInTree(

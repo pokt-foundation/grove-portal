@@ -1,7 +1,7 @@
 import { Flex } from "@mantine/core"
 import { AppShell } from "@pokt-foundation/pocket-blocks"
 import { json, LinksFunction, LoaderFunction } from "@remix-run/node"
-import { Outlet, useLoaderData, useLocation } from "@remix-run/react"
+import { Outlet, useLoaderData } from "@remix-run/react"
 import { useEffect, useMemo, useRef, useState } from "react"
 import DocsBreadcrumbs from "./components/Breadcrumbs/Breadcrumbs"
 import DocsFooter from "./components/footer/footer"
@@ -10,8 +10,8 @@ import { links as RemarkLinks } from "~/components/Remark"
 import { Sidebar } from "~/components/Sidebar/Sidebar"
 import { initCmsClient } from "~/models/cms/cms.server"
 import { documentation } from "~/models/cms/sdk"
-import DocumentationSearch from "~/routes/_landing.($lang).docs/components"
-import { flattenTree, nextNodeInTree, organizeData } from "~/utils/docs"
+import DocumentationSearch from "~/routes/_landing.($lang).docs/components/DocumentationSearch"
+import { flattenTree, organizeData } from "~/utils/docs"
 import { getClientEnv } from "~/utils/environment.server"
 
 type LoaderData = {
@@ -32,7 +32,9 @@ export const loader: LoaderFunction = async ({ params }) => {
   try {
     const doc = await cms.getDocs({
       filter: {
-        ...(showOnlyPublished && { status: { _eq: "published" } }),
+        ...(showOnlyPublished
+          ? { status: { _eq: "published" } }
+          : { status: { _neq: "archived" } }),
       },
       sort: ["id"],
       language: routeLang,
@@ -51,12 +53,9 @@ export default function DocsLayout() {
   const { data }: LoaderData = useLoaderData()
   const [linksGroupItems, setLinksGroupItems] = useState<LinksGroupProps[]>([])
   const organizeDataRef = useRef(organizeData)
-  const location = useLocation()
-
-  const flattenedTree = useMemo(() => flattenTree(linksGroupItems), [linksGroupItems])
-  const nextDoc = nextNodeInTree(
-    flattenedTree,
-    flattenedTree.find((ft) => location.pathname.includes(ft.slug)),
+  const flattenedLinksTree = useMemo(
+    () => flattenTree(linksGroupItems),
+    [linksGroupItems],
   )
 
   useEffect(() => {
@@ -81,11 +80,11 @@ export default function DocsLayout() {
     >
       <Flex direction="column" gap="sm" sx={{ maxWidth: "calc(100vw - 400px)" }}>
         <Flex align="center" justify="flex-end" sx={{ zIndex: 1200 }}>
-          <DocumentationSearch />
+          <DocumentationSearch docsLinks={flattenedLinksTree} />
         </Flex>
-        <DocsBreadcrumbs />
+        <DocsBreadcrumbs flattenedLinksTree={flattenedLinksTree} />
         <Outlet />
-        {nextDoc && <DocsFooter nextDoc={nextDoc} />}
+        <DocsFooter items={flattenedLinksTree} />
       </Flex>
     </AppShell>
   )

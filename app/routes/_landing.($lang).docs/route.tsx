@@ -1,11 +1,12 @@
 import { Flex } from "@mantine/core"
 import { AppShell } from "@pokt-foundation/pocket-blocks"
-import { json, LoaderFunction } from "@remix-run/node"
+import { json, LinksFunction, LoaderFunction } from "@remix-run/node"
 import { Outlet, useLoaderData, useLocation } from "@remix-run/react"
 import { useEffect, useMemo, useRef, useState } from "react"
 import DocsBreadcrumbs from "./components/Breadcrumbs/Breadcrumbs"
 import DocsFooter from "./components/footer/footer"
 import { LinksGroupProps } from "~/components/LinksGroup/LinksGroup"
+import { links as RemarkLinks } from "~/components/Remark"
 import { Sidebar } from "~/components/Sidebar/Sidebar"
 import { initCmsClient } from "~/models/cms/cms.server"
 import { documentation } from "~/models/cms/sdk"
@@ -16,6 +17,12 @@ import { getClientEnv } from "~/utils/environment.server"
 type LoaderData = {
   data: documentation[]
 }
+
+/* c8 ignore start */
+export const links: LinksFunction = () => {
+  return [...RemarkLinks()]
+}
+/* c8 ignore emd */
 
 export const loader: LoaderFunction = async ({ params }) => {
   const routeLang = params.lang ?? "en-US"

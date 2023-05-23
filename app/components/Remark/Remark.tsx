@@ -24,12 +24,7 @@ export const Remark = (props: Options) => {
           </a>
         ),
         img: (props: any) => (
-          <img
-            alt="pokt-remark"
-            className="pokt-remark-img"
-            style={{ width: "100%" }}
-            {...props}
-          />
+          <img alt="pokt-remark" className="pokt-remark-img" {...props} />
         ),
       }}
       rehypePlugins={[rehypeRaw]}

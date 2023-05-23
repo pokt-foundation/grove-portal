@@ -1,7 +1,7 @@
+import { List } from "@pokt-foundation/pocket-blocks"
 import { expect } from "vitest"
 import LinksGroup from "./LinksGroup"
 import { render, screen } from "test/helpers"
-import { List } from "@pokt-foundation/pocket-blocks"
 
 const props = {
   id: "1",

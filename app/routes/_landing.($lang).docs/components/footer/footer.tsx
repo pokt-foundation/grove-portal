@@ -56,7 +56,7 @@ function DocsFooter({ items, pathname }: DocsFooterProps) {
             {prev.label}
           </Anchor>
         )}
-        
+
         {next && (
           <Anchor
             component={Link}

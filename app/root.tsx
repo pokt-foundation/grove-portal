@@ -8,6 +8,7 @@ import {
   IconCircleQuestion,
   IconMail,
   MantineProvider,
+  MantineThemeOverride,
   theme,
 } from "@pokt-foundation/pocket-blocks"
 import { LinksFunction, LoaderFunction, MetaFunction, json } from "@remix-run/node"
@@ -79,7 +80,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 createEmotionCache({ key: "pni" })
 
-export const portalTheme = {
+export const portalTheme: MantineThemeOverride = {
   ...theme,
   primaryColor: "blue",
   components: {

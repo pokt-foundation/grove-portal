@@ -4,7 +4,6 @@ import {
   Switch,
   Loader,
   Group,
-  useMantineTheme,
 } from "@pokt-foundation/pocket-blocks"
 import { useFetcher, useNavigation } from "@remix-run/react"
 import React, { useState, forwardRef } from "react"
@@ -56,8 +55,6 @@ SelectItem.displayName = "SelectItem"
 
 export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps) => {
   const navigation = useNavigation()
-
-  const theme = useMantineTheme()
 
   type FormatData = {
     id: string

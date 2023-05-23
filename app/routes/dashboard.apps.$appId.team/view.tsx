@@ -128,7 +128,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
       endpoint?.users?.some(
         ({ email, roleName }) => email === profile?._json?.email && roleName === "ADMIN",
       ),
-    [endpoint],
+    [endpoint, profile],
   )
 
   const isOwnerUser = useMemo(
@@ -136,7 +136,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
       endpoint?.users?.some(
         ({ email, roleName }) => email === profile?._json?.email && roleName === "OWNER",
       ),
-    [endpoint],
+    [endpoint, profile],
   )
 
   const isMember = !isAdminUser && !isOwnerUser
@@ -149,15 +149,6 @@ function TeamView({ state, endpoint }: TeamViewProps) {
       transferOwnership,
     })
     setIsUpdateRoleModalOpened(true)
-  }
-
-  const handleLeaveRemoveUser = (email: string) => {
-    setConfirmationModalProps({ type: "options", isActive: true })
-    setConfirmationModalTitle("Do you want to remove this user from this app team?")
-    setConfirmationModalDescription(
-      "That user will completely lose access to the current application.",
-    )
-    setConfirmationModalEmail(email)
   }
 
   const getRolesSelectData = useMemo(() => {

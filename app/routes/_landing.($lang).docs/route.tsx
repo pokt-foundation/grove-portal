@@ -1,7 +1,7 @@
 import { Flex } from "@mantine/core"
 import { AppShell } from "@pokt-foundation/pocket-blocks"
 import { json, LoaderFunction } from "@remix-run/node"
-import { Outlet, useLoaderData } from "@remix-run/react"
+import { Outlet, useLoaderData, useLocation } from "@remix-run/react"
 import { useEffect, useMemo, useRef, useState } from "react"
 import DocsBreadcrumbs from "./components/Breadcrumbs/Breadcrumbs"
 import DocsFooter from "./components/footer/footer"
@@ -43,6 +43,7 @@ export const loader: LoaderFunction = async ({ params }) => {
 }
 
 export default function DocsLayout() {
+  const location = useLocation()
   const { data }: LoaderData = useLoaderData()
   const [linksGroupItems, setLinksGroupItems] = useState<LinksGroupProps[]>([])
   const organizeDataRef = useRef(organizeData)
@@ -77,7 +78,7 @@ export default function DocsLayout() {
         </Flex>
         <DocsBreadcrumbs flattenedLinksTree={flattenedLinksTree} />
         <Outlet />
-        <DocsFooter items={flattenedLinksTree} />
+        <DocsFooter items={flattenedLinksTree} pathname={location.pathname} />
       </Flex>
     </AppShell>
   )

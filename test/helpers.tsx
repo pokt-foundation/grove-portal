@@ -1,6 +1,8 @@
+import { MantineProvider } from "@mantine/core"
 import { RemixBrowser } from "@remix-run/react"
 import { RenderOptions, render as rtlRender } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
+import { portalTheme } from "~/root"
 
 export { axe } from "jest-axe"
 export * from "@testing-library/react"
@@ -8,7 +10,7 @@ export { userEvent }
 
 export function render(ui: React.ReactElement, options?: RenderOptions) {
   function RootComponent() {
-    return ui
+    return <MantineProvider theme={portalTheme}>{ui}</MantineProvider>
   }
 
   window.__remixManifest = {

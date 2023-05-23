@@ -20,6 +20,10 @@ export const loader: LoaderFunction = ({ params }) => {
   }
 }
 
+export const action: LoaderFunction = ({ request }) => {
+  return request
+}
+
 export default function Route404() {
   const data = useLoaderData() as LoaderData
   return <NotFound404 message={data.param} />

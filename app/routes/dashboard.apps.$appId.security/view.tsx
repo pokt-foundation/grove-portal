@@ -1,10 +1,4 @@
-import {
-  Button,
-  Text,
-  Switch,
-  Loader,
-  Group,
-} from "@pokt-foundation/pocket-blocks"
+import { Button, Text, Switch, Loader, Group } from "@pokt-foundation/pocket-blocks"
 import { useFetcher, useNavigation } from "@remix-run/react"
 import React, { useState, forwardRef } from "react"
 import styles from "./styles.css"

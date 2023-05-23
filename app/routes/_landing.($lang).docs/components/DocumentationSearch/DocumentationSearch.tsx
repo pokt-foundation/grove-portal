@@ -4,10 +4,15 @@ import {
   IconSearch,
 } from "@pokt-foundation/pocket-blocks"
 import { useFetcher, useNavigate } from "@remix-run/react"
+import { LinksGroupProps } from "~/components/LinksGroup/LinksGroup"
 import AutoCompleteSearchItem from "~/components/SearchAutoCompleteItem"
 import { useDocumentationSearch } from "~/routes/_landing.($lang).docs/hooks"
 
-export const DocumentationSearch = () => {
+interface DocumentationSearchProps {
+  docsLinks: LinksGroupProps[]
+}
+
+export const DocumentationSearch = ({ docsLinks }: DocumentationSearchProps) => {
   const navigate = useNavigate()
   const fetcher = useFetcher()
 
@@ -18,7 +23,7 @@ export const DocumentationSearch = () => {
     setSearchResults,
     autocompleteRightSection,
     nothingFoundText,
-  } = useDocumentationSearch({ fetcher })
+  } = useDocumentationSearch({ fetcher, docsLinks })
 
   return (
     <Autocomplete
@@ -58,7 +63,7 @@ export const DocumentationSearch = () => {
         setSearchTerm(term)
       }}
       onItemSubmit={(item: AutocompleteItem) => {
-        navigate(item.slug)
+        navigate(item.link)
         setSearchTerm("")
       }}
     />

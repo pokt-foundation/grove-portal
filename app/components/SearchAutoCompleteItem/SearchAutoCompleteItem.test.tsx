@@ -1,9 +1,11 @@
 import { expect } from "vitest"
-import SearchAutoCompleteItem from "./SearchAutoCompleteItem"
+import SearchAutoCompleteItem, {
+  type SearchAutoCompleteItemProps,
+} from "./SearchAutoCompleteItem"
 import { render, screen } from "test/helpers"
 
 describe("SearchAutoCompleteItem", () => {
-  const itemProps = {
+  const itemProps: SearchAutoCompleteItemProps = {
     id: "1",
     translations: [
       { id: "1", title: "Title 1", summary: "Summary 1" },
@@ -13,6 +15,7 @@ describe("SearchAutoCompleteItem", () => {
     slug: "item-1",
     value: "value",
     label: "label",
+    link: "link-to-doc",
   }
 
   it("renders the title and summary of the search item", () => {

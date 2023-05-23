@@ -7,6 +7,7 @@ import {
 } from "@pokt-foundation/pocket-blocks"
 import { FetcherWithComponents } from "@remix-run/react"
 import { type ReactNode, useEffect, useMemo, useState } from "react"
+import { LinksGroupProps } from "~/components/LinksGroup/LinksGroup"
 import { type documentation } from "~/models/cms/sdk"
 
 type FetcherData = {
@@ -15,6 +16,7 @@ type FetcherData = {
 
 type UseDocumentationSearchProps = {
   fetcher: FetcherWithComponents<FetcherData>
+  docsLinks: LinksGroupProps[]
 }
 
 type UseDocumentationSearchReturnType = {
@@ -30,6 +32,7 @@ type UseDocumentationSearchReturnType = {
 
 export const useDocumentationSearch = ({
   fetcher,
+  docsLinks,
 }: UseDocumentationSearchProps): UseDocumentationSearchReturnType => {
   const [searchTerm, setSearchTerm] = useState<string>("")
   const [searchResults, setSearchResults] = useState<documentation[]>([])
@@ -62,13 +65,14 @@ export const useDocumentationSearch = ({
           .filter((doc) => doc?.translations && doc.translations.length > 0)
           .map((doc, i) => ({
             ...doc,
+            link: docsLinks.find(({ id }) => id === doc.id)?.link,
             value:
               doc && doc.translations && doc.translations[0]?.title
                 ? doc?.translations[0]?.title
                 : doc.id,
           }))
       : []
-  }, [searchResults])
+  }, [docsLinks, searchResults])
 
   const autocompleteRightSection = useMemo(() => {
     if (!searchTerm) {

@@ -47,8 +47,8 @@ function DocsFooter({ items, pathname }: DocsFooterProps) {
         {prev && (
           <Anchor
             component={Link}
+            mr="auto"
             prefetch="intent"
-            style={{ marginRight: "auto" }}
             sx={commonLinkStyles}
             to={prev.link}
           >
@@ -59,8 +59,8 @@ function DocsFooter({ items, pathname }: DocsFooterProps) {
         {next && (
           <Anchor
             component={Link}
+            ml="auto"
             prefetch="intent"
-            style={{ marginLeft: "auto" }}
             sx={commonLinkStyles}
             to={next.link}
           >

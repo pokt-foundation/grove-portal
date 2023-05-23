@@ -146,6 +146,8 @@ const LinksGroup = ({
     />
   ))
 
+  console.log(theme)
+
   return (
     <>
       <List.Item

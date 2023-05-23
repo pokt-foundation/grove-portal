@@ -287,9 +287,9 @@ export default function App() {
         <main>
           <Container
             className="container"
+            maw={location.pathname.includes("/docs") ? "100%" : "1140px"}
             ml={location.pathname.includes("/docs") ? "0" : "auto"}
             mr={location.pathname.includes("/docs") ? "0" : "auto"}
-            maw={location.pathname.includes("/docs") ? "100%" : "1140px"}
             pl={location.pathname.includes("/docs") ? "0" : "16px"}
             pr={location.pathname.includes("/docs") ? "0" : "16px"}
             size="lg"

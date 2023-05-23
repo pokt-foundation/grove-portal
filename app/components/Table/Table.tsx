@@ -1,11 +1,11 @@
 import { Table as MantineTable, Box } from "@pokt-foundation/pocket-blocks"
 import { useState } from "react"
 import styles from "./styles.css"
-import { IdObj, TableProps } from "~/types/table"
-import { usePagination } from "~/hooks/usePagination"
-import { TableHeader } from "./TableHeader"
 import { TableBody } from "./TableBody"
+import { TableHeader } from "./TableHeader"
 import { TablePagination } from "./TablePagination"
+import { usePagination } from "~/hooks/usePagination"
+import { IdObj, TableProps } from "~/types/table"
 
 export const links = () => {
   return [{ rel: "stylesheet", href: styles }]
@@ -34,11 +34,11 @@ export const Table = <T extends IdObj>({
       <Box>
         {(label || search) && (
           <TableHeader
-            label={label}
-            search={search}
             columns={columns}
-            setSearchTerm={setSearchTerm}
+            label={label}
             rightComponent={rightComponent}
+            search={search}
+            setSearchTerm={setSearchTerm}
           />
         )}
 
@@ -53,7 +53,7 @@ export const Table = <T extends IdObj>({
                 ))}
               </tr>
             </thead>
-            <TableBody paginatedData={paginatedData} rowAsLink={rowAsLink} data={data} />
+            <TableBody data={data} paginatedData={paginatedData} rowAsLink={rowAsLink} />
           </MantineTable>
         </div>
         {paginate && (

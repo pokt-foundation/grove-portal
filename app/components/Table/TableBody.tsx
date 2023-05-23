@@ -1,7 +1,7 @@
+import { Text } from "@pokt-foundation/pocket-blocks"
 import { Link } from "@remix-run/react"
 import { useTranslate } from "~/context/TranslateContext"
 import { TableBodyProps, TableDataArray } from "~/types/table"
-import { Text } from "@pokt-foundation/pocket-blocks"
 
 const renderTableCell = ([key, value]: TableDataArray) => (
   <td key={key}>{typeof value === "object" ? value.element : value}</td>

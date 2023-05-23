@@ -10,7 +10,7 @@ export type PaginateProps = {
   totalPages?: number
 }
 
-export type TableDataArray = [string, any];
+export type TableDataArray = [string, any]
 
 export interface TableHeaderProps<T extends IdObj> {
   label?: string

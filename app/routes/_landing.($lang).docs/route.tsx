@@ -74,7 +74,7 @@ export default function DocsLayout() {
     >
       <Flex direction="column" gap="sm" sx={{ maxWidth: "calc(100vw - 400px)" }}>
         <Flex align="center" justify="flex-end" sx={{ zIndex: 1200 }}>
-          <DocumentationSearch />
+          <DocumentationSearch docsLinks={flattenedLinksTree} />
         </Flex>
         <DocsBreadcrumbs flattenedLinksTree={flattenedLinksTree} />
         <Outlet />

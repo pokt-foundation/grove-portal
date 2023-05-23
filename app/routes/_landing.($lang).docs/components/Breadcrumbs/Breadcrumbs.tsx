@@ -62,7 +62,7 @@ const DocsBreadcrumbs = ({ flattenedLinksTree }: DocsBreadcrumbsProps) => {
             {name}
           </Link>
         ) : (
-          <Text>{name}</Text>
+          <Text key={index}>{name}</Text>
         ),
       )}
     </Breadcrumbs>

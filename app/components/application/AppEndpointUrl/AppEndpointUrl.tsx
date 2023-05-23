@@ -1,4 +1,4 @@
-import { Badge, useMantineTheme } from "@pokt-foundation/pocket-blocks"
+import { Badge } from "@pokt-foundation/pocket-blocks"
 import styles from "./styles.css"
 import CopyText from "~/components/CopyText/CopyText"
 import Delete from "~/components/Delete/Delete"
@@ -25,8 +25,6 @@ export default function AppEndpointUrl({
   hasDelete,
   ...props
 }: AppEndpointUrlProp) {
-  const theme = useMantineTheme()
-
   if (!chain) {
     return <></>
   }

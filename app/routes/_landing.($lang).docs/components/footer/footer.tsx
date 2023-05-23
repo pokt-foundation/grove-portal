@@ -40,31 +40,36 @@ function DocsFooter({ items, pathname }: DocsFooterProps) {
     [items, lastPathPart],
   )
 
-  let justify = "flex-end"
-  if (prev && next) {
-    justify = "space-between"
-  } else if (prev) {
-    justify = "flex-start"
-  }
-
   return (
-    <Flex direction="column">
+    <>
       <Divider color="gray" mb="sm" mt="xl" sx={{ borderTopWidth: "0.03rem" }} />
-      <Flex direction="row" justify={justify}>
+      <Flex direction="row">
         {prev && (
-          <Anchor component={Link} prefetch="intent" sx={commonLinkStyles} to={prev.link}>
+          <Anchor
+            component={Link}
+            prefetch="intent"
+            style={{ marginRight: "auto" }}
+            sx={commonLinkStyles}
+            to={prev.link}
+          >
             <IconCaretLeft />
             {prev.label}
           </Anchor>
         )}
         {next && (
-          <Anchor component={Link} prefetch="intent" sx={commonLinkStyles} to={next.link}>
+          <Anchor
+            component={Link}
+            prefetch="intent"
+            style={{ marginLeft: "auto" }}
+            sx={commonLinkStyles}
+            to={next.link}
+          >
             {next.label}
             <IconCaretRight />
           </Anchor>
         )}
       </Flex>
-    </Flex>
+    </>
   )
 }
 

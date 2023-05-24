@@ -20,7 +20,10 @@ function formatBreadcrumbs(
     if (linkNode) {
       const hasLinks = linkNode.links && linkNode.links.length > 0
       return {
-        link: !hasLinks ? linkNode.link : "",
+        link:
+          !hasLinks && linkNode.slug !== locations[locations.length - 1]
+            ? linkNode.link
+            : "",
         name: linkNode.label,
       }
     }

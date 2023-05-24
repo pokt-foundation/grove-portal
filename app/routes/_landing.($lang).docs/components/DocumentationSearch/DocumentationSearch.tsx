@@ -1,8 +1,10 @@
 import {
   Autocomplete,
   AutocompleteItem,
+  AutocompleteProps,
   IconSearch,
   MediaQuery,
+  Sx,
 } from "@pokt-foundation/pocket-blocks"
 import { useFetcher, useNavigate } from "@remix-run/react"
 import { useState } from "react"
@@ -14,10 +16,15 @@ interface DocumentationSearchProps {
   docsLinks: LinksGroupProps[]
 }
 
-export const DocumentationSearch = ({ docsLinks }: DocumentationSearchProps) => {
+interface PAutocompleteProps
+  extends DocumentationSearchProps,
+    Partial<AutocompleteProps> {
+  sx?: Sx | (Sx | undefined)[] | undefined
+}
+
+function PAutocomplete({ docsLinks, sx, ...props }: PAutocompleteProps) {
   const navigate = useNavigate()
   const fetcher = useFetcher()
-  const [mobileExpanded, setMobileExpanded] = useState(false)
 
   const {
     searchResultsData,
@@ -29,26 +36,47 @@ export const DocumentationSearch = ({ docsLinks }: DocumentationSearchProps) => 
   } = useDocumentationSearch({ fetcher, docsLinks })
 
   return (
+    <Autocomplete
+      {...props}
+      aria-label="Documentation search"
+      data={fetcher.state === "submitting" ? [] : searchResultsData}
+      dropdownComponent="div"
+      filter={(_, item) => Boolean(item.value)}
+      icon={<IconSearch />}
+      itemComponent={AutoCompleteSearchItem}
+      limit={20}
+      nothingFound={nothingFoundText}
+      placeholder="Search in Docs"
+      rightSection={autocompleteRightSection}
+      rightSectionWidth={25}
+      size="md"
+      styles={{
+        rightSection: {
+          paddingRight: 5,
+        },
+      }}
+      sx={sx}
+      value={searchTerm}
+      onChange={(term) => {
+        setSearchResults([])
+        setSearchTerm(term)
+      }}
+      onItemSubmit={(item: AutocompleteItem) => {
+        navigate(item.link)
+        setSearchTerm("")
+      }}
+    />
+  )
+}
+
+export const DocumentationSearch = ({ docsLinks }: DocumentationSearchProps) => {
+  const [mobileExpanded, setMobileExpanded] = useState(false)
+
+  return (
     <>
       <MediaQuery largerThan="md" styles={{ display: "none" }}>
-        <Autocomplete
-          aria-label="Documentation search"
-          data={fetcher.state === "submitting" ? [] : searchResultsData}
-          dropdownComponent="div"
-          filter={(_, item) => Boolean(item.value)}
-          icon={<IconSearch />}
-          itemComponent={AutoCompleteSearchItem}
-          limit={20}
-          nothingFound={nothingFoundText}
-          placeholder="Search in Docs"
-          rightSection={autocompleteRightSection}
-          rightSectionWidth={25}
-          size="md"
-          styles={{
-            rightSection: {
-              paddingRight: 5,
-            },
-          }}
+        <PAutocomplete
+          docsLinks={docsLinks}
           sx={(theme) => ({
             width: "280px",
             ".mantine-Autocomplete-itemsWrapper": {
@@ -75,39 +103,14 @@ export const DocumentationSearch = ({ docsLinks }: DocumentationSearchProps) => 
               backgroundColor: theme.colors.navy[6],
             },
           })}
-          value={searchTerm}
-          onChange={(term) => {
-            setSearchResults([])
-            setSearchTerm(term)
-          }}
           onClick={() => setMobileExpanded(true)}
           onDropdownClose={() => setMobileExpanded(false)}
-          onItemSubmit={(item: AutocompleteItem) => {
-            navigate(item.link)
-            setSearchTerm("")
-          }}
         />
       </MediaQuery>
 
       <MediaQuery smallerThan="md" styles={{ display: "none" }}>
-        <Autocomplete
-          aria-label="Documentation search"
-          data={fetcher.state === "submitting" ? [] : searchResultsData}
-          dropdownComponent="div"
-          filter={(_, item) => Boolean(item.value)}
-          icon={<IconSearch />}
-          itemComponent={AutoCompleteSearchItem}
-          limit={20}
-          nothingFound={nothingFoundText}
-          placeholder="Search in Docs"
-          rightSection={autocompleteRightSection}
-          rightSectionWidth={25}
-          size="md"
-          styles={{
-            rightSection: {
-              paddingRight: 5,
-            },
-          }}
+        <PAutocomplete
+          docsLinks={docsLinks}
           sx={(theme) => ({
             width: "560px",
             ".mantine-Autocomplete-itemsWrapper": {
@@ -133,15 +136,6 @@ export const DocumentationSearch = ({ docsLinks }: DocumentationSearchProps) => 
               backgroundColor: theme.colors.navy[6],
             },
           })}
-          value={searchTerm}
-          onChange={(term) => {
-            setSearchResults([])
-            setSearchTerm(term)
-          }}
-          onItemSubmit={(item: AutocompleteItem) => {
-            navigate(item.link)
-            setSearchTerm("")
-          }}
         />
       </MediaQuery>
     </>

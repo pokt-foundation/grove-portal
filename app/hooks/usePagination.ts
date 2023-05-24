@@ -32,14 +32,20 @@ export const usePagination = ({
     [paginate],
   )
 
-  const totalData = useMemo(() => search && searchTerm
-    ? data.filter((row) => {
-      const columns = Object.values(row).map((column) => typeof column === "object" ? column.value : column)
-      const filter = columns.join().toLowerCase().trim()
-      const exists = filter.includes(searchTerm.toLowerCase().trim())
-      return exists
-    })
-    : data, [data, search, searchTerm])
+  const totalData = useMemo(
+    () =>
+      search && searchTerm
+        ? data.filter((row) => {
+            const columns = Object.values(row).map((column) =>
+              typeof column === "object" ? column.value : column,
+            )
+            const filter = columns.join().toLowerCase().trim()
+            const exists = filter.includes(searchTerm.toLowerCase().trim())
+            return exists
+          })
+        : data,
+    [data, search, searchTerm],
+  )
 
   const totalPages = useMemo(
     () =>
@@ -49,8 +55,10 @@ export const usePagination = ({
     [totalData, perPage, paginate],
   )
 
-  const paginatedData = useMemo(() => paginate ? totalData.slice((page - 1) * perPage, page * perPage) : totalData
-    , [totalData, paginate, page, perPage])
+  const paginatedData = useMemo(
+    () => (paginate ? totalData.slice((page - 1) * perPage, page * perPage) : totalData),
+    [totalData, paginate, page, perPage],
+  )
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage)

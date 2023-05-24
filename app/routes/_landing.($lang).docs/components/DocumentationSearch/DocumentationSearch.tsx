@@ -11,7 +11,10 @@ import { useFetcher, useNavigate } from "@remix-run/react"
 import { useState } from "react"
 import { LinksGroupProps } from "~/components/LinksGroup/LinksGroup"
 import AutoCompleteSearchItem from "~/components/SearchAutoCompleteItem"
-import { useDocumentationSearch } from "~/routes/_landing.($lang).docs/hooks"
+import {
+  UseDocumentationSearchReturnType,
+  useDocumentationSearch,
+} from "~/routes/_landing.($lang).docs/hooks"
 
 interface DocumentationSearchProps {
   docsLinks: LinksGroupProps[]
@@ -21,6 +24,7 @@ interface CustomAutocompleteProps
   extends DocumentationSearchProps,
     Partial<AutocompleteProps> {
   sx?: Sx | (Sx | undefined)[] | undefined
+  searchData: UseDocumentationSearchReturnType
 }
 
 const commonStyles = (theme: MantineTheme) => ({
@@ -45,18 +49,23 @@ const rightSectionStyles = {
   },
 }
 
-function CustomAutocomplete({ docsLinks, sx, ...props }: CustomAutocompleteProps) {
+function CustomAutocomplete({
+  docsLinks,
+  sx,
+  searchData,
+  ...props
+}: CustomAutocompleteProps) {
   const navigate = useNavigate()
   const fetcher = useFetcher()
 
   const {
-    searchResultsData,
-    searchTerm,
-    setSearchTerm,
-    setSearchResults,
     autocompleteRightSection,
     nothingFoundText,
-  } = useDocumentationSearch({ fetcher, docsLinks })
+    searchResultsData,
+    searchTerm,
+    setSearchResults,
+    setSearchTerm,
+  } = searchData
 
   return (
     <Autocomplete
@@ -90,12 +99,16 @@ function CustomAutocomplete({ docsLinks, sx, ...props }: CustomAutocompleteProps
 
 export const DocumentationSearch = ({ docsLinks }: DocumentationSearchProps) => {
   const [mobileExpanded, setMobileExpanded] = useState(false)
+  const fetcher = useFetcher()
+
+  const searchData = useDocumentationSearch({ fetcher, docsLinks })
 
   return (
     <>
-      <MediaQuery largerThan="md" styles={{ display: "none" }}>
+      <MediaQuery largerThan="xs" styles={{ display: "none" }}>
         <CustomAutocomplete
           docsLinks={docsLinks}
+          searchData={searchData}
           sx={(theme) => ({
             ...commonStyles(theme),
             width: "280px",
@@ -104,6 +117,7 @@ export const DocumentationSearch = ({ docsLinks }: DocumentationSearchProps) => 
               backgroundColor: "transparent",
               borderColor: theme.colors.gray[4],
               transition: "all 0.5s ease-in-out",
+              paddingRight: searchData.searchTerm ? "1rem" : 0,
               "&::placeholder": {
                 color: theme.colors.gray[4],
               },
@@ -114,9 +128,10 @@ export const DocumentationSearch = ({ docsLinks }: DocumentationSearchProps) => 
         />
       </MediaQuery>
 
-      <MediaQuery smallerThan="md" styles={{ display: "none" }}>
+      <MediaQuery smallerThan="xs" styles={{ display: "none" }}>
         <CustomAutocomplete
           docsLinks={docsLinks}
+          searchData={searchData}
           sx={(theme) => ({
             ...commonStyles(theme),
             width: "560px",

@@ -19,7 +19,7 @@ type UseDocumentationSearchProps = {
   docsLinks: LinksGroupProps[]
 }
 
-type UseDocumentationSearchReturnType = {
+export type UseDocumentationSearchReturnType = {
   searchTerm: string
   setSearchResults: (
     value: ((prevState: documentation[]) => documentation[]) | documentation[],

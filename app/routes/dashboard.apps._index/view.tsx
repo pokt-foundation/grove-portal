@@ -292,7 +292,7 @@ export const AppsView = ({
                   paginate={
                     getRequiredClientEnvVar("GODMODE_ACCOUNTS")?.includes(userId)
                       ? { perPage: 5 }
-                      : undefined
+                      : false
                   }
                 />
               ) : (
@@ -424,7 +424,7 @@ export const AppsView = ({
                     paginate={
                       getRequiredClientEnvVar("GODMODE_ACCOUNTS")?.includes(userId)
                         ? { perPage: 5 }
-                        : undefined
+                        : false
                     }
                   />
                 </Tabs.Panel>

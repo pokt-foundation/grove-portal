@@ -385,7 +385,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
             }
           })}
           label="Users"
-          paginate={endpoint.users.length > 10 ? { perPage: 10 } : undefined}
+          paginate={endpoint.users.length > 10 ? { perPage: 10 } : false}
           rightComponent={
             isOwnerUser || isAdminUser ? (
               <Button
@@ -396,7 +396,9 @@ function TeamView({ state, endpoint }: TeamViewProps) {
               >
                 Invite new user
               </Button>
-            ) : null
+            ) : (
+              <></>
+            )
           }
         />
       </Card>

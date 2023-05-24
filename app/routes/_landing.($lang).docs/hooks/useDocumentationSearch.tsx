@@ -70,7 +70,6 @@ export const useDocumentationSearch = ({
               doc && doc.translations && doc.translations[0]?.title
                 ? doc?.translations[0]?.title
                 : doc.id,
-            description: doc && doc.translations && doc.translations[0]?.summary,
           }))
       : []
   }, [docsLinks, searchResults])

@@ -63,13 +63,14 @@ export const useDocumentationSearch = ({
     return searchResults.length > 0
       ? searchResults
           .filter((doc) => doc?.translations && doc.translations.length > 0)
-          .map((doc, i) => ({
+          .map((doc) => ({
             ...doc,
             link: docsLinks.find(({ id }) => id === doc.id)?.link,
             value:
               doc && doc.translations && doc.translations[0]?.title
                 ? doc?.translations[0]?.title
                 : doc.id,
+            description: doc && doc.translations && doc.translations[0]?.summary,
           }))
       : []
   }, [docsLinks, searchResults])

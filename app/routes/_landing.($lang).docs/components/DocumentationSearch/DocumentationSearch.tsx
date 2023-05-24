@@ -35,7 +35,7 @@ export const DocumentationSearch = ({ docsLinks }: DocumentationSearchProps) => 
       itemComponent={AutoCompleteSearchItem}
       limit={20}
       nothingFound={nothingFoundText}
-      placeholder="Search"
+      placeholder="Search in Docs"
       rightSection={autocompleteRightSection}
       rightSectionWidth={25}
       size="md"
@@ -44,7 +44,7 @@ export const DocumentationSearch = ({ docsLinks }: DocumentationSearchProps) => 
           paddingRight: 5,
         },
       }}
-      sx={() => ({
+      sx={(theme) => ({
         width: "560px",
         ".mantine-Autocomplete-itemsWrapper": {
           maxHeight: "500px",
@@ -55,6 +55,18 @@ export const DocumentationSearch = ({ docsLinks }: DocumentationSearchProps) => 
         },
         ".mantine-Autocomplete-input": {
           width: "350px",
+          backgroundColor: "transparent",
+          borderColor: theme.colors.gray[4],
+
+          "&::placeholder": {
+            color: theme.colors.gray[4],
+          },
+        },
+        ".mantine-Autocomplete-icon": {
+          color: theme.colors.gray[3],
+        },
+        ".mantine-Autocomplete-dropdown": {
+          backgroundColor: theme.colors.navy[6],
         },
       })}
       value={searchTerm}

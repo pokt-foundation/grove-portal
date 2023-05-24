@@ -167,7 +167,7 @@ const LinksGroup = ({
               label={label}
               link={link}
               nesting_level={nesting_level}
-              size={size}
+              size={hasLinks ? "lg" : size}
               theme={theme}
             />
             {hasLinks && (

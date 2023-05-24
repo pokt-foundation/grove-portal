@@ -3,6 +3,7 @@ import {
   AutocompleteItem,
   AutocompleteProps,
   IconSearch,
+  MantineTheme,
   MediaQuery,
   Sx,
 } from "@pokt-foundation/pocket-blocks"
@@ -16,13 +17,35 @@ interface DocumentationSearchProps {
   docsLinks: LinksGroupProps[]
 }
 
-interface PAutocompleteProps
+interface CustomAutocompleteProps
   extends DocumentationSearchProps,
     Partial<AutocompleteProps> {
   sx?: Sx | (Sx | undefined)[] | undefined
 }
 
-function PAutocomplete({ docsLinks, sx, ...props }: PAutocompleteProps) {
+const commonStyles = (theme: MantineTheme) => ({
+  ".mantine-Autocomplete-itemsWrapper": {
+    maxHeight: "500px",
+  },
+  ".mantine-Autocomplete-wrapper": {
+    display: "flex",
+    justifyContent: "flex-end",
+  },
+  ".mantine-Autocomplete-icon": {
+    color: theme.colors.gray[3],
+  },
+  ".mantine-Autocomplete-dropdown": {
+    backgroundColor: theme.colors.navy[6],
+  },
+})
+
+const rightSectionStyles = {
+  rightSection: {
+    paddingRight: 5,
+  },
+}
+
+function CustomAutocomplete({ docsLinks, sx, ...props }: CustomAutocompleteProps) {
   const navigate = useNavigate()
   const fetcher = useFetcher()
 
@@ -50,11 +73,7 @@ function PAutocomplete({ docsLinks, sx, ...props }: PAutocompleteProps) {
       rightSection={autocompleteRightSection}
       rightSectionWidth={25}
       size="md"
-      styles={{
-        rightSection: {
-          paddingRight: 5,
-        },
-      }}
+      styles={rightSectionStyles}
       sx={sx}
       value={searchTerm}
       onChange={(term) => {
@@ -75,32 +94,19 @@ export const DocumentationSearch = ({ docsLinks }: DocumentationSearchProps) => 
   return (
     <>
       <MediaQuery largerThan="md" styles={{ display: "none" }}>
-        <PAutocomplete
+        <CustomAutocomplete
           docsLinks={docsLinks}
           sx={(theme) => ({
+            ...commonStyles(theme),
             width: "280px",
-            ".mantine-Autocomplete-itemsWrapper": {
-              maxHeight: "500px",
-            },
-            ".mantine-Autocomplete-wrapper": {
-              display: "flex",
-              justifyContent: "flex-end",
-            },
             ".mantine-Autocomplete-input": {
               width: mobileExpanded ? "280px" : "32px",
               backgroundColor: "transparent",
               borderColor: theme.colors.gray[4],
               transition: "all 0.5s ease-in-out",
-
               "&::placeholder": {
                 color: theme.colors.gray[4],
               },
-            },
-            ".mantine-Autocomplete-icon": {
-              color: theme.colors.gray[3],
-            },
-            ".mantine-Autocomplete-dropdown": {
-              backgroundColor: theme.colors.navy[6],
             },
           })}
           onClick={() => setMobileExpanded(true)}
@@ -109,31 +115,18 @@ export const DocumentationSearch = ({ docsLinks }: DocumentationSearchProps) => 
       </MediaQuery>
 
       <MediaQuery smallerThan="md" styles={{ display: "none" }}>
-        <PAutocomplete
+        <CustomAutocomplete
           docsLinks={docsLinks}
           sx={(theme) => ({
+            ...commonStyles(theme),
             width: "560px",
-            ".mantine-Autocomplete-itemsWrapper": {
-              maxHeight: "500px",
-            },
-            ".mantine-Autocomplete-wrapper": {
-              display: "flex",
-              justifyContent: "flex-end",
-            },
             ".mantine-Autocomplete-input": {
               width: "350px",
               backgroundColor: "transparent",
               borderColor: theme.colors.gray[4],
-
               "&::placeholder": {
                 color: theme.colors.gray[4],
               },
-            },
-            ".mantine-Autocomplete-icon": {
-              color: theme.colors.gray[3],
-            },
-            ".mantine-Autocomplete-dropdown": {
-              backgroundColor: theme.colors.navy[6],
             },
           })}
         />

@@ -5,7 +5,6 @@ import {
   IconSearch,
   MantineTheme,
   MediaQuery,
-  Sx,
 } from "@pokt-foundation/pocket-blocks"
 import { useFetcher, useNavigate } from "@remix-run/react"
 import { useState } from "react"
@@ -23,7 +22,6 @@ interface DocumentationSearchProps {
 interface CustomAutocompleteProps
   extends DocumentationSearchProps,
     Partial<AutocompleteProps> {
-  sx?: Sx | (Sx | undefined)[] | undefined
   searchData: UseDocumentationSearchReturnType
 }
 
@@ -42,12 +40,6 @@ const commonStyles = (theme: MantineTheme) => ({
     backgroundColor: theme.colors.navy[6],
   },
 })
-
-const rightSectionStyles = {
-  rightSection: {
-    paddingRight: 5,
-  },
-}
 
 function CustomAutocomplete({
   docsLinks,
@@ -82,7 +74,6 @@ function CustomAutocomplete({
       rightSection={autocompleteRightSection}
       rightSectionWidth={25}
       size="md"
-      // styles={rightSectionStyles}
       sx={sx}
       value={searchTerm}
       onChange={(term) => {
@@ -122,6 +113,9 @@ export const DocumentationSearch = ({ docsLinks }: DocumentationSearchProps) => 
                 color: theme.colors.gray[4],
               },
             },
+            ".mantine-Autocomplete-rightSection": {
+              position: "absolute",
+            },
           })}
           onClick={() => setMobileExpanded(true)}
           onDropdownClose={() => setMobileExpanded(false)}
@@ -142,6 +136,9 @@ export const DocumentationSearch = ({ docsLinks }: DocumentationSearchProps) => 
               "&::placeholder": {
                 color: theme.colors.gray[4],
               },
+            },
+            ".mantine-Autocomplete-rightSection": {
+              position: "absolute",
             },
           })}
         />

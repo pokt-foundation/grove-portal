@@ -115,6 +115,9 @@ export const DocumentationSearch = ({ docsLinks }: DocumentationSearchProps) => 
             },
             ".mantine-Autocomplete-rightSection": {
               position: "absolute",
+              right: 0,
+              top: "50%",
+              transform: "translate(0, -50%)",
             },
           })}
           onClick={() => setMobileExpanded(true)}
@@ -139,6 +142,9 @@ export const DocumentationSearch = ({ docsLinks }: DocumentationSearchProps) => 
             },
             ".mantine-Autocomplete-rightSection": {
               position: "absolute",
+              right: 0,
+              top: "50%",
+              transform: "translate(0, -50%)",
             },
           })}
         />

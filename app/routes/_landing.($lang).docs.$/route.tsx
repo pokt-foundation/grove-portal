@@ -1,15 +1,23 @@
-import { LoaderFunction, json } from "@remix-run/node"
+import { LoaderFunction, json, MetaFunction } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
 import invariant from "tiny-invariant"
-import NotFound404 from "~/components/NotFound404"
+import NotFound404, { seo_404_description, seo_404_title } from "~/components/NotFound404"
 import Remark from "~/components/Remark"
 import { initCmsClient } from "~/models/cms/cms.server"
 import { documentation } from "~/models/cms/sdk"
 import { getClientEnv } from "~/utils/environment.server"
+import { seo_title_append } from "~/utils/meta"
 
 type LoaderData = {
   data: documentation[]
 }
+
+export const meta: MetaFunction = ({ data }) => ({
+  title: `${data?.data[0]?.translations[0]?.title ?? seo_404_title} ${seo_title_append}`,
+  description: `${
+    data?.data[0]?.translations[0]?.summary ?? seo_404_description
+  } ${seo_title_append}`,
+})
 
 export const loader: LoaderFunction = async ({ params }) => {
   const routelang = params.lang !== undefined ? params.lang : "en-US"

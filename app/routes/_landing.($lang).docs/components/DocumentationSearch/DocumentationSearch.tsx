@@ -5,7 +5,6 @@ import {
   IconSearch,
   MantineTheme,
   MediaQuery,
-  Sx,
 } from "@pokt-foundation/pocket-blocks"
 import { useFetcher, useNavigate } from "@remix-run/react"
 import { useState } from "react"
@@ -23,31 +22,36 @@ interface DocumentationSearchProps {
 interface CustomAutocompleteProps
   extends DocumentationSearchProps,
     Partial<AutocompleteProps> {
-  sx?: Sx | (Sx | undefined)[] | undefined
   searchData: UseDocumentationSearchReturnType
 }
 
-const commonStyles = (theme: MantineTheme) => ({
-  ".mantine-Autocomplete-itemsWrapper": {
-    maxHeight: "500px",
-  },
-  ".mantine-Autocomplete-wrapper": {
-    display: "flex",
-    justifyContent: "flex-end",
-  },
-  ".mantine-Autocomplete-icon": {
-    color: theme.colors.gray[3],
-  },
-  ".mantine-Autocomplete-dropdown": {
-    backgroundColor: theme.colors.navy[6],
-  },
-})
+const commonStyles = (theme: MantineTheme) =>
+  ({
+    ".mantine-Autocomplete-itemsWrapper": {
+      maxHeight: "500px",
+    },
+    ".mantine-Autocomplete-wrapper": {
+      display: "flex",
+      justifyContent: "flex-end",
+    },
+    ".mantine-Autocomplete-icon": {
+      color: theme.colors.gray[3],
+    },
+    ".mantine-Autocomplete-dropdown": {
+      backgroundColor: theme.colors.navy[6],
+    },
+    ".mantine-Autocomplete-rightSection": {
+      position: "absolute",
+      right: 0,
+      top: "50%",
+      transform: "translate(0, -50%)",
+      paddingRight: "0.3125rem",
 
-const rightSectionStyles = {
-  rightSection: {
-    paddingRight: 5,
-  },
-}
+      svg: {
+        verticalAlign: "middle",
+      },
+    },
+  } as const)
 
 function CustomAutocomplete({
   docsLinks,
@@ -82,7 +86,6 @@ function CustomAutocomplete({
       rightSection={autocompleteRightSection}
       rightSectionWidth={25}
       size="md"
-      styles={rightSectionStyles}
       sx={sx}
       value={searchTerm}
       onChange={(term) => {

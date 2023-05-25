@@ -1,18 +1,20 @@
 import { installGlobals } from "@remix-run/node"
-// import "@testing-library/jest-dom"
 import matchers, { TestingLibraryMatchers } from "@testing-library/jest-dom/matchers"
 import { toHaveNoViolations } from "jest-axe"
 import { getClientEnv } from "~/utils/environment.server"
 
 declare global {
   namespace Vi {
-    interface JestAssertion<T = any>
-      extends jest.Matchers<void, T>,
-        TestingLibraryMatchers<T, void> {}
+    type OmittedMatchers = Omit<TestingLibraryMatchers<unknown, void>,
+      | 'toHaveAccessibleDescription'
+      | 'toHaveAccessibleName'
+      | 'toHaveDescription'
+      | 'toHaveErrorMessage'>;
+
+    interface JestAssertion<T = any> extends jest.Matchers<void, T>, OmittedMatchers { }
   }
 }
 
-// expect.extend(matchers)
 expect.extend({ ...toHaveNoViolations, ...matchers } as any)
 
 // SERVER VARIABLE MOCKS

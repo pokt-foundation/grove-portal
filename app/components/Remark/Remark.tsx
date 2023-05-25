@@ -1,5 +1,6 @@
 import ReactMarkdown, { Options } from "react-markdown"
 import rehypeRaw from "rehype-raw"
+import rehypeSlug from "rehype-slug"
 import remarkGfm from "remark-gfm"
 import styles from "./styles.css"
 
@@ -26,7 +27,7 @@ export const Remark = (props: Options) => {
           <img alt="pokt-remark" className="pokt-remark-img" {...props} />
         ),
       }}
-      rehypePlugins={[rehypeRaw]}
+      rehypePlugins={[rehypeRaw, rehypeSlug]}
       remarkPlugins={[remarkGfm]}
     >
       {props.children}

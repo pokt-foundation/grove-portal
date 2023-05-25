@@ -79,13 +79,15 @@ export const useDocumentationSearch = ({
       return null
     }
 
-    return fetcher.state === "submitting" ? (
-      <Loader size="sm" />
-    ) : (
-      <ActionIcon aria-label="Dismiss search button" variant="transparent">
-        <IconX height={19} width={19} onClick={() => setSearchTerm("")} />
-      </ActionIcon>
-    )
+    return <Loader size="sm" />
+
+    // return fetcher.state === "submitting" ? (
+    //   <Loader size="sm" />
+    // ) : (
+    //   <ActionIcon aria-label="Dismiss search button" variant="transparent">
+    //     <IconX height={19} width={19} onClick={() => setSearchTerm("")} />
+    //   </ActionIcon>
+    // )
   }, [fetcher.state, searchTerm])
 
   const nothingFoundText = useMemo(

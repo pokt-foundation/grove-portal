@@ -25,21 +25,32 @@ interface CustomAutocompleteProps
   searchData: UseDocumentationSearchReturnType
 }
 
-const commonStyles = (theme: MantineTheme) => ({
-  ".mantine-Autocomplete-itemsWrapper": {
-    maxHeight: "500px",
-  },
-  ".mantine-Autocomplete-wrapper": {
-    display: "flex",
-    justifyContent: "flex-end",
-  },
-  ".mantine-Autocomplete-icon": {
-    color: theme.colors.gray[3],
-  },
-  ".mantine-Autocomplete-dropdown": {
-    backgroundColor: theme.colors.navy[6],
-  },
-})
+const commonStyles = (theme: MantineTheme) =>
+  ({
+    ".mantine-Autocomplete-itemsWrapper": {
+      maxHeight: "500px",
+    },
+    ".mantine-Autocomplete-wrapper": {
+      display: "flex",
+      justifyContent: "flex-end",
+    },
+    ".mantine-Autocomplete-icon": {
+      color: theme.colors.gray[3],
+    },
+    ".mantine-Autocomplete-dropdown": {
+      backgroundColor: theme.colors.navy[6],
+    },
+    ".mantine-Autocomplete-rightSection": {
+      position: "absolute",
+      right: 0,
+      top: "50%",
+      transform: "translate(0, -50%)",
+
+      svg: {
+        verticalAlign: "middle",
+      },
+    },
+  } as const)
 
 function CustomAutocomplete({
   docsLinks,
@@ -113,12 +124,6 @@ export const DocumentationSearch = ({ docsLinks }: DocumentationSearchProps) => 
                 color: theme.colors.gray[4],
               },
             },
-            ".mantine-Autocomplete-rightSection": {
-              position: "absolute",
-              right: 0,
-              top: "50%",
-              transform: "translate(0, -50%)",
-            },
           })}
           onClick={() => setMobileExpanded(true)}
           onDropdownClose={() => setMobileExpanded(false)}
@@ -139,12 +144,6 @@ export const DocumentationSearch = ({ docsLinks }: DocumentationSearchProps) => 
               "&::placeholder": {
                 color: theme.colors.gray[4],
               },
-            },
-            ".mantine-Autocomplete-rightSection": {
-              position: "absolute",
-              right: 0,
-              top: "50%",
-              transform: "translate(0, -50%)",
             },
           })}
         />

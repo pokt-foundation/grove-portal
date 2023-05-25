@@ -1,5 +1,6 @@
-import { render, fireEvent } from "@testing-library/react"
+import { render, fireEvent, screen } from "@testing-library/react"
 import { TableHeader } from "./TableHeader"
+import { userEvent } from "test/helpers"
 
 describe("TableHeader component", () => {
   const mockColumns = ["id", "name"]
@@ -17,18 +18,18 @@ describe("TableHeader component", () => {
   })
 
   it("receives and displays label prop", () => {
-    const { getByText } = render(
+    render(
       <TableHeader
         columns={mockColumns}
         label={"Test Label"}
         setSearchTerm={mockSetSearchTerm}
       />,
     )
-    expect(getByText("Test Label")).toBeInTheDocument()
+    expect(screen.getByText("Test Label")).toBeInTheDocument()
   })
 
   it("renders search input if search prop is true", () => {
-    const { getByLabelText } = render(
+    render(
       <TableHeader
         columns={mockColumns}
         label={"Test Label"}
@@ -36,11 +37,14 @@ describe("TableHeader component", () => {
         setSearchTerm={mockSetSearchTerm}
       />,
     )
-    expect(getByLabelText(`Search by ${mockColumns.join(", ")}`)).toBeInTheDocument()
+    expect(
+      screen.getByLabelText(`Search by ${mockColumns.join(", ")}`),
+    ).toBeInTheDocument()
   })
 
   it("calls setSearchTerm when search input changes", () => {
-    const { getByLabelText } = render(
+    const user = userEvent.setup()
+    render(
       <TableHeader
         columns={mockColumns}
         label={"Test Label"}
@@ -49,7 +53,7 @@ describe("TableHeader component", () => {
       />,
     )
 
-    fireEvent.change(getByLabelText(`Search by ${mockColumns.join(", ")}`), {
+    fireEvent.change(screen.getByLabelText(`Search by ${mockColumns.join(", ")}`), {
       target: { value: "Test value" },
     })
     expect(mockSetSearchTerm).toHaveBeenCalledWith("Test value")

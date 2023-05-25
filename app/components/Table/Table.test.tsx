@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom"
-import { render } from "@testing-library/react"
+import { render, screen } from "@testing-library/react"
 import { Table } from "./Table"
 
 describe("Table component", () => {
@@ -23,7 +23,7 @@ describe("Table component", () => {
   })
 
   it("receives necessary props", () => {
-    const { getByText } = render(
+    render(
       <Table
         columns={mockColumns}
         data={mockData}
@@ -32,11 +32,11 @@ describe("Table component", () => {
         search={true}
       />,
     )
-    expect(getByText("Test Label")).toBeInTheDocument()
+    expect(screen.getByText("Test Label")).toBeInTheDocument()
   })
 
   it("renders the correct number of rows", () => {
-    const { getAllByRole } = render(
+    render(
       <Table
         columns={mockColumns}
         data={mockData}
@@ -45,7 +45,7 @@ describe("Table component", () => {
         search={true}
       />,
     )
-    const rows = getAllByRole("row")
+    const rows = screen.getAllByRole("row")
     expect(rows).toHaveLength(mockData.length + 1)
   })
 })

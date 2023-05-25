@@ -2,6 +2,7 @@ import { Pagination, Group } from "@pokt-foundation/pocket-blocks"
 import { fireEvent, render } from "@testing-library/react"
 import { MockedFunction } from "vitest"
 import { TablePagination } from "./TablePagination"
+import { userEvent } from "test/helpers"
 
 interface PocketBlocksModule {
   Pagination: typeof Pagination
@@ -38,11 +39,12 @@ describe("TablePagination", () => {
   })
 
   it("calls onPageChange when page is changed", async () => {
+    const user = userEvent.setup()
     render(<TablePagination page={1} totalPages={5} onPageChange={onPageChange} />)
 
     const pagination = document.querySelector(".pokt-table-paginate div")
     if (pagination) {
-      fireEvent.click(pagination)
+      await user.click(pagination)
     }
 
     expect(onPageChange.mock.calls.length).toBe(1)

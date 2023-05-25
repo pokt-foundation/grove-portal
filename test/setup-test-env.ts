@@ -5,13 +5,15 @@ import { getClientEnv } from "~/utils/environment.server"
 
 declare global {
   namespace Vi {
-    type OmittedMatchers = Omit<TestingLibraryMatchers<unknown, void>,
-      | 'toHaveAccessibleDescription'
-      | 'toHaveAccessibleName'
-      | 'toHaveDescription'
-      | 'toHaveErrorMessage'>;
+    type OmittedMatchers = Omit<
+      TestingLibraryMatchers<unknown, void>,
+      | "toHaveAccessibleDescription"
+      | "toHaveAccessibleName"
+      | "toHaveDescription"
+      | "toHaveErrorMessage"
+    >
 
-    interface JestAssertion<T = any> extends jest.Matchers<void, T>, OmittedMatchers { }
+    interface JestAssertion<T = any> extends jest.Matchers<void, T>, OmittedMatchers {}
   }
 }
 

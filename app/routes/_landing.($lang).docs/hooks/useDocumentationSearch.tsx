@@ -19,7 +19,7 @@ type UseDocumentationSearchProps = {
   docsLinks: LinksGroupProps[]
 }
 
-type UseDocumentationSearchReturnType = {
+export type UseDocumentationSearchReturnType = {
   searchTerm: string
   setSearchResults: (
     value: ((prevState: documentation[]) => documentation[]) | documentation[],
@@ -63,7 +63,7 @@ export const useDocumentationSearch = ({
     return searchResults.length > 0
       ? searchResults
           .filter((doc) => doc?.translations && doc.translations.length > 0)
-          .map((doc, i) => ({
+          .map((doc) => ({
             ...doc,
             link: docsLinks.find(({ id }) => id === doc.id)?.link,
             value:

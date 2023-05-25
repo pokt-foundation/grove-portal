@@ -45,6 +45,7 @@ const commonStyles = (theme: MantineTheme) =>
       right: 0,
       top: "50%",
       transform: "translate(0, -50%)",
+      paddingRight: "0.3125rem",
 
       svg: {
         verticalAlign: "middle",

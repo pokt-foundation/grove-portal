@@ -82,7 +82,7 @@ function CustomAutocomplete({
       rightSection={autocompleteRightSection}
       rightSectionWidth={25}
       size="md"
-      styles={rightSectionStyles}
+      // styles={rightSectionStyles}
       sx={sx}
       value={searchTerm}
       onChange={(term) => {

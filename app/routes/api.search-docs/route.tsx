@@ -20,7 +20,10 @@ export const action: ActionFunction = async ({ request, params }) => {
     const doc = await cms.searchDocs({
       language: routeLang,
       search: searchTerm,
-      filter: { status: { _eq: "published" } },
+      filter: {
+        status: { _eq: "published" },
+        is_parent: { _neq: true },
+      },
     })
 
     return json<LoaderData>({

@@ -1,7 +1,7 @@
+import { Pagination, Group } from "@pokt-foundation/pocket-blocks"
 import { fireEvent, render } from "@testing-library/react"
 import { MockedFunction } from "vitest"
 import { TablePagination } from "./TablePagination"
-import { Pagination, Group } from "@pokt-foundation/pocket-blocks"
 
 interface PocketBlocksModule {
   Pagination: typeof Pagination

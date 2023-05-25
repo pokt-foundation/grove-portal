@@ -12,8 +12,8 @@ describe("Table component", () => {
   it("renders without crashing", () => {
     const { container } = render(
       <Table
-        data={mockData}
         columns={mockColumns}
+        data={mockData}
         label={"Test Label"}
         paginate={true}
         search={true}
@@ -25,8 +25,8 @@ describe("Table component", () => {
   it("receives necessary props", () => {
     const { getByText } = render(
       <Table
-        data={mockData}
         columns={mockColumns}
+        data={mockData}
         label={"Test Label"}
         paginate={true}
         search={true}
@@ -38,8 +38,8 @@ describe("Table component", () => {
   it("renders the correct number of rows", () => {
     const { getAllByRole } = render(
       <Table
-        data={mockData}
         columns={mockColumns}
+        data={mockData}
         label={"Test Label"}
         paginate={true}
         search={true}

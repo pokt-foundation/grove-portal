@@ -1,12 +1,12 @@
 import { screen } from "@testing-library/react"
 import { TableBody } from "./TableBody"
-import { TableBodyProps } from "~/types/table"
 import { render } from "test/helpers"
+import { TableBodyProps } from "~/types/table"
 
 describe("TableBody", () => {
   it("renders empty search message if no data is provided", () => {
     const data: TableBodyProps["data"] = []
-    render(<TableBody paginatedData={data} data={data} rowAsLink={false} />)
+    render(<TableBody data={data} paginatedData={data} rowAsLink={false} />)
     expect(screen.getByText("Nothing found.")).toBeInTheDocument()
   })
 
@@ -20,7 +20,7 @@ describe("TableBody", () => {
       { id: "2", name: "Mock 2", value: 456 },
       { id: "3", name: "Mock 3", value: 567 },
     ]
-    render(<TableBody paginatedData={paginatedData} data={data} rowAsLink={true} />)
+    render(<TableBody data={data} paginatedData={paginatedData} rowAsLink={true} />)
     expect(screen.getByText("Mock 1")).toBeInTheDocument()
     expect(screen.getByText("Mock 2")).toBeInTheDocument()
     expect(screen.getByText("123")).toBeInTheDocument()

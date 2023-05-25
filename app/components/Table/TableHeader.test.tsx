@@ -8,8 +8,8 @@ describe("TableHeader component", () => {
   it("renders without crashing", () => {
     const { container } = render(
       <TableHeader
-        label={"Test Label"}
         columns={mockColumns}
+        label={"Test Label"}
         setSearchTerm={mockSetSearchTerm}
       />,
     )
@@ -19,8 +19,8 @@ describe("TableHeader component", () => {
   it("receives and displays label prop", () => {
     const { getByText } = render(
       <TableHeader
-        label={"Test Label"}
         columns={mockColumns}
+        label={"Test Label"}
         setSearchTerm={mockSetSearchTerm}
       />,
     )
@@ -30,9 +30,9 @@ describe("TableHeader component", () => {
   it("renders search input if search prop is true", () => {
     const { getByLabelText } = render(
       <TableHeader
+        columns={mockColumns}
         label={"Test Label"}
         search={true}
-        columns={mockColumns}
         setSearchTerm={mockSetSearchTerm}
       />,
     )
@@ -42,9 +42,9 @@ describe("TableHeader component", () => {
   it("calls setSearchTerm when search input changes", () => {
     const { getByLabelText } = render(
       <TableHeader
+        columns={mockColumns}
         label={"Test Label"}
         search={true}
-        columns={mockColumns}
         setSearchTerm={mockSetSearchTerm}
       />,
     )

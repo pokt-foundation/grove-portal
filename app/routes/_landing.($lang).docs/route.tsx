@@ -66,7 +66,7 @@ export default function DocsLayout() {
     <AppShell
       aside={
         <MediaQuery smallerThan="md" styles={{ display: "none" }}>
-          <Box pl={10} w="12vw">
+          <Box pl={10} w="15vw">
             {currentDoc && <DocAside doc={currentDoc} />}
           </Box>
         </MediaQuery>

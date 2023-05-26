@@ -1,5 +1,4 @@
-import { Flex } from "@mantine/core"
-import { AppShell, Box, MediaQuery } from "@pokt-foundation/pocket-blocks"
+import { AppShell, Flex, Box, MediaQuery } from "@pokt-foundation/pocket-blocks"
 import { json, LoaderFunction } from "@remix-run/node"
 import { Outlet, useLoaderData, useLocation } from "@remix-run/react"
 import { useEffect, useMemo, useRef, useState } from "react"

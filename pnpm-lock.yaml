@@ -18,7 +18,7 @@ specifiers:
   '@mantine/core': ^5.10.3
   '@mantine/hooks': ^5.10.3
   '@mantine/remix': ^5.10.3
-  '@pokt-foundation/pocket-blocks': ^2.0.3
+  '@pokt-foundation/pocket-blocks': ^2.0.4
   '@pokt-foundation/pocketjs-isomorphic-provider': ^1.0.0
   '@pokt-foundation/pocketjs-types': ^1.0.1
   '@pokt-foundation/portal-types': ^0.0.1
@@ -91,7 +91,7 @@ dependencies:
   '@mantine/core': 5.10.5_zrh3qbywp4klzxzvocxisz6a5a
   '@mantine/hooks': 5.10.5_react@18.2.0
   '@mantine/remix': 5.10.5_awjq7nnjaockokutkm4uxomyfe
-  '@pokt-foundation/pocket-blocks': 2.0.3_yzswr6dvs2rems2osgw4v7jara
+  '@pokt-foundation/pocket-blocks': 2.0.4_yzswr6dvs2rems2osgw4v7jara
   '@pokt-foundation/pocketjs-isomorphic-provider': 1.2.0
   '@remix-run/node': 1.16.0
   '@remix-run/react': 1.16.0_biqbaboplfbrettd7655fr4n2y
@@ -3787,8 +3787,8 @@ packages:
       tslib: 2.5.0
     dev: true
 
-  /@pokt-foundation/pocket-blocks/2.0.3_yzswr6dvs2rems2osgw4v7jara:
-    resolution: {integrity: sha512-27mPfriK+/nyQlvT9rpyVVgtyNGj7fnTtwdb/UzqsN1sfcUmTcxdHYf0u9T1MgZCfPpkaUa6oqy1JlZA3+6XHg==}
+  /@pokt-foundation/pocket-blocks/2.0.4_yzswr6dvs2rems2osgw4v7jara:
+    resolution: {integrity: sha512-JZLxjNBTNHuRU2dz3J7J1jqFdeXgXBBjV6QWGh3lEtZ62dlXifZBiSeFpi9OJucR1FSHg9WEluLPaxsaqK60dA==}
     peerDependencies:
       react: ^16.8 || ^17.0 || ^18.0
       react-dom: ^16.8 || ^17.0 || ^18.0

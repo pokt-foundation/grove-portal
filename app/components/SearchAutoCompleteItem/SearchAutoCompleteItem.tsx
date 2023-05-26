@@ -1,5 +1,4 @@
-import { Flex } from "@mantine/core"
-import { SelectItemProps, Text } from "@pokt-foundation/pocket-blocks"
+import { SelectItemProps, Text, Flex } from "@pokt-foundation/pocket-blocks"
 import { Link } from "@remix-run/react"
 import { forwardRef } from "react"
 import { type LinksGroupProps } from "~/components/LinksGroup/LinksGroup"

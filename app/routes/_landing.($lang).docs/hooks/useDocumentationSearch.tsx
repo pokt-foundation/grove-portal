@@ -63,7 +63,7 @@ export const useDocumentationSearch = ({
     return searchResults.length > 0
       ? searchResults
           .filter((doc) => doc?.translations && doc.translations.length > 0)
-          .map((doc) => ({
+          .map(({ is_parent, ...doc }) => ({
             ...doc,
             link: docsLinks.find(({ id }) => id === doc.id)?.link,
             value:

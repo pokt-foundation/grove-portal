@@ -1,9 +1,10 @@
-import { Flex, MantineTheme } from "@mantine/core"
+import { MantineTheme } from "@mantine/core"
 import {
   Anchor,
   Divider,
   IconCaretLeft,
   IconCaretRight,
+  Flex,
 } from "@pokt-foundation/pocket-blocks"
 import { Link } from "@remix-run/react"
 import { useMemo } from "react"

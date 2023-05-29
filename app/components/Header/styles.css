@@ -88,7 +88,7 @@
 
 /* END: MOBILE DRAWER MENU */
 
-@media (min-width: 640px) {
+@media (min-width: 991px) {
   .pokt-header-actions.mobile {
     display: flex;
   }

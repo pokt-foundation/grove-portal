@@ -60,7 +60,7 @@
   background: var(--mantine-color-navy-4);
   box-sizing: border-box;
   transition: right ease-in-out 0.3s;
-  z-index: calc(var(--zindex-nav) + 1);
+  z-index: 99999;
 }
 
 .pokt-aside-menu.open {

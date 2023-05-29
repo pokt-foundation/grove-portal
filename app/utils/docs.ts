@@ -75,3 +75,16 @@ export function getNextAndPrevNodesInTree(
 
   return [prevNode || null, nextNode || null]
 }
+
+export const getHeadersFromMarkdown = (markdown: string): string[] | null => {
+  const regXHeader = /#{1,6}.+/g
+  return markdown.match(regXHeader)
+}
+
+export const transformHeaderToAnchor = (header: string): string =>
+  header
+    .replace(/^#+/, "") // Remove leading '#' characters
+    .trim()
+    .toLowerCase()
+    .replace(/[^\w\s]+/g, "") // Remove special characters
+    .replace(/\s+/g, "-") // Replace spaces with dashes

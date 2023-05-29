@@ -21,7 +21,6 @@ const commonLinkStyles = (_: MantineTheme) => ({
   justifyContent: "center",
   alignItems: "center",
   padding: "0.625rem",
-  width: "228px",
   color: "white",
   borderRadius: "0.5rem",
   "&:hover": {

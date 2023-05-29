@@ -1,7 +1,8 @@
 import { List, MediaQuery, useMantineTheme } from "@pokt-foundation/pocket-blocks"
-import LinksGroup, { LinksGroupProps } from "../LinksGroup/LinksGroup"
-import SidebarButton from "../Icons/SidebarButton"
 import { useState } from "react"
+import SidebarRightButton from "../Icons/SidebarRightButton"
+import LinksGroup, { LinksGroupProps } from "../LinksGroup/LinksGroup"
+import SidebarLeftButton from "../Icons/SidebarLeftButton"
 
 type SidebarProps = {
   data: LinksGroupProps[]
@@ -13,7 +14,7 @@ export function Sidebar({ data }: SidebarProps) {
 
   return (
     <>
-      <MediaQuery smallerThan="xs" styles={{ display: "none" }}>
+      <MediaQuery smallerThan="md" styles={{ display: "none" }}>
         <List
           unstyled
           withPadding
@@ -33,7 +34,7 @@ export function Sidebar({ data }: SidebarProps) {
           ))}
         </List>
       </MediaQuery>
-      <MediaQuery largerThan="xs" styles={{ display: "none" }}>
+      <MediaQuery largerThan="md" styles={{ display: "none" }}>
         <List
           unstyled
           withPadding
@@ -41,13 +42,14 @@ export function Sidebar({ data }: SidebarProps) {
           sx={{
             background: theme.colors.navy[7],
             height: "100vh",
+            left: isSidebarOpen ? 0 : "calc(-300px + 45px)",
+            maxWidth: 300,
             padding: "0 8px",
-            width: "100%",
-            top: 88,
-            left: isSidebarOpen ? 0 : -345,
             position: "absolute",
-            zIndex: 9999,
+            top: 88,
             transition: "left ease-in-out .3s",
+            width: "100%",
+            zIndex: 9999,
           }}
         >
           <List.Item
@@ -59,11 +61,11 @@ export function Sidebar({ data }: SidebarProps) {
             }}
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
           >
-            <SidebarButton />
+            {isSidebarOpen ? <SidebarLeftButton /> : <SidebarRightButton />}
           </List.Item>
-          {data.map((item) => (
-            <LinksGroup {...item} key={item.label} />
-          ))}
+          {isSidebarOpen
+            ? data.map((item) => <LinksGroup {...item} key={item.label} />)
+            : null}
         </List>
       </MediaQuery>
     </>

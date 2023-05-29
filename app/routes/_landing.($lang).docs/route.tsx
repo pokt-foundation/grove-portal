@@ -72,13 +72,11 @@ export default function DocsLayout() {
         </MediaQuery>
       }
       navbar={
-        <MediaQuery smallerThan="md" styles={{ display: "none" }}>
-          <div>
-            {linksGroupItems && linksGroupItems.length ? (
-              <Sidebar data={linksGroupItems} />
-            ) : null}
-          </div>
-        </MediaQuery>
+        linksGroupItems && linksGroupItems.length ? (
+          <Sidebar data={linksGroupItems} />
+        ) : (
+          <></>
+        )
       }
       styles={() => ({
         body: {

@@ -1,8 +1,8 @@
 import { List, MediaQuery, useMantineTheme } from "@pokt-foundation/pocket-blocks"
+import SidebarRightButton from "~/components/Icons/SidebarRightButton"
+import LinksGroup, { LinksGroupProps } from "~/components/LinksGroup/LinksGroup"
+import SidebarLeftButton from "~/components/Icons/SidebarLeftButton"
 import { useState } from "react"
-import SidebarRightButton from "../Icons/SidebarRightButton"
-import LinksGroup, { LinksGroupProps } from "../LinksGroup/LinksGroup"
-import SidebarLeftButton from "../Icons/SidebarLeftButton"
 
 type SidebarProps = {
   data: LinksGroupProps[]

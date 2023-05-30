@@ -66,7 +66,6 @@ const LinkItem = ({
   >
     {!hasLinks ? (
       <Link
-        prefetch="intent"
         style={{
           display: "block",
           height: "100%",

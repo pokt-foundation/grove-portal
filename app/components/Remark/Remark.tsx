@@ -28,7 +28,7 @@ export const Remark = (props: Options) => {
           <img alt="pokt-remark" className="pokt-remark-img" {...props} />
         ),
       }}
-      rehypePlugins={[rehypeSlug, rehypeMermaid]}
+      rehypePlugins={[rehypeRaw, rehypeSlug, rehypeMermaid]}
       remarkPlugins={[remarkGfm]}
     >
       {props.children}

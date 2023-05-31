@@ -1,9 +1,10 @@
-import { Flex, MantineTheme } from "@mantine/core"
+import { MantineTheme } from "@mantine/core"
 import {
   Anchor,
   Divider,
   IconCaretLeft,
   IconCaretRight,
+  Flex,
 } from "@pokt-foundation/pocket-blocks"
 import { Link } from "@remix-run/react"
 import { useMemo } from "react"
@@ -20,7 +21,6 @@ const commonLinkStyles = (_: MantineTheme) => ({
   justifyContent: "center",
   alignItems: "center",
   padding: "0.625rem",
-  width: "228px",
   color: "white",
   borderRadius: "0.5rem",
   "&:hover": {

@@ -72,19 +72,35 @@ export default function DocsLayout() {
         </MediaQuery>
       }
       navbar={
-        <MediaQuery smallerThan="md" styles={{ display: "none" }}>
-          <div>
-            {linksGroupItems && linksGroupItems.length ? (
-              <Sidebar data={linksGroupItems} />
-            ) : null}
-          </div>
-        </MediaQuery>
+        linksGroupItems && linksGroupItems.length ? (
+          <Sidebar data={linksGroupItems} />
+        ) : (
+          <></>
+        )
       }
       styles={() => ({
+        body: {
+          display: "block",
+
+          "@media screen and (min-width: 1024px)": {
+            display: "flex",
+            overflowY: "hidden",
+          },
+        },
         main: { overflowY: "hidden" },
       })}
     >
-      <Flex direction="column" gap="sm" sx={{ maxWidth: "calc(100vw - 400px)" }}>
+      <Flex
+        direction="column"
+        gap="sm"
+        sx={{
+          maxWidth: "80%",
+
+          "@media screen and (min-width: 1024px)": {
+            maxWidth: "calc(100vw - 400px)",
+          },
+        }}
+      >
         <Flex align="center" justify="flex-end" sx={{ zIndex: 1200 }}>
           <DocumentationSearch docsLinks={flattenedLinksTree} />
         </Flex>

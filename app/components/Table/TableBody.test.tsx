@@ -25,5 +25,7 @@ describe("TableBody", () => {
     expect(screen.getByText("Mock 2")).toBeInTheDocument()
     expect(screen.getByText("123")).toBeInTheDocument()
     expect(screen.getByText("234")).toBeInTheDocument()
+    expect(screen.queryByText("Mock 3")).not.toBeInTheDocument()
+    expect(screen.queryByText("567")).not.toBeInTheDocument()
   })
 })

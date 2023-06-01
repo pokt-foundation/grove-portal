@@ -1,27 +1,17 @@
-import { IconCaretLeft, Grid, Button } from "@pokt-foundation/pocket-blocks"
-import { FetcherWithComponents, Outlet } from "@remix-run/react"
+import { IconCaretLeft, Button } from "@pokt-foundation/pocket-blocks"
+import { FetcherWithComponents } from "@remix-run/react"
 import { useEffect, useState } from "react"
 import { Auth0Profile } from "remix-auth-auth0"
-import AddressCard, { links as AddressCardLinks } from "./components/AddressCard"
-import KeysCard, { links as KeysCardLinks } from "./components/KeysCard"
 import LegacyBannerCard, {
   links as LegacyBannerCardLinks,
 } from "./components/LegacyBannerCard"
-import MemberRoleCard, { links as MemberRoleCardLinks } from "./components/MemberRoleCard"
-import StopRemoveApp, { links as StopRemoveAppLinks } from "./components/StopRemoveApp"
 import styles from "./styles.css"
 import AppName from "~/components/application/AppName"
-import AppPlanDetails, {
-  links as AppPlanDetailsLinks,
-} from "~/components/application/AppPlanDetails"
-import FeedbackCard, {
-  links as FeedbackCardLinks,
-} from "~/components/application/FeedbackCard"
 import Modal, { links as ModalLinks, ModalCTA } from "~/components/Modal"
 import Nav, { links as NavLinks } from "~/components/Nav"
 import { useFeatureFlags } from "~/context/FeatureFlagContext"
 import { useTranslate } from "~/context/TranslateContext"
-import { EndpointQuery, PayPlanType, RoleName } from "~/models/portal/sdk"
+import { EndpointQuery, PayPlanType } from "~/models/portal/sdk"
 import { Stripe } from "~/models/stripe/stripe.server"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { getRequiredClientEnvVar } from "~/utils/environment"
@@ -31,14 +21,8 @@ import { getPlanName } from "~/utils/utils"
 export const links = () => {
   return [
     ...NavLinks(),
-    ...KeysCardLinks(),
-    ...AddressCardLinks(),
-    ...FeedbackCardLinks(),
-    ...StopRemoveAppLinks(),
     ...ModalLinks(),
-    ...AppPlanDetailsLinks(),
     ...LegacyBannerCardLinks(),
-    ...MemberRoleCardLinks(),
     { rel: "stylesheet", href: styles },
   ]
 }
@@ -204,81 +188,20 @@ export default function AppIdLayoutView({
     }
   }, [endpoint, subscription, updatePlanFetcher])
 
-  const role = endpoint?.users.find((u) => u.email === user._json?.email)?.roleName
-  const isMember = role === RoleName.Member
-  const isAdmin = role === RoleName.Admin
-
   return (
     <div className="pokt-appid-layout-view">
-      <Grid gutter={32}>
-        <Grid.Col md={8}>
-          {endpoint && (
-            <Grid.Col xs={12}>
-              <div>
-                <AppName id={endpoint.id} name={endpoint.name} />
-                <Nav
-                  dropdown
-                  appId={endpoint.id}
-                  ariaLabel="Application"
-                  routes={routes}
-                />
-              </div>
-            </Grid.Col>
-          )}
-          {endpoint &&
-            getPlanName(endpoint.appLimits.planType) === "Legacy" &&
-            getRequiredClientEnvVar("FLAG_LEGACY_MESSAGING") === "true" && (
-              <LegacyBannerCard />
-            )}
-          {children}
-        </Grid.Col>
-        <Grid.Col md={4}>
-          {endpoint && (
-            <>
-              <section>
-                <AppPlanDetails
-                  dailyLimit={endpoint.appLimits.dailyLimit}
-                  id={endpoint.id}
-                  isMember={isMember}
-                  name={endpoint.name}
-                  planType={endpoint.appLimits.planType}
-                  subscription={subscription}
-                />
-              </section>
-              {role && (
-                <section>
-                  <MemberRoleCard role={role} />
-                </section>
-              )}
-              <section>
-                <KeysCard
-                  id={endpoint.id}
-                  isMember={isMember}
-                  publicKey={endpoint.apps ? endpoint.apps[0]?.publicKey : ""}
-                  secret={endpoint.gatewaySettings.secretKey}
-                />
-              </section>
-              <section>
-                <AddressCard apps={endpoint.apps} />
-              </section>
-              <section>
-                <FeedbackCard />
-              </section>
-              <section>
-                <StopRemoveApp
-                  appId={endpoint.id}
-                  apps={endpoint.apps}
-                  isAdmin={isAdmin}
-                  isMember={isMember}
-                  name={endpoint.name}
-                  planType={endpoint.appLimits.planType}
-                  subscription={subscription}
-                />
-              </section>
-            </>
-          )}
-        </Grid.Col>
-      </Grid>
+      {endpoint && (
+        <div>
+          <AppName id={endpoint.id} name={endpoint.name} />
+          <Nav dropdown appId={endpoint.id} ariaLabel="Application" routes={routes} />
+        </div>
+      )}
+      {endpoint &&
+        getPlanName(endpoint.appLimits.planType) === "Legacy" &&
+        getRequiredClientEnvVar("FLAG_LEGACY_MESSAGING") === "true" && (
+          <LegacyBannerCard />
+        )}
+      {children}
       <Modal
         opened={showSuccessModal}
         title="Congratulations!"

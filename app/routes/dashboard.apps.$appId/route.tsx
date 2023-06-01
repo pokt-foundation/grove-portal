@@ -10,12 +10,7 @@ import { Auth0Profile } from "remix-auth-auth0"
 import invariant from "tiny-invariant"
 import AppIdLayoutView, { links as AppIdLayoutViewLinks } from "./view"
 import { initPortalClient } from "~/models/portal/portal.server"
-import {
-  BlockchainsQuery,
-  EndpointQuery,
-  PayPlanType,
-  ProcessedEndpoint,
-} from "~/models/portal/sdk"
+import { BlockchainsQuery, EndpointQuery, PayPlanType } from "~/models/portal/sdk"
 import {
   getRelays,
   getRelaysPerPeriod,

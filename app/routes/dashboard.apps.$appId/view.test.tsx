@@ -78,12 +78,6 @@ describe("<AppIdLayoutView />", () => {
       screen.queryByRole("dialog", { name: /subscription error/i }),
     ).not.toBeInTheDocument()
     expect(screen.queryByRole("heading", { name: endpoint.name })).not.toBeInTheDocument()
-    expect(screen.queryByLabelText(/portal id/i)).not.toBeInTheDocument()
-    expect(screen.queryByLabelText(/secret key/i)).not.toBeInTheDocument()
-    expect(screen.queryByLabelText(/public key/i)).not.toBeInTheDocument()
-    expect(
-      screen.queryByRole("heading", { name: t.appAddressCard.heading }),
-    ).not.toBeInTheDocument()
   })
   it("renders layout with endpoint and without search params", () => {
     render(
@@ -106,12 +100,6 @@ describe("<AppIdLayoutView />", () => {
       screen.queryByRole("dialog", { name: /subscription error/i }),
     ).not.toBeInTheDocument()
     expect(screen.getByRole("heading", { name: endpoint.name })).toBeInTheDocument()
-    expect(screen.getByLabelText(/portal id/i)).toBeInTheDocument()
-    expect(screen.getByLabelText(/secret key/i)).toBeInTheDocument()
-    expect(screen.getByLabelText(/public key/i)).toBeInTheDocument()
-    expect(
-      screen.getByRole("heading", { name: t.appAddressCard.heading }),
-    ).toBeInTheDocument()
   })
   it("renders nav routes when planType is paid", () => {
     render(

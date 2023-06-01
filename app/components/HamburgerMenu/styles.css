@@ -10,7 +10,7 @@
   display: block;
 }
 
-@media (min-width: 640px) {
+@media (min-width: 991px) {
   .ham.visible {
     display: none;
   }

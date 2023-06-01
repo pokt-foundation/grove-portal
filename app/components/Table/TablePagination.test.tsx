@@ -1,5 +1,5 @@
 import { Pagination, Group } from "@pokt-foundation/pocket-blocks"
-import { fireEvent, render } from "@testing-library/react"
+import { render } from "@testing-library/react"
 import { MockedFunction } from "vitest"
 import { TablePagination } from "./TablePagination"
 import { userEvent } from "test/helpers"

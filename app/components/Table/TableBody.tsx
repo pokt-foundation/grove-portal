@@ -37,7 +37,10 @@ export const TableBody = ({ paginatedData, rowAsLink, data }: TableBodyProps) =>
         })
       ) : (
         <tr>
-          <td className="empty-search" colSpan={Object.keys(data[0]).length}>
+          <td
+            className="empty-search"
+            colSpan={data?.length && data[0].length ? Object.keys(data[0]).length : 0}
+          >
             <Text align="center">{t.search.emptySearch}</Text>
           </td>
         </tr>

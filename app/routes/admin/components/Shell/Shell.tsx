@@ -80,14 +80,14 @@ export default function Shell({ routes, externalRoutes, children }: ShellProps) 
                     {({ isActive }) => (
                       <NavLink
                         active={isActive}
-                        p={16}
                         label={route.label}
-                        variant="filled"
+                        p={16}
                         sx={(theme) => ({
                           '&[data-active="true"]': {
                             borderRight: `2px solid ${theme.primaryColor}`,
                           },
                         })}
+                        variant="filled"
                       />
                     )}
                   </RemixNavLink>
@@ -101,15 +101,15 @@ export default function Shell({ routes, externalRoutes, children }: ShellProps) 
                 <li key={route.to}>
                   <a href={route.to}>
                     <NavLink
-                      p={16}
                       label={route.label}
-                      variant="filled"
+                      p={16}
+                      rightSection={<IconArrowUpRight height={18} width={18} />}
                       sx={(theme) => ({
                         '&[data-active="true"]': {
                           borderRight: `2px solid ${theme.primaryColor}`,
                         },
                       })}
-                      rightSection={<IconArrowUpRight width={18} height={18} />}
+                      variant="filled"
                     />
                   </a>
                 </li>

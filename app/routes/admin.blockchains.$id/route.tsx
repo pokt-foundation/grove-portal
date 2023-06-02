@@ -44,15 +44,15 @@ export const action: ActionFunction = async ({ request }) => {
 export default function Analytics() {
   const { blockchain } = useLoaderData() as LoaderData
 
-  const [saveGeneral, setSaveGeneral] = useState(false)
+  const [save, setSave] = useState(false)
 
-  const handleChange = (initialValue, changeValue, stateFunction) => {
-    if (initialValue === changeValue) {
-      stateFunction(false)
-    } else {
-      stateFunction(true)
-    }
-  }
+  // const handleChange = (initialValue, changeValue, stateFunction) => {
+  //   if (initialValue === changeValue) {
+  //     stateFunction(false)
+  //   } else {
+  //     stateFunction(true)
+  //   }
+  // }
 
   return (
     <Form method="post">
@@ -76,47 +76,47 @@ export default function Analytics() {
           label="ID"
           mb={16}
           name="id"
-          onChange={(e) =>
-            handleChange(blockchain.id, e.currentTarget.value, setSaveGeneral)
-          }
+          // onChange={(e) =>
+          //   handleChange(blockchain.id, e.currentTarget.value, setSave)
+          // }
         />
         <TextInput
           defaultValue={blockchain.blockchain}
           label="Blockchain"
           mb={16}
           name="blockchain"
-          onChange={(e) =>
-            handleChange(blockchain.blockchain, e.currentTarget.value, setSaveGeneral)
-          }
+          // onChange={(e) =>
+          //   handleChange(blockchain.blockchain, e.currentTarget.value, setSave)
+          // }
         />
         <TextInput
           defaultValue={blockchain.description}
           label="Description"
           mb={16}
           name="description"
-          onChange={(e) =>
-            handleChange(blockchain.description, e.currentTarget.value, setSaveGeneral)
-          }
+          // onChange={(e) =>
+          //   handleChange(blockchain.description, e.currentTarget.value, setSave)
+          // }
         />
         <TextInput
           defaultValue={blockchain.altruist}
           label="Altruist"
           mb={16}
           name="altruist"
-          onChange={(e) =>
-            handleChange(blockchain.altruist, e.currentTarget.value, setSaveGeneral)
-          }
+          // onChange={(e) =>
+          //   handleChange(blockchain.altruist, e.currentTarget.value, setSave)
+          // }
         />
         <TextInput
           defaultValue={blockchain.chainID}
           label="Chain ID"
           mb={16}
           name="chainID"
-          onChange={(e) =>
-            handleChange(blockchain.chainID, e.currentTarget.value, setSaveGeneral)
-          }
+          // onChange={(e) =>
+          //   handleChange(blockchain.chainID, e.currentTarget.value, setSave)
+          // }
         />
-        {saveGeneral && (
+        {save && (
           <Button mt={16} size="sm" type="submit">
             Save
           </Button>

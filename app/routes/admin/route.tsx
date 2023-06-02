@@ -89,7 +89,7 @@ export default function Admin() {
   return (
     <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
       <MantineProvider theme={{ ...portalTheme, primaryColor: "magenta", colorScheme }}>
-        <Shell routes={routes} externalRoutes={externalRoutes}>
+        <Shell externalRoutes={externalRoutes} routes={routes}>
           <Container fluid p={32}>
             <Outlet context={{ setRoutes }} />
           </Container>

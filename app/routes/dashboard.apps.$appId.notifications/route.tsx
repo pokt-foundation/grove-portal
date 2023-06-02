@@ -3,16 +3,13 @@ import { useCatch, useOutletContext } from "@remix-run/react"
 import { useEffect } from "react"
 import invariant from "tiny-invariant"
 import { AppIdOutletContext } from "../dashboard.apps.$appId/route"
-import NotificationsAlertForm, {
-  links as NotificationsAlertFormLinks,
-} from "./components/NotificationsAlertForm/NotificationsAlertForm"
+import NotificationsAlertForm from "./components/NotificationsAlertForm/NotificationsAlertForm"
 import styles from "./styles.css"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { requireUser } from "~/utils/session.server"
 
 export const links: LinksFunction = () => [
-  ...NotificationsAlertFormLinks(),
   {
     rel: "stylesheet",
     href: styles,
@@ -61,7 +58,6 @@ export default function AppNotifications() {
   return (
     <section className="pokt-network-app-notifications">
       <NotificationsAlertForm endpoint={endpoint} />
-      {/* <NotificationsWeeklyBandwidthUsageCard /> */}
     </section>
   )
 }

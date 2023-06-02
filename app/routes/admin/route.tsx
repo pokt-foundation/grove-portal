@@ -71,10 +71,25 @@ export default function Admin() {
     },
   ])
 
+  const [externalRoutes, setExternalRoutes] = useState<Route[]>([
+    {
+      to: "https://stripe.com",
+      label: "Stripe Subscriptions",
+    },
+    {
+      to: "https://pokt-manager.us-east4-1.poktnodes.network:8443",
+      label: "Chain Manager",
+    },
+    {
+      to: "https://altruists.us-east4-1.poktnodes.network:8443",
+      label: "Altruist Manager",
+    },
+  ])
+
   return (
     <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
       <MantineProvider theme={{ ...portalTheme, primaryColor: "magenta", colorScheme }}>
-        <Shell routes={routes}>
+        <Shell routes={routes} externalRoutes={externalRoutes}>
           <Container fluid p={32}>
             <Outlet context={{ setRoutes }} />
           </Container>

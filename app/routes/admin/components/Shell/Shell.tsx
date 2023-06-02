@@ -2,33 +2,36 @@ import {
   useMantineColorScheme,
   AppShell,
   Navbar,
+  NavLink,
   Header,
   Group,
   ActionIcon,
   IconSun,
   IconMoon,
+  IconArrowUpRight,
   Text,
   Burger,
   MediaQuery,
 } from "@pokt-foundation/pocket-blocks"
-import { NavLink, Link } from "@remix-run/react"
+import { NavLink as RemixNavLink, Link } from "@remix-run/react"
 import clsx from "clsx"
 import React, { useState } from "react"
 import { Route } from "../../route"
 
 type ShellProps = {
   routes: Route[]
+  externalRoutes: Route[]
   children: React.ReactNode
 }
 
-export default function Shell({ routes, children }: ShellProps) {
+export default function Shell({ routes, externalRoutes, children }: ShellProps) {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme()
   const [opened, setOpened] = useState(false)
 
   return (
     <AppShell
       header={
-        <Header height={60}>
+        <Header height={80}>
           <Group align="center" position="apart" px={20} sx={{ height: "100%" }}>
             <div>
               <MediaQuery largerThan="md" styles={{ display: "none" }}>
@@ -67,23 +70,48 @@ export default function Shell({ routes, children }: ShellProps) {
         </Header>
       }
       navbar={
-        <Navbar hidden={!opened} hiddenBreakpoint="md" p="xs" width={{ base: 250 }}>
+        <Navbar hidden={!opened} hiddenBreakpoint="md" width={{ base: 280 }}>
           <Navbar.Section grow mt="xs">
             {/* <Link to="">Back</Link> */}
             <ul className="admin-nav">
               {routes.map((route) => (
                 <li key={route.to}>
-                  <NavLink
-                    className={({ isActive }) =>
-                      clsx("nav-link", { "nav-link-active": isActive })
-                    }
-                    end={route.to === ""}
-                    to={route.to}
-                  >
-                    <Text color={colorScheme === "dark" ? "light" : "dark"} m="0">
-                      {route.label}
-                    </Text>
-                  </NavLink>
+                  <RemixNavLink end={route.to === ""} to={route.to}>
+                    {({ isActive }) => (
+                      <NavLink
+                        active={isActive}
+                        p={16}
+                        label={route.label}
+                        variant="filled"
+                        sx={(theme) => ({
+                          '&[data-active="true"]': {
+                            borderRight: `2px solid ${theme.primaryColor}`,
+                          },
+                        })}
+                      />
+                    )}
+                  </RemixNavLink>
+                </li>
+              ))}
+            </ul>
+          </Navbar.Section>
+          <Navbar.Section>
+            <ul className="admin-nav">
+              {externalRoutes.map((route) => (
+                <li key={route.to}>
+                  <a href={route.to}>
+                    <NavLink
+                      p={16}
+                      label={route.label}
+                      variant="filled"
+                      sx={(theme) => ({
+                        '&[data-active="true"]': {
+                          borderRight: `2px solid ${theme.primaryColor}`,
+                        },
+                      })}
+                      rightSection={<IconArrowUpRight width={18} height={18} />}
+                    />
+                  </a>
                 </li>
               ))}
             </ul>
@@ -95,20 +123,18 @@ export default function Shell({ routes, children }: ShellProps) {
       styles={(theme) => ({
         main: {
           backgroundColor:
-            theme.colorScheme === "dark" ? theme.colors.navy[6] : theme.colors.gray[0],
+            theme.colorScheme === "dark" ? theme.colors.navy[7] : theme.colors.gray[2],
         },
         root: {
           header: {
             backgroundColor:
-              theme.colorScheme === "dark" ? theme.colors.navy[5] : theme.colors.gray[1],
-            borderColor:
-              theme.colorScheme === "dark" ? theme.colors.navy[4] : theme.colors.gray[2],
+              theme.colorScheme === "dark" ? theme.colors.navy[6] : theme.colors.gray[3],
+            border: "none",
           },
           nav: {
             backgroundColor:
-              theme.colorScheme === "dark" ? theme.colors.navy[5] : theme.colors.gray[1],
-            borderColor:
-              theme.colorScheme === "dark" ? theme.colors.navy[4] : theme.colors.gray[2],
+              theme.colorScheme === "dark" ? theme.colors.navy[8] : theme.colors.gray[1],
+            border: "none",
           },
         },
       })}

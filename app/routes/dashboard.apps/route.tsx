@@ -1,6 +1,12 @@
 import { Button, Grid } from "@pokt-foundation/pocket-blocks"
 import { json, LoaderFunction } from "@remix-run/node"
-import { Link, Outlet, useLoaderData, useNavigation } from "@remix-run/react"
+import {
+  Link,
+  Outlet,
+  useLoaderData,
+  useNavigation,
+  useOutletContext,
+} from "@remix-run/react"
 import { PocketUser } from "../api.user/route"
 import styles from "./styles.css"
 import FeedbackCard, {

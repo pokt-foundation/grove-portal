@@ -84,6 +84,10 @@ export default function Admin() {
       to: "https://altruists.us-east4-1.poktnodes.network:8443",
       label: "Altruist Manager",
     },
+    {
+      to: "https://support.pokt.network",
+      label: "Support",
+    },
   ])
 
   return (

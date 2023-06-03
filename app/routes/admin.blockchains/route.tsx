@@ -23,10 +23,10 @@ import {
 import clsx from "clsx"
 import { useEffect, useState } from "react"
 import styles from "./styles.css"
-import { getRequiredServerEnvVar } from "~/utils/environment"
 import UsageChartCard, {
   links as UsageChartCardLinks,
 } from "~/components/application/UsageChartCard"
+import { getRequiredServerEnvVar } from "~/utils/environment"
 
 export const links: LinksFunction = () => [
   {
@@ -116,6 +116,7 @@ export default function Analytics() {
         <Title order={1}>Blockchains</Title>
         <Group>
           <Select
+            aria-label="Filter"
             data={[
               {
                 value: "filter",
@@ -136,7 +137,6 @@ export default function Analytics() {
               },
             ]}
             defaultValue={searchParams.get("filter") ?? "filter"}
-            aria-label="Filter"
             placeholder="Filter"
             size="xs"
             onChange={(value) => {
@@ -146,6 +146,7 @@ export default function Analytics() {
           />
 
           <Select
+            aria-label="Sort"
             data={[
               {
                 value: "sort",
@@ -162,7 +163,6 @@ export default function Analytics() {
               },
             ]}
             defaultValue={searchParams.get("sort") ?? "sort"}
-            aria-label="Sort"
             placeholder="Sort"
             size="xs"
             onChange={(value) => {
@@ -176,6 +176,7 @@ export default function Analytics() {
       <UsageChartCard
         detail={
           <Select
+            aria-label="Time Period"
             data={[
               {
                 value: "3",
@@ -191,7 +192,6 @@ export default function Analytics() {
               },
             ]}
             defaultValue={days ?? "7"}
-            aria-label="Time Period"
             placeholder="Time Period"
             size="xs"
             onChange={(value) => {
@@ -226,7 +226,7 @@ export default function Analytics() {
                     <Text m="0">{chain.blockchain}</Text>
                   </Grid.Col>
                   <Grid.Col sm={"content"}>
-                    <Badge variant="outline" color={chain.active ? "magenta" : "gray"}>
+                    <Badge color={chain.active ? "magenta" : "gray"} variant="outline">
                       {chain.active ? "Active" : "Inactive"}
                     </Badge>
                   </Grid.Col>

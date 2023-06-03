@@ -47,6 +47,7 @@ export default function Analytics() {
         <UsageChartCard
           detail={
             <Select
+              aria-label="Time Period"
               data={[
                 {
                   value: "3",
@@ -62,7 +63,6 @@ export default function Analytics() {
                 },
               ]}
               defaultValue={days ?? "7"}
-              aria-label="Time Period"
               placeholder="Time Period"
               size="xs"
               onChange={(value) => {

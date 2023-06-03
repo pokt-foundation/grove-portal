@@ -66,7 +66,7 @@ export default function Analytics() {
       <Box sx={(theme) => ({ marginBottom: theme.spacing.lg })}>
         <Link to="/admin/blockchains">
           <Group>
-            <IconArrowLeft width={18} height={18} />
+            <IconArrowLeft height={18} width={18} />
             <Text m={0}>Back to Blockchains</Text>
           </Group>
         </Link>

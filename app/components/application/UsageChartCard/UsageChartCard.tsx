@@ -3,6 +3,7 @@ import {
   LineChart,
   ParentSize,
   useMantineTheme,
+  Text,
 } from "@pokt-foundation/pocket-blocks"
 import { useMemo } from "react"
 import styles from "./styles.css"
@@ -19,7 +20,7 @@ export const links = () => {
 interface NetworkChardCardProps {
   relays: RelayMetric[]
   title?: string
-  detail?: string
+  detail?: string | React.ReactNode
   emptyLabel?: string
   height?: string
 }
@@ -64,7 +65,7 @@ export default function UsageChartCard({
       <Card>
         <div className="pokt-card-header">
           <h3>{title}</h3>
-          <p>{detail}</p>
+          <Text m={0}>{detail}</Text>
         </div>
         <div className="pokt-chart-wrapper">
           {!hasRelays && emptyLabel && (

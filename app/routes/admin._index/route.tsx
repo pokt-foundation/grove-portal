@@ -41,35 +41,36 @@ export default function Analytics() {
           })}
         >
           <Title order={1}>Dashboard</Title>
-          <Select
-            data={[
-              {
-                value: "3",
-                label: "3 Days",
-              },
-              {
-                value: "7",
-                label: "7 Days",
-              },
-              {
-                value: "30",
-                label: "30 Days",
-              },
-            ]}
-            defaultValue={days ?? "7"}
-            label="Time Period"
-            placeholder="Time Period"
-            size="xs"
-            onChange={(value) => {
-              searchParams.set("days", value as string)
-              setSearchParams(searchParams)
-            }}
-          />
         </Group>
       </Grid.Col>
       <Grid.Col>
         <UsageChartCard
-          detail={`Last ${days ?? 7} days`}
+          detail={
+            <Select
+              data={[
+                {
+                  value: "3",
+                  label: "3 Days",
+                },
+                {
+                  value: "7",
+                  label: "7 Days",
+                },
+                {
+                  value: "30",
+                  label: "30 Days",
+                },
+              ]}
+              defaultValue={days ?? "7"}
+              aria-label="Time Period"
+              placeholder="Time Period"
+              size="xs"
+              onChange={(value) => {
+                searchParams.set("days", value as string)
+                setSearchParams(searchParams)
+              }}
+            />
+          }
           height="400px"
           relays={relays}
           title="Network Relay Count"

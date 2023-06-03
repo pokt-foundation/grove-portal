@@ -8,6 +8,7 @@ import {
   Select,
   Box,
   Anchor,
+  Badge,
 } from "@pokt-foundation/pocket-blocks"
 import { json, LinksFunction, LoaderFunction, redirect } from "@remix-run/node"
 import {
@@ -23,12 +24,16 @@ import clsx from "clsx"
 import { useEffect, useState } from "react"
 import styles from "./styles.css"
 import { getRequiredServerEnvVar } from "~/utils/environment"
+import UsageChartCard, {
+  links as UsageChartCardLinks,
+} from "~/components/application/UsageChartCard"
 
 export const links: LinksFunction = () => [
   {
     rel: "stylesheet",
     href: styles,
   },
+  ...UsageChartCardLinks(),
 ]
 
 export type Blockchain = {
@@ -89,8 +94,8 @@ export const loader: LoaderFunction = async ({ request }) => {
 export default function Analytics() {
   const { blockchains } = useLoaderData() as LoaderData
   const params = useParams()
-  const navigate = useNavigate()
   const [searchParams, setSearchParams] = useSearchParams()
+  const days = searchParams.get("days")
 
   if (params.id) {
     return <Outlet />
@@ -113,6 +118,11 @@ export default function Analytics() {
           <Select
             data={[
               {
+                value: "filter",
+                label: "Filter",
+                disabled: true,
+              },
+              {
                 value: "all",
                 label: "All",
               },
@@ -125,8 +135,8 @@ export default function Analytics() {
                 label: "In-Active",
               },
             ]}
-            defaultValue={searchParams.get("filter") ?? "all"}
-            label="Filter"
+            defaultValue={searchParams.get("filter") ?? "filter"}
+            aria-label="Filter"
             placeholder="Filter"
             size="xs"
             onChange={(value) => {
@@ -138,6 +148,11 @@ export default function Analytics() {
           <Select
             data={[
               {
+                value: "sort",
+                label: "Sort",
+                disabled: true,
+              },
+              {
                 value: "id",
                 label: "ID",
               },
@@ -146,8 +161,8 @@ export default function Analytics() {
                 label: "Blockchain",
               },
             ]}
-            defaultValue={searchParams.get("sort") ?? "id"}
-            label="Sort"
+            defaultValue={searchParams.get("sort") ?? "sort"}
+            aria-label="Sort"
             placeholder="Sort"
             size="xs"
             onChange={(value) => {
@@ -157,6 +172,39 @@ export default function Analytics() {
           />
         </Group>
       </Group>
+
+      <UsageChartCard
+        detail={
+          <Select
+            data={[
+              {
+                value: "3",
+                label: "3 Days",
+              },
+              {
+                value: "7",
+                label: "7 Days",
+              },
+              {
+                value: "30",
+                label: "30 Days",
+              },
+            ]}
+            defaultValue={days ?? "7"}
+            aria-label="Time Period"
+            placeholder="Time Period"
+            size="xs"
+            onChange={(value) => {
+              searchParams.set("days", value as string)
+              setSearchParams(searchParams)
+            }}
+          />
+        }
+        height="200px"
+        relays={[]}
+        title="Blockchain Relay Count"
+      />
+
       <List className="chains-nav">
         {blockchains &&
           blockchains.map((chain) => (
@@ -171,14 +219,16 @@ export default function Analytics() {
                 })}
               >
                 <Grid>
-                  <Grid.Col sm={3}>
+                  <Grid.Col sm={"content"}>
                     <Text m="0">{chain.id}</Text>
                   </Grid.Col>
-                  <Grid.Col sm={3}>
+                  <Grid.Col sm={"auto"}>
                     <Text m="0">{chain.blockchain}</Text>
                   </Grid.Col>
-                  <Grid.Col offsetSm={3} sm={3}>
-                    <Text m="0">{String(chain.active)}</Text>
+                  <Grid.Col sm={"content"}>
+                    <Badge variant="outline" color={chain.active ? "magenta" : "gray"}>
+                      {chain.active ? "Active" : "Inactive"}
+                    </Badge>
                   </Grid.Col>
                 </Grid>
               </Box>

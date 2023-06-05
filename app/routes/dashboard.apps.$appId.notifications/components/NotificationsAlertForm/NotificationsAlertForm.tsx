@@ -14,7 +14,7 @@ import {
   NOTIFICATIONS_ALERT_LEVELS,
   getBackgroundColor,
   getRelaysByPercentage,
-  getUsagePercentage,
+  ALERT_USAGE_PERCENTAGES,
 } from "../../utils/notificationsAlertFormUtils"
 import { AppIdOutletContext } from "~/routes/dashboard.apps.$appId/route"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
@@ -28,8 +28,8 @@ export default function NotificationsAlertForm({
 }: NotificationsAlertFormProps) {
   const navigation = useNavigation()
   const { notificationSettings } = endpoint
-  const [changeHappened, setChangeHappened] = useState(false)
-  const [resetKey, setResetKey] = useState(135813)
+  const [isFormdirty, setIsFormDirty] = useState(false)
+  const [resetKey, setResetKey] = useState(Math.random())
 
   return (
     <Form key={resetKey} method="put">
@@ -38,7 +38,7 @@ export default function NotificationsAlertForm({
           <Flex justify="space-between" w="100%" wrap="wrap">
             <Title order={4}>Email Notifications</Title>
 
-            {changeHappened && (
+            {isFormdirty && (
               <Flex gap="xs">
                 <Button
                   disabled={
@@ -82,7 +82,7 @@ export default function NotificationsAlertForm({
                 />
                 <Flex align="center" gap="xs" justify="space-between" w="100%">
                   <Text>
-                    Notify me at {getUsagePercentage(level)} of (
+                    Notify me at {ALERT_USAGE_PERCENTAGES[level]} of (
                     {getRelaysByPercentage(level).toLocaleString()} Relays)
                   </Text>
                   <Switch
@@ -92,7 +92,7 @@ export default function NotificationsAlertForm({
                         : DEFAULT_ALERT_PERCENTAGES[level]
                     }
                     name={level}
-                    onChange={() => setChangeHappened(true)}
+                    onChange={() => setIsFormDirty(true)}
                   />
                 </Flex>
               </Flex>

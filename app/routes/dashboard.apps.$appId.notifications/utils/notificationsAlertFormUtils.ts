@@ -10,35 +10,29 @@ export const NOTIFICATIONS_ALERT_LEVELS: NotificationLevel[] = [
   "full",
 ]
 
-export const DEFAULT_ALERT_PERCENTAGES = {
+export const DEFAULT_ALERT_PERCENTAGES: Record<NotificationLevel, boolean> = {
   quarter: false,
   half: false,
   threeQuarters: true,
   full: true,
 }
 
-export function getUsagePercentage(usageLevel: string): string {
-  if (usageLevel === "quarter") {
-    return "25%"
-  } else if (usageLevel === "half") {
-    return "50%"
-  } else if (usageLevel === "threeQuarters") {
-    return "75%"
-  } else {
-    return "100%"
-  }
+export const ALERT_USAGE_PERCENTAGES: Record<NotificationLevel, string> = {
+  quarter: "25%",
+  half: "50%",
+  threeQuarters: "75%",
+  full: "100%",
 }
 
-export function getBackgroundColor(usageLevel: string, theme: MantineTheme): string {
-  if (usageLevel === "quarter") {
-    return theme.colors.green[6]
-  } else if (usageLevel === "half") {
-    return theme.colors.yellow[6]
-  } else if (usageLevel === "threeQuarters") {
-    return theme.colors.orange[6]
-  } else {
-    return theme.colors.red[6]
+export function getBackgroundColor(usageLevel: NotificationLevel, theme: MantineTheme) {
+  const colorMapping = {
+    quarter: theme.colors.green[6],
+    half: theme.colors.yellow[6],
+    threeQuarters: theme.colors.orange[6],
+    full: theme.colors.red[6],
   }
+
+  return colorMapping[usageLevel]
 }
 
 export function getRelaysByPercentage(

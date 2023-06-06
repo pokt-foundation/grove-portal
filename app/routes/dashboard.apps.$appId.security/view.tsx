@@ -150,6 +150,8 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             <h3>{t.security.headings.approvedChains}</h3>
             <ChainsDropdown
               chains={blockchains}
+              checkboxData={whitelistBlockchains}
+              endpoint={endpoint}
               onChange={(val: string) => {
                 setWhitelistBlockchains(addIfMissing(val, whitelistBlockchains))
               }}
@@ -281,6 +283,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
           <div className="flexGrowRow">
             <ChainsDropdown
               chains={blockchains}
+              endpoint={endpoint}
               onChange={(val: string) => setWhitelistContractsDropdown(val)}
             />
             <input
@@ -358,6 +361,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
           <div className="flexGrowRow">
             <ChainsDropdown
               chains={blockchains}
+              endpoint={endpoint}
               onChange={(val: string) => setWhitelistMethodsDropdown(val)}
             />
 

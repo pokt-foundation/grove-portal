@@ -1,60 +1,23 @@
-import { Button, Card, Text, Switch } from "@pokt-foundation/pocket-blocks"
-import { LinksFunction } from "@remix-run/node"
+import {
+  Button,
+  Card,
+  Text,
+  Switch,
+  Box,
+  Flex,
+  Title,
+} from "@pokt-foundation/pocket-blocks"
 import { Form, useNavigation } from "@remix-run/react"
-import styles from "./styles.css"
+import { useState } from "react"
+import {
+  DEFAULT_ALERT_PERCENTAGES,
+  NOTIFICATIONS_ALERT_LEVELS,
+  getBackgroundColor,
+  getRelaysByPercentage,
+  ALERT_USAGE_PERCENTAGES,
+} from "../../utils/notificationsAlertFormUtils"
 import { AppIdOutletContext } from "~/routes/dashboard.apps.$appId/route"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
-import { formatNumberToSICompact } from "~/utils/formattingUtils"
-import { FREE_TIER_MAX_RELAYS } from "~/utils/pocketUtils"
-
-/* c8 ignore start */
-export const links: LinksFunction = () => [
-  {
-    rel: "stylesheet",
-    href: styles,
-  },
-]
-/* c8 ignore stop */
-
-type NotificationLevel = "quarter" | "half" | "threeQuarters" | "full"
-
-const NOTIFICATIONS_ALERT_LEVELS: NotificationLevel[] = [
-  "quarter",
-  "half",
-  "threeQuarters",
-  "full",
-]
-
-const DEFAULT_ALERT_PERCENTAGES = {
-  quarter: false,
-  half: false,
-  threeQuarters: true,
-  full: true,
-}
-
-function getUsagePercentage(usageLevel: string): string {
-  if (usageLevel === "quarter") {
-    return "25%"
-  } else if (usageLevel === "half") {
-    return "50%"
-  } else if (usageLevel === "threeQuarters") {
-    return "75%"
-  } else {
-    return "100%"
-  }
-}
-
-function backgroundColor(usageLevel: string): string {
-  if (usageLevel === "quarter") {
-    return "positive"
-  } else if (usageLevel === "half") {
-    return "yellow"
-  } else if (usageLevel === "threeQuarters") {
-    return "warning"
-  } else {
-    return "negative"
-  }
-}
 
 type NotificationsAlertFormProps = {
   endpoint: AppIdOutletContext["endpoint"]
@@ -65,67 +28,83 @@ export default function NotificationsAlertForm({
 }: NotificationsAlertFormProps) {
   const navigation = useNavigation()
   const { notificationSettings } = endpoint
+  const [isFormdirty, setIsFormDirty] = useState(false)
+  const [resetKey, setResetKey] = useState(Math.random())
 
   return (
-    <Form method="put">
-      <section className="pokt-network-notifications-activate-alerts">
+    <Form key={resetKey} method="put">
+      <Box w="100%">
         <Card>
-          <div className="pokt-card-header">
-            <h3>Activate Alerts</h3>
-          </div>
-          <p>
-            Set up usage alerts to be warned when you are approaching your relay limits.
-            We will send an email when your usage crosses the thresholds specified below.
-          </p>
-          <div className="pokt-network-notifications-alerts">
+          <Flex justify="space-between" w="100%" wrap="wrap">
+            <Title order={4}>Email Notifications</Title>
+
+            {isFormdirty && (
+              <Flex gap="xs">
+                <Button
+                  disabled={
+                    navigation.state === "loading" || navigation.state === "submitting"
+                  }
+                  variant="outline"
+                  onClick={() => setResetKey((prev) => prev + 1)}
+                >
+                  Reset
+                </Button>
+                <Button
+                  disabled={
+                    navigation.state === "loading" || navigation.state === "submitting"
+                  }
+                  type="submit"
+                  onClick={() => {
+                    trackEvent(AmplitudeEvents.NotificationSettingsChange)
+                  }}
+                >
+                  {navigation.state === "loading" || navigation.state === "submitting"
+                    ? navigation.state
+                    : "Save Changes"}
+                </Button>
+              </Flex>
+            )}
+          </Flex>
+          <Text>
+            Receive alerts and email notifications when you're nearing or exceeding your
+            usage limits.
+          </Text>
+          <Flex direction="column">
             {NOTIFICATIONS_ALERT_LEVELS.map((level) => (
-              <div key={level} className="pokt-network-notifications-alert">
-                <div
-                  className={`pokt-network-notifications-alert-border pokt-network-notifications-alert-border-${backgroundColor(
-                    level,
-                  )}`}
+              <Flex key={level} align="center" gap="xs">
+                <Box
+                  sx={(theme) => ({
+                    width: "8px",
+                    height: "8px",
+                    borderRadius: "8px",
+                    backgroundColor: getBackgroundColor(level, theme),
+                  })}
                 />
-                <div className="pokt-network-notifications-alert-description">
-                  <p>
-                    {getUsagePercentage(level)} of{" "}
-                    {formatNumberToSICompact(FREE_TIER_MAX_RELAYS)} relays per day
-                  </p>
+                <Flex align="center" gap="xs" justify="space-between" w="100%">
+                  <Text>
+                    Notify me at {ALERT_USAGE_PERCENTAGES[level]} of (
+                    {getRelaysByPercentage(level).toLocaleString()} Relays)
+                  </Text>
                   <Switch
                     defaultChecked={
-                      Object.keys(notificationSettings).length > 0 &&
-                      notificationSettings[level]
+                      Object.keys(notificationSettings).length > 0
                         ? (notificationSettings[level] as boolean)
                         : DEFAULT_ALERT_PERCENTAGES[level]
                     }
                     name={level}
+                    onChange={() => setIsFormDirty(true)}
                   />
-                </div>
-              </div>
+                </Flex>
+              </Flex>
             ))}
-          </div>
-          <div className="pokt-network-notifications-alert-btn-container">
-            <Button
-              className="pokt-network-notifications-submit-btn"
-              disabled={
-                navigation.state === "loading" || navigation.state === "submitting"
-              }
-              type="submit"
-              onClick={() => {
-                trackEvent(AmplitudeEvents.NotificationSettingsChange)
-              }}
-            >
-              {navigation.state === "loading" || navigation.state === "submitting"
-                ? navigation.state
-                : "Save Changes"}
-            </Button>
-          </div>
+          </Flex>
           <Text mt={16} size="xs">
-            The Portal automatically redirects all surplus relays to our backup
-            infrastructure. If you want all relays to be unstoppable, stay under your
-            limit or contact the team to up your stake.
+            To ensure uninterrupted relay service, any surplus relays are automatically
+            redirected to our backup infrastructure. Stay within your limit or reach out
+            to our team to increase your stake for full relay capacity.
           </Text>
         </Card>
-      </section>
+      </Box>
     </Form>
   )
 }

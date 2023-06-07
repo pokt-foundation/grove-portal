@@ -144,8 +144,8 @@ export default function Index() {
     <NetworkView
       blockchains={blockchains}
       dailyNetworkRelays={dailyNetworkRelays}
-      dailyNetworkRelaysPerMonth={dailyNetworkRelaysPerWeek}
       dailyNetworkRelaysPer2Weeks={dailyNetworkRelaysPerWeek}
+      dailyNetworkRelaysPerMonth={dailyNetworkRelaysPerWeek}
       dailyNetworkRelaysPerWeek={dailyNetworkRelaysPerWeek}
       monthlyNetworkRelays={monthlyNetworkRelays}
       poktscanChains={poktscanChains}

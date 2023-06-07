@@ -89,11 +89,13 @@ export default function NetworkView({
             </Grid>
           </section>
           <section>
-            <UsageChartCard relays={[
-              { period: "last30", data: dailyNetworkRelaysPerMonth },
-              { period: "last14", data: dailyNetworkRelaysPer2Weeks },
-              { period: "last7", data: dailyNetworkRelaysPerWeek },
-            ]} />
+            <UsageChartCard
+              relays={[
+                { period: "last30", data: dailyNetworkRelaysPerMonth },
+                { period: "last14", data: dailyNetworkRelaysPer2Weeks },
+                { period: "last7", data: dailyNetworkRelaysPerWeek },
+              ]}
+            />
           </section>
           {blockchains && (
             <section>

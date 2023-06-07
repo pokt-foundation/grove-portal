@@ -50,6 +50,8 @@ export const Application = () => {
     endpoint,
     relaysToday,
     relaysYesterday,
+    dailyNetworkRelaysPer2Weeks,
+    dailyNetworkRelaysPerMonth,
     dailyNetworkRelaysPerWeek,
   } = useOutletContext<AppIdOutletContext>()
   const { t } = useTranslate()
@@ -123,7 +125,11 @@ export const Application = () => {
         <section>
           <UsageChartCard
             emptyLabel="Your application does not have relay data yet."
-            relays={dailyNetworkRelaysPerWeek}
+            relays={[
+              { period: "last30", data: dailyNetworkRelaysPerMonth },
+              { period: "last14", data: dailyNetworkRelaysPer2Weeks },
+              { period: "last7", data: dailyNetworkRelaysPerWeek },
+            ]}
           />
         </section>
       )}

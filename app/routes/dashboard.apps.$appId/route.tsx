@@ -36,6 +36,8 @@ export type AppIdLoaderData = {
   endpoint: EndpointQuery["endpoint"]
   relaysToday: RelayMetric
   relaysYesterday: RelayMetric
+  dailyNetworkRelaysPerMonth: RelayMetric[]
+  dailyNetworkRelaysPer2Weeks: RelayMetric[]
   dailyNetworkRelaysPerWeek: RelayMetric[]
   subscription: Stripe.Subscription | undefined
   user: Auth0Profile
@@ -88,6 +90,16 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   const subscription = await getSubscription(uEmail, endpoint.id, userId)
 
   const dailyNetworkRelaysPerWeek = await getRelaysPerPeriod("endpoints", 7, endpoint.id)
+  const dailyNetworkRelaysPer2Weeks = await getRelaysPerPeriod(
+    "endpoints",
+    14,
+    endpoint.id,
+  )
+  const dailyNetworkRelaysPerMonth = await getRelaysPerPeriod(
+    "endpoints",
+    30,
+    endpoint.id,
+  )
   const { blockchains } = await portal.blockchains({ active: true })
 
   // api auto adjusts to/from to begining and end of each day so putting the same time here gives us back one full day
@@ -99,6 +111,8 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   return json<AppIdLoaderData>({
     blockchains,
     endpoint,
+    dailyNetworkRelaysPerMonth,
+    dailyNetworkRelaysPer2Weeks,
     dailyNetworkRelaysPerWeek,
     relaysToday,
     relaysYesterday,
@@ -117,6 +131,8 @@ export default function AppIdLayout() {
     user,
     relaysToday,
     relaysYesterday,
+    dailyNetworkRelaysPerMonth,
+    dailyNetworkRelaysPer2Weeks,
     dailyNetworkRelaysPerWeek,
   } = useLoaderData() as AppIdLoaderData
   const [searchParams, setSearchParams] = useSearchParams()
@@ -137,6 +153,8 @@ export default function AppIdLayout() {
           endpoint,
           relaysToday,
           relaysYesterday,
+          dailyNetworkRelaysPerMonth,
+          dailyNetworkRelaysPer2Weeks,
           dailyNetworkRelaysPerWeek,
           subscription,
           user,

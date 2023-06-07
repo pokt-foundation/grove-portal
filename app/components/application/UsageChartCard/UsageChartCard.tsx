@@ -2,9 +2,10 @@ import {
   Box,
   LineChart,
   ParentSize,
+  Select,
   useMantineTheme,
 } from "@pokt-foundation/pocket-blocks"
-import { useMemo } from "react"
+import { useEffect, useMemo, useState } from "react"
 import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/Card"
 import { RelayMetric } from "~/models/relaymeter/relaymeter.server"
@@ -16,8 +17,13 @@ export const links = () => {
 }
 /* c8 ignore stop */
 
+interface RelayMetricObject {
+  period: string
+  data: RelayMetric[]
+}
+
 interface NetworkChardCardProps {
-  relays: RelayMetric[]
+  relays: RelayMetricObject[]
   title?: string
   detail?: string
   emptyLabel?: string
@@ -26,13 +32,22 @@ interface NetworkChardCardProps {
 export default function UsageChartCard({
   relays,
   title = "Relay Count",
-  detail = "last 7 Days",
   emptyLabel,
 }: NetworkChardCardProps) {
-  // const theme = useTheme()
+  const [chartPeriod, setChartPeriod] = useState<string | null>("last7")
+  const [currentChartData, setCurrentChartData] = useState<RelayMetricObject>(relays[0])
+  console.log(relays)
+
+  useEffect(() => {
+    if (chartPeriod) {
+      setCurrentChartData(relays.find((r) => r.period === chartPeriod) || relays[0])
+    }
+  }, [chartPeriod])
 
   const hasRelays = useMemo(() => {
-    const r = relays.reduce((prev, curr) => {
+    if (!currentChartData.data || !currentChartData.data?.length) return false
+
+    const r = currentChartData.data.reduce((prev, curr) => {
       return curr.Count.Total + prev
     }, 0)
 
@@ -47,7 +62,7 @@ export default function UsageChartCard({
       color: hasRelays ? theme.colors[theme.primaryColor][6] : "gray",
       dotColor: hasRelays ? theme.colors[theme.primaryColor][3] : "gray",
       data: hasRelays
-        ? relays
+        ? currentChartData.data
             .sort((a, b) => dayjs(a.From).utc().valueOf() - dayjs(b.From).utc().valueOf())
             .map((relay) => ({
               x: dayjs(relay.To).format("MMM DD"),
@@ -62,7 +77,18 @@ export default function UsageChartCard({
       <Card>
         <div className="pokt-card-header">
           <h3>{title}</h3>
-          <p>{detail}</p>
+          <p>
+            <Select
+              data={[
+                { label: "Last 7 Days", value: "last7" },
+                { label: "Last 2 Weeks", value: "last14" },
+                { label: "Last 30 Days", value: "last30" },
+              ]}
+              defaultValue={"last7"}
+              onChange={(value) => setChartPeriod(value)}
+              value={chartPeriod}
+            />
+          </p>
         </div>
         <div className="pokt-chart-wrapper">
           {!hasRelays && emptyLabel && (

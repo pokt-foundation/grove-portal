@@ -18,8 +18,8 @@ describe("<NetworkView />", () => {
       <NetworkView
         blockchains={blockchains}
         dailyNetworkRelays={today}
-        dailyNetworkRelaysPerMonth={relayMetricPerMonth}
         dailyNetworkRelaysPer2Weeks={relayMetricPer2Weeks}
+        dailyNetworkRelaysPerMonth={relayMetricPerMonth}
         dailyNetworkRelaysPerWeek={relayMetricPerWeek}
         monthlyNetworkRelays={month}
         poktscanChains={chainTotals}
@@ -46,8 +46,8 @@ describe("<NetworkView />", () => {
       <NetworkView
         blockchains={null}
         dailyNetworkRelays={today}
-        dailyNetworkRelaysPerMonth={relayMetricPerMonth}
         dailyNetworkRelaysPer2Weeks={relayMetricPer2Weeks}
+        dailyNetworkRelaysPerMonth={relayMetricPerMonth}
         dailyNetworkRelaysPerWeek={relayMetricPerWeek}
         monthlyNetworkRelays={month}
         poktscanChains={chainTotals}
@@ -66,8 +66,8 @@ describe("<NetworkView />", () => {
       <NetworkView
         blockchains={blockchains}
         dailyNetworkRelays={today}
-        dailyNetworkRelaysPerMonth={relayMetricPerMonth}
         dailyNetworkRelaysPer2Weeks={relayMetricPer2Weeks}
+        dailyNetworkRelaysPerMonth={relayMetricPerMonth}
         dailyNetworkRelaysPerWeek={relayMetricPerWeek}
         monthlyNetworkRelays={month}
         poktscanChains={null}

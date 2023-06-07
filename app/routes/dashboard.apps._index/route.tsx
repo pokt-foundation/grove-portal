@@ -3,11 +3,9 @@ import { useLoaderData, useOutletContext, useSearchParams } from "@remix-run/rea
 import { useEffect } from "react"
 import { Auth0Profile } from "remix-auth-auth0"
 import invariant from "tiny-invariant"
-import { AllAppsLoaderData, AllAppsOutletContext } from "../dashboard.apps/route"
+import { AllAppsOutletContext } from "../dashboard.apps/route"
 import AppsView, { links as AppsViewLinks } from "./view"
-import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { EndpointsQuery } from "~/models/portal/sdk"
 import { getRelaysPerPeriod, RelayMetric } from "~/models/relaymeter/relaymeter.server"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { getPoktId, requireUser } from "~/utils/session.server"
@@ -23,7 +21,9 @@ export const meta: MetaFunction = () => {
 }
 
 export type AppsLoaderData = {
-  dailyNetworkRelaysPerWeek: RelayMetric[] | null
+  dailyNetworkRelaysPerMonth: RelayMetric[]
+  dailyNetworkRelaysPer2Weeks: RelayMetric[]
+  dailyNetworkRelaysPerWeek: RelayMetric[]
   userId: string
   profile: Auth0Profile
   // endpoints: EndpointsQuery | null
@@ -40,16 +40,16 @@ export const loader: LoaderFunction = async ({ request, context }) => {
   invariant(user.profile.id && user.profile.emails, "user not found")
   const userId = getPoktId(user.profile.id)
 
-  let dailyNetworkRelaysPerWeek: RelayMetric[] | null = null
-
-  try {
-    dailyNetworkRelaysPerWeek = await getRelaysPerPeriod("users", 7, userId)
-  } catch (e) {}
+  const dailyNetworkRelaysPerMonth = await getRelaysPerPeriod("endpoints", 30, userId)
+  const dailyNetworkRelaysPer2Weeks = await getRelaysPerPeriod("endpoints", 14, userId)
+  const dailyNetworkRelaysPerWeek = await getRelaysPerPeriod("endpoints", 7, userId)
 
   console.log(context)
 
   return json<AppsLoaderData>(
     {
+      dailyNetworkRelaysPerMonth,
+      dailyNetworkRelaysPer2Weeks,
       dailyNetworkRelaysPerWeek,
       userId,
       profile: user.profile,
@@ -116,7 +116,13 @@ export const action: ActionFunction = async ({ request }) => {
 
 export const Apps = () => {
   const { endpoints } = useOutletContext<AllAppsOutletContext>()
-  const { dailyNetworkRelaysPerWeek, userId, profile } = useLoaderData() as AppsLoaderData
+  const {
+    dailyNetworkRelaysPerMonth,
+    dailyNetworkRelaysPer2Weeks,
+    dailyNetworkRelaysPerWeek,
+    userId,
+    profile,
+  } = useLoaderData() as AppsLoaderData
   const [searchParams] = useSearchParams()
 
   useEffect(() => {
@@ -125,6 +131,8 @@ export const Apps = () => {
 
   return (
     <AppsView
+      dailyNetworkRelaysPerMonth={dailyNetworkRelaysPerMonth}
+      dailyNetworkRelaysPer2Weeks={dailyNetworkRelaysPer2Weeks}
       dailyNetworkRelaysPerWeek={dailyNetworkRelaysPerWeek}
       endpoints={endpoints}
       profile={profile}

@@ -2,7 +2,11 @@ import { expect } from "vitest"
 import AppsView from "./view"
 import { render, screen } from "test/helpers"
 import { endpoints, profileMockData } from "~/models/portal/portal.data"
-import { relayMetricPerWeek } from "~/models/relaymeter/relaymeter.data"
+import {
+  relayMetricPer2Weeks,
+  relayMetricPerMonth,
+  relayMetricPerWeek,
+} from "~/models/relaymeter/relaymeter.data"
 
 const userId = "mock"
 const userIdGod = "god"
@@ -11,6 +15,8 @@ describe("<AppsView />", () => {
   it("renders without endpoints", async () => {
     render(
       <AppsView
+        dailyNetworkRelaysPerMonth={relayMetricPerMonth}
+        dailyNetworkRelaysPer2Weeks={relayMetricPer2Weeks}
         dailyNetworkRelaysPerWeek={relayMetricPerWeek}
         endpoints={null}
         profile={profileMockData}
@@ -26,6 +32,8 @@ describe("<AppsView />", () => {
   it("renders without pagination", () => {
     render(
       <AppsView
+        dailyNetworkRelaysPerMonth={relayMetricPerMonth}
+        dailyNetworkRelaysPer2Weeks={relayMetricPer2Weeks}
         dailyNetworkRelaysPerWeek={relayMetricPerWeek}
         endpoints={endpoints}
         profile={profileMockData}
@@ -41,6 +49,8 @@ describe("<AppsView />", () => {
   it("renders with pagination", () => {
     render(
       <AppsView
+        dailyNetworkRelaysPerMonth={relayMetricPerMonth}
+        dailyNetworkRelaysPer2Weeks={relayMetricPer2Weeks}
         dailyNetworkRelaysPerWeek={relayMetricPerWeek}
         endpoints={endpoints}
         profile={profileMockData}
@@ -55,6 +65,8 @@ describe("<AppsView />", () => {
   it("renders error modal", () => {
     render(
       <AppsView
+        dailyNetworkRelaysPerMonth={relayMetricPerMonth}
+        dailyNetworkRelaysPer2Weeks={relayMetricPer2Weeks}
         dailyNetworkRelaysPerWeek={relayMetricPerWeek}
         endpoints={endpoints}
         profile={profileMockData}

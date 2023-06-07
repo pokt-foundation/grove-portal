@@ -36,7 +36,6 @@ export default function UsageChartCard({
 }: NetworkChardCardProps) {
   const [chartPeriod, setChartPeriod] = useState<string | null>("last7")
   const [currentChartData, setCurrentChartData] = useState<RelayMetricObject>(relays[0])
-  console.log(relays)
 
   useEffect(() => {
     if (chartPeriod) {

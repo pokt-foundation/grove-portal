@@ -85,8 +85,8 @@ export default function UsageChartCard({
                 { label: "Last 30 Days", value: "last30" },
               ]}
               defaultValue={"last7"}
-              onChange={(value) => setChartPeriod(value)}
               value={chartPeriod}
+              onChange={(value) => setChartPeriod(value)}
             />
           </p>
         </div>

@@ -87,9 +87,9 @@ const ChainsDropdown = ({
   return isInputShown || !checkboxData ? (
     <div ref={selectRef}>
       <Select
-        allowDeselect={true}
         ref={addNewChainSelectRef}
         searchable
+        allowDeselect={true}
         aria-label="Search Network"
         data={selectChainData}
         icon={<IconSearch fill={theme.colors.blue[5]} height={18} width={18} />}
@@ -118,9 +118,9 @@ const ChainsDropdown = ({
     <Button
       aria-label="Add Network"
       leftIcon={<IconPlus height="18px" width="18px" />}
-      onClick={() => setIsInputShown(true)}
       size="xs"
       variant="outline"
+      onClick={() => setIsInputShown(true)}
     >
       Add Network
     </Button>

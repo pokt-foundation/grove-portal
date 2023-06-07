@@ -27,6 +27,8 @@ export const meta: MetaFunction = () => {
 
 export type NetworkLoaderData = {
   blockchains: Blockchain[] | null
+  dailyNetworkRelaysPerMonth: RelayMetric[]
+  dailyNetworkRelaysPer2Weeks: RelayMetric[]
   dailyNetworkRelaysPerWeek: RelayMetric[]
   dailyNetworkRelays: RelayMetric
   weeklyNetworkRelays: RelayMetric
@@ -69,7 +71,6 @@ export const loader: LoaderFunction = async ({ request }) => {
         console.log(e)
       })) ?? null
 
-  const dailyNetworkRelaysPerWeek = await getRelaysPerPeriod("network", 7)
   // api auto adjusts to/from to begining and end of each day so putting the same time here gives us back one full day
   const today = dayjs().utc().hour(0).minute(0).second(0).millisecond(0).format()
   const week = dayjs()
@@ -91,6 +92,9 @@ export const loader: LoaderFunction = async ({ request }) => {
   const dailyNetworkRelays = await getRelays("network", today, today)
   const weeklyNetworkRelays = await getRelays("network", week, today)
   const monthlyNetworkRelays = await getRelays("network", month, today)
+  const dailyNetworkRelaysPerMonth = await getRelaysPerPeriod("network", 30)
+  const dailyNetworkRelaysPer2Weeks = await getRelaysPerPeriod("network", 14)
+  const dailyNetworkRelaysPerWeek = await getRelaysPerPeriod("network", 7)
 
   return json<NetworkLoaderData>(
     {
@@ -100,6 +104,8 @@ export const loader: LoaderFunction = async ({ request }) => {
           ) as Blockchain[])
         : null,
       // latestBlock,
+      dailyNetworkRelaysPerMonth,
+      dailyNetworkRelaysPer2Weeks,
       dailyNetworkRelaysPerWeek,
       dailyNetworkRelays,
       weeklyNetworkRelays,
@@ -138,6 +144,8 @@ export default function Index() {
     <NetworkView
       blockchains={blockchains}
       dailyNetworkRelays={dailyNetworkRelays}
+      dailyNetworkRelaysPerMonth={dailyNetworkRelaysPerWeek}
+      dailyNetworkRelaysPer2Weeks={dailyNetworkRelaysPerWeek}
       dailyNetworkRelaysPerWeek={dailyNetworkRelaysPerWeek}
       monthlyNetworkRelays={monthlyNetworkRelays}
       poktscanChains={poktscanChains}

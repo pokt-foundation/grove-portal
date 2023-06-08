@@ -131,8 +131,8 @@ export const Apps = () => {
 
   return (
     <AppsView
-      dailyNetworkRelaysPerMonth={dailyNetworkRelaysPerMonth}
       dailyNetworkRelaysPer2Weeks={dailyNetworkRelaysPer2Weeks}
+      dailyNetworkRelaysPerMonth={dailyNetworkRelaysPerMonth}
       dailyNetworkRelaysPerWeek={dailyNetworkRelaysPerWeek}
       endpoints={endpoints}
       profile={profile}

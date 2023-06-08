@@ -15,8 +15,8 @@ describe("<AppsView />", () => {
   it("renders without endpoints", async () => {
     render(
       <AppsView
-        dailyNetworkRelaysPerMonth={relayMetricPerMonth}
         dailyNetworkRelaysPer2Weeks={relayMetricPer2Weeks}
+        dailyNetworkRelaysPerMonth={relayMetricPerMonth}
         dailyNetworkRelaysPerWeek={relayMetricPerWeek}
         endpoints={null}
         profile={profileMockData}
@@ -32,8 +32,8 @@ describe("<AppsView />", () => {
   it("renders without pagination", () => {
     render(
       <AppsView
-        dailyNetworkRelaysPerMonth={relayMetricPerMonth}
         dailyNetworkRelaysPer2Weeks={relayMetricPer2Weeks}
+        dailyNetworkRelaysPerMonth={relayMetricPerMonth}
         dailyNetworkRelaysPerWeek={relayMetricPerWeek}
         endpoints={endpoints}
         profile={profileMockData}
@@ -49,8 +49,8 @@ describe("<AppsView />", () => {
   it("renders with pagination", () => {
     render(
       <AppsView
-        dailyNetworkRelaysPerMonth={relayMetricPerMonth}
         dailyNetworkRelaysPer2Weeks={relayMetricPer2Weeks}
+        dailyNetworkRelaysPerMonth={relayMetricPerMonth}
         dailyNetworkRelaysPerWeek={relayMetricPerWeek}
         endpoints={endpoints}
         profile={profileMockData}
@@ -65,8 +65,8 @@ describe("<AppsView />", () => {
   it("renders error modal", () => {
     render(
       <AppsView
-        dailyNetworkRelaysPerMonth={relayMetricPerMonth}
         dailyNetworkRelaysPer2Weeks={relayMetricPer2Weeks}
+        dailyNetworkRelaysPerMonth={relayMetricPerMonth}
         dailyNetworkRelaysPerWeek={relayMetricPerWeek}
         endpoints={endpoints}
         profile={profileMockData}

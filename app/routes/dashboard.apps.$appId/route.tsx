@@ -89,17 +89,17 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   const uEmail = user?.profile?._json?.email ?? ""
   const subscription = await getSubscription(uEmail, endpoint.id, userId)
 
-  const dailyNetworkRelaysPerWeek = await getRelaysPerPeriod("endpoints", 7, endpoint.id)
-  const dailyNetworkRelaysPer2Weeks = await getRelaysPerPeriod(
-    "endpoints",
-    14,
-    endpoint.id,
-  )
   const dailyNetworkRelaysPerMonth = await getRelaysPerPeriod(
     "endpoints",
     30,
     endpoint.id,
   )
+  const dailyNetworkRelaysPer2Weeks = await getRelaysPerPeriod(
+    "endpoints",
+    14,
+    endpoint.id,
+  )
+  const dailyNetworkRelaysPerWeek = await getRelaysPerPeriod("endpoints", 7, endpoint.id)
   const { blockchains } = await portal.blockchains({ active: true })
 
   // api auto adjusts to/from to begining and end of each day so putting the same time here gives us back one full day

@@ -1,12 +1,3 @@
-import { Button, Grid } from "@pokt-foundation/pocket-blocks"
-import { LinksFunction, MetaFunction } from "@remix-run/node"
-import { Form, useSearchParams } from "@remix-run/react"
-import { useEffect, useState } from "react"
-import styles from "./styles.css"
-import { CallOutBox, links as CallOutBoxLinks } from "~/components/CallOutBox"
-import Modal, { links as ModalLinks } from "~/components/Modal"
-import { useTranslate } from "~/context/TranslateContext"
-import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import {
   PlasmicRootProvider,
   PlasmicComponent,
@@ -15,10 +6,7 @@ import {
 } from "@plasmicapp/loader-react"
 import { json, LoaderFunction, MetaFunction } from "@remix-run/node"
 import { useCatch, useLoaderData } from "@remix-run/react"
-import NotFound404, {
-  seo_404_title,
-  seo_404_description,
-} from "~/components/shared/NotFound404"
+import NotFound404, { seo_404_description, seo_404_title } from "~/components/NotFound404"
 import { PLASMIC } from "~/models/plasmic/plasmic"
 import { seo_title_append } from "~/utils/meta"
 

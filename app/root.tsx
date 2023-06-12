@@ -217,7 +217,7 @@ const Document = ({ children, title }: { children: React.ReactNode; title?: stri
 export default function App() {
   const { ENV, user } = useLoaderData<RootLoaderData>()
   const { t } = useTranslate()
-  let { pathname } = useLocation()
+  const { pathname } = useLocation()
   const isDashboard = useMemo(() => pathname.includes("/dashboard/"), [pathname])
 
   const location = useLocation()
@@ -301,6 +301,11 @@ export default function App() {
             <StylesPlaceholder />
             <Meta />
             <Links />
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `window.ENV = ${JSON.stringify(ENV)};`,
+              }}
+            />
           </head>
           <body>
             <Outlet />

@@ -29,7 +29,7 @@ export const meta: MetaFunction = ({ data }) => {
 export const loader: LoaderFunction = async ({ params }) => {
   try {
     if (typeof params.plasmic !== "string") {
-      throw new Error("Page slug must be a strong")
+      throw new Error("Page slug must be a string")
     }
 
     const plasmicData = await PLASMIC.fetchComponentData(params.plasmic)

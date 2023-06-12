@@ -129,6 +129,10 @@ query endpoint($endpointID: ID!) {
       email
       accepted
     }
+    integrations {
+      covalentAPIKeyFree
+      covalentAPIKeyPaid
+    }
   }
 }
 

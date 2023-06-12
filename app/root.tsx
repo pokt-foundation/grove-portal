@@ -8,6 +8,7 @@ import {
   IconBookOpen,
   IconMail,
   MantineProvider,
+  MantineThemeOverride,
   theme,
 } from "@pokt-foundation/pocket-blocks"
 import { LinksFunction, LoaderFunction, MetaFunction, json } from "@remix-run/node"
@@ -27,10 +28,10 @@ import React, { useEffect, useMemo } from "react"
 import { Auth0Profile } from "remix-auth-auth0"
 import analyticsInit from "./utils/analytics"
 import { authenticator } from "./utils/auth.server"
-import Footer, { links as FooterLinks } from "~/components/shared/Footer"
-import Header, { links as HeaderLinks } from "~/components/shared/Header"
-import { IconApp } from "~/components/shared/Icons"
-import Nav, { links as NavLinks } from "~/components/shared/Nav"
+import Footer, { links as FooterLinks } from "~/components/Footer"
+import Header, { links as HeaderLinks } from "~/components/Header"
+import { IconApp } from "~/components/Icons"
+import Nav, { links as NavLinks } from "~/components/Nav"
 import { FeatureFlagsContextProvider } from "~/context/FeatureFlagContext"
 import { TranslateContextProvider, useTranslate } from "~/context/TranslateContext"
 import { UserContextProvider } from "~/context/UserContext"
@@ -80,84 +81,85 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 createEmotionCache({ key: "pni" })
 
+export const portalTheme: MantineThemeOverride = {
+  ...theme,
+  primaryColor: "blue",
+  components: {
+    ...theme.components,
+    Paper: {
+      styles: {
+        root: {
+          overflow: "visible !important",
+        },
+      },
+    },
+    Card: {
+      styles: (theme) => ({
+        root: {
+          padding: "32px",
+          backgroundColor:
+            theme.colorScheme === "dark" ? theme.colors.navy[5] : theme.colors.gray[1],
+        },
+      }),
+    },
+    Tabs: {
+      styles: (theme) => ({
+        tabsList: {
+          borderBottom: "2px solid transparent",
+          marginBottom: theme.spacing.md,
+        },
+        tab: {
+          paddingRight: theme.spacing.xs,
+          paddingLeft: theme.spacing.xs,
+          transition: "border-color ease-in-out 0.3s, color ease-in-out 0.3s",
+          "&[data-active]": {
+            borderColor: theme.colors[theme.primaryColor][6],
+          },
+          "&:hover": {
+            backgroundColor: "transparent",
+            borderColor: "transparent",
+            color: theme.colors[theme.primaryColor][8],
+          },
+          "&[data-active]:hover": {
+            borderColor: theme.colors[theme.primaryColor][8],
+          },
+          "&:not(:last-child)": {
+            marginRight: theme.spacing.md,
+          },
+        },
+      }),
+    },
+    TextInput: {
+      styles: {
+        input: {
+          backgroundColor: "transparent",
+        },
+      },
+    },
+    Textarea: {
+      styles: {
+        input: {
+          backgroundColor: "transparent",
+        },
+      },
+    },
+    MultiSelect: {
+      styles: {
+        input: {
+          backgroundColor: "transparent",
+        },
+      },
+    },
+  },
+}
+
 const WithProviders = ({ children }: { children: React.ReactNode }) => {
   return (
     <MantineProvider
       withCSSVariables
       withGlobalStyles
       withNormalizeCSS
-      theme={{
-        ...theme,
-        primaryColor: "blue",
-        components: {
-          ...theme.components,
-          Paper: {
-            styles: {
-              root: {
-                overflow: "visible !important",
-              },
-            },
-          },
-          Card: {
-            styles: (theme) => ({
-              root: {
-                backgroundColor:
-                  theme.colorScheme === "dark"
-                    ? theme.colors.navy[5]
-                    : theme.colors.gray[1],
-              },
-            }),
-          },
-          Tabs: {
-            styles: (theme) => ({
-              tabsList: {
-                borderBottom: "2px solid transparent",
-                marginBottom: theme.spacing.md,
-              },
-              tab: {
-                paddingRight: theme.spacing.xs,
-                paddingLeft: theme.spacing.xs,
-                transition: "border-color ease-in-out 0.3s, color ease-in-out 0.3s",
-                "&[data-active]": {
-                  borderColor: theme.colors[theme.primaryColor][6],
-                },
-                "&:hover": {
-                  backgroundColor: "transparent",
-                  borderColor: "transparent",
-                  color: theme.colors[theme.primaryColor][8],
-                },
-                "&[data-active]:hover": {
-                  borderColor: theme.colors[theme.primaryColor][8],
-                },
-                "&:not(:last-child)": {
-                  marginRight: theme.spacing.md,
-                },
-              },
-            }),
-          },
-          TextInput: {
-            styles: {
-              input: {
-                backgroundColor: "transparent",
-              },
-            },
-          },
-          Textarea: {
-            styles: {
-              input: {
-                backgroundColor: "transparent",
-              },
-            },
-          },
-          MultiSelect: {
-            styles: {
-              input: {
-                backgroundColor: "transparent",
-              },
-            },
-          },
-        },
-      }}
+      theme={portalTheme}
     >
       <FeatureFlagsContextProvider>
         <UserContextProvider>
@@ -218,6 +220,8 @@ export default function App() {
   let { pathname } = useLocation()
   const isDashboard = useMemo(() => pathname.includes("/dashboard/"), [pathname])
 
+  const location = useLocation()
+
   useEffect(() => {
     analyticsInit({ id: user?.id ?? "" })
   }, [user])
@@ -238,7 +242,7 @@ export default function App() {
         protected: Protected.Public, // show this link to all. dashboard layout handles redirect to login.
       },
       {
-        to: "https://docs.pokt.network",
+        to: "https://docs.pokt.network/",
         external: true,
         label: t.dashboard.routes.docs,
         icon: IconBookOpen,
@@ -271,7 +275,15 @@ export default function App() {
               <Nav ariaLabel="Main" routes={routes} />
             </Header>
             <main>
-              <Container className="container" size="lg">
+              <Container
+            className="container"
+            maw={location.pathname.includes("/docs") ? "100%" : "1140px"}
+            ml={location.pathname.includes("/docs") ? "0" : "auto"}
+            mr={location.pathname.includes("/docs") ? "0" : "auto"}
+            pl={location.pathname.includes("/docs") ? "0" : "16px"}
+            pr={location.pathname.includes("/docs") ? "0" : "16px"}
+            size="lg"
+          >
                 <Outlet />
               </Container>
             </main>

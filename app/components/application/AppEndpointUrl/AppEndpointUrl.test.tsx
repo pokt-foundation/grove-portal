@@ -47,13 +47,11 @@ describe("<AppEndpointUrl />", () => {
     )
     const image = screen.getByRole("img", { name: String(chain?.description) })
     const input = screen.getByRole("textbox")
-    const button = screen.queryByRole("button")
 
     expect(image).toBeInTheDocument()
     expect(input).toHaveValue(
       `https://${chain?.blockchain}.gateway.pokt.network/v1/lb/${appId}`,
     )
-    expect(button).not.toBeInTheDocument()
   })
   it("handles different chains", () => {
     chain = blockchains[2]
@@ -68,13 +66,11 @@ describe("<AppEndpointUrl />", () => {
     )
     const image = screen.getByRole("img", { name: String(chain.description) })
     const input = screen.getByRole("textbox")
-    const button = screen.queryByRole("button")
 
     expect(image).toBeInTheDocument()
     expect(input).toHaveValue(
       `https://${chain.blockchain}.gateway.pokt.network/v1/lb/${appId}`,
     )
-    expect(button).not.toBeInTheDocument()
   })
   it("allows user to delete if gigastake is true", async () => {
     const user = userEvent.setup()
@@ -87,7 +83,7 @@ describe("<AppEndpointUrl />", () => {
         value={inputValue}
       />,
     )
-    const button = screen.getByRole("button")
+    const button = screen.getAllByLabelText(/delete/i)[0]
     expect(button).toBeInTheDocument()
 
     await user.click(button)

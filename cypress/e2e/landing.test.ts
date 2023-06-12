@@ -21,7 +21,7 @@ describe("landing page tests", () => {
     cy.findByRole("banner")
       .findByRole("navigation")
       .findByRole("link", { name: /docs/i })
-      .should("have.attr", "href", "https://docs.pokt.network")
+      .should("have.attr", "href", "https://docs.pokt.network/")
 
     // should find 'about pocket' in navigation
     cy.findByRole("contentinfo")
@@ -45,6 +45,6 @@ describe("landing page tests", () => {
     cy.findByRole("contentinfo")
       .findByRole("navigation")
       .findByRole("link", { name: /discord/i })
-      .should("have.attr", "href", "https://discord.gg/pokt")
+      .should("have.attr", "href", "https://discord.gg/portal-rpc")
   })
 })

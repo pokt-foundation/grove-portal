@@ -11,7 +11,6 @@ import {
   useMantineTheme,
 } from "@pokt-foundation/pocket-blocks"
 import { forwardRef, useMemo, useState } from "react"
-import { useUser } from "~/context/UserContext"
 import { BlockchainsQuery, EndpointQuery } from "~/models/portal/sdk"
 
 const CheckboxItem = forwardRef<
@@ -54,7 +53,6 @@ const ChainsDropdown = ({
 }) => {
   const [isInputShown, setIsInputShown] = useState(false)
   const theme = useMantineTheme()
-  const user = useUser()
   const selectRef = useClickOutside(() => setIsInputShown(false))
 
   const selectChainData = useMemo(() => {

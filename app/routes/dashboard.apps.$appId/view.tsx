@@ -83,6 +83,10 @@ export default function AppIdLayoutView({
       to: "team",
       label: t.appId.routes.team,
     },
+    {
+      to: "settings",
+      label: t.appId.routes.settings,
+    },
   ])
 
   useEffect(() => {

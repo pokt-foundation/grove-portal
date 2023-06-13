@@ -180,6 +180,7 @@ const schema = {
       notifications: "Notifications -fr",
       plan: "Plan Details -fr",
       team: "Team -fr",
+      settings: "Settings -fr",
     },
   },
   AppRequestsByOriginCard: {

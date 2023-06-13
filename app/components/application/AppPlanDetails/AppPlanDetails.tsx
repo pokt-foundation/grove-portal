@@ -38,7 +38,7 @@ export default function AppPlanDetails({
 
   return (
     <div className="pokt-app-plan-details">
-      <Card>
+      <Card bg="navy">
         <div className="pokt-card-header">
           <h3>Plan</h3>
           {subscription && subscription.cancel_at_period_end && (

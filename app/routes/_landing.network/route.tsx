@@ -1,4 +1,4 @@
-import { LoaderFunction, json, MetaFunction } from "@remix-run/node"
+import { LoaderFunction, json, MetaFunction, ActionFunction } from "@remix-run/node"
 import { useLoaderData, useNavigation } from "@remix-run/react"
 import { useEffect } from "react"
 import NetworkView, { links as NetworkViewLinks } from "./view"
@@ -27,9 +27,7 @@ export const meta: MetaFunction = () => {
 
 export type NetworkLoaderData = {
   blockchains: Blockchain[] | null
-  dailyNetworkRelaysPerMonth: RelayMetric[]
-  dailyNetworkRelaysPer2Weeks: RelayMetric[]
-  dailyNetworkRelaysPerWeek: RelayMetric[]
+  dailyNetworkRelaysPerPeriod: RelayMetric[]
   dailyNetworkRelays: RelayMetric
   weeklyNetworkRelays: RelayMetric
   monthlyNetworkRelays: RelayMetric
@@ -42,6 +40,8 @@ export const loader: LoaderFunction = async ({ request }) => {
   const blockchainResponse = await portal.blockchains({ active: true }).catch((e) => {
     console.log(e)
   })
+  const url = new URL(request.url)
+  const days = url.searchParams.get("days")
 
   const poktscan = initPoktScanClient()
   const poktscanLatestBlock =
@@ -92,9 +92,10 @@ export const loader: LoaderFunction = async ({ request }) => {
   const dailyNetworkRelays = await getRelays("network", today, today)
   const weeklyNetworkRelays = await getRelays("network", week, today)
   const monthlyNetworkRelays = await getRelays("network", month, today)
-  const dailyNetworkRelaysPerMonth = await getRelaysPerPeriod("network", 30)
-  const dailyNetworkRelaysPer2Weeks = await getRelaysPerPeriod("network", 14)
-  const dailyNetworkRelaysPerWeek = await getRelaysPerPeriod("network", 7)
+  const dailyNetworkRelaysPerPeriod = await getRelaysPerPeriod(
+    "network",
+    days ? Number(days) : 7,
+  )
 
   return json<NetworkLoaderData>(
     {
@@ -104,9 +105,7 @@ export const loader: LoaderFunction = async ({ request }) => {
           ) as Blockchain[])
         : null,
       // latestBlock,
-      dailyNetworkRelaysPerMonth,
-      dailyNetworkRelaysPer2Weeks,
-      dailyNetworkRelaysPerWeek,
+      dailyNetworkRelaysPerPeriod,
       dailyNetworkRelays,
       weeklyNetworkRelays,
       monthlyNetworkRelays,
@@ -126,7 +125,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 export default function Index() {
   const {
     blockchains,
-    dailyNetworkRelaysPerWeek,
+    dailyNetworkRelaysPerPeriod,
     dailyNetworkRelays,
     monthlyNetworkRelays,
     weeklyNetworkRelays,
@@ -144,9 +143,7 @@ export default function Index() {
     <NetworkView
       blockchains={blockchains}
       dailyNetworkRelays={dailyNetworkRelays}
-      dailyNetworkRelaysPer2Weeks={dailyNetworkRelaysPerWeek}
-      dailyNetworkRelaysPerMonth={dailyNetworkRelaysPerWeek}
-      dailyNetworkRelaysPerWeek={dailyNetworkRelaysPerWeek}
+      dailyNetworkRelaysPerPeriod={dailyNetworkRelaysPerPeriod}
       monthlyNetworkRelays={monthlyNetworkRelays}
       poktscanChains={poktscanChains}
       poktscanLatestBlock={poktscanLatestBlock}

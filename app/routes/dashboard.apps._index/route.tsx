@@ -21,9 +21,7 @@ export const meta: MetaFunction = () => {
 }
 
 export type AppsLoaderData = {
-  dailyNetworkRelaysPerMonth: RelayMetric[]
-  dailyNetworkRelaysPer2Weeks: RelayMetric[]
-  dailyNetworkRelaysPerWeek: RelayMetric[]
+  dailyNetworkRelaysPerPeriod: RelayMetric[]
   userId: string
   profile: Auth0Profile
   // endpoints: EndpointsQuery | null
@@ -39,21 +37,20 @@ export const loader: LoaderFunction = async ({ request, context }) => {
   const user = await requireUser(request)
   invariant(user.profile.id && user.profile.emails, "user not found")
   const userId = getPoktId(user.profile.id)
+  const url = new URL(request.url)
+  const days = url.searchParams.get("days")
 
-  const dailyNetworkRelaysPerMonth = await getRelaysPerPeriod("endpoints", 30, userId)
-  const dailyNetworkRelaysPer2Weeks = await getRelaysPerPeriod("endpoints", 14, userId)
-  const dailyNetworkRelaysPerWeek = await getRelaysPerPeriod("endpoints", 7, userId)
-
-  console.log(context)
+  const dailyNetworkRelaysPerPeriod = await getRelaysPerPeriod(
+    "endpoints",
+    days ? Number(days) : 7,
+    userId,
+  )
 
   return json<AppsLoaderData>(
     {
-      dailyNetworkRelaysPerMonth,
-      dailyNetworkRelaysPer2Weeks,
-      dailyNetworkRelaysPerWeek,
+      dailyNetworkRelaysPerPeriod,
       userId,
       profile: user.profile,
-      // endpoints: context.endpoints
     },
     {
       headers: {
@@ -116,13 +113,8 @@ export const action: ActionFunction = async ({ request }) => {
 
 export const Apps = () => {
   const { endpoints } = useOutletContext<AllAppsOutletContext>()
-  const {
-    dailyNetworkRelaysPerMonth,
-    dailyNetworkRelaysPer2Weeks,
-    dailyNetworkRelaysPerWeek,
-    userId,
-    profile,
-  } = useLoaderData() as AppsLoaderData
+  const { dailyNetworkRelaysPerPeriod, userId, profile } =
+    useLoaderData() as AppsLoaderData
   const [searchParams] = useSearchParams()
 
   useEffect(() => {
@@ -131,9 +123,7 @@ export const Apps = () => {
 
   return (
     <AppsView
-      dailyNetworkRelaysPer2Weeks={dailyNetworkRelaysPer2Weeks}
-      dailyNetworkRelaysPerMonth={dailyNetworkRelaysPerMonth}
-      dailyNetworkRelaysPerWeek={dailyNetworkRelaysPerWeek}
+      dailyNetworkRelaysPerPeriod={dailyNetworkRelaysPerPeriod}
       endpoints={endpoints}
       profile={profile}
       searchParams={searchParams}

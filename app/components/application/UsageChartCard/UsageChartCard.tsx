@@ -5,11 +5,12 @@ import {
   Select,
   useMantineTheme,
 } from "@pokt-foundation/pocket-blocks"
-import { useEffect, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/Card"
 import { RelayMetric } from "~/models/relaymeter/relaymeter.server"
 import { dayjs } from "~/utils/dayjs"
+import { useSearchParams } from "@remix-run/react"
 
 /* c8 ignore start */
 export const links = () => {
@@ -17,13 +18,8 @@ export const links = () => {
 }
 /* c8 ignore stop */
 
-interface RelayMetricObject {
-  period: string
-  data: RelayMetric[]
-}
-
 interface NetworkChardCardProps {
-  relays: RelayMetricObject[]
+  relays: RelayMetric[]
   title?: string
   detail?: string
   emptyLabel?: string
@@ -34,18 +30,12 @@ export default function UsageChartCard({
   title = "Relay Count",
   emptyLabel,
 }: NetworkChardCardProps) {
-  const [chartPeriod, setChartPeriod] = useState<string | null>("last7")
-  const [currentChartData, setCurrentChartData] = useState<RelayMetricObject>(relays[0])
-
-  useEffect(() => {
-    if (chartPeriod) {
-      setCurrentChartData(relays.find((r) => r.period === chartPeriod) || relays[0])
-    }
-  }, [chartPeriod, relays])
+  const [searchParams, setSearchParams] = useSearchParams()
+  const days = searchParams.get("days")
 
   const hasRelays = useMemo(
-    () => currentChartData.data?.reduce((prev, curr) => prev + curr.Count.Total, 0) > 0,
-    [relays, currentChartData],
+    () => relays?.reduce((prev, curr) => prev + curr.Count.Total, 0) > 0,
+    [relays, relays],
   )
 
   const theme = useMantineTheme()
@@ -56,7 +46,7 @@ export default function UsageChartCard({
       color: hasRelays ? theme.colors[theme.primaryColor][6] : "gray",
       dotColor: hasRelays ? theme.colors[theme.primaryColor][3] : "gray",
       data: hasRelays
-        ? currentChartData.data
+        ? relays
             .sort((a, b) => dayjs(a.From).utc().valueOf() - dayjs(b.From).utc().valueOf())
             .map((relay) => ({
               x: dayjs(relay.To).format("MMM DD"),
@@ -74,13 +64,15 @@ export default function UsageChartCard({
           <p>
             <Select
               data={[
-                { label: "Last 7 Days", value: "last7" },
-                { label: "Last 2 Weeks", value: "last14" },
-                { label: "Last 30 Days", value: "last30" },
+                { label: "Last 7 Days", value: "7" },
+                { label: "Last 2 Weeks", value: "14" },
+                { label: "Last 30 Days", value: "30" },
               ]}
-              defaultValue={"last7"}
-              value={chartPeriod}
-              onChange={(value) => setChartPeriod(value)}
+              defaultValue={days ? String(days) : "7"}
+              onChange={(value) => {
+                searchParams.set("days", String(value))
+                setSearchParams(searchParams)
+              }}
             />
           </p>
         </div>

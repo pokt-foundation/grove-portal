@@ -44,9 +44,7 @@ type NetworkViewProps = NetworkLoaderData & {
 export default function NetworkView({
   blockchains,
   dailyNetworkRelays,
-  dailyNetworkRelaysPerMonth,
-  dailyNetworkRelaysPer2Weeks,
-  dailyNetworkRelaysPerWeek,
+  dailyNetworkRelaysPerPeriod,
   monthlyNetworkRelays,
   poktscanLatestBlock,
   poktscanChains,
@@ -90,11 +88,8 @@ export default function NetworkView({
           </section>
           <section>
             <UsageChartCard
-              relays={[
-                { period: "last30", data: dailyNetworkRelaysPerMonth },
-                { period: "last14", data: dailyNetworkRelaysPer2Weeks },
-                { period: "last7", data: dailyNetworkRelaysPerWeek },
-              ]}
+              relays={dailyNetworkRelaysPerPeriod}
+              emptyLabel="No relay data for the selected period."
             />
           </section>
           {blockchains && (

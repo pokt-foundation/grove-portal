@@ -53,18 +53,14 @@ export const links = () => {
 type AppsViewProps = {
   userId: string
   endpoints: EndpointsQuery | null
-  dailyNetworkRelaysPerMonth: RelayMetric[]
-  dailyNetworkRelaysPer2Weeks: RelayMetric[]
-  dailyNetworkRelaysPerWeek: RelayMetric[]
+  dailyNetworkRelaysPerPeriod: RelayMetric[]
   searchParams: URLSearchParams
   profile: Auth0Profile
 }
 
 export const AppsView = ({
   endpoints,
-  dailyNetworkRelaysPerMonth,
-  dailyNetworkRelaysPer2Weeks,
-  dailyNetworkRelaysPerWeek,
+  dailyNetworkRelaysPerPeriod,
   searchParams,
   userId,
   profile,
@@ -436,15 +432,11 @@ export const AppsView = ({
           </Tabs>
         </Card>
       </section>
-      {dailyNetworkRelaysPerWeek && (
+      {dailyNetworkRelaysPerPeriod && (
         <section>
           <UsageChartCard
             emptyLabel="Your applications do not have relay data yet."
-            relays={[
-              { period: "last30", data: dailyNetworkRelaysPerMonth },
-              { period: "last14", data: dailyNetworkRelaysPer2Weeks },
-              { period: "last7", data: dailyNetworkRelaysPerWeek },
-            ]}
+            relays={dailyNetworkRelaysPerPeriod}
             title="Total User Relay Counts"
           />
         </section>

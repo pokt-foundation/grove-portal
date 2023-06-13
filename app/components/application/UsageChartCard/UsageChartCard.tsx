@@ -41,17 +41,12 @@ export default function UsageChartCard({
     if (chartPeriod) {
       setCurrentChartData(relays.find((r) => r.period === chartPeriod) || relays[0])
     }
-  }, [chartPeriod])
+  }, [chartPeriod, relays])
 
-  const hasRelays = useMemo(() => {
-    if (!currentChartData.data || !currentChartData.data?.length) return false
-
-    const r = currentChartData.data.reduce((prev, curr) => {
-      return curr.Count.Total + prev
-    }, 0)
-
-    return r > 0
-  }, [relays])
+  const hasRelays = useMemo(
+    () => currentChartData.data?.reduce((prev, curr) => prev + curr.Count.Total, 0) > 0,
+    [relays, currentChartData],
+  )
 
   const theme = useMantineTheme()
   const groups = [

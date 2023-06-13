@@ -1,3 +1,4 @@
+import { useClickOutside } from "@mantine/hooks"
 import {
   Button,
   Checkbox,
@@ -9,7 +10,7 @@ import {
   Text,
   useMantineTheme,
 } from "@pokt-foundation/pocket-blocks"
-import { forwardRef, useEffect, useMemo, useRef, useState } from "react"
+import { forwardRef, useMemo, useState } from "react"
 import { useUser } from "~/context/UserContext"
 import { BlockchainsQuery, EndpointQuery } from "~/models/portal/sdk"
 
@@ -53,22 +54,8 @@ const ChainsDropdown = ({
 }) => {
   const [isInputShown, setIsInputShown] = useState(false)
   const theme = useMantineTheme()
-  const selectRef = useRef<HTMLDivElement>(null)
-  const addNewChainSelectRef = useRef<HTMLInputElement>(null)
   const user = useUser()
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (selectRef.current && !selectRef.current.contains(event.target as Node)) {
-        setIsInputShown(false)
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside)
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
-    }
-  }, [])
+  const selectRef = useClickOutside(() => setIsInputShown(false))
 
   const selectChainData = useMemo(() => {
     return chains
@@ -82,12 +69,11 @@ const ChainsDropdown = ({
           false,
       }))
       .sort((a, b) => a.label.localeCompare(b.label))
-  }, [chains, user, endpoint])
+  }, [chains, checkboxData, endpoint, user])
 
   return isInputShown || !checkboxData ? (
     <div ref={selectRef}>
       <Select
-        ref={addNewChainSelectRef}
         searchable
         allowDeselect={true}
         aria-label="Search Network"
@@ -99,7 +85,7 @@ const ChainsDropdown = ({
         size="xs"
         sx={(theme: MantineTheme) => ({
           ".mantine-Select-dropdown": {
-            backgroundColor: theme.colors.navy ? theme.colors.navy[6] : "black",
+            backgroundColor: theme.colors.navy[6],
           },
           ".mantine-Select-input": {
             backgroundColor: "transparent",

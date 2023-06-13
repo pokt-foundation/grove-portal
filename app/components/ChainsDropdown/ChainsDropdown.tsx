@@ -69,7 +69,7 @@ const ChainsDropdown = ({
           false,
       }))
       .sort((a, b) => a.label.localeCompare(b.label))
-  }, [chains, checkboxData, endpoint, user])
+  }, [chains, checkboxData])
 
   return isInputShown || !checkboxData ? (
     <div ref={selectRef}>

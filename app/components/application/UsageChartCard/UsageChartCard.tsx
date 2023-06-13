@@ -6,7 +6,7 @@ import {
   useMantineTheme,
 } from "@pokt-foundation/pocket-blocks"
 import { useSearchParams } from "@remix-run/react"
-import { useMemo, useState } from "react"
+import { useMemo } from "react"
 import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/Card"
 import { RelayMetric } from "~/models/relaymeter/relaymeter.server"
@@ -35,7 +35,7 @@ export default function UsageChartCard({
 
   const hasRelays = useMemo(
     () => relays?.reduce((prev, curr) => prev + curr.Count.Total, 0) > 0,
-    [relays, relays],
+    [relays],
   )
 
   const theme = useMantineTheme()

@@ -127,7 +127,7 @@ export const AppsView = ({
         setPendingEndpoints(endpoints.pending)
       }
     }
-  }, [endpoints])
+  }, [endpoints, uEmail])
 
   useEffect(() => {
     if (pendingEndpoints && pendingEndpoints.length > 0) {

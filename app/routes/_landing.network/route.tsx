@@ -1,4 +1,4 @@
-import { LoaderFunction, json, MetaFunction, ActionFunction } from "@remix-run/node"
+import { LoaderFunction, json, MetaFunction } from "@remix-run/node"
 import { useLoaderData, useNavigation } from "@remix-run/react"
 import { useEffect } from "react"
 import NetworkView, { links as NetworkViewLinks } from "./view"

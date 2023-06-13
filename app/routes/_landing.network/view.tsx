@@ -88,8 +88,8 @@ export default function NetworkView({
           </section>
           <section>
             <UsageChartCard
-              relays={dailyNetworkRelaysPerPeriod}
               emptyLabel="No relay data for the selected period."
+              relays={dailyNetworkRelaysPerPeriod}
             />
           </section>
           {blockchains && (

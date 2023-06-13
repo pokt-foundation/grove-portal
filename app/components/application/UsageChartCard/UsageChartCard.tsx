@@ -5,12 +5,12 @@ import {
   Select,
   useMantineTheme,
 } from "@pokt-foundation/pocket-blocks"
+import { useSearchParams } from "@remix-run/react"
 import { useMemo, useState } from "react"
 import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/Card"
 import { RelayMetric } from "~/models/relaymeter/relaymeter.server"
 import { dayjs } from "~/utils/dayjs"
-import { useSearchParams } from "@remix-run/react"
 
 /* c8 ignore start */
 export const links = () => {

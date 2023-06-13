@@ -41,7 +41,7 @@ export const loader: LoaderFunction = async ({ request, context }) => {
   const days = url.searchParams.get("days")
 
   const dailyNetworkRelaysPerPeriod = await getRelaysPerPeriod(
-    "endpoints",
+    "users",
     days ? Number(days) : 7,
     userId,
   )

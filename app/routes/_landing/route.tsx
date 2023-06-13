@@ -1,24 +1,7 @@
-import { Container } from "@pokt-foundation/pocket-blocks"
-import { LinksFunction } from "@remix-run/node"
-import { Outlet, useCatch, useLocation } from "@remix-run/react"
-import { useMemo } from "react"
-import styles from "./styles.css"
-
-export const links: LinksFunction = () => {
-  return [{ rel: "stylesheet", href: styles }]
-}
+import { Outlet, useCatch } from "@remix-run/react"
 
 export default function Landing() {
-  const { pathname } = useLocation()
-  const isDashboard = useMemo(() => pathname.includes("/dashboard/"), [pathname])
-
-  return isDashboard ? (
-    <Container fluid className="container">
-      <Outlet />
-    </Container>
-  ) : (
-    <Outlet />
-  )
+  return <Outlet />
 }
 
 export const CatchBoundary = () => {

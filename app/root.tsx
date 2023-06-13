@@ -2,7 +2,6 @@ import { StylesPlaceholder } from "@mantine/remix"
 import {
   Alert,
   Center,
-  Container,
   createEmotionCache,
   Global,
   IconBookOpen,
@@ -219,9 +218,6 @@ export default function App() {
   const { t } = useTranslate()
   const { pathname } = useLocation()
   const isDashboard = useMemo(() => pathname.includes("/dashboard/"), [pathname])
-
-  const location = useLocation()
-
   useEffect(() => {
     analyticsInit({ id: user?.id ?? "" })
   }, [user])
@@ -275,17 +271,8 @@ export default function App() {
               <Nav ariaLabel="Main" routes={routes} />
             </Header>
             <main>
-              <Container
-                className="container"
-                maw={location.pathname.includes("/docs") ? "100%" : "1140px"}
-                ml={location.pathname.includes("/docs") ? "0" : "auto"}
-                mr={location.pathname.includes("/docs") ? "0" : "auto"}
-                pl={location.pathname.includes("/docs") ? "0" : "16px"}
-                pr={location.pathname.includes("/docs") ? "0" : "16px"}
-                size="lg"
-              >
-                <Outlet />
-              </Container>
+              <Outlet />
+
             </main>
             <Footer />
             <script

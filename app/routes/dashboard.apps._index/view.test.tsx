@@ -2,11 +2,7 @@ import { expect } from "vitest"
 import AppsView from "./view"
 import { render, screen } from "test/helpers"
 import { endpoints, profileMockData } from "~/models/portal/portal.data"
-import {
-  relayMetricPer2Weeks,
-  relayMetricPerMonth,
-  relayMetricPerWeek,
-} from "~/models/relaymeter/relaymeter.data"
+import { relayMetricPerPeriod } from "~/models/relaymeter/relaymeter.data"
 
 const userId = "mock"
 const userIdGod = "god"
@@ -15,9 +11,7 @@ describe("<AppsView />", () => {
   it("renders without endpoints", async () => {
     render(
       <AppsView
-        dailyNetworkRelaysPer2Weeks={relayMetricPer2Weeks}
-        dailyNetworkRelaysPerMonth={relayMetricPerMonth}
-        dailyNetworkRelaysPerWeek={relayMetricPerWeek}
+        dailyNetworkRelaysPerPeriod={relayMetricPerPeriod}
         endpoints={null}
         profile={profileMockData}
         searchParams={new URLSearchParams({ error: "false" })}
@@ -32,9 +26,7 @@ describe("<AppsView />", () => {
   it("renders without pagination", () => {
     render(
       <AppsView
-        dailyNetworkRelaysPer2Weeks={relayMetricPer2Weeks}
-        dailyNetworkRelaysPerMonth={relayMetricPerMonth}
-        dailyNetworkRelaysPerWeek={relayMetricPerWeek}
+        dailyNetworkRelaysPerPeriod={relayMetricPerPeriod}
         endpoints={endpoints}
         profile={profileMockData}
         searchParams={new URLSearchParams({ error: "false" })}
@@ -49,9 +41,7 @@ describe("<AppsView />", () => {
   it("renders with pagination", () => {
     render(
       <AppsView
-        dailyNetworkRelaysPer2Weeks={relayMetricPer2Weeks}
-        dailyNetworkRelaysPerMonth={relayMetricPerMonth}
-        dailyNetworkRelaysPerWeek={relayMetricPerWeek}
+        dailyNetworkRelaysPerPeriod={relayMetricPerPeriod}
         endpoints={endpoints}
         profile={profileMockData}
         searchParams={new URLSearchParams({ error: "false" })}
@@ -65,9 +55,7 @@ describe("<AppsView />", () => {
   it("renders error modal", () => {
     render(
       <AppsView
-        dailyNetworkRelaysPer2Weeks={relayMetricPer2Weeks}
-        dailyNetworkRelaysPerMonth={relayMetricPerMonth}
-        dailyNetworkRelaysPerWeek={relayMetricPerWeek}
+        dailyNetworkRelaysPerPeriod={relayMetricPerPeriod}
         endpoints={endpoints}
         profile={profileMockData}
         searchParams={new URLSearchParams({ error: "true" })}

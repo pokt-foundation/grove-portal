@@ -55,7 +55,7 @@ const schema = {
             The Pocket Portal currently supports creating an endpoint for dozens of
             chains, including Ethereum, Harmony, Binance Smart Chain, Avalanche, Fuse, and{" "}
             <a
-              href="https://docs.pokt.network/supported-blockchains/"
+              href="https://docs.portal.pokt.network/introduction/supported-blockchains/"
               rel="noreferrer"
               target="_blank"
             >
@@ -393,8 +393,7 @@ const schema = {
     howIsThisCalculated: "How is this calculated?",
     modalTitle: "How is this price calculated",
     modalDescription:
-      "This formula is how Pocket portal calculates and charge you app relays monthly. If you want to learn more see our",
-    secondModalDescription: "documentation",
+      "This formula is how Pocket portal calculates and charge you app relays monthly.",
     totalDailyRelays: "Total daily relays",
     freeRelays: "free relays",
     costPerDay: "Cost per day",

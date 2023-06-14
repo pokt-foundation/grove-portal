@@ -8,7 +8,6 @@ export type CalculateYourPricing = {
   howIsThisCalculated: string
   modalTitle: string
   modalDescription: string
-  secondModalDescription: string
   totalDailyRelays: string
   freeRelays: string
   costPerDay: string

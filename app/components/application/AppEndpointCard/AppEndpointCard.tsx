@@ -177,19 +177,16 @@ export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) 
           <Box>
             <Text mb={0}>URL</Text>
             <TextInput
-              value="https://services.portal.pokt.network/indexing"
               rightSection={
                 <CopyText
                   text={String("https://services.portal.pokt.network/indexing")}
                 />
               }
+              value="https://services.portal.pokt.network/indexing"
             />
             <Text mb={0}>API Key</Text>
             <TextInput
               mt="0.5em"
-              value={
-                app.integrations.covalentAPIKeyPaid || app.integrations.covalentAPIKeyFree
-              }
               rightSection={
                 <CopyText
                   text={String(
@@ -197,6 +194,9 @@ export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) 
                       app.integrations.covalentAPIKeyFree,
                   )}
                 />
+              }
+              value={
+                app.integrations.covalentAPIKeyPaid || app.integrations.covalentAPIKeyFree
               }
             />
             <Text fz="sm" mb="0">

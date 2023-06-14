@@ -32,7 +32,7 @@ export const useRoot = ({ user }: useRootProps) => {
         protected: Protected.Public, // show this link to all. dashboard layout handles redirect to login.
       },
       {
-        to: "https://docs.pokt.network/",
+        to: "https://docs.portal.pokt.network/",
         external: true,
         label: t.dashboard.routes.docs,
         icon: IconBookOpen,

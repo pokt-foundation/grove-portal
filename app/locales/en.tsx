@@ -316,8 +316,7 @@ const schema = {
     howIsThisCalculated: "How is this calculated?",
     modalTitle: "How is this price calculated",
     modalDescription:
-      "This formula is how Pocket portal calculates and charge you app relays monthly. If you want to learn more see our",
-    secondModalDescription: "documentation",
+      "This formula is how Pocket portal calculates and charge you app relays monthly.",
     totalDailyRelays: "Total daily relays",
     freeRelays: "free relays",
     costPerDay: "Cost per day",

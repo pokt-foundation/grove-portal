@@ -32,7 +32,7 @@ export const loader: LoaderFunction = async ({ params }) => {
       throw new Error("Page slug must be a string")
     }
 
-    const plasmicData = await PLASMIC.fetchComponentData(params.plasmic)
+    const plasmicData = await PLASMIC.fetchComponentData(`/${params.plasmic}`)
 
     if (!plasmicData || plasmicData.entryCompMetas.length === 0) {
       throw new Error("Unable to load page")

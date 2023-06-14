@@ -5,13 +5,23 @@ import {
   IconDownload,
 } from "@pokt-foundation/pocket-blocks"
 import Table from "~/components/Table"
+import { RelayMetric } from "~/models/relaymeter/relaymeter.server"
 import { Stripe } from "~/models/stripe/stripe.server"
 
 interface InvoicesTableProps {
   invoices: Stripe.Invoice[]
+  usageRecords: Stripe.ApiList<Stripe.UsageRecordSummary>[]
+  relaysInvoices: RelayMetric[]
 }
 
-export function InvoicesTable({ invoices }: InvoicesTableProps) {
+const CENTS = 100
+const MS = 1000
+
+export function InvoicesTable({
+  invoices,
+  usageRecords,
+  relaysInvoices,
+}: InvoicesTableProps) {
   return (
     <Table
       paginate
@@ -26,12 +36,12 @@ export function InvoicesTable({ invoices }: InvoicesTableProps) {
       ]}
       data={invoices?.map(({ lines, status, invoice_pdf, hosted_invoice_url }, idx) => ({
         no: idx + 1,
-        period: `${new Date(
-          lines.data[0].period.start * 1000,
-        ).toDateString()} - ${new Date(lines.data[0].period.end * 1000).toDateString()}`,
-        relaysUsed: "",
-        relaysBilled: "",
-        billed: lines.data[0].amount / 100,
+        period: `${new Date(lines.data[0].period.start * MS).toDateString()} - ${new Date(
+          lines.data[0].period.end * MS,
+        ).toDateString()}`,
+        relaysUsed: relaysInvoices[idx].Count.Total,
+        relaysBilled: usageRecords[idx].data[0].total_usage,
+        billed: lines.data[0].amount / CENTS,
         paymentStatus: status,
         download: {
           element: (

@@ -45,11 +45,11 @@ export default function AppPlanLatestInvoiceCard({
     },
     {
       label: t.AppPlanLatestInvoiceCard.dateStart,
-      value: dayjs.unix(Number(invoice.period_start)).toString(),
+      value: dayjs.unix(Number(invoice.lines.data[0].period.start)).toString(),
     },
     {
       label: t.AppPlanLatestInvoiceCard.dateEnd,
-      value: dayjs.unix(Number(invoice.period_end)).toString(),
+      value: dayjs.unix(Number(invoice.lines.data[0].period.end)).toString(),
     },
   ]
 

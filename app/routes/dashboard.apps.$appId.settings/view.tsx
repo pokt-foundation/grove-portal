@@ -15,6 +15,9 @@ import {
 import { useState } from "react"
 import KeysCard from "../dashboard.apps.$appId/components/KeysCard"
 import { AppIdLoaderData } from "../dashboard.apps.$appId/route"
+import AppPlanLatestInvoiceCard, {
+  links as AppPlanLatestInvoiceCardLinks,
+} from "../dashboard.apps.$appId.plan/components/AppPlanLatestInvoiceCard"
 import InvoicesTable from "./components/InvoicesTable/InvoicesTable"
 import { AppSettingsLoaderData } from "./route"
 import AppPlanDetails, {
@@ -24,7 +27,7 @@ import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { RoleName } from "~/models/portal/sdk"
 
 export const links = () => {
-  return [...AppPlanDetailsLinks()]
+  return [...AppPlanDetailsLinks(), ...AppPlanLatestInvoiceCardLinks()]
 }
 
 interface SettingsViewProps {
@@ -39,7 +42,9 @@ export function SettingsView({ data }: SettingsViewProps) {
   const role = endpoint?.users.find((u) => u.email === user._json?.email)?.roleName
   const isMember = role === RoleName.Member
 
-  console.log("data: ", data)
+  if (data.error) {
+    return <></>
+  }
 
   return (
     <Card>
@@ -92,23 +97,24 @@ export function SettingsView({ data }: SettingsViewProps) {
           <Button rightIcon={<IconArrowUpRight width={8} />}>Manage in Stripe</Button>
         </Box>
 
-        <Card
-          sx={(theme) => ({
-            flexBasis: "45%",
-            background: theme.colors.navy[4],
-          })}
-        >
-          <Title order={3}>Current period</Title>
-          <Button variant="outline">View Relay Data</Button>
-        </Card>
+        <AppPlanLatestInvoiceCard
+          invoice={data.invoices[0]}
+          relaysLatestInvoice={data.relaysInvoices[0]}
+          usageRecords={data.usageRecords[0]}
+        />
       </Flex>
       {data.invoices && (
         <Card
           sx={(theme) => ({
             background: theme.colors.navy[4],
+            margin: "1.5rem 2rem",
           })}
         >
-          <InvoicesTable invoices={data.invoices} />
+          <InvoicesTable
+            invoices={data.invoices}
+            relaysInvoices={data.relaysInvoices}
+            usageRecords={data.usageRecords}
+          />
         </Card>
       )}
 

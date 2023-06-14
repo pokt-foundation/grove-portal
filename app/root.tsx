@@ -183,7 +183,6 @@ const Document = ({ children, title }: { children: React.ReactNode; title?: stri
   return (
     <html lang={language}>
       <head>
-        <StylesPlaceholder />
         <Global
           styles={(theme) => ({
             body: {

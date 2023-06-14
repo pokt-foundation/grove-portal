@@ -1,5 +1,5 @@
 import { Text } from "@pokt-foundation/pocket-blocks"
-import { Link } from "@remix-run/react"
+import { useNavigate } from "@remix-run/react"
 import { useTranslate } from "~/context/TranslateContext"
 import { TableBodyProps, TableDataArray } from "~/types/table"
 
@@ -10,6 +10,8 @@ const renderTableCell = ([key, value]: TableDataArray) => (
 export const TableBody = ({ paginatedData, rowAsLink, data }: TableBodyProps) => {
   const { t } = useTranslate()
 
+  const navigate = useNavigate()
+
   return (
     <tbody>
       {paginatedData.length > 0 ? (
@@ -19,19 +21,14 @@ export const TableBody = ({ paginatedData, rowAsLink, data }: TableBodyProps) =>
           const tableData = Object.entries(itemData)
 
           return (
-            <tr key={id}>
-              {rowAsLink ? (
-                <Link
-                  style={{
-                    display: "contents",
-                  }}
-                  to={`${id}`}
-                >
-                  {tableData.map(renderTableCell)}
-                </Link>
-              ) : (
-                tableData.map(renderTableCell)
-              )}
+            <tr
+              key={id}
+              onClick={() => {
+                if (!rowAsLink) return
+                navigate(id)
+              }}
+            >
+              {tableData.map(renderTableCell)}
             </tr>
           )
         })

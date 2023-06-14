@@ -1,6 +1,16 @@
 import "@testing-library/jest-dom"
 import { render, screen } from "@testing-library/react"
+import { vi } from "vitest"
 import { Table } from "./Table"
+
+vi.mock("@remix-run/react", async () => {
+  const actual = await vi.importActual("@remix-run/react")
+  return {
+    // @ts-ignore
+    ...actual,
+    useNavigate: () => vi.fn(),
+  }
+})
 
 describe("Table component", () => {
   const mockData = [

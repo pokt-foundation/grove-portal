@@ -2,7 +2,6 @@ import { StylesPlaceholder } from "@mantine/remix"
 import {
   Alert,
   Center,
-  Container,
   createEmotionCache,
   Global,
   IconBookOpen,
@@ -22,7 +21,6 @@ import {
   ScrollRestoration,
   useCatch,
   useLoaderData,
-  useLocation,
   useSearchParams,
 } from "@remix-run/react"
 import React, { useEffect, useMemo } from "react"
@@ -218,9 +216,6 @@ const Document = ({ children, title }: { children: React.ReactNode; title?: stri
 export default function App() {
   const { ENV, user } = useLoaderData<RootLoaderData>()
   const { t } = useTranslate()
-
-  const location = useLocation()
-
   useEffect(() => {
     analyticsInit({ id: user?.id ?? "" })
   }, [user])
@@ -248,7 +243,7 @@ export default function App() {
         protected: Protected.Public, // show this link to all. dashboard layout handles redirect to login.
       },
       {
-        to: "https://docs.pokt.network/",
+        to: "https://docs.portal.pokt.network/",
         external: true,
         label: t.dashboard.routes.docs,
         icon: IconBookOpen,
@@ -285,17 +280,7 @@ export default function App() {
           <Nav ariaLabel="Main" routes={routes} />
         </Header>
         <main>
-          <Container
-            className="container"
-            maw={location.pathname.includes("/docs") ? "100%" : "1140px"}
-            ml={location.pathname.includes("/docs") ? "0" : "auto"}
-            mr={location.pathname.includes("/docs") ? "0" : "auto"}
-            pl={location.pathname.includes("/docs") ? "0" : "16px"}
-            pr={location.pathname.includes("/docs") ? "0" : "16px"}
-            size="lg"
-          >
-            <Outlet />
-          </Container>
+          <Outlet />
         </main>
         <Footer />
         <script

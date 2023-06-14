@@ -2,6 +2,7 @@ import { StylesPlaceholder } from "@mantine/remix"
 import {
   Alert,
   Center,
+  Container,
   createEmotionCache,
   Global,
   IconBookOpen,
@@ -280,7 +281,9 @@ export default function App() {
           <Nav ariaLabel="Main" routes={routes} />
         </Header>
         <main>
-          <Outlet />
+          <Container size="lg">
+            <Outlet />
+          </Container>
         </main>
         <Footer />
         <script

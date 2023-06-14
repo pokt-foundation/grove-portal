@@ -1,10 +1,22 @@
-import { Text } from "@pokt-foundation/pocket-blocks"
+import {
+  Anchor,
+  Box,
+  Button,
+  Grid,
+  Group,
+  IconArrowUpRight,
+  Text,
+  TextInput,
+  useMantineTheme,
+} from "@pokt-foundation/pocket-blocks"
 import { useEffect, useMemo } from "react"
 import AppEndpointUrl, {
   links as AppEndpointUrlLinks,
 } from "~/components/application/AppEndpointUrl"
 import { Card, links as CardLinks } from "~/components/Card"
 import ChainsDropdown from "~/components/ChainsDropdown/ChainsDropdown"
+import CopyText from "~/components/CopyText"
+import HelpTooltip from "~/components/HelpTooltip"
 import { useUser } from "~/context/UserContext"
 import { Blockchain, BlockchainsQuery, EndpointQuery } from "~/models/portal/sdk"
 import { ChainMetadata, prefixFromChainId } from "~/utils/chainUtils"
@@ -22,6 +34,8 @@ interface AppEndpointProps {
 
 export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) {
   const user = useUser()
+  const theme = useMantineTheme()
+
   const chains = useMemo(
     () =>
       user.data?.preferences?.endpoints
@@ -129,6 +143,69 @@ export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) 
               />
             )
           })}
+        <Grid
+          align="center"
+          dir="column"
+          justify="space-between"
+          sx={{
+            margin: "2em 0 0",
+            paddingTop: "2em",
+            borderTop: "1px solid #2F373E",
+          }}
+        >
+          <Grid align="center" justify="space-between" m={0} w="100%">
+            <Group spacing={4}>
+              <Text size="lg" weight={600}>
+                Your Data API
+              </Text>
+              <Text size="sm" weight={400}>
+                (powered by Covalent)
+              </Text>
+              <HelpTooltip
+                label={"This endpoint supports Ethereum, Polygon, BSC and more."}
+              />
+            </Group>
+            <Anchor href="https://www.covalenthq.com/docs/api/" target="_blank">
+              <Button size="xs" variant="outline">
+                <Text fz="xs" mr="0.5em">
+                  Data API Docs
+                </Text>
+                <IconArrowUpRight fill={theme?.colors?.blue[5]} height={18} width={18} />
+              </Button>
+            </Anchor>
+          </Grid>
+          <Box>
+            <Text mb={0}>URL</Text>
+            <TextInput
+              value="https://services.portal.pokt.network/indexing"
+              rightSection={
+                <CopyText
+                  text={String("https://services.portal.pokt.network/indexing")}
+                />
+              }
+            />
+            <Text mb={0}>API Key</Text>
+            <TextInput
+              mt="0.5em"
+              value={
+                app.integrations.covalentAPIKeyPaid || app.integrations.covalentAPIKeyFree
+              }
+              rightSection={
+                <CopyText
+                  text={String(
+                    app.integrations.covalentAPIKeyPaid ||
+                      app.integrations.covalentAPIKeyFree,
+                  )}
+                />
+              }
+            />
+            <Text fz="sm" mb="0">
+              The following API key can be uses to authenticate against the Covalent API.
+              When authenticating, add the API key using the x-api-key header to the
+              request.
+            </Text>
+          </Box>
+        </Grid>
       </Card>
     </div>
   )

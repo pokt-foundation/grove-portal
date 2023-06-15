@@ -2,7 +2,7 @@ import { MantineProvider } from "@mantine/core"
 import { RemixBrowser } from "@remix-run/react"
 import { RenderOptions, render as rtlRender } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-import { portalTheme } from "~/root"
+import { portalTheme } from "~/root/portalTheme"
 
 export { axe } from "jest-axe"
 export * from "@testing-library/react"

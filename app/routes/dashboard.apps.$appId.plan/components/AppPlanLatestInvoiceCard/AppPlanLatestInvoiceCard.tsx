@@ -1,4 +1,4 @@
-import { Button, Group } from "@pokt-foundation/pocket-blocks"
+import { Button, Group, CardProps } from "@pokt-foundation/pocket-blocks"
 import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/Card"
 import CardList, { CardListItem, links as CardListLinks } from "~/components/CardList"
@@ -17,12 +17,14 @@ interface PlanLatestInvoiceCardProps {
   invoice: Stripe.Invoice
   usageRecords: Stripe.ApiList<Stripe.UsageRecordSummary>
   relaysLatestInvoice: RelayMetric
+  CardProps?: Partial<CardProps>
 }
 
 export default function AppPlanLatestInvoiceCard({
   invoice,
   usageRecords,
   relaysLatestInvoice,
+  CardProps,
 }: PlanLatestInvoiceCardProps) {
   const { t } = useTranslate()
 
@@ -55,7 +57,7 @@ export default function AppPlanLatestInvoiceCard({
 
   return (
     <div className="pokt-app-plan-latest-invoice">
-      <Card>
+      <Card {...CardProps}>
         <div className="pokt-card-header">
           <h3>{t.AppPlanLatestInvoiceCard.title}</h3>
         </div>

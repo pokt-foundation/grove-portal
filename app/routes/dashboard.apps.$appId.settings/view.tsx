@@ -9,25 +9,31 @@ import {
   IconDeleteAlt,
   IconArrowUpRight,
   Box,
-  Modal,
   ActionIcon,
 } from "@pokt-foundation/pocket-blocks"
 import { useState } from "react"
-import KeysCard from "../dashboard.apps.$appId/components/KeysCard"
 import { AppIdLoaderData } from "../dashboard.apps.$appId/route"
 import AppPlanLatestInvoiceCard, {
   links as AppPlanLatestInvoiceCardLinks,
 } from "../dashboard.apps.$appId.plan/components/AppPlanLatestInvoiceCard"
+import DeleteAppModal, {
+  links as DeleteAppModalLinks,
+} from "./components/DeleteAppModal/DeleteAppModal"
 import InvoicesTable from "./components/InvoicesTable/InvoicesTable"
+import KeysModal, { links as KeysModalLinks } from "./components/KeysModal/KeysModal"
 import { AppSettingsLoaderData } from "./route"
 import AppPlanDetails, {
   links as AppPlanDetailsLinks,
 } from "~/components/application/AppPlanDetails"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
-import { RoleName } from "~/models/portal/sdk"
 
 export const links = () => {
-  return [...AppPlanDetailsLinks(), ...AppPlanLatestInvoiceCardLinks()]
+  return [
+    ...AppPlanDetailsLinks(),
+    ...AppPlanLatestInvoiceCardLinks(),
+    ...KeysModalLinks(),
+    ...DeleteAppModalLinks(),
+  ]
 }
 
 interface SettingsViewProps {
@@ -36,11 +42,10 @@ interface SettingsViewProps {
 
 export function SettingsView({ data }: SettingsViewProps) {
   const [isKeysModalOpen, setIsKeysModalOpen] = useState(false)
+  const [isRemoveAppOpened, setIsRemoveAppOpened] = useState(false)
   const appIdRoute = useMatchesRoute("routes/dashboard.apps.$appId")
   const appIdData = appIdRoute?.data as AppIdLoaderData
   const { endpoint, subscription, user } = appIdData
-  const role = endpoint?.users.find((u) => u.email === user._json?.email)?.roleName
-  const isMember = role === RoleName.Member
 
   if (data.error) {
     return <></>
@@ -51,12 +56,11 @@ export function SettingsView({ data }: SettingsViewProps) {
       <Flex justify="space-between">
         <Title order={3}>Manage your App</Title>
 
-        <Flex gap={12}>
+        <Flex align="center" gap={12}>
           <Button
             leftIcon={<IconKey width={12} />}
             sx={(theme) => ({
               color: theme.colors.gray[5],
-              // 12 px
               fontSize: "0.75rem",
             })}
             variant="subtle"
@@ -77,7 +81,10 @@ export function SettingsView({ data }: SettingsViewProps) {
             </Menu.Target>
 
             <Menu.Dropdown>
-              <Menu.Item icon={<IconDeleteAlt width={12} />}>
+              <Menu.Item
+                icon={<IconDeleteAlt width={12} />}
+                onClick={() => setIsRemoveAppOpened(true)}
+              >
                 Delete Application
               </Menu.Item>
             </Menu.Dropdown>
@@ -98,11 +105,17 @@ export function SettingsView({ data }: SettingsViewProps) {
         </Box>
 
         <AppPlanLatestInvoiceCard
+          CardProps={{
+            sx: (theme) => ({
+              background: theme.colors.navy[4],
+            }),
+          }}
           invoice={data.invoices[0]}
           relaysLatestInvoice={data.relaysInvoices[0]}
           usageRecords={data.usageRecords[0]}
         />
       </Flex>
+
       {data.invoices && (
         <Card
           sx={(theme) => ({
@@ -118,14 +131,18 @@ export function SettingsView({ data }: SettingsViewProps) {
         </Card>
       )}
 
-      <Modal opened={isKeysModalOpen} onClose={() => setIsKeysModalOpen(false)}>
-        <KeysCard
-          id={endpoint.id}
-          isMember={isMember}
-          publicKey={endpoint.apps ? endpoint.apps[0]?.publicKey : ""}
-          secret={endpoint.gatewaySettings.secretKey}
-        />
-      </Modal>
+      <DeleteAppModal
+        endpointID={endpoint.id}
+        isRemoveAppOpened={isRemoveAppOpened}
+        setIsRemoveAppOpened={setIsRemoveAppOpened}
+      />
+
+      <KeysModal
+        endpoint={endpoint}
+        isKeysModalOpen={isKeysModalOpen}
+        setIsKeysModalOpen={setIsKeysModalOpen}
+        user={user}
+      />
     </Card>
   )
 }

@@ -14,7 +14,7 @@ interface AppNameProps {
   name: string
 }
 
-export default function AppKeysCard({ id, name }: AppNameProps) {
+export default function AppName({ id, name }: AppNameProps) {
   const [editing, setEditing] = useState(false)
   const [nameState, setNameState] = useState(name)
   const [error, setError] = useState(false)

@@ -1,11 +1,8 @@
 import { Grid, IconArrowDown, IconArrowUp } from "@pokt-foundation/pocket-blocks"
 import { useMemo } from "react"
 import styles from "./styles.css"
-import Card, { links as CardLinks } from "~/components/shared/Card"
-import CardList, {
-  CardListItem,
-  links as CardListLinks,
-} from "~/components/shared/CardList"
+import Card, { links as CardLinks } from "~/components/Card"
+import CardList, { CardListItem, links as CardListLinks } from "~/components/CardList"
 import { useTranslate } from "~/context/TranslateContext"
 import { RelayMetric } from "~/models/relaymeter/relaymeter.server"
 
@@ -54,13 +51,13 @@ export default function AppRequestsRateCard({
 
   const getItemColor = (successRateDelta: string | number) => {
     if (Math.abs(successRateDelta as number) === 0) return undefined
-    if (successRateDelta > 0) return "success"
+    if (parseInt(successRateDelta.toString()) > 0) return "success"
     return "error"
   }
 
   const getItemIcon = (successRateDelta: string | number) => {
     if (Math.abs(successRateDelta as number) === 0) return undefined
-    if (successRateDelta > 0) return ArrowSuccess
+    if (parseInt(successRateDelta.toString()) > 0) return ArrowSuccess
     return ArrowError
   }
 

@@ -1,9 +1,9 @@
-import { Badge, useMantineTheme } from "@pokt-foundation/pocket-blocks"
+import { Badge } from "@pokt-foundation/pocket-blocks"
 import styles from "./styles.css"
-import CopyText from "~/components/shared/CopyText/CopyText"
-import Delete from "~/components/shared/Delete/Delete"
-import TextInput from "~/components/shared/TextInput"
-import { InputProps } from "~/components/shared/TextInput"
+import CopyText from "~/components/CopyText/CopyText"
+import Delete from "~/components/Delete/Delete"
+import TextInput from "~/components/TextInput"
+import { InputProps } from "~/components/TextInput"
 import { Blockchain } from "~/models/portal/sdk"
 import { getImageForChain } from "~/utils/known-chains/known-chains"
 
@@ -25,8 +25,6 @@ export default function AppEndpointUrl({
   hasDelete,
   ...props
 }: AppEndpointUrlProp) {
-  const theme = useMantineTheme()
-
   if (!chain) {
     return <></>
   }

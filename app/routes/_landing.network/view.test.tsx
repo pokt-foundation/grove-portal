@@ -4,10 +4,10 @@ import { render, screen } from "test/helpers"
 import { latestBlock, chainTotals } from "~/models/poktscan/poktscan.data"
 import { blockchains } from "~/models/portal/portal.data"
 import {
-  relayMetricPerWeek,
   month,
   today,
   week,
+  relayMetricPerPeriod,
 } from "~/models/relaymeter/relaymeter.data"
 
 describe("<NetworkView />", () => {
@@ -16,7 +16,7 @@ describe("<NetworkView />", () => {
       <NetworkView
         blockchains={blockchains}
         dailyNetworkRelays={today}
-        dailyNetworkRelaysPerWeek={relayMetricPerWeek}
+        dailyNetworkRelaysPerPeriod={relayMetricPerPeriod}
         monthlyNetworkRelays={month}
         poktscanChains={chainTotals}
         poktscanLatestBlock={latestBlock}
@@ -42,7 +42,7 @@ describe("<NetworkView />", () => {
       <NetworkView
         blockchains={null}
         dailyNetworkRelays={today}
-        dailyNetworkRelaysPerWeek={relayMetricPerWeek}
+        dailyNetworkRelaysPerPeriod={relayMetricPerPeriod}
         monthlyNetworkRelays={month}
         poktscanChains={chainTotals}
         poktscanLatestBlock={latestBlock}
@@ -60,7 +60,7 @@ describe("<NetworkView />", () => {
       <NetworkView
         blockchains={blockchains}
         dailyNetworkRelays={today}
-        dailyNetworkRelaysPerWeek={relayMetricPerWeek}
+        dailyNetworkRelaysPerPeriod={relayMetricPerPeriod}
         monthlyNetworkRelays={month}
         poktscanChains={null}
         poktscanLatestBlock={null}

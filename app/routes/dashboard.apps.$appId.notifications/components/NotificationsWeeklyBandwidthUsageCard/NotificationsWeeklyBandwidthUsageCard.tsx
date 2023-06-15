@@ -22,34 +22,34 @@ export const links: LinksFunction = () => [
 export default function NotificationsWeeklyBandwidthUsageCard() {
   const appIdRoute = useMatchesRoute("routes/dashboard/apps/$appId")
   const appIdData = appIdRoute?.data as AppIdLoaderData
-  const { dailyNetworkRelaysPerWeek } = appIdData
+  const { dailyNetworkRelaysPerPeriod } = appIdData
 
   const highestDailyAmount = useMemo(
     () =>
-      dailyNetworkRelaysPerWeek.reduce(
+      dailyNetworkRelaysPerPeriod.reduce(
         (highest, { Count }) => Math.max(highest, Count.Total),
         0,
       ),
-    [dailyNetworkRelaysPerWeek],
+    [dailyNetworkRelaysPerPeriod],
   )
 
   const lowestDailyAmount = useMemo(
     () =>
-      dailyNetworkRelaysPerWeek.length === 0
+      dailyNetworkRelaysPerPeriod.length === 0
         ? 0
-        : dailyNetworkRelaysPerWeek.reduce(
+        : dailyNetworkRelaysPerPeriod.reduce(
             (lowest, { Count }) => Math.min(lowest, Count.Total),
             Number.POSITIVE_INFINITY,
           ),
-    [dailyNetworkRelaysPerWeek],
+    [dailyNetworkRelaysPerPeriod],
   )
 
   const totalDailyRelays = useMemo(() => {
-    return dailyNetworkRelaysPerWeek.length === 0
+    return dailyNetworkRelaysPerPeriod.length === 0
       ? 0
-      : dailyNetworkRelaysPerWeek.reduce((sum, { Count }) => sum + Count.Total, 0) /
-          dailyNetworkRelaysPerWeek.length
-  }, [dailyNetworkRelaysPerWeek])
+      : dailyNetworkRelaysPerPeriod.reduce((sum, { Count }) => sum + Count.Total, 0) /
+          dailyNetworkRelaysPerPeriod.length
+  }, [dailyNetworkRelaysPerPeriod])
 
   const [primaryAverageUsageColor, secondaryAverageUsageColor] = useUsageColor(
     totalDailyRelays / FREE_TIER_MAX_RELAYS,

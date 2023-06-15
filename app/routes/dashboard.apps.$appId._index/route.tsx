@@ -50,7 +50,7 @@ export const Application = () => {
     endpoint,
     relaysToday,
     relaysYesterday,
-    dailyNetworkRelaysPerWeek,
+    dailyNetworkRelaysPerPeriod,
   } = useOutletContext<AppIdOutletContext>()
   const { t } = useTranslate()
   const { flags } = useFeatureFlags()
@@ -71,17 +71,17 @@ export const Application = () => {
     let relays = 0
     relays += relaysToday.Count.Total
     relays += relaysYesterday.Count.Total
-    for (let i = 0; i < dailyNetworkRelaysPerWeek.length; i += 1) {
-      relays += dailyNetworkRelaysPerWeek[i].Count.Total
+    for (let i = 0; i < dailyNetworkRelaysPerPeriod.length; i += 1) {
+      relays += dailyNetworkRelaysPerPeriod[i].Count.Total
     }
     return relays
   }
 
   const totalRelaysForTheWeek = useMemo(() => {
-    return dailyNetworkRelaysPerWeek.reduce((prev, curr) => {
+    return dailyNetworkRelaysPerPeriod.reduce((prev, curr) => {
       return prev + curr.Count.Success
     }, 0)
-  }, [dailyNetworkRelaysPerWeek])
+  }, [dailyNetworkRelaysPerPeriod])
 
   return (
     <>
@@ -119,11 +119,11 @@ export const Application = () => {
           <AppLatencyCard hourlyLatency={data.hourlyLatency.hourly_latency} />
         </section>
       )} */}
-      {dailyNetworkRelaysPerWeek && (
+      {dailyNetworkRelaysPerPeriod && (
         <section>
           <UsageChartCard
             emptyLabel="Your application does not have relay data yet."
-            relays={dailyNetworkRelaysPerWeek}
+            relays={dailyNetworkRelaysPerPeriod}
           />
         </section>
       )}

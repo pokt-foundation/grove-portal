@@ -2,8 +2,10 @@ import {
   Box,
   LineChart,
   ParentSize,
+  Select,
   useMantineTheme,
 } from "@pokt-foundation/pocket-blocks"
+import { useSearchParams } from "@remix-run/react"
 import { useMemo } from "react"
 import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/Card"
@@ -26,18 +28,15 @@ interface NetworkChardCardProps {
 export default function UsageChartCard({
   relays,
   title = "Relay Count",
-  detail = "last 7 Days",
   emptyLabel,
 }: NetworkChardCardProps) {
-  // const theme = useTheme()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const days = searchParams.get("days")
 
-  const hasRelays = useMemo(() => {
-    const r = relays.reduce((prev, curr) => {
-      return curr.Count.Total + prev
-    }, 0)
-
-    return r > 0
-  }, [relays])
+  const hasRelays = useMemo(
+    () => relays?.reduce((prev, curr) => prev + curr.Count.Total, 0) > 0,
+    [relays],
+  )
 
   const theme = useMantineTheme()
   const groups = [
@@ -62,7 +61,20 @@ export default function UsageChartCard({
       <Card>
         <div className="pokt-card-header">
           <h3>{title}</h3>
-          <p>{detail}</p>
+          <p>
+            <Select
+              data={[
+                { label: "Last 7 Days", value: "7" },
+                { label: "Last 2 Weeks", value: "14" },
+                { label: "Last 30 Days", value: "30" },
+              ]}
+              defaultValue={days ? String(days) : "7"}
+              onChange={(value) => {
+                searchParams.set("days", String(value))
+                setSearchParams(searchParams)
+              }}
+            />
+          </p>
         </div>
         <div className="pokt-chart-wrapper">
           {!hasRelays && emptyLabel && (

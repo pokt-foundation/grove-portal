@@ -40,4 +40,4 @@ export const month: RelayMetric = {
   },
 }
 
-export const relayMetricPerWeek: RelayMetric[] = Array(7).fill(relayMetric)
+export const relayMetricPerPeriod: RelayMetric[] = Array(7).fill(relayMetric)

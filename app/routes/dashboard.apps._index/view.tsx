@@ -53,14 +53,14 @@ export const links = () => {
 type AppsViewProps = {
   userId: string
   endpoints: EndpointsQuery | null
-  dailyNetworkRelaysPerWeek: RelayMetric[] | null
+  dailyNetworkRelaysPerPeriod: RelayMetric[]
   searchParams: URLSearchParams
   profile: Auth0Profile
 }
 
 export const AppsView = ({
   endpoints,
-  dailyNetworkRelaysPerWeek,
+  dailyNetworkRelaysPerPeriod,
   searchParams,
   userId,
   profile,
@@ -127,7 +127,7 @@ export const AppsView = ({
         setPendingEndpoints(endpoints.pending)
       }
     }
-  }, [endpoints])
+  }, [endpoints, uEmail])
 
   useEffect(() => {
     if (pendingEndpoints && pendingEndpoints.length > 0) {
@@ -432,11 +432,11 @@ export const AppsView = ({
           </Tabs>
         </Card>
       </section>
-      {dailyNetworkRelaysPerWeek && (
+      {dailyNetworkRelaysPerPeriod && (
         <section>
           <UsageChartCard
             emptyLabel="Your applications do not have relay data yet."
-            relays={dailyNetworkRelaysPerWeek}
+            relays={dailyNetworkRelaysPerPeriod}
             title="Total User Relay Counts"
           />
         </section>

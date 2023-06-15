@@ -59,17 +59,19 @@ export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) 
     }
   }, [app, user])
 
-  const handleAddToStoredChains = (chain: string) => {
-    if (!user.data?.preferences?.endpoints || !user.data?.preferences?.endpoints[app.id])
-      return
-    if (user.data?.preferences?.endpoints[app.id].includes(chain)) return
+  const handleChangeInStoredChains = (chain: string) => {
+    const currentEndpoints = user.data?.preferences?.endpoints?.[app.id]
+
+    if (!currentEndpoints) return
+
+    const modifiedEndpoints = currentEndpoints.includes(chain)
+      ? currentEndpoints.filter((e: string) => e !== chain)
+      : [...currentEndpoints, chain]
 
     user.submit(
       {
         endpoints: JSON.stringify({
-          [app.id]: user.data?.preferences?.endpoints[app.id]
-            ? [...user.data?.preferences?.endpoints[app.id], chain]
-            : [chain],
+          [app.id]: modifiedEndpoints,
         }),
       },
       {
@@ -107,7 +109,12 @@ export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) 
           <h3>Endpoint</h3>
           <div>
             {app.gigastake ? (
-              <ChainsDropdown chains={blockchains} onChange={handleAddToStoredChains} />
+              <ChainsDropdown
+                chains={blockchains}
+                checkboxData={user.data?.preferences?.endpoints?.[app.id] || []}
+                endpoint={app}
+                onChange={handleChangeInStoredChains}
+              />
             ) : (
               <Text>{chainDescription}</Text>
             )}

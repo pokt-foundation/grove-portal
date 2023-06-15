@@ -57,7 +57,7 @@ describe("<AppEndpointCard />", () => {
       </UserContext.Provider>,
     )
 
-    const button = screen.getByLabelText(/add new/i)
+    const button = screen.getByLabelText(/Add Network/i)
     expect(button).toBeInTheDocument()
   })
 })

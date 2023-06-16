@@ -19,7 +19,7 @@ const CheckboxItem = forwardRef<
 >(({ checked, label, ...others }, ref) => {
   return (
     <div ref={ref} {...others}>
-      <Checkbox checked={checked} label={label} />
+      <Checkbox checked={checked} label={label} readOnly />
     </div>
   )
 })

@@ -72,11 +72,6 @@
   max-height: 36px;
 }
 
-.security button[type="submit"] {
-  align-self: end;
-  width: 160px;
-}
-
 .security .pokt-text {
   margin-bottom: 0;
   padding-bottom: 0;

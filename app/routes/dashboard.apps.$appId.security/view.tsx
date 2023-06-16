@@ -1,6 +1,14 @@
-import { Button, Text, Switch, Loader, Group } from "@pokt-foundation/pocket-blocks"
+import {
+  Button,
+  Text,
+  Switch,
+  Loader,
+  Group,
+  Flex,
+  useMantineTheme,
+} from "@pokt-foundation/pocket-blocks"
 import { useFetcher, useNavigation } from "@remix-run/react"
-import React, { useState, forwardRef } from "react"
+import React, { useState, forwardRef, useEffect } from "react"
 import styles from "./styles.css"
 import AppEndpointUrl, {
   links as AppEndpointUrlLinks,
@@ -75,6 +83,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
 
   const { t } = useTranslate()
   const securityAction = useFetcher()
+  const theme = useMantineTheme()
 
   const [secretKeyRequired, setSecretKeyRequired] = useState<boolean>(
     Boolean(endpoint.gatewaySettings.secretKeyRequired),
@@ -114,6 +123,29 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
   const [whitelistMethodsDropdown, setWhitelistMethodsDropdown] = useState<string>("")
   const [whitelistMethodsError, setWhitelistMethodsError] = useState<boolean>(false)
 
+  const [isSecretKeySaveShown, setIsSecretKeySaveShown] = useState<boolean>(false)
+  const [isApprovedChainsSaveShown, setIsApprovedChainsSaveShown] =
+    useState<boolean>(false)
+  const [isWhitelistUserAgentsSaveShown, setIsWhitelistUserAgentsSaveShown] =
+    useState<boolean>(false)
+  const [isWhitelistOriginsSaveShown, setIsWhitelistOriginsSaveShown] =
+    useState<boolean>(false)
+  const [isWhitelistContractsSaveShown, setIsWhitelistContractsSaveShown] =
+    useState<boolean>(false)
+  const [isWhitelistMethodsSaveShown, setIsWhitelistMethodsSaveShown] =
+    useState<boolean>(false)
+
+  useEffect(() => {
+    if (navigation.state === "idle") {
+      setIsSecretKeySaveShown(false)
+      setIsApprovedChainsSaveShown(false)
+      setIsWhitelistUserAgentsSaveShown(false)
+      setIsWhitelistOriginsSaveShown(false)
+      setIsWhitelistContractsSaveShown(false)
+      setIsWhitelistMethodsSaveShown(false)
+    }
+  }, [navigation])
+
   const removeFromArray = (item: string, arr: string[]) => arr.filter((i) => i !== item)
   const addIfMissing = (item: string, arr: string[]) => {
     if (arr.indexOf(item) !== -1) {
@@ -133,31 +165,74 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
         <Card>
           <div className="pokt-card-header">
             <h3>{t.security.headings.secretKey}</h3>
-            <Switch
-              aria-label={t.security.secretSwitchAria}
-              checked={secretKeyRequired}
-              id="secretRequired"
-              name="secretKeyRequired"
-              onChange={(event) => setSecretKeyRequired(event.currentTarget.checked)}
-            />
+            {isSecretKeySaveShown ? (
+              <Button
+                type="submit"
+                variant="filled"
+                onClick={() => {
+                  trackEvent(AmplitudeEvents.SecuritySettingsUpdate)
+                }}
+              >
+                {t.common.save}
+                {navigation.state !== "idle" && (
+                  <Loader color={theme.colors.blue[5]} ml={8} size="xs" />
+                )}
+              </Button>
+            ) : null}
           </div>
           <div>
             <Text size="xs">{t.security.secretKeyText}</Text>
+            <Flex mt={16} justify="space-between">
+              <Text size="xs">Private Secret Key Required</Text>
+              <Switch
+                aria-label={t.security.secretSwitchAria}
+                checked={secretKeyRequired}
+                id="secretRequired"
+                name="secretKeyRequired"
+                onChange={(event) => {
+                  setSecretKeyRequired(event.currentTarget.checked)
+                  setIsSecretKeySaveShown(true)
+                }}
+                sx={{
+                  cursor: "pointer",
+                }}
+              />
+            </Flex>
           </div>
         </Card>
+      </securityAction.Form>
+      <securityAction.Form action={`/api/${appId}/settings`} method="post">
+        <input name="appID" type="hidden" value={appId} />
         <Card>
           <div className="pokt-card-header">
             <h3>{t.security.headings.approvedChains}</h3>
+            {isApprovedChainsSaveShown ? (
+              <Button
+                type="submit"
+                variant="filled"
+                onClick={() => {
+                  trackEvent(AmplitudeEvents.SecuritySettingsUpdate)
+                }}
+              >
+                {t.common.save}
+                {navigation.state !== "idle" && (
+                  <Loader color={theme.colors.blue[5]} ml={8} size="xs" />
+                )}
+              </Button>
+            ) : null}
+          </div>
+          <Flex justify="space-between">
+            <Text size="sm">{t.security.approvedChainsText}</Text>
             <ChainsDropdown
               chains={blockchains}
               checkboxData={whitelistBlockchains}
               endpoint={endpoint}
               onChange={(val: string) => {
                 setWhitelistBlockchains(addIfMissing(val, whitelistBlockchains))
+                setIsApprovedChainsSaveShown(true)
               }}
             />
-          </div>
-          <Text size="sm">{t.security.approvedChainsText}</Text>
+          </Flex>
 
           {whitelistBlockchains.map((item: string) => {
             const blockchain: Blockchain | undefined | null = blockchains.find(
@@ -171,6 +246,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                   chain={blockchain}
                   handleRemove={() => {
                     setWhitelistBlockchains((current) => removeFromArray(item, current))
+                    setIsApprovedChainsSaveShown(true)
                   }}
                   hasDelete={true}
                   value={blockchain?.description ?? ""}
@@ -180,9 +256,26 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             )
           })}
         </Card>
+      </securityAction.Form>
+      <securityAction.Form action={`/api/${appId}/settings`} method="post">
+        <input name="appID" type="hidden" value={appId} />
         <Card>
           <div className="pokt-card-header">
             <h3>{t.security.headings.userAgents}</h3>
+            {isWhitelistUserAgentsSaveShown ? (
+              <Button
+                type="submit"
+                variant="filled"
+                onClick={() => {
+                  trackEvent(AmplitudeEvents.SecuritySettingsUpdate)
+                }}
+              >
+                {t.common.save}
+                {navigation.state !== "idle" && (
+                  <Loader color={theme.colors.blue[5]} ml={8} size="xs" />
+                )}
+              </Button>
+            ) : null}
           </div>
           <Text size="sm">{t.security.whitelistUserAgentsText}</Text>
           <div className="flexGrowRow">
@@ -199,13 +292,14 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
               aria-label={t.security.userAgentAria}
               size="xs"
               type="button"
-              variant="filled"
+              variant="outline"
               onClick={() => {
                 if (whitelistUserAgentsElement !== "") {
                   setWhitelistUserAgents(
                     addIfMissing(whitelistUserAgentsElement, whitelistUserAgents),
                   )
                   setWhitelistUserAgentsElement("")
+                  setIsWhitelistUserAgentsSaveShown(true)
                 }
               }}
             >
@@ -220,6 +314,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                   <Delete
                     onDelete={() => {
                       setWhitelistUserAgents((current) => removeFromArray(item, current))
+                      setIsWhitelistUserAgentsSaveShown(true)
                     }}
                   />
                 </TextInput>
@@ -228,9 +323,26 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             ))}
           </div>
         </Card>
+      </securityAction.Form>
+      <securityAction.Form action={`/api/${appId}/settings`} method="post">
+        <input name="appID" type="hidden" value={appId} />
         <Card>
           <div className="pokt-card-header">
             <h3>{t.security.headings.origins}</h3>
+            {isWhitelistOriginsSaveShown ? (
+              <Button
+                type="submit"
+                variant="filled"
+                onClick={() => {
+                  trackEvent(AmplitudeEvents.SecuritySettingsUpdate)
+                }}
+              >
+                {t.common.save}
+                {navigation.state !== "idle" && (
+                  <Loader color={theme.colors.blue[5]} ml={8} size="xs" />
+                )}
+              </Button>
+            ) : null}
           </div>
           <Text size="sm">{t.security.whitelistOriginsText}</Text>
           <div className="flexGrowRow">
@@ -246,13 +358,14 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
               aria-label={t.security.OriginAria}
               size="xs"
               type="button"
-              variant="filled"
+              variant="outline"
               onClick={() => {
                 if (whitelistOriginsElement !== "") {
                   setWhitelistOrigins(
                     addIfMissing(whitelistOriginsElement, whitelistOrigins),
                   )
                   setWhitelistOriginsElement("")
+                  setIsWhitelistOriginsSaveShown(true)
                 }
               }}
             >
@@ -267,6 +380,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                   <Delete
                     onDelete={() => {
                       setWhitelistOrigins((current) => removeFromArray(item, current))
+                      setIsWhitelistOriginsSaveShown(true)
                     }}
                   />
                 </TextInput>
@@ -275,9 +389,26 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             ))}
           </div>
         </Card>
+      </securityAction.Form>
+      <securityAction.Form action={`/api/${appId}/settings`} method="post">
+        <input name="appID" type="hidden" value={appId} />
         <Card>
           <div className="pokt-card-header">
             <h3>{t.security.headings.contracts}</h3>
+            {isWhitelistContractsSaveShown ? (
+              <Button
+                type="submit"
+                variant="filled"
+                onClick={() => {
+                  trackEvent(AmplitudeEvents.SecuritySettingsUpdate)
+                }}
+              >
+                {t.common.save}
+                {navigation.state !== "idle" && (
+                  <Loader color={theme.colors.blue[5]} ml={8} size="xs" />
+                )}
+              </Button>
+            ) : null}
           </div>
           <Text size="sm">{t.security.whitelistContractsText}</Text>
           <div className="flexGrowRow">
@@ -298,7 +429,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
               aria-label={t.security.contractAria}
               size="xs"
               type="button"
-              variant="filled"
+              variant="outline"
               onClick={() => {
                 if (whitelistContractsInput === "" || whitelistContractsDropdown === "") {
                   setWhitelistContractsError(true)
@@ -313,6 +444,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                   ])
                   setWhitelistContractsInput("")
                   setWhitelistContractsDropdown("")
+                  setIsWhitelistContractsSaveShown(true)
                 }
               }}
             >
@@ -339,6 +471,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                       setWhitelistContracts((current) =>
                         removeFromArrayByValue(item.inputValue, "inputValue", current),
                       )
+                      setIsWhitelistContractsSaveShown(true)
                     }}
                     value={item.inputValue}
                   />
@@ -353,9 +486,26 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             })}
           </div>
         </Card>
+      </securityAction.Form>
+      <securityAction.Form action={`/api/${appId}/settings`} method="post">
+        <input name="appID" type="hidden" value={appId} />
         <Card>
           <div className="pokt-card-header">
             <h3>{t.security.headings.methods}</h3>
+            {isWhitelistMethodsSaveShown ? (
+              <Button
+                type="submit"
+                variant="filled"
+                onClick={() => {
+                  trackEvent(AmplitudeEvents.SecuritySettingsUpdate)
+                }}
+              >
+                {t.common.save}
+                {navigation.state !== "idle" && (
+                  <Loader color={theme.colors.blue[5]} ml={8} size="xs" />
+                )}
+              </Button>
+            ) : null}
           </div>
           <Text size="sm">{t.security.whitelistMethodsText}</Text>
           <div className="flexGrowRow">
@@ -377,7 +527,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
               aria-label={t.security.methodAria}
               size="xs"
               type="button"
-              variant="filled"
+              variant="outline"
               onClick={() => {
                 if (whitelistMethodsInput === "" || whitelistMethodsDropdown === "") {
                   setWhitelistMethodsError(true)
@@ -389,6 +539,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                   ])
                   setWhitelistMethodsInput("")
                   setWhitelistMethodsDropdown("")
+                  setIsWhitelistMethodsSaveShown(true)
                 }
               }}
             >
@@ -416,6 +567,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                       setWhitelistMethods((current) =>
                         removeFromArrayByValue(item.inputValue, "inputValue", current),
                       )
+                      setIsWhitelistMethodsSaveShown(true)
                     }}
                     value={item.inputValue}
                   />
@@ -430,16 +582,6 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             })}
           </div>
         </Card>
-        <Button
-          type="submit"
-          variant="filled"
-          onClick={() => {
-            trackEvent(AmplitudeEvents.SecuritySettingsUpdate)
-          }}
-        >
-          {t.common.save}
-          {navigation.state !== "idle" && <Loader color="black" ml={8} size="xs" />}
-        </Button>
       </securityAction.Form>
     </div>
   )

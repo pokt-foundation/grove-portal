@@ -403,14 +403,14 @@ const schema = {
   },
   security: {
     headings: {
-      secretKey: "Private Secret Key Required",
+      secretKey: "Private Secret Key",
       approvedChains: "Approved Chains",
       userAgents: "Whitelist User-Agents",
       origins: "Whitelist Origins",
       contracts: "Whitelist Contracts",
       methods: "Whitelist Methods",
     },
-    secretSwitchAria: "Private key required",
+    secretSwitchAria: "Private Secret Key",
     userAgentPlaceholder: "Type user-agent here",
     userAgentAria: "Add user-agents to white list",
     defaultSelectChainText: "Select Chain",

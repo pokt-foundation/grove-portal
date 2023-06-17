@@ -74,7 +74,7 @@ export default function App() {
               <Nav ariaLabel="Main" routes={routes} />
             </Header>
             <main>
-              <Container fluid className="container">
+              <Container className="container" size="lg">
                 <Outlet />
               </Container>
             </main>

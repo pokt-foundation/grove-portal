@@ -1,7 +1,12 @@
 import { expect } from "vitest"
 import AppsView from "./view"
 import { render, screen } from "test/helpers"
-import { endpoints, profileMockData } from "~/models/portal/portal.data"
+import {
+  endpoints,
+  pendingEndpoints,
+  profileMockData,
+  testPortalUserId,
+} from "~/models/portal/portal.data"
 import { relayMetricPerWeek } from "~/models/relaymeter/relaymeter.data"
 
 const userId = "mock"
@@ -13,6 +18,8 @@ describe("<AppsView />", () => {
       <AppsView
         dailyNetworkRelaysPerWeek={relayMetricPerWeek}
         endpoints={null}
+        pendingEndpoints={pendingEndpoints}
+        portalUserId={testPortalUserId}
         profile={profileMockData}
         searchParams={new URLSearchParams({ error: "false" })}
         userId={userId}
@@ -28,6 +35,8 @@ describe("<AppsView />", () => {
       <AppsView
         dailyNetworkRelaysPerWeek={relayMetricPerWeek}
         endpoints={endpoints}
+        pendingEndpoints={pendingEndpoints}
+        portalUserId={testPortalUserId}
         profile={profileMockData}
         searchParams={new URLSearchParams({ error: "false" })}
         userId={userId}
@@ -43,6 +52,8 @@ describe("<AppsView />", () => {
       <AppsView
         dailyNetworkRelaysPerWeek={relayMetricPerWeek}
         endpoints={endpoints}
+        pendingEndpoints={pendingEndpoints}
+        portalUserId={testPortalUserId}
         profile={profileMockData}
         searchParams={new URLSearchParams({ error: "false" })}
         userId={userIdGod}
@@ -57,6 +68,8 @@ describe("<AppsView />", () => {
       <AppsView
         dailyNetworkRelaysPerWeek={relayMetricPerWeek}
         endpoints={endpoints}
+        pendingEndpoints={pendingEndpoints}
+        portalUserId={testPortalUserId}
         profile={profileMockData}
         searchParams={new URLSearchParams({ error: "true" })}
         userId={userIdGod}

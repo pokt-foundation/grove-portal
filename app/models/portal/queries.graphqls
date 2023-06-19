@@ -16,6 +16,7 @@ query endpoints {
       roleName
       email
       accepted
+      userID
     }
   }
   admin: endpoints(filter: ADMIN) {
@@ -38,25 +39,6 @@ query endpoints {
     }
   }
   member: endpoints(filter: MEMBER) {
-    appLimits {
-      dailyLimit
-      planType
-      publicKey
-    }
-    createdAt
-    gigastake
-    id
-    name
-    status
-    updatedAt
-    userId
-    users {
-      roleName
-      email
-      accepted
-    }
-  }
-  pending: endpoints(pending: true) {
     appLimits {
       dailyLimit
       planType
@@ -125,6 +107,7 @@ query endpoint($endpointID: ID!) {
     updatedAt
     userId
     users {
+      userID
       roleName
       email
       accepted
@@ -132,6 +115,39 @@ query endpoint($endpointID: ID!) {
     integrations {
       covalentAPIKeyFree
       covalentAPIKeyPaid
+    }
+  }
+}
+
+query endpointUser($endpointID: ID!) {
+  endpoint(endpointID: $endpointID) {
+    users {
+      userID
+      roleName
+      email
+      accepted
+    }
+  }
+}
+
+query pendingEndpoints($portalUserID: ID!) {
+  pendingEndpoints(portalUserID: $portalUserID) {
+    appLimits {
+      dailyLimit
+      planType
+      publicKey
+    }
+    createdAt
+    gigastake
+    id
+    name
+    status
+    updatedAt
+    userId
+    users {
+      roleName
+      email
+      accepted
     }
   }
 }

@@ -10,6 +10,7 @@ const schema = {
     goBack: "go back",
     cancel: "Cancel",
     unavailable: "Currently unavailable",
+    reset: "Reset",
   },
   search: {
     label: "Search",

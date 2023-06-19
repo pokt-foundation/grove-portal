@@ -10,6 +10,7 @@ const schema = {
     goBack: "go back -fr",
     cancel: "Cancel -fr",
     unavailable: "Currently unavailable -fr",
+    reset: "Reset -fr",
   },
   search: {
     label: "Search -fr",

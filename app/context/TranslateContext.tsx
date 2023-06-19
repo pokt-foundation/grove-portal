@@ -28,6 +28,7 @@ interface TranslationData {
     goBack: string
     cancel: string
     unavailable: string
+    reset: string
   }
   search: {
     label: string

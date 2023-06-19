@@ -166,18 +166,38 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
           <div className="pokt-card-header">
             <h3>{t.security.headings.secretKey}</h3>
             {isSecretKeySaveShown ? (
-              <Button
-                type="submit"
-                variant="filled"
-                onClick={() => {
-                  trackEvent(AmplitudeEvents.SecuritySettingsUpdate)
-                }}
-              >
-                {t.common.save}
-                {navigation.state !== "idle" && (
-                  <Loader color={theme.colors.blue[5]} ml={8} size="xs" />
-                )}
-              </Button>
+              <Flex>
+                <Button
+                  mr=".5em"
+                  px="2em"
+                  size="sm"
+                  variant="outline"
+                  onClick={() => {
+                    setSecretKeyRequired(
+                      Boolean(endpoint.gatewaySettings.secretKeyRequired),
+                    )
+                    setIsSecretKeySaveShown(false)
+                  }}
+                >
+                  {t.common.reset}
+                </Button>
+                <Button
+                  type="submit"
+                  variant="filled"
+                  size="sm"
+                  sx={{
+                    padding: "0 2em",
+                  }}
+                  onClick={() => {
+                    trackEvent(AmplitudeEvents.SecuritySettingsUpdate)
+                  }}
+                >
+                  {t.common.save}
+                  {navigation.state !== "idle" && (
+                    <Loader color={theme.colors.blue[5]} ml={8} size="xs" />
+                  )}
+                </Button>
+              </Flex>
             ) : null}
           </div>
           <div>
@@ -207,18 +227,38 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
           <div className="pokt-card-header">
             <h3>{t.security.headings.approvedChains}</h3>
             {isApprovedChainsSaveShown ? (
-              <Button
-                type="submit"
-                variant="filled"
-                onClick={() => {
-                  trackEvent(AmplitudeEvents.SecuritySettingsUpdate)
-                }}
-              >
-                {t.common.save}
-                {navigation.state !== "idle" && (
-                  <Loader color={theme.colors.blue[5]} ml={8} size="xs" />
-                )}
-              </Button>
+              <Flex>
+                <Button
+                  mr=".5em"
+                  px="2em"
+                  size="sm"
+                  variant="outline"
+                  onClick={() => {
+                    setWhitelistBlockchains(
+                      endpoint.gatewaySettings.whitelistBlockchains as string[],
+                    )
+                    setIsApprovedChainsSaveShown(false)
+                  }}
+                >
+                  {t.common.reset}
+                </Button>
+                <Button
+                  type="submit"
+                  variant="filled"
+                  size="sm"
+                  sx={{
+                    padding: "0 2em",
+                  }}
+                  onClick={() => {
+                    trackEvent(AmplitudeEvents.SecuritySettingsUpdate)
+                  }}
+                >
+                  {t.common.save}
+                  {navigation.state !== "idle" && (
+                    <Loader color={theme.colors.blue[5]} ml={8} size="xs" />
+                  )}
+                </Button>
+              </Flex>
             ) : null}
           </div>
           <Flex justify="space-between">
@@ -263,18 +303,38 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
           <div className="pokt-card-header">
             <h3>{t.security.headings.userAgents}</h3>
             {isWhitelistUserAgentsSaveShown ? (
-              <Button
-                type="submit"
-                variant="filled"
-                onClick={() => {
-                  trackEvent(AmplitudeEvents.SecuritySettingsUpdate)
-                }}
-              >
-                {t.common.save}
-                {navigation.state !== "idle" && (
-                  <Loader color={theme.colors.blue[5]} ml={8} size="xs" />
-                )}
-              </Button>
+              <Flex>
+                <Button
+                  mr=".5em"
+                  px="2em"
+                  size="sm"
+                  variant="outline"
+                  onClick={() => {
+                    setWhitelistUserAgents(
+                      endpoint.gatewaySettings.whitelistUserAgents as string[],
+                    )
+                    setIsWhitelistUserAgentsSaveShown(false)
+                  }}
+                >
+                  {t.common.reset}
+                </Button>
+                <Button
+                  type="submit"
+                  variant="filled"
+                  size="sm"
+                  sx={{
+                    padding: "0 2em",
+                  }}
+                  onClick={() => {
+                    trackEvent(AmplitudeEvents.SecuritySettingsUpdate)
+                  }}
+                >
+                  {t.common.save}
+                  {navigation.state !== "idle" && (
+                    <Loader color={theme.colors.blue[5]} ml={8} size="xs" />
+                  )}
+                </Button>
+              </Flex>
             ) : null}
           </div>
           <Text size="sm">{t.security.whitelistUserAgentsText}</Text>
@@ -330,18 +390,38 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
           <div className="pokt-card-header">
             <h3>{t.security.headings.origins}</h3>
             {isWhitelistOriginsSaveShown ? (
-              <Button
-                type="submit"
-                variant="filled"
-                onClick={() => {
-                  trackEvent(AmplitudeEvents.SecuritySettingsUpdate)
-                }}
-              >
-                {t.common.save}
-                {navigation.state !== "idle" && (
-                  <Loader color={theme.colors.blue[5]} ml={8} size="xs" />
-                )}
-              </Button>
+              <Flex>
+                <Button
+                  mr=".5em"
+                  px="2em"
+                  size="sm"
+                  variant="outline"
+                  onClick={() => {
+                    setWhitelistOrigins(
+                      endpoint.gatewaySettings.whitelistOrigins as string[],
+                    )
+                    setIsWhitelistOriginsSaveShown(false)
+                  }}
+                >
+                  {t.common.reset}
+                </Button>
+                <Button
+                  type="submit"
+                  variant="filled"
+                  size="sm"
+                  sx={{
+                    padding: "0 2em",
+                  }}
+                  onClick={() => {
+                    trackEvent(AmplitudeEvents.SecuritySettingsUpdate)
+                  }}
+                >
+                  {t.common.save}
+                  {navigation.state !== "idle" && (
+                    <Loader color={theme.colors.blue[5]} ml={8} size="xs" />
+                  )}
+                </Button>
+              </Flex>
             ) : null}
           </div>
           <Text size="sm">{t.security.whitelistOriginsText}</Text>
@@ -396,18 +476,41 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
           <div className="pokt-card-header">
             <h3>{t.security.headings.contracts}</h3>
             {isWhitelistContractsSaveShown ? (
-              <Button
-                type="submit"
-                variant="filled"
-                onClick={() => {
-                  trackEvent(AmplitudeEvents.SecuritySettingsUpdate)
-                }}
-              >
-                {t.common.save}
-                {navigation.state !== "idle" && (
-                  <Loader color={theme.colors.blue[5]} ml={8} size="xs" />
-                )}
-              </Button>
+              <Flex>
+                <Button
+                  mr=".5em"
+                  px="2em"
+                  size="sm"
+                  variant="outline"
+                  onClick={() => {
+                    setWhitelistContracts(
+                      formatData<WhitelistContractType>(
+                        endpoint.gatewaySettings?.whitelistContracts,
+                        "contracts",
+                      ),
+                    )
+                    setIsWhitelistContractsSaveShown(false)
+                  }}
+                >
+                  {t.common.reset}
+                </Button>
+                <Button
+                  type="submit"
+                  variant="filled"
+                  size="sm"
+                  sx={{
+                    padding: "0 2em",
+                  }}
+                  onClick={() => {
+                    trackEvent(AmplitudeEvents.SecuritySettingsUpdate)
+                  }}
+                >
+                  {t.common.save}
+                  {navigation.state !== "idle" && (
+                    <Loader color={theme.colors.blue[5]} ml={8} size="xs" />
+                  )}
+                </Button>
+              </Flex>
             ) : null}
           </div>
           <Text size="sm">{t.security.whitelistContractsText}</Text>
@@ -493,18 +596,41 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
           <div className="pokt-card-header">
             <h3>{t.security.headings.methods}</h3>
             {isWhitelistMethodsSaveShown ? (
-              <Button
-                type="submit"
-                variant="filled"
-                onClick={() => {
-                  trackEvent(AmplitudeEvents.SecuritySettingsUpdate)
-                }}
-              >
-                {t.common.save}
-                {navigation.state !== "idle" && (
-                  <Loader color={theme.colors.blue[5]} ml={8} size="xs" />
-                )}
-              </Button>
+              <Flex>
+                <Button
+                  mr=".5em"
+                  px="2em"
+                  size="sm"
+                  variant="outline"
+                  onClick={() => {
+                    setWhitelistMethods(
+                      formatData<WhitelistMethodType>(
+                        endpoint.gatewaySettings?.whitelistMethods,
+                        "methods",
+                      ),
+                    )
+                    setIsWhitelistMethodsSaveShown(false)
+                  }}
+                >
+                  {t.common.reset}
+                </Button>
+                <Button
+                  type="submit"
+                  variant="filled"
+                  size="sm"
+                  sx={{
+                    padding: "0 2em",
+                  }}
+                  onClick={() => {
+                    trackEvent(AmplitudeEvents.SecuritySettingsUpdate)
+                  }}
+                >
+                  {t.common.save}
+                  {navigation.state !== "idle" && (
+                    <Loader color={theme.colors.blue[5]} ml={8} size="xs" />
+                  )}
+                </Button>
+              </Flex>
             ) : null}
           </div>
           <Text size="sm">{t.security.whitelistMethodsText}</Text>

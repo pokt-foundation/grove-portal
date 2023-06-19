@@ -183,12 +183,12 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                   {t.common.reset}
                 </Button>
                 <Button
-                  type="submit"
-                  variant="filled"
                   size="sm"
                   sx={{
                     padding: "0 2em",
                   }}
+                  type="submit"
+                  variant="filled"
                   onClick={() => {
                     trackEvent(AmplitudeEvents.SecuritySettingsUpdate)
                   }}
@@ -203,19 +203,19 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
           </div>
           <div>
             <Text size="xs">{t.security.secretKeyText}</Text>
-            <Flex mt={16} justify="space-between">
+            <Flex justify="space-between" mt={16}>
               <Text size="xs">Private Secret Key Required</Text>
               <Switch
                 aria-label={t.security.secretSwitchAria}
                 checked={secretKeyRequired}
                 id="secretRequired"
                 name="secretKeyRequired"
+                sx={{
+                  cursor: "pointer",
+                }}
                 onChange={(event) => {
                   setSecretKeyRequired(event.currentTarget.checked)
                   setIsSecretKeySaveShown(true)
-                }}
-                sx={{
-                  cursor: "pointer",
                 }}
               />
             </Flex>
@@ -244,12 +244,12 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                   {t.common.reset}
                 </Button>
                 <Button
-                  type="submit"
-                  variant="filled"
                   size="sm"
                   sx={{
                     padding: "0 2em",
                   }}
+                  type="submit"
+                  variant="filled"
                   onClick={() => {
                     trackEvent(AmplitudeEvents.SecuritySettingsUpdate)
                   }}
@@ -320,12 +320,12 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                   {t.common.reset}
                 </Button>
                 <Button
-                  type="submit"
-                  variant="filled"
                   size="sm"
                   sx={{
                     padding: "0 2em",
                   }}
+                  type="submit"
+                  variant="filled"
                   onClick={() => {
                     trackEvent(AmplitudeEvents.SecuritySettingsUpdate)
                   }}
@@ -364,7 +364,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                 }
               }}
             >
-              <IconPlus height="18px" width="18px" style={{ marginRight: "10px" }} /> Add
+              <IconPlus height="18px" style={{ marginRight: "10px" }} width="18px" /> Add
             </Button>
           </div>
           <div>
@@ -407,12 +407,12 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                   {t.common.reset}
                 </Button>
                 <Button
-                  type="submit"
-                  variant="filled"
                   size="sm"
                   sx={{
                     padding: "0 2em",
                   }}
+                  type="submit"
+                  variant="filled"
                   onClick={() => {
                     trackEvent(AmplitudeEvents.SecuritySettingsUpdate)
                   }}
@@ -450,7 +450,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                 }
               }}
             >
-              <IconPlus height="18px" width="18px" style={{ marginRight: "10px" }} /> Add
+              <IconPlus height="18px" style={{ marginRight: "10px" }} width="18px" /> Add
             </Button>
           </div>
           <div>
@@ -496,12 +496,12 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                   {t.common.reset}
                 </Button>
                 <Button
-                  type="submit"
-                  variant="filled"
                   size="sm"
                   sx={{
                     padding: "0 2em",
                   }}
+                  type="submit"
+                  variant="filled"
                   onClick={() => {
                     trackEvent(AmplitudeEvents.SecuritySettingsUpdate)
                   }}
@@ -552,7 +552,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                 }
               }}
             >
-              <IconPlus height="18px" width="18px" style={{ marginRight: "10px" }} /> Add
+              <IconPlus height="18px" style={{ marginRight: "10px" }} width="18px" /> Add
             </Button>
           </div>
           {whitelistContractsError && (
@@ -616,12 +616,12 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                   {t.common.reset}
                 </Button>
                 <Button
-                  type="submit"
-                  variant="filled"
                   size="sm"
                   sx={{
                     padding: "0 2em",
                   }}
+                  type="submit"
+                  variant="filled"
                   onClick={() => {
                     trackEvent(AmplitudeEvents.SecuritySettingsUpdate)
                   }}
@@ -670,7 +670,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                 }
               }}
             >
-              <IconPlus height="18px" width="18px" style={{ marginRight: "10px" }} /> Add
+              <IconPlus height="18px" style={{ marginRight: "10px" }} width="18px" /> Add
             </Button>
           </div>
 

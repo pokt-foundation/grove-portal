@@ -373,12 +373,7 @@ const schema = {
       "On September 27th our unlimited free tier plan is coming to an end. All Free-tier applications will be rate limited at 250K relays per day.",
       "As an early customer, we've got you covered. You will be grandfathered into a legacy free tier plan for a limited time which will grant your app uniterupted service.",
       <>
-        Please view our
-        <Link className="pokt-link" to="/faq">
-          {" "}
-          FAQs{" "}
-        </Link>
-        for more information and
+        For more information
         <Link className="pokt-link" to="/contact-sales">
           {" "}
           contact us{" "}

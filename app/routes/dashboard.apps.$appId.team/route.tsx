@@ -47,17 +47,22 @@ export const action: ActionFunction = async ({ request, params }) => {
 
   if (type === "delete") {
     const email = formData.get("email-address")
+    const portalUserId = formData.get("portal-user-id")
     const appName = formData.get("app-name")
 
-    invariant(appId, "app id not found")
-    invariant(email && typeof email === "string", "user email not found")
+    invariant(appId, "app id is not found")
+    invariant(email && typeof email === "string", "user email is not found")
+    invariant(
+      portalUserId && typeof portalUserId === "string",
+      "portal user id is not found",
+    )
 
     try {
       await sendTeamUserRemovedEmail(email, String(appName ?? "a Portal App"))
 
       await portal.deleteEndpointUser({
         endpointID: appId,
-        email: email,
+        portalUserID: portalUserId,
       })
 
       const isLeaveApp = email === user.profile._json?.email
@@ -125,13 +130,17 @@ export const action: ActionFunction = async ({ request, params }) => {
     }
   } else if (type === "updateRole") {
     const email = formData.get("email")
+    const portalUserId = formData.get("portal-user-id")
     const roleName = formData.get("roleName")
     const appName = formData.get("app-name")
     const transferOwnership = formData.get("transferOwnership")
 
     invariant(roleName && typeof roleName === "string", "user role not found")
     invariant(email && typeof email === "string", "user email not found")
-
+    invariant(
+      portalUserId && typeof portalUserId === "string",
+      "portal user id is not found",
+    )
     try {
       const invertedRoleName = roleName === "MEMBER" ? RoleName.Admin : RoleName.Member
       const role = transferOwnership === "true" ? RoleName.Owner : invertedRoleName
@@ -140,6 +149,7 @@ export const action: ActionFunction = async ({ request, params }) => {
         endpointID: appId,
         input: {
           email,
+          portalUserID: portalUserId,
           roleName: role,
         },
       })

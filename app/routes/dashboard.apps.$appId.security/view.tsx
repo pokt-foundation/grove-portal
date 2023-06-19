@@ -6,6 +6,7 @@ import {
   Group,
   Flex,
   useMantineTheme,
+  IconPlus,
 } from "@pokt-foundation/pocket-blocks"
 import { useFetcher, useNavigation } from "@remix-run/react"
 import React, { useState, forwardRef, useEffect } from "react"
@@ -363,7 +364,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                 }
               }}
             >
-              +
+              <IconPlus height="18px" width="18px" style={{ marginRight: "10px" }} /> Add
             </Button>
           </div>
           <div>
@@ -449,7 +450,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                 }
               }}
             >
-              +
+              <IconPlus height="18px" width="18px" style={{ marginRight: "10px" }} /> Add
             </Button>
           </div>
           <div>
@@ -551,7 +552,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                 }
               }}
             >
-              +
+              <IconPlus height="18px" width="18px" style={{ marginRight: "10px" }} /> Add
             </Button>
           </div>
           {whitelistContractsError && (
@@ -669,7 +670,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                 }
               }}
             >
-              +
+              <IconPlus height="18px" width="18px" style={{ marginRight: "10px" }} /> Add
             </Button>
           </div>
 

@@ -8,7 +8,6 @@ import {
 } from "@remix-run/node"
 import jwt_decode from "jwt-decode"
 import { Auth0Profile } from "remix-auth-auth0"
-import invariant from "tiny-invariant"
 import { authenticator } from "./auth.server"
 import { getRequiredServerEnvVar } from "./environment"
 

@@ -41,9 +41,9 @@ export type AllAppsOutletContext = {
   endpoints: EndpointsQuery | null
 }
 
-export const loader: LoaderFunction = async ({ request }) => {
+export const loader: LoaderFunction = async ({ request, context }) => {
   const user = await requireUser(request)
-  const portal = initPortalClient(user.accessToken)
+  const portal = initPortalClient({ token: user.accessToken })
   const endpointsResponse = await portal.endpoints().catch((e) => {
     console.log(e)
   })

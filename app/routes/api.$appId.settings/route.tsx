@@ -115,7 +115,7 @@ export const action: ActionFunction = async ({ request, params }) => {
   }
 
   const user = await requireUser(request)
-  const portal = initPortalClient(user.accessToken)
+  const portal = initPortalClient({ token: user.accessToken })
   await portal.updateEndpoint({
     input: {
       id: data.appID,

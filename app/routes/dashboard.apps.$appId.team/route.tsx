@@ -39,7 +39,7 @@ export type ActionData = {
 export const action: ActionFunction = async ({ request, params }) => {
   const { appId } = params
   const user = await requireUser(request)
-  const portal = initPortalClient(user.accessToken)
+  const portal = initPortalClient({ token: user.accessToken })
   const formData = await request.formData()
   const type = formData.get("type")
 

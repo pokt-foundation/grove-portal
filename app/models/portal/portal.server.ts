@@ -2,13 +2,18 @@ import { GraphQLClient } from "graphql-request"
 import { getSdk as getSdkGen } from "~/models/portal/sdk"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 
-function initPortalClient(token?: string) {
-  let options = undefined
+type Headers = {
+  [key: string]: string
+}
 
-  if (token) {
+function initPortalClient(headers: Headers = {}): ReturnType<typeof getSdkGen> {
+  let options: { headers?: Headers } | undefined
+  const { token, ...rest } = headers
+  if (Object.keys(headers).length > 0) {
     options = {
       headers: {
-        Authorization: `Bearer ${token}`,
+        ...(token && { Authorization: `Bearer ${token}` }),
+        ...rest,
       },
     }
   }

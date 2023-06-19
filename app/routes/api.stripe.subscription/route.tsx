@@ -21,7 +21,7 @@ export const action: ActionFunction = async ({ request }) => {
   const user = await requireUser(request)
   invariant(user.profile.id && user.profile.emails, "user not found")
   const userId = await getPoktId(user.profile.id)
-  const portal = initPortalClient(user.accessToken)
+  const portal = initPortalClient({ token: user.accessToken })
   const formData = await request.formData()
   const appId = formData.get("app-id")
   const renew = formData.get("subscription-renew")

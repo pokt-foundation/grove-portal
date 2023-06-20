@@ -19,7 +19,7 @@ const CheckboxItem = forwardRef<
 >(({ checked, label, ...others }, ref) => {
   return (
     <div ref={ref} {...others}>
-      <Checkbox readOnly checked={checked} label={label} />
+      <Checkbox checked={checked} label={label} readOnly />
     </div>
   )
 })
@@ -57,19 +57,21 @@ const ChainsDropdown = ({
 
   const selectChainData = useMemo(() => {
     return chains
-      .map((chain) => ({
-        label: chain?.description ?? "",
-        value: chain?.id ?? "",
-        checked:
-          (checkboxData &&
-            checkboxData?.length &&
-            checkboxData.includes(chain?.id ?? "")) ??
-          false,
-      }))
+      .map((chain) => {
+        const isChecked =
+          checkboxData && checkboxData?.length && checkboxData.includes(chain?.id ?? "")
+
+        return {
+          label: chain?.description ?? "",
+          value: chain?.id ?? "",
+          checked: isChecked ?? false,
+          group: isChecked ? "Checked" : "Unchecked",
+        }
+      })
       .sort((a, b) => a.label.localeCompare(b.label))
   }, [chains, checkboxData])
 
-  return isInputShown || !checkboxData ? (
+  return isInputShown ? (
     <div ref={selectRef}>
       <Select
         searchable
@@ -77,6 +79,7 @@ const ChainsDropdown = ({
         aria-label="Search Network"
         data={selectChainData}
         icon={<IconSearch fill={theme.colors.blue[5]} height={18} width={18} />}
+        initiallyOpened
         itemComponent={checkboxData ? CheckboxItem : SelectItem}
         placeholder="Search Network"
         rightSectionWidth={0}
@@ -93,6 +96,9 @@ const ChainsDropdown = ({
             color: theme.colors.blue[5],
             fontWeight: 600,
             fontSize: "12px",
+          },
+          ".mantine-Select-item": {
+            cursor: "default",
           },
         })}
         onChange={onChange}

@@ -4,6 +4,7 @@ import {
   useCatch,
   useFetcher,
   useLoaderData,
+  useNavigation,
   useSearchParams,
 } from "@remix-run/react"
 import { Auth0Profile } from "remix-auth-auth0"
@@ -20,9 +21,10 @@ import { getSubscription, Stripe } from "~/models/stripe/stripe.server"
 import { getErrorMessage } from "~/utils/catchError"
 import { dayjs } from "~/utils/dayjs"
 import { getPoktId, requireUser } from "~/utils/session.server"
+import Loader, { links as LoaderLinks } from "~/components/Loader"
 
 export const links = () => {
-  return [...AppIdLayoutViewLinks()]
+  return [...AppIdLayoutViewLinks(), ...LoaderLinks()]
 }
 
 export const meta: MetaFunction = () => {
@@ -126,28 +128,32 @@ export default function AppIdLayout() {
   } = useLoaderData() as AppIdLoaderData
   const [searchParams, setSearchParams] = useSearchParams()
   const updatePlanFetcher = useFetcher()
+  const navigation = useNavigation()
 
   return (
-    <AppIdLayoutView
-      endpoint={endpoint}
-      searchParams={searchParams}
-      setSearchParams={setSearchParams}
-      subscription={subscription}
-      updatePlanFetcher={updatePlanFetcher}
-      user={user}
-    >
-      <Outlet
-        context={{
-          blockchains,
-          endpoint,
-          relaysToday,
-          relaysYesterday,
-          dailyNetworkRelaysPerPeriod,
-          subscription,
-          user,
-        }}
-      />
-    </AppIdLayoutView>
+    <>
+      {navigation.state === "loading" ? <Loader /> : null}
+      <AppIdLayoutView
+        endpoint={endpoint}
+        searchParams={searchParams}
+        setSearchParams={setSearchParams}
+        subscription={subscription}
+        updatePlanFetcher={updatePlanFetcher}
+        user={user}
+      >
+        <Outlet
+          context={{
+            blockchains,
+            endpoint,
+            relaysToday,
+            relaysYesterday,
+            dailyNetworkRelaysPerPeriod,
+            subscription,
+            user,
+          }}
+        />
+      </AppIdLayoutView>
+    </>
   )
 }
 

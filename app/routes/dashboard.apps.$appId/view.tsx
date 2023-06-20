@@ -110,6 +110,7 @@ export default function AppIdLayoutView({
       // update plan type to paid on success
       if (
         endpoint &&
+        endpoint.appLimits.planType !== PayPlanType.PayAsYouGoV0 &&
         updatePlanFetcher.state !== "submitting" &&
         updatePlanFetcher.state !== "loading"
       ) {
@@ -119,7 +120,7 @@ export default function AppIdLayoutView({
             type: PayPlanType.PayAsYouGoV0,
           },
           {
-            action: `/api/${endpoint.id}/updatePlan`,
+            action: `/api/${endpoint.id}/update-plan`,
             method: "post",
           },
         )
@@ -176,7 +177,7 @@ export default function AppIdLayoutView({
           type: PayPlanType.FreetierV0,
         },
         {
-          action: `/api/${endpoint.id}/updatePlan`,
+          action: `/api/${endpoint.id}/update-plan`,
           method: "post",
         },
       )
@@ -197,7 +198,7 @@ export default function AppIdLayoutView({
           type: PayPlanType.PayAsYouGoV0,
         },
         {
-          action: "/api/updatePlan",
+          action: `/api/${endpoint.id}/update-plan`,
           method: "post",
         },
       )

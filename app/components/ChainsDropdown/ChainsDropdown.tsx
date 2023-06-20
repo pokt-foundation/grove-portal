@@ -69,7 +69,7 @@ const ChainsDropdown = ({
       .sort((a, b) => a.label.localeCompare(b.label))
   }, [chains, checkboxData])
 
-  return isInputShown || !checkboxData ? (
+  return isInputShown ? (
     <div ref={selectRef}>
       <Select
         searchable
@@ -77,6 +77,7 @@ const ChainsDropdown = ({
         aria-label="Search Network"
         data={selectChainData}
         icon={<IconSearch fill={theme.colors.blue[5]} height={18} width={18} />}
+        initiallyOpened
         itemComponent={checkboxData ? CheckboxItem : SelectItem}
         placeholder="Search Network"
         rightSectionWidth={0}
@@ -93,6 +94,9 @@ const ChainsDropdown = ({
             color: theme.colors.blue[5],
             fontWeight: 600,
             fontSize: "12px",
+          },
+          ".mantine-Select-item": {
+            cursor: "default",
           },
         })}
         onChange={onChange}

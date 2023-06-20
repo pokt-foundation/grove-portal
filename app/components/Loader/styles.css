@@ -1,5 +1,5 @@
 .pokt-loader-wrapper {
-  position: absolute;
+  position: fixed;
   z-index: 1000;
   width: 100vw;
   height: 100vh;
@@ -22,7 +22,7 @@
 }
 
 .pokt-loader-bg {
-  position: absolute;
+  position: fixed;
   width: 100vw;
   height: 100vh;
   top: 0;

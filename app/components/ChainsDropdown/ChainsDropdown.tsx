@@ -19,7 +19,7 @@ const CheckboxItem = forwardRef<
 >(({ checked, label, ...others }, ref) => {
   return (
     <div ref={ref} {...others}>
-      <Checkbox checked={checked} label={label} readOnly />
+      <Checkbox readOnly checked={checked} label={label} />
     </div>
   )
 })
@@ -74,12 +74,12 @@ const ChainsDropdown = ({
   return isInputShown ? (
     <div ref={selectRef}>
       <Select
+        initiallyOpened
         searchable
         allowDeselect={true}
         aria-label="Search Network"
         data={selectChainData}
         icon={<IconSearch fill={theme.colors.blue[5]} height={18} width={18} />}
-        initiallyOpened
         itemComponent={checkboxData ? CheckboxItem : SelectItem}
         placeholder="Search Network"
         rightSectionWidth={0}

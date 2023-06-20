@@ -110,6 +110,7 @@ export default function AppIdLayoutView({
       // update plan type to paid on success
       if (
         endpoint &&
+        endpoint.appLimits.planType !== PayPlanType.PayAsYouGoV0 &&
         updatePlanFetcher.state !== "submitting" &&
         updatePlanFetcher.state !== "loading"
       ) {

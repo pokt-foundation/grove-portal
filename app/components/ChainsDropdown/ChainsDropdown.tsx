@@ -19,7 +19,7 @@ const CheckboxItem = forwardRef<
 >(({ checked, label, ...others }, ref) => {
   return (
     <div ref={ref} {...others}>
-      <Checkbox checked={checked} label={label} />
+      <Checkbox checked={checked} label={label} readOnly />
     </div>
   )
 })
@@ -57,15 +57,17 @@ const ChainsDropdown = ({
 
   const selectChainData = useMemo(() => {
     return chains
-      .map((chain) => ({
-        label: chain?.description ?? "",
-        value: chain?.id ?? "",
-        checked:
-          (checkboxData &&
-            checkboxData?.length &&
-            checkboxData.includes(chain?.id ?? "")) ??
-          false,
-      }))
+      .map((chain) => {
+        const isChecked =
+          checkboxData && checkboxData?.length && checkboxData.includes(chain?.id ?? "")
+
+        return {
+          label: chain?.description ?? "",
+          value: chain?.id ?? "",
+          checked: isChecked ?? false,
+          group: isChecked ? "Checked" : "Unchecked",
+        }
+      })
       .sort((a, b) => a.label.localeCompare(b.label))
   }, [chains, checkboxData])
 

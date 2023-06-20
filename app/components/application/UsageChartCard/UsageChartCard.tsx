@@ -65,7 +65,7 @@ export default function UsageChartCard({
             <Select
               data={[
                 { label: "Last 7 Days", value: "7" },
-                { label: "Last 2 Weeks", value: "14" },
+                { label: "Last 14 Days", value: "14" },
                 { label: "Last 30 Days", value: "30" },
               ]}
               defaultValue={days ? String(days) : "7"}

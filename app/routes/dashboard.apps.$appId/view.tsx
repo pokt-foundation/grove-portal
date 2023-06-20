@@ -119,7 +119,7 @@ export default function AppIdLayoutView({
             type: PayPlanType.PayAsYouGoV0,
           },
           {
-            action: `/api/${endpoint.id}/updatePlan`,
+            action: `/api/${endpoint.id}/update-plan`,
             method: "post",
           },
         )

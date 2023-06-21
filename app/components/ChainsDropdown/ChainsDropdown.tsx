@@ -5,13 +5,12 @@ import {
   Group,
   IconPlus,
   IconSearch,
-  MantineTheme,
   Select,
   Text,
   useMantineTheme,
 } from "@pokt-foundation/pocket-blocks"
 import { forwardRef, useMemo, useState } from "react"
-import { BlockchainsQuery, EndpointQuery } from "~/models/portal/sdk"
+import { BlockchainsQuery } from "~/models/portal/sdk"
 
 const CheckboxItem = forwardRef<
   HTMLDivElement,
@@ -56,12 +55,10 @@ SelectItem.displayName = "SelectItem"
 const ChainsDropdown = ({
   chains,
   checkboxData,
-  endpoint,
   onChange,
 }: {
   chains: BlockchainsQuery["blockchains"]
   checkboxData?: string[]
-  endpoint: EndpointQuery["endpoint"]
   onChange: (chain: string) => void
 }) => {
   const [isInputShown, setIsInputShown] = useState(false)

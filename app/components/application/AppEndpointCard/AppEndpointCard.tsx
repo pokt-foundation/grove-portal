@@ -112,7 +112,6 @@ export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) 
               <ChainsDropdown
                 chains={blockchains}
                 checkboxData={user.data?.preferences?.endpoints?.[app.id] || []}
-                endpoint={app}
                 onChange={handleChangeInStoredChains}
               />
             ) : (

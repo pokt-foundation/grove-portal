@@ -2,7 +2,7 @@ import {
   Anchor,
   Box,
   Button,
-  Grid,
+  Flex,
   Group,
   IconArrowUpRight,
   Text,
@@ -143,9 +143,9 @@ export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) 
               />
             )
           })}
-        <Grid
+        <Flex
           align="center"
-          dir="column"
+          direction="column"
           justify="space-between"
           sx={{
             margin: "2em 0 0",
@@ -153,7 +153,7 @@ export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) 
             borderTop: "1px solid #2F373E",
           }}
         >
-          <Grid align="center" justify="space-between" m={0} w="100%">
+          <Flex align="center" justify="space-between" m={0} w="100%">
             <Group spacing={4}>
               <Text size="lg" weight={600}>
                 Your Data API
@@ -173,7 +173,7 @@ export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) 
                 <IconArrowUpRight fill={theme?.colors?.blue[5]} height={18} width={18} />
               </Button>
             </Anchor>
-          </Grid>
+          </Flex>
           <Box>
             <Text mb={0}>URL</Text>
             <TextInput
@@ -205,7 +205,7 @@ export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) 
               request.
             </Text>
           </Box>
-        </Grid>
+        </Flex>
       </Card>
     </div>
   )

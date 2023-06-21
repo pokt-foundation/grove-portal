@@ -344,9 +344,10 @@ const schema = {
     contractAria: "Add contract selections to the whitelist",
     contractError:
       "You must select a chain and have a value to add to the methods whitelist.",
-      contractPlaceholder: "Type the contract address here",
+    contractPlaceholder: "Type the contract address here",
     methodAria: "Add method selections to the whitelist",
-    methodError: "You must select a chain and have a value to add to the methods whitelist.",
+    methodError:
+      "You must select a chain and have a value to add to the methods whitelist.",
     methodPlaceholder: "Type the method here",
     secretKeyText:
       "To maximize the security of your application, you should activate the private secret key for all requests and enable the use of whitelisted user-agents and origins.",

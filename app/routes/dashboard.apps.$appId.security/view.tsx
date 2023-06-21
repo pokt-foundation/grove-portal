@@ -530,6 +530,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
               onChange={(e) => {
                 setWhitelistContractsInput(e.target.value)
               }}
+              placeholder={t.security.contractPlaceholder}
             />
             {whitelistContractsInput !== "" && whitelistContractsDropdown !== "" ? (
               <Button
@@ -656,6 +657,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
               onChange={(e) => {
                 setWhitelistMethodsInput(e.target.value)
               }}
+              placeholder={t.security.methodPlaceholder}
             />
             {whitelistMethodsInput !== "" && whitelistMethodsDropdown !== "" ? (
               <Button

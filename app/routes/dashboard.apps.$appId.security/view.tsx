@@ -210,9 +210,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                 checked={secretKeyRequired}
                 id="secretRequired"
                 name="secretKeyRequired"
-                sx={{
-                  cursor: "pointer",
-                }}
+                styles={{ track: { cursor: "pointer" } }}
                 onChange={(event) => {
                   setSecretKeyRequired(event.currentTarget.checked)
                   setIsSecretKeySaveShown(true)

@@ -1,6 +1,5 @@
 import { Link } from "@remix-run/react"
 import { PayPlanType } from "~/models/portal/sdk"
-import { FREE_TIER_MAX_RELAYS } from "~/utils/pocketUtils"
 
 const schema = {
   common: {
@@ -38,82 +37,6 @@ const schema = {
     default: "Default Error Message",
     browser: "Browser Error Message",
     server: "Server Error Message",
-  },
-  faq: {
-    title: "Pocket Portal",
-    subtitle: "FAQs",
-    faqs: [
-      {
-        question: "What is the Pocket Portal?",
-        answer:
-          'The Pocket Portal is a browser-based interface where developers can create ("mint") a Pocket endpoint for use in their applications, utilizing a generous free tier of relays and scaling up as needed. Portal users can also monitor network performance.',
-      },
-      {
-        question: "Which blockchains can I connect to?",
-        answer: (
-          <>
-            The Pocket Portal currently supports creating an endpoint for dozens of
-            chains, including Ethereum, Harmony, Binance Smart Chain, Avalanche, Fuse, and{" "}
-            <a
-              href="https://docs.pokt.network/supported-blockchains/"
-              rel="noreferrer"
-              target="_blank"
-            >
-              many more
-            </a>
-            .
-          </>
-        ),
-      },
-      {
-        question: "How can this be free?",
-        answer: `The Pocket Network provides bandwidth to decentralized applications that stake POKT. For the Pocket Portal's free tier, the Pocket Network Foundation has staked POKT on behalf of anyone who signs up to the Portal for up to ${FREE_TIER_MAX_RELAYS.toLocaleString(
-          "en-US",
-        )} relays per day.`,
-      },
-      {
-        question: "How many endpoints can I create?",
-        answer:
-          "The Pocket Portal currently allows a user to create blockchain-specific endpoints for any chain served via the Portal. These endpoints can each be monitored as a single Application allowing for cross-chain analytics.",
-      },
-      {
-        question: "What’s the difference between an Application and an Endpoint?",
-        answer:
-          "The Portal organizes relay traffic through Applications, which are collections of relay traffic. An Application can consist of one or more endpoints, which are URLs that can receive RPC requests to a blockchain. A Portal account can contain multiple Applications, which can in turn contain multiple endpoints.",
-      },
-      {
-        question: "How long can I use the free option?",
-        answer: `Currently, the Foundation is operating with "good faith" guidelines, meaning that as long as you are actually using the service as intended, you can use the free tier for as long as you'd like. Our goal is to allocate this to developers who truly want to use and improve the service and grow their user base, so if you are not using the service, we reserve the right to withdraw the endpoint in order to reallocate it to another development team.`,
-      },
-      {
-        question: "What happens if I go over my daily relay limit?",
-        answer: (
-          <>
-            The Pocket Portal has overflow protection in case an app accidentally goes
-            over its daily relay limit. All surplus relays are served by our backup
-            infrastructure, ensuring no service interruptions. This is only a temporary
-            measure so you should{" "}
-            <a href="https://discord.gg/portal-rpc" rel="noreferrer" target="_blank">
-              reach out to our team
-            </a>{" "}
-            if you need more relays.
-          </>
-        ),
-      },
-      {
-        question: "How can I get [blockchain] added to the Portal?",
-        answer: (
-          <>
-            Pocket Network is expandable, and is continually adding support for new
-            chains. Community members can advocate for chains to be considered by{" "}
-            <a href="https://discord.gg/portal-rpc" rel="noreferrer" target="_blank">
-              reaching out on Discord
-            </a>{" "}
-            and posting a suggestion to our team.
-          </>
-        ),
-      },
-    ],
   },
   landing: {
     chains: [
@@ -393,8 +316,7 @@ const schema = {
     howIsThisCalculated: "How is this calculated?",
     modalTitle: "How is this price calculated",
     modalDescription:
-      "This formula is how Pocket portal calculates and charge you app relays monthly. If you want to learn more see our",
-    secondModalDescription: "documentation",
+      "This formula is how Pocket portal calculates and charge you app relays monthly.",
     totalDailyRelays: "Total daily relays",
     freeRelays: "free relays",
     costPerDay: "Cost per day",
@@ -451,12 +373,7 @@ const schema = {
       "On September 27th our unlimited free tier plan is coming to an end. All Free-tier applications will be rate limited at 250K relays per day.",
       "As an early customer, we've got you covered. You will be grandfathered into a legacy free tier plan for a limited time which will grant your app uniterupted service.",
       <>
-        Please view our
-        <Link className="pokt-link" to="/faq">
-          {" "}
-          FAQs{" "}
-        </Link>
-        for more information and
+        For more information
         <Link className="pokt-link" to="/contact-sales">
           {" "}
           contact us{" "}

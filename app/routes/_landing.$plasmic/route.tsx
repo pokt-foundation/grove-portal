@@ -26,9 +26,13 @@ export const meta: MetaFunction = ({ data }) => {
   }
 }
 
-export const loader: LoaderFunction = async () => {
+export const loader: LoaderFunction = async ({ params }) => {
   try {
-    const plasmicData = await PLASMIC.fetchComponentData("Homepage")
+    if (typeof params.plasmic !== "string") {
+      throw new Error("Page slug must be a string")
+    }
+
+    const plasmicData = await PLASMIC.fetchComponentData(`/${params.plasmic}`)
 
     if (!plasmicData || plasmicData.entryCompMetas.length === 0) {
       throw new Error("Unable to load page")
@@ -44,7 +48,7 @@ export const loader: LoaderFunction = async () => {
   } catch (e) {
     throw new Response("Not Found", {
       status: 404,
-      statusText: "Cannot find home page",
+      statusText: params.plasmic,
     })
   }
 }
@@ -63,6 +67,7 @@ export default function Page() {
   )
 }
 
+// handles 404
 export const CatchBoundary = () => {
   const caught = useCatch()
 
@@ -70,14 +75,4 @@ export const CatchBoundary = () => {
     return <NotFound404 />
   }
   throw new Error(`Unexpected caught response with status: ${caught.status}`)
-}
-
-export const ErrorBoundary = ({ error }: { error: Error }) => {
-  return (
-    <div>
-      <p>{error.name}</p>
-      <p>{error.message}</p>
-      <p>{error?.stack}</p>
-    </div>
-  )
 }

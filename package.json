@@ -31,6 +31,7 @@
     "@mantine/core": "^5.10.3",
     "@mantine/hooks": "^5.10.3",
     "@mantine/remix": "^5.10.3",
+    "@plasmicapp/loader-react": "^1.0.245",
     "@pokt-foundation/pocket-blocks": "^2.0.4",
     "@pokt-foundation/pocketjs-isomorphic-provider": "^1.0.0",
     "@remix-run/node": "^1.16.0",

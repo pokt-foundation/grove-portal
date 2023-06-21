@@ -103,13 +103,7 @@ export default function CalculateYourPricing({ price }: CalculateYourPriceProps)
         onClose={() => setOpen(false)}
       >
         <div className="calculate-your-pricing-modal">
-          <p>
-            {t.CalculateYourPricing.modalDescription}{" "}
-            <a href="https://docs.pokt.network/home/">
-              {t.CalculateYourPricing.secondModalDescription}
-            </a>
-            .
-          </p>
+          <p>{t.CalculateYourPricing.modalDescription}</p>
           <p className="calculate-your-pricing-formula">
             <span>
               ({t.CalculateYourPricing.totalDailyRelays} <span className="symbol">-</span>{" "}

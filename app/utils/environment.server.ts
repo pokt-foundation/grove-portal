@@ -20,6 +20,8 @@ function getClientEnv() {
     FLAG_MAINTENANCE_MODE: process.env.FLAG_MAINTENANCE_MODE,
     FLAG_MAINTENANCE_MODE_DASHBOARD: process.env.FLAG_MAINTENANCE_MODE_DASHBOARD,
     DOCS_STATUS: process.env.DOCS_STATUS,
+    PLASMIC_ID: process.env.PLASMIC_ID,
+    PLASMIC_TOKEN: process.env.PLASMIC_TOKEN,
   }
 }
 

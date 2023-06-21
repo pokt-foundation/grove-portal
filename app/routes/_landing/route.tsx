@@ -1,18 +1,7 @@
-import { Container } from "@pokt-foundation/pocket-blocks"
-import { LinksFunction } from "@remix-run/node"
 import { Outlet, useCatch } from "@remix-run/react"
-import styles from "./styles.css"
-
-export const links: LinksFunction = () => {
-  return [{ rel: "stylesheet", href: styles }]
-}
 
 export default function Landing() {
-  return (
-    <Container fluid className="container">
-      <Outlet />
-    </Container>
-  )
+  return <Outlet />
 }
 
 export const CatchBoundary = () => {

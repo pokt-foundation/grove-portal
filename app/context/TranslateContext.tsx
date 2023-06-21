@@ -56,14 +56,6 @@ interface TranslationData {
     browser: string
     server: string
   }
-  faq: {
-    title: string
-    subtitle: string
-    faqs: {
-      question: string
-      answer: string | React.ReactNode | JSX.Element
-    }[]
-  }
   landing: {
     chains: string[]
     callOutBoxText: {

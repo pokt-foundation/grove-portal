@@ -115,8 +115,8 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
     ),
   )
 
-  const [whitelistUserAgentsElement, setWhitelistUserAgentsElement] = useState<string>("")
-  const [whitelistOriginsElement, setWhitelistOriginsElement] = useState<string>("")
+  const [whitelistUserAgentsInput, setWhitelistUserAgentsInput] = useState<string>("")
+  const [whitelistOriginsInput, setWhitelistOriginsInput] = useState<string>("")
   const [whitelistContractsInput, setWhitelistContractsInput] = useState("")
   const [whitelistContractsDropdown, setWhitelistContractsDropdown] = useState<string>("")
   const [whitelistContractsError, setWhitelistContractsError] = useState<boolean>(false)
@@ -342,28 +342,31 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
               id="userAgents"
               name="whitelistUserAgentsInput"
               placeholder={t.security.userAgentPlaceholder}
-              value={whitelistUserAgentsElement}
+              value={whitelistUserAgentsInput}
               onChange={(e) => {
-                setWhitelistUserAgentsElement(e.target.value)
+                setWhitelistUserAgentsInput(e.target.value)
               }}
             />
-            <Button
-              aria-label={t.security.userAgentAria}
-              size="xs"
-              type="button"
-              variant="outline"
-              onClick={() => {
-                if (whitelistUserAgentsElement !== "") {
-                  setWhitelistUserAgents(
-                    addIfMissing(whitelistUserAgentsElement, whitelistUserAgents),
-                  )
-                  setWhitelistUserAgentsElement("")
-                  setIsWhitelistUserAgentsSaveShown(true)
-                }
-              }}
-            >
-              <IconPlus height="18px" style={{ marginRight: "10px" }} width="18px" /> Add
-            </Button>
+            {whitelistUserAgentsInput !== "" ? (
+              <Button
+                aria-label={t.security.userAgentAria}
+                size="xs"
+                type="button"
+                variant="outline"
+                onClick={() => {
+                  if (whitelistUserAgentsInput !== "") {
+                    setWhitelistUserAgents(
+                      addIfMissing(whitelistUserAgentsInput, whitelistUserAgents),
+                    )
+                    setWhitelistUserAgentsInput("")
+                    setIsWhitelistUserAgentsSaveShown(true)
+                  }
+                }}
+              >
+                <IconPlus height="18px" style={{ marginRight: "10px" }} width="18px" />{" "}
+                Add
+              </Button>
+            ) : null}
           </div>
           <div>
             {whitelistUserAgents.map((item: string) => (
@@ -428,28 +431,31 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             <TextInput
               id="userOrigins"
               placeholder={t.security.OriginPlaceholder}
-              value={whitelistOriginsElement}
+              value={whitelistOriginsInput}
               onChange={(e) => {
-                setWhitelistOriginsElement(e.target.value)
+                setWhitelistOriginsInput(e.target.value)
               }}
             />
-            <Button
-              aria-label={t.security.OriginAria}
-              size="xs"
-              type="button"
-              variant="outline"
-              onClick={() => {
-                if (whitelistOriginsElement !== "") {
-                  setWhitelistOrigins(
-                    addIfMissing(whitelistOriginsElement, whitelistOrigins),
-                  )
-                  setWhitelistOriginsElement("")
-                  setIsWhitelistOriginsSaveShown(true)
-                }
-              }}
-            >
-              <IconPlus height="18px" style={{ marginRight: "10px" }} width="18px" /> Add
-            </Button>
+            {whitelistOriginsInput !== "" ? (
+              <Button
+                aria-label={t.security.OriginAria}
+                size="xs"
+                type="button"
+                variant="outline"
+                onClick={() => {
+                  if (whitelistOriginsInput !== "") {
+                    setWhitelistOrigins(
+                      addIfMissing(whitelistOriginsInput, whitelistOrigins),
+                    )
+                    setWhitelistOriginsInput("")
+                    setIsWhitelistOriginsSaveShown(true)
+                  }
+                }}
+              >
+                <IconPlus height="18px" style={{ marginRight: "10px" }} width="18px" />{" "}
+                Add
+              </Button>
+            ) : null}
           </div>
           <div>
             {whitelistOrigins.map((item: string) => (
@@ -527,31 +533,37 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                 setWhitelistContractsInput(e.target.value)
               }}
             />
-            <Button
-              aria-label={t.security.contractAria}
-              size="xs"
-              type="button"
-              variant="outline"
-              onClick={() => {
-                if (whitelistContractsInput === "" || whitelistContractsDropdown === "") {
-                  setWhitelistContractsError(true)
-                } else {
-                  setWhitelistContractsError(false)
-                  setWhitelistContracts([
-                    ...whitelistContracts,
-                    {
-                      id: whitelistContractsDropdown,
-                      inputValue: whitelistContractsInput,
-                    },
-                  ])
-                  setWhitelistContractsInput("")
-                  setWhitelistContractsDropdown("")
-                  setIsWhitelistContractsSaveShown(true)
-                }
-              }}
-            >
-              <IconPlus height="18px" style={{ marginRight: "10px" }} width="18px" /> Add
-            </Button>
+            {whitelistContractsInput !== "" && whitelistContractsDropdown !== "" ? (
+              <Button
+                aria-label={t.security.contractAria}
+                size="xs"
+                type="button"
+                variant="outline"
+                onClick={() => {
+                  if (
+                    whitelistContractsInput === "" ||
+                    whitelistContractsDropdown === ""
+                  ) {
+                    setWhitelistContractsError(true)
+                  } else {
+                    setWhitelistContractsError(false)
+                    setWhitelistContracts([
+                      ...whitelistContracts,
+                      {
+                        id: whitelistContractsDropdown,
+                        inputValue: whitelistContractsInput,
+                      },
+                    ])
+                    setWhitelistContractsInput("")
+                    setWhitelistContractsDropdown("")
+                    setIsWhitelistContractsSaveShown(true)
+                  }
+                }}
+              >
+                <IconPlus height="18px" style={{ marginRight: "10px" }} width="18px" />{" "}
+                Add
+              </Button>
+            ) : null}
           </div>
           {whitelistContractsError && (
             <div>
@@ -648,28 +660,31 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                 setWhitelistMethodsInput(e.target.value)
               }}
             />
-            <Button
-              aria-label={t.security.methodAria}
-              size="xs"
-              type="button"
-              variant="outline"
-              onClick={() => {
-                if (whitelistMethodsInput === "" || whitelistMethodsDropdown === "") {
-                  setWhitelistMethodsError(true)
-                } else {
-                  setWhitelistMethodsError(false)
-                  setWhitelistMethods([
-                    ...whitelistMethods,
-                    { id: whitelistMethodsDropdown, inputValue: whitelistMethodsInput },
-                  ])
-                  setWhitelistMethodsInput("")
-                  setWhitelistMethodsDropdown("")
-                  setIsWhitelistMethodsSaveShown(true)
-                }
-              }}
-            >
-              <IconPlus height="18px" style={{ marginRight: "10px" }} width="18px" /> Add
-            </Button>
+            {whitelistMethodsInput !== "" && whitelistMethodsDropdown !== "" ? (
+              <Button
+                aria-label={t.security.methodAria}
+                size="xs"
+                type="button"
+                variant="outline"
+                onClick={() => {
+                  if (whitelistMethodsInput === "" || whitelistMethodsDropdown === "") {
+                    setWhitelistMethodsError(true)
+                  } else {
+                    setWhitelistMethodsError(false)
+                    setWhitelistMethods([
+                      ...whitelistMethods,
+                      { id: whitelistMethodsDropdown, inputValue: whitelistMethodsInput },
+                    ])
+                    setWhitelistMethodsInput("")
+                    setWhitelistMethodsDropdown("")
+                    setIsWhitelistMethodsSaveShown(true)
+                  }
+                }}
+              >
+                <IconPlus height="18px" style={{ marginRight: "10px" }} width="18px" />{" "}
+                Add
+              </Button>
+            ) : null}
           </div>
 
           {whitelistMethodsError && (

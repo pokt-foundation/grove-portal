@@ -301,7 +301,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             ) : null}
           </div>
           <Text size="sm">{t.security.whitelistUserAgentsText}</Text>
-          <Flex gap="md" mt="lg">
+          <Flex gap="md" mt="lg" align="center">
             <TextInput
               id="userAgents"
               name="whitelistUserAgentsInput"
@@ -340,7 +340,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
           </Flex>
           <div>
             {whitelistUserAgents.map((item: string) => (
-              <Flex align="center" key={item} w="100%">
+              <Flex align="center" key={item} mt="md" w="100%">
                 <TextInput mr="xs" readOnly value={item} w="100%"></TextInput>
                 <CopyText text={String(item)} />
                 <Delete

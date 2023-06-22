@@ -18,7 +18,8 @@ type FormatData = {
 type State = {
   secretKeyRequired: boolean
   whitelistBlockchains: string[]
-  // whitelistUserAgents: string[]
+  whitelistUserAgents: string[]
+  whitelistUserAgentsInput: string
   // whitelistOrigins: string[]
   // whitelistContracts: FormatData[]
   // whitelistMethods: FormatData[]
@@ -43,7 +44,8 @@ type State = {
 type Action =
   | { type: "SET_SECRET_KEY_REQUIRED"; payload: boolean }
   | { type: "SET_WHITELIST_BLOCKCHAINS"; payload: string[] }
-  // | { type: "SET_WHITELIST_USER_AGENTS"; payload: string[] }
+  | { type: "SET_WHITELIST_USER_AGENTS"; payload: string[] }
+  | { type: "SET_WHITELIST_USER_AGENTS_INPUT"; payload: string }
   // | { type: "SET_WHITELIST_ORIGINS"; payload: string[] }
   // | { type: "SET_WHITELIST_CONTRACTS"; payload: FormatData[] }
   // | { type: "SET_WHITELIST_METHODS"; payload: FormatData[] }
@@ -91,7 +93,8 @@ const formatData = <T extends WhitelistContractType | WhitelistMethodType>(
 const initialState = (endpoint: EndpointQuery["endpoint"]): State => ({
   secretKeyRequired: Boolean(endpoint.gatewaySettings.secretKeyRequired),
   whitelistBlockchains: endpoint.gatewaySettings.whitelistBlockchains as string[],
-  // whitelistUserAgents: endpoint.gatewaySettings?.whitelistUserAgents as string[],
+  whitelistUserAgents: endpoint.gatewaySettings?.whitelistUserAgents as string[],
+  whitelistUserAgentsInput: "",
   // whitelistOrigins: endpoint.gatewaySettings?.whitelistOrigins as string[],
   // whitelistContracts: formatData<WhitelistContractType>(
   //   endpoint.gatewaySettings?.whitelistContracts,
@@ -125,8 +128,10 @@ const reducer = (state: State, action: Action): State => {
       return { ...state, secretKeyRequired: action.payload }
     case "SET_WHITELIST_BLOCKCHAINS":
       return { ...state, whitelistBlockchains: action.payload }
-    // case "SET_WHITELIST_USER_AGENTS":
-    //   return { ...state, whitelistUserAgents: action.payload }
+    case "SET_WHITELIST_USER_AGENTS":
+      return { ...state, whitelistUserAgents: action.payload }
+    case "SET_WHITELIST_USER_AGENTS_INPUT":
+      return { ...state, whitelistUserAgentsInput: action.payload }
     // //... TODO: similar for other SET_... cases
     case "SET_SAVE_MODAL_SHOWN":
       return {

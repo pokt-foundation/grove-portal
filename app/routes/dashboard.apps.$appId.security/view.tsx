@@ -6,6 +6,8 @@ import {
   Group,
   Flex,
   useMantineTheme,
+  TextInput,
+  IconPlus,
 } from "@pokt-foundation/pocket-blocks"
 import { useFetcher, useNavigation } from "@remix-run/react"
 import { forwardRef } from "react"
@@ -21,6 +23,8 @@ import { EndpointQuery } from "~/models/portal/sdk"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import ChainsDropdown from "~/components/ChainsDropdown/ChainsDropdown"
 import React from "react"
+import CopyText from "~/components/CopyText"
+import Delete from "~/components/Delete/Delete"
 
 /* c8 ignore start */
 export const links = () => {
@@ -59,14 +63,15 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
     saveModalsShown: {
       isSecretKeySaveShown,
       isApprovedChainsSaveShown,
-      // isWhitelistUserAgentsSaveShown,
+      isWhitelistUserAgentsSaveShown,
       // isWhitelistOriginsSaveShown,
       // isWhitelistContractsSaveShown,
       // isWhitelistMethodsSaveShown,
     },
     secretKeyRequired,
     whitelistBlockchains,
-    // whitelistUserAgents,
+    whitelistUserAgents,
+    whitelistUserAgentsInput,
     // whitelistOrigins,
     // whitelistContracts,
     // whitelistMethods,
@@ -251,7 +256,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
           })}
         </Card>
       </securityAction.Form>
-      {/* <securityAction.Form action={`/api/${appId}/settings`} method="post">
+      <securityAction.Form action={`/api/${appId}/settings`} method="post">
         <input name="appID" type="hidden" value={appId} />
         <Card>
           <div className="pokt-card-header">
@@ -264,10 +269,14 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                   size="sm"
                   variant="outline"
                   onClick={() => {
-                    setWhitelistUserAgents(
-                      endpoint.gatewaySettings.whitelistUserAgents as string[],
-                    )
-                    setIsWhitelistUserAgentsSaveShown(false)
+                    dispatch({
+                      type: "SET_WHITELIST_USER_AGENTS",
+                      payload: endpoint.gatewaySettings.whitelistUserAgents as string[],
+                    })
+                    dispatch({
+                      type: "SET_SAVE_MODAL_SHOWN",
+                      payload: { modal: "isWhitelistUserAgentsSaveShown", shown: false },
+                    })
                   }}
                 >
                   {t.common.reset}
@@ -299,8 +308,12 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
               placeholder={t.security.userAgentPlaceholder}
               value={whitelistUserAgentsInput}
               onChange={(e) => {
-                setWhitelistUserAgentsInput(e.target.value)
+                dispatch({
+                  type: "SET_WHITELIST_USER_AGENTS_INPUT",
+                  payload: e.target.value,
+                })
               }}
+              w="100%"
             />
             {whitelistUserAgentsInput !== "" ? (
               <Button
@@ -309,13 +322,15 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                 type="button"
                 variant="outline"
                 onClick={() => {
-                  if (whitelistUserAgentsInput !== "") {
-                    setWhitelistUserAgents(
-                      addIfMissing(whitelistUserAgentsInput, whitelistUserAgents),
-                    )
-                    setWhitelistUserAgentsInput("")
-                    setIsWhitelistUserAgentsSaveShown(true)
-                  }
+                  dispatch({
+                    type: "SET_WHITELIST_USER_AGENTS",
+                    payload: addIfMissing(whitelistUserAgentsInput, whitelistUserAgents),
+                  })
+                  dispatch({ type: "SET_WHITELIST_USER_AGENTS_INPUT", payload: "" })
+                  dispatch({
+                    type: "SET_SAVE_MODAL_SHOWN",
+                    payload: { modal: "isWhitelistUserAgentsSaveShown", shown: true },
+                  })
                 }}
               >
                 <IconPlus height="18px" style={{ marginRight: "10px" }} width="18px" />{" "}
@@ -325,23 +340,26 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
           </div>
           <div>
             {whitelistUserAgents.map((item: string) => (
-              <div key={item} className="list">
-                <TextInput readOnly value={item}>
-                  <CopyText text={String(item)} />
-                  <Delete
-                    onDelete={() => {
-                      setWhitelistUserAgents((current) => removeFromArray(item, current))
-                      setIsWhitelistUserAgentsSaveShown(true)
-                    }}
-                  />
-                </TextInput>
+              <Flex align="center" key={item} w="100%">
+                <TextInput mr="xs" readOnly value={item} w="100%"></TextInput>
+                <CopyText text={String(item)} />
+                <Delete
+                  onDelete={() => {
+                    const newArray = whitelistUserAgents.filter((i) => i !== item)
+                    dispatch({ type: "SET_WHITELIST_USER_AGENTS", payload: newArray })
+                    dispatch({
+                      type: "SET_SAVE_MODAL_SHOWN",
+                      payload: { modal: "isWhitelistUserAgentsSaveShown", shown: true },
+                    })
+                  }}
+                />
                 <input name="whitelistUserAgents" type="hidden" value={item} />
-              </div>
+              </Flex>
             ))}
           </div>
         </Card>
       </securityAction.Form>
-      <securityAction.Form action={`/api/${appId}/settings`} method="post">
+      {/* <securityAction.Form action={`/api/${appId}/settings`} method="post">
         <input name="appID" type="hidden" value={appId} />
         <Card>
           <div className="pokt-card-header">

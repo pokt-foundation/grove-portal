@@ -301,7 +301,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             ) : null}
           </div>
           <Text size="sm">{t.security.whitelistUserAgentsText}</Text>
-          <div className="flexGrowRow">
+          <Flex gap="md" mt="lg">
             <TextInput
               id="userAgents"
               name="whitelistUserAgentsInput"
@@ -337,7 +337,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                 Add
               </Button>
             ) : null}
-          </div>
+          </Flex>
           <div>
             {whitelistUserAgents.map((item: string) => (
               <Flex align="center" key={item} w="100%">

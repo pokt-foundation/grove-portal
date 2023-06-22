@@ -11,12 +11,16 @@ import { useFetcher, useNavigation } from "@remix-run/react"
 import { forwardRef } from "react"
 import useSecurityState from "./hooks/useSecurityState"
 import styles from "./styles.css"
-import { links as AppEndpointUrlLinks } from "~/components/application/AppEndpointUrl"
+import AppEndpointUrl, {
+  links as AppEndpointUrlLinks,
+} from "~/components/application/AppEndpointUrl"
 import Card, { links as CardLinks } from "~/components/Card"
 import { useTranslate } from "~/context/TranslateContext"
-import { BlockchainsQuery } from "~/models/portal/sdk"
+import { Blockchain, BlockchainsQuery } from "~/models/portal/sdk"
 import { EndpointQuery } from "~/models/portal/sdk"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
+import ChainsDropdown from "~/components/ChainsDropdown/ChainsDropdown"
+import React from "react"
 
 /* c8 ignore start */
 export const links = () => {
@@ -54,14 +58,14 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
   const {
     saveModalsShown: {
       isSecretKeySaveShown,
-      // isApprovedChainsSaveShown,
+      isApprovedChainsSaveShown,
       // isWhitelistUserAgentsSaveShown,
       // isWhitelistOriginsSaveShown,
       // isWhitelistContractsSaveShown,
       // isWhitelistMethodsSaveShown,
     },
     secretKeyRequired,
-    // whitelistBlockchains,
+    whitelistBlockchains,
     // whitelistUserAgents,
     // whitelistOrigins,
     // whitelistContracts,
@@ -75,6 +79,13 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
     // whitelistMethodsDropdown,
     // whitelistMethodsError,
   } = state
+
+  const addIfMissing = (item: string, arr: string[]) => {
+    if (arr.indexOf(item) !== -1) {
+      return arr
+    }
+    return [...arr, item]
+  }
 
   return (
     <div className="security">
@@ -147,7 +158,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
           </div>
         </Card>
       </securityAction.Form>
-      {/* <securityAction.Form action={`/api/${appId}/settings`} method="post">
+      <securityAction.Form action={`/api/${appId}/settings`} method="post">
         <input name="appID" type="hidden" value={appId} />
         <Card>
           <div className="pokt-card-header">
@@ -160,10 +171,14 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                   size="sm"
                   variant="outline"
                   onClick={() => {
-                    setWhitelistBlockchains(
-                      endpoint.gatewaySettings.whitelistBlockchains as string[],
-                    )
-                    setIsApprovedChainsSaveShown(false)
+                    dispatch({
+                      type: "SET_WHITELIST_BLOCKCHAINS",
+                      payload: endpoint.gatewaySettings.whitelistBlockchains as string[],
+                    })
+                    dispatch({
+                      type: "SET_SAVE_MODAL_SHOWN",
+                      payload: { modal: "isApprovedChainsSaveShown", shown: false },
+                    })
                   }}
                 >
                   {t.common.reset}
@@ -193,8 +208,16 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
               chains={blockchains}
               checkboxData={whitelistBlockchains}
               onChange={(val: string) => {
-                setWhitelistBlockchains(addIfMissing(val, whitelistBlockchains))
-                setIsApprovedChainsSaveShown(true)
+                const newArray = addIfMissing(val, whitelistBlockchains)
+                console.log(newArray)
+                dispatch({
+                  type: "SET_WHITELIST_BLOCKCHAINS",
+                  payload: addIfMissing(val, whitelistBlockchains),
+                })
+                dispatch({
+                  type: "SET_SAVE_MODAL_SHOWN",
+                  payload: { modal: "isApprovedChainsSaveShown", shown: true },
+                })
               }}
             />
           </Flex>
@@ -210,8 +233,14 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                   readOnly
                   chain={blockchain}
                   handleRemove={() => {
-                    setWhitelistBlockchains((current) => removeFromArray(item, current))
-                    setIsApprovedChainsSaveShown(true)
+                    const newArray = state.whitelistBlockchains.filter(
+                      (blockchain) => blockchain !== item,
+                    )
+                    dispatch({ type: "SET_WHITELIST_BLOCKCHAINS", payload: newArray })
+                    dispatch({
+                      type: "SET_SAVE_MODAL_SHOWN",
+                      payload: { modal: "isApprovedChainsSaveShown", shown: true },
+                    })
                   }}
                   hasDelete={true}
                   value={blockchain?.description ?? ""}
@@ -222,7 +251,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
           })}
         </Card>
       </securityAction.Form>
-      <securityAction.Form action={`/api/${appId}/settings`} method="post">
+      {/* <securityAction.Form action={`/api/${appId}/settings`} method="post">
         <input name="appID" type="hidden" value={appId} />
         <Card>
           <div className="pokt-card-header">

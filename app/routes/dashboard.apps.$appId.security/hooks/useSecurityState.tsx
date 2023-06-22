@@ -1,6 +1,11 @@
 // useSecurityView.ts
 import { useReducer, useEffect } from "react"
-import { Maybe, WhitelistContracts, WhitelistMethods } from "~/models/portal/sdk"
+import {
+  EndpointQuery,
+  Maybe,
+  WhitelistContracts,
+  WhitelistMethods,
+} from "~/models/portal/sdk"
 
 type WhitelistContractType = Pick<WhitelistContracts, "blockchainID" | "contracts">
 type WhitelistMethodType = Pick<WhitelistMethods, "blockchainID" | "methods">
@@ -12,7 +17,7 @@ type FormatData = {
 
 type State = {
   secretKeyRequired: boolean
-  // whitelistBlockchains: string[]
+  whitelistBlockchains: string[]
   // whitelistUserAgents: string[]
   // whitelistOrigins: string[]
   // whitelistContracts: FormatData[]
@@ -37,7 +42,7 @@ type State = {
 
 type Action =
   | { type: "SET_SECRET_KEY_REQUIRED"; payload: boolean }
-  // | { type: "SET_WHITELIST_BLOCKCHAINS"; payload: string[] }
+  | { type: "SET_WHITELIST_BLOCKCHAINS"; payload: string[] }
   // | { type: "SET_WHITELIST_USER_AGENTS"; payload: string[] }
   // | { type: "SET_WHITELIST_ORIGINS"; payload: string[] }
   // | { type: "SET_WHITELIST_CONTRACTS"; payload: FormatData[] }
@@ -83,9 +88,9 @@ const formatData = <T extends WhitelistContractType | WhitelistMethodType>(
   }, [])
 }
 
-const initialState = (endpoint: any): State => ({
+const initialState = (endpoint: EndpointQuery["endpoint"]): State => ({
   secretKeyRequired: Boolean(endpoint.gatewaySettings.secretKeyRequired),
-  // whitelistBlockchains: endpoint.gatewaySettings.whitelistBlockchains as string[],
+  whitelistBlockchains: endpoint.gatewaySettings.whitelistBlockchains as string[],
   // whitelistUserAgents: endpoint.gatewaySettings?.whitelistUserAgents as string[],
   // whitelistOrigins: endpoint.gatewaySettings?.whitelistOrigins as string[],
   // whitelistContracts: formatData<WhitelistContractType>(
@@ -118,8 +123,8 @@ const reducer = (state: State, action: Action): State => {
   switch (action.type) {
     case "SET_SECRET_KEY_REQUIRED":
       return { ...state, secretKeyRequired: action.payload }
-    // case "SET_WHITELIST_BLOCKCHAINS":
-    //   return { ...state, whitelistBlockchains: action.payload }
+    case "SET_WHITELIST_BLOCKCHAINS":
+      return { ...state, whitelistBlockchains: action.payload }
     // case "SET_WHITELIST_USER_AGENTS":
     //   return { ...state, whitelistUserAgents: action.payload }
     // //... TODO: similar for other SET_... cases
@@ -148,7 +153,10 @@ const reducer = (state: State, action: Action): State => {
   }
 }
 
-const useSecurityState = (endpoint: any, navigationState: string) => {
+const useSecurityState = (
+  endpoint: EndpointQuery["endpoint"],
+  navigationState: string,
+) => {
   const [state, dispatch] = useReducer(reducer, initialState(endpoint))
 
   useEffect(() => {

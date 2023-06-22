@@ -77,14 +77,6 @@
   padding-bottom: 0;
 }
 
-.security .list:first-child {
-  margin-top: 24px;
-}
-
-.security .list {
-  margin-top: 8px;
-}
-
 .security .submit:hover {
   background-color: rgb(182, 216, 74);
   box-shadow: rgb(182 216 74 / 50%) 0px 0px 20px;

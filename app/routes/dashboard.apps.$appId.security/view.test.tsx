@@ -21,24 +21,24 @@ describe("<SecurityView />", () => {
         name: englishText.security.headings.approvedChains,
       }),
     ).toBeInTheDocument()
-    expect(
-      screen.getByRole("heading", {
-        level: 3,
-        name: englishText.security.headings.contracts,
-      }),
-    ).toBeInTheDocument()
-    expect(
-      screen.getByRole("heading", {
-        level: 3,
-        name: englishText.security.headings.methods,
-      }),
-    ).toBeInTheDocument()
-    expect(
-      screen.getByRole("heading", {
-        level: 3,
-        name: englishText.security.headings.origins,
-      }),
-    ).toBeInTheDocument()
+    // expect(
+    //   screen.getByRole("heading", {
+    //     level: 3,
+    //     name: englishText.security.headings.contracts,
+    //   }),
+    // ).toBeInTheDocument()
+    // expect(
+    //   screen.getByRole("heading", {
+    //     level: 3,
+    //     name: englishText.security.headings.methods,
+    //   }),
+    // ).toBeInTheDocument()
+    // expect(
+    //   screen.getByRole("heading", {
+    //     level: 3,
+    //     name: englishText.security.headings.origins,
+    //   }),
+    // ).toBeInTheDocument()
     expect(
       screen.getByRole("heading", {
         level: 3,

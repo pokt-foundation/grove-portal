@@ -440,19 +440,18 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
           <div>
             {whitelistOrigins.map((item: string) => (
               <div key={item} className="list">
-                <TextInput readOnly value={item}>
-                  <CopyText text={String(item)} />
-                  <Delete
-                    onDelete={() => {
-                      const newArray = whitelistOrigins.filter((i) => i !== item)
-                      dispatch({ type: "SET_WHITELIST_ORIGINS", payload: newArray })
-                      dispatch({
-                        type: "SET_SAVE_MODAL_SHOWN",
-                        payload: { modal: "isWhitelistOriginsSaveShown", shown: true },
-                      })
-                    }}
-                  />
-                </TextInput>
+                <TextInput readOnly value={item} />
+                <CopyText text={String(item)} />
+                <Delete
+                  onDelete={() => {
+                    const newArray = whitelistOrigins.filter((i) => i !== item)
+                    dispatch({ type: "SET_WHITELIST_ORIGINS", payload: newArray })
+                    dispatch({
+                      type: "SET_SAVE_MODAL_SHOWN",
+                      payload: { modal: "isWhitelistOriginsSaveShown", shown: true },
+                    })
+                  }}
+                />
                 <input name="whitelistOrigins" type="hidden" value={item} />
               </div>
             ))}

@@ -6,28 +6,17 @@ import {
   Group,
   Flex,
   useMantineTheme,
-  IconPlus,
 } from "@pokt-foundation/pocket-blocks"
 import { useFetcher, useNavigation } from "@remix-run/react"
-import React, { useState, forwardRef, useEffect } from "react"
+import { forwardRef } from "react"
 import styles from "./styles.css"
-import AppEndpointUrl, {
-  links as AppEndpointUrlLinks,
-} from "~/components/application/AppEndpointUrl"
+import { links as AppEndpointUrlLinks } from "~/components/application/AppEndpointUrl"
 import Card, { links as CardLinks } from "~/components/Card"
-import ChainsDropdown from "~/components/ChainsDropdown/ChainsDropdown"
-import CopyText from "~/components/CopyText"
-import Delete from "~/components/Delete/Delete"
-import TextInput from "~/components/TextInput"
 import { useTranslate } from "~/context/TranslateContext"
-import {
-  BlockchainsQuery,
-  Maybe,
-  WhitelistContracts,
-  WhitelistMethods,
-} from "~/models/portal/sdk"
-import { Blockchain, EndpointQuery } from "~/models/portal/sdk"
+import { BlockchainsQuery } from "~/models/portal/sdk"
+import { EndpointQuery } from "~/models/portal/sdk"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
+import useSecurityState from "./hooks/useSecurityState"
 
 /* c8 ignore start */
 export const links = () => {
@@ -40,9 +29,6 @@ type SecurityViewProps = {
   appId: string | undefined
   blockchains: BlockchainsQuery["blockchains"]
 }
-
-type WhitelistContractType = Pick<WhitelistContracts, "blockchainID" | "contracts">
-type WhitelistMethodType = Pick<WhitelistMethods, "blockchainID" | "methods">
 
 const SelectItem = forwardRef<HTMLDivElement, { label: string; value: string }>(
   ({ label, ...others }, ref) => (
@@ -58,106 +44,37 @@ SelectItem.displayName = "SelectItem"
 
 export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps) => {
   const navigation = useNavigation()
-
-  type FormatData = {
-    id: string
-    inputValue: string
-  }
-
-  const formatData = <T extends WhitelistContractType | WhitelistMethodType>(
-    data: Maybe<T>[],
-    key: keyof T,
-  ) => {
-    return data.reduce((prev: FormatData[], curr) => {
-      if (!curr) {
-        return prev
-      }
-      const subArray = (curr[key] as unknown as string[]).reduce(
-        (subPrev: FormatData[], subCurr) => {
-          return [...subPrev, { id: curr.blockchainID, inputValue: subCurr }]
-        },
-        [],
-      )
-      return [...prev, ...subArray]
-    }, [])
-  }
-
   const { t } = useTranslate()
   const securityAction = useFetcher()
   const theme = useMantineTheme()
 
-  const [secretKeyRequired, setSecretKeyRequired] = useState<boolean>(
-    Boolean(endpoint.gatewaySettings.secretKeyRequired),
-  )
-  const [whitelistBlockchains, setWhitelistBlockchains] = useState<string[]>(
-    endpoint.gatewaySettings.whitelistBlockchains as string[],
-  )
-  const [whitelistUserAgents, setWhitelistUserAgents] = useState<string[]>(
-    endpoint.gatewaySettings?.whitelistUserAgents as string[],
-  )
-  const [whitelistOrigins, setWhitelistOrigins] = useState<string[]>(
-    endpoint.gatewaySettings?.whitelistOrigins as string[],
-  )
-  const [whitelistContracts, setWhitelistContracts] = useState<
-    Array<{ id: string; inputValue: string }>
-  >(
-    formatData<WhitelistContractType>(
-      endpoint.gatewaySettings?.whitelistContracts,
-      "contracts",
-    ),
-  )
-  const [whitelistMethods, setWhitelistMethods] = useState<
-    Array<{ id: string; inputValue: string }>
-  >(
-    formatData<WhitelistMethodType>(
-      endpoint.gatewaySettings?.whitelistMethods,
-      "methods",
-    ),
-  )
+  const [state, dispatch] = useSecurityState(endpoint, navigation.state)
 
-  const [whitelistUserAgentsInput, setWhitelistUserAgentsInput] = useState<string>("")
-  const [whitelistOriginsInput, setWhitelistOriginsInput] = useState<string>("")
-  const [whitelistContractsInput, setWhitelistContractsInput] = useState("")
-  const [whitelistContractsDropdown, setWhitelistContractsDropdown] = useState<string>("")
-  const [whitelistContractsError, setWhitelistContractsError] = useState<boolean>(false)
-  const [whitelistMethodsInput, setWhitelistMethodsInput] = useState<string>("")
-  const [whitelistMethodsDropdown, setWhitelistMethodsDropdown] = useState<string>("")
-  const [whitelistMethodsError, setWhitelistMethodsError] = useState<boolean>(false)
-
-  const [isSecretKeySaveShown, setIsSecretKeySaveShown] = useState<boolean>(false)
-  const [isApprovedChainsSaveShown, setIsApprovedChainsSaveShown] =
-    useState<boolean>(false)
-  const [isWhitelistUserAgentsSaveShown, setIsWhitelistUserAgentsSaveShown] =
-    useState<boolean>(false)
-  const [isWhitelistOriginsSaveShown, setIsWhitelistOriginsSaveShown] =
-    useState<boolean>(false)
-  const [isWhitelistContractsSaveShown, setIsWhitelistContractsSaveShown] =
-    useState<boolean>(false)
-  const [isWhitelistMethodsSaveShown, setIsWhitelistMethodsSaveShown] =
-    useState<boolean>(false)
-
-  useEffect(() => {
-    if (navigation.state === "idle") {
-      setIsSecretKeySaveShown(false)
-      setIsApprovedChainsSaveShown(false)
-      setIsWhitelistUserAgentsSaveShown(false)
-      setIsWhitelistOriginsSaveShown(false)
-      setIsWhitelistContractsSaveShown(false)
-      setIsWhitelistMethodsSaveShown(false)
-    }
-  }, [navigation])
-
-  const removeFromArray = (item: string, arr: string[]) => arr.filter((i) => i !== item)
-  const addIfMissing = (item: string, arr: string[]) => {
-    if (arr.indexOf(item) !== -1) {
-      return arr
-    }
-    return [...arr, item]
-  }
-
-  const removeFromArrayByValue = (item: string, field: string, arr: any[]) => {
-    return arr.filter((obj) => (!obj[field].includes(item) ? obj : null))
-  }
+  // get all states from the state hook
+  const {
+    saveModalsShown: {
+      isSecretKeySaveShown,
+      // isApprovedChainsSaveShown,
+      // isWhitelistUserAgentsSaveShown,
+      // isWhitelistOriginsSaveShown,
+      // isWhitelistContractsSaveShown,
+      // isWhitelistMethodsSaveShown,
+    },
+    secretKeyRequired,
+    // whitelistBlockchains,
+    // whitelistUserAgents,
+    // whitelistOrigins,
+    // whitelistContracts,
+    // whitelistMethods,
+    // whitelistUserAgentsElement,
+    // whitelistOriginsElement,
+    // whitelistContractsInput,
+    // whitelistContractsDropdown,
+    // whitelistContractsError,
+    // whitelistMethodsInput,
+    // whitelistMethodsDropdown,
+    // whitelistMethodsError,
+  } = state
 
   return (
     <div className="security">
@@ -174,10 +91,14 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                   size="sm"
                   variant="outline"
                   onClick={() => {
-                    setSecretKeyRequired(
-                      Boolean(endpoint.gatewaySettings.secretKeyRequired),
-                    )
-                    setIsSecretKeySaveShown(false)
+                    dispatch({
+                      type: "SET_SECRET_KEY_REQUIRED",
+                      payload: endpoint.gatewaySettings.secretKeyRequired,
+                    })
+                    dispatch({
+                      type: "SET_SAVE_MODAL_SHOWN",
+                      payload: { modal: "isSecretKeySaveShown", shown: false },
+                    })
                   }}
                 >
                   {t.common.reset}
@@ -212,15 +133,21 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                 name="secretKeyRequired"
                 styles={{ track: { cursor: "pointer" } }}
                 onChange={(event) => {
-                  setSecretKeyRequired(event.currentTarget.checked)
-                  setIsSecretKeySaveShown(true)
+                  dispatch({
+                    type: "SET_SECRET_KEY_REQUIRED",
+                    payload: event.currentTarget.checked,
+                  })
+                  dispatch({
+                    type: "SET_SAVE_MODAL_SHOWN",
+                    payload: { modal: "isSecretKeySaveShown", shown: true },
+                  })
                 }}
               />
             </Flex>
           </div>
         </Card>
       </securityAction.Form>
-      <securityAction.Form action={`/api/${appId}/settings`} method="post">
+      {/* <securityAction.Form action={`/api/${appId}/settings`} method="post">
         <input name="appID" type="hidden" value={appId} />
         <Card>
           <div className="pokt-card-header">
@@ -721,7 +648,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             })}
           </div>
         </Card>
-      </securityAction.Form>
+      </securityAction.Form> */}
     </div>
   )
 }

@@ -1,4 +1,3 @@
-// useSecurityView.ts
 import { useReducer, useEffect } from "react"
 import {
   EndpointQuery,
@@ -20,11 +19,10 @@ type State = {
   whitelistBlockchains: string[]
   whitelistUserAgents: string[]
   whitelistUserAgentsInput: string
-  // whitelistOrigins: string[]
+  whitelistOrigins: string[]
+  whitelistOriginsInput: string
   // whitelistContracts: FormatData[]
   // whitelistMethods: FormatData[]
-  // whitelistUserAgentsElement: string
-  // whitelistOriginsElement: string
   // whitelistContractsInput: string
   // whitelistContractsDropdown: string
   // whitelistContractsError: boolean
@@ -46,11 +44,10 @@ type Action =
   | { type: "SET_WHITELIST_BLOCKCHAINS"; payload: string[] }
   | { type: "SET_WHITELIST_USER_AGENTS"; payload: string[] }
   | { type: "SET_WHITELIST_USER_AGENTS_INPUT"; payload: string }
-  // | { type: "SET_WHITELIST_ORIGINS"; payload: string[] }
+  | { type: "SET_WHITELIST_ORIGINS"; payload: string[] }
+  | { type: "SET_WHITELIST_ORIGINS_INPUT"; payload: string }
   // | { type: "SET_WHITELIST_CONTRACTS"; payload: FormatData[] }
   // | { type: "SET_WHITELIST_METHODS"; payload: FormatData[] }
-  // | { type: "SET_WHITELIST_USER_AGENTS_ELEMENT"; payload: string }
-  // | { type: "SET_WHITELIST_ORIGINS_ELEMENT"; payload: string }
   // | { type: "SET_WHITELIST_CONTRACTS_INPUT"; payload: string }
   // | { type: "SET_WHITELIST_CONTRACTS_DROPDOWN"; payload: string }
   // | { type: "SET_WHITELIST_CONTRACTS_ERROR"; payload: boolean }
@@ -95,7 +92,8 @@ const initialState = (endpoint: EndpointQuery["endpoint"]): State => ({
   whitelistBlockchains: endpoint.gatewaySettings.whitelistBlockchains as string[],
   whitelistUserAgents: endpoint.gatewaySettings?.whitelistUserAgents as string[],
   whitelistUserAgentsInput: "",
-  // whitelistOrigins: endpoint.gatewaySettings?.whitelistOrigins as string[],
+  whitelistOrigins: endpoint.gatewaySettings?.whitelistOrigins as string[],
+  whitelistOriginsInput: "",
   // whitelistContracts: formatData<WhitelistContractType>(
   //   endpoint.gatewaySettings?.whitelistContracts,
   //   "contracts",
@@ -104,8 +102,6 @@ const initialState = (endpoint: EndpointQuery["endpoint"]): State => ({
   //   endpoint.gatewaySettings?.whitelistMethods,
   //   "methods",
   // ),
-  // whitelistUserAgentsElement: "",
-  // whitelistOriginsElement: "",
   // whitelistContractsInput: "",
   // whitelistContractsDropdown: "",
   // whitelistContractsError: false,
@@ -132,6 +128,8 @@ const reducer = (state: State, action: Action): State => {
       return { ...state, whitelistUserAgents: action.payload }
     case "SET_WHITELIST_USER_AGENTS_INPUT":
       return { ...state, whitelistUserAgentsInput: action.payload }
+    case "SET_WHITELIST_ORIGINS":
+      return { ...state, whitelistOrigins: action.payload }
     // //... TODO: similar for other SET_... cases
     case "SET_SAVE_MODAL_SHOWN":
       return {

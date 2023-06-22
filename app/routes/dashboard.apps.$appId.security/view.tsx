@@ -64,7 +64,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
       isSecretKeySaveShown,
       isApprovedChainsSaveShown,
       isWhitelistUserAgentsSaveShown,
-      // isWhitelistOriginsSaveShown,
+      isWhitelistOriginsSaveShown,
       // isWhitelistContractsSaveShown,
       // isWhitelistMethodsSaveShown,
     },
@@ -72,7 +72,8 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
     whitelistBlockchains,
     whitelistUserAgents,
     whitelistUserAgentsInput,
-    // whitelistOrigins,
+    whitelistOrigins,
+    whitelistOriginsInput,
     // whitelistContracts,
     // whitelistMethods,
     // whitelistUserAgentsElement,
@@ -359,7 +360,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
           </div>
         </Card>
       </securityAction.Form>
-      {/* <securityAction.Form action={`/api/${appId}/settings`} method="post">
+      <securityAction.Form action={`/api/${appId}/settings`} method="post">
         <input name="appID" type="hidden" value={appId} />
         <Card>
           <div className="pokt-card-header">
@@ -372,10 +373,14 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                   size="sm"
                   variant="outline"
                   onClick={() => {
-                    setWhitelistOrigins(
-                      endpoint.gatewaySettings.whitelistOrigins as string[],
-                    )
-                    setIsWhitelistOriginsSaveShown(false)
+                    dispatch({
+                      type: "SET_WHITELIST_ORIGINS",
+                      payload: endpoint.gatewaySettings.whitelistOrigins as string[],
+                    })
+                    dispatch({
+                      type: "SET_SAVE_MODAL_SHOWN",
+                      payload: { modal: "isWhitelistOriginsSaveShown", shown: false },
+                    })
                   }}
                 >
                   {t.common.reset}
@@ -406,7 +411,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
               placeholder={t.security.OriginPlaceholder}
               value={whitelistOriginsInput}
               onChange={(e) => {
-                setWhitelistOriginsInput(e.target.value)
+                dispatch({ type: "SET_WHITELIST_ORIGINS_INPUT", payload: e.target.value })
               }}
             />
             {whitelistOriginsInput !== "" ? (
@@ -416,13 +421,15 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                 type="button"
                 variant="outline"
                 onClick={() => {
-                  if (whitelistOriginsInput !== "") {
-                    setWhitelistOrigins(
-                      addIfMissing(whitelistOriginsInput, whitelistOrigins),
-                    )
-                    setWhitelistOriginsInput("")
-                    setIsWhitelistOriginsSaveShown(true)
-                  }
+                  dispatch({
+                    type: "SET_WHITELIST_ORIGINS",
+                    payload: addIfMissing(whitelistOriginsInput, whitelistOrigins),
+                  })
+                  dispatch({ type: "SET_WHITELIST_ORIGINS_INPUT", payload: "" })
+                  dispatch({
+                    type: "SET_SAVE_MODAL_SHOWN",
+                    payload: { modal: "isWhitelistOriginsSaveShown", shown: true },
+                  })
                 }}
               >
                 <IconPlus height="18px" style={{ marginRight: "10px" }} width="18px" />{" "}
@@ -437,8 +444,12 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                   <CopyText text={String(item)} />
                   <Delete
                     onDelete={() => {
-                      setWhitelistOrigins((current) => removeFromArray(item, current))
-                      setIsWhitelistOriginsSaveShown(true)
+                      const newArray = whitelistOrigins.filter((i) => i !== item)
+                      dispatch({ type: "SET_WHITELIST_ORIGINS", payload: newArray })
+                      dispatch({
+                        type: "SET_SAVE_MODAL_SHOWN",
+                        payload: { modal: "isWhitelistOriginsSaveShown", shown: true },
+                      })
                     }}
                   />
                 </TextInput>
@@ -448,7 +459,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
           </div>
         </Card>
       </securityAction.Form>
-      <securityAction.Form action={`/api/${appId}/settings`} method="post">
+      {/* <securityAction.Form action={`/api/${appId}/settings`} method="post">
         <input name="appID" type="hidden" value={appId} />
         <Card>
           <div className="pokt-card-header">

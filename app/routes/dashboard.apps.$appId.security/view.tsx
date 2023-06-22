@@ -9,6 +9,7 @@ import {
 } from "@pokt-foundation/pocket-blocks"
 import { useFetcher, useNavigation } from "@remix-run/react"
 import { forwardRef } from "react"
+import useSecurityState from "./hooks/useSecurityState"
 import styles from "./styles.css"
 import { links as AppEndpointUrlLinks } from "~/components/application/AppEndpointUrl"
 import Card, { links as CardLinks } from "~/components/Card"
@@ -16,7 +17,6 @@ import { useTranslate } from "~/context/TranslateContext"
 import { BlockchainsQuery } from "~/models/portal/sdk"
 import { EndpointQuery } from "~/models/portal/sdk"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
-import useSecurityState from "./hooks/useSecurityState"
 
 /* c8 ignore start */
 export const links = () => {

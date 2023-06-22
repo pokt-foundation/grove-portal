@@ -11,20 +11,20 @@ import {
 } from "@pokt-foundation/pocket-blocks"
 import { useFetcher, useNavigation } from "@remix-run/react"
 import { forwardRef } from "react"
+import React from "react"
 import useSecurityState from "./hooks/useSecurityState"
 import styles from "./styles.css"
 import AppEndpointUrl, {
   links as AppEndpointUrlLinks,
 } from "~/components/application/AppEndpointUrl"
 import Card, { links as CardLinks } from "~/components/Card"
+import ChainsDropdown from "~/components/ChainsDropdown/ChainsDropdown"
+import CopyText from "~/components/CopyText"
+import Delete from "~/components/Delete/Delete"
 import { useTranslate } from "~/context/TranslateContext"
 import { Blockchain, BlockchainsQuery } from "~/models/portal/sdk"
 import { EndpointQuery } from "~/models/portal/sdk"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
-import ChainsDropdown from "~/components/ChainsDropdown/ChainsDropdown"
-import React from "react"
-import CopyText from "~/components/CopyText"
-import Delete from "~/components/Delete/Delete"
 
 /* c8 ignore start */
 export const links = () => {
@@ -301,19 +301,19 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             ) : null}
           </div>
           <Text size="sm">{t.security.whitelistUserAgentsText}</Text>
-          <Flex gap="md" mt="lg" align="center">
+          <Flex align="center" gap="md" mt="lg">
             <TextInput
               id="userAgents"
               name="whitelistUserAgentsInput"
               placeholder={t.security.userAgentPlaceholder}
               value={whitelistUserAgentsInput}
+              w="100%"
               onChange={(e) => {
                 dispatch({
                   type: "SET_WHITELIST_USER_AGENTS_INPUT",
                   payload: e.target.value,
                 })
               }}
-              w="100%"
             />
             {whitelistUserAgentsInput !== "" ? (
               <Button
@@ -340,8 +340,8 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
           </Flex>
           <div>
             {whitelistUserAgents.map((item: string) => (
-              <Flex align="center" key={item} mt="md" w="100%">
-                <TextInput mr="xs" readOnly value={item} w="100%"></TextInput>
+              <Flex key={item} align="center" mt="md" w="100%">
+                <TextInput readOnly mr="xs" value={item} w="100%"></TextInput>
                 <CopyText text={String(item)} />
                 <Delete
                   onDelete={() => {

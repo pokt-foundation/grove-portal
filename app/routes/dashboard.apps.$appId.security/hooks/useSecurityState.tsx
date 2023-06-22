@@ -130,6 +130,8 @@ const reducer = (state: State, action: Action): State => {
       return { ...state, whitelistUserAgentsInput: action.payload }
     case "SET_WHITELIST_ORIGINS":
       return { ...state, whitelistOrigins: action.payload }
+    case "SET_WHITELIST_ORIGINS_INPUT":
+      return { ...state, whitelistOriginsInput: action.payload }
     // //... TODO: similar for other SET_... cases
     case "SET_SAVE_MODAL_SHOWN":
       return {

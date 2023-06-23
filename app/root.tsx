@@ -64,10 +64,12 @@ createEmotionCache({ key: "pni" })
 
 export default function App() {
   const { ENV, user } = useLoaderData<RootLoaderData>()
-  const { isDashboard, routes } = useRoot({ user })
+  const { isPlasmic, routes } = useRoot({ user })
   return (
     <>
-      {isDashboard ? (
+      {isPlasmic ? (
+        <PlasmicContainer />
+      ) : (
         <RootProviders>
           <Document>
             <Header user={user}>
@@ -86,8 +88,6 @@ export default function App() {
             />
           </Document>
         </RootProviders>
-      ) : (
-        <PlasmicContainer />
       )}
     </>
   )

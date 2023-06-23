@@ -36,11 +36,11 @@ type Route = {
 export default function Admin() {
   const routes: Route[] = [
     {
-      to: "customPayPlan",
+      to: "users/pay-plan",
       label: "Pay Plan",
     },
     {
-      to: "featureflags",
+      to: "settings/feature-flags",
       label: "Feature Flags",
     },
   ]

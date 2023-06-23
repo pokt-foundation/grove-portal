@@ -1,11 +1,17 @@
 import { Button, Checkbox, Container } from "@pokt-foundation/pocket-blocks"
-import { LinksFunction } from "@remix-run/node"
+import { LinksFunction, MetaFunction } from "@remix-run/node"
 import { useFetcher } from "@remix-run/react"
 import Card, { links as CardLinks } from "~/components/Card"
 import CardList, { CardListItem, links as CardListLinks } from "~/components/CardList"
 import { useFeatureFlags } from "~/context/FeatureFlagContext"
 
 export const links: LinksFunction = () => [...CardLinks(), ...CardListLinks()]
+
+export const meta: MetaFunction = () => {
+  return {
+    title: "Feature Flags | Admin",
+  }
+}
 
 export default function FeatureFlags() {
   const fetcher = useFetcher()

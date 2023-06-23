@@ -107,9 +107,10 @@ export default function AppIdLayoutView({
 
     if (!success) return
     if (success === "true") {
-      // update plan type to paid on success
+      // Update plan type to paid on success
       if (
         endpoint &&
+        endpoint.appLimits.planType !== PayPlanType.PayAsYouGoV0 &&
         updatePlanFetcher.state !== "submitting" &&
         updatePlanFetcher.state !== "loading"
       ) {
@@ -119,7 +120,7 @@ export default function AppIdLayoutView({
             type: PayPlanType.PayAsYouGoV0,
           },
           {
-            action: `/api/${endpoint.id}/updatePlan`,
+            action: `/api/${endpoint.id}/update-plan`,
             method: "post",
           },
         )
@@ -163,7 +164,7 @@ export default function AppIdLayoutView({
   }, [endpoint, t, routes, flags.STRIPE_PAYMENT, subscription])
 
   useEffect(() => {
-    // update plan type to free if plan is paid and there subscription is canceled
+    // Update plan type to free if plan is paid and there subscription is canceled
     if (
       endpoint?.appLimits.planType === PayPlanType.PayAsYouGoV0 &&
       (!subscription || subscription.cancel_at_period_end) &&
@@ -176,7 +177,7 @@ export default function AppIdLayoutView({
           type: PayPlanType.FreetierV0,
         },
         {
-          action: `/api/${endpoint.id}/updatePlan`,
+          action: `/api/${endpoint.id}/update-plan`,
           method: "post",
         },
       )
@@ -184,10 +185,11 @@ export default function AppIdLayoutView({
   }, [endpoint, subscription, updatePlanFetcher])
 
   useEffect(() => {
-    // update plan type to paid if plan is free and there is a subscription
+    // Update plan type to paid if plan is free and there is a subscription
     if (
       endpoint?.appLimits.planType === PayPlanType.FreetierV0 &&
       subscription &&
+      !subscription.cancel_at_period_end &&
       updatePlanFetcher.state !== "submitting" &&
       updatePlanFetcher.state !== "loading"
     ) {
@@ -197,7 +199,7 @@ export default function AppIdLayoutView({
           type: PayPlanType.PayAsYouGoV0,
         },
         {
-          action: "/api/updatePlan",
+          action: `/api/${endpoint.id}/update-plan`,
           method: "post",
         },
       )

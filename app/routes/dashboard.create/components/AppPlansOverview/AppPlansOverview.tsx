@@ -70,11 +70,14 @@ export default function AppPlansOverview({ planType }: AppPlansOverviewProps) {
             </Title>
             <Text mt={8} weight="lighter">
               {AppPlansOverview.planDetails.enterpriseSolutions.description}{" "}
-              <Text color="var(--mantine-color-green-6)" component="span">
-                <Anchor component={Link} to="/contact-sales">
-                  {AppPlansOverview.planDetails.enterpriseSolutions.contactUS}
-                </Anchor>
-              </Text>
+              <Anchor
+                component={Link}
+                rel="noreferrer"
+                target="_blank"
+                to="mailto:sales@pokt.network"
+              >
+                {AppPlansOverview.planDetails.enterpriseSolutions.contactUS}
+              </Anchor>
             </Text>
           </Box>
         </Grid.Col>

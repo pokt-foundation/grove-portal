@@ -16,13 +16,15 @@ export const links = () => {
 type AppEndpointUrlProp = InputProps & {
   chain: Blockchain | undefined | null
   handleRemove: () => void
-  hasDelete: boolean
+  hasCopy?: boolean
+  hasDelete?: boolean
 }
 
 export default function AppEndpointUrl({
   chain,
   handleRemove,
-  hasDelete,
+  hasCopy = true,
+  hasDelete = true,
   ...props
 }: AppEndpointUrlProp) {
   if (!chain) {
@@ -53,8 +55,8 @@ export default function AppEndpointUrl({
         {chain.description?.substring(0, 3).toUpperCase()}
       </Badge>
       <TextInput {...props}>
-        <CopyText text={String(props.value)} />
-        {hasDelete && <Delete onDelete={handleRemove} />}
+        {hasCopy ? <CopyText text={String(props.value)} /> : null}
+        {hasDelete ? <Delete onDelete={handleRemove} /> : null}
       </TextInput>
     </div>
   )

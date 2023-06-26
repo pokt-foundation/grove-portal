@@ -8,11 +8,17 @@ import {
   useMantineTheme,
   TextInput,
   IconPlus,
+  Box,
+  Badge,
 } from "@pokt-foundation/pocket-blocks"
 import { useFetcher, useNavigation } from "@remix-run/react"
 import { forwardRef } from "react"
 import React from "react"
-import useSecurityState from "./hooks/useSecurityState"
+import useSecurityState, {
+  FormatData,
+  WhitelistContractType,
+  formatData,
+} from "./hooks/useSecurityState"
 import styles from "./styles.css"
 import AppEndpointUrl, {
   links as AppEndpointUrlLinks,
@@ -25,6 +31,7 @@ import { useTranslate } from "~/context/TranslateContext"
 import { Blockchain, BlockchainsQuery } from "~/models/portal/sdk"
 import { EndpointQuery } from "~/models/portal/sdk"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
+import { getImageForChain } from "~/utils/known-chains/known-chains"
 
 /* c8 ignore start */
 export const links = () => {
@@ -65,7 +72,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
       isApprovedChainsSaveShown,
       isWhitelistUserAgentsSaveShown,
       isWhitelistOriginsSaveShown,
-      // isWhitelistContractsSaveShown,
+      isWhitelistContractsSaveShown,
       // isWhitelistMethodsSaveShown,
     },
     secretKeyRequired,
@@ -74,13 +81,12 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
     whitelistUserAgentsInput,
     whitelistOrigins,
     whitelistOriginsInput,
-    // whitelistContracts,
+    whitelistContracts,
+    whitelistContractsInput,
+    whitelistContractsDropdown,
     // whitelistMethods,
     // whitelistUserAgentsElement,
     // whitelistOriginsElement,
-    // whitelistContractsInput,
-    // whitelistContractsDropdown,
-    // whitelistContractsError,
     // whitelistMethodsInput,
     // whitelistMethodsDropdown,
     // whitelistMethodsError,
@@ -92,6 +98,10 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
     }
     return [...arr, item]
   }
+
+  const whitelistContractsDropdownChain =
+    blockchains.find((chain) => chain?.id === whitelistContractsDropdown)?.description ||
+    ""
 
   return (
     <div className="security">
@@ -506,13 +516,36 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             ) : null}
           </div>
           <Text size="sm">{t.security.whitelistContractsText}</Text>
-          <div className="flexGrowRow">
+          <Flex align="center" w="100%" gap="sm" mb="xs">
             <ChainsDropdown
               chains={blockchains}
               onChange={(val: string) =>
                 dispatch({ type: "SET_WHITELIST_CONTRACTS_DROPDOWN", payload: val })
               }
             />
+            {whitelistContractsDropdownChain ? (
+              <Badge
+                fullWidth
+                color="gray"
+                leftSection={
+                  getImageForChain(whitelistContractsDropdownChain) ? (
+                    <img
+                      alt={whitelistContractsDropdownChain}
+                      height={16}
+                      src={getImageForChain(whitelistContractsDropdownChain)}
+                    />
+                  ) : null
+                }
+                p="12px 0"
+                sx={{
+                  borderRadius: "8px",
+                }}
+                variant="outline"
+                w={100}
+              >
+                {whitelistContractsDropdownChain.substring(0, 3).toUpperCase()}
+              </Badge>
+            ) : null}
             <input
               className="grow userInputs"
               name="whitelistContractsInput"
@@ -553,19 +586,14 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                 Add
               </Button>
             ) : null}
-          </div>
-          {whitelistContractsError && (
-            <div>
-              <p className="errorText">{t.security.contractError}</p>
-            </div>
-          )}
+          </Flex>
           <div>
             {whitelistContracts.map((item) => {
               const blockchain: Blockchain | undefined | null = blockchains.find(
                 (c) => c?.id === item.id,
               )
               return (
-                <div key={`${item.id} ${item.inputValue}`} className="list">
+                <Box key={`${item.id} ${item.inputValue}`}>
                   <AppEndpointUrl
                     hasDelete
                     readOnly
@@ -588,13 +616,13 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                     type="hidden"
                     value={item.inputValue}
                   />
-                </div>
+                </Box>
               )
             })}
           </div>
         </Card>
       </securityAction.Form>
-      <securityAction.Form action={`/api/${appId}/settings`} method="post">
+      {/* <securityAction.Form action={`/api/${appId}/settings`} method="post">
         <input name="appID" type="hidden" value={appId} />
         <Card>
           <div className="pokt-card-header">

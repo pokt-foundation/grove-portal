@@ -514,7 +514,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             ) : null}
           </div>
           <Text size="sm">{t.security.whitelistContractsText}</Text>
-          <Flex align="center" w="100%" gap="sm" mb="xs">
+          <Flex align="center" w="100%" gap="xs" mb="xs">
             <ChainsDropdown
               chains={blockchains}
               onChange={(val: string) =>
@@ -668,7 +668,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             ) : null}
           </div>
           <Text size="sm">{t.security.whitelistMethodsText}</Text>
-          <div className="flexGrowRow">
+          <Flex align="center" w="100%" gap="xs" mb="xs">
             <ChainsDropdown
               chains={blockchains}
               onChange={(val: string) =>
@@ -717,7 +717,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                 Add
               </Button>
             ) : null}
-          </div>
+          </Flex>
           <div>
             {whitelistMethods.map((item) => {
               const blockchain: Blockchain | undefined | null = blockchains.find(

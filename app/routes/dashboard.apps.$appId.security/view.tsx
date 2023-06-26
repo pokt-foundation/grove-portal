@@ -522,7 +522,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             ) : null}
           </div>
           <Text size="sm">{t.security.whitelistContractsText}</Text>
-          <Flex align="center" w="100%" gap="xs" mb="xs">
+          <Flex align="center" gap="xs" mb="xs" w="100%">
             <ChainsDropdown
               chains={blockchains}
               onChange={(val: string) =>
@@ -555,6 +555,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             <input
               className="grow userInputs"
               name="whitelistContractsInput"
+              placeholder={t.security.contractPlaceholder}
               value={whitelistContractsInput}
               onChange={(e) => {
                 dispatch({
@@ -562,7 +563,6 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                   payload: e.target.value,
                 })
               }}
-              placeholder={t.security.contractPlaceholder}
             />
             {whitelistContractsInput !== "" && whitelistContractsDropdown !== "" ? (
               <Button
@@ -676,7 +676,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             ) : null}
           </div>
           <Text size="sm">{t.security.whitelistMethodsText}</Text>
-          <Flex align="center" w="100%" gap="xs" mb="xs">
+          <Flex align="center" gap="xs" mb="xs" w="100%">
             <ChainsDropdown
               chains={blockchains}
               onChange={(val: string) =>
@@ -709,11 +709,11 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             <input
               className="grow userInputs"
               name="whitelistMethodsInput"
+              placeholder={t.security.methodPlaceholder}
               value={whitelistMethodsInput}
               onChange={(e) => {
                 dispatch({ type: "SET_WHITELIST_METHODS_INPUT", payload: e.target.value })
               }}
-              placeholder={t.security.methodPlaceholder}
             />
             {whitelistMethodsInput !== "" && whitelistMethodsDropdown !== "" ? (
               <Button

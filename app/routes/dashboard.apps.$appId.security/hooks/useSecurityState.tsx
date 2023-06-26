@@ -138,7 +138,6 @@ const reducer = (state: State, action: Action): State => {
       return { ...state, whitelistMethodsInput: action.payload }
     case "SET_WHITELIST_METHODS_DROPDOWN":
       return { ...state, whitelistMethodsDropdown: action.payload }
-    // //... TODO: similar for other SET_... cases
     case "SET_SAVE_MODAL_SHOWN":
       return {
         ...state,

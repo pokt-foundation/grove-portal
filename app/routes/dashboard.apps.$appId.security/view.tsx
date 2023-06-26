@@ -101,6 +101,9 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
     blockchains.find((chain) => chain?.id === whitelistContractsDropdown)?.description ||
     ""
 
+  const whitelistMethodsDropdownChain =
+    blockchains.find((chain) => chain?.id === whitelistMethodsDropdown)?.description || ""
+
   return (
     <div className="security">
       <securityAction.Form action={`/api/${appId}/settings`} method="post">
@@ -675,7 +678,29 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                 dispatch({ type: "SET_WHITELIST_METHODS_DROPDOWN", payload: val })
               }
             />
-
+            {whitelistMethodsDropdownChain ? (
+              <Badge
+                fullWidth
+                color="gray"
+                leftSection={
+                  getImageForChain(whitelistMethodsDropdownChain) ? (
+                    <img
+                      alt={whitelistMethodsDropdownChain}
+                      height={16}
+                      src={getImageForChain(whitelistMethodsDropdownChain)}
+                    />
+                  ) : null
+                }
+                p="12px 0"
+                sx={{
+                  borderRadius: "8px",
+                }}
+                variant="outline"
+                w={100}
+              >
+                {whitelistMethodsDropdownChain.substring(0, 3).toUpperCase()}
+              </Badge>
+            ) : null}
             <input
               className="grow userInputs"
               name="whitelistMethodsInput"

@@ -90,6 +90,13 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
     whitelistMethodsDropdown,
   } = state
 
+  const addIfMissingOrRemove = (item: string, arr: string[]) => {
+    if (arr.indexOf(item) !== -1) {
+      return arr.filter((i) => i !== item)
+    }
+    return [...arr, item]
+  }
+
   const addIfMissing = (item: string, arr: string[]) => {
     if (arr.indexOf(item) !== -1) {
       return arr
@@ -225,11 +232,9 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
               chains={blockchains}
               checkboxData={whitelistBlockchains}
               onChange={(val: string) => {
-                const newArray = addIfMissing(val, whitelistBlockchains)
-                console.log(newArray)
                 dispatch({
                   type: "SET_WHITELIST_BLOCKCHAINS",
-                  payload: addIfMissing(val, whitelistBlockchains),
+                  payload: addIfMissingOrRemove(val, whitelistBlockchains),
                 })
                 dispatch({
                   type: "SET_SAVE_MODAL_SHOWN",

@@ -170,3 +170,7 @@ query blockchains($active: Boolean) {
 query getUserJWT($username: String!, $password: String!) {
   getUserJWT(username: $username, password: $password)
 }
+
+query getPortalUserID {
+  getPortalUserID
+}

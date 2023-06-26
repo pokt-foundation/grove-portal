@@ -17,6 +17,7 @@ import React from "react"
 import useSecurityState, {
   FormatData,
   WhitelistContractType,
+  WhitelistMethodType,
   formatData,
 } from "./hooks/useSecurityState"
 import styles from "./styles.css"
@@ -73,7 +74,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
       isWhitelistUserAgentsSaveShown,
       isWhitelistOriginsSaveShown,
       isWhitelistContractsSaveShown,
-      // isWhitelistMethodsSaveShown,
+      isWhitelistMethodsSaveShown,
     },
     secretKeyRequired,
     whitelistBlockchains,
@@ -84,12 +85,9 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
     whitelistContracts,
     whitelistContractsInput,
     whitelistContractsDropdown,
-    // whitelistMethods,
-    // whitelistUserAgentsElement,
-    // whitelistOriginsElement,
-    // whitelistMethodsInput,
-    // whitelistMethodsDropdown,
-    // whitelistMethodsError,
+    whitelistMethods,
+    whitelistMethodsInput,
+    whitelistMethodsDropdown,
   } = state
 
   const addIfMissing = (item: string, arr: string[]) => {
@@ -622,7 +620,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
           </div>
         </Card>
       </securityAction.Form>
-      {/* <securityAction.Form action={`/api/${appId}/settings`} method="post">
+      <securityAction.Form action={`/api/${appId}/settings`} method="post">
         <input name="appID" type="hidden" value={appId} />
         <Card>
           <div className="pokt-card-header">
@@ -635,13 +633,17 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                   size="sm"
                   variant="outline"
                   onClick={() => {
-                    setWhitelistMethods(
-                      formatData<WhitelistMethodType>(
+                    dispatch({
+                      type: "SET_WHITELIST_METHODS",
+                      payload: formatData<WhitelistMethodType>(
                         endpoint.gatewaySettings?.whitelistMethods,
                         "methods",
                       ),
-                    )
-                    setIsWhitelistMethodsSaveShown(false)
+                    })
+                    dispatch({
+                      type: "SET_SAVE_MODAL_SHOWN",
+                      payload: { modal: "isWhitelistMethodsSaveShown", shown: false },
+                    })
                   }}
                 >
                   {t.common.reset}
@@ -669,7 +671,9 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
           <div className="flexGrowRow">
             <ChainsDropdown
               chains={blockchains}
-              onChange={(val: string) => setWhitelistMethodsDropdown(val)}
+              onChange={(val: string) =>
+                dispatch({ type: "SET_WHITELIST_METHODS_DROPDOWN", payload: val })
+              }
             />
 
             <input
@@ -677,7 +681,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
               name="whitelistMethodsInput"
               value={whitelistMethodsInput}
               onChange={(e) => {
-                setWhitelistMethodsInput(e.target.value)
+                dispatch({ type: "SET_WHITELIST_METHODS_INPUT", payload: e.target.value })
               }}
               placeholder={t.security.methodPlaceholder}
             />
@@ -689,16 +693,23 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                 variant="outline"
                 onClick={() => {
                   if (whitelistMethodsInput === "" || whitelistMethodsDropdown === "") {
-                    setWhitelistMethodsError(true)
                   } else {
-                    setWhitelistMethodsError(false)
-                    setWhitelistMethods([
-                      ...whitelistMethods,
-                      { id: whitelistMethodsDropdown, inputValue: whitelistMethodsInput },
-                    ])
-                    setWhitelistMethodsInput("")
-                    setWhitelistMethodsDropdown("")
-                    setIsWhitelistMethodsSaveShown(true)
+                    dispatch({
+                      type: "SET_WHITELIST_METHODS",
+                      payload: [
+                        ...whitelistMethods,
+                        {
+                          id: whitelistMethodsDropdown,
+                          inputValue: whitelistMethodsInput,
+                        },
+                      ],
+                    })
+                    dispatch({ type: "SET_WHITELIST_METHODS_INPUT", payload: "" })
+                    dispatch({ type: "SET_WHITELIST_METHODS_DROPDOWN", payload: "" })
+                    dispatch({
+                      type: "SET_SAVE_MODAL_SHOWN",
+                      payload: { modal: "isWhitelistMethodsSaveShown", shown: true },
+                    })
                   }
                 }}
               >
@@ -707,12 +718,6 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
               </Button>
             ) : null}
           </div>
-
-          {whitelistMethodsError && (
-            <div>
-              <p className="errorText">{t.security.methodError}</p>
-            </div>
-          )}
           <div>
             {whitelistMethods.map((item) => {
               const blockchain: Blockchain | undefined | null = blockchains.find(
@@ -725,10 +730,15 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                     readOnly
                     chain={blockchain}
                     handleRemove={() => {
-                      setWhitelistMethods((current) =>
-                        removeFromArrayByValue(item.inputValue, "inputValue", current),
+                      const newArray = whitelistMethods.filter((obj: FormatData) =>
+                        !obj["inputValue"].includes(item.inputValue) ? obj : null,
                       )
-                      setIsWhitelistMethodsSaveShown(true)
+                      dispatch({ type: "SET_WHITELIST_METHODS", payload: newArray })
+
+                      dispatch({
+                        type: "SET_SAVE_MODAL_SHOWN",
+                        payload: { modal: "isWhitelistMethodsSaveShown", shown: true },
+                      })
                     }}
                     value={item.inputValue}
                   />
@@ -743,7 +753,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             })}
           </div>
         </Card>
-      </securityAction.Form> */}
+      </securityAction.Form>
     </div>
   )
 }

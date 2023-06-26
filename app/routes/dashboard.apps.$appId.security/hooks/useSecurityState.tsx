@@ -24,10 +24,9 @@ type State = {
   whitelistContracts: FormatData[]
   whitelistContractsInput: string
   whitelistContractsDropdown: string
-  // whitelistMethods: FormatData[]
-  // whitelistMethodsInput: string
-  // whitelistMethodsDropdown: string
-  // whitelistMethodsError: boolean
+  whitelistMethods: FormatData[]
+  whitelistMethodsInput: string
+  whitelistMethodsDropdown: string
   saveModalsShown: {
     isSecretKeySaveShown: boolean
     isApprovedChainsSaveShown: boolean
@@ -48,10 +47,9 @@ type Action =
   | { type: "SET_WHITELIST_CONTRACTS"; payload: FormatData[] }
   | { type: "SET_WHITELIST_CONTRACTS_INPUT"; payload: string }
   | { type: "SET_WHITELIST_CONTRACTS_DROPDOWN"; payload: string }
-  // | { type: "SET_WHITELIST_METHODS"; payload: FormatData[] }
-  // | { type: "SET_WHITELIST_METHODS_INPUT"; payload: string }
-  // | { type: "SET_WHITELIST_METHODS_DROPDOWN"; payload: string }
-  // | { type: "SET_WHITELIST_METHODS_ERROR"; payload: boolean }
+  | { type: "SET_WHITELIST_METHODS"; payload: FormatData[] }
+  | { type: "SET_WHITELIST_METHODS_INPUT"; payload: string }
+  | { type: "SET_WHITELIST_METHODS_DROPDOWN"; payload: string }
   | {
       type: "SET_SAVE_MODAL_SHOWN"
       payload: {
@@ -98,13 +96,12 @@ const initialState = (endpoint: EndpointQuery["endpoint"]): State => ({
   ),
   whitelistContractsInput: "",
   whitelistContractsDropdown: "",
-  // whitelistMethods: formatData<WhitelistMethodType>(
-  //   endpoint.gatewaySettings?.whitelistMethods,
-  //   "methods",
-  // ),
-  // whitelistMethodsInput: "",
-  // whitelistMethodsDropdown: "",
-  // whitelistMethodsError: false,
+  whitelistMethods: formatData<WhitelistMethodType>(
+    endpoint.gatewaySettings?.whitelistMethods,
+    "methods",
+  ),
+  whitelistMethodsInput: "",
+  whitelistMethodsDropdown: "",
   saveModalsShown: {
     isSecretKeySaveShown: false,
     isApprovedChainsSaveShown: false,
@@ -135,6 +132,12 @@ const reducer = (state: State, action: Action): State => {
       return { ...state, whitelistContractsInput: action.payload }
     case "SET_WHITELIST_CONTRACTS_DROPDOWN":
       return { ...state, whitelistContractsDropdown: action.payload }
+    case "SET_WHITELIST_METHODS":
+      return { ...state, whitelistMethods: action.payload }
+    case "SET_WHITELIST_METHODS_INPUT":
+      return { ...state, whitelistMethodsInput: action.payload }
+    case "SET_WHITELIST_METHODS_DROPDOWN":
+      return { ...state, whitelistMethodsDropdown: action.payload }
     // //... TODO: similar for other SET_... cases
     case "SET_SAVE_MODAL_SHOWN":
       return {

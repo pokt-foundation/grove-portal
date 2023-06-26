@@ -12,7 +12,11 @@ import {
   Grid,
   Group,
 } from "@pokt-foundation/pocket-blocks"
-import { Form, Link, useActionData } from "@remix-run/react"
+import {
+  Form,
+  Link,
+  useActionData,
+} from "@remix-run/react"
 import { useEffect, useMemo, useState } from "react"
 import { Auth0Profile } from "remix-auth-auth0"
 import styles from "./styles.css"
@@ -30,7 +34,11 @@ import NotificationMessage, {
   NotificationType,
 } from "~/components/NotificationMessage"
 import Table, { links as TableLinks } from "~/components/Table"
-import { EndpointsQuery, ProcessedEndpoint } from "~/models/portal/sdk"
+import {
+  EndpointsQuery,
+  PendingEndpointsQuery,
+  ProcessedEndpoint,
+} from "~/models/portal/sdk"
 import { RelayMetric } from "~/models/relaymeter/relaymeter.server"
 import { dayjs } from "~/utils/dayjs"
 import { getRequiredClientEnvVar } from "~/utils/environment"
@@ -54,7 +62,7 @@ type AppsViewProps = {
   userId: string
   portalUserId: string | undefined
   endpoints: EndpointsQuery | null
-  pendingEndpoints: ProcessedEndpoint[] | null
+  pendingEndpointsQuery: PendingEndpointsQuery | null
   dailyNetworkRelaysPerWeek: RelayMetric[] | null
   searchParams: URLSearchParams
   profile: Auth0Profile
@@ -66,9 +74,10 @@ export const AppsView = ({
   searchParams,
   userId,
   profile,
-  pendingEndpoints,
+  pendingEndpointsQuery,
   portalUserId,
 }: AppsViewProps) => {
+  const pendingEndpoints = pendingEndpointsQuery?.pendingEndpoints as ProcessedEndpoint[]
   const uEmail = profile?._json?.email
   const [showErrorModal, setShowErrorModal] = useState(false)
   const notOwnerEndpoints = useMemo(() => {

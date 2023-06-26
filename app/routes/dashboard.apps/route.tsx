@@ -11,7 +11,10 @@ import CardList, { CardListItem, links as CardListLinks } from "~/components/Car
 import Loader, { links as LoaderLinks } from "~/components/Loader"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { EndpointsQuery } from "~/models/portal/sdk"
+import {
+  EndpointsQuery,
+  PendingEndpointsQuery,
+} from "~/models/portal/sdk"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 import { MAX_USER_APPS } from "~/utils/pocketUtils"
 import {
@@ -33,12 +36,16 @@ export const links = () => {
 
 export type AllAppsLoaderData = {
   endpoints: EndpointsQuery | null
+  pendingEndpoints: PendingEndpointsQuery | null
+  portalUserId: string | undefined
   isEnterprise: boolean
   user: PocketUser
 }
 
 export type AllAppsOutletContext = {
   endpoints: EndpointsQuery | null
+  pendingEndpoints: PendingEndpointsQuery | null
+  portalUserId: string | undefined
 }
 
 export const loader: LoaderFunction = async ({ request, context }) => {
@@ -50,20 +57,39 @@ export const loader: LoaderFunction = async ({ request, context }) => {
 
   const userId = user.profile.id ? getPoktId(user.profile.id) : ""
 
+  const getPortalUserIdResponse = await portal.getPortalUserID().catch((e) => {
+    console.log(e)
+  })
+
+  const portalUserId = getPortalUserIdResponse?.getPortalUserID
+
+  let pendingEndpointsResponse
+
+  if (portalUserId) {
+    pendingEndpointsResponse = await portal
+      .pendingEndpoints({ portalUserID: portalUserId })
+      .catch((e) => {
+        console.log(e)
+      })
+  }
+
   const permissions = getUserPermissions(user.accessToken)
   const isEnterprise =
     permissions.includes(Permissions.AppsUnlimited) ||
     getRequiredClientEnvVar("GODMODE_ACCOUNTS")?.includes(userId)
 
   return json<AllAppsLoaderData>({
-    endpoints: endpointsResponse ? endpointsResponse : null,
+    endpoints: endpointsResponse ?? null,
+    pendingEndpoints: pendingEndpointsResponse ?? null,
+    portalUserId: portalUserId,
     isEnterprise,
     user,
   })
 }
 
 export const Apps = () => {
-  const { endpoints, isEnterprise } = useLoaderData() as AllAppsLoaderData
+  const { endpoints, isEnterprise, pendingEndpoints, portalUserId } =
+    useLoaderData() as AllAppsLoaderData
   const appIdRoute = useMatchesRoute("routes/dashboard.apps.$appId")
   const navigation = useNavigation()
 
@@ -83,7 +109,7 @@ export const Apps = () => {
       <Grid gutter={32}>
         <Grid.Col md={8}>
           {navigation.state === "loading" && <Loader />}
-          <Outlet context={{ endpoints: endpoints }} />
+          <Outlet context={{ endpoints, pendingEndpoints, portalUserId }} />
         </Grid.Col>
         <Grid.Col md={4}>
           <Card>

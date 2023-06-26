@@ -6,7 +6,6 @@ import invariant from "tiny-invariant"
 import { AllAppsOutletContext } from "../dashboard.apps/route"
 import AppsView, { links as AppsViewLinks } from "./view"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { EndpointsQuery, type ProcessedEndpoint } from "~/models/portal/sdk"
 import { getRelaysPerPeriod, RelayMetric } from "~/models/relaymeter/relaymeter.server"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { getPoktId, requireUser } from "~/utils/session.server"
@@ -24,9 +23,7 @@ export const meta: MetaFunction = () => {
 export type AppsLoaderData = {
   dailyNetworkRelaysPerWeek: RelayMetric[] | null
   userId: string
-  portalUserId: string | undefined
   profile: Auth0Profile
-  pendingEndpoints: ProcessedEndpoint[] | null
 }
 
 export type AppsActionData = {
@@ -39,27 +36,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   const user = await requireUser(request)
   invariant(user.profile.id && user.profile.emails, "user not found")
   const userId = getPoktId(user.profile.id)
-  const portal = initPortalClient({ token: user.accessToken })
-  const endpointsResponse: EndpointsQuery | void = await portal.endpoints().catch((e) => {
-    console.log(e)
-  })
-
-  let portalUserId: string | undefined
-
-  if (endpointsResponse && endpointsResponse.owner.length > 0) {
-    portalUserId = endpointsResponse.owner.at(0)?.userId
-  }
-
   let dailyNetworkRelaysPerWeek: RelayMetric[] | null = null
-  let pendingEndpointsResponse
-
-  if (portalUserId) {
-    pendingEndpointsResponse = await portal
-      .pendingEndpoints({ portalUserID: portalUserId })
-      .catch((e) => {
-        console.log(e)
-      })
-  }
 
   try {
     dailyNetworkRelaysPerWeek = await getRelaysPerPeriod("users", 7, userId)
@@ -70,11 +47,7 @@ export const loader: LoaderFunction = async ({ request }) => {
       dailyNetworkRelaysPerWeek,
       userId,
       profile: user.profile,
-      portalUserId,
-      pendingEndpoints: pendingEndpointsResponse
-        ? pendingEndpointsResponse.pendingEndpoints
-        : null,
-    } as AppsLoaderData,
+    },
     {
       headers: {
         "Cache-Control": `private, max-age=${
@@ -140,9 +113,9 @@ export const action: ActionFunction = async ({ request }) => {
 }
 
 export const Apps = () => {
-  const { endpoints } = useOutletContext<AllAppsOutletContext>()
-  const { dailyNetworkRelaysPerWeek, userId, profile, pendingEndpoints, portalUserId } =
-    useLoaderData() as AppsLoaderData
+  const { endpoints, pendingEndpoints, portalUserId } =
+    useOutletContext<AllAppsOutletContext>()
+  const { dailyNetworkRelaysPerWeek, userId, profile } = useLoaderData() as AppsLoaderData
   const [searchParams] = useSearchParams()
 
   useEffect(() => {
@@ -153,7 +126,7 @@ export const Apps = () => {
     <AppsView
       dailyNetworkRelaysPerWeek={dailyNetworkRelaysPerWeek}
       endpoints={endpoints}
-      pendingEndpoints={pendingEndpoints}
+      pendingEndpointsQuery={pendingEndpoints}
       portalUserId={portalUserId}
       profile={profile}
       searchParams={searchParams}

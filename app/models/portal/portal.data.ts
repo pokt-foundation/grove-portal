@@ -4,6 +4,7 @@ import {
   Blockchain,
   EndpointsQuery,
   PayPlanType,
+  PendingEndpointsQuery,
   ProcessedEndpoint,
   RoleName,
 } from "./sdk"
@@ -75,7 +76,7 @@ export const endpoints: EndpointsQuery = {
   __typename: "Query",
 }
 
-export const pendingEndpoints: ProcessedEndpoint[] = [endpoint]
+export const pendingEndpoints: PendingEndpointsQuery = { pendingEndpoints: [endpoint] }
 
 export const blockchains: Blockchain[] = [
   {

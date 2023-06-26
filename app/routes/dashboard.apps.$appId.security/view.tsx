@@ -458,7 +458,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
           </div>
         </Card>
       </securityAction.Form>
-      {/* <securityAction.Form action={`/api/${appId}/settings`} method="post">
+      <securityAction.Form action={`/api/${appId}/settings`} method="post">
         <input name="appID" type="hidden" value={appId} />
         <Card>
           <div className="pokt-card-header">
@@ -471,13 +471,17 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                   size="sm"
                   variant="outline"
                   onClick={() => {
-                    setWhitelistContracts(
-                      formatData<WhitelistContractType>(
+                    dispatch({
+                      type: "SET_WHITELIST_CONTRACTS",
+                      payload: formatData<WhitelistContractType>(
                         endpoint.gatewaySettings?.whitelistContracts,
                         "contracts",
                       ),
-                    )
-                    setIsWhitelistContractsSaveShown(false)
+                    })
+                    dispatch({
+                      type: "SET_SAVE_MODAL_SHOWN",
+                      payload: { modal: "isWhitelistContractsSaveShown", shown: false },
+                    })
                   }}
                 >
                   {t.common.reset}
@@ -505,14 +509,19 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
           <div className="flexGrowRow">
             <ChainsDropdown
               chains={blockchains}
-              onChange={(val: string) => setWhitelistContractsDropdown(val)}
+              onChange={(val: string) =>
+                dispatch({ type: "SET_WHITELIST_CONTRACTS_DROPDOWN", payload: val })
+              }
             />
             <input
               className="grow userInputs"
               name="whitelistContractsInput"
               value={whitelistContractsInput}
               onChange={(e) => {
-                setWhitelistContractsInput(e.target.value)
+                dispatch({
+                  type: "SET_WHITELIST_CONTRACTS_INPUT",
+                  payload: e.target.value,
+                })
               }}
               placeholder={t.security.contractPlaceholder}
             />
@@ -523,24 +532,21 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                 type="button"
                 variant="outline"
                 onClick={() => {
-                  if (
-                    whitelistContractsInput === "" ||
-                    whitelistContractsDropdown === ""
-                  ) {
-                    setWhitelistContractsError(true)
-                  } else {
-                    setWhitelistContractsError(false)
-                    setWhitelistContracts([
+                  dispatch({
+                    type: "SET_WHITELIST_CONTRACTS",
+                    payload: [
                       ...whitelistContracts,
                       {
                         id: whitelistContractsDropdown,
                         inputValue: whitelistContractsInput,
                       },
-                    ])
-                    setWhitelistContractsInput("")
-                    setWhitelistContractsDropdown("")
-                    setIsWhitelistContractsSaveShown(true)
-                  }
+                    ],
+                  })
+                  dispatch({ type: "SET_WHITELIST_CONTRACTS_INPUT", payload: "" })
+                  dispatch({
+                    type: "SET_SAVE_MODAL_SHOWN",
+                    payload: { modal: "isWhitelistContractsSaveShown", shown: true },
+                  })
                 }}
               >
                 <IconPlus height="18px" style={{ marginRight: "10px" }} width="18px" />{" "}
@@ -565,10 +571,14 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
                     readOnly
                     chain={blockchain}
                     handleRemove={() => {
-                      setWhitelistContracts((current) =>
-                        removeFromArrayByValue(item.inputValue, "inputValue", current),
+                      const newArray = whitelistContracts.filter((obj: FormatData) =>
+                        !obj["inputValue"].includes(item.inputValue) ? obj : null,
                       )
-                      setIsWhitelistContractsSaveShown(true)
+                      dispatch({ type: "SET_WHITELIST_CONTRACTS", payload: newArray })
+                      dispatch({
+                        type: "SET_SAVE_MODAL_SHOWN",
+                        payload: { modal: "isWhitelistContractsSaveShown", shown: true },
+                      })
                     }}
                     value={item.inputValue}
                   />

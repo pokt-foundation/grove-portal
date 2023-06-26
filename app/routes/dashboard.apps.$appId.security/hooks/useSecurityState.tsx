@@ -6,10 +6,10 @@ import {
   WhitelistMethods,
 } from "~/models/portal/sdk"
 
-type WhitelistContractType = Pick<WhitelistContracts, "blockchainID" | "contracts">
-type WhitelistMethodType = Pick<WhitelistMethods, "blockchainID" | "methods">
+export type WhitelistContractType = Pick<WhitelistContracts, "blockchainID" | "contracts">
+export type WhitelistMethodType = Pick<WhitelistMethods, "blockchainID" | "methods">
 
-type FormatData = {
+export type FormatData = {
   id: string
   inputValue: string
 }
@@ -21,11 +21,10 @@ type State = {
   whitelistUserAgentsInput: string
   whitelistOrigins: string[]
   whitelistOriginsInput: string
-  // whitelistContracts: FormatData[]
+  whitelistContracts: FormatData[]
+  whitelistContractsInput: string
+  whitelistContractsDropdown: string
   // whitelistMethods: FormatData[]
-  // whitelistContractsInput: string
-  // whitelistContractsDropdown: string
-  // whitelistContractsError: boolean
   // whitelistMethodsInput: string
   // whitelistMethodsDropdown: string
   // whitelistMethodsError: boolean
@@ -46,11 +45,10 @@ type Action =
   | { type: "SET_WHITELIST_USER_AGENTS_INPUT"; payload: string }
   | { type: "SET_WHITELIST_ORIGINS"; payload: string[] }
   | { type: "SET_WHITELIST_ORIGINS_INPUT"; payload: string }
-  // | { type: "SET_WHITELIST_CONTRACTS"; payload: FormatData[] }
+  | { type: "SET_WHITELIST_CONTRACTS"; payload: FormatData[] }
+  | { type: "SET_WHITELIST_CONTRACTS_INPUT"; payload: string }
+  | { type: "SET_WHITELIST_CONTRACTS_DROPDOWN"; payload: string }
   // | { type: "SET_WHITELIST_METHODS"; payload: FormatData[] }
-  // | { type: "SET_WHITELIST_CONTRACTS_INPUT"; payload: string }
-  // | { type: "SET_WHITELIST_CONTRACTS_DROPDOWN"; payload: string }
-  // | { type: "SET_WHITELIST_CONTRACTS_ERROR"; payload: boolean }
   // | { type: "SET_WHITELIST_METHODS_INPUT"; payload: string }
   // | { type: "SET_WHITELIST_METHODS_DROPDOWN"; payload: string }
   // | { type: "SET_WHITELIST_METHODS_ERROR"; payload: boolean }
@@ -69,7 +67,7 @@ type Action =
     }
   | { type: "RESET_SAVE_MODALS_SHOWN" }
 
-const formatData = <T extends WhitelistContractType | WhitelistMethodType>(
+export const formatData = <T extends WhitelistContractType | WhitelistMethodType>(
   data: Maybe<T>[],
   key: keyof T,
 ) => {
@@ -94,17 +92,16 @@ const initialState = (endpoint: EndpointQuery["endpoint"]): State => ({
   whitelistUserAgentsInput: "",
   whitelistOrigins: endpoint.gatewaySettings?.whitelistOrigins as string[],
   whitelistOriginsInput: "",
-  // whitelistContracts: formatData<WhitelistContractType>(
-  //   endpoint.gatewaySettings?.whitelistContracts,
-  //   "contracts",
-  // ),
+  whitelistContracts: formatData<WhitelistContractType>(
+    endpoint.gatewaySettings?.whitelistContracts,
+    "contracts",
+  ),
+  whitelistContractsInput: "",
+  whitelistContractsDropdown: "",
   // whitelistMethods: formatData<WhitelistMethodType>(
   //   endpoint.gatewaySettings?.whitelistMethods,
   //   "methods",
   // ),
-  // whitelistContractsInput: "",
-  // whitelistContractsDropdown: "",
-  // whitelistContractsError: false,
   // whitelistMethodsInput: "",
   // whitelistMethodsDropdown: "",
   // whitelistMethodsError: false,
@@ -132,6 +129,12 @@ const reducer = (state: State, action: Action): State => {
       return { ...state, whitelistOrigins: action.payload }
     case "SET_WHITELIST_ORIGINS_INPUT":
       return { ...state, whitelistOriginsInput: action.payload }
+    case "SET_WHITELIST_CONTRACTS":
+      return { ...state, whitelistContracts: action.payload }
+    case "SET_WHITELIST_CONTRACTS_INPUT":
+      return { ...state, whitelistContractsInput: action.payload }
+    case "SET_WHITELIST_CONTRACTS_DROPDOWN":
+      return { ...state, whitelistContractsDropdown: action.payload }
     // //... TODO: similar for other SET_... cases
     case "SET_SAVE_MODAL_SHOWN":
       return {

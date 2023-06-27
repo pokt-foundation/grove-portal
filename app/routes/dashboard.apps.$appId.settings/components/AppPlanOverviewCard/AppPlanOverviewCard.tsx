@@ -9,9 +9,10 @@ import { Auth0Profile } from "remix-auth-auth0"
 import { Card, links as CardLinks } from "~/components/Card"
 import CardList, { CardListItem, links as CardListLinks } from "~/components/CardList"
 import { useTranslate } from "~/context/TranslateContext"
-import { EndpointQuery } from "~/models/portal/sdk"
+import { EndpointQuery, PayPlanType } from "~/models/portal/sdk"
 import { Stripe } from "~/models/stripe/stripe.server"
 import { dayjs } from "~/utils/dayjs"
+import { getPlanName } from "~/utils/utils"
 
 /* c8 ignore start */
 export const links = () => {
@@ -24,6 +25,7 @@ interface AppPlanOverviewCardProps {
   CardProps?: Partial<CardProps>
   endpoint: EndpointQuery["endpoint"]
   user: Auth0Profile
+  planType: PayPlanType
 }
 
 export default function AppPlanOverviewCard({
@@ -31,6 +33,7 @@ export default function AppPlanOverviewCard({
   CardProps,
   endpoint,
   user,
+  planType,
 }: AppPlanOverviewCardProps) {
   const { t } = useTranslate()
   const location = useLocation()
@@ -38,8 +41,8 @@ export default function AppPlanOverviewCard({
 
   const listItems: CardListItem[] = [
     {
-      label: t.AppPlanOverviewCard.subscription,
-      value: subscription.id,
+      label: t.AppPlanOverviewCard.currentPlan,
+      value: getPlanName(planType),
     },
     {
       label: t.AppPlanOverviewCard.status,

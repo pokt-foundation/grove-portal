@@ -242,6 +242,7 @@ const schema = {
     role: "Role",
     date: "Start Date",
     managePlan: "Manage in Stripe",
+    currentPlan: "Current Plan",
   },
   AppPlanLatestInvoiceCard: {
     title: "Current period",

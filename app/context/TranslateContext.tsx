@@ -160,6 +160,7 @@ interface TranslationData {
     role: string
     date: string
     managePlan: string
+    currentPlan: string
   }
   AppPlanLatestInvoiceCard: {
     title: string

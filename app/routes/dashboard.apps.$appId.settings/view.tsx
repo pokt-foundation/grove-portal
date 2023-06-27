@@ -63,10 +63,12 @@ export function SettingsView({ data }: SettingsViewProps) {
               }),
             }}
             endpoint={endpoint}
+            planType={endpoint.appLimits.planType}
             subscription={subscription}
             user={user}
           />
         )}
+
         {invoicesNotEmpty && relaysNotEmpty && data.usageRecords && (
           <AppPlanLatestInvoiceCard
             CardProps={{

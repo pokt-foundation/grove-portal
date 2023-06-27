@@ -2,6 +2,7 @@ import { expect } from "vitest"
 import AppPlanOverviewCard from "./AppPlanOverviewCard"
 import { render, screen } from "test/helpers"
 import { endpoint, profileMockData } from "~/models/portal/portal.data"
+import { PayPlanType } from "~/models/portal/sdk"
 import { subscription } from "~/models/stripe/stripe.data"
 
 describe("<AppPlanOverviewCard />", () => {
@@ -9,6 +10,7 @@ describe("<AppPlanOverviewCard />", () => {
     render(
       <AppPlanOverviewCard
         endpoint={endpoint}
+        planType={PayPlanType.FreetierV0}
         subscription={subscription}
         user={profileMockData}
       />,

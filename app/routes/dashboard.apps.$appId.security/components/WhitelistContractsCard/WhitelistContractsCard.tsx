@@ -45,7 +45,7 @@ const WhitelistContractsCard = ({ endpoint }: WhitelistContractsCardProps) => {
     ""
 
   return (
-    <Card>
+    <Card mb="xl">
       <div className="pokt-card-header">
         <h3>{t.security.headings.contracts}</h3>
         {isWhitelistContractsSaveShown ? (

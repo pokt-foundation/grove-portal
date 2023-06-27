@@ -44,7 +44,7 @@ const WhitelistMethodsCard = ({ endpoint }: WhitelistMethodsCardProps) => {
     blockchains.find((chain) => chain?.id === whitelistMethodsDropdown)?.description || ""
 
   return (
-    <Card>
+    <Card mb="xl">
       <div className="pokt-card-header">
         <h3>{t.security.headings.methods}</h3>
         {isWhitelistMethodsSaveShown ? (

@@ -43,7 +43,7 @@ const WhitelistBlockchainsCard = ({
   }
 
   return (
-    <Card>
+    <Card mb="xl">
       <div className="pokt-card-header">
         <h3>{t.security.headings.approvedChains}</h3>
         {isApprovedChainsSaveShown ? (

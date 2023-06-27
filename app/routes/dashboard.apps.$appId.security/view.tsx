@@ -33,6 +33,7 @@ import { Blockchain, BlockchainsQuery } from "~/models/portal/sdk"
 import { EndpointQuery } from "~/models/portal/sdk"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { getImageForChain } from "~/utils/known-chains/known-chains"
+import SecretKeyCard from "./components/SecretKeyCard/SecretKeyCard"
 
 /* c8 ignore start */
 export const links = () => {
@@ -114,72 +115,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
     <div className="security">
       <securityAction.Form action={`/api/${appId}/settings`} method="post">
         <input name="appID" type="hidden" value={appId} />
-        <Card>
-          <div className="pokt-card-header">
-            <h3>{t.security.headings.secretKey}</h3>
-            {isSecretKeySaveShown ? (
-              <Flex>
-                <Button
-                  mr=".5em"
-                  px="2em"
-                  size="sm"
-                  variant="outline"
-                  onClick={() => {
-                    dispatch({
-                      type: "SET_SECRET_KEY_REQUIRED",
-                      payload: endpoint.gatewaySettings.secretKeyRequired,
-                    })
-                    dispatch({
-                      type: "SET_SAVE_MODAL_SHOWN",
-                      payload: { modal: "isSecretKeySaveShown", shown: false },
-                    })
-                  }}
-                >
-                  {t.common.reset}
-                </Button>
-                <Button
-                  size="sm"
-                  sx={{
-                    padding: "0 2em",
-                  }}
-                  type="submit"
-                  variant="filled"
-                  onClick={() => {
-                    trackEvent(AmplitudeEvents.SecuritySettingsUpdate)
-                  }}
-                >
-                  {t.common.save}
-                  {navigation.state !== "idle" && (
-                    <Loader color={theme.colors.blue[5]} ml={8} size="xs" />
-                  )}
-                </Button>
-              </Flex>
-            ) : null}
-          </div>
-          <div>
-            <Text size="xs">{t.security.secretKeyText}</Text>
-            <Flex justify="space-between" mt={16}>
-              <Text size="xs">Private Secret Key Required</Text>
-              <Switch
-                aria-label={t.security.secretSwitchAria}
-                checked={secretKeyRequired}
-                id="secretRequired"
-                name="secretKeyRequired"
-                styles={{ track: { cursor: "pointer" } }}
-                onChange={(event) => {
-                  dispatch({
-                    type: "SET_SECRET_KEY_REQUIRED",
-                    payload: event.currentTarget.checked,
-                  })
-                  dispatch({
-                    type: "SET_SAVE_MODAL_SHOWN",
-                    payload: { modal: "isSecretKeySaveShown", shown: true },
-                  })
-                }}
-              />
-            </Flex>
-          </div>
-        </Card>
+        <SecretKeyCard endpoint={endpoint} />
         <Card>
           <div className="pokt-card-header">
             <h3>{t.security.headings.approvedChains}</h3>

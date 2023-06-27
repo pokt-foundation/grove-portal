@@ -37,6 +37,7 @@ import SecretKeyCard from "./components/SecretKeyCard/SecretKeyCard"
 import WhitelistBlockchainsCard from "./components/WhitelistBlockchainsCard/WhitelistBlockchainsCard"
 import WhitelistUserAgentsCard from "./components/WhitelistUserAgentsCard/WhitelistUserAgentsCard"
 import { addIfMissing } from "./utils/utils"
+import WhitelistOriginsCard from "./components/WhitelistOriginsCard/WhitelistOriginsCard"
 
 /* c8 ignore start */
 export const links = () => {
@@ -107,101 +108,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
         <SecretKeyCard endpoint={endpoint} />
         <WhitelistBlockchainsCard blockchains={blockchains} endpoint={endpoint} />
         <WhitelistUserAgentsCard endpoint={endpoint} />
-        <Card>
-          <div className="pokt-card-header">
-            <h3>{t.security.headings.origins}</h3>
-            {isWhitelistOriginsSaveShown ? (
-              <Flex>
-                <Button
-                  mr=".5em"
-                  px="2em"
-                  size="sm"
-                  variant="outline"
-                  onClick={() => {
-                    dispatch({
-                      type: "SET_WHITELIST_ORIGINS",
-                      payload: endpoint.gatewaySettings.whitelistOrigins as string[],
-                    })
-                    dispatch({
-                      type: "SET_SAVE_MODAL_SHOWN",
-                      payload: { modal: "isWhitelistOriginsSaveShown", shown: false },
-                    })
-                  }}
-                >
-                  {t.common.reset}
-                </Button>
-                <Button
-                  size="sm"
-                  sx={{
-                    padding: "0 2em",
-                  }}
-                  type="submit"
-                  variant="filled"
-                  onClick={() => {
-                    trackEvent(AmplitudeEvents.SecuritySettingsUpdate)
-                  }}
-                >
-                  {t.common.save}
-                  {navigation.state !== "idle" && (
-                    <Loader color={theme.colors.blue[5]} ml={8} size="xs" />
-                  )}
-                </Button>
-              </Flex>
-            ) : null}
-          </div>
-          <Text size="sm">{t.security.whitelistOriginsText}</Text>
-          <div className="flexGrowRow">
-            <TextInput
-              id="userOrigins"
-              placeholder={t.security.OriginPlaceholder}
-              value={whitelistOriginsInput}
-              onChange={(e) => {
-                dispatch({ type: "SET_WHITELIST_ORIGINS_INPUT", payload: e.target.value })
-              }}
-            />
-            {whitelistOriginsInput !== "" ? (
-              <Button
-                aria-label={t.security.OriginAria}
-                size="xs"
-                type="button"
-                variant="outline"
-                onClick={() => {
-                  dispatch({
-                    type: "SET_WHITELIST_ORIGINS",
-                    payload: addIfMissing(whitelistOriginsInput, whitelistOrigins),
-                  })
-                  dispatch({ type: "SET_WHITELIST_ORIGINS_INPUT", payload: "" })
-                  dispatch({
-                    type: "SET_SAVE_MODAL_SHOWN",
-                    payload: { modal: "isWhitelistOriginsSaveShown", shown: true },
-                  })
-                }}
-              >
-                <IconPlus height="18px" style={{ marginRight: "10px" }} width="18px" />{" "}
-                Add
-              </Button>
-            ) : null}
-          </div>
-          <div>
-            {whitelistOrigins.map((item: string) => (
-              <div key={item} className="list">
-                <TextInput readOnly value={item} />
-                <CopyText text={String(item)} />
-                <Delete
-                  onDelete={() => {
-                    const newArray = whitelistOrigins.filter((i) => i !== item)
-                    dispatch({ type: "SET_WHITELIST_ORIGINS", payload: newArray })
-                    dispatch({
-                      type: "SET_SAVE_MODAL_SHOWN",
-                      payload: { modal: "isWhitelistOriginsSaveShown", shown: true },
-                    })
-                  }}
-                />
-                <input name="whitelistOrigins" type="hidden" value={item} />
-              </div>
-            ))}
-          </div>
-        </Card>
+        <WhitelistOriginsCard endpoint={endpoint} />
         <Card>
           <div className="pokt-card-header">
             <h3>{t.security.headings.contracts}</h3>

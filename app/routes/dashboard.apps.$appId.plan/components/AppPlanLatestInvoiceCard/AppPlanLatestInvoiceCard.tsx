@@ -1,5 +1,4 @@
 import { Button, Group, CardProps } from "@pokt-foundation/pocket-blocks"
-import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/Card"
 import CardList, { CardListItem, links as CardListLinks } from "~/components/CardList"
 import { useTranslate } from "~/context/TranslateContext"
@@ -9,7 +8,7 @@ import { dayjs } from "~/utils/dayjs"
 
 /* c8 ignore start */
 export const links = () => {
-  return [...CardLinks(), ...CardListLinks(), { rel: "stylesheet", href: styles }]
+  return [...CardLinks(), ...CardListLinks()]
 }
 /* c8 ignore stop */
 
@@ -30,57 +29,51 @@ export default function AppPlanLatestInvoiceCard({
 
   const listItems: CardListItem[] = [
     {
-      label: t.AppPlanLatestInvoiceCard.invoice,
-      value: invoice.id,
-    },
-    {
-      label: t.AppPlanLatestInvoiceCard.status,
-      value: invoice.paid ? "Paid" : "Open",
-    },
-    {
-      label: t.AppPlanLatestInvoiceCard.relaysBilled,
-      value: usageRecords.data[0].total_usage,
-    },
-    {
       label: t.AppPlanLatestInvoiceCard.relaysUsed,
       value: relaysLatestInvoice.Count.Total,
     },
     {
+      label: "USD",
+      value: `$${usageRecords.data[0].total_usage}`,
+    },
+    {
       label: t.AppPlanLatestInvoiceCard.dateStart,
-      value: dayjs.unix(Number(invoice.lines.data[0].period.start)).toString(),
+      value: dayjs
+        .unix(Number(invoice.lines.data[0].period.start))
+        .toDate()
+        .toLocaleDateString(),
     },
     {
       label: t.AppPlanLatestInvoiceCard.dateEnd,
-      value: dayjs.unix(Number(invoice.lines.data[0].period.end)).toString(),
+      value: dayjs
+        .unix(Number(invoice.lines.data[0].period.end))
+        .toDate()
+        .toLocaleDateString("en-US"),
     },
   ]
 
   return (
-    <div className="pokt-app-plan-latest-invoice">
-      <Card {...CardProps}>
-        <div className="pokt-card-header">
-          <h3>{t.AppPlanLatestInvoiceCard.title}</h3>
-        </div>
-        <CardList items={listItems} />
-        <Group mt="xl" position="right">
-          <Button
-            component="a"
-            href={invoice.hosted_invoice_url ?? ""}
-            rel="noreferrer"
-            target="_blank"
-          >
-            {t.AppPlanLatestInvoiceCard.view}
-          </Button>
-          <Button
-            component="a"
-            href={invoice.invoice_pdf ?? ""}
-            rel="noreferrer"
-            target="_blank"
-          >
-            {t.AppPlanLatestInvoiceCard.download}
-          </Button>
-        </Group>
-      </Card>
-    </div>
+    <Card {...CardProps}>
+      <h3>{t.AppPlanLatestInvoiceCard.title}</h3>
+      <CardList items={listItems} />
+      <Group mt="xl" position="right">
+        <Button
+          component="a"
+          href={invoice.hosted_invoice_url ?? ""}
+          rel="noreferrer"
+          target="_blank"
+        >
+          {t.AppPlanLatestInvoiceCard.view}
+        </Button>
+        <Button
+          component="a"
+          href={invoice.invoice_pdf ?? ""}
+          rel="noreferrer"
+          target="_blank"
+        >
+          {t.AppPlanLatestInvoiceCard.download}
+        </Button>
+      </Group>
+    </Card>
   )
 }

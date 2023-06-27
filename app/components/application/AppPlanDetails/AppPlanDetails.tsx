@@ -1,7 +1,6 @@
-import { Button } from "@pokt-foundation/pocket-blocks"
+import { Button, CardProps } from "@pokt-foundation/pocket-blocks"
 import { Link, useFetcher } from "@remix-run/react"
 import clsx from "clsx"
-import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/Card"
 import CardList, { links as CardListLinks } from "~/components/CardList"
 import { useFeatureFlags } from "~/context/FeatureFlagContext"
@@ -13,7 +12,7 @@ import { getPlanName, isFreePlan, isLegacyPlan } from "~/utils/utils"
 
 /* c8 ignore next */
 export const links = () => {
-  return [...CardLinks(), ...CardListLinks(), { rel: "stylesheet", href: styles }]
+  return [...CardLinks(), ...CardListLinks()]
 }
 
 interface AppPlanDetailsProps {
@@ -22,6 +21,7 @@ interface AppPlanDetailsProps {
   id: string
   name: string
   subscription: Stripe.Subscription | undefined
+  CardProps?: Partial<CardProps>
 }
 
 export default function AppPlanDetails({
@@ -30,6 +30,7 @@ export default function AppPlanDetails({
   id,
   name,
   subscription,
+  CardProps,
 }: AppPlanDetailsProps) {
   const { flags } = useFeatureFlags()
   const { t } = useTranslate()
@@ -37,9 +38,8 @@ export default function AppPlanDetails({
   const stripe = `/api/stripe/checkout-session?app-id=${id}&app-name=${name}`
 
   return (
-    <div className="pokt-app-plan-details">
-      <Card bg="navy">
-        <div className="pokt-card-header">
+      <Card {...CardProps}>
+        <div>
           <h3>Plan</h3>
           {subscription && subscription.cancel_at_period_end && (
             <subscriptionFetcher.Form action="/api/stripe/subscription" method="post">
@@ -52,9 +52,6 @@ export default function AppPlanDetails({
                 variant="outline"
               >
                 {t.AppPlanDetails.renew}
-                {/* {subscriptionFetcher.state === "submitting" && (
-                <Loader className="pokt-loader" />
-              )} */}
               </Button>
             </subscriptionFetcher.Form>
           )}
@@ -88,6 +85,5 @@ export default function AppPlanDetails({
           </Button>
         )}
       </Card>
-    </div>
   )
 }

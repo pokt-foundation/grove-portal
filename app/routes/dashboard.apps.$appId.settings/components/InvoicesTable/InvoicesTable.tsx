@@ -3,6 +3,7 @@ import {
   IconArrowUpRight,
   Anchor,
   IconDownload,
+  Badge,
 } from "@pokt-foundation/pocket-blocks"
 import Table from "~/components/Table"
 import { RelayMetric } from "~/models/relaymeter/relaymeter.server"
@@ -12,6 +13,7 @@ interface InvoicesTableProps {
   invoices: Stripe.Invoice[]
   usageRecords: Stripe.ApiList<Stripe.UsageRecordSummary>[]
   relaysInvoices: RelayMetric[]
+  emptyComponent?: JSX.Element
 }
 
 const CENTS = 100
@@ -21,6 +23,7 @@ export function InvoicesTable({
   invoices,
   usageRecords,
   relaysInvoices,
+  emptyComponent,
 }: InvoicesTableProps) {
   return (
     <Table
@@ -41,8 +44,10 @@ export function InvoicesTable({
         ).toDateString()}`,
         relaysUsed: relaysInvoices[idx].Count.Total,
         relaysBilled: usageRecords[idx].data[0].total_usage,
-        billed: lines.data[0].amount / CENTS,
-        paymentStatus: status,
+        billed: `US$${lines.data[0].amount / CENTS}`,
+        paymentStatus: {
+          element: <Badge>{status}</Badge>,
+        },
         download: {
           element: (
             <Flex gap={12}>
@@ -81,6 +86,7 @@ export function InvoicesTable({
           ),
         },
       }))}
+      emptyComponent={emptyComponent}
       label="Invoice History"
     />
   )

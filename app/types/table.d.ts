@@ -41,4 +41,5 @@ export interface TableProps<T extends IdObj> {
   rightComponent?: JSX.Element
   subHeader?: JSX.Element
   rowAsLink?: boolean
+  emptyComponent?: JSX.Element
 }

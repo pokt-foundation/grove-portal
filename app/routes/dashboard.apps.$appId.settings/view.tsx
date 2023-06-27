@@ -1,36 +1,26 @@
-import {
-  Button,
-  Card,
-  Flex,
-  Menu,
-  Title,
-  IconMoreVertical,
-  IconKey,
-  IconDeleteAlt,
-  IconArrowUpRight,
-  Box,
-  ActionIcon,
-} from "@pokt-foundation/pocket-blocks"
+import { useViewportSize } from "@mantine/hooks"
+import { Card, Flex, Text, Title } from "@pokt-foundation/pocket-blocks"
 import { useState } from "react"
 import { AppIdLoaderData } from "../dashboard.apps.$appId/route"
 import AppPlanLatestInvoiceCard, {
   links as AppPlanLatestInvoiceCardLinks,
 } from "../dashboard.apps.$appId.plan/components/AppPlanLatestInvoiceCard"
+import AppPlanOverviewCard, {
+  links as AppPlanOverviewCardStyles,
+} from "../dashboard.apps.$appId.plan/components/AppPlanOverviewCard"
 import DeleteAppModal, {
   links as DeleteAppModalLinks,
 } from "./components/DeleteAppModal/DeleteAppModal"
 import InvoicesTable from "./components/InvoicesTable/InvoicesTable"
 import KeysModal, { links as KeysModalLinks } from "./components/KeysModal/KeysModal"
+import SettingsHeader from "./components/SettingsHeader/SettingsHeader"
 import { AppSettingsLoaderData } from "./route"
-import AppPlanDetails, {
-  links as AppPlanDetailsLinks,
-} from "~/components/application/AppPlanDetails"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 
 export const links = () => {
   return [
-    ...AppPlanDetailsLinks(),
     ...AppPlanLatestInvoiceCardLinks(),
+    ...AppPlanOverviewCardStyles(),
     ...KeysModalLinks(),
     ...DeleteAppModalLinks(),
   ]
@@ -43,6 +33,7 @@ interface SettingsViewProps {
 export function SettingsView({ data }: SettingsViewProps) {
   const [isKeysModalOpen, setIsKeysModalOpen] = useState(false)
   const [isRemoveAppOpened, setIsRemoveAppOpened] = useState(false)
+  const { width } = useViewportSize()
   const appIdRoute = useMatchesRoute("routes/dashboard.apps.$appId")
   const appIdData = appIdRoute?.data as AppIdLoaderData
   const { endpoint, subscription, user } = appIdData
@@ -51,79 +42,61 @@ export function SettingsView({ data }: SettingsViewProps) {
     return <></>
   }
 
+  const invoicesNotEmpty = data.invoices && data.invoices.length > 0
+  const relaysNotEmpty = data.relaysInvoices && data.relaysInvoices.length > 0
+
   return (
-    <Card>
-      <Flex justify="space-between">
-        <Title order={3}>Manage your App</Title>
+    <Card sx={{ "&.mantine-Paper-root.mantine-Card-root": { padding: "2rem" } }}>
+      <SettingsHeader
+        setIsKeysModalOpen={setIsKeysModalOpen}
+        setIsRemoveAppOpened={setIsRemoveAppOpened}
+      />
 
-        <Flex align="center" gap={12}>
-          <Button
-            leftIcon={<IconKey width={12} />}
-            sx={(theme) => ({
-              color: theme.colors.gray[5],
-              fontSize: "0.75rem",
-            })}
-            variant="subtle"
-            onClick={() => setIsKeysModalOpen(true)}
-          >
-            View keys
-          </Button>
-          <Menu>
-            <Menu.Target>
-              <ActionIcon
-                sx={(theme) => ({
-                  color: theme.colors.gray[5],
-                })}
-                variant="subtle"
-              >
-                <IconMoreVertical height={16} />
-              </ActionIcon>
-            </Menu.Target>
-
-            <Menu.Dropdown>
-              <Menu.Item
-                icon={<IconDeleteAlt width={12} />}
-                onClick={() => setIsRemoveAppOpened(true)}
-              >
-                Delete Application
-              </Menu.Item>
-            </Menu.Dropdown>
-          </Menu>
-        </Flex>
-      </Flex>
-
-      <Flex align="stretch" gap="xs" justify="space-between" wrap="wrap">
-        <Box sx={{ flexBasis: "45%" }}>
-          <AppPlanDetails
-            dailyLimit={endpoint.appLimits.dailyLimit}
-            id={endpoint.id}
-            name={endpoint.name}
-            planType={endpoint.appLimits.planType}
+      <Flex align="stretch" gap="xs" justify="space-between" mb="xl" wrap="wrap">
+        {subscription && (
+          <AppPlanOverviewCard
+            CardProps={{
+              sx: (theme) => ({
+                background: theme.colors.navy[4],
+                minWidth:
+                  width <= theme.breakpoints.lg || !invoicesNotEmpty ? "100%" : "45%",
+              }),
+            }}
+            endpoint={endpoint}
             subscription={subscription}
+            user={user}
           />
-          <Button rightIcon={<IconArrowUpRight width={8} />}>Manage in Stripe</Button>
-        </Box>
-
-        <AppPlanLatestInvoiceCard
-          CardProps={{
-            sx: (theme) => ({
-              background: theme.colors.navy[4],
-            }),
-          }}
-          invoice={data.invoices[0]}
-          relaysLatestInvoice={data.relaysInvoices[0]}
-          usageRecords={data.usageRecords[0]}
-        />
+        )}
+        {invoicesNotEmpty && relaysNotEmpty && data.usageRecords && (
+          <AppPlanLatestInvoiceCard
+            CardProps={{
+              sx: (theme) => ({
+                background: theme.colors.navy[4],
+                minWidth: width <= theme.breakpoints.lg ? "100%" : "45%",
+              }),
+            }}
+            invoice={data.invoices[0]}
+            relaysLatestInvoice={data.relaysInvoices[0]}
+            usageRecords={data.usageRecords[0]}
+          />
+        )}
       </Flex>
 
       {data.invoices && (
         <Card
           sx={(theme) => ({
             background: theme.colors.navy[4],
-            margin: "1.5rem 2rem",
           })}
         >
           <InvoicesTable
+            emptyComponent={
+              !invoicesNotEmpty ? (
+                <Flex align="center" direction="column">
+                  <Title order={3}>No data to display</Title>
+                  <Text>Your invoices will be displayed here.</Text>
+                </Flex>
+              ) : undefined
+            }
             invoices={data.invoices}
             relaysInvoices={data.relaysInvoices}
             usageRecords={data.usageRecords}

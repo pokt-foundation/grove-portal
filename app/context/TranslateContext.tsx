@@ -157,7 +157,7 @@ interface TranslationData {
     title: string
     subscription: string
     status: string
-    relays: string
+    role: string
     date: string
     managePlan: string
   }

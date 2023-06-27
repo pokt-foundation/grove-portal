@@ -20,6 +20,7 @@ export const Table = <T extends IdObj>({
   rightComponent,
   subHeader,
   rowAsLink = false,
+  emptyComponent,
   ...props
 }: TableProps<T>) => {
   const [searchTerm, setSearchTerm] = useState("")
@@ -56,6 +57,7 @@ export const Table = <T extends IdObj>({
             </thead>
             <TableBody data={data} paginatedData={paginatedData} rowAsLink={rowAsLink} />
           </MantineTable>
+          {emptyComponent}
         </div>
         {paginate && (
           <TablePagination

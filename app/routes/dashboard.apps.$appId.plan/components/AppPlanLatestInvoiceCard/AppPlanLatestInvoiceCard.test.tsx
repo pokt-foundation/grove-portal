@@ -14,7 +14,7 @@ describe("<AppPlanLatestInvoiceCard />", () => {
       />,
     )
 
-    expect(screen.getByRole("heading", { name: /latest invoice/i })).toBeInTheDocument()
+    expect(screen.getByRole("heading", { name: /current period/i })).toBeInTheDocument()
     expect(screen.getByRole("link", { name: /view in stripe/i })).toHaveAttribute(
       "href",
       invoice.hosted_invoice_url,

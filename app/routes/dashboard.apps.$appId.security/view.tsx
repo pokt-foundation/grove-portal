@@ -180,7 +180,6 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             </Flex>
           </div>
         </Card>
-        <input name="appID" type="hidden" value={appId} />
         <Card>
           <div className="pokt-card-header">
             <h3>{t.security.headings.approvedChains}</h3>
@@ -269,7 +268,6 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             )
           })}
         </Card>
-        <input name="appID" type="hidden" value={appId} />
         <Card>
           <div className="pokt-card-header">
             <h3>{t.security.headings.userAgents}</h3>
@@ -370,7 +368,6 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             ))}
           </div>
         </Card>
-        <input name="appID" type="hidden" value={appId} />
         <Card>
           <div className="pokt-card-header">
             <h3>{t.security.headings.origins}</h3>
@@ -466,7 +463,6 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             ))}
           </div>
         </Card>
-        <input name="appID" type="hidden" value={appId} />
         <Card>
           <div className="pokt-card-header">
             <h3>{t.security.headings.contracts}</h3>
@@ -618,7 +614,6 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             })}
           </div>
         </Card>
-        <input name="appID" type="hidden" value={appId} />
         <Card>
           <div className="pokt-card-header">
             <h3>{t.security.headings.methods}</h3>

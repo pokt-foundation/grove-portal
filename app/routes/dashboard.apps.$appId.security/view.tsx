@@ -66,7 +66,6 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
 
   const [state, dispatch] = useSecurityState(endpoint, navigation.state)
 
-  // get all states from the state hook
   const {
     saveModalsShown: {
       isSecretKeySaveShown,
@@ -181,8 +180,6 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             </Flex>
           </div>
         </Card>
-      </securityAction.Form>
-      <securityAction.Form action={`/api/${appId}/settings`} method="post">
         <input name="appID" type="hidden" value={appId} />
         <Card>
           <div className="pokt-card-header">
@@ -272,8 +269,6 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             )
           })}
         </Card>
-      </securityAction.Form>
-      <securityAction.Form action={`/api/${appId}/settings`} method="post">
         <input name="appID" type="hidden" value={appId} />
         <Card>
           <div className="pokt-card-header">
@@ -375,8 +370,6 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             ))}
           </div>
         </Card>
-      </securityAction.Form>
-      <securityAction.Form action={`/api/${appId}/settings`} method="post">
         <input name="appID" type="hidden" value={appId} />
         <Card>
           <div className="pokt-card-header">
@@ -473,8 +466,6 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             ))}
           </div>
         </Card>
-      </securityAction.Form>
-      <securityAction.Form action={`/api/${appId}/settings`} method="post">
         <input name="appID" type="hidden" value={appId} />
         <Card>
           <div className="pokt-card-header">
@@ -627,8 +618,6 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
             })}
           </div>
         </Card>
-      </securityAction.Form>
-      <securityAction.Form action={`/api/${appId}/settings`} method="post">
         <input name="appID" type="hidden" value={appId} />
         <Card>
           <div className="pokt-card-header">

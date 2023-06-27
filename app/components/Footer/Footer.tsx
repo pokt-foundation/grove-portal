@@ -36,7 +36,6 @@ export const Footer = () => {
             <a href="https://www.pokt.network/" rel="noreferrer" target="_blank">
               About POKT
             </a>
-            <Link to="/contact-sales">Contact</Link>
             <span aria-hidden className="vertical-split"></span>
             <Anchor
               aria-label="Twitter"

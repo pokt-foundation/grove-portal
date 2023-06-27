@@ -4,10 +4,10 @@ import { authenticator } from "~/utils/auth.server"
 export let loader: LoaderFunction = ({ request }) => {
   const url = new URL(request.url)
   const signupField = url.searchParams.get("signup")
+  url.searchParams.append("prompt", "login")
 
   if (signupField) {
     url.searchParams.append("screen_hint", "signup")
-    url.searchParams.append("prompt", "login")
     const signupRequest = new Request(url.toString(), request)
     return authenticator.authenticate("auth0", signupRequest, {
       successRedirect: "/dashboard",
@@ -15,7 +15,8 @@ export let loader: LoaderFunction = ({ request }) => {
     })
   }
 
-  return authenticator.authenticate("auth0", request, {
+  const loginRequest = new Request(url.toString(), request)
+  return authenticator.authenticate("auth0", loginRequest, {
     successRedirect: "/dashboard",
     failureRedirect: "/",
   })

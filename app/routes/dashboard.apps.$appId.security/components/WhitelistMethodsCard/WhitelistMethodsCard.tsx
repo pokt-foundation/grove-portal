@@ -8,17 +8,17 @@ import {
   IconPlus,
   Text,
 } from "@pokt-foundation/pocket-blocks"
-import { Blockchain, EndpointQuery } from "~/models/portal/sdk"
 import { useNavigation } from "@remix-run/react"
-import { useTranslate } from "~/context/TranslateContext"
 import useSecurityState, {
   FormatData,
   WhitelistMethodType,
   formatData,
 } from "../../hooks/useSecurityState"
-import ChainsDropdown from "~/components/ChainsDropdown/ChainsDropdown"
 import AppEndpointUrl from "~/components/application/AppEndpointUrl"
+import ChainsDropdown from "~/components/ChainsDropdown/ChainsDropdown"
+import { useTranslate } from "~/context/TranslateContext"
 import { blockchains } from "~/models/portal/portal.data"
+import { Blockchain, EndpointQuery } from "~/models/portal/sdk"
 import { trackEvent, AmplitudeEvents } from "~/utils/analytics"
 import { getImageForChain } from "~/utils/known-chains/known-chains"
 

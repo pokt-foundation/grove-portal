@@ -7,11 +7,11 @@ import {
   Text,
   useMantineTheme,
 } from "@pokt-foundation/pocket-blocks"
+import { useNavigation } from "@remix-run/react"
+import useSecurityState from "../../hooks/useSecurityState"
+import { useTranslate } from "~/context/TranslateContext"
 import { EndpointQuery } from "~/models/portal/sdk"
 import { trackEvent, AmplitudeEvents } from "~/utils/analytics"
-import useSecurityState from "../../hooks/useSecurityState"
-import { useNavigation } from "@remix-run/react"
-import { useTranslate } from "~/context/TranslateContext"
 
 interface SecretKeyCardProps {
   endpoint: EndpointQuery["endpoint"]

@@ -9,13 +9,13 @@ import {
   useMantineTheme,
 } from "@pokt-foundation/pocket-blocks"
 import { useNavigation } from "@remix-run/react"
+import useSecurityState from "../../hooks/useSecurityState"
+import { addIfMissing } from "../../utils/utils"
 import CopyText from "~/components/CopyText"
 import Delete from "~/components/Delete/Delete"
 import { useTranslate } from "~/context/TranslateContext"
 import { EndpointQuery } from "~/models/portal/sdk"
-import useSecurityState from "../../hooks/useSecurityState"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
-import { addIfMissing } from "../../utils/utils"
 
 interface WhitelistUserAgentsCardProps {
   endpoint: EndpointQuery["endpoint"]

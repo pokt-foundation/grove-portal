@@ -1,17 +1,17 @@
 import { Text, Group } from "@pokt-foundation/pocket-blocks"
 import { useFetcher } from "@remix-run/react"
 import { forwardRef } from "react"
+import SecretKeyCard from "./components/SecretKeyCard/SecretKeyCard"
+import WhitelistBlockchainsCard from "./components/WhitelistBlockchainsCard/WhitelistBlockchainsCard"
+import WhitelistContractsCard from "./components/WhitelistContractsCard/WhitelistContractsCard"
+import WhitelistMethodsCard from "./components/WhitelistMethodsCard/WhitelistMethodsCard"
+import WhitelistOriginsCard from "./components/WhitelistOriginsCard/WhitelistOriginsCard"
+import WhitelistUserAgentsCard from "./components/WhitelistUserAgentsCard/WhitelistUserAgentsCard"
 import styles from "./styles.css"
 import { links as AppEndpointUrlLinks } from "~/components/application/AppEndpointUrl"
 import { links as CardLinks } from "~/components/Card"
 import { BlockchainsQuery } from "~/models/portal/sdk"
 import { EndpointQuery } from "~/models/portal/sdk"
-import SecretKeyCard from "./components/SecretKeyCard/SecretKeyCard"
-import WhitelistBlockchainsCard from "./components/WhitelistBlockchainsCard/WhitelistBlockchainsCard"
-import WhitelistUserAgentsCard from "./components/WhitelistUserAgentsCard/WhitelistUserAgentsCard"
-import WhitelistOriginsCard from "./components/WhitelistOriginsCard/WhitelistOriginsCard"
-import WhitelistContractsCard from "./components/WhitelistContractsCard/WhitelistContractsCard"
-import WhitelistMethodsCard from "./components/WhitelistMethodsCard/WhitelistMethodsCard"
 
 /* c8 ignore start */
 export const links = () => {

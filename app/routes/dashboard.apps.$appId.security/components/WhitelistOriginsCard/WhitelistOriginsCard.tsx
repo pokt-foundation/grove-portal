@@ -8,14 +8,14 @@ import {
   Text,
   useMantineTheme,
 } from "@pokt-foundation/pocket-blocks"
+import { useNavigation } from "@remix-run/react"
+import useSecurityState from "../../hooks/useSecurityState"
+import { addIfMissing } from "../../utils/utils"
 import CopyText from "~/components/CopyText"
 import Delete from "~/components/Delete/Delete"
+import { useTranslate } from "~/context/TranslateContext"
 import { EndpointQuery } from "~/models/portal/sdk"
 import { trackEvent, AmplitudeEvents } from "~/utils/analytics"
-import { addIfMissing } from "../../utils/utils"
-import { useNavigation } from "@remix-run/react"
-import { useTranslate } from "~/context/TranslateContext"
-import useSecurityState from "../../hooks/useSecurityState"
 
 interface WhitelistOriginsCardProps {
   endpoint: EndpointQuery["endpoint"]

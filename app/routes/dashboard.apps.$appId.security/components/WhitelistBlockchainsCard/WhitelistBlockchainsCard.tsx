@@ -6,14 +6,14 @@ import {
   Text,
   useMantineTheme,
 } from "@pokt-foundation/pocket-blocks"
+import { useNavigation } from "@remix-run/react"
 import React from "react"
-import ChainsDropdown from "~/components/ChainsDropdown/ChainsDropdown"
+import useSecurityState from "../../hooks/useSecurityState"
 import AppEndpointUrl from "~/components/application/AppEndpointUrl"
+import ChainsDropdown from "~/components/ChainsDropdown/ChainsDropdown"
+import { useTranslate } from "~/context/TranslateContext"
 import { Blockchain, BlockchainsQuery, EndpointQuery } from "~/models/portal/sdk"
 import { trackEvent, AmplitudeEvents } from "~/utils/analytics"
-import useSecurityState from "../../hooks/useSecurityState"
-import { useNavigation } from "@remix-run/react"
-import { useTranslate } from "~/context/TranslateContext"
 
 interface WhitelistBlockchainsCardProps {
   blockchains: BlockchainsQuery["blockchains"]

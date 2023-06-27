@@ -35,7 +35,7 @@ const WhitelistOriginsCard = ({ endpoint }: WhitelistOriginsCardProps) => {
   } = state
 
   return (
-    <Card mb="xl">
+    <Card mb="xl" p="xl">
       <div className="pokt-card-header">
         <h3>{t.security.headings.origins}</h3>
         {isWhitelistOriginsSaveShown ? (

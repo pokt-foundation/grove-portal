@@ -34,7 +34,7 @@ const WhitelistUserAgentsCard = ({ endpoint }: WhitelistUserAgentsCardProps) => 
     saveModalsShown: { isWhitelistUserAgentsSaveShown },
   } = state
   return (
-    <Card mb="xl">
+    <Card mb="xl" p="xl">
       <div className="pokt-card-header">
         <h3>{t.security.headings.userAgents}</h3>
         {isWhitelistUserAgentsSaveShown ? (

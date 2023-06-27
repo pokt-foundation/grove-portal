@@ -35,6 +35,8 @@ import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { getImageForChain } from "~/utils/known-chains/known-chains"
 import SecretKeyCard from "./components/SecretKeyCard/SecretKeyCard"
 import WhitelistBlockchainsCard from "./components/WhitelistBlockchainsCard/WhitelistBlockchainsCard"
+import WhitelistUserAgentsCard from "./components/WhitelistUserAgentsCard/WhitelistUserAgentsCard"
+import { addIfMissing } from "./utils/utils"
 
 /* c8 ignore start */
 export const links = () => {
@@ -91,13 +93,6 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
     whitelistMethodsDropdown,
   } = state
 
-  const addIfMissing = (item: string, arr: string[]) => {
-    if (arr.indexOf(item) !== -1) {
-      return arr
-    }
-    return [...arr, item]
-  }
-
   const whitelistContractsDropdownChain =
     blockchains.find((chain) => chain?.id === whitelistContractsDropdown)?.description ||
     ""
@@ -111,106 +106,7 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
         <input name="appID" type="hidden" value={appId} />
         <SecretKeyCard endpoint={endpoint} />
         <WhitelistBlockchainsCard blockchains={blockchains} endpoint={endpoint} />
-        <Card>
-          <div className="pokt-card-header">
-            <h3>{t.security.headings.userAgents}</h3>
-            {isWhitelistUserAgentsSaveShown ? (
-              <Flex>
-                <Button
-                  mr=".5em"
-                  px="2em"
-                  size="sm"
-                  variant="outline"
-                  onClick={() => {
-                    dispatch({
-                      type: "SET_WHITELIST_USER_AGENTS",
-                      payload: endpoint.gatewaySettings.whitelistUserAgents as string[],
-                    })
-                    dispatch({
-                      type: "SET_SAVE_MODAL_SHOWN",
-                      payload: { modal: "isWhitelistUserAgentsSaveShown", shown: false },
-                    })
-                  }}
-                >
-                  {t.common.reset}
-                </Button>
-                <Button
-                  size="sm"
-                  sx={{
-                    padding: "0 2em",
-                  }}
-                  type="submit"
-                  variant="filled"
-                  onClick={() => {
-                    trackEvent(AmplitudeEvents.SecuritySettingsUpdate)
-                  }}
-                >
-                  {t.common.save}
-                  {navigation.state !== "idle" && (
-                    <Loader color={theme.colors.blue[5]} ml={8} size="xs" />
-                  )}
-                </Button>
-              </Flex>
-            ) : null}
-          </div>
-          <Text size="sm">{t.security.whitelistUserAgentsText}</Text>
-          <Flex align="center" gap="md" mt="lg">
-            <TextInput
-              id="userAgents"
-              name="whitelistUserAgentsInput"
-              placeholder={t.security.userAgentPlaceholder}
-              value={whitelistUserAgentsInput}
-              w="100%"
-              onChange={(e) => {
-                dispatch({
-                  type: "SET_WHITELIST_USER_AGENTS_INPUT",
-                  payload: e.target.value,
-                })
-              }}
-            />
-            {whitelistUserAgentsInput !== "" ? (
-              <Button
-                aria-label={t.security.userAgentAria}
-                size="xs"
-                type="button"
-                variant="outline"
-                onClick={() => {
-                  dispatch({
-                    type: "SET_WHITELIST_USER_AGENTS",
-                    payload: addIfMissing(whitelistUserAgentsInput, whitelistUserAgents),
-                  })
-                  dispatch({ type: "SET_WHITELIST_USER_AGENTS_INPUT", payload: "" })
-                  dispatch({
-                    type: "SET_SAVE_MODAL_SHOWN",
-                    payload: { modal: "isWhitelistUserAgentsSaveShown", shown: true },
-                  })
-                }}
-              >
-                <IconPlus height="18px" style={{ marginRight: "10px" }} width="18px" />{" "}
-                Add
-              </Button>
-            ) : null}
-          </Flex>
-          <div>
-            {whitelistUserAgents.map((item: string) => (
-              <Flex key={item} align="center" mt="md" w="100%">
-                <TextInput readOnly mr="xs" value={item} w="100%"></TextInput>
-                <CopyText text={String(item)} />
-                <Delete
-                  onDelete={() => {
-                    const newArray = whitelistUserAgents.filter((i) => i !== item)
-                    dispatch({ type: "SET_WHITELIST_USER_AGENTS", payload: newArray })
-                    dispatch({
-                      type: "SET_SAVE_MODAL_SHOWN",
-                      payload: { modal: "isWhitelistUserAgentsSaveShown", shown: true },
-                    })
-                  }}
-                />
-                <input name="whitelistUserAgents" type="hidden" value={item} />
-              </Flex>
-            ))}
-          </div>
-        </Card>
+        <WhitelistUserAgentsCard endpoint={endpoint} />
         <Card>
           <div className="pokt-card-header">
             <h3>{t.security.headings.origins}</h3>

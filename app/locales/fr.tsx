@@ -243,6 +243,7 @@ const schema = {
     dateEnd: "End -fr",
     download: "Download -fr",
     view: "View in Stripe -fr",
+    viewRelayData: "View Relay Data -fr",
   },
   AppOverLimitCard: {
     title: "Session Limit Reached -fr",

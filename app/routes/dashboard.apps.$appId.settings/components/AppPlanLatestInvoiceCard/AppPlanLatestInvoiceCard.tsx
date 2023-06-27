@@ -1,4 +1,5 @@
-import { Button, Group, CardProps } from "@pokt-foundation/pocket-blocks"
+import { CardProps, Anchor } from "@pokt-foundation/pocket-blocks"
+import { Link } from "@remix-run/react"
 import { Card, links as CardLinks } from "~/components/Card"
 import CardList, { CardListItem, links as CardListLinks } from "~/components/CardList"
 import { useTranslate } from "~/context/TranslateContext"
@@ -56,24 +57,27 @@ export default function AppPlanLatestInvoiceCard({
     <Card {...CardProps}>
       <h3>{t.AppPlanLatestInvoiceCard.title}</h3>
       <CardList items={listItems} />
-      <Group mt="xl" position="right">
-        <Button
-          component="a"
-          href={invoice.hosted_invoice_url ?? ""}
-          rel="noreferrer"
-          target="_blank"
-        >
-          {t.AppPlanLatestInvoiceCard.view}
-        </Button>
-        <Button
-          component="a"
-          href={invoice.invoice_pdf ?? ""}
-          rel="noreferrer"
-          target="_blank"
-        >
-          {t.AppPlanLatestInvoiceCard.download}
-        </Button>
-      </Group>
+      <Anchor
+        component={Link}
+        sx={(theme) => ({
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "transparent",
+          border: `1px solid ${theme.colors.blue[5]}`,
+          color: theme.colors.blue[5],
+          borderRadius: "0.5rem",
+          width: "100%",
+          padding: "0 1.375rem",
+          height: "2.625rem",
+          marginTop: "1.5rem",
+          textAlign: "center",
+        })}
+        to="/empty-route-for-now"
+        variant="text"
+      >
+        {t.AppPlanLatestInvoiceCard.viewRelayData}
+      </Anchor>
     </Card>
   )
 }

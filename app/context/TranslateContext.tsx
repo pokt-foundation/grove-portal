@@ -172,6 +172,7 @@ interface TranslationData {
     dateEnd: string
     download: string
     view: string
+    viewRelayData: string
   }
   AppOverLimitCard: {
     title: string

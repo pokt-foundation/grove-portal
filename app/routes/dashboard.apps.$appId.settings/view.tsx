@@ -4,10 +4,10 @@ import { useState } from "react"
 import { AppIdLoaderData } from "../dashboard.apps.$appId/route"
 import AppPlanLatestInvoiceCard, {
   links as AppPlanLatestInvoiceCardLinks,
-} from "../dashboard.apps.$appId.plan/components/AppPlanLatestInvoiceCard"
+} from "./components/AppPlanLatestInvoiceCard"
 import AppPlanOverviewCard, {
   links as AppPlanOverviewCardStyles,
-} from "../dashboard.apps.$appId.plan/components/AppPlanOverviewCard"
+} from "./components/AppPlanOverviewCard"
 import DeleteAppModal, {
   links as DeleteAppModalLinks,
 } from "./components/DeleteAppModal/DeleteAppModal"

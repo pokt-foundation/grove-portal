@@ -7,12 +7,14 @@ import { subscription } from "~/models/stripe/stripe.data"
 describe("<AppPlanOverviewCard />", () => {
   it("renders", () => {
     render(
-      <AppPlanOverviewCard endpoint={endpoint} subscription={subscription} user={profileMockData} />,
+      <AppPlanOverviewCard
+        endpoint={endpoint}
+        subscription={subscription}
+        user={profileMockData}
+      />,
     )
 
     expect(screen.getByRole("heading", { name: /plan/i })).toBeInTheDocument()
-    expect(
-      screen.getByRole("button", { name: /manage in stripe/i }),
-    ).toBeInTheDocument()
+    expect(screen.getByRole("button", { name: /manage in stripe/i })).toBeInTheDocument()
   })
 })

@@ -11,7 +11,7 @@ import ChainsDropdown from "~/components/ChainsDropdown/ChainsDropdown"
 import AppEndpointUrl from "~/components/application/AppEndpointUrl"
 import { Blockchain, BlockchainsQuery, EndpointQuery } from "~/models/portal/sdk"
 import { trackEvent, AmplitudeEvents } from "~/utils/analytics"
-import useSecurityState from "../hooks/useSecurityState"
+import useSecurityState from "../../hooks/useSecurityState"
 import { useNavigation } from "@remix-run/react"
 import { useTranslate } from "~/context/TranslateContext"
 

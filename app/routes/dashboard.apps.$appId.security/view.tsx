@@ -34,7 +34,7 @@ import { EndpointQuery } from "~/models/portal/sdk"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { getImageForChain } from "~/utils/known-chains/known-chains"
 import SecretKeyCard from "./components/SecretKeyCard/SecretKeyCard"
-import WhitelistBlockchainsCard from "./components/WhitelistBlockchainsCard"
+import WhitelistBlockchainsCard from "./components/WhitelistBlockchainsCard/WhitelistBlockchainsCard"
 
 /* c8 ignore start */
 export const links = () => {

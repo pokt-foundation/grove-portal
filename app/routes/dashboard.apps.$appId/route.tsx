@@ -10,6 +10,7 @@ import {
 import { Auth0Profile } from "remix-auth-auth0"
 import invariant from "tiny-invariant"
 import AppIdLayoutView, { links as AppIdLayoutViewLinks } from "./view"
+import Loader, { links as LoaderLinks } from "~/components/Loader"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { BlockchainsQuery, EndpointQuery, PayPlanType } from "~/models/portal/sdk"
 import {
@@ -21,7 +22,6 @@ import { getSubscription, Stripe } from "~/models/stripe/stripe.server"
 import { getErrorMessage } from "~/utils/catchError"
 import { dayjs } from "~/utils/dayjs"
 import { getPoktId, requireUser } from "~/utils/session.server"
-import Loader, { links as LoaderLinks } from "~/components/Loader"
 
 export const links = () => {
   return [...AppIdLayoutViewLinks(), ...LoaderLinks()]

@@ -136,25 +136,22 @@ const WhitelistMethodsCard = ({ endpoint }: WhitelistMethodsCardProps) => {
             type="button"
             variant="outline"
             onClick={() => {
-              if (whitelistMethodsInput === "" || whitelistMethodsDropdown === "") {
-              } else {
-                dispatch({
-                  type: "SET_WHITELIST_METHODS",
-                  payload: [
-                    ...whitelistMethods,
-                    {
-                      id: whitelistMethodsDropdown,
-                      inputValue: whitelistMethodsInput,
-                    },
-                  ],
-                })
-                dispatch({ type: "SET_WHITELIST_METHODS_INPUT", payload: "" })
-                dispatch({ type: "SET_WHITELIST_METHODS_DROPDOWN", payload: "" })
-                dispatch({
-                  type: "SET_SAVE_MODAL_SHOWN",
-                  payload: { modal: "isWhitelistMethodsSaveShown", shown: true },
-                })
-              }
+              dispatch({
+                type: "SET_WHITELIST_METHODS",
+                payload: [
+                  ...whitelistMethods,
+                  {
+                    id: whitelistMethodsDropdown,
+                    inputValue: whitelistMethodsInput,
+                  },
+                ],
+              })
+              dispatch({ type: "SET_WHITELIST_METHODS_INPUT", payload: "" })
+              dispatch({ type: "SET_WHITELIST_METHODS_DROPDOWN", payload: "" })
+              dispatch({
+                type: "SET_SAVE_MODAL_SHOWN",
+                payload: { modal: "isWhitelistMethodsSaveShown", shown: true },
+              })
             }}
           >
             <IconPlus height="18px" style={{ marginRight: "10px" }} width="18px" /> Add

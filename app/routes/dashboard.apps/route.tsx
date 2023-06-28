@@ -1,4 +1,4 @@
-import { Button, Grid } from "@pokt-foundation/pocket-blocks"
+import { Badge, Button, Flex, Grid } from "@pokt-foundation/pocket-blocks"
 import { json, LoaderFunction } from "@remix-run/node"
 import { Link, Outlet, useLoaderData, useNavigation } from "@remix-run/react"
 import { PocketUser } from "../api.user/route"
@@ -88,7 +88,10 @@ export const Apps = () => {
         <Grid.Col md={4}>
           <Card>
             <div className="pokt-card-header">
-              <h3>Account</h3>
+              <Flex align="center" justify="space-between" w="100%">
+                <h3>Account</h3>
+                <Badge variant="filled">{isEnterprise ? "Enterprise" : "Free"}</Badge>
+              </Flex>
             </div>
             <CardList items={userAppsStatus} />
             {(!endpoints || endpoints.owner.length < MAX_USER_APPS || isEnterprise) && (

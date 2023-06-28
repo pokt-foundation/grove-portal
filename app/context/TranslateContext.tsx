@@ -101,6 +101,7 @@ interface TranslationData {
       notifications: string
       plan: string
       team: string
+      settings: string
     }
   }
   AppRequestsByOriginCard: {
@@ -148,9 +149,10 @@ interface TranslationData {
     title: string
     subscription: string
     status: string
-    relays: string
+    role: string
     date: string
     managePlan: string
+    currentPlan: string
   }
   AppPlanLatestInvoiceCard: {
     title: string
@@ -162,6 +164,7 @@ interface TranslationData {
     dateEnd: string
     download: string
     view: string
+    viewRelayData: string
   }
   AppOverLimitCard: {
     title: string

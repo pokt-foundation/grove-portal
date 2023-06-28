@@ -14,14 +14,10 @@ describe("<AppPlanLatestInvoiceCard />", () => {
       />,
     )
 
-    expect(screen.getByRole("heading", { name: /latest invoice/i })).toBeInTheDocument()
-    expect(screen.getByRole("link", { name: /view in stripe/i })).toHaveAttribute(
+    expect(screen.getByRole("heading", { name: /current period/i })).toBeInTheDocument()
+    expect(screen.getByRole("link", { name: /view relay data/i })).toHaveAttribute(
       "href",
-      invoice.hosted_invoice_url,
-    )
-    expect(screen.getByRole("link", { name: /download/i })).toHaveAttribute(
-      "href",
-      invoice.invoice_pdf,
+      "/empty-route-for-now",
     )
   })
 })

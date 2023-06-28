@@ -10,10 +10,10 @@ import WhitelistUserAgentsCard from "./components/WhitelistUserAgentsCard/Whitel
 import styles from "./styles.css"
 import { links as AppEndpointUrlLinks } from "~/components/application/AppEndpointUrl"
 import { links as CardLinks } from "~/components/Card"
-import { BlockchainsQuery } from "~/models/portal/sdk"
-import { EndpointQuery } from "~/models/portal/sdk"
 import ErrorIcon from "~/components/Icons/ErrorIcon"
 import SuccessIcon from "~/components/Icons/SuccessIcon"
+import { BlockchainsQuery } from "~/models/portal/sdk"
+import { EndpointQuery } from "~/models/portal/sdk"
 
 /* c8 ignore start */
 export const links = () => {

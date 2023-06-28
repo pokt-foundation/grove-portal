@@ -1,11 +1,11 @@
 import { MetaFunction } from "@remix-run/node"
+import { ActionFunction, json, redirect } from "@remix-run/node"
 import { useOutletContext, useParams } from "@remix-run/react"
 import { useEffect } from "react"
 import { AppIdOutletContext } from "../dashboard.apps.$appId/route"
 import SecurityView, { links as SecurityViewLinks } from "./view"
-import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
-import { ActionFunction, json, redirect } from "@remix-run/node"
 import { initPortalClient } from "~/models/portal/portal.server"
+import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { requireUser } from "~/utils/session.server"
 
 export const meta: MetaFunction = () => {

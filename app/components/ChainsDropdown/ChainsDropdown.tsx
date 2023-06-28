@@ -5,13 +5,12 @@ import {
   Group,
   IconPlus,
   IconSearch,
-  MantineTheme,
   Select,
   Text,
   useMantineTheme,
 } from "@pokt-foundation/pocket-blocks"
 import { forwardRef, useMemo, useState } from "react"
-import { BlockchainsQuery, EndpointQuery } from "~/models/portal/sdk"
+import { BlockchainsQuery } from "~/models/portal/sdk"
 
 const CheckboxItem = forwardRef<
   HTMLDivElement,
@@ -19,7 +18,20 @@ const CheckboxItem = forwardRef<
 >(({ checked, label, ...others }, ref) => {
   return (
     <div ref={ref} {...others}>
-      <Checkbox readOnly checked={checked} label={label} />
+      <Checkbox
+        readOnly
+        checked={checked}
+        label={label}
+        styles={{
+          label: {
+            cursor: "pointer",
+          },
+
+          input: {
+            cursor: "pointer",
+          },
+        }}
+      />
     </div>
   )
 })
@@ -43,12 +55,10 @@ SelectItem.displayName = "SelectItem"
 const ChainsDropdown = ({
   chains,
   checkboxData,
-  endpoint,
   onChange,
 }: {
   chains: BlockchainsQuery["blockchains"]
   checkboxData?: string[]
-  endpoint: EndpointQuery["endpoint"]
   onChange: (chain: string) => void
 }) => {
   const [isInputShown, setIsInputShown] = useState(false)
@@ -84,23 +94,26 @@ const ChainsDropdown = ({
         placeholder="Search Network"
         rightSectionWidth={0}
         size="xs"
-        sx={(theme: MantineTheme) => ({
-          ".mantine-Select-dropdown": {
+        styles={{
+          dropdown: {
             backgroundColor: theme.colors.navy[6],
           },
-          ".mantine-Select-input": {
+
+          input: {
             backgroundColor: "transparent",
             borderColor: theme.colors.blue[5],
+
+            "&::placeholder": {
+              color: theme.colors.blue[5],
+              fontWeight: 600,
+              fontSize: "12px",
+            },
           },
-          ".mantine-Select-input::placeholder": {
-            color: theme.colors.blue[5],
-            fontWeight: 600,
-            fontSize: "12px",
+
+          item: {
+            cursor: "pointer",
           },
-          ".mantine-Select-item": {
-            cursor: "default",
-          },
-        })}
+        }}
         onChange={onChange}
       />
     </div>

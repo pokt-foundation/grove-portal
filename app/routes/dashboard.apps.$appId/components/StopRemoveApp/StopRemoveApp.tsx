@@ -126,7 +126,7 @@ export default function StopRemoveApp({
               <Button variant="outline" onClick={() => setRemoveAppOpened(false)}>
                 {t.common.cancel}
               </Button>
-              <Form action={`/api.${appId}.remove`} method="post">
+              <Form action={`/api/${appId}/remove`} method="post">
                 <Button
                   type="submit"
                   onClick={() => {

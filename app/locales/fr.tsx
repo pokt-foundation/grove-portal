@@ -381,10 +381,15 @@ const schema = {
       "As an early customer, we've got you covered. You will be grandfathered into a legacy free tier plan for a limited time which will grant your app uniterupted service. -fr",
       <>
         For more information
-        <Link className="pokt-link" to="/contact-sales">
+        <a
+          className="pokt-link"
+          href="mailto:sales@pokt.network"
+          rel="noreferrer"
+          target="_blank"
+        >
           {" "}
           contact us{" "}
-        </Link>
+        </a>
         with any questions. -fr
       </>,
     ],

@@ -11,7 +11,11 @@ type useRootProps = { user: Awaited<Auth0Profile | undefined> }
 export const useRoot = ({ user }: useRootProps) => {
   const { t } = useTranslate()
   const { pathname } = useLocation()
-  const isDashboard = useMemo(() => pathname.includes("/dashboard/"), [pathname])
+  const isPlasmic = useMemo(
+    () => !pathname.includes("/dashboard/") && !pathname.includes("/admin"),
+    [pathname],
+  )
+
   useEffect(() => {
     analyticsInit({ id: user?.id ?? "" })
   }, [user])
@@ -56,5 +60,5 @@ export const useRoot = ({ user }: useRootProps) => {
     return allRoutes.filter((r) => r.protected <= protectedLevel)
   }, [t, user])
 
-  return { isDashboard, routes }
+  return { isPlasmic, routes }
 }

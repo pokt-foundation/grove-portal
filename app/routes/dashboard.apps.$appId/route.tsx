@@ -61,7 +61,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       form.append("id", params.appId)
       form.append("type", PayPlanType.PayAsYouGoV0)
 
-      await fetch(url.origin + `/api/${params.appId}/updatePlan`, {
+      await fetch(url.origin + `/api/${params.appId}/update-plan`, {
         method: "POST",
         body: form,
       })

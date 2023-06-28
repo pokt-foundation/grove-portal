@@ -1,5 +1,5 @@
 import { Button, Container, Select } from "@pokt-foundation/pocket-blocks"
-import { LinksFunction } from "@remix-run/node"
+import { LinksFunction, MetaFunction } from "@remix-run/node"
 import { useFetcher } from "@remix-run/react"
 import { useState } from "react"
 import Card, { links as CardLinks } from "~/components/Card"
@@ -7,6 +7,12 @@ import TextInput from "~/components/TextInput"
 import { PayPlanType } from "~/models/portal/sdk"
 
 export const links: LinksFunction = () => [...CardLinks()]
+
+export const meta: MetaFunction = () => {
+  return {
+    title: "Custom Pay Plan | Admin",
+  }
+}
 
 export default function CustomPayPlan() {
   const [selectedPlanType, setSelectedPlanType] = useState<string | null>(null)

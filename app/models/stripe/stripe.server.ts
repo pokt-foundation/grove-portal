@@ -43,3 +43,17 @@ export const getSubscription = async (
 
   return subscription
 }
+
+export const getInvoices = async (email: string, userId: string) => {
+  const customer = await getCustomer(email, userId)
+  if (!customer) {
+    return undefined
+  }
+
+  const invoices = await stripe.invoices.list({ customer: customer.id })
+  if (!invoices) {
+    return undefined
+  }
+
+  return invoices.data
+}

@@ -20,6 +20,8 @@ export const Table = <T extends IdObj>({
   rightComponent,
   subHeader,
   rowAsLink = false,
+  emptyComponent,
+  ...props
 }: TableProps<T>) => {
   const [searchTerm, setSearchTerm] = useState("")
   const { paginatedData, totalPages, page, handlePageChange } = usePagination({
@@ -45,7 +47,7 @@ export const Table = <T extends IdObj>({
         {subHeader && <div>{subHeader}</div>}
 
         <div className="pokt-table-overflow">
-          <MantineTable>
+          <MantineTable {...props}>
             <thead>
               <tr>
                 {columns.map((key) => (
@@ -55,6 +57,7 @@ export const Table = <T extends IdObj>({
             </thead>
             <TableBody data={data} paginatedData={paginatedData} rowAsLink={rowAsLink} />
           </MantineTable>
+          {emptyComponent}
         </div>
         {paginate && (
           <TablePagination

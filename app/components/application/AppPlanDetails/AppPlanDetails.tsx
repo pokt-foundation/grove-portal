@@ -1,7 +1,6 @@
-import { Button } from "@pokt-foundation/pocket-blocks"
+import { Button, CardProps } from "@pokt-foundation/pocket-blocks"
 import { Link, useFetcher } from "@remix-run/react"
 import clsx from "clsx"
-import styles from "./styles.css"
 import { Card, links as CardLinks } from "~/components/Card"
 import CardList, { links as CardListLinks } from "~/components/CardList"
 import { useFeatureFlags } from "~/context/FeatureFlagContext"
@@ -13,7 +12,7 @@ import { getPlanName, isFreePlan, isLegacyPlan } from "~/utils/utils"
 
 /* c8 ignore next */
 export const links = () => {
-  return [...CardLinks(), ...CardListLinks(), { rel: "stylesheet", href: styles }]
+  return [...CardLinks(), ...CardListLinks()]
 }
 
 interface AppPlanDetailsProps {
@@ -22,6 +21,7 @@ interface AppPlanDetailsProps {
   id: string
   name: string
   subscription: Stripe.Subscription | undefined
+  CardProps?: Partial<CardProps>
 }
 
 export default function AppPlanDetails({
@@ -30,6 +30,7 @@ export default function AppPlanDetails({
   id,
   name,
   subscription,
+  CardProps,
 }: AppPlanDetailsProps) {
   const { flags } = useFeatureFlags()
   const { t } = useTranslate()
@@ -37,57 +38,52 @@ export default function AppPlanDetails({
   const stripe = `/api/stripe/checkout-session?app-id=${id}&app-name=${name}`
 
   return (
-    <div className="pokt-app-plan-details">
-      <Card>
-        <div className="pokt-card-header">
-          <h3>Plan</h3>
-          {subscription && subscription.cancel_at_period_end && (
-            <subscriptionFetcher.Form action="/api/stripe/subscription" method="post">
-              <input hidden name="app-id" value={id} />
-              <input hidden name="subscription-renew" value="true" />
-              <Button
-                disabled={flags.STRIPE_PAYMENT === "false"}
-                size="xs"
-                type="submit"
-                variant="outline"
-              >
-                {t.AppPlanDetails.renew}
-                {/* {subscriptionFetcher.state === "submitting" && (
-                <Loader className="pokt-loader" />
-              )} */}
-              </Button>
-            </subscriptionFetcher.Form>
-          )}
-        </div>
-        <CardList
-          items={[
-            {
-              label: t.AppPlanDetails.relayLimit,
-              value: dailyLimit !== 0 ? commify(dailyLimit) : "Unlimited",
-            },
-            {
-              label: t.AppPlanDetails.currentPlan,
-              value: getPlanName(planType),
-              help: t.AppPlanDetails.currentPlanToolTip,
-            },
-          ]}
-        />
-        {!subscription && (isFreePlan(planType) || isLegacyPlan(planType)) && (
-          <Button
-            fullWidth
-            className={clsx("pokt-button", {
-              disabled: flags.STRIPE_PAYMENT === "false",
-            })}
-            component={Link}
-            disabled={flags.STRIPE_PAYMENT === "false"}
-            mt={16}
-            size="xs"
-            to={stripe}
-          >
-            {t.AppPlanDetails.upgrade}
-          </Button>
+    <Card {...CardProps}>
+      <div>
+        <h3>Plan</h3>
+        {subscription && subscription.cancel_at_period_end && (
+          <subscriptionFetcher.Form action="/api/stripe/subscription" method="post">
+            <input hidden name="app-id" value={id} />
+            <input hidden name="subscription-renew" value="true" />
+            <Button
+              disabled={flags.STRIPE_PAYMENT === "false"}
+              size="xs"
+              type="submit"
+              variant="outline"
+            >
+              {t.AppPlanDetails.renew}
+            </Button>
+          </subscriptionFetcher.Form>
         )}
-      </Card>
-    </div>
+      </div>
+      <CardList
+        items={[
+          {
+            label: t.AppPlanDetails.relayLimit,
+            value: dailyLimit !== 0 ? commify(dailyLimit) : "Unlimited",
+          },
+          {
+            label: t.AppPlanDetails.currentPlan,
+            value: getPlanName(planType),
+            help: t.AppPlanDetails.currentPlanToolTip,
+          },
+        ]}
+      />
+      {!subscription && (isFreePlan(planType) || isLegacyPlan(planType)) && (
+        <Button
+          fullWidth
+          className={clsx("pokt-button", {
+            disabled: flags.STRIPE_PAYMENT === "false",
+          })}
+          component={Link}
+          disabled={flags.STRIPE_PAYMENT === "false"}
+          mt={16}
+          size="xs"
+          to={stripe}
+        >
+          {t.AppPlanDetails.upgrade}
+        </Button>
+      )}
+    </Card>
   )
 }

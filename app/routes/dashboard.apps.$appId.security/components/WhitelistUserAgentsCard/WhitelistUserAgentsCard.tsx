@@ -90,6 +90,19 @@ const WhitelistUserAgentsCard = ({ endpoint }: WhitelistUserAgentsCardProps) => 
               payload: e.target.value,
             })
           }}
+          sx={{
+            backgroundColor: theme.colors.navy[6],
+
+            "&::placeholder": {
+              fontWeight: 600,
+              fontSize: "12px",
+            },
+          }}
+          styles={{
+            input: {
+              border: "1px solid transparent",
+            },
+          }}
         />
         {whitelistUserAgentsInput !== "" ? (
           <Button

@@ -78,13 +78,27 @@ const WhitelistOriginsCard = ({ endpoint }: WhitelistOriginsCardProps) => {
         ) : null}
       </div>
       <Text size="sm">{t.security.whitelistOriginsText}</Text>
-      <div className="flexGrowRow">
+      <Flex align="center" mt="lg" gap="md" w="100%">
         <TextInput
           id="userOrigins"
           placeholder={t.security.OriginPlaceholder}
           value={whitelistOriginsInput}
           onChange={(e) => {
             dispatch({ type: "SET_WHITELIST_ORIGINS_INPUT", payload: e.target.value })
+          }}
+          w="100%"
+          sx={{
+            backgroundColor: theme.colors.navy[6],
+
+            "&::placeholder": {
+              fontWeight: 600,
+              fontSize: "12px",
+            },
+          }}
+          styles={{
+            input: {
+              border: "1px solid transparent",
+            },
           }}
         />
         {whitelistOriginsInput !== "" ? (
@@ -108,10 +122,10 @@ const WhitelistOriginsCard = ({ endpoint }: WhitelistOriginsCardProps) => {
             <IconPlus height="18px" style={{ marginRight: "10px" }} width="18px" /> Add
           </Button>
         ) : null}
-      </div>
+      </Flex>
       <div>
         {whitelistOrigins.map((item: string) => (
-          <div key={item} className="list">
+          <Flex key={item} mt="md" w="100%" className="list">
             <TextInput readOnly value={item} />
             <CopyText text={String(item)} />
             <Delete
@@ -125,7 +139,7 @@ const WhitelistOriginsCard = ({ endpoint }: WhitelistOriginsCardProps) => {
               }}
             />
             <input name="whitelistOrigins" type="hidden" value={item} />
-          </div>
+          </Flex>
         ))}
       </div>
     </Card>

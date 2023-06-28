@@ -5,6 +5,7 @@ import {
   IconSave,
   Text,
   TextInput,
+  useMantineTheme,
 } from "@pokt-foundation/pocket-blocks"
 import { useFetcher } from "@remix-run/react"
 import { useEffect, useState } from "react"
@@ -20,6 +21,7 @@ export default function AppName({ id, name }: AppNameProps) {
   const [error, setError] = useState(false)
   const [errorMessage, setErrorMessage] = useState("")
   const fetcher = useFetcher()
+  const theme = useMantineTheme()
 
   const handleButtonClick = () => {
     if (editing) {
@@ -79,24 +81,27 @@ export default function AppName({ id, name }: AppNameProps) {
         {editing && (
           <TextInput
             defaultValue={nameState}
-            size="lg"
             onChange={(e) => setNameState(e.currentTarget.value)}
+            sx={{
+              fontSize: "24px",
+            }}
           />
         )}
         <Button
-          size="xs"
+          size="sm"
           sx={{
             opacity: editing ? "100%" : "0",
             pointerEvents: editing ? "auto" : "none",
             transition: "opacity ease-in-out 0.3s",
           }}
-          variant="outline"
+          p="6px 8px"
+          variant="subtle"
           onClick={handleButtonClick}
         >
           {editing ? (
-            <IconSave height={18} width={18} />
+            <IconSave color={theme.colors.blue[5]} height={18} width={18} />
           ) : (
-            <IconEdit height={18} width={18} />
+            <IconEdit color={theme.colors.blue[5]} height={18} width={18} />
           )}
         </Button>
       </Box>

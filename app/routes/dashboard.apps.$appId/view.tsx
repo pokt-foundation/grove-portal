@@ -202,6 +202,9 @@ export default function AppIdLayoutView({
             component={Link}
             to="/dashboard/apps"
             sx={{
+              display: "block",
+              marginBottom: "16px",
+
               "&:hover": {
                 textDecoration: "none",
               },

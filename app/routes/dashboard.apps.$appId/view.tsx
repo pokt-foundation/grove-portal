@@ -1,5 +1,13 @@
-import { IconCaretLeft, Button } from "@pokt-foundation/pocket-blocks"
-import { FetcherWithComponents } from "@remix-run/react"
+import {
+  IconCaretLeft,
+  Button,
+  Flex,
+  IconArrowLeft,
+  Text,
+  Anchor,
+  useMantineTheme,
+} from "@pokt-foundation/pocket-blocks"
+import { FetcherWithComponents, Link } from "@remix-run/react"
 import { useEffect, useState } from "react"
 import { Auth0Profile } from "remix-auth-auth0"
 import LegacyBannerCard, {
@@ -51,17 +59,9 @@ export default function AppIdLayoutView({
   const { flags } = useFeatureFlags()
   const [showSuccessModal, setShowSuccessModel] = useState<boolean>(false)
   const [showErrorModal, setShowErrorModel] = useState<boolean>(false)
+  const theme = useMantineTheme()
 
   const [routes, setRoutes] = useState([
-    {
-      to: "/dashboard/apps",
-      icon: () => (
-        <span>
-          <IconCaretLeft className="pokt-icon" />
-        </span>
-      ),
-      end: true,
-    },
     {
       to: "",
       label: t.appId.routes.overview,
@@ -196,6 +196,28 @@ export default function AppIdLayoutView({
     <div className="pokt-appid-layout-view">
       {endpoint && (
         <div>
+          <Anchor
+            component={Link}
+            to="/dashboard/apps"
+            sx={{
+              "&:hover": {
+                textDecoration: "none",
+              },
+            }}
+          >
+            <Flex align="center">
+              <IconArrowLeft height="18px" width="18px" />
+              <Text
+                ml="10px"
+                color={theme.white}
+                sx={{
+                  fontSize: "14px",
+                }}
+              >
+                Back to My Applications
+              </Text>
+            </Flex>
+          </Anchor>
           <AppName id={endpoint.id} name={endpoint.name} />
           <Nav dropdown appId={endpoint.id} ariaLabel="Application" routes={routes} />
         </div>

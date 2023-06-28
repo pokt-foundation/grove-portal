@@ -1,6 +1,6 @@
-import { Text, Group } from "@pokt-foundation/pocket-blocks"
-import { useFetcher } from "@remix-run/react"
-import { forwardRef } from "react"
+import { Text, Group, Notification } from "@pokt-foundation/pocket-blocks"
+import { Form, useActionData } from "@remix-run/react"
+import { forwardRef, useEffect, useState } from "react"
 import SecretKeyCard from "./components/SecretKeyCard/SecretKeyCard"
 import WhitelistBlockchainsCard from "./components/WhitelistBlockchainsCard/WhitelistBlockchainsCard"
 import WhitelistContractsCard from "./components/WhitelistContractsCard/WhitelistContractsCard"
@@ -12,6 +12,8 @@ import { links as AppEndpointUrlLinks } from "~/components/application/AppEndpoi
 import { links as CardLinks } from "~/components/Card"
 import { BlockchainsQuery } from "~/models/portal/sdk"
 import { EndpointQuery } from "~/models/portal/sdk"
+import ErrorIcon from "~/components/Icons/ErrorIcon"
+import SuccessIcon from "~/components/Icons/SuccessIcon"
 
 /* c8 ignore start */
 export const links = () => {
@@ -38,11 +40,23 @@ const SelectItem = forwardRef<HTMLDivElement, { label: string; value: string }>(
 SelectItem.displayName = "SelectItem"
 
 export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps) => {
-  const securityAction = useFetcher()
+  const [isNotificationShown, setIsNotificationShown] = useState(false)
+  const actionData = useActionData()
+
+  useEffect(() => {
+    if (actionData && !isNotificationShown) {
+      setTimeout(() => {
+        setIsNotificationShown(true)
+      }, 5000)
+      setTimeout(() => {
+        setIsNotificationShown(false)
+      }, 10000)
+    }
+  }, [actionData])
 
   return (
     <div className="security">
-      <securityAction.Form action={`/api/${appId}/settings`} method="post">
+      <Form method="post">
         <input name="appID" type="hidden" value={appId} />
         <SecretKeyCard endpoint={endpoint} />
         <WhitelistBlockchainsCard blockchains={blockchains} endpoint={endpoint} />
@@ -50,7 +64,20 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
         <WhitelistOriginsCard endpoint={endpoint} />
         <WhitelistContractsCard endpoint={endpoint} />
         <WhitelistMethodsCard endpoint={endpoint} />
-      </securityAction.Form>
+      </Form>
+      {isNotificationShown ? (
+        <Notification
+          icon={actionData.error ? <ErrorIcon /> : <SuccessIcon />}
+          sx={{
+            position: "sticky",
+            bottom: "1em",
+            margin: "0 auto",
+            maxWidth: "200px",
+          }}
+        >
+          {actionData.error ? "There was an error saving the changes" : "Changes saved"}
+        </Notification>
+      ) : null}
     </div>
   )
 }

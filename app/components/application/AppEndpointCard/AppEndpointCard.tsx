@@ -103,39 +103,37 @@ export default function AppEndpointCard({ app, blockchains }: AppEndpointProps) 
   }
 
   return (
-    <div className="pokt-app-endpoint">
-      <Card>
-        <div className="pokt-card-header">
-          <h3>Endpoint</h3>
-          <div>
-            {app.gigastake ? (
-              <ChainsDropdown
-                chains={blockchains}
-                checkboxData={user.data?.preferences?.endpoints?.[app.id] || []}
-                onChange={handleChangeInStoredChains}
-              />
-            ) : (
-              <Text>{chainDescription}</Text>
-            )}
-          </div>
+    <Card>
+      <div className="pokt-card-header">
+        <h3>Endpoints</h3>
+        <div>
+          {app.gigastake ? (
+            <ChainsDropdown
+              chains={blockchains}
+              checkboxData={user.data?.preferences?.endpoints?.[app.id] || []}
+              onChange={handleChangeInStoredChains}
+            />
+          ) : (
+            <Text>{chainDescription}</Text>
+          )}
         </div>
-        {chains &&
-          chains.map((chain: string) => {
-            const blockchain: Blockchain | undefined | null = blockchains.find(
-              (c) => c?.id === chain,
-            )
-            const endpoint = `https://${blockchain?.blockchain}.gateway.pokt.network/v1/lb/${app.id}`
-            return (
-              <AppEndpointUrl
-                key={chain}
-                chain={blockchain}
-                handleRemove={() => handleRemoveFromStoredChains(chain)}
-                hasDelete={app.gigastake}
-                value={endpoint}
-              />
-            )
-          })}
-      </Card>
-    </div>
+      </div>
+      {chains &&
+        chains.map((chain: string) => {
+          const blockchain: Blockchain | undefined | null = blockchains.find(
+            (c) => c?.id === chain,
+          )
+          const endpoint = `https://${blockchain?.blockchain}.gateway.pokt.network/v1/lb/${app.id}`
+          return (
+            <AppEndpointUrl
+              key={chain}
+              chain={blockchain}
+              handleRemove={() => handleRemoveFromStoredChains(chain)}
+              hasDelete={app.gigastake}
+              value={endpoint}
+            />
+          )
+        })}
+    </Card>
   )
 }

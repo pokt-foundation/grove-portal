@@ -17,6 +17,7 @@ type NavProps = {
   dropdown?: boolean
   appId?: string
   ariaLabel: string
+  activeHasBorder?: boolean
 }
 
 type Route = {
@@ -27,7 +28,13 @@ type Route = {
   external?: boolean
 }
 
-export const Nav = ({ routes, dropdown = false, appId, ariaLabel }: NavProps) => {
+export const Nav = ({
+  routes,
+  dropdown = false,
+  appId,
+  ariaLabel,
+  activeHasBorder = false,
+}: NavProps) => {
   const [mobilePageSelect, setMobilePageSelect] = useState<string | null>(null)
 
   const reformatRoute = (routes: Route[]) => {
@@ -89,7 +96,12 @@ export const Nav = ({ routes, dropdown = false, appId, ariaLabel }: NavProps) =>
                   color: theme.white,
                   transition: "color 0.3s ease-in-out",
                   "&.active": {
-                    color: theme.colors[theme.primaryColor][6],
+                    color: activeHasBorder
+                      ? theme.colors.white
+                      : theme.colors[theme.primaryColor][6],
+                    borderBottom: activeHasBorder
+                      ? `2px solid ${theme.colors.blue[5]}`
+                      : "none",
                   },
                   "&:hover": {
                     color: theme.colors[theme.primaryColor][9],
@@ -110,7 +122,12 @@ export const Nav = ({ routes, dropdown = false, appId, ariaLabel }: NavProps) =>
                   color: theme.white,
                   transition: "color 0.3s ease-in-out",
                   "&.active": {
-                    color: theme.colors[theme.primaryColor][6],
+                    color: activeHasBorder
+                      ? theme.colors.white
+                      : theme.colors[theme.primaryColor][6],
+                    borderBottom: activeHasBorder
+                      ? `2px solid ${theme.colors.blue[5]}`
+                      : "none",
                   },
                   "&:hover": {
                     color: theme.colors[theme.primaryColor][9],

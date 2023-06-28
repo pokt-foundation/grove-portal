@@ -2,10 +2,6 @@
   margin-left: 0;
 }
 
-.pokt-appid-layout-view .pokt-nav ul {
-  margin-left: -16px;
-}
-
 .pokt-appid-layout-view .pokt-icon {
   fill: var(--mantine-color-white);
 }

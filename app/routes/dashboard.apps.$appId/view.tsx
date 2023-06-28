@@ -6,6 +6,7 @@ import {
   Text,
   Anchor,
   useMantineTheme,
+  Box,
 } from "@pokt-foundation/pocket-blocks"
 import { FetcherWithComponents, Link } from "@remix-run/react"
 import { useEffect, useState } from "react"
@@ -197,7 +198,7 @@ export default function AppIdLayoutView({
   return (
     <div className="pokt-appid-layout-view">
       {endpoint && (
-        <div>
+        <Box mb="1em">
           <Anchor
             component={Link}
             to="/dashboard/apps"
@@ -224,8 +225,14 @@ export default function AppIdLayoutView({
             </Flex>
           </Anchor>
           <AppName id={endpoint.id} name={endpoint.name} />
-          <Nav dropdown appId={endpoint.id} ariaLabel="Application" routes={routes} />
-        </div>
+          <Nav
+            activeHasBorder
+            dropdown
+            appId={endpoint.id}
+            ariaLabel="Application"
+            routes={routes}
+          />
+        </Box>
       )}
       {endpoint &&
         getPlanName(endpoint.appLimits.planType) === "Legacy" &&

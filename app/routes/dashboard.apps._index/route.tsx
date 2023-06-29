@@ -3,11 +3,9 @@ import { useLoaderData, useOutletContext, useSearchParams } from "@remix-run/rea
 import { useEffect } from "react"
 import { Auth0Profile } from "remix-auth-auth0"
 import invariant from "tiny-invariant"
-import { AllAppsLoaderData, AllAppsOutletContext } from "../dashboard.apps/route"
+import { AllAppsOutletContext } from "../dashboard.apps/route"
 import AppsView, { links as AppsViewLinks } from "./view"
-import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { EndpointsQuery } from "~/models/portal/sdk"
 import { getRelaysPerPeriod, RelayMetric } from "~/models/relaymeter/relaymeter.server"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { getPoktId, requireUser } from "~/utils/session.server"
@@ -26,34 +24,29 @@ export type AppsLoaderData = {
   dailyNetworkRelaysPerWeek: RelayMetric[] | null
   userId: string
   profile: Auth0Profile
-  // endpoints: EndpointsQuery | null
 }
 
 export type AppsActionData = {
-  email: string
+  portalUserId?: string
   type: "accept" | "decline" | "leaveApp"
   error: boolean
 }
 
-export const loader: LoaderFunction = async ({ request, context }) => {
+export const loader: LoaderFunction = async ({ request }) => {
   const user = await requireUser(request)
   invariant(user.profile.id && user.profile.emails, "user not found")
   const userId = getPoktId(user.profile.id)
-
   let dailyNetworkRelaysPerWeek: RelayMetric[] | null = null
 
   try {
     dailyNetworkRelaysPerWeek = await getRelaysPerPeriod("users", 7, userId)
   } catch (e) {}
 
-  console.log(context)
-
   return json<AppsLoaderData>(
     {
       dailyNetworkRelaysPerWeek,
       userId,
       profile: user.profile,
-      // endpoints: context.endpoints
     },
     {
       headers: {
@@ -67,46 +60,51 @@ export const loader: LoaderFunction = async ({ request, context }) => {
 
 export const action: ActionFunction = async ({ request }) => {
   const user = await requireUser(request)
-  const portal = initPortalClient(user.accessToken)
+  const portal = initPortalClient({ token: user.accessToken })
   const formData = await request.formData()
   const type = formData.get("type")
   const appId = formData.get("appId")?.toString()
 
   if (type === "accept") {
-    const email = formData.get("email")
-
+    const portalUserId = formData.get("portalUserId")
     invariant(appId, "app id not found")
-    invariant(email && typeof email === "string", "user email not found")
+    invariant(
+      portalUserId && typeof portalUserId === "string",
+      "portalUserId is not found",
+    )
 
     try {
       await portal.acceptEndpointUser({
         endpointID: appId,
       })
-      return json<AppsActionData>({ email, type, error: false })
+      return json<AppsActionData>({ portalUserId, type, error: false })
     } catch (e) {
       console.log(e)
-      return json<AppsActionData>({ email, type, error: true })
+      return json<AppsActionData>({ portalUserId, type, error: true })
     }
   } else if (type === "decline" || type === "leaveApp") {
-    const email = formData.get("email")
+    const portalUserId = formData.get("portalUserId")
 
     invariant(appId, "app id not found")
-    invariant(email && typeof email === "string", "user email not found")
+    invariant(
+      portalUserId && typeof portalUserId === "string",
+      "portalUserId is not found",
+    )
 
     try {
       await portal.deleteEndpointUser({
         endpointID: appId,
-        email: email !== null ? email.toString() : "",
+        portalUserID: portalUserId ? portalUserId : "",
       })
 
       return json<AppsActionData>({
-        email,
+        portalUserId,
         type,
         error: false,
       })
     } catch (error) {
       return json<AppsActionData>({
-        email,
+        portalUserId,
         type,
         error: true,
       })
@@ -115,7 +113,8 @@ export const action: ActionFunction = async ({ request }) => {
 }
 
 export const Apps = () => {
-  const { endpoints } = useOutletContext<AllAppsOutletContext>()
+  const { endpoints, pendingEndpoints, portalUserId } =
+    useOutletContext<AllAppsOutletContext>()
   const { dailyNetworkRelaysPerWeek, userId, profile } = useLoaderData() as AppsLoaderData
   const [searchParams] = useSearchParams()
 
@@ -127,6 +126,8 @@ export const Apps = () => {
     <AppsView
       dailyNetworkRelaysPerWeek={dailyNetworkRelaysPerWeek}
       endpoints={endpoints}
+      pendingEndpointsQuery={pendingEndpoints}
+      portalUserId={portalUserId}
       profile={profile}
       searchParams={searchParams}
       userId={userId}

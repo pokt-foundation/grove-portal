@@ -4,11 +4,13 @@ import {
   Blockchain,
   EndpointsQuery,
   PayPlanType,
+  PendingEndpointsQuery,
   ProcessedEndpoint,
   RoleName,
 } from "./sdk"
 
 const testEmail = "test@test.test"
+export const testPortalUserId = "userId_test"
 
 export const endpoint: ProcessedEndpoint = {
   appLimits: {
@@ -58,6 +60,7 @@ export const endpoint: ProcessedEndpoint = {
       accepted: true,
       email: testEmail,
       roleName: RoleName.Admin,
+      userID: testPortalUserId,
     },
   ],
   integrations: {
@@ -70,9 +73,10 @@ export const endpoints: EndpointsQuery = {
   admin: [endpoint],
   member: [endpoint],
   owner: [endpoint],
-  pending: [endpoint],
   __typename: "Query",
 }
+
+export const pendingEndpoints: PendingEndpointsQuery = { pendingEndpoints: [endpoint] }
 
 export const blockchains: Blockchain[] = [
   {

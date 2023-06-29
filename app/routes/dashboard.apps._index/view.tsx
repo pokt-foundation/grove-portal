@@ -12,7 +12,11 @@ import {
   Grid,
   Group,
 } from "@pokt-foundation/pocket-blocks"
-import { Form, Link, useActionData } from "@remix-run/react"
+import {
+  Form,
+  Link,
+  useActionData,
+} from "@remix-run/react"
 import { useEffect, useMemo, useState } from "react"
 import { Auth0Profile } from "remix-auth-auth0"
 import styles from "./styles.css"
@@ -30,7 +34,11 @@ import NotificationMessage, {
   NotificationType,
 } from "~/components/NotificationMessage"
 import Table, { links as TableLinks } from "~/components/Table"
-import { EndpointsQuery, ProcessedEndpoint } from "~/models/portal/sdk"
+import {
+  EndpointsQuery,
+  PendingEndpointsQuery,
+  ProcessedEndpoint,
+} from "~/models/portal/sdk"
 import { RelayMetric } from "~/models/relaymeter/relaymeter.server"
 import { dayjs } from "~/utils/dayjs"
 import { getRequiredClientEnvVar } from "~/utils/environment"
@@ -52,7 +60,9 @@ export const links = () => {
 
 type AppsViewProps = {
   userId: string
+  portalUserId: string | undefined
   endpoints: EndpointsQuery | null
+  pendingEndpointsQuery: PendingEndpointsQuery | null
   dailyNetworkRelaysPerWeek: RelayMetric[] | null
   searchParams: URLSearchParams
   profile: Auth0Profile
@@ -64,22 +74,31 @@ export const AppsView = ({
   searchParams,
   userId,
   profile,
+  pendingEndpointsQuery,
+  portalUserId,
 }: AppsViewProps) => {
+  const pendingEndpoints = pendingEndpointsQuery?.pendingEndpoints as ProcessedEndpoint[]
   const uEmail = profile?._json?.email
   const [showErrorModal, setShowErrorModal] = useState(false)
   const notOwnerEndpoints = useMemo(() => {
     return endpoints
-      ? [...endpoints.admin, ...endpoints.member, ...endpoints.pending]
+      ? [
+          ...endpoints.admin,
+          ...endpoints.member,
+          ...(pendingEndpoints ? pendingEndpoints : []),
+        ]
       : []
-  }, [endpoints])
+  }, [endpoints, pendingEndpoints])
+
   const userDataByEndpoint = useMemo(() => {
     return notOwnerEndpoints.map((endpoint) =>
       endpoint?.users.find((u) => u.email === uEmail),
     )
   }, [notOwnerEndpoints, uEmail])
-  const [pendingEndpoints, setPendingEndpoints] = useState<
-    EndpointsQuery["pending"] | null
-  >(null)
+
+  const [localPendingEndpoints, setLocalPendingEndpoints] = useState<
+    ProcessedEndpoint[] | null
+  >(pendingEndpoints)
 
   const [notificationMessageProps, setNotificationMessageProps] =
     useState<NotificationType>({
@@ -95,12 +114,12 @@ export const AppsView = ({
     error: false,
     isOpen: false,
   })
-  const [appTodeleteID, setAppToDeleteID] = useState("")
+  const [appToDeleteID, setAppToDeleteID] = useState("")
   const actionData = useActionData()
 
   const handleLocallyAcceptInvite = (id: string) => {
-    setPendingEndpoints((endpoints) =>
-      endpoints ? endpoints.filter((e) => e && e.id !== id) : null,
+    setLocalPendingEndpoints((endpoints) =>
+      pendingEndpoints ? pendingEndpoints.filter((e) => e && e.id !== id) : null,
     )
   }
 
@@ -114,32 +133,16 @@ export const AppsView = ({
   }, [searchParams])
 
   useEffect(() => {
-    let hasPending = false
-    if (endpoints && endpoints.pending) {
-      endpoints.pending.forEach((endpoint) => {
-        endpoint?.users.forEach((user) => {
-          if (user.email === uEmail && user.accepted === false) {
-            hasPending = true
-          }
-        })
-      })
-      if (hasPending) {
-        setPendingEndpoints(endpoints.pending)
-      }
-    }
-  }, [endpoints])
-
-  useEffect(() => {
-    if (pendingEndpoints && pendingEndpoints.length > 0) {
+    if (localPendingEndpoints && localPendingEndpoints.length > 0) {
       setNotificationMessageProps({
         type: "options",
-        title: `You have been invited to ${pendingEndpoints[0]?.name}`,
+        title: `You have been invited to ${localPendingEndpoints[0]?.name}`,
         description: "Do you wish to accept?",
         isActive: true,
       })
-      setOptionsEndpointId(pendingEndpoints[0]?.id || "")
+      setOptionsEndpointId(localPendingEndpoints[0]?.id || "")
     }
-  }, [pendingEndpoints])
+  }, [localPendingEndpoints])
 
   useEffect(() => {
     if (actionData) {
@@ -238,7 +241,7 @@ export const AppsView = ({
                 )}
               </NotificationMessage>
               <input hidden readOnly name="appId" value={optionsEndpointId} />
-              <input hidden readOnly name="email" value={profile._json?.email} />
+              <input hidden readOnly name="portalUserId" value={portalUserId} />
             </Form>
           </div>
         </section>
@@ -474,7 +477,7 @@ export const AppsView = ({
               {isDeleteModalOptions.description}
             </Text>
             <input name="email" type="hidden" value={uEmail} />
-            <input name="appId" type="hidden" value={appTodeleteID} />
+            <input name="appId" type="hidden" value={appToDeleteID} />
 
             <div className="confirmation-modal-options">
               <Button

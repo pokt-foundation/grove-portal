@@ -55,7 +55,7 @@ type LoaderData = {
 export const loader: LoaderFunction = async ({ request }) => {
   const user = await requireUser(request)
 
-  const portal = initPortalClient(user.accessToken)
+  const portal = initPortalClient({ token: user.accessToken })
   const endpointsResponse = await portal.endpoints().catch((e) => {
     console.log(e)
   })
@@ -105,7 +105,7 @@ type ActionData = {
 
 export const action: ActionFunction = async ({ request }) => {
   const user = await requireUser(request)
-  const portal = initPortalClient(user.accessToken)
+  const portal = initPortalClient({ token: user.accessToken })
   const formData = await request.formData()
   const subscription = formData.get("app-subscription")
   const name = formData.get("app-name")

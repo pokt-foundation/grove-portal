@@ -42,7 +42,10 @@ export const updatePlan = async ({ id, type, limit }: UpdatePlanArgs) => {
       password: getRequiredServerEnvVar("ADMIN_PASSWORD"),
     })
 
-    const portalAdmin = initPortalClient(resultGetUserJWT.getUserJWT)
+    const portalAdmin = initPortalClient({
+      token: resultGetUserJWT.getUserJWT,
+      "x-Admin-Key": getRequiredServerEnvVar("ADMIN_KEY"),
+    })
 
     let options: AdminUpdatePayPlanTypeMutationVariables = {
       endpointID: id,

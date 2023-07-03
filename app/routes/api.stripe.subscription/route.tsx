@@ -3,7 +3,7 @@ import invariant from "tiny-invariant"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { PayPlanType } from "~/models/portal/sdk"
 import { getSubscription, stripe, Stripe } from "~/models/stripe/stripe.server"
-import { updatePlan } from "~/routes/api.$appId.update-plan/route"
+import { updatePlan } from "~/routes/api.admin.update-plan/route"
 import { getErrorMessage } from "~/utils/catchError"
 import { getPoktId, requireUser } from "~/utils/session.server"
 

@@ -26,8 +26,7 @@ export const action: ActionFunction = async ({ request }) => {
   const type = formData.get("type") as UpdatePlanArgs["type"]
   const limit = formData.get("limit") as UpdatePlanArgs["limit"]
 
-  const result = await updatePlan({ id, type, limit })
-  return result
+  return await updatePlan({ id, type, limit })
 }
 
 export const updatePlan = async ({ id, type, limit }: UpdatePlanArgs) => {
@@ -47,7 +46,7 @@ export const updatePlan = async ({ id, type, limit }: UpdatePlanArgs) => {
       "x-Admin-Key": getRequiredServerEnvVar("ADMIN_KEY"),
     })
 
-    let options: AdminUpdatePayPlanTypeMutationVariables = {
+    const options: AdminUpdatePayPlanTypeMutationVariables = {
       endpointID: id,
       payPlanType: type,
     }

@@ -55,7 +55,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   const user = await requireUser(request)
   invariant(user.profile.id && user.profile.emails, "user not found")
   const userId = getPoktId(user.profile.id)
-  const portal = initPortalClient(user.accessToken)
+  const portal = initPortalClient({ token: user.accessToken })
 
   if (searchParams.get("success") === "true") {
     try {

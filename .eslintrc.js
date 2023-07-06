@@ -35,6 +35,10 @@ module.exports = {
         reservedFirst: true,
       },
     ],
+    "testing-library/no-render-in-setup": [
+      "error",
+      { allowTestingFrameworkSetupHook: "beforeEach" },
+    ],
     eqeqeq: "warn",
     "no-unneeded-ternary": "error",
     "no-nested-ternary": "error",

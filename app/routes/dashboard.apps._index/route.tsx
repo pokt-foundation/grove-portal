@@ -39,7 +39,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   let dailyNetworkRelaysPerWeek: RelayMetric[] | null = null
 
   try {
-    dailyNetworkRelaysPerWeek = await getRelaysPerPeriod("users", 7, userId)
+    dailyNetworkRelaysPerWeek = await getRelaysPerPeriod("users", 7, user.profile.id)
   } catch (e) {}
 
   return json<AppsLoaderData>(

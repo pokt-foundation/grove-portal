@@ -118,7 +118,8 @@ export const action: ActionFunction = async ({ request }) => {
 export const Apps = () => {
   const { endpoints, pendingEndpoints, portalUserId } =
     useOutletContext<AllAppsOutletContext>()
-  const { dailyNetworkRelaysPerPeriod, userId, profile } = useLoaderData() as AppsLoaderData
+  const { dailyNetworkRelaysPerPeriod, userId, profile } =
+    useLoaderData() as AppsLoaderData
   const [searchParams] = useSearchParams()
 
   useEffect(() => {

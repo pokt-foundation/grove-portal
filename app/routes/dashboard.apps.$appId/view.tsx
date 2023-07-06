@@ -201,7 +201,6 @@ export default function AppIdLayoutView({
         <Box mb="1em">
           <Anchor
             component={Link}
-            to="/dashboard/apps"
             sx={{
               display: "block",
               marginBottom: "16px",
@@ -210,12 +209,13 @@ export default function AppIdLayoutView({
                 textDecoration: "none",
               },
             }}
+            to="/dashboard/apps"
           >
             <Flex align="center">
               <IconArrowLeft height="18px" width="18px" />
               <Text
-                ml="10px"
                 color={theme.white}
+                ml="10px"
                 sx={{
                   fontSize: "14px",
                 }}

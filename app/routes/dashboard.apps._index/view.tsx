@@ -12,11 +12,7 @@ import {
   Grid,
   Group,
 } from "@pokt-foundation/pocket-blocks"
-import {
-  Form,
-  Link,
-  useActionData,
-} from "@remix-run/react"
+import { Form, Link, useActionData } from "@remix-run/react"
 import { useEffect, useMemo, useState } from "react"
 import { Auth0Profile } from "remix-auth-auth0"
 import styles from "./styles.css"

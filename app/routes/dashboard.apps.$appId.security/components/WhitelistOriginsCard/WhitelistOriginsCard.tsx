@@ -78,15 +78,15 @@ const WhitelistOriginsCard = ({ endpoint }: WhitelistOriginsCardProps) => {
         ) : null}
       </div>
       <Text size="sm">{t.security.whitelistOriginsText}</Text>
-      <Flex align="center" mt="lg" gap="md" w="100%">
+      <Flex align="center" gap="md" mt="lg" w="100%">
         <TextInput
           id="userOrigins"
           placeholder={t.security.OriginPlaceholder}
-          value={whitelistOriginsInput}
-          onChange={(e) => {
-            dispatch({ type: "SET_WHITELIST_ORIGINS_INPUT", payload: e.target.value })
+          styles={{
+            input: {
+              border: "1px solid transparent",
+            },
           }}
-          w="100%"
           sx={{
             backgroundColor: theme.colors.navy[6],
 
@@ -95,10 +95,10 @@ const WhitelistOriginsCard = ({ endpoint }: WhitelistOriginsCardProps) => {
               fontSize: "12px",
             },
           }}
-          styles={{
-            input: {
-              border: "1px solid transparent",
-            },
+          value={whitelistOriginsInput}
+          w="100%"
+          onChange={(e) => {
+            dispatch({ type: "SET_WHITELIST_ORIGINS_INPUT", payload: e.target.value })
           }}
         />
         {whitelistOriginsInput !== "" ? (
@@ -125,7 +125,7 @@ const WhitelistOriginsCard = ({ endpoint }: WhitelistOriginsCardProps) => {
       </Flex>
       <div>
         {whitelistOrigins.map((item: string) => (
-          <Flex key={item} mt="md" w="100%" className="list">
+          <Flex key={item} className="list" mt="md" w="100%">
             <TextInput readOnly value={item} />
             <CopyText text={String(item)} />
             <Delete

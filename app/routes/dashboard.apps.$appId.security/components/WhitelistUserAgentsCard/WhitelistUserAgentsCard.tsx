@@ -82,13 +82,10 @@ const WhitelistUserAgentsCard = ({ endpoint }: WhitelistUserAgentsCardProps) => 
           id="userAgents"
           name="whitelistUserAgentsInput"
           placeholder={t.security.userAgentPlaceholder}
-          value={whitelistUserAgentsInput}
-          w="100%"
-          onChange={(e) => {
-            dispatch({
-              type: "SET_WHITELIST_USER_AGENTS_INPUT",
-              payload: e.target.value,
-            })
+          styles={{
+            input: {
+              border: "1px solid transparent",
+            },
           }}
           sx={{
             backgroundColor: theme.colors.navy[6],
@@ -98,10 +95,13 @@ const WhitelistUserAgentsCard = ({ endpoint }: WhitelistUserAgentsCardProps) => 
               fontSize: "12px",
             },
           }}
-          styles={{
-            input: {
-              border: "1px solid transparent",
-            },
+          value={whitelistUserAgentsInput}
+          w="100%"
+          onChange={(e) => {
+            dispatch({
+              type: "SET_WHITELIST_USER_AGENTS_INPUT",
+              payload: e.target.value,
+            })
           }}
         />
         {whitelistUserAgentsInput !== "" ? (

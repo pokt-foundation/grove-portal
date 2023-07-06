@@ -81,20 +81,20 @@ export default function AppName({ id, name }: AppNameProps) {
         {editing && (
           <TextInput
             defaultValue={nameState}
-            onChange={(e) => setNameState(e.currentTarget.value)}
             sx={{
               fontSize: "24px",
             }}
+            onChange={(e) => setNameState(e.currentTarget.value)}
           />
         )}
         <Button
+          p="6px 8px"
           size="sm"
           sx={{
             opacity: editing ? "100%" : "0",
             pointerEvents: editing ? "auto" : "none",
             transition: "opacity ease-in-out 0.3s",
           }}
-          p="6px 8px"
           variant="subtle"
           onClick={handleButtonClick}
         >

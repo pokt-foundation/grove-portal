@@ -26,7 +26,7 @@ export default function CustomPayPlan() {
         <div className="pokt-card-header">
           <h3>Update Pay Plan</h3>
         </div>
-        <Form action={"/api/updatePlan"} method="post">
+        <Form action={"/api/admin/update-plan"} method="post">
           <Select
             data={plans}
             id="pay_plan_type"

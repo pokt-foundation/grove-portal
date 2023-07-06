@@ -439,6 +439,13 @@ function TeamView({ state, endpoint }: TeamViewProps) {
             <input
               hidden
               readOnly
+              name="portal-user-id"
+              style={{ display: "none" }}
+              value={endpoint.userId}
+            />
+            <input
+              hidden
+              readOnly
               name="app-name"
               style={{ display: "none" }}
               value={endpoint.name}
@@ -503,6 +510,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
             </div>
 
             <input name="email" type="hidden" value={updateRoleModalData.email} />
+            <input name="portal-user-id" type="hidden" value={endpoint.userId} />
             <input name="roleName" type="hidden" value={updateRoleModalData.roleName} />
             <input hidden value={endpoint.name} />
             <input

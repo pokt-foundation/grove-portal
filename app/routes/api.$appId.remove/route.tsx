@@ -8,7 +8,7 @@ export const action: ActionFunction = async ({ request, params }) => {
   invariant(appId && typeof appId === "string", "app id not found")
 
   const user = await requireUser(request)
-  const portal = initPortalClient(user.accessToken)
+  const portal = initPortalClient({ token: user.accessToken })
 
   const response = await portal.removeEndpoint({
     endpointID: appId,

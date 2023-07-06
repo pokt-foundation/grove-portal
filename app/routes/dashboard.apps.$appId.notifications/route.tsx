@@ -20,7 +20,7 @@ export const action: ActionFunction = async ({ request, params }) => {
   const { appId } = params
   invariant(appId, "app id not found")
   const user = await requireUser(request)
-  const portal = initPortalClient(user.accessToken)
+  const portal = initPortalClient({ token: user.accessToken })
 
   const formData = await request.formData()
   const quarter = formData.get("quarter")

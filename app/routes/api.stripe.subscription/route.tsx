@@ -3,7 +3,7 @@ import invariant from "tiny-invariant"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { PayPlanType } from "~/models/portal/sdk"
 import { getSubscription, stripe, Stripe } from "~/models/stripe/stripe.server"
-import { updatePlan } from "~/routes/api.$appId.update-plan/route"
+import { updatePlan } from "~/routes/api.admin.update-plan/route"
 import { getErrorMessage } from "~/utils/catchError"
 import { getPoktId, requireUser } from "~/utils/session.server"
 
@@ -21,7 +21,7 @@ export const action: ActionFunction = async ({ request }) => {
   const user = await requireUser(request)
   invariant(user.profile.id && user.profile.emails, "user not found")
   const userId = await getPoktId(user.profile.id)
-  const portal = initPortalClient(user.accessToken)
+  const portal = initPortalClient({ token: user.accessToken })
   const formData = await request.formData()
   const appId = formData.get("app-id")
   const renew = formData.get("subscription-renew")

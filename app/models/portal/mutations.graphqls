@@ -30,7 +30,7 @@ mutation removeEndpoint($endpointID: ID!) {
   }
 }
 
-mutation createEndpointUser($endpointID: ID!, $input: UserAccessInput!) {
+mutation createEndpointUser($endpointID: ID!, $input: CreateUserAccessInput!) {
   createEndpointUser(endpointID: $endpointID, input: $input) {
     id
     users {
@@ -41,8 +41,8 @@ mutation createEndpointUser($endpointID: ID!, $input: UserAccessInput!) {
   }
 }
 
-mutation deleteEndpointUser($endpointID: ID!, $email: String!) {
-  deleteEndpointUser(endpointID: $endpointID, email: $email) {
+mutation deleteEndpointUser($endpointID: ID!, $portalUserID: String!) {
+  deleteEndpointUser(endpointID: $endpointID, portalUserID: $portalUserID) {
     id
     users {
       roleName

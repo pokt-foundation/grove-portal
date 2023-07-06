@@ -44,10 +44,10 @@ function MaintenanceNotification({ maintenanceMode, css }: MaintenanceNotificati
       onClose={handleMaintenanceNotificationClose}
     >
       <Text color="white" size="sm">
-        Our platform will be undergoing scheduled maintenance on 4/26/2023 at 12PM EST.
-        During this time, the Portal UI will be temporarily unavailable, and users will
-        not be able to create or edit applications, adjust security settings or pay plans.
-        However, all relay requests will continue to be processed as usual.
+        Our platform will be undergoing scheduled maintenance. During this time, the
+        Portal UI will be temporarily unavailable, and users will not be able to create or
+        edit applications, adjust security settings or pay plans. However, all relay
+        requests will continue to be processed as usual.
       </Text>
     </NotificationMessage>
   )

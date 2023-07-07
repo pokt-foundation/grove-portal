@@ -1,0 +1,3 @@
+# This is a blank robots.txt file. All robots may freely crawl this site. I, for one, welcome our new robot overlords. Beep boop, beep boop.
+
+Sitemap: https://portal.pokt.network/sitemap.xml

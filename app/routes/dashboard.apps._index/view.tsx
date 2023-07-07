@@ -12,11 +12,7 @@ import {
   Grid,
   Group,
 } from "@pokt-foundation/pocket-blocks"
-import {
-  Form,
-  Link,
-  useActionData,
-} from "@remix-run/react"
+import { Form, Link, useActionData } from "@remix-run/react"
 import { useEffect, useMemo, useState } from "react"
 import { Auth0Profile } from "remix-auth-auth0"
 import styles from "./styles.css"
@@ -400,6 +396,12 @@ export const AppsView = ({
                                       </Button>
                                       <input name="type" type="hidden" value="accept" />
                                       <input name="email" type="hidden" value={uEmail} />
+                                      <input
+                                        hidden
+                                        readOnly
+                                        name="portalUserId"
+                                        value={portalUserId}
+                                      />
                                       <input name="appId" type="hidden" value={team.id} />
                                     </Form>
                                   </Menu.Item>

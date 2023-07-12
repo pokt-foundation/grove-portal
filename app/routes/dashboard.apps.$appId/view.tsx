@@ -120,13 +120,13 @@ export default function AppIdLayoutView({
             type: PayPlanType.PayAsYouGoV0,
           },
           {
-            action: `/api/${endpoint.id}/update-plan`,
+            action: "/api/admin/update-plan",
             method: "post",
           },
         )
       }
       trackEvent(AmplitudeEvents.NewSubscription)
-      setSearchParams({})
+      searchParams.delete("success")
       setShowSuccessModel(true)
     }
 
@@ -177,7 +177,7 @@ export default function AppIdLayoutView({
           type: PayPlanType.FreetierV0,
         },
         {
-          action: `/api/${endpoint.id}/update-plan`,
+          action: "/api/admin/update-plan",
           method: "post",
         },
       )
@@ -199,7 +199,7 @@ export default function AppIdLayoutView({
           type: PayPlanType.PayAsYouGoV0,
         },
         {
-          action: `/api/${endpoint.id}/update-plan`,
+          action: "/api/admin/update-plan",
           method: "post",
         },
       )

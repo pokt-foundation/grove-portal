@@ -86,7 +86,7 @@ export const Application = () => {
 
   return (
     <>
-      {endpoint.appLimits.planType === PayPlanType.FreetierV0 && exceedsMaxRelays && (
+      {endpoint.appLimits.planType !== PayPlanType.PayAsYouGoV0 && exceedsMaxRelays && (
         <AppOverLimitCard exceedsMaxRelays={exceedsMaxRelays} />
       )}
       {endpoint && (

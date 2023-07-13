@@ -24,6 +24,7 @@ import UsageChartCard, {
 } from "~/components/application/UsageChartCard"
 import { useFeatureFlags } from "~/context/FeatureFlagContext"
 import { useTranslate } from "~/context/TranslateContext"
+import { PayPlanType } from "~/models/portal/sdk"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 
 export const links = () => {
@@ -85,7 +86,9 @@ export const Application = () => {
 
   return (
     <>
-      {exceedsMaxRelays && <AppOverLimitCard exceedsMaxRelays={exceedsMaxRelays} />}
+      {endpoint.appLimits.planType === PayPlanType.FreetierV0 && exceedsMaxRelays && (
+        <AppOverLimitCard exceedsMaxRelays={exceedsMaxRelays} />
+      )}
       {endpoint && (
         <section>
           <AppEndpointCard app={endpoint} blockchains={blockchains} />

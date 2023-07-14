@@ -74,3 +74,9 @@ mutation acceptEndpointUser($endpointID: ID!) {
     }
   }
 }
+
+mutation adminCreatePortalUser($email: String!, $providerUserID: ID!) {
+  adminCreatePortalUser(email: $email, providerUserID: $providerUserID) {
+    portalUserID
+  }
+}

@@ -15,7 +15,7 @@ export const links: LinksFunction = () => {
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
-  const user = await requireUser(request)
+  const user = await requireUser(request, "/api/auth/auth0")
   const portal = initPortalClient({ token: user.accessToken })
 
   const getPortalUserIdResponse = await portal.getPortalUserID().catch((e) => {

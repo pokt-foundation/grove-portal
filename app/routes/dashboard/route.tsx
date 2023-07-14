@@ -1,9 +1,12 @@
 import { Box, Button, Center, Group, Text, Title } from "@pokt-foundation/pocket-blocks"
 import { LinksFunction, LoaderFunction } from "@remix-run/node"
 import { Outlet, useCatch, Link } from "@remix-run/react"
+import invariant from "tiny-invariant"
 import styles from "./styles.css"
+import { initPortalClient } from "~/models/portal/portal.server"
+import { initAdminPortal } from "~/utils/admin"
 import { getRequiredClientEnvVar } from "~/utils/environment"
-import { requireUserProfile } from "~/utils/session.server"
+import { requireUser } from "~/utils/session.server"
 
 const DASHBOARD_MAINTENANCE = getRequiredClientEnvVar("FLAG_MAINTENANCE_MODE_DASHBOARD")
 
@@ -12,7 +15,30 @@ export const links: LinksFunction = () => {
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
-  await requireUserProfile(request, "/api/auth/auth0")
+  const user = await requireUser(request)
+  const portal = initPortalClient({ token: user.accessToken })
+
+  const getPortalUserIdResponse = await portal.getPortalUserID().catch((e) => {
+    console.log(e)
+  })
+
+  const portalUserId = getPortalUserIdResponse?.getPortalUserID
+
+  if (!portalUserId && user) {
+    const email = user?.profile?._json?.email
+    const providerUserID = user?.profile?.id
+
+    invariant(email, "email is not found")
+    invariant(providerUserID, "providerUserID is not found")
+
+    const portalAdmin = await initAdminPortal(portal)
+
+    await portalAdmin.adminCreatePortalUser({
+      email,
+      providerUserID,
+    })
+  }
+
   return null
 }
 

@@ -11,10 +11,7 @@ import CardList, { CardListItem, links as CardListLinks } from "~/components/Car
 import Loader, { links as LoaderLinks } from "~/components/Loader"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { initPortalClient } from "~/models/portal/portal.server"
-import {
-  EndpointsQuery,
-  PendingEndpointsQuery,
-} from "~/models/portal/sdk"
+import { EndpointsQuery, PendingEndpointsQuery } from "~/models/portal/sdk"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 import { MAX_USER_APPS } from "~/utils/pocketUtils"
 import {

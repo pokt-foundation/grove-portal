@@ -2,8 +2,8 @@ import { ActionFunction, json } from "@remix-run/node"
 import invariant from "tiny-invariant"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { AdminUpdatePayPlanTypeMutationVariables, PayPlanType } from "~/models/portal/sdk"
+import { initAdminPortal } from "~/utils/admin"
 import { getErrorMessage } from "~/utils/catchError"
-import { getRequiredServerEnvVar } from "~/utils/environment"
 
 export type UpdatePlanActionData =
   | {
@@ -36,15 +36,7 @@ export const updatePlan = async ({ id, type, limit }: UpdatePlanArgs) => {
     invariant(id, "endpoint id not found")
     invariant(type, "plan type not found")
 
-    const resultGetUserJWT = await portal.getUserJWT({
-      username: getRequiredServerEnvVar("ADMIN_EMAIL"),
-      password: getRequiredServerEnvVar("ADMIN_PASSWORD"),
-    })
-
-    const portalAdmin = initPortalClient({
-      token: resultGetUserJWT.getUserJWT,
-      "x-Admin-Key": getRequiredServerEnvVar("ADMIN_KEY"),
-    })
+    const portalAdmin = await initAdminPortal(portal)
 
     const options: AdminUpdatePayPlanTypeMutationVariables = {
       endpointID: id,

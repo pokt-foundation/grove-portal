@@ -1,73 +1,88 @@
-import { List, MediaQuery, useMantineTheme } from "@pokt-foundation/pocket-blocks"
-import { useState } from "react"
-import SidebarLeftButton from "~/components/Icons/SidebarLeftButton"
-import SidebarRightButton from "~/components/Icons/SidebarRightButton"
-import LinksGroup, { LinksGroupProps } from "~/components/LinksGroup/LinksGroup"
+import {
+  Divider,
+  IconBookOpen,
+  IconHighlight,
+  IconLayers,
+  IconPlus,
+  IconSettings,
+  Navbar,
+  ScrollArea,
+} from "@pokt-foundation/pocket-blocks"
+import { IconProps } from "@pokt-foundation/pocket-blocks/dist/src/package/icon/types"
+import React, { FC } from "react"
+import IconDiscord from "~/components/Icons/IconDiscord"
+import SidebarApps from "~/components/Sidebar/components/SidebarApps"
+import { AppLink, ExternalLink } from "~/components/Sidebar/components/SidebarLinks"
+import { EndpointsQuery } from "~/models/portal/sdk"
 
-type SidebarProps = {
-  data: LinksGroupProps[]
+export type SidebarRoute = {
+  to: string
+  label: string
+  icon: FC<IconProps> | string
+  end?: boolean
+  external?: boolean
+  badge?: string
 }
 
-export function Sidebar({ data }: SidebarProps) {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
-  const theme = useMantineTheme()
+type SidebarProps = { endpoints: EndpointsQuery | null; hidden: boolean }
 
+const staticRoutes: Record<string, SidebarRoute> = {
+  overview: {
+    to: "/dashboard",
+    label: "Overview",
+    icon: IconLayers,
+    end: true,
+  },
+  createNewApp: {
+    to: "/dashboard/create",
+    label: "New Application",
+    icon: IconPlus,
+    end: true,
+  },
+  docs: {
+    to: "https://docs.portal.pokt.network/",
+    icon: IconBookOpen,
+    label: "Documentation",
+  },
+  accountSettings: {
+    to: "/dashboard/profile",
+    icon: IconSettings,
+    label: "Account Settings",
+  },
+  support: {
+    to: "https://discord.gg/portal-rpc",
+    icon: IconDiscord,
+    label: "Support",
+  },
+  feedback: {
+    to: "https://discord.gg/portal-rpc",
+    icon: IconHighlight,
+    label: "Feedback",
+  },
+}
+
+export const Sidebar = ({ endpoints, hidden }: SidebarProps) => {
   return (
-    <>
-      <MediaQuery smallerThan="md" styles={{ display: "none" }}>
-        <List
-          unstyled
-          withPadding
-          m={0}
-          sx={{
-            height: "100vh",
-            padding: "0 8px 8px 0",
-            width: 300,
-            top: 0,
-            position: "sticky",
-            background: theme.colors.navy[7],
-            overflowY: "auto",
-          }}
-        >
-          {data.map((item) => (
-            <LinksGroup {...item} key={item.label} />
-          ))}
-        </List>
-      </MediaQuery>
-      <MediaQuery largerThan="md" styles={{ display: "none" }}>
-        <List
-          unstyled
-          withPadding
-          m={0}
-          sx={{
-            background: theme.colors.navy[7],
-            height: "100vh",
-            left: isSidebarOpen ? 0 : "calc(-300px + 45px)",
-            maxWidth: 300,
-            padding: "0 8px",
-            position: "absolute",
-            top: 88,
-            transition: "left ease-in-out .3s",
-            width: "100%",
-            zIndex: 9999,
-          }}
-        >
-          <List.Item
-            sx={{
-              display: "flex",
-              listStyle: "none",
-              justifyContent: "flex-end",
-              paddingTop: "20px",
-            }}
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          >
-            {isSidebarOpen ? <SidebarLeftButton /> : <SidebarRightButton />}
-          </List.Item>
-          {isSidebarOpen
-            ? data.map((item) => <LinksGroup {...item} key={item.label} />)
-            : null}
-        </List>
-      </MediaQuery>
-    </>
+    <Navbar hidden={hidden} hiddenBreakpoint="sm" p="md" width={{ sm: 200, lg: 300 }}>
+      <ScrollArea mx="-xs" px="xs">
+        <Navbar.Section>
+          <AppLink route={staticRoutes.overview} />
+          {endpoints && <SidebarApps apps={endpoints} />}
+          <AppLink route={staticRoutes.createNewApp} />
+        </Navbar.Section>
+        <Divider color="#343438" my="lg" size="xs" />
+        <Navbar.Section>
+          <ExternalLink route={staticRoutes.docs} />
+        </Navbar.Section>
+        <Divider color="#343438" my="lg" size="xs" />
+        <Navbar.Section>
+          <AppLink route={staticRoutes.accountSettings} />
+          <ExternalLink route={staticRoutes.support} />
+          <ExternalLink route={staticRoutes.feedback} />
+        </Navbar.Section>
+      </ScrollArea>
+    </Navbar>
   )
 }
+
+export default Sidebar

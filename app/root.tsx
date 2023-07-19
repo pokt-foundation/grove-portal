@@ -1,17 +1,12 @@
-import {
-  Alert,
-  Center,
-  Container,
-  createEmotionCache,
-} from "@pokt-foundation/pocket-blocks"
+import { Alert, Center, createEmotionCache } from "@pokt-foundation/pocket-blocks"
 import { LinksFunction, LoaderFunction, MetaFunction, json } from "@remix-run/node"
 import { Outlet, useCatch, useLoaderData } from "@remix-run/react"
 import React from "react"
 import { Auth0Profile } from "remix-auth-auth0"
 import { authenticator } from "./utils/auth.server"
-import Footer, { links as FooterLinks } from "~/components/Footer"
-import Header, { links as HeaderLinks } from "~/components/Header"
-import Nav, { links as NavLinks } from "~/components/Nav"
+import { links as FooterLinks } from "~/components/Footer"
+import { links as HeaderLinks } from "~/components/Header"
+import { links as NavLinks } from "~/components/Nav"
 import Document from "~/root/components/Document"
 import PlasmicContainer from "~/root/components/PlasmicContainer"
 import RootProviders from "~/root/components/RootProviders"
@@ -64,7 +59,7 @@ createEmotionCache({ key: "pni" })
 
 export default function App() {
   const { ENV, user } = useLoaderData<RootLoaderData>()
-  const { isPlasmic, routes } = useRoot({ user })
+  const { isPlasmic } = useRoot({ user })
   return (
     <>
       {isPlasmic ? (
@@ -72,15 +67,9 @@ export default function App() {
       ) : (
         <RootProviders>
           <Document>
-            <Header user={user}>
-              <Nav ariaLabel="Main" routes={routes} />
-            </Header>
-            <main>
-              <Container className="container" size="lg">
-                <Outlet />
-              </Container>
+            <main style={{ padding: 0 }}>
+              <Outlet />
             </main>
-            <Footer />
             <script
               dangerouslySetInnerHTML={{
                 __html: `window.ENV = ${JSON.stringify(ENV)};`,

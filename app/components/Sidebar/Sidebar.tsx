@@ -1,6 +1,9 @@
 import {
   Divider,
+  IconArrowLeft,
   IconBookOpen,
+  IconDoubleLeft,
+  IconDoubleRight,
   IconHighlight,
   IconLayers,
   IconPlus,
@@ -8,21 +11,16 @@ import {
   Navbar,
   ScrollArea,
 } from "@pokt-foundation/pocket-blocks"
-import { IconProps } from "@pokt-foundation/pocket-blocks/dist/src/package/icon/types"
-import React, { FC } from "react"
+import React, { useState } from "react"
 import IconDiscord from "~/components/Icons/IconDiscord"
 import SidebarApps from "~/components/Sidebar/components/SidebarApps"
-import { AppLink, ExternalLink } from "~/components/Sidebar/components/SidebarLinks"
+import {
+  AppLink,
+  ExternalLink,
+  SidebarButton,
+  SidebarRoute,
+} from "~/components/Sidebar/components/SidebarLinks"
 import { EndpointsQuery } from "~/models/portal/sdk"
-
-export type SidebarRoute = {
-  to: string
-  label: string
-  icon: FC<IconProps> | string
-  end?: boolean
-  external?: boolean
-  badge?: string
-}
 
 type SidebarProps = { endpoints: EndpointsQuery | null; hidden: boolean }
 
@@ -62,25 +60,40 @@ const staticRoutes: Record<string, SidebarRoute> = {
 }
 
 export const Sidebar = ({ endpoints, hidden }: SidebarProps) => {
+  const [collapsed, setCollapsed] = useState(false)
+
   return (
-    <Navbar hidden={hidden} hiddenBreakpoint="sm" p="md" width={{ sm: 200, lg: 300 }}>
-      <ScrollArea mx="-xs" px="xs">
+    <Navbar
+      hidden={hidden}
+      hiddenBreakpoint="sm"
+      p="md"
+      width={{ base: collapsed ? 75 : 300 }}
+    >
+      <ScrollArea h="100%" mx="-xs" px="xs">
         <Navbar.Section>
-          <AppLink route={staticRoutes.overview} />
-          {endpoints && <SidebarApps apps={endpoints} />}
-          <AppLink route={staticRoutes.createNewApp} />
+          <AppLink iconOnly={collapsed} route={staticRoutes.overview} />
+          {endpoints && <SidebarApps apps={endpoints} iconOnly={collapsed} />}
+          <AppLink iconOnly={collapsed} route={staticRoutes.createNewApp} />
         </Navbar.Section>
         <Divider color="#343438" my="lg" size="xs" />
         <Navbar.Section>
-          <ExternalLink route={staticRoutes.docs} />
+          <ExternalLink iconOnly={collapsed} route={staticRoutes.docs} />
         </Navbar.Section>
         <Divider color="#343438" my="lg" size="xs" />
         <Navbar.Section>
-          <AppLink route={staticRoutes.accountSettings} />
-          <ExternalLink route={staticRoutes.support} />
-          <ExternalLink route={staticRoutes.feedback} />
+          <AppLink iconOnly={collapsed} route={staticRoutes.accountSettings} />
+          <ExternalLink iconOnly={collapsed} route={staticRoutes.support} />
+          <ExternalLink iconOnly={collapsed} route={staticRoutes.feedback} />
         </Navbar.Section>
       </ScrollArea>
+      <Navbar.Section>
+        <SidebarButton
+          icon={collapsed ? IconDoubleRight : IconDoubleLeft}
+          iconOnly={collapsed}
+          label="Collapse sidebar"
+          onClick={() => setCollapsed(!collapsed)}
+        />
+      </Navbar.Section>
     </Navbar>
   )
 }

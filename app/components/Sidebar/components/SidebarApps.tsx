@@ -1,10 +1,9 @@
 import { Navbar } from "@pokt-foundation/pocket-blocks"
 import React, { useMemo } from "react"
-import { SidebarRoute } from "~/components/Sidebar"
-import { AppLink } from "~/components/Sidebar/components/SidebarLinks"
+import { AppLink, SidebarRoute } from "~/components/Sidebar/components/SidebarLinks"
 import { EndpointsQuery } from "~/models/portal/sdk"
 
-type SidebarAppsProps = { apps: EndpointsQuery }
+type SidebarAppsProps = { apps: EndpointsQuery; iconOnly?: boolean }
 
 function getRandomAppmoji(): string {
   const emojis: string[] = [
@@ -25,7 +24,7 @@ function getRandomAppmoji(): string {
   return emojis[randomIndex]
 }
 
-export const SidebarApps = ({ apps }: SidebarAppsProps) => {
+export const SidebarApps = ({ apps, iconOnly }: SidebarAppsProps) => {
   const appsRoutes = useMemo(() => {
     return Object.entries(apps).flatMap(([parent, apps]) => {
       return typeof apps === "object"
@@ -33,19 +32,16 @@ export const SidebarApps = ({ apps }: SidebarAppsProps) => {
             to: `apps/${app?.id}`,
             label: app?.name,
             badge: parent,
-            end: true,
             icon: getRandomAppmoji(),
           }))
         : []
     }) as SidebarRoute[]
   }, [apps])
 
-  console.log(appsRoutes)
-
   return (
     <Navbar.Section>
       {appsRoutes.map((appRoute) => (
-        <AppLink key={appRoute.to} route={appRoute} />
+        <AppLink key={appRoute.to} iconOnly={iconOnly} route={appRoute} />
       ))}
     </Navbar.Section>
   )

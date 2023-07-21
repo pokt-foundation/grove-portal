@@ -4,22 +4,22 @@ import {
   Group,
   MantineTheme,
   Text,
-  Tooltip,
   UnstyledButton,
 } from "@pokt-foundation/pocket-blocks"
-import { IconProps } from "@pokt-foundation/pocket-blocks/dist/src/package/icon/types"
 import { NavLink } from "@remix-run/react"
-import React, { FC } from "react"
+import React from "react"
+import { IconType } from "react-icons/lib/cjs/iconBase"
+import Tooltip from "~/components/Tooltip"
 
-export type SidebarRoute = {
+export type NavRoute = {
   to: string
   label: string
-  icon: FC<IconProps> | string
+  icon: IconType | string
   end?: boolean
   badge?: string
 }
 
-export type LinkLabelProps = Pick<SidebarRoute, "icon" | "label"> & { iconOnly?: boolean }
+export type LinkLabelProps = Pick<NavRoute, "icon" | "label"> & { iconOnly?: boolean }
 
 type SidebarButtonProps = LinkLabelProps & { onClick?: () => void }
 
@@ -47,15 +47,21 @@ const commonLinkStyles = (theme: MantineTheme): CSSObject => ({
 const LinkLabel = ({ icon: Icon, label, iconOnly }: LinkLabelProps) => {
   const isEmoji = typeof Icon === "string"
   return (
-    <Tooltip withinPortal disabled={!iconOnly} label={label} position="right">
+    <Tooltip
+      withArrow
+      withinPortal
+      disabled={!iconOnly}
+      label={label}
+      offset={35}
+      position="right"
+    >
       <Group>
-        {/* @ts-ignore eslint-disable-next-line */}
         {isEmoji ? (
           <Text span fz="20px" m={0} ta="center">
             {Icon}
           </Text>
         ) : (
-          <Icon width={22} />
+          <Icon size={25} />
         )}
         {!iconOnly && <span>{label}</span>}
       </Group>
@@ -67,7 +73,7 @@ export const ExternalLink = ({
   route,
   iconOnly,
 }: {
-  route: SidebarRoute
+  route: NavRoute
   iconOnly?: boolean
 }) => (
   <Anchor
@@ -81,13 +87,7 @@ export const ExternalLink = ({
   </Anchor>
 )
 
-export const AppLink = ({
-  route,
-  iconOnly,
-}: {
-  route: SidebarRoute
-  iconOnly?: boolean
-}) => (
+export const AppLink = ({ route, iconOnly }: { route: NavRoute; iconOnly?: boolean }) => (
   <Anchor
     component={NavLink}
     end={route.end}
@@ -99,8 +99,10 @@ export const AppLink = ({
   </Anchor>
 )
 
-export const SidebarButton = ({ icon, label, iconOnly, ...rest }: SidebarButtonProps) => (
+export const NavButton = ({ icon, label, iconOnly, ...rest }: SidebarButtonProps) => (
   <UnstyledButton sx={commonLinkStyles} {...rest}>
     <LinkLabel icon={icon} iconOnly={iconOnly} label={label} />
   </UnstyledButton>
 )
+
+export default AppLink

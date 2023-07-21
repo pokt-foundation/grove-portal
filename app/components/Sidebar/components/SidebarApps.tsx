@@ -1,6 +1,6 @@
 import { Navbar } from "@pokt-foundation/pocket-blocks"
 import React, { useMemo } from "react"
-import { AppLink, SidebarRoute } from "~/components/Sidebar/components/SidebarLinks"
+import { AppLink, NavRoute } from "~/components/NavLinks/NavLinks"
 import { EndpointsQuery } from "~/models/portal/sdk"
 
 type SidebarAppsProps = { apps: EndpointsQuery; iconOnly?: boolean }
@@ -35,13 +35,13 @@ export const SidebarApps = ({ apps, iconOnly }: SidebarAppsProps) => {
             icon: getRandomAppmoji(),
           }))
         : []
-    }) as SidebarRoute[]
+    }) as NavRoute[]
   }, [apps])
 
   return (
     <Navbar.Section>
-      {appsRoutes.map((appRoute) => (
-        <AppLink key={appRoute.to} iconOnly={iconOnly} route={appRoute} />
+      {appsRoutes.map((NavRoute) => (
+        <AppLink key={NavRoute.to} iconOnly={iconOnly} route={NavRoute} />
       ))}
     </Navbar.Section>
   )

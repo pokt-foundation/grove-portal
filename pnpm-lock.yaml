@@ -70,6 +70,7 @@ specifiers:
   prettier: ^2.6.2
   react: 18.2.0
   react-dom: ^18.2.0
+  react-icons: ^4.10.1
   react-markdown: ^8.0.6
   rehype-raw: ^6.1.1
   rehype-slug: ^5.1.0
@@ -114,6 +115,7 @@ dependencies:
   next-mdx-remote: 4.4.1_biqbaboplfbrettd7655fr4n2y
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
+  react-icons: 4.10.1_react@18.2.0
   react-markdown: 8.0.6_pmekkgnqduwlme35zpnqhenc34
   rehype-raw: 6.1.1
   rehype-slug: 5.1.0
@@ -12375,6 +12377,14 @@ packages:
       loose-envify: 1.4.0
       react: 18.2.0
       scheduler: 0.23.0
+
+  /react-icons/4.10.1_react@18.2.0:
+    resolution: {integrity: sha512-/ngzDP/77tlCfqthiiGNZeYFACw85fUjZtLbedmJ5DTlNDIwETxhwBzdOJ21zj4iJdvc0J3y7yOsX3PpxAJzrw==}
+    peerDependencies:
+      react: '*'
+    dependencies:
+      react: 18.2.0
+    dev: false
 
   /react-is/16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}

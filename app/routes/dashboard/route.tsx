@@ -6,11 +6,8 @@ import {
   Group,
   Text,
   Title,
-  Header as AppHeader,
+  Header,
   Container,
-  MediaQuery,
-  Burger,
-  Flex,
 } from "@pokt-foundation/pocket-blocks"
 import { json, LinksFunction, LoaderFunction } from "@remix-run/node"
 import { Outlet, useCatch, Link, useLoaderData } from "@remix-run/react"
@@ -18,6 +15,7 @@ import React, { useState } from "react"
 import { Auth0Profile } from "remix-auth-auth0"
 import invariant from "tiny-invariant"
 import styles from "./styles.css"
+import { AppHeader } from "~/components/AppHeader"
 import { Sidebar } from "~/components/Sidebar"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { EndpointsQuery } from "~/models/portal/sdk"
@@ -74,7 +72,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 }
 
 export default function Dashboard() {
-  const { endpoints } = useLoaderData<DashboardLoaderData>()
+  const { endpoints, user } = useLoaderData<DashboardLoaderData>()
   const [opened, setOpened] = useState(false)
 
   if (DASHBOARD_MAINTENANCE === "true") {
@@ -101,31 +99,9 @@ export default function Dashboard() {
   return (
     <AppShell
       header={
-        <AppHeader height={{ base: 50, md: 70 }} p="md">
-          {/*    <AppHeader height={70} p="xs">*/}
-          {/*      <Header user={user}>*/}
-          {/*        <Nav ariaLabel="Main" routes={routes} />*/}
-          {/*      </Header>*/}
-          {/*    </AppHeader>*/}
-          <Flex align="center" h="100%">
-            <MediaQuery largerThan="sm" styles={{ display: "none" }}>
-              <Burger
-                mr="xl"
-                opened={opened}
-                size="sm"
-                onClick={() => setOpened((o) => !o)}
-              />
-            </MediaQuery>
-            <Link to="/">
-              <img
-                alt="Pocket network portal logo"
-                loading="lazy"
-                src="/pni_portal_logo_blue.svg"
-                style={{ height: "1.5rem", objectFit: "contain" }}
-              ></img>
-            </Link>
-          </Flex>
-        </AppHeader>
+        <Header height={{ base: 50, md: 70 }} p="md">
+          <AppHeader opened={opened} user={user} onOpen={(o) => setOpened(o)} />
+        </Header>
       }
       navbar={<Sidebar endpoints={endpoints} hidden={!opened} />}
       navbarOffsetBreakpoint="sm"

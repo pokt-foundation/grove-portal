@@ -5,7 +5,6 @@ import React from "react"
 import { Auth0Profile } from "remix-auth-auth0"
 import { authenticator } from "./utils/auth.server"
 import { links as FooterLinks } from "~/components/Footer"
-import { links as HeaderLinks } from "~/components/Header"
 import { links as NavLinks } from "~/components/Nav"
 import Document from "~/root/components/Document"
 import PlasmicContainer from "~/root/components/PlasmicContainer"
@@ -27,7 +26,6 @@ export const links: LinksFunction = () => {
       href: "https://fonts.googleapis.com/css2?family=Manrope:wght@400;700&display=swap",
     },
     ...FooterLinks(),
-    ...HeaderLinks(),
     ...NavLinks(),
   ]
 }

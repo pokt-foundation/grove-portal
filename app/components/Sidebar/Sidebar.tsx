@@ -1,60 +1,57 @@
-import {
-  Divider,
-  IconArrowLeft,
-  IconBookOpen,
-  IconDoubleLeft,
-  IconDoubleRight,
-  IconHighlight,
-  IconLayers,
-  IconPlus,
-  IconSettings,
-  Navbar,
-  ScrollArea,
-} from "@pokt-foundation/pocket-blocks"
+import { Divider, MediaQuery, Navbar, ScrollArea } from "@pokt-foundation/pocket-blocks"
 import React, { useState } from "react"
-import IconDiscord from "~/components/Icons/IconDiscord"
-import SidebarApps from "~/components/Sidebar/components/SidebarApps"
+import {
+  RiStackLine,
+  RiAddLine,
+  RiBook2Line,
+  RiSettings3Line,
+  RiDiscordLine,
+  RiUserSmileLine,
+  RiArrowLeftDoubleLine,
+  RiArrowRightDoubleLine,
+} from "react-icons/ri"
 import {
   AppLink,
   ExternalLink,
-  SidebarButton,
-  SidebarRoute,
-} from "~/components/Sidebar/components/SidebarLinks"
+  NavButton,
+  NavRoute,
+} from "~/components/NavLinks/NavLinks"
+import SidebarApps from "~/components/Sidebar/components/SidebarApps"
 import { EndpointsQuery } from "~/models/portal/sdk"
 
 type SidebarProps = { endpoints: EndpointsQuery | null; hidden: boolean }
 
-const staticRoutes: Record<string, SidebarRoute> = {
+const staticRoutes: Record<string, NavRoute> = {
   overview: {
     to: "/dashboard",
     label: "Overview",
-    icon: IconLayers,
+    icon: RiStackLine,
     end: true,
   },
   createNewApp: {
     to: "/dashboard/create",
     label: "New Application",
-    icon: IconPlus,
+    icon: RiAddLine,
     end: true,
   },
   docs: {
     to: "https://docs.portal.pokt.network/",
-    icon: IconBookOpen,
+    icon: RiBook2Line,
     label: "Documentation",
   },
   accountSettings: {
     to: "/dashboard/profile",
-    icon: IconSettings,
+    icon: RiSettings3Line,
     label: "Account Settings",
   },
   support: {
     to: "https://discord.gg/portal-rpc",
-    icon: IconDiscord,
+    icon: RiDiscordLine,
     label: "Support",
   },
   feedback: {
     to: "https://discord.gg/portal-rpc",
-    icon: IconHighlight,
+    icon: RiUserSmileLine,
     label: "Feedback",
   },
 }
@@ -67,7 +64,7 @@ export const Sidebar = ({ endpoints, hidden }: SidebarProps) => {
       hidden={hidden}
       hiddenBreakpoint="sm"
       p="md"
-      width={{ base: collapsed ? 75 : 300 }}
+      width={{ base: collapsed ? 80 : 300 }}
     >
       <ScrollArea h="100%" mx="-xs" px="xs">
         <Navbar.Section>
@@ -79,21 +76,22 @@ export const Sidebar = ({ endpoints, hidden }: SidebarProps) => {
         <Navbar.Section>
           <ExternalLink iconOnly={collapsed} route={staticRoutes.docs} />
         </Navbar.Section>
-        <Divider color="#343438" my="lg" size="xs" />
         <Navbar.Section>
           <AppLink iconOnly={collapsed} route={staticRoutes.accountSettings} />
           <ExternalLink iconOnly={collapsed} route={staticRoutes.support} />
           <ExternalLink iconOnly={collapsed} route={staticRoutes.feedback} />
         </Navbar.Section>
       </ScrollArea>
-      <Navbar.Section>
-        <SidebarButton
-          icon={collapsed ? IconDoubleRight : IconDoubleLeft}
-          iconOnly={collapsed}
-          label="Collapse sidebar"
-          onClick={() => setCollapsed(!collapsed)}
-        />
-      </Navbar.Section>
+      <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
+        <Navbar.Section>
+          <NavButton
+            icon={collapsed ? RiArrowRightDoubleLine : RiArrowLeftDoubleLine}
+            iconOnly={collapsed}
+            label="Collapse sidebar"
+            onClick={() => setCollapsed(!collapsed)}
+          />
+        </Navbar.Section>
+      </MediaQuery>
     </Navbar>
   )
 }

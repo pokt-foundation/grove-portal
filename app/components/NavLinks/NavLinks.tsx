@@ -1,6 +1,7 @@
 import { CSSObject } from "@mantine/core"
 import {
   Anchor,
+  Flex,
   Group,
   MantineTheme,
   Text,
@@ -29,7 +30,7 @@ const commonLinkStyles = (theme: MantineTheme): CSSObject => ({
   padding: theme.spacing.xs,
   borderRadius: theme.radius.sm,
   color: theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
-
+  fontSize: "14px",
   "&:hover": {
     backgroundColor:
       theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.gray[0],
@@ -47,25 +48,27 @@ const commonLinkStyles = (theme: MantineTheme): CSSObject => ({
 const LinkLabel = ({ icon: Icon, label, iconOnly }: LinkLabelProps) => {
   const isEmoji = typeof Icon === "string"
   return (
-    <Tooltip
-      withArrow
-      withinPortal
-      disabled={!iconOnly}
-      label={label}
-      offset={35}
-      position="right"
-    >
-      <Group>
-        {isEmoji ? (
-          <Text span fz="20px" m={0} ta="center">
-            {Icon}
-          </Text>
-        ) : (
-          <Icon size={25} />
-        )}
-        {!iconOnly && <span>{label}</span>}
-      </Group>
-    </Tooltip>
+    <Flex sx={{ justifyContent: iconOnly ? "center" : "flex-start" }}>
+      <Tooltip
+        withArrow
+        withinPortal
+        disabled={!iconOnly}
+        label={label}
+        offset={35}
+        position="right"
+      >
+        <Group>
+          {isEmoji ? (
+            <Text span fz="16px" m={0} ta="center">
+              {Icon}
+            </Text>
+          ) : (
+            <Icon size={16} />
+          )}
+          {!iconOnly && <span>{label}</span>}
+        </Group>
+      </Tooltip>
+    </Flex>
   )
 }
 

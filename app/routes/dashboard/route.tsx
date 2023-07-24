@@ -1,11 +1,13 @@
 import { Box, Button, Center, Group, Text, Title } from "@pokt-foundation/pocket-blocks"
-import { LinksFunction, LoaderFunction } from "@remix-run/node"
-import { Outlet, useCatch, Link } from "@remix-run/react"
+import { LinksFunction, LoaderFunction, json } from "@remix-run/node"
+import { Outlet, useCatch, Link, useLoaderData } from "@remix-run/react"
 import invariant from "tiny-invariant"
 import styles from "./styles.css"
+import NotificationMessage from "~/components/NotificationMessage"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { initAdminPortal } from "~/utils/admin"
 import { getRequiredClientEnvVar } from "~/utils/environment"
+import { getClientEnv } from "~/utils/environment.server"
 import { requireUser } from "~/utils/session.server"
 
 const DASHBOARD_MAINTENANCE = getRequiredClientEnvVar("FLAG_MAINTENANCE_MODE_DASHBOARD")
@@ -14,7 +16,19 @@ export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: styles }]
 }
 
+type DashboardLoaderResponse = {
+  notice: {
+    active: string
+    title: string
+    message: string
+  }
+}
+
 export const loader: LoaderFunction = async ({ request }) => {
+  const NOTICE_ACTIVE = getClientEnv().NOTICE_ACTIVE
+  const NOTICE_TITLE = getClientEnv().NOTICE_TITLE
+  const NOTICE_MESSAGE = getClientEnv().NOTICE_MESSAGE
+
   const user = await requireUser(request, "/api/auth/auth0")
   const portal = initPortalClient({ token: user.accessToken })
 
@@ -39,10 +53,17 @@ export const loader: LoaderFunction = async ({ request }) => {
     })
   }
 
-  return null
+  return json({
+    notice: {
+      active: NOTICE_ACTIVE,
+      title: NOTICE_TITLE,
+      message: NOTICE_MESSAGE,
+    },
+  })
 }
 
 export default function Dashboard() {
+  const { notice } = useLoaderData() as DashboardLoaderResponse
   if (DASHBOARD_MAINTENANCE === "true") {
     return (
       <Center className="error-container" mt="xl">
@@ -64,7 +85,18 @@ export default function Dashboard() {
     )
   }
 
-  return <Outlet />
+  return (
+    <>
+      {notice.active === "true" && (
+        <Box mb="xl">
+          <NotificationMessage isActive={true} title={notice.title} type={"info"}>
+            {notice.message}
+          </NotificationMessage>
+        </Box>
+      )}
+      <Outlet />
+    </>
+  )
 }
 
 export const CatchBoundary = () => {

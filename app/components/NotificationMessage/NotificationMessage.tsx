@@ -27,7 +27,8 @@ type NotificationMessageProps = AlertProps & {
   css?: React.CSSProperties
 }
 
-type NotificationMessageType = "success" | "info" | "warning" | "error" | "options"
+export type NotificationMessageType = "success" | "info" | "warning" | "error" | "options"
+export const notificationMessageTypes = ["success", "info", "warning", "error", "options"]
 
 const NotificationMessageIcon = ({ type }: { type: NotificationMessageType }) => {
   switch (type) {

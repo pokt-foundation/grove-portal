@@ -3,7 +3,10 @@ import { LinksFunction, LoaderFunction, json } from "@remix-run/node"
 import { Outlet, useCatch, Link, useLoaderData } from "@remix-run/react"
 import invariant from "tiny-invariant"
 import styles from "./styles.css"
-import NotificationMessage from "~/components/NotificationMessage"
+import NotificationMessage, {
+  NotificationMessageType,
+  notificationMessageTypes,
+} from "~/components/NotificationMessage"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { initAdminPortal } from "~/utils/admin"
 import { getRequiredClientEnvVar } from "~/utils/environment"
@@ -19,15 +22,18 @@ export const links: LinksFunction = () => {
 type DashboardLoaderResponse = {
   notice: {
     active: string
+    type: string
     title: string
     message: string
   }
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
-  const NOTICE_ACTIVE = getClientEnv().NOTICE_ACTIVE
-  const NOTICE_TITLE = getClientEnv().NOTICE_TITLE
-  const NOTICE_MESSAGE = getClientEnv().NOTICE_MESSAGE
+  const ENV = getClientEnv()
+  const NOTICE_ACTIVE = ENV.NOTICE_ACTIVE
+  const NOTICE_TYPE = ENV.NOTICE_TYPE
+  const NOTICE_TITLE = ENV.NOTICE_TITLE
+  const NOTICE_MESSAGE = ENV.NOTICE_MESSAGE
 
   const user = await requireUser(request, "/api/auth/auth0")
   const portal = initPortalClient({ token: user.accessToken })
@@ -56,6 +62,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   return json({
     notice: {
       active: NOTICE_ACTIVE,
+      type: NOTICE_TYPE,
       title: NOTICE_TITLE,
       message: NOTICE_MESSAGE,
     },
@@ -89,7 +96,15 @@ export default function Dashboard() {
     <>
       {notice.active === "true" && (
         <Box mb="xl">
-          <NotificationMessage isActive={true} title={notice.title} type={"info"}>
+          <NotificationMessage
+            isActive={true}
+            title={notice.title}
+            type={
+              Object.values(notificationMessageTypes).includes(notice.type)
+                ? (notice.type as NotificationMessageType)
+                : "info"
+            }
+          >
             {notice.message}
           </NotificationMessage>
         </Box>

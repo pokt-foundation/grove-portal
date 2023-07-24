@@ -14,14 +14,14 @@ import {
   AppLink,
   ExternalLink,
   NavButton,
-  NavRoute,
-} from "~/components/NavLinks/NavLinks"
-import SidebarApps from "~/components/Sidebar/components/SidebarApps"
+  SidebarNavRoute,
+  SidebarApps,
+} from "~/components/Sidebar/components"
 import { EndpointsQuery } from "~/models/portal/sdk"
 
 type SidebarProps = { endpoints: EndpointsQuery | null; hidden: boolean }
 
-const staticRoutes: Record<string, NavRoute> = {
+const staticRoutes: Record<string, SidebarNavRoute> = {
   overview: {
     to: "/dashboard",
     label: "Overview",

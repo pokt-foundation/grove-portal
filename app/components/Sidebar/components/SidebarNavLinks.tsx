@@ -12,7 +12,7 @@ import React from "react"
 import { IconType } from "react-icons/lib/cjs/iconBase"
 import Tooltip from "~/components/Tooltip"
 
-export type NavRoute = {
+export type SidebarNavRoute = {
   to: string
   label: string
   icon: IconType | string
@@ -20,7 +20,9 @@ export type NavRoute = {
   badge?: string
 }
 
-export type LinkLabelProps = Pick<NavRoute, "icon" | "label"> & { iconOnly?: boolean }
+export type LinkLabelProps = Pick<SidebarNavRoute, "icon" | "label"> & {
+  iconOnly?: boolean
+}
 
 type SidebarButtonProps = LinkLabelProps & { onClick?: () => void }
 
@@ -76,7 +78,7 @@ export const ExternalLink = ({
   route,
   iconOnly,
 }: {
-  route: NavRoute
+  route: SidebarNavRoute
   iconOnly?: boolean
 }) => (
   <Anchor
@@ -90,7 +92,13 @@ export const ExternalLink = ({
   </Anchor>
 )
 
-export const AppLink = ({ route, iconOnly }: { route: NavRoute; iconOnly?: boolean }) => (
+export const AppLink = ({
+  route,
+  iconOnly,
+}: {
+  route: SidebarNavRoute
+  iconOnly?: boolean
+}) => (
   <Anchor
     component={NavLink}
     end={route.end}
@@ -107,5 +115,3 @@ export const NavButton = ({ icon, label, iconOnly, ...rest }: SidebarButtonProps
     <LinkLabel icon={icon} iconOnly={iconOnly} label={label} />
   </UnstyledButton>
 )
-
-export default AppLink

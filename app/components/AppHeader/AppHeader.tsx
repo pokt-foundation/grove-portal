@@ -1,9 +1,15 @@
-import { Avatar, Burger, Flex, MediaQuery, Menu } from "@pokt-foundation/pocket-blocks"
-import { Form, Link } from "@remix-run/react"
+import {
+  Avatar,
+  Burger,
+  Flex,
+  MediaQuery,
+  Menu,
+  UnstyledButton,
+} from "@pokt-foundation/pocket-blocks"
+import { Form, Link, NavLink } from "@remix-run/react"
 import React, { useRef } from "react"
 import { RiAccountCircleLine, RiLogoutBoxRLine, RiUser3Line } from "react-icons/ri"
 import { Auth0Profile } from "remix-auth-auth0"
-import { AppLink, NavButton } from "~/components/NavLinks/NavLinks"
 
 type HeaderProps = {
   user?: Auth0Profile
@@ -38,13 +44,6 @@ type UserMenuDropdownProps = {
 
 function UserMenuDropdown({ user }: UserMenuDropdownProps) {
   const logoutFormRef = useRef<HTMLFormElement>(null)
-
-  const userProfileRoute = {
-    to: "/dashboard/profile",
-    icon: RiAccountCircleLine,
-    label: "User Profile",
-  }
-
   return (
     <>
       <Form ref={logoutFormRef} action="/api/auth/auth0" method="post">
@@ -52,7 +51,13 @@ function UserMenuDropdown({ user }: UserMenuDropdownProps) {
       </Form>
 
       {user && (
-        <Menu>
+        <Menu
+          styles={{
+            item: {
+              padding: 16,
+            },
+          }}
+        >
           <Menu.Target>
             <Avatar
               radius="xl"
@@ -65,13 +70,12 @@ function UserMenuDropdown({ user }: UserMenuDropdownProps) {
             </Avatar>
           </Menu.Target>
           <Menu.Dropdown>
-            <Menu.Item>
-              <AppLink route={userProfileRoute} />
+            <Menu.Item icon={<RiAccountCircleLine size={16} />}>
+              <NavLink to="/dashboard/profile">User Profile </NavLink>
             </Menu.Item>
-            <Menu.Item>
-              <NavButton
-                icon={RiLogoutBoxRLine}
-                label="Logout"
+            <Menu.Item icon={<RiLogoutBoxRLine size={16} />}>
+              <UnstyledButton
+                component="span"
                 onClick={() => {
                   if (logoutFormRef.current) {
                     logoutFormRef.current.dispatchEvent(
@@ -79,7 +83,9 @@ function UserMenuDropdown({ user }: UserMenuDropdownProps) {
                     )
                   }
                 }}
-              />
+              >
+                Logout
+              </UnstyledButton>
             </Menu.Item>
           </Menu.Dropdown>
         </Menu>

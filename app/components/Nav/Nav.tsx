@@ -105,7 +105,6 @@ export const Nav = ({ routes, dropdown = false, appId, ariaLabel }: NavProps) =>
                 className="nav-link"
                 component={NavLink}
                 end={route.end}
-                styles={{}}
                 sx={(theme) => ({
                   color: theme.white,
                   transition: "color 0.3s ease-in-out",

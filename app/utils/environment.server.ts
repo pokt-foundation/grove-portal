@@ -22,6 +22,10 @@ function getClientEnv() {
     DOCS_STATUS: process.env.DOCS_STATUS,
     PLASMIC_ID: process.env.PLASMIC_ID,
     PLASMIC_TOKEN: process.env.PLASMIC_TOKEN,
+    NOTICE_ACTIVE: process.env.NOTICE_ACTIVE ?? "false",
+    NOTICE_TYPE: process.env.NOTICE_TYPE ?? "info",
+    NOTICE_TITLE: process.env.NOTICE_TITLE ?? "Portal Notice",
+    NOTICE_MESSAGE: process.env.NOTICE_MESSAGE ?? "",
   }
 }
 

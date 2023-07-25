@@ -12,7 +12,7 @@ export const useRoot = ({ user }: useRootProps) => {
   const { t } = useTranslate()
   const { pathname } = useLocation()
   const isPlasmic = useMemo(
-    () => !pathname.includes("/dashboard/") && !pathname.includes("/admin"),
+    () => !pathname.includes("/dashboard") && !pathname.includes("/admin"),
     [pathname],
   )
 

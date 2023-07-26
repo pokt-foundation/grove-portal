@@ -22,10 +22,10 @@ import { EndpointsQuery } from "~/models/portal/sdk"
 type SidebarProps = {
   endpoints: EndpointsQuery | null
   hidden: boolean
-  accountId: string
+  accountId: string | null
 }
 
-const getStaticRoutes = (accountId: string): Record<string, SidebarNavRoute> => ({
+const getStaticRoutes = (accountId: string | null): Record<string, SidebarNavRoute> => ({
   overview: {
     to: `/account/${accountId}`,
     label: "Overview",

@@ -3,7 +3,11 @@ import React, { useMemo } from "react"
 import { AppLink, SidebarNavRoute } from "~/components/Sidebar/components"
 import { EndpointsQuery } from "~/models/portal/sdk"
 
-type SidebarAppsProps = { apps: EndpointsQuery; iconOnly?: boolean; accountId: string }
+type SidebarAppsProps = {
+  apps: EndpointsQuery
+  iconOnly?: boolean
+  accountId: string | null
+}
 
 function getRandomAppmoji(): string {
   const emojis: string[] = [

@@ -110,7 +110,7 @@ export default function Account() {
           />
         </Header>
       }
-      navbar={<Sidebar accountId={"200bb0c2"} endpoints={endpoints} hidden={!opened} />}
+      navbar={<Sidebar accountId={portalUserId} endpoints={endpoints} hidden={!opened} />}
       navbarOffsetBreakpoint="sm"
       padding="xs"
       styles={(theme) => ({

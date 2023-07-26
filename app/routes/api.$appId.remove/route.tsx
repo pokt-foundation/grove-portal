@@ -15,7 +15,7 @@ export const action: ActionFunction = async ({ request, params }) => {
   })
 
   if (response.removeEndpoint) {
-    return redirect("/dashboard/apps")
+    return redirect("/account/apps")
   }
 
   return json({ success: false })

@@ -42,11 +42,11 @@ export const Nav = ({ routes, dropdown = false, appId, ariaLabel }: NavProps) =>
   useEffect(() => {
     if (mobilePageSelect !== null) {
       if (mobilePageSelect === "") {
-        window.location.href = `/dashboard/apps/${appId}`
-      } else if (mobilePageSelect === "/dashboard/apps") {
+        window.location.href = `/account/apps/${appId}`
+      } else if (mobilePageSelect === "/account/apps") {
         window.location.href = mobilePageSelect
       } else {
-        window.location.href = `/dashboard/apps/${appId}/${mobilePageSelect}`
+        window.location.href = `/account/apps/${appId}/${mobilePageSelect}`
       }
     }
   }, [appId, mobilePageSelect])

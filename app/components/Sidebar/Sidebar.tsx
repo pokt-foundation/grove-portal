@@ -19,17 +19,21 @@ import {
 } from "~/components/Sidebar/components"
 import { EndpointsQuery } from "~/models/portal/sdk"
 
-type SidebarProps = { endpoints: EndpointsQuery | null; hidden: boolean }
+type SidebarProps = {
+  endpoints: EndpointsQuery | null
+  hidden: boolean
+  accountId: string
+}
 
-const staticRoutes: Record<string, SidebarNavRoute> = {
+const getStaticRoutes = (accountId: string): Record<string, SidebarNavRoute> => ({
   overview: {
-    to: "/dashboard",
+    to: `/account/${accountId}`,
     label: "Overview",
     icon: RiStackLine,
     end: true,
   },
   createNewApp: {
-    to: "/dashboard/create",
+    to: `/account/${accountId}/create`,
     label: "New Application",
     icon: RiAddLine,
     end: true,
@@ -40,7 +44,7 @@ const staticRoutes: Record<string, SidebarNavRoute> = {
     label: "Documentation",
   },
   accountSettings: {
-    to: "/dashboard/profile",
+    to: `/account/${accountId}/profile`,
     icon: RiSettings3Line,
     label: "Account Settings",
   },
@@ -54,11 +58,11 @@ const staticRoutes: Record<string, SidebarNavRoute> = {
     icon: RiUserSmileLine,
     label: "Feedback",
   },
-}
+})
 
-export const Sidebar = ({ endpoints, hidden }: SidebarProps) => {
+export const Sidebar = ({ endpoints, hidden, accountId }: SidebarProps) => {
   const [collapsed, setCollapsed] = useState(false)
-
+  const staticRoutes = getStaticRoutes(accountId)
   return (
     <Navbar
       hidden={hidden}
@@ -69,7 +73,9 @@ export const Sidebar = ({ endpoints, hidden }: SidebarProps) => {
       <ScrollArea h="100%" mx="-xs" px="xs">
         <Navbar.Section>
           <AppLink iconOnly={collapsed} route={staticRoutes.overview} />
-          {endpoints && <SidebarApps apps={endpoints} iconOnly={collapsed} />}
+          {endpoints && (
+            <SidebarApps accountId={accountId} apps={endpoints} iconOnly={collapsed} />
+          )}
           <AppLink iconOnly={collapsed} route={staticRoutes.createNewApp} />
         </Navbar.Section>
         <Divider color="#343438" my="lg" size="xs" />

@@ -16,7 +16,7 @@ interface AppNameProps {
 
 export default function AppName({ id, name }: AppNameProps) {
   const [editing, setEditing] = useState(false)
-  const [nameState, setNameState] = useState(name)
+  const [nameState, setNameState] = useState("")
   const [error, setError] = useState(false)
   const [errorMessage, setErrorMessage] = useState("")
   const fetcher = useFetcher()
@@ -38,6 +38,10 @@ export default function AppName({ id, name }: AppNameProps) {
       setEditing(true)
     }
   }
+
+  useEffect(() => {
+    setNameState(name)
+  }, [name])
 
   useEffect(() => {
     if (fetcher.data && fetcher.data.result === "error") {

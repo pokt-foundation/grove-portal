@@ -130,5 +130,5 @@ export const action: ActionFunction = async ({ request, params }) => {
     },
   })
 
-  return redirect(`/dashboard/apps/${data.appID}/security`)
+  return redirect(`/account/apps/${data.appID}/security`)
 }

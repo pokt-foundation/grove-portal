@@ -3,7 +3,7 @@ import React, { useMemo } from "react"
 import { AppLink, SidebarNavRoute } from "~/components/Sidebar/components"
 import { EndpointsQuery } from "~/models/portal/sdk"
 
-type SidebarAppsProps = { apps: EndpointsQuery; iconOnly?: boolean }
+type SidebarAppsProps = { apps: EndpointsQuery; iconOnly?: boolean; accountId: string }
 
 function getRandomAppmoji(): string {
   const emojis: string[] = [
@@ -24,12 +24,12 @@ function getRandomAppmoji(): string {
   return emojis[randomIndex]
 }
 
-export const SidebarApps = ({ apps, iconOnly }: SidebarAppsProps) => {
+export const SidebarApps = ({ apps, iconOnly, accountId }: SidebarAppsProps) => {
   const appsRoutes = useMemo(() => {
     return Object.entries(apps).flatMap(([parent, apps]) => {
       return typeof apps === "object"
         ? apps.map((app) => ({
-            to: `apps/${app?.id}`,
+            to: `${accountId}/${app?.id}`,
             label: app?.name,
             badge: parent,
             icon: getRandomAppmoji(),

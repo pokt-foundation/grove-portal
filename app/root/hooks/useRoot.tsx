@@ -12,7 +12,7 @@ export const useRoot = ({ user }: useRootProps) => {
   const { t } = useTranslate()
   const { pathname } = useLocation()
   const isPlasmic = useMemo(
-    () => !pathname.includes("/dashboard/") && !pathname.includes("/admin"),
+    () => !pathname.includes("/account") && !pathname.includes("/admin"),
     [pathname],
   )
 
@@ -30,7 +30,7 @@ export const useRoot = ({ user }: useRootProps) => {
 
     const allRoutes = [
       {
-        to: "/dashboard/apps",
+        to: "/account/apps",
         label: t.dashboard.routes.apps,
         icon: IconApp,
         protected: Protected.Public, // show this link to all. dashboard layout handles redirect to login.

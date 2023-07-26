@@ -61,7 +61,7 @@ const LinkLabel = ({ icon: Icon, label, iconOnly }: LinkLabelProps) => {
       >
         <Group>
           {isEmoji ? (
-            <Text span fz="lg" m={0} ta="center">
+            <Text span fz="md" m={0} ta="center">
               {Icon}
             </Text>
           ) : (

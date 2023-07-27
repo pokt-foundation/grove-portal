@@ -19,10 +19,10 @@ import { AppHeader } from "~/components/AppHeader"
 import { Sidebar } from "~/components/Sidebar"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { EndpointsQuery } from "~/models/portal/sdk"
+import useCommonStyles from "~/styles/commonStyles"
 import { initAdminPortal } from "~/utils/admin"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 import { requireUser } from "~/utils/session.server"
-import useCommonStyles from "~/styles/commonStyles"
 
 const DASHBOARD_MAINTENANCE = getRequiredClientEnvVar("FLAG_MAINTENANCE_MODE_DASHBOARD")
 

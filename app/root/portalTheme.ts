@@ -53,8 +53,8 @@ export const portalTheme: MantineThemeOverride = {
       styles: (theme) => ({
         root: {
           padding: "32px",
-          // backgroundColor:
-          //   theme.colorScheme === "dark" ? theme.colors.dark[9] : theme.colors.gray[1],
+          backgroundColor:
+            theme.colorScheme === "dark" ? theme.colors.dark[9] : theme.colors.gray[1],
         },
       }),
     },
@@ -96,13 +96,6 @@ export const portalTheme: MantineThemeOverride = {
       styles: {
         input: {
           backgroundColor: "transparent",
-        },
-      },
-    },
-    Text: {
-      styles: {
-        root: {
-          margin: 0,
         },
       },
     },

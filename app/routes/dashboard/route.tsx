@@ -22,6 +22,7 @@ import { EndpointsQuery } from "~/models/portal/sdk"
 import { initAdminPortal } from "~/utils/admin"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 import { requireUser } from "~/utils/session.server"
+import useCommonStyles from "~/styles/commonStyles"
 
 const DASHBOARD_MAINTENANCE = getRequiredClientEnvVar("FLAG_MAINTENANCE_MODE_DASHBOARD")
 
@@ -74,6 +75,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 export default function Dashboard() {
   const { endpoints, user } = useLoaderData<DashboardLoaderData>()
   const [opened, setOpened] = useState(false)
+  const { classes: commonClasses } = useCommonStyles()
 
   if (DASHBOARD_MAINTENANCE === "true") {
     return (
@@ -99,19 +101,17 @@ export default function Dashboard() {
   return (
     <AppShell
       header={
-        <Header height={{ base: 50, md: 70 }} p="md">
+        <Header
+          className={commonClasses.mainBackgroundColor}
+          height={{ base: 50, md: 70 }}
+          p="md"
+        >
           <AppHeader opened={opened} user={user} onOpen={(o) => setOpened(o)} />
         </Header>
       }
       navbar={<Sidebar endpoints={endpoints} hidden={!opened} />}
       navbarOffsetBreakpoint="sm"
       padding="xs"
-      styles={(theme) => ({
-        main: {
-          backgroundColor:
-            theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.colors.gray[0],
-        },
-      })}
     >
       <Container className="container" size="lg">
         <Outlet />

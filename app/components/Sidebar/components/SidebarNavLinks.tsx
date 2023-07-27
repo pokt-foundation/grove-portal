@@ -31,7 +31,7 @@ const commonLinkStyles = (theme: MantineTheme): CSSObject => ({
   width: "100%",
   padding: theme.spacing.xs,
   borderRadius: theme.radius.sm,
-  color: theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
+  color: theme.colorScheme === "dark" ? theme.colors.gray[3] : theme.black,
   fontSize: "14px",
   "&:hover": {
     backgroundColor:
@@ -42,7 +42,7 @@ const commonLinkStyles = (theme: MantineTheme): CSSObject => ({
   "&.active": {
     color: theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
     backgroundColor:
-      theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.gray[0],
+      theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.colors.gray[0],
     fontWeight: 600,
   },
 })

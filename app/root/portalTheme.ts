@@ -2,9 +2,46 @@ import { MantineThemeOverride, theme } from "@pokt-foundation/pocket-blocks"
 
 export const portalTheme: MantineThemeOverride = {
   ...theme,
+  // fontFamily:
+  //   '-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji"',
   primaryColor: "blue",
+  colorScheme: "dark",
+  colors: {
+    ...theme.colors,
+    dark: [
+      "#C1C2C5",
+      "#A6A7AB",
+      "#909296",
+      "#5c5f66",
+      "#373A40",
+      "#2C2E33",
+      "#25262b",
+      "#27292F",
+      "#1F2327",
+      "#1A1B1E",
+    ],
+    gray: [
+      "#FAFAFA",
+      "#f1f3f5",
+      "#E6EDF3",
+      "#E3E8ED",
+      "#ced4da",
+      "#adb5bd",
+      "#808B95",
+      "#495057",
+      "#343438",
+      "#202024",
+    ],
+  },
   components: {
     ...theme.components,
+    Text: {
+      styles: {
+        root: {
+          margin: 0,
+        },
+      },
+    },
     Paper: {
       styles: {
         root: {
@@ -16,8 +53,8 @@ export const portalTheme: MantineThemeOverride = {
       styles: (theme) => ({
         root: {
           padding: "32px",
-          backgroundColor:
-            theme.colorScheme === "dark" ? theme.colors.navy[5] : theme.colors.gray[1],
+          // backgroundColor:
+          //   theme.colorScheme === "dark" ? theme.colors.dark[9] : theme.colors.gray[1],
         },
       }),
     },

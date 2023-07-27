@@ -18,6 +18,7 @@ import {
   SidebarApps,
 } from "~/components/Sidebar/components"
 import { EndpointsQuery } from "~/models/portal/sdk"
+import useCommonStyles from "~/styles/commonStyles"
 
 type SidebarProps = { endpoints: EndpointsQuery | null; hidden: boolean }
 
@@ -57,10 +58,12 @@ const staticRoutes: Record<string, SidebarNavRoute> = {
 }
 
 export const Sidebar = ({ endpoints, hidden }: SidebarProps) => {
+  const { classes: commonClasses } = useCommonStyles()
   const [collapsed, setCollapsed] = useState(false)
 
   return (
     <Navbar
+      className={commonClasses.mainBackgroundColor}
       hidden={hidden}
       hiddenBreakpoint="sm"
       p="md"

@@ -44,7 +44,7 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
   overflow-y: auto;
-  font-family: "Manrope";
+  /*font-family: "Manrope";*/
   width: 100%;
 }
 

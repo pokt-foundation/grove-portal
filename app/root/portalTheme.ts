@@ -99,6 +99,13 @@ export const portalTheme: MantineThemeOverride = {
         },
       },
     },
+    Text: {
+      styles: {
+        root: {
+          margin: 0,
+        },
+      },
+    },
     MultiSelect: {
       styles: {
         input: {

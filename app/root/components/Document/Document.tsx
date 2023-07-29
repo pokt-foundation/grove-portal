@@ -40,6 +40,7 @@ const Document = ({ children, title }: { children: React.ReactNode; title?: stri
                   ? theme.colors.gray[3]
                   : theme.colors.navy[9],
               lineHeight: theme.lineHeight,
+              fontSize: theme.fontSizes.sm,
             },
           })}
         />

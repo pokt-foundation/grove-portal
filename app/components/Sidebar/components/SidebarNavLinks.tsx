@@ -32,7 +32,6 @@ const commonLinkStyles = (theme: MantineTheme): CSSObject => ({
   padding: theme.spacing.xs,
   borderRadius: theme.radius.sm,
   color: theme.colorScheme === "dark" ? theme.colors.gray[3] : theme.black,
-  fontSize: "14px",
   "&:hover": {
     backgroundColor:
       theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.gray[0],

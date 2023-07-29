@@ -107,7 +107,7 @@ export default function Dashboard() {
                   <Text fw={600} fz="md">
                     {val}
                   </Text>
-                  <Text fz="sm">{label}</Text>
+                  <Text>{label}</Text>
                 </Flex>
               </Box>
             ))}
@@ -142,7 +142,7 @@ export default function Dashboard() {
                   dataKey="date"
                   padding={{ left: 30, right: 30 }}
                   stroke="#343438"
-                  tick={{ fill: "#808B95", fontSize: 14 }}
+                  tick={{ fill: "#808B95" }}
                   tickLine={false}
                   tickMargin={35}
                 />
@@ -150,7 +150,7 @@ export default function Dashboard() {
                   axisLine={false}
                   includeHidden={true}
                   minTickGap={0}
-                  tick={{ fill: "#808B95", fontSize: 14 }}
+                  tick={{ fill: "#808B95" }}
                   tickFormatter={(val) => (val === 0 ? val : `${val}k`)}
                   tickLine={false}
                 />

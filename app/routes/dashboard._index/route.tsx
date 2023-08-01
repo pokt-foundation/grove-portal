@@ -155,93 +155,12 @@ export default function Dashboard() {
                   tickLine={false}
                 />
                 <Tooltip />
-                <Line
-                  // activeDot={{ r: 8 }}
-                  dataKey="val"
-                  dot={false}
-                  stroke="#0079E8"
-                  strokeWidth={3}
-                />
+                <Line dataKey="val" dot={false} stroke="#0079E8" strokeWidth={3} />
               </LineChart>
             </ResponsiveContainer>
           </Box>
         </Card.Section>
       </TitledCard>
-
-      {/*<SimpleGrid breakpoints={[{ maxWidth: "md", cols: 1 }]} cols={2}>*/}
-      {/*  <TitledCard*/}
-      {/*    header={() => (*/}
-      {/*      <Group position="apart">*/}
-      {/*        <Text weight={600}>Total Relays</Text>*/}
-      {/*      </Group>*/}
-      {/*    )}*/}
-      {/*  >*/}
-      {/*    <Card.Section inheritPadding>*/}
-      {/*      <Box h="350px" pt="xl">*/}
-      {/*        <ResponsiveContainer height="100%" width="100%">*/}
-      {/*          <LineChart data={data} height={350}>*/}
-      {/*            <CartesianGrid strokeWidth={0.3} vertical={false} />*/}
-      {/*            <XAxis*/}
-      {/*              dataKey="date"*/}
-      {/*              height={40}*/}
-      {/*              padding={{ left: 30, right: 30 }}*/}
-      {/*              tickMargin={20}*/}
-      {/*            />*/}
-      {/*            <YAxis*/}
-      {/*              axisLine={false}*/}
-      {/*              includeHidden={true}*/}
-      {/*              minTickGap={0}*/}
-      {/*              tickFormatter={(val) => (val === 0 ? val : `${val}k`)}*/}
-      {/*              tickLine={false}*/}
-      {/*            />*/}
-      {/*            <Tooltip />*/}
-      {/*            <Line dataKey="val" dot={false} stroke="#0079E8" strokeWidth={3} />*/}
-      {/*          </LineChart>*/}
-      {/*        </ResponsiveContainer>*/}
-      {/*      </Box>*/}
-      {/*    </Card.Section>*/}
-      {/*  </TitledCard>*/}
-      {/*  <TitledCard*/}
-      {/*    header={() => (*/}
-      {/*      <Group position="apart">*/}
-      {/*        <Text weight={600}>Total Relays</Text>*/}
-      {/*      </Group>*/}
-      {/*    )}*/}
-      {/*  >*/}
-      {/*    <Card.Section inheritPadding>*/}
-      {/*      <Box h="350px" pt="xl">*/}
-      {/*        <ResponsiveContainer height="100%" width="100%">*/}
-      {/*          <LineChart*/}
-      {/*            data={data}*/}
-      {/*            height={350}*/}
-      {/*            margin={{*/}
-      {/*              top: 5,*/}
-      {/*              right: 5,*/}
-      {/*              left: 0,*/}
-      {/*              bottom: 5,*/}
-      {/*            }}*/}
-      {/*          >*/}
-      {/*            <CartesianGrid strokeWidth={0.3} vertical={false} />*/}
-      {/*            <XAxis*/}
-      {/*              dataKey="date"*/}
-      {/*              padding={{ left: 30, right: 30 }}*/}
-      {/*              tickMargin={20}*/}
-      {/*            />*/}
-      {/*            <YAxis*/}
-      {/*              axisLine={false}*/}
-      {/*              includeHidden={true}*/}
-      {/*              minTickGap={0}*/}
-      {/*              tickFormatter={(val) => (val === 0 ? val : `${val}k`)}*/}
-      {/*              tickLine={false}*/}
-      {/*            />*/}
-      {/*            <Tooltip />*/}
-      {/*            <Line dataKey="val" dot={false} stroke="#0079E8" strokeWidth={3} />*/}
-      {/*          </LineChart>*/}
-      {/*        </ResponsiveContainer>*/}
-      {/*      </Box>*/}
-      {/*    </Card.Section>*/}
-      {/*  </TitledCard>*/}
-      {/*</SimpleGrid>*/}
     </Stack>
   )
 }

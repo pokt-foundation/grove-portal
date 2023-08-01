@@ -33,13 +33,14 @@ const Document = ({ children, title }: { children: React.ReactNode; title?: stri
               ...theme.fn.fontStyles(),
               backgroundColor:
                 theme.colorScheme === "dark"
-                  ? theme.colors.navy[7]
+                  ? theme.colors.dark[9]
                   : theme.colors.gray[2],
               color:
                 theme.colorScheme === "dark"
-                  ? theme.colors.gray[0]
+                  ? theme.colors.gray[3]
                   : theme.colors.navy[9],
               lineHeight: theme.lineHeight,
+              fontSize: theme.fontSizes.sm,
             },
           })}
         />

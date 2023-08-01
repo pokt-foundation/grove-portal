@@ -19,6 +19,7 @@ import {
   SidebarApps,
 } from "~/components/Sidebar/components"
 import { EndpointsQuery } from "~/models/portal/sdk"
+import useCommonStyles from "~/styles/commonStyles"
 
 type SidebarProps = {
   endpoints: EndpointsQuery | null
@@ -63,12 +64,14 @@ const getStaticRoutes = (
 })
 
 export const Sidebar = ({ endpoints, hidden }: SidebarProps) => {
+  const { classes: commonClasses } = useCommonStyles()
   const { accountId } = useParams()
   const [collapsed, setCollapsed] = useState(false)
   const staticRoutes = useMemo(() => getStaticRoutes(accountId), [accountId])
 
   return (
     <Navbar
+      className={commonClasses.mainBackgroundColor}
       hidden={hidden}
       hiddenBreakpoint="sm"
       p="md"

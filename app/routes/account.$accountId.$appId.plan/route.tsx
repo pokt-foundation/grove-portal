@@ -38,18 +38,19 @@ export type AppPlanLoaderData =
     }
 
 export const loader: LoaderFunction = async ({ request, params }) => {
-  invariant(params.appId, "app id not found")
+  const { appId, accountId } = params
+  invariant(appId, "app id not found")
   if (getRequiredServerEnvVar("FLAG_STRIPE_PAYMENT") === "false") {
-    return redirect(`/account/apps/${params.appId}`)
+    return redirect(`/account/${accountId}/${params.appId}`)
   }
   const user = await requireUser(request)
   invariant(user.profile.id && user.profile.emails, "user not found")
-  const userId = await getPoktId(user.profile.id)
+  const userId = getPoktId(user.profile.id)
   const portal = initPortalClient({ token: user.accessToken })
 
   try {
     const { endpoint } = await portal.endpoint({
-      endpointID: params.appId,
+      endpointID: appId,
     })
     const uEmail = user?.profile?._json?.email ?? ""
     const customer = await getCustomer(uEmail, userId)
@@ -106,7 +107,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
         }
       }
 
-      return redirect(`/account/apps/${params.appId}`)
+      return redirect(`/account/${accountId}/${params.appId}`)
     }
   } catch (error) {
     return json({

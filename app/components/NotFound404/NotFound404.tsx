@@ -27,7 +27,7 @@ export default function NotFound404({ message }: NotFound404Props) {
           <Button component={Link} size="sm" to="/">
             Portal Home
           </Button>
-          <Button component={Link} size="sm" to="/account/apps">
+          <Button component={Link} size="sm" to="/account">
             Application Dashboard
           </Button>
         </Group>

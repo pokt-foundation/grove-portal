@@ -50,7 +50,7 @@ export const sendTeamInviteEmail = async (email: string, app: string) => {
   return await sendEmail(email, "Your invite to POKT Portal", EmailTemplates.TeamInvite, {
     app: app,
     // TODO: Change to correct invite link
-    invite_link: "https://www.portal.pokt.network/account/apps",
+    invite_link: "https://www.portal.pokt.network/account",
   })
 }
 export const sendTeamUserRemovedEmail = async (email: string, app: string) => {

@@ -76,7 +76,7 @@ export const loader: LoaderFunction = async ({ request }) => {
     underMaxApps()
 
   if (!userCanCreateApp) {
-    return redirect("/account/apps")
+    return redirect("/account")
   }
 
   const priceID = getRequiredServerEnvVar("STRIPE_PRICE_ID")
@@ -103,12 +103,13 @@ type ActionData = {
   message: string
 }
 
-export const action: ActionFunction = async ({ request }) => {
+export const action: ActionFunction = async ({ request, params }) => {
   const user = await requireUser(request)
   const portal = initPortalClient({ token: user.accessToken })
   const formData = await request.formData()
   const subscription = formData.get("app-subscription")
   const name = formData.get("app-name")
+  const { accountId } = params
 
   invariant(
     subscription && typeof subscription === "string",
@@ -133,7 +134,7 @@ export const action: ActionFunction = async ({ request }) => {
       return redirect(`/api/stripe/checkout-session?${params}`)
     }
 
-    return redirect(`/account/apps/${createNewEndpoint.id}`)
+    return redirect(`/account/${accountId}/${createNewEndpoint.id}`)
   } catch (error) {
     return json({
       error: true,

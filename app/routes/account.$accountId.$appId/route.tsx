@@ -50,7 +50,9 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   const url = new URL(request.url)
   const searchParams = url.searchParams
 
-  invariant(params.appId, "app id not found")
+  const { appId, accountId } = params
+
+  invariant(appId, "app id not found")
 
   const user = await requireUser(request)
   invariant(user.profile.id && user.profile.emails, "user not found")
@@ -60,7 +62,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   if (searchParams.get("success") === "true") {
     try {
       const form = new FormData()
-      form.append("id", params.appId)
+      form.append("id", appId)
       form.append("type", PayPlanType.PayAsYouGoV0)
 
       await fetch(url.origin + `/api/${params.appId}/update-plan`, {
@@ -75,7 +77,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
   const endpointRes = await portal
     .endpoint({
-      endpointID: params.appId,
+      endpointID: appId,
     })
     .catch((error) => {
       endpointError = true
@@ -83,7 +85,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     })
 
   if (endpointError) {
-    return redirect(`/account/apps?error=true&message=${endpointErrorMessage}`)
+    return redirect(`/account/${accountId}?error=true&message=${endpointErrorMessage}`)
   }
 
   const endpoint = endpointRes?.endpoint

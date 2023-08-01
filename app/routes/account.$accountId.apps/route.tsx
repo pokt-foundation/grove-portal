@@ -1,6 +1,6 @@
 import { Button, Grid } from "@pokt-foundation/pocket-blocks"
 import { json, LoaderFunction } from "@remix-run/node"
-import { Link, Outlet, useLoaderData, useNavigation } from "@remix-run/react"
+import { Link, Outlet, useLoaderData, useNavigation, useParams } from "@remix-run/react"
 import { PocketUser } from "../api.user/route"
 import styles from "./styles.css"
 import FeedbackCard, {
@@ -87,8 +87,10 @@ export const loader: LoaderFunction = async ({ request, context }) => {
 export const Apps = () => {
   const { endpoints, isEnterprise, pendingEndpoints, portalUserId } =
     useLoaderData() as AllAppsLoaderData
-  const appIdRoute = useMatchesRoute("routes/dashboard.apps.$appId")
+  const appIdRoute = useMatchesRoute("routes/account.$accountId.$appId")
   const navigation = useNavigation()
+
+  const { accountId } = useParams()
 
   const userAppsStatus: CardListItem[] = [
     {
@@ -115,7 +117,12 @@ export const Apps = () => {
             </div>
             <CardList items={userAppsStatus} />
             {(!endpoints || endpoints.owner.length < MAX_USER_APPS || isEnterprise) && (
-              <Button fullWidth component={Link} mt={32} to="/account/create">
+              <Button
+                fullWidth
+                component={Link}
+                mt={32}
+                to={`/account/${accountId}/create`}
+              >
                 Create New Application
               </Button>
             )}

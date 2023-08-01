@@ -20,7 +20,7 @@ export const links: LinksFunction = () => [
 /* c8 ignore stop */
 
 export default function NotificationsWeeklyBandwidthUsageCard() {
-  const appIdRoute = useMatchesRoute("routes/account/apps/$appId")
+  const appIdRoute = useMatchesRoute("routes/account.$accountId.$appId")
   const appIdData = appIdRoute?.data as AppIdLoaderData
   const { dailyNetworkRelaysPerWeek } = appIdData
 

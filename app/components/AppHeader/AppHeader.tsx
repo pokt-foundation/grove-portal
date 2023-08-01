@@ -15,10 +15,9 @@ type HeaderProps = {
   user?: Auth0Profile
   opened: boolean
   onOpen: (o: boolean) => void
-  portalUserId: string | null
 }
 
-export const AppHeader = ({ user, opened, onOpen, portalUserId }: HeaderProps) => {
+export const AppHeader = ({ user, opened, onOpen }: HeaderProps) => {
   return (
     <>
       <Flex align="center" h="100%" justify="space-between">
@@ -33,18 +32,17 @@ export const AppHeader = ({ user, opened, onOpen, portalUserId }: HeaderProps) =
             style={{ height: "1.5rem", objectFit: "contain" }}
           ></img>
         </Link>
-        <UserMenuDropdown portalUserId={portalUserId} user={user} />
+        <UserMenuDropdown user={user} />
       </Flex>
     </>
   )
 }
 
 type UserMenuDropdownProps = {
-  portalUserId: string | null
   user?: Auth0Profile
 }
 
-function UserMenuDropdown({ user, portalUserId }: UserMenuDropdownProps) {
+function UserMenuDropdown({ user }: UserMenuDropdownProps) {
   const logoutFormRef = useRef<HTMLFormElement>(null)
   return (
     <>
@@ -73,7 +71,7 @@ function UserMenuDropdown({ user, portalUserId }: UserMenuDropdownProps) {
           </Menu.Target>
           <Menu.Dropdown>
             <Menu.Item icon={<RiAccountCircleLine size={16} />}>
-              <NavLink to={`/account/${portalUserId}/profile`}>User Profile </NavLink>
+              <NavLink to={`/user/profile`}>User Profile </NavLink>
             </Menu.Item>
             <Menu.Item icon={<RiLogoutBoxRLine size={16} />}>
               <UnstyledButton

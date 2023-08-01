@@ -68,7 +68,7 @@ export const action: ActionFunction = async ({ request, params }) => {
       const isLeaveApp = email === user.profile._json?.email
 
       return isLeaveApp
-        ? redirect("/account/apps")
+        ? redirect("/account")
         : json<ActionData>({ email, type, error: false })
     } catch (e) {
       return json<ActionData>({ email, type, error: true })

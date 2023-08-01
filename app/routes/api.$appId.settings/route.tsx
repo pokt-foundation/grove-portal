@@ -68,6 +68,7 @@ export interface AppSecurityActionResponse {
 }
 
 export const action: ActionFunction = async ({ request, params }) => {
+  const { accountId } = params
   const formData = await request.formData()
   let data: AppSecurityActionResponse["data"] = {
     appID: "",
@@ -130,5 +131,5 @@ export const action: ActionFunction = async ({ request, params }) => {
     },
   })
 
-  return redirect(`/account/apps/${data.appID}/security`)
+  return redirect(`/account/${accountId}/${data.appID}/security`)
 }

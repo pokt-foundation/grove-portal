@@ -1,5 +1,6 @@
 import { Divider, MediaQuery, Navbar, ScrollArea } from "@pokt-foundation/pocket-blocks"
-import React, { useState } from "react"
+import { useParams } from "@remix-run/react"
+import React, { useMemo, useState } from "react"
 import {
   RiStackLine,
   RiAddLine,
@@ -22,10 +23,11 @@ import { EndpointsQuery } from "~/models/portal/sdk"
 type SidebarProps = {
   endpoints: EndpointsQuery | null
   hidden: boolean
-  accountId: string | null
 }
 
-const getStaticRoutes = (accountId: string | null): Record<string, SidebarNavRoute> => ({
+const getStaticRoutes = (
+  accountId: string | undefined,
+): Record<string, SidebarNavRoute> => ({
   overview: {
     to: `/account/${accountId}`,
     label: "Overview",
@@ -44,7 +46,7 @@ const getStaticRoutes = (accountId: string | null): Record<string, SidebarNavRou
     label: "Documentation",
   },
   accountSettings: {
-    to: `/account/${accountId}/profile`,
+    to: `/user/profile`,
     icon: RiSettings3Line,
     label: "Account Settings",
   },
@@ -60,9 +62,11 @@ const getStaticRoutes = (accountId: string | null): Record<string, SidebarNavRou
   },
 })
 
-export const Sidebar = ({ endpoints, hidden, accountId }: SidebarProps) => {
+export const Sidebar = ({ endpoints, hidden }: SidebarProps) => {
+  const { accountId } = useParams()
   const [collapsed, setCollapsed] = useState(false)
-  const staticRoutes = getStaticRoutes(accountId)
+  const staticRoutes = useMemo(() => getStaticRoutes(accountId), [accountId])
+
   return (
     <Navbar
       hidden={hidden}
@@ -73,9 +77,7 @@ export const Sidebar = ({ endpoints, hidden, accountId }: SidebarProps) => {
       <ScrollArea h="100%" mx="-xs" px="xs">
         <Navbar.Section>
           <AppLink iconOnly={collapsed} route={staticRoutes.overview} />
-          {endpoints && (
-            <SidebarApps accountId={accountId} apps={endpoints} iconOnly={collapsed} />
-          )}
+          {endpoints && <SidebarApps apps={endpoints} iconOnly={collapsed} />}
           <AppLink iconOnly={collapsed} route={staticRoutes.createNewApp} />
         </Navbar.Section>
         <Divider color="#343438" my="lg" size="xs" />

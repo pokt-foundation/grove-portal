@@ -6,10 +6,11 @@ import { getErrorMessage } from "~/utils/catchError"
 import { getRequiredServerEnvVar } from "~/utils/environment"
 import { getPoktId, requireUser } from "~/utils/session.server"
 
-export const loader: LoaderFunction = async ({ request }) => {
+export const loader: LoaderFunction = async ({ request, params }) => {
   const user = await requireUser(request)
   invariant(user.profile.id && user.profile.emails, "user not found")
   const userId = getPoktId(user.profile.id)
+  const { accountId } = params
 
   const url = new URL(request.url)
   const id = url.searchParams.get("app-id")
@@ -17,7 +18,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   const referral = url.searchParams.get("referral-id")
 
   if (getRequiredServerEnvVar("FLAG_STRIPE_PAYMENT") === "false") {
-    return redirect(`/account/apps/${id}`)
+    return redirect(`/account/${accountId}/${id}`)
   }
 
   try {
@@ -59,7 +60,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
     // create stripe checkout session and redirect to stripe hosted checkout page
     // TODO: metadata doesnt seem to be sending here: https://stripe.com/docs/api/checkout/sessions/object
-    const returnUrl = `${url.origin}/account/apps/${id}`
+    const returnUrl = `${url.origin}/account/${accountId}/${id}`
     const session = await stripe.checkout.sessions.create({
       customer: customer.id,
       billing_address_collection: "auto",
@@ -82,7 +83,7 @@ export const loader: LoaderFunction = async ({ request }) => {
       error: "true",
       message: getErrorMessage(error),
     })
-    return redirect(`/account/apps/${id}?${params}`)
+    return redirect(`/account/${accountId}/${id}?${params}`)
   }
 }
 

@@ -1,5 +1,5 @@
 import { Anchor, Select } from "@pokt-foundation/pocket-blocks"
-import { NavLink } from "@remix-run/react"
+import { NavLink, useParams } from "@remix-run/react"
 import clsx from "clsx"
 import React, { useEffect, useState } from "react"
 import styles from "./styles.css"
@@ -29,6 +29,7 @@ type Route = {
 
 export const Nav = ({ routes, dropdown = false, appId, ariaLabel }: NavProps) => {
   const [mobilePageSelect, setMobilePageSelect] = useState<string | null>(null)
+  const { accountId } = useParams()
 
   const reformatRoute = (routes: Route[]) => {
     let routeTable = []
@@ -42,11 +43,11 @@ export const Nav = ({ routes, dropdown = false, appId, ariaLabel }: NavProps) =>
   useEffect(() => {
     if (mobilePageSelect !== null) {
       if (mobilePageSelect === "") {
-        window.location.href = `/account/apps/${appId}`
-      } else if (mobilePageSelect === "/account/apps") {
+        window.location.href = `/account/${accountId}/${appId}`
+      } else if (mobilePageSelect === "/account") {
         window.location.href = mobilePageSelect
       } else {
-        window.location.href = `/account/apps/${appId}/${mobilePageSelect}`
+        window.location.href = `/account/${accountId}/${appId}/${mobilePageSelect}`
       }
     }
   }, [appId, mobilePageSelect])

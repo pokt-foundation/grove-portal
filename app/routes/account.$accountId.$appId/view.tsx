@@ -70,7 +70,7 @@ export default function AppIdLayoutView({
 
   const [routes, setRoutes] = useState([
     {
-      to: "/account/apps",
+      to: "/account",
       icon: () => (
         <span>
           <IconCaretLeft className="pokt-icon" />
@@ -209,12 +209,6 @@ export default function AppIdLayoutView({
   const role = endpoint?.users.find((u) => u.email === user._json?.email)?.roleName
   const isMember = role === RoleName.Member
   const isAdmin = role === RoleName.Admin
-
-  console.log(
-    "endpoint.name aaaaaaaaaaaaaaaaaaaaaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-  )
-  // @ts-ignore
-  console.log(endpoint.name)
 
   return (
     <div className="pokt-appid-layout-view">

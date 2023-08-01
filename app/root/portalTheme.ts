@@ -2,7 +2,8 @@ import { MantineThemeOverride, theme } from "@pokt-foundation/pocket-blocks"
 
 export const portalTheme: MantineThemeOverride = {
   ...theme,
-  primaryColor: "dark",
+  primaryColor: "blue",
+  colorScheme: "dark",
   colors: {
     ...theme.colors,
     dark: [
@@ -17,9 +18,100 @@ export const portalTheme: MantineThemeOverride = {
       "#1F2327",
       "#1A1B1E",
     ],
+    gray: [
+      "#FAFAFA",
+      "#f1f3f5",
+      "#E6EDF3",
+      "#E3E8ED",
+      "#ced4da",
+      "#adb5bd",
+      "#808B95",
+      "#495057",
+      "#343438",
+      "#202024",
+    ],
+    blue: [
+      "#F0F6FC",
+      "#d0ebff",
+      "#a5d8ff",
+      "#74c0fc",
+      "#4dabf7",
+      "#339af0",
+      "#228be6",
+      "#0079E8",
+      "#1971c2",
+      "#005099",
+    ],
+    green: [
+      "#ebfbee",
+      "#d3f9d8",
+      "#b2f2bb",
+      "#8ce99a",
+      "#65C971",
+      "#51cf66",
+      "#40c057",
+      "#37b24d",
+      "#2f9e44",
+      "#2b8a3e",
+    ],
+    yellow: [
+      "#fff9db",
+      "#fff3bf",
+      "#ffec99",
+      "#ffe066",
+      "#ffd43b",
+      "#fcc419",
+      "#fab005",
+      "#E1A43E",
+      "#f08c00",
+      "#e67700",
+    ],
+    orange: [
+      "#fff4e6",
+      "#ffe8cc",
+      "#ffd8a8",
+      "#ffc078",
+      "#ffa94d",
+      "#ff922b",
+      "#fd7e14",
+      "#f76707",
+      "#e8590c",
+      "#D65745",
+    ],
+    navy: [
+      "#EBEAEF",
+      "#A4A7AC",
+      "#e9ecef",
+      "#dee2e6",
+      "#26282B",
+      "#161D25",
+      "#10161C",
+      "#0B0E12",
+      "#05070A",
+      "#000000",
+    ],
+    magenta: [
+      "#E5C0EA",
+      "#CE88D6",
+      "#C46FCD",
+      "#B044BB",
+      "#A733B2",
+      "#9E26A9",
+      "#961DA1",
+      "#871990",
+      "#771581",
+      "#681170",
+    ],
   },
   components: {
     ...theme.components,
+    Text: {
+      styles: {
+        root: {
+          margin: 0,
+        },
+      },
+    },
     Paper: {
       styles: {
         root: {
@@ -32,7 +124,7 @@ export const portalTheme: MantineThemeOverride = {
         root: {
           padding: "32px",
           backgroundColor:
-            theme.colorScheme === "dark" ? theme.colors.navy[5] : theme.colors.gray[1],
+            theme.colorScheme === "dark" ? theme.colors.dark[9] : theme.colors.gray[1],
         },
       }),
     },
@@ -62,34 +154,6 @@ export const portalTheme: MantineThemeOverride = {
           },
         },
       }),
-    },
-    TextInput: {
-      styles: {
-        input: {
-          backgroundColor: "transparent",
-        },
-      },
-    },
-    Textarea: {
-      styles: {
-        input: {
-          backgroundColor: "transparent",
-        },
-      },
-    },
-    Text: {
-      styles: {
-        root: {
-          margin: 0,
-        },
-      },
-    },
-    MultiSelect: {
-      styles: {
-        input: {
-          backgroundColor: "transparent",
-        },
-      },
     },
   },
 }

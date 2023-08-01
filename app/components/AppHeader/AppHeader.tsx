@@ -76,6 +76,7 @@ function UserMenuDropdown({ user }: UserMenuDropdownProps) {
             <Menu.Item icon={<RiLogoutBoxRLine size={16} />}>
               <UnstyledButton
                 component="span"
+                fz="sm"
                 onClick={() => {
                   if (logoutFormRef.current) {
                     logoutFormRef.current.dispatchEvent(

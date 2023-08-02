@@ -4,6 +4,7 @@ export const portalTheme: MantineThemeOverride = {
   ...theme,
   primaryColor: "blue",
   colorScheme: "dark",
+  primaryShade: 7,
   colors: {
     ...theme.colors,
     dark: [
@@ -110,6 +111,13 @@ export const portalTheme: MantineThemeOverride = {
         root: {
           margin: 0,
         },
+      },
+    },
+    Button: {
+      ...theme?.components?.Button,
+      defaultProps: {
+        size: "md",
+        radius: "sm",
       },
     },
     Paper: {

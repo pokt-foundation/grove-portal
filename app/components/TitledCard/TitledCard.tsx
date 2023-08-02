@@ -9,7 +9,9 @@ export type TitledCardPropsType = {
 const useStyles = createStyles((theme) => ({
   cardHeader: {
     backgroundColor:
-      theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.colors.gray[4],
+      theme.colorScheme === "dark" ? theme.colors.gray[9] : theme.colors.gray[4],
+    borderTopLeftRadius: "4px",
+    borderTopRightRadius: "4px",
   },
 }))
 

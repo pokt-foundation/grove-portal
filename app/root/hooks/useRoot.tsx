@@ -11,10 +11,8 @@ type useRootProps = { user: Awaited<Auth0Profile | undefined> }
 export const useRoot = ({ user }: useRootProps) => {
   const { t } = useTranslate()
   const { pathname } = useLocation()
-  const isPlasmic = useMemo(
-    () => !pathname.includes("/dashboard") && !pathname.includes("/admin"),
-    [pathname],
-  )
+
+  const isPlasmic = useMemo(() => pathname === "/", [pathname])
 
   useEffect(() => {
     analyticsInit({ id: user?.id ?? "" })
@@ -30,7 +28,7 @@ export const useRoot = ({ user }: useRootProps) => {
 
     const allRoutes = [
       {
-        to: "/dashboard/apps",
+        to: "/account",
         label: t.dashboard.routes.apps,
         icon: IconApp,
         protected: Protected.Public, // show this link to all. dashboard layout handles redirect to login.

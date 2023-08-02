@@ -71,7 +71,7 @@ function UserMenuDropdown({ user }: UserMenuDropdownProps) {
           </Menu.Target>
           <Menu.Dropdown>
             <Menu.Item icon={<RiAccountCircleLine size={16} />}>
-              <NavLink to="/dashboard/profile">User Profile </NavLink>
+              <NavLink to={`/user/profile`}>User Profile </NavLink>
             </Menu.Item>
             <Menu.Item icon={<RiLogoutBoxRLine size={16} />}>
               <UnstyledButton

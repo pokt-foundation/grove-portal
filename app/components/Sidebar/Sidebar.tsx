@@ -1,5 +1,6 @@
 import { Divider, MediaQuery, Navbar, ScrollArea } from "@pokt-foundation/pocket-blocks"
-import React, { useState } from "react"
+import { useParams } from "@remix-run/react"
+import React, { useMemo, useState } from "react"
 import {
   RiStackLine,
   RiAddLine,
@@ -20,17 +21,22 @@ import {
 import { EndpointsQuery } from "~/models/portal/sdk"
 import useCommonStyles from "~/styles/commonStyles"
 
-type SidebarProps = { endpoints: EndpointsQuery | null; hidden: boolean }
+type SidebarProps = {
+  endpoints: EndpointsQuery | null
+  hidden: boolean
+}
 
-const staticRoutes: Record<string, SidebarNavRoute> = {
+const getStaticRoutes = (
+  accountId: string | undefined,
+): Record<string, SidebarNavRoute> => ({
   overview: {
-    to: "/dashboard",
+    to: `/account/${accountId}`,
     label: "Overview",
     icon: RiStackLine,
     end: true,
   },
   createNewApp: {
-    to: "/dashboard/create",
+    to: `/account/${accountId}/create`,
     label: "New Application",
     icon: RiAddLine,
     end: true,
@@ -41,7 +47,7 @@ const staticRoutes: Record<string, SidebarNavRoute> = {
     label: "Documentation",
   },
   accountSettings: {
-    to: "/dashboard/profile",
+    to: `/user/profile`,
     icon: RiSettings3Line,
     label: "Account Settings",
   },
@@ -55,11 +61,13 @@ const staticRoutes: Record<string, SidebarNavRoute> = {
     icon: RiUserSmileLine,
     label: "Feedback",
   },
-}
+})
 
 export const Sidebar = ({ endpoints, hidden }: SidebarProps) => {
   const { classes: commonClasses } = useCommonStyles()
+  const { accountId } = useParams()
   const [collapsed, setCollapsed] = useState(false)
+  const staticRoutes = useMemo(() => getStaticRoutes(accountId), [accountId])
 
   return (
     <Navbar

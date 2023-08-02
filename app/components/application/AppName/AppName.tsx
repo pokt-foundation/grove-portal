@@ -29,7 +29,7 @@ export default function AppName({ id, name }: AppNameProps) {
           "endpoint-id": id,
         },
         {
-          action: "/api/updateName",
+          action: "/api/update-name",
           method: "post",
         },
       )

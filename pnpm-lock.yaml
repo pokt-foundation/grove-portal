@@ -51,6 +51,7 @@ specifiers:
   d3-format: ^3.1.0
   dayjs: ^1.11.4
   dotenv: ^16.0.1
+  emoji-picker-react: ^4.4.10
   esbuild: ^0.17.11
   eslint: ^8.14.0
   eslint-config-prettier: ^8.5.0
@@ -104,6 +105,7 @@ dependencies:
   clsx: 1.2.1
   d3-format: 3.1.0
   dayjs: 1.11.7
+  emoji-picker-react: 4.4.10_react@18.2.0
   esbuild: 0.17.18
   form-data: 4.0.0
   graphql: 16.6.0
@@ -7367,6 +7369,16 @@ packages:
   /electron-to-chromium/1.4.328:
     resolution: {integrity: sha512-DE9tTy2PNmy1v55AZAO542ui+MLC2cvINMK4P2LXGsJdput/ThVG9t+QGecPuAZZSgC8XoI+Jh9M1OG9IoNSCw==}
     dev: true
+
+  /emoji-picker-react/4.4.10_react@18.2.0:
+    resolution: {integrity: sha512-/5o57w8BKiCHklyqfYCeUlm00R9tdm2ZmJd0p6Q3/Ul7E7eMh+/FduuRFn3UVQCl5F6i4kOdREMz7EJ7YI1vMg==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      react: '>=16'
+    dependencies:
+      clsx: 1.2.1
+      react: 18.2.0
+    dev: false
 
   /emoji-regex/8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}

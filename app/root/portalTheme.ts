@@ -120,6 +120,16 @@ export const portalTheme: MantineThemeOverride = {
         radius: "sm",
       },
     },
+    TextInput: {
+      defaultProps: {
+        radius: "sm",
+      },
+      styles: {
+        root: {
+          backgroundColor: "transparent",
+        },
+      },
+    },
     Paper: {
       styles: {
         root: {

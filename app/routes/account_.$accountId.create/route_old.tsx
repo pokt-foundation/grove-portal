@@ -15,7 +15,6 @@ import AppPlansOverview, {
 import CalculateYourPricing, {
   links as CalculateYourPricingLinks,
 } from "./components/CalculateYourPricing/CalculateYourPricing"
-import styles from "./styles.css"
 import AppRadioCards, {
   links as AppRadioCardsLinks,
 } from "~/components/application/AppRadioCards"
@@ -44,7 +43,6 @@ export const links = () => {
     ...AppPlansOverviewLinks(),
     ...AppRadioCardsLinks(),
     ...CalculateYourPricingLinks(),
-    { rel: "stylesheet", href: styles },
   ]
 }
 

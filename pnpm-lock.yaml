@@ -74,8 +74,8 @@ specifiers:
   rehype-raw: ^6.1.1
   rehype-slug: ^5.1.0
   remark-gfm: ^3.0.1
-  remix-auth: ^3.2.2
-  remix-auth-auth0: ^1.3.7
+  remix-auth: ^3.5.0
+  remix-auth-auth0: ^1.7.0
   start-server-and-test: ^1.14.0
   stripe: ^9.9.0
   tiny-invariant: ^1.2.0
@@ -118,8 +118,8 @@ dependencies:
   rehype-raw: 6.1.1
   rehype-slug: 5.1.0
   remark-gfm: 3.0.1
-  remix-auth: 3.4.0_xtxzivr6aypvifqnfgxiy7mqra
-  remix-auth-auth0: 1.6.0_mswud4yiue63myozn34lgb34de
+  remix-auth: 3.5.0_xtxzivr6aypvifqnfgxiy7mqra
+  remix-auth-auth0: 1.7.0_oertfltuc7sukiizu3mobmctti
   stripe: 9.16.0
   tiny-invariant: 1.3.1
 
@@ -12716,19 +12716,19 @@ packages:
     resolution: {integrity: sha512-/62tYiOe6DzS5BqVsNpH/nkGlX45C/Sp6V+NtiN6JQNS1Viay7cWkazmRkrQrdFj2eshDe96SIQNIoMxqhzBOg==}
     dev: true
 
-  /remix-auth-auth0/1.6.0_mswud4yiue63myozn34lgb34de:
-    resolution: {integrity: sha512-GzFz6nm4Fg0J5e4i6xOR8vfqhwhqRKRNjoCA4Bvg3+MmCAUcrpyjgAMvJkVmYjfqcSverx9Ikd2zxNDRdn4wtg==}
+  /remix-auth-auth0/1.7.0_oertfltuc7sukiizu3mobmctti:
+    resolution: {integrity: sha512-I6Au+6Witb6Ae1JmQEaOcKfaYCxayL5lsNJAQs4skuh0PRi2xZpB1oSH5NL9WN1+xZ29GnD56JDvSw0N/m3Qiw==}
     peerDependencies:
       remix-auth: ^3.x
     dependencies:
-      remix-auth: 3.4.0_xtxzivr6aypvifqnfgxiy7mqra
-      remix-auth-oauth2: 1.6.0_mswud4yiue63myozn34lgb34de
+      remix-auth: 3.5.0_xtxzivr6aypvifqnfgxiy7mqra
+      remix-auth-oauth2: 1.6.0_oertfltuc7sukiizu3mobmctti
     transitivePeerDependencies:
       - '@remix-run/server-runtime'
       - supports-color
     dev: false
 
-  /remix-auth-oauth2/1.6.0_mswud4yiue63myozn34lgb34de:
+  /remix-auth-oauth2/1.6.0_oertfltuc7sukiizu3mobmctti:
     resolution: {integrity: sha512-HnMgdKn/+LIKHYlbxys14g9cUMGvzMS9mbopAfnntIYWBC8MOfUy6uYyyoWJNqm3HriAE/MiEUaTnlz3B0c7uQ==}
     peerDependencies:
       '@remix-run/server-runtime': ^1.0.0
@@ -12736,14 +12736,14 @@ packages:
     dependencies:
       '@remix-run/server-runtime': 1.17.0
       debug: 4.3.4
-      remix-auth: 3.4.0_xtxzivr6aypvifqnfgxiy7mqra
+      remix-auth: 3.5.0_xtxzivr6aypvifqnfgxiy7mqra
       uuid: 8.3.2
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  /remix-auth/3.4.0_xtxzivr6aypvifqnfgxiy7mqra:
-    resolution: {integrity: sha512-VRliJo9VRAS4sSYgMjYbi7rYRixPWU2Tb8PFZb06OIj0nONK/1KRzHf2+Y6VGZeIacepLVgan6g2IUJjayE2rQ==}
+  /remix-auth/3.5.0_xtxzivr6aypvifqnfgxiy7mqra:
+    resolution: {integrity: sha512-+0kFPhqNPQ4mjhDXViY5mG4jvWHWMsG1IXFiCj3T58BKQGynonk93vTFZ5/CCDzGFBjTsRpcA+mXCUW5LY8MdQ==}
     peerDependencies:
       '@remix-run/react': ^1.0.0
       '@remix-run/server-runtime': ^1.0.0

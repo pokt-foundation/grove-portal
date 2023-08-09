@@ -3,7 +3,7 @@ import { vi, expect } from "vitest"
 import AppIdLayoutView from "./view"
 import { render, screen } from "test/helpers"
 import t from "~/locales/en"
-import { endpoint, profileMockData } from "~/models/portal/portal.data"
+import { endpoint, profileMockData, testPortalUserId } from "~/models/portal/portal.data"
 import { PayPlanType } from "~/models/portal/sdk"
 import { subscription } from "~/models/stripe/stripe.data"
 
@@ -27,6 +27,7 @@ describe("<AppIdLayoutView />", () => {
     render(
       <AppIdLayoutView
         endpoint={endpoint}
+        portalUserId={testPortalUserId}
         searchParams={new URLSearchParams({ success: "false" })}
         setSearchParams={setSearchParams}
         subscription={subscription}
@@ -45,6 +46,7 @@ describe("<AppIdLayoutView />", () => {
     render(
       <AppIdLayoutView
         endpoint={endpoint}
+        portalUserId={testPortalUserId}
         searchParams={new URLSearchParams({ success: "true" })}
         setSearchParams={setSearchParams}
         subscription={subscription}
@@ -61,6 +63,7 @@ describe("<AppIdLayoutView />", () => {
     render(
       <AppIdLayoutView
         endpoint={null}
+        portalUserId={testPortalUserId}
         searchParams={new URLSearchParams()}
         setSearchParams={setSearchParams}
         subscription={subscription}
@@ -89,6 +92,7 @@ describe("<AppIdLayoutView />", () => {
     render(
       <AppIdLayoutView
         endpoint={endpoint}
+        portalUserId={testPortalUserId}
         searchParams={new URLSearchParams()}
         setSearchParams={setSearchParams}
         subscription={subscription}
@@ -117,6 +121,7 @@ describe("<AppIdLayoutView />", () => {
     render(
       <AppIdLayoutView
         endpoint={endpoint}
+        portalUserId={testPortalUserId}
         searchParams={new URLSearchParams()}
         setSearchParams={setSearchParams}
         subscription={subscription}
@@ -146,6 +151,7 @@ describe("<AppIdLayoutView />", () => {
     render(
       <AppIdLayoutView
         endpoint={endpoint}
+        portalUserId={testPortalUserId}
         searchParams={new URLSearchParams()}
         setSearchParams={setSearchParams}
         subscription={subscription}
@@ -177,6 +183,7 @@ describe("<AppIdLayoutView />", () => {
     render(
       <AppIdLayoutView
         endpoint={endpoint}
+        portalUserId={testPortalUserId}
         searchParams={new URLSearchParams()}
         setSearchParams={setSearchParams}
         subscription={subscription}
@@ -196,6 +203,7 @@ describe("<AppIdLayoutView />", () => {
     render(
       <AppIdLayoutView
         endpoint={endpoint}
+        portalUserId={testPortalUserId}
         searchParams={new URLSearchParams()}
         setSearchParams={setSearchParams}
         subscription={subscription}
@@ -216,6 +224,7 @@ describe("<AppIdLayoutView />", () => {
     render(
       <AppIdLayoutView
         endpoint={endpoint}
+        portalUserId={testPortalUserId}
         searchParams={new URLSearchParams()}
         setSearchParams={setSearchParams}
         subscription={subscription}
@@ -238,6 +247,7 @@ describe("<AppIdLayoutView />", () => {
     render(
       <AppIdLayoutView
         endpoint={endpoint}
+        portalUserId={testPortalUserId}
         searchParams={new URLSearchParams()}
         setSearchParams={setSearchParams}
         subscription={subscription}

@@ -1,6 +1,6 @@
 import { IconCaretLeft, Grid, Button } from "@pokt-foundation/pocket-blocks"
 import { FetcherWithComponents } from "@remix-run/react"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { Auth0Profile } from "remix-auth-auth0"
 import AddressCard, { links as AddressCardLinks } from "./components/AddressCard"
 import KeysCard, { links as KeysCardLinks } from "./components/KeysCard"
@@ -69,7 +69,10 @@ export default function AppIdLayoutView({
   const { flags } = useFeatureFlags()
   const [showSuccessModal, setShowSuccessModel] = useState<boolean>(false)
   const [showErrorModal, setShowErrorModel] = useState<boolean>(false)
-  const isUserOwner = portalUserId === endpoint?.userId
+  const isUserOwner = useMemo(
+    () => portalUserId === endpoint?.userId,
+    [portalUserId, endpoint],
+  )
 
   const [routes, setRoutes] = useState([
     {

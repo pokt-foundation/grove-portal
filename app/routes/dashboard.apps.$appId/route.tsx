@@ -4,24 +4,21 @@ import {
   useCatch,
   useFetcher,
   useLoaderData,
+  useRouteLoaderData,
   useSearchParams,
 } from "@remix-run/react"
 import { Auth0Profile } from "remix-auth-auth0"
 import invariant from "tiny-invariant"
 import AppIdLayoutView, { links as AppIdLayoutViewLinks } from "./view"
 import { initPortalClient } from "~/models/portal/portal.server"
-import {
-  BlockchainsQuery,
-  EndpointQuery,
-  PayPlanType,
-  ProcessedEndpoint,
-} from "~/models/portal/sdk"
+import { BlockchainsQuery, EndpointQuery, PayPlanType } from "~/models/portal/sdk"
 import {
   getRelays,
   getRelaysPerPeriod,
   RelayMetric,
 } from "~/models/relaymeter/relaymeter.server"
 import { getSubscription, Stripe } from "~/models/stripe/stripe.server"
+import { AllAppsLoaderData } from "~/routes/dashboard.apps/route"
 import { getErrorMessage } from "~/utils/catchError"
 import { dayjs } from "~/utils/dayjs"
 import { getPoktId, requireUser } from "~/utils/session.server"
@@ -125,12 +122,18 @@ export default function AppIdLayout() {
     relaysYesterday,
     dailyNetworkRelaysPerWeek,
   } = useLoaderData() as AppIdLoaderData
+
+  const { portalUserId } = useRouteLoaderData(
+    "routes/dashboard.apps",
+  ) as AllAppsLoaderData
+
   const [searchParams, setSearchParams] = useSearchParams()
   const updatePlanFetcher = useFetcher()
 
   return (
     <AppIdLayoutView
       endpoint={endpoint}
+      portalUserId={portalUserId}
       searchParams={searchParams}
       setSearchParams={setSearchParams}
       subscription={subscription}

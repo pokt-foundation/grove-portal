@@ -478,9 +478,9 @@ export const AppsView = ({
             <Text className="confirmation-modal-description" mb="1.6em" weight={400}>
               {isDeleteModalOptions.description}
             </Text>
-            <input name="email" type="hidden" value={uEmail} />
-            <input name="appId" type="hidden" value={appToDeleteID} />
-
+            <input hidden readOnly name="email" value={uEmail} />
+            <input hidden readOnly name="appId" value={appToDeleteID} />
+            <input hidden readOnly name="portalUserId" value={portalUserId} />
             <div className="confirmation-modal-options">
               <Button
                 id="cancel"

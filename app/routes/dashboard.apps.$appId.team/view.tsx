@@ -19,7 +19,7 @@ import {
 } from "@remix-run/react"
 import { Transition } from "@remix-run/react/dist/transition"
 import clsx from "clsx"
-import { useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import { ActionData, TeamLoaderData } from "./route"
 import styles from "./styles.css"
 import AppRadioCards, {
@@ -103,6 +103,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
     email: "",
     roleName: "",
     transferOwnership: false,
+    targetPortalUserId: "",
   })
 
   const navigation = useNavigation()
@@ -141,12 +142,19 @@ function TeamView({ state, endpoint }: TeamViewProps) {
 
   const isMember = !isAdminUser && !isOwnerUser
 
+  const getPortalUserId = useCallback(
+    (email: string) => endpoint?.users?.find((u) => u.email === email)?.userID as string,
+    [endpoint],
+  )
+
   const handleUpdateRoleSubmit = (email: string, roleName: RoleName) => {
     const transferOwnership: boolean = roleName === RoleName.Owner
+
     setUpdateRoleModalData({
       email,
       roleName,
       transferOwnership,
+      targetPortalUserId: getPortalUserId(email),
     })
     setIsUpdateRoleModalOpened(true)
   }
@@ -225,6 +233,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
           email: "",
           roleName: "",
           transferOwnership: false,
+          targetPortalUserId: "",
         })
       }
     }
@@ -441,7 +450,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
               readOnly
               name="portal-user-id"
               style={{ display: "none" }}
-              value={endpoint.userId}
+              value={getPortalUserId(confirmationModalEmail)}
             />
             <input
               hidden
@@ -510,7 +519,11 @@ function TeamView({ state, endpoint }: TeamViewProps) {
             </div>
 
             <input name="email" type="hidden" value={updateRoleModalData.email} />
-            <input name="portal-user-id" type="hidden" value={endpoint.userId} />
+            <input
+              name="portal-user-id"
+              type="hidden"
+              value={updateRoleModalData.targetPortalUserId}
+            />
             <input name="roleName" type="hidden" value={updateRoleModalData.roleName} />
             <input hidden value={endpoint.name} />
             <input

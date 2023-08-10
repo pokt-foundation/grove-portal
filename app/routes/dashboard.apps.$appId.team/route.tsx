@@ -131,7 +131,7 @@ export const action: ActionFunction = async ({ request, params }) => {
   } else if (type === "updateRole") {
     const email = formData.get("email")
     const portalUserId = formData.get("portal-user-id")
-    const roleName = formData.get("roleName")
+    const roleName = formData.get("roleName") as RoleName
     const appName = formData.get("app-name")
     const transferOwnership = formData.get("transferOwnership")
 
@@ -142,8 +142,7 @@ export const action: ActionFunction = async ({ request, params }) => {
       "portal user id is not found",
     )
     try {
-      const invertedRoleName = roleName === "MEMBER" ? RoleName.Admin : RoleName.Member
-      const role = transferOwnership === "true" ? RoleName.Owner : invertedRoleName
+      const role = transferOwnership === "true" ? RoleName.Owner : roleName
 
       const { updateEndpointUserRole } = await portal.updateEndpointUserRole({
         endpointID: appId,

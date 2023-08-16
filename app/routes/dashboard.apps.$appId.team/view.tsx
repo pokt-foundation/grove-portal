@@ -159,18 +159,16 @@ function TeamView({ state, endpoint }: TeamViewProps) {
     setIsUpdateRoleModalOpened(true)
   }
 
-  const getRolesSelectData = useMemo(() => {
-    let array = []
-    if (isOwnerUser) {
-      array = Object.values(RoleName)
-    } else {
-      array = Object.values(RoleName).filter((r) => r !== RoleName.Owner)
-    }
-    return array.map((role) => ({
-      value: role,
-      label: role,
-    }))
-  }, [isOwnerUser])
+  const rolesSelectData = [
+    {
+      value: RoleName.Admin,
+      label: RoleName.Admin,
+    },
+    {
+      value: RoleName.Member,
+      label: RoleName.Member,
+    },
+  ]
 
   useEffect(() => {
     if (actionData) {
@@ -325,22 +323,27 @@ function TeamView({ state, endpoint }: TeamViewProps) {
                 value: accepted ? "ACCEPTED" : "PENDING",
               },
               role: {
-                element: (
-                  <div className="list__role">
-                    <Select
-                      data={getRolesSelectData}
-                      defaultValue={roleName}
-                      // make the select disabled if:
-                      // * the list user is the app owner
-                      // * the list user hasn't accepted yet
-                      // * the logged user is only a member
-                      disabled={roleName === RoleName.Owner || !accepted || isMember}
-                      onChange={(value) =>
-                        handleUpdateRoleSubmit(email, value as RoleName)
-                      }
-                    />
-                  </div>
-                ),
+                element:
+                  roleName === RoleName.Owner ? (
+                    <Badge color="green" variant="outline">
+                      OWNER
+                    </Badge>
+                  ) : (
+                    <div className="list__role">
+                      <Select
+                        data={rolesSelectData}
+                        defaultValue={roleName}
+                        // make the select disabled if:
+                        // * the list user is the app owner
+                        // * the list user hasn't accepted yet
+                        // * the logged user is only a member
+                        disabled={!accepted || isMember}
+                        onChange={(value) =>
+                          handleUpdateRoleSubmit(email, value as RoleName)
+                        }
+                      />
+                    </div>
+                  ),
                 value: "Role",
               },
               action: {

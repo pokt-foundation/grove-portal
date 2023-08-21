@@ -1,6 +1,6 @@
 import { IconCaretLeft, Grid, Button } from "@pokt-foundation/pocket-blocks"
-import { FetcherWithComponents, Outlet } from "@remix-run/react"
-import { useEffect, useState } from "react"
+import { FetcherWithComponents } from "@remix-run/react"
+import { useEffect, useMemo, useState } from "react"
 import { Auth0Profile } from "remix-auth-auth0"
 import AddressCard, { links as AddressCardLinks } from "./components/AddressCard"
 import KeysCard, { links as KeysCardLinks } from "./components/KeysCard"
@@ -52,6 +52,7 @@ type AppIdLayoutViewProps = {
   updatePlanFetcher: FetcherWithComponents<any>
   user: Auth0Profile
   children: React.ReactNode
+  portalUserId: string | undefined
 }
 
 export default function AppIdLayoutView({
@@ -62,11 +63,16 @@ export default function AppIdLayoutView({
   updatePlanFetcher,
   user,
   children,
+  portalUserId,
 }: AppIdLayoutViewProps) {
   const { t } = useTranslate()
   const { flags } = useFeatureFlags()
   const [showSuccessModal, setShowSuccessModel] = useState<boolean>(false)
   const [showErrorModal, setShowErrorModel] = useState<boolean>(false)
+  const isUserOwner = useMemo(
+    () => portalUserId === endpoint?.userId,
+    [portalUserId, endpoint],
+  )
 
   const [routes, setRoutes] = useState([
     {
@@ -164,9 +170,10 @@ export default function AppIdLayoutView({
   }, [endpoint, t, routes, flags.STRIPE_PAYMENT, subscription])
 
   useEffect(() => {
-    // Update plan type to free if plan is paid and there subscription is canceled
+    // Update plan type to free if plan is paid and the subscription is canceled
     if (
       endpoint?.appLimits.planType === PayPlanType.PayAsYouGoV0 &&
+      isUserOwner &&
       (!subscription || subscription.cancel_at_period_end) &&
       updatePlanFetcher.state !== "submitting" &&
       updatePlanFetcher.state !== "loading"
@@ -182,7 +189,7 @@ export default function AppIdLayoutView({
         },
       )
     }
-  }, [endpoint, subscription, updatePlanFetcher])
+  }, [endpoint, isUserOwner, subscription, updatePlanFetcher])
 
   useEffect(() => {
     // Update plan type to paid if plan is free and there is a subscription

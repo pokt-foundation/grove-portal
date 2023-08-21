@@ -19,7 +19,7 @@ import {
 } from "@remix-run/react"
 import { Transition } from "@remix-run/react/dist/transition"
 import clsx from "clsx"
-import { useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import { ActionData, TeamLoaderData } from "./route"
 import styles from "./styles.css"
 import AppRadioCards, {
@@ -103,6 +103,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
     email: "",
     roleName: "",
     transferOwnership: false,
+    targetPortalUserId: "",
   })
 
   const navigation = useNavigation()
@@ -141,28 +142,33 @@ function TeamView({ state, endpoint }: TeamViewProps) {
 
   const isMember = !isAdminUser && !isOwnerUser
 
+  const getPortalUserId = useCallback(
+    (email: string) => endpoint?.users?.find((u) => u.email === email)?.userID as string,
+    [endpoint],
+  )
+
   const handleUpdateRoleSubmit = (email: string, roleName: RoleName) => {
     const transferOwnership: boolean = roleName === RoleName.Owner
+
     setUpdateRoleModalData({
       email,
       roleName,
       transferOwnership,
+      targetPortalUserId: getPortalUserId(email),
     })
     setIsUpdateRoleModalOpened(true)
   }
 
-  const getRolesSelectData = useMemo(() => {
-    let array = []
-    if (isOwnerUser) {
-      array = Object.values(RoleName)
-    } else {
-      array = Object.values(RoleName).filter((r) => r !== RoleName.Owner)
-    }
-    return array.map((role) => ({
-      value: role,
-      label: role,
-    }))
-  }, [isOwnerUser])
+  const rolesSelectData = [
+    {
+      value: RoleName.Admin,
+      label: RoleName.Admin,
+    },
+    {
+      value: RoleName.Member,
+      label: RoleName.Member,
+    },
+  ]
 
   useEffect(() => {
     if (actionData) {
@@ -225,6 +231,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
           email: "",
           roleName: "",
           transferOwnership: false,
+          targetPortalUserId: "",
         })
       }
     }
@@ -316,22 +323,27 @@ function TeamView({ state, endpoint }: TeamViewProps) {
                 value: accepted ? "ACCEPTED" : "PENDING",
               },
               role: {
-                element: (
-                  <div className="list__role">
-                    <Select
-                      data={getRolesSelectData}
-                      defaultValue={roleName}
-                      // make the select disabled if:
-                      // * the list user is the app owner
-                      // * the list user hasn't accepted yet
-                      // * the logged user is only a member
-                      disabled={roleName === RoleName.Owner || !accepted || isMember}
-                      onChange={(value) =>
-                        handleUpdateRoleSubmit(email, value as RoleName)
-                      }
-                    />
-                  </div>
-                ),
+                element:
+                  roleName === RoleName.Owner ? (
+                    <Badge color="green" variant="outline">
+                      OWNER
+                    </Badge>
+                  ) : (
+                    <div className="list__role">
+                      <Select
+                        data={rolesSelectData}
+                        defaultValue={roleName}
+                        // make the select disabled if:
+                        // * the list user is the app owner
+                        // * the list user hasn't accepted yet
+                        // * the logged user is only a member
+                        disabled={!accepted || isMember}
+                        onChange={(value) =>
+                          handleUpdateRoleSubmit(email, value as RoleName)
+                        }
+                      />
+                    </div>
+                  ),
                 value: "Role",
               },
               action: {
@@ -441,7 +453,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
               readOnly
               name="portal-user-id"
               style={{ display: "none" }}
-              value={endpoint.userId}
+              value={getPortalUserId(confirmationModalEmail)}
             />
             <input
               hidden
@@ -510,7 +522,11 @@ function TeamView({ state, endpoint }: TeamViewProps) {
             </div>
 
             <input name="email" type="hidden" value={updateRoleModalData.email} />
-            <input name="portal-user-id" type="hidden" value={endpoint.userId} />
+            <input
+              name="portal-user-id"
+              type="hidden"
+              value={updateRoleModalData.targetPortalUserId}
+            />
             <input name="roleName" type="hidden" value={updateRoleModalData.roleName} />
             <input hidden value={endpoint.name} />
             <input

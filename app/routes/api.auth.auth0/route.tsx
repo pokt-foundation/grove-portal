@@ -31,7 +31,7 @@ export let action: ActionFunction = async ({ request }) => {
 
   if (logoutField) {
     return authenticator.logout(request, {
-      redirectTo: `${url.origin}`,
+      redirectTo: url.origin,
     })
   }
 

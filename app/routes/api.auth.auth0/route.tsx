@@ -11,14 +11,16 @@ export let loader: LoaderFunction = ({ request }) => {
     const signupRequest = new Request(url.toString(), request)
     return authenticator.authenticate("auth0", signupRequest, {
       successRedirect: "/dashboard",
-      failureRedirect: url.origin,
+      // failureRedirect: url.origin,
+      failureRedirect: "/",
     })
   }
 
   const loginRequest = new Request(url.toString(), request)
   return authenticator.authenticate("auth0", loginRequest, {
     successRedirect: "/dashboard",
-    failureRedirect: url.origin,
+    // failureRedirect: url.origin,
+    failureRedirect: "/",
   })
 }
 
@@ -31,7 +33,8 @@ export let action: ActionFunction = async ({ request }) => {
 
   if (logoutField) {
     return authenticator.logout(request, {
-      redirectTo: url.origin,
+      // redirectTo: url.origin,
+      redirectTo: "/",
     })
   }
 
@@ -41,7 +44,8 @@ export let action: ActionFunction = async ({ request }) => {
     const signupRequest = new Request(url.toString(), request)
     return authenticator.authenticate("auth0", signupRequest, {
       successRedirect: "/dashboard",
-      failureRedirect: url.origin,
+      // failureRedirect: url.origin,
+      failureRedirect: "/",
     })
   }
 
@@ -49,6 +53,7 @@ export let action: ActionFunction = async ({ request }) => {
   const loginRequest = new Request(url.toString(), request)
   return authenticator.authenticate("auth0", loginRequest, {
     successRedirect: "/dashboard",
-    failureRedirect: url.origin,
+    // failureRedirect: url.origin,
+    failureRedirect: "/",
   })
 }

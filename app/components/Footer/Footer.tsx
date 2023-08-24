@@ -23,11 +23,19 @@ export const Footer = () => {
           <div>
             <Text>
               &copy; {dayjs().format("YYYY")} Pocket Network Inc.{" "}
-              <Anchor component={Link} to="/terms-and-conditions">
+              <Anchor
+                href="https://docs.portal.pokt.network/terms"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
                 {footer.termsOfUse}
               </Anchor>{" "}
               |{" "}
-              <Anchor component={Link} to="/privacy-policy">
+              <Anchor
+                href="https://docs.portal.pokt.network/privacy"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
                 {footer.privacyPolicy}
               </Anchor>
             </Text>

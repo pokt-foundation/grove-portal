@@ -11,14 +11,14 @@ export let loader: LoaderFunction = ({ request }) => {
     const signupRequest = new Request(url.toString(), request)
     return authenticator.authenticate("auth0", signupRequest, {
       successRedirect: "/dashboard",
-      failureRedirect: "/",
+      failureRedirect: url.origin,
     })
   }
 
   const loginRequest = new Request(url.toString(), request)
   return authenticator.authenticate("auth0", loginRequest, {
     successRedirect: "/dashboard",
-    failureRedirect: "/",
+    failureRedirect: url.origin,
   })
 }
 
@@ -27,28 +27,28 @@ export let action: ActionFunction = async ({ request }) => {
   const logoutField = formData.get("logout")
   const signupField = formData.get("signup")
 
+  const url = new URL(request.url)
+
   if (logoutField) {
     return authenticator.logout(request, {
-      redirectTo: "/",
+      redirectTo: url.origin,
     })
   }
 
   if (signupField) {
-    const url = new URL(request.url)
     url.searchParams.append("screen_hint", "signup")
     url.searchParams.append("prompt", "login")
     const signupRequest = new Request(url.toString(), request)
     return authenticator.authenticate("auth0", signupRequest, {
       successRedirect: "/dashboard",
-      failureRedirect: "/",
+      failureRedirect: url.origin,
     })
   }
 
-  const url = new URL(request.url)
   url.searchParams.append("prompt", "login")
   const loginRequest = new Request(url.toString(), request)
   return authenticator.authenticate("auth0", loginRequest, {
     successRedirect: "/dashboard",
-    failureRedirect: "/",
+    failureRedirect: url.origin,
   })
 }

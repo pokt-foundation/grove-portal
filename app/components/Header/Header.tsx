@@ -112,14 +112,14 @@ export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) 
     <>
       <header className="pokt-header">
         <div className="pokt-header-branding pokt-header-flex">
-          <Link to="/">
+          <a href="/">
             <img
               alt="pocket network"
               className="pokt-header-brand"
               loading="lazy"
               src="/pni_portal_logo_blue.svg"
             ></img>
-          </Link>
+          </a>
         </div>
         <HamburgerMenu isActive={isActive} onClick={() => setIsActive(!isActive)} />
         <div

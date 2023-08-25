@@ -24,7 +24,7 @@ export const Footer = () => {
             <Text>
               &copy; {dayjs().format("YYYY")} Pocket Network Inc.{" "}
               <Anchor
-                href="https://docs.portal.pokt.network/terms"
+                href="https://docs.grove.city/terms"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -32,7 +32,7 @@ export const Footer = () => {
               </Anchor>{" "}
               |{" "}
               <Anchor
-                href="https://docs.portal.pokt.network/privacy"
+                href="https://docs.grove.city/privacy"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -41,14 +41,14 @@ export const Footer = () => {
             </Text>
           </div>
           <Group>
-            <a href="https://www.pokt.network/" rel="noreferrer" target="_blank">
-              About POKT
+            <a href="https://grove.city" rel="noreferrer" target="_blank">
+              About Grove
             </a>
             <span aria-hidden className="vertical-split"></span>
             <Anchor
               aria-label="Twitter"
               className="discord-icon"
-              href="https://twitter.com/POKTnetwork"
+              href="https://twitter.com/BuildwithGrove"
               rel="noreferrer"
               target="_blank"
             >
@@ -56,7 +56,7 @@ export const Footer = () => {
             </Anchor>
             <Anchor
               aria-label="Discord"
-              href="https://discord.gg/portal-rpc"
+              href="https://discord.gg/grove"
               rel="noreferrer"
               target="_blank"
             >

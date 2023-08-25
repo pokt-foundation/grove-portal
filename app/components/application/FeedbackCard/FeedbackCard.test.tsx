@@ -11,7 +11,7 @@ describe("<FeedbackCard />", () => {
     expect(screen.getByText(label)).toBeInTheDocument()
     expect(screen.getByRole("link", { name: label })).toHaveAttribute(
       "href",
-      "https://discord.gg/portal-rpc",
+      "https://discord.gg/grove",
     )
   })
 })

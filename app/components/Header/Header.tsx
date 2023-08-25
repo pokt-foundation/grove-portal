@@ -114,10 +114,11 @@ export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) 
         <div className="pokt-header-branding pokt-header-flex">
           <a href="/">
             <img
-              alt="pocket network"
+              alt="Grove"
               className="pokt-header-brand"
               loading="lazy"
-              src="/pni_portal_logo_blue.svg"
+              src="/grove/Logo_Joined_4.svg"
+              // src="/grove/Portal_Color_DT.png"
             ></img>
           </a>
         </div>

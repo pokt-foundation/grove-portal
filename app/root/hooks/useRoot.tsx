@@ -11,7 +11,7 @@ type useRootProps = { user: Awaited<Auth0Profile | undefined> }
 export const useRoot = ({ user }: useRootProps) => {
   const { t } = useTranslate()
   const { pathname } = useLocation()
-  const isPlasmic = useMemo(
+  const isLoggedIn = useMemo(
     () => !pathname.includes("/dashboard/") && !pathname.includes("/admin"),
     [pathname],
   )
@@ -36,14 +36,14 @@ export const useRoot = ({ user }: useRootProps) => {
         protected: Protected.Public, // show this link to all. dashboard layout handles redirect to login.
       },
       {
-        to: "https://docs.portal.pokt.network/",
+        to: "https://docs.grove.city/",
         external: true,
         label: t.dashboard.routes.docs,
         icon: IconBookOpen,
         protected: Protected.Public,
       },
       {
-        to: "https://support.pokt.network",
+        to: "https://support.grove.city",
         external: true,
         label: "Support",
         icon: IconMail,
@@ -60,5 +60,5 @@ export const useRoot = ({ user }: useRootProps) => {
     return allRoutes.filter((r) => r.protected <= protectedLevel)
   }, [t, user])
 
-  return { isPlasmic, routes }
+  return { isLoggedIn, routes }
 }

@@ -19,7 +19,8 @@
 }
 
 .pokt-header-brand {
-  height: 1.5rem;
+  height: 3rem;
+  margin-bottom: -6px;
   object-fit: contain;
 }
 

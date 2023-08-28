@@ -66,12 +66,12 @@ export default function App() {
   const { ENV, user } = useLoaderData<RootLoaderData>()
   const { isLoggedIn, routes } = useRoot({ user })
   return (
-    <>
-      {isLoggedIn ? (
-        <LandingContainer />
-      ) : (
-        <RootProviders>
-          <Document>
+    <RootProviders>
+      <Document>
+        {isLoggedIn ? (
+          <Outlet />
+        ) : (
+          <>
             <Header user={user}>
               <Nav ariaLabel="Main" routes={routes} />
             </Header>
@@ -81,15 +81,15 @@ export default function App() {
               </Container>
             </main>
             <Footer />
-            <script
-              dangerouslySetInnerHTML={{
-                __html: `window.ENV = ${JSON.stringify(ENV)};`,
-              }}
-            />
-          </Document>
-        </RootProviders>
-      )}
-    </>
+          </>
+        )}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.ENV = ${JSON.stringify(ENV)};`,
+          }}
+        />
+      </Document>
+    </RootProviders>
   )
 }
 

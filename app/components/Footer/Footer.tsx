@@ -20,9 +20,18 @@ export const Footer = () => {
     <footer className="pokt-footer">
       <nav aria-label="Footer" id="footer-nav">
         <Group position="apart">
+          <a href="https://grove.city" rel="noreferrer" target="_blank">
+            <img
+              alt="About Grove"
+              className="pokt-header-brand"
+              loading="lazy"
+              src="/grove/Logo_Joined_4.svg"
+              // src="/grove/Portal_Color_DT.png"
+            ></img>
+          </a>
           <div>
             <Text>
-              &copy; {dayjs().format("YYYY")} Pocket Network Inc.{" "}
+              &copy; {dayjs().format("YYYY")} Grove Infrastructure Inc.{" "}
               <Anchor
                 href="https://docs.grove.city/terms"
                 rel="noopener noreferrer"
@@ -41,10 +50,7 @@ export const Footer = () => {
             </Text>
           </div>
           <Group>
-            <a href="https://grove.city" rel="noreferrer" target="_blank">
-              About Grove
-            </a>
-            <span aria-hidden className="vertical-split"></span>
+            {/* <span aria-hidden className="vertical-split"></span> */}
             <Anchor
               aria-label="Twitter"
               className="discord-icon"

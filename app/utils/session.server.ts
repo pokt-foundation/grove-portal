@@ -40,7 +40,7 @@ export const sessionStorage = createCookieSessionStorage({
 
 export const requireUser = async (request: Request, defaultRedirect = "/") => {
   const user = await authenticator.isAuthenticated(request)
-  if (!user || !user.profile._json) {
+  if (!user || !user.profile?._json) {
     throw redirect(defaultRedirect)
   }
   if (!user.profile._json.email_verified) {

@@ -8,7 +8,7 @@ import {
   ScrollRestoration,
 } from "@remix-run/react"
 
-const LandingContainer = () => {
+const LandingContainer = ({ ENV }: { ENV: any }) => {
   return (
     <html>
       <head>

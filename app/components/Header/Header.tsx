@@ -117,8 +117,7 @@ export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) 
               alt="Grove"
               className="pokt-header-brand"
               loading="lazy"
-              src="/grove/Logo_Joined_4.svg"
-              // src="/grove/Portal_Color_DT.png"
+              src="/grove/Portal_Color_DT.png"
             ></img>
           </a>
         </div>

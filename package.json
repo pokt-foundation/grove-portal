@@ -36,6 +36,7 @@
     "@remix-run/node": "^1.16.0",
     "@remix-run/react": "^1.16.0",
     "@remix-run/vercel": "^1.16.0",
+    "@rive-app/react-canvas": "^4.1.6",
     "@vercel/node": "^2.6.2",
     "clsx": "^1.1.1",
     "d3-format": "^3.1.0",

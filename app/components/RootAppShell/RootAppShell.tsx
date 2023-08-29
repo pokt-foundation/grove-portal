@@ -39,7 +39,7 @@ export const RootAppShell = ({ user, endpoints, children }: RootAppShellProps) =
       navbarOffsetBreakpoint="sm"
       padding="xs"
     >
-      <Container mt="xl" size="lg">
+      <Container h="100%" size="lg">
         {children}
       </Container>
     </AppShell>

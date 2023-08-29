@@ -1,27 +1,21 @@
 import { Divider } from "@mantine/core"
-import {
-  Box,
-  Card,
-  createStyles,
-  Flex,
-  Group,
-  SimpleGrid,
-  Stack,
-  Text,
-} from "@pokt-foundation/pocket-blocks"
-
-import { LoaderFunction, MetaFunction } from "@remix-run/node"
+import { Card, Group, SimpleGrid, Stack, Text } from "@pokt-foundation/pocket-blocks"
+import { MetaFunction } from "@remix-run/node"
+import { useRouteLoaderData } from "@remix-run/react"
 import React from "react"
-import {
-  CartesianGrid,
-  ResponsiveContainer,
-  XAxis,
-  YAxis,
-  Tooltip,
-  Line,
-  LineChart,
-} from "recharts"
-import { TitledCard } from "~/components/TitledCard"
+import AppOverview from "./components/AppOverview/AppOverview"
+import TitledCard from "~/components/TitledCard"
+import { EndpointsQuery, ProcessedEndpoint } from "~/models/portal/sdk"
+import { RootLoaderData } from "~/root"
+import { AccountAppsOverview } from "~/routes/account.$accountId._index/components/AccountAppsOverview"
+import { EmptyState } from "~/routes/account.$accountId._index/components/EmptyState"
+import { OverviewSparkline } from "~/routes/account.$accountId._index/components/OverviewSparkline"
+import { PocketUser } from "~/routes/api.user/route"
+
+export type DashboardLoaderData = {
+  endpoints: EndpointsQuery | null
+  user: PocketUser
+}
 
 export const meta: MetaFunction = () => {
   return {
@@ -29,35 +23,10 @@ export const meta: MetaFunction = () => {
   }
 }
 
-export const loader: LoaderFunction = async ({ request }) => {
-  return null
-}
-
-type stat = { label: string; val: string }
-
-const stats: stat[] = [
-  { label: "Total Relays (24hrs)", val: "54,828" },
-  { label: "Average Latency (24hrs)", val: "90ms" },
-  { label: "Success % (24hrs)", val: "99.92%" },
-  { label: "Errors (24hrs)", val: "8" },
-  { label: "Uptime (30days)", val: "99.72%" },
-]
-
-const useStyles = createStyles((theme) => ({
-  stat: {
-    padding: "24px 20px",
-    "&:not(:last-child)": {
-      borderRight: `1px solid ${
-        theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.colors.gray[3]
-      }`,
-    },
-  },
-}))
-
 export default function Account() {
-  const { classes } = useStyles()
+  const { endpoints } = useRouteLoaderData("root") as RootLoaderData
 
-  const data = [
+  const sparklineData = [
     {
       date: "Jul 15",
       val: 0,
@@ -88,8 +57,19 @@ export default function Account() {
     },
   ]
 
+  // const ownerEndpoints = (endpoints?.owner as ProcessedEndpoint[]) ?? []
+  const ownerEndpoints = endpoints
+    ? ([
+        ...endpoints.owner,
+        ...endpoints.member,
+        ...endpoints.admin,
+      ] as ProcessedEndpoint[])
+    : []
+
+  if (ownerEndpoints.length === 0) return <EmptyState />
+
   return (
-    <Stack>
+    <Stack mb="xl">
       <TitledCard
         header={() => (
           <Group position="apart">
@@ -98,26 +78,25 @@ export default function Account() {
         )}
       >
         <Card.Section>
-          <SimpleGrid
-            breakpoints={[
-              { maxWidth: "sm", cols: 1 },
-              { maxWidth: "md", cols: 2 },
-            ]}
-            cols={5}
-          >
-            {stats.map(({ label, val }) => (
-              <Box key={label} className={classes.stat}>
-                <Flex align="center" direction="column" gap={4}>
-                  <Text fw={600} fz="md">
-                    {val}
-                  </Text>
-                  <Text>{label}</Text>
-                </Flex>
-              </Box>
-            ))}
-          </SimpleGrid>
+          <AccountAppsOverview />
         </Card.Section>
       </TitledCard>
+
+      {ownerEndpoints.length > 0 && (
+        <TitledCard
+          header={() => (
+            <Group position="apart">
+              <Text weight={600}>Applications</Text>
+            </Group>
+          )}
+        >
+          {ownerEndpoints.map((endpoint) => (
+            <Card.Section key={endpoint.id} inheritPadding mt="md">
+              <AppOverview endpoint={endpoint} />
+            </Card.Section>
+          ))}
+        </TitledCard>
+      )}
 
       <Divider my="xl" />
 
@@ -129,42 +108,34 @@ export default function Account() {
         )}
       >
         <Card.Section inheritPadding>
-          <Box h="350px" pt="xl">
-            <Text fw="600" fz="md" mb="lg">
-              542,499
-            </Text>
-            <ResponsiveContainer height="100%" width="100%">
-              <LineChart data={data} height={350} margin={{ bottom: 100 }}>
-                {/* style={{ transform: "translate(-5px, -5px)" }} }} */}
-                {/* tick={{ stroke: "red", strokeWidth: 2, x: 50, cx: 60, y: 100 }} */}
-                <CartesianGrid
-                  strokeWidth={0.2}
-                  style={{ fill: "#343438" }}
-                  vertical={false}
-                />
-                <XAxis
-                  dataKey="date"
-                  padding={{ left: 30, right: 30 }}
-                  stroke="#343438"
-                  tick={{ fill: "#808B95" }}
-                  tickLine={false}
-                  tickMargin={35}
-                />
-                <YAxis
-                  axisLine={false}
-                  includeHidden={true}
-                  minTickGap={0}
-                  tick={{ fill: "#808B95" }}
-                  tickFormatter={(val) => (val === 0 ? val : `${val}k`)}
-                  tickLine={false}
-                />
-                <Tooltip />
-                <Line dataKey="val" dot={false} stroke="#0079E8" strokeWidth={3} />
-              </LineChart>
-            </ResponsiveContainer>
-          </Box>
+          <OverviewSparkline sparklineData={sparklineData} title="542,499" />
         </Card.Section>
       </TitledCard>
+
+      <SimpleGrid breakpoints={[{ maxWidth: "md", cols: 1 }]} cols={2}>
+        <TitledCard
+          header={() => (
+            <Group position="apart">
+              <Text weight={600}>Total Relays</Text>
+            </Group>
+          )}
+        >
+          <Card.Section inheritPadding>
+            <OverviewSparkline sparklineData={sparklineData} title="542,499" />
+          </Card.Section>
+        </TitledCard>
+        <TitledCard
+          header={() => (
+            <Group position="apart">
+              <Text weight={600}>Total Relays</Text>
+            </Group>
+          )}
+        >
+          <Card.Section inheritPadding>
+            <OverviewSparkline sparklineData={sparklineData} title="542,499" />
+          </Card.Section>
+        </TitledCard>
+      </SimpleGrid>
     </Stack>
   )
 }

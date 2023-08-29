@@ -142,8 +142,7 @@ export default function CreateApp() {
       ) : (
         <AppForm onSubmit={(formData) => setAppFromData(formData)} />
       )}
-
-      // TODO: Handle error messages and failures differently
+      {/* TODO: Handle error messages and failures differently */}
       {/*{action && (*/}
       {/*  <Card>*/}
       {/*    <p>{action.message}</p>*/}

@@ -1,4 +1,12 @@
-import { Box, Center, Flex, Text } from "@pokt-foundation/pocket-blocks"
+import {
+  Box,
+  Center,
+  CloseButton,
+  Flex,
+  Text,
+  Tooltip,
+} from "@pokt-foundation/pocket-blocks"
+import { NavLink } from "@remix-run/react"
 import { AccountPlan } from "~/components/AccountPlan"
 import { PayPlanType } from "~/models/portal/sdk"
 
@@ -9,9 +17,15 @@ type AccountPlansContainerProps = {
 const AccountPlansContainer = ({ onPlanSelected }: AccountPlansContainerProps) => {
   return (
     <Box>
-      <Text fz="21px" mb="48px" mt="xl">
-        Choose a plan for your application New Application
-      </Text>
+      <Flex align="center" justify="space-between" my="32px">
+        <Text fw={600} fz="21px">
+          Choose a plan for your application New Application
+        </Text>
+        <Tooltip withArrow label="Discard" position="bottom">
+          <CloseButton aria-label="Discard" component={NavLink} size="lg" to="/account" />
+        </Tooltip>
+      </Flex>
+
       <Flex justify="space-evenly">
         <AccountPlan
           type={PayPlanType.FreetierV0}

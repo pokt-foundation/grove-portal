@@ -5,12 +5,13 @@ import {
   CloseButton,
   createStyles,
   Group,
+  Flex,
   Stack,
   Text,
   TextInput,
   Tooltip,
 } from "@pokt-foundation/pocket-blocks"
-import { Form, NavLink, useNavigation } from "@remix-run/react"
+import { Form, NavLink } from "@remix-run/react"
 import { useEffect, useState } from "react"
 import AppmojiPicker, {
   DEFAULT_APPMOJI,
@@ -50,8 +51,8 @@ const AppForm = ({ onSubmit }: AppFormProps) => {
   return (
     <Stack>
       <Box>
-        <Group mb="xl" position="apart">
-          <Text fw={600} fz="xl">
+        <Flex align="center" justify="space-between" my="32px">
+          <Text fw={600} fz="21px">
             Create a new application
           </Text>
           <Tooltip withArrow label="Discard" position="bottom">
@@ -62,7 +63,7 @@ const AppForm = ({ onSubmit }: AppFormProps) => {
               to="/account"
             />
           </Tooltip>
-        </Group>
+        </Flex>
         <Text>
           An 'application' is a unique bridge connecting your project to the decentralized
           world. It represents the configuration set for accessing various blockchains,

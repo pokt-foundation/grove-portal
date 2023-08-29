@@ -66,7 +66,7 @@ const LinkLabel = ({ icon: Icon, label, iconOnly }: LinkLabelProps) => {
           ) : (
             <Icon size={18} />
           )}
-          {!iconOnly && <span>{label}</span>}
+          {!iconOnly && <Text>{label}</Text>}
         </Group>
       </Tooltip>
     </Flex>
@@ -110,7 +110,7 @@ export const AppLink = ({
 )
 
 export const NavButton = ({ icon, label, iconOnly, ...rest }: SidebarButtonProps) => (
-  <UnstyledButton sx={commonLinkStyles} {...rest}>
+  <UnstyledButton fz="sm" sx={commonLinkStyles} {...rest}>
     <LinkLabel icon={icon} iconOnly={iconOnly} label={label} />
   </UnstyledButton>
 )

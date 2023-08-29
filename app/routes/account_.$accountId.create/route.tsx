@@ -76,10 +76,10 @@ export const loader: LoaderFunction = async ({ request }) => {
   )
 }
 
-type ActionData = {
-  error: true
-  message: string
-}
+// type ActionData = {
+//   error: true
+//   message: string
+// }
 
 export const action: ActionFunction = async ({ request, params }) => {
   const user = await requireUser(request)
@@ -143,6 +143,7 @@ export default function CreateApp() {
         <AppForm onSubmit={(formData) => setAppFromData(formData)} />
       )}
 
+      // TODO: Handle error messages and failures differently
       {/*{action && (*/}
       {/*  <Card>*/}
       {/*    <p>{action.message}</p>*/}

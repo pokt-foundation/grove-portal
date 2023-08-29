@@ -114,8 +114,10 @@ export const portalTheme: MantineThemeOverride = {
     },
     Button: {
       defaultProps: {
-        size: "sm",
+        size: "md",
         radius: "xl",
+        fw: "400",
+        fz: "sm",
       },
       styles: (theme) => ({
         root: {

@@ -129,7 +129,7 @@ export default function CreateApp() {
   const [appFromData, setAppFromData] = useState<FormData>()
 
   return fetcher.state === "idle" ? (
-    <Box h="100%" maw={860} mx="auto">
+    <Box maw={860} mx="auto">
       {appFromData ? (
         <AccountPlansContainer
           onPlanSelected={(plan: PayPlanType) => {

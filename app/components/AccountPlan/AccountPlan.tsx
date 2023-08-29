@@ -8,6 +8,7 @@ import {
   Stack,
   Title,
   Box,
+  MantineTheme,
 } from "@pokt-foundation/pocket-blocks"
 import { RiCheckLine, RiCloseLine } from "react-icons/ri"
 import { PayPlanType } from "~/models/portal/sdk"
@@ -26,7 +27,7 @@ const AutoScaleList = () => {
       center
       icon={<RiCheckLine color={theme.colors.blue[7]} size="18px" />}
       size="sm"
-      spacing="md"
+      spacing="xl"
     >
       <List.Item>100,000 relays free per day</List.Item>
       <List.Item>Auto-Scale at $7.456 / additional million</List.Item>
@@ -42,7 +43,7 @@ const AutoScaleList = () => {
 }
 
 const FreeList = () => (
-  <List center icon={<RiCheckLine size="18px" />} size="sm" spacing="md">
+  <List center icon={<RiCheckLine size="18px" />} size="sm" spacing="xl">
     <List.Item>100,000 relays free per day</List.Item>
     <List.Item icon={<RiCloseLine size="18px" />}>
       <Text td="line-through">Auto-Scale</Text>
@@ -64,7 +65,15 @@ export const AccountPlan = ({ type, onContinue }: AccountPlanProps) => {
   const { classes: commonClasses } = useCommonStyles()
 
   return (
-    <Card withBorder radius="md" shadow="sm" w="360px">
+    <Card
+      withBorder
+      radius="md"
+      shadow="sm"
+      sx={(theme: MantineTheme) => ({
+        borderColor: isFree ? theme.colors.gray[8] : theme.colors.blue[7],
+      })}
+      w="360px"
+    >
       <Stack align="center" mb="xl" spacing="xl">
         <Badge color="gray" mb="8px">
           {isFree ? "Builder" : "Pay as you go"}

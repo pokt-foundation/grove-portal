@@ -70,12 +70,27 @@ export const AccountPlan = ({ type, onContinue }: AccountPlanProps) => {
       radius="md"
       shadow="sm"
       sx={(theme: MantineTheme) => ({
-        borderColor: isFree ? theme.colors.gray[8] : theme.colors.blue[7],
+        ...(theme.colorScheme === "dark" && {
+          borderColor: isFree ? theme.colors.gray[8] : theme.colors.blue[7],
+        }),
+        ...(theme.colorScheme === "light" && {
+          borderColor: isFree ? theme.colors.gray[3] : theme.colors.blue[7],
+        }),
       })}
       w="360px"
     >
       <Stack align="center" mb="xl" spacing="xl">
-        <Badge color="gray" mb="8px">
+        <Badge
+          color="gray"
+          fw={400}
+          fz="xs"
+          h="xl"
+          mb="8px"
+          sx={(theme: MantineTheme) => ({
+            textTransform: "capitalize",
+            backgroundColor: theme.colors.navy[4],
+          })}
+        >
           {isFree ? "Builder" : "Pay as you go"}
         </Badge>
         <Title order={3}>{isFree ? "Free" : "Auto-Scale"}</Title>

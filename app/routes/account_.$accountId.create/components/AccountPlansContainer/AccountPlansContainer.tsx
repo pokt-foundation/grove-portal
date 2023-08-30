@@ -37,9 +37,7 @@ const AccountPlansContainer = ({ onPlanSelected }: AccountPlansContainerProps) =
         />
       </Flex>
       <Center mt="xl">
-        <Text fz="xs">
-          All prices are in USD and are charged per organization with applicable taxes.
-        </Text>
+        <Text fz="xs">All prices are in USD and are charged per application.</Text>
       </Center>
     </Box>
   )

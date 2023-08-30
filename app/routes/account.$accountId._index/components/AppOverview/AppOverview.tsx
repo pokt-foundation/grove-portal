@@ -39,9 +39,6 @@ const barData = [
 ]
 
 export const AppOverview = ({ endpoint }: { endpoint: ProcessedEndpoint }) => {
-  console.log("endpoint")
-  console.log(endpoint)
-
   const user = useUser()
   // @ts-ignore
   const chains = useMemo(

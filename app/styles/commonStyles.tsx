@@ -5,6 +5,10 @@ const useCommonStyles = createStyles((theme) => ({
     backgroundColor:
       theme.colorScheme === "dark" ? theme.colors.dark[9] : theme.colors.gray[2],
   },
+  grayOutlinedButton: {
+    borderColor:
+      theme.colorScheme === "dark" ? theme.colors.gray[8] : theme.colors.dark[8],
+  },
 }))
 
 export default useCommonStyles

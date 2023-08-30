@@ -4,7 +4,6 @@ export const portalTheme: MantineThemeOverride = {
   ...theme,
   primaryColor: "blue",
   colorScheme: "dark",
-  primaryShade: 7,
   colors: {
     ...theme.colors,
     dark: [
@@ -16,13 +15,13 @@ export const portalTheme: MantineThemeOverride = {
       "#2C2E33",
       "#25262b",
       "#27292F",
-      "#1F2327",
+      "#242224",
       "#1A1B1E",
     ],
     gray: [
       "#FAFAFA",
       "#f1f3f5",
-      "#E6EDF3",
+      "#EBECED",
       "#E3E8ED",
       "#ced4da",
       "#adb5bd",
@@ -36,10 +35,10 @@ export const portalTheme: MantineThemeOverride = {
       "#d0ebff",
       "#a5d8ff",
       "#74c0fc",
-      "#4dabf7",
+      "#33B0FF",
       "#339af0",
       "#228be6",
-      "#0079E8",
+      "#1D8AED",
       "#1971c2",
       "#005099",
     ],
@@ -49,7 +48,7 @@ export const portalTheme: MantineThemeOverride = {
       "#b2f2bb",
       "#8ce99a",
       "#65C971",
-      "#51cf66",
+      "#46BD6B",
       "#40c057",
       "#37b24d",
       "#2f9e44",
@@ -114,10 +113,29 @@ export const portalTheme: MantineThemeOverride = {
       },
     },
     Button: {
-      ...theme?.components?.Button,
       defaultProps: {
         size: "md",
+        radius: "xl",
+        fw: "400",
+        fz: "sm",
+      },
+      styles: (theme) => ({
+        root: {
+          "&[data-disabled]": {
+            color: theme.colors.gray[6],
+            backgroundColor: theme.colors.gray[9],
+          },
+        },
+      }),
+    },
+    TextInput: {
+      defaultProps: {
         radius: "sm",
+      },
+      styles: {
+        root: {
+          backgroundColor: "transparent",
+        },
       },
     },
     Paper: {

@@ -1,5 +1,5 @@
 import { IconBookOpen, IconMail } from "@pokt-foundation/pocket-blocks"
-import { useLocation } from "@remix-run/react"
+import { useLocation, useParams } from "@remix-run/react"
 import { useEffect, useMemo } from "react"
 import { Auth0Profile } from "remix-auth-auth0"
 import { IconApp } from "~/components/Icons"
@@ -11,8 +11,13 @@ type useRootProps = { user: Awaited<Auth0Profile | undefined> }
 export const useRoot = ({ user }: useRootProps) => {
   const { t } = useTranslate()
   const { pathname } = useLocation()
+  const { accountId } = useParams()
 
   const isPlasmic = useMemo(() => pathname === "/", [pathname])
+  const isCreateApp = useMemo(
+    () => pathname === `/account/${accountId}/create`,
+    [accountId, pathname],
+  )
 
   useEffect(() => {
     analyticsInit({ id: user?.id ?? "" })
@@ -58,5 +63,5 @@ export const useRoot = ({ user }: useRootProps) => {
     return allRoutes.filter((r) => r.protected <= protectedLevel)
   }, [t, user])
 
-  return { isPlasmic, routes }
+  return { isPlasmic, isCreateApp, routes }
 }

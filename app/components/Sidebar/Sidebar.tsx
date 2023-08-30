@@ -2,15 +2,14 @@ import { Divider, MediaQuery, Navbar, ScrollArea } from "@pokt-foundation/pocket
 import { useParams } from "@remix-run/react"
 import React, { useMemo, useState } from "react"
 import {
-  RiStackLine,
-  RiAddLine,
-  RiBook2Line,
-  RiSettings3Line,
-  RiDiscordLine,
-  RiUserSmileLine,
-  RiArrowLeftDoubleLine,
-  RiArrowRightDoubleLine,
-} from "react-icons/ri"
+  LuBook,
+  LuChevronsLeft,
+  LuChevronsRight,
+  LuLayers,
+  LuLifeBuoy,
+  LuPlus,
+  LuSettings,
+} from "react-icons/lu"
 import {
   AppLink,
   ExternalLink,
@@ -32,35 +31,30 @@ const getStaticRoutes = (
   overview: {
     to: `/account/${accountId}`,
     label: "Overview",
-    icon: RiStackLine,
+    icon: LuLayers,
     end: true,
   },
   createNewApp: {
     to: `/account/${accountId}/create`,
     label: "New Application",
-    icon: RiAddLine,
+    icon: LuPlus,
     end: true,
   },
   docs: {
     to: "https://docs.portal.pokt.network/",
-    icon: RiBook2Line,
+    icon: LuBook,
     label: "Documentation",
   },
   accountSettings: {
     to: `/user/profile`,
-    icon: RiSettings3Line,
+    icon: LuSettings,
     label: "Account Settings",
   },
   support: {
     to: "https://discord.gg/portal-rpc",
-    icon: RiDiscordLine,
+    icon: LuLifeBuoy,
     label: "Support",
-  },
-  feedback: {
-    to: "https://discord.gg/portal-rpc",
-    icon: RiUserSmileLine,
-    label: "Feedback",
-  },
+  }
 })
 
 export const Sidebar = ({ endpoints, hidden }: SidebarProps) => {
@@ -90,13 +84,12 @@ export const Sidebar = ({ endpoints, hidden }: SidebarProps) => {
         <Navbar.Section>
           <AppLink iconOnly={collapsed} route={staticRoutes.accountSettings} />
           <ExternalLink iconOnly={collapsed} route={staticRoutes.support} />
-          <ExternalLink iconOnly={collapsed} route={staticRoutes.feedback} />
         </Navbar.Section>
       </ScrollArea>
       <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
         <Navbar.Section>
           <NavButton
-            icon={collapsed ? RiArrowRightDoubleLine : RiArrowLeftDoubleLine}
+            icon={collapsed ? LuChevronsRight : LuChevronsLeft}
             iconOnly={collapsed}
             label="Collapse sidebar"
             onClick={() => setCollapsed(!collapsed)}

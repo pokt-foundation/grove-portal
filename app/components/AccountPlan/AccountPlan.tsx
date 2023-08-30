@@ -54,8 +54,8 @@ const FreeList = () => (
     <List.Item>Community Discord Support</List.Item>
     <List.Item>Unlimited Endpoints</List.Item>
     <List.Item>Global Region Support</List.Item>
-    <List.Item icon={<RiCloseLine size="18px" />}>
-      <Text td="line-through">ETH Trace Supported</Text>
+    <List.Item>
+      <Text>ETH Trace Supported</Text>
     </List.Item>
   </List>
 )

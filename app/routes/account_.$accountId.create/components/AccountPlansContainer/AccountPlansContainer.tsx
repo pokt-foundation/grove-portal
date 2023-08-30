@@ -19,7 +19,7 @@ const AccountPlansContainer = ({ onPlanSelected }: AccountPlansContainerProps) =
     <Box>
       <Flex align="center" justify="space-between" my="32px">
         <Text fw={600} fz="21px">
-          Choose a plan for your application New Application
+          Choose an application plan
         </Text>
         <Tooltip withArrow label="Discard" position="bottom">
           <CloseButton aria-label="Discard" component={NavLink} size="lg" to="/account" />

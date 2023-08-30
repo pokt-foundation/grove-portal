@@ -35,8 +35,12 @@ const Document = ({ children, title }: { children: React.ReactNode; title?: stri
                 theme.colorScheme === "dark"
                   ? theme.colors.dark[9]
                   : theme.colors.gray[2],
+              color:
+                theme.colorScheme === "dark"
+                  ? theme.colors.gray[2]
+                  : theme.colors.navy[9],
               lineHeight: theme.lineHeight,
-              fontSize: theme.fontSizes.sm,
+              fontSize: "14px",
             },
           })}
         />

@@ -19,7 +19,7 @@ type NavProps = {
   ariaLabel: string
 }
 
-type Route = {
+export type Route = {
   to: string
   label?: string
   icon?: React.ReactNode | (() => JSX.Element) | React.FunctionComponent

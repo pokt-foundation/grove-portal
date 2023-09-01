@@ -13,6 +13,9 @@ const useStyles = createStyles((theme) => ({
     overflow: "auto",
     padding: 0,
   },
+  appmojiActionIcon: {
+    borderColor: theme.colors.dark[4],
+  },
 }))
 
 type AppmojiPickerProps = { onAppmojiSelect: (appmoji: string) => void }
@@ -41,7 +44,7 @@ const AppmojiPicker = ({ onAppmojiSelect }: AppmojiPickerProps) => {
       onChange={handleShowAppmojiPicker}
     >
       <Menu.Target>
-        <ActionIcon size="lg" variant="outline">
+        <ActionIcon className={classes.appmojiActionIcon} size="lg" variant="outline">
           <Emoji size={14} unified={selectedAppmoji} />
         </ActionIcon>
       </Menu.Target>

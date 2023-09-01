@@ -15,14 +15,17 @@ import Tooltip from "~/components/Tooltip"
 export type SidebarNavRoute = {
   to: string
   label: string
-  icon: IconType | string
+  icon?: IconType | string
+  imgSrc?: string
   end?: boolean
   badge?: string
 }
 
-export type LinkLabelProps = Pick<SidebarNavRoute, "icon" | "label"> & {
+export type LinkLabelProps = Pick<SidebarNavRoute, "icon" | "label" | "imgSrc"> & {
   iconOnly?: boolean
 }
+
+type LabelIconProps = Pick<LinkLabelProps, "icon" | "imgSrc" | "label">
 
 type SidebarButtonProps = LinkLabelProps & { onClick?: () => void }
 
@@ -31,7 +34,7 @@ const commonLinkStyles = (theme: MantineTheme): CSSObject => ({
   width: "100%",
   padding: theme.spacing.xs,
   borderRadius: theme.radius.sm,
-  color: theme.colorScheme === "dark" ? theme.colors.gray[3] : theme.black,
+  color: theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
   "&:hover": {
     backgroundColor:
       theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.gray[0],
@@ -39,15 +42,38 @@ const commonLinkStyles = (theme: MantineTheme): CSSObject => ({
   },
 
   "&.active": {
-    color: theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
     backgroundColor:
       theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.colors.gray[0],
     fontWeight: 600,
   },
 })
 
-const LinkLabel = ({ icon: Icon, label, iconOnly }: LinkLabelProps) => {
+const LabelIcon = ({ icon: Icon, imgSrc, label }: LabelIconProps) => {
   const isEmoji = typeof Icon === "string"
+
+  if (imgSrc) {
+    return (
+      <img
+        alt={`icon for ${label}`}
+        loading="lazy"
+        src={imgSrc}
+        style={{ height: "18px", objectFit: "contain" }}
+      ></img>
+    )
+  }
+
+  if (isEmoji) {
+    return (
+      <Text span fz="md" m={0} ta="center">
+        {Icon}
+      </Text>
+    )
+  }
+
+  return Icon ? <Icon size={18} /> : null
+}
+
+const LinkLabel = ({ icon, label, iconOnly, imgSrc }: LinkLabelProps) => {
   return (
     <Flex sx={{ justifyContent: iconOnly ? "center" : "flex-start" }}>
       <Tooltip
@@ -59,13 +85,7 @@ const LinkLabel = ({ icon: Icon, label, iconOnly }: LinkLabelProps) => {
         position="right"
       >
         <Group>
-          {isEmoji ? (
-            <Text span fz="md" m={0} ta="center">
-              {Icon}
-            </Text>
-          ) : (
-            <Icon size={18} />
-          )}
+          <LabelIcon icon={icon} imgSrc={imgSrc} label={label} />
           {!iconOnly && <Text>{label}</Text>}
         </Group>
       </Tooltip>
@@ -87,11 +107,16 @@ export const ExternalLink = ({
     target="_blank"
     variant="text"
   >
-    <LinkLabel icon={route.icon} iconOnly={iconOnly} label={route.label} />
+    <LinkLabel
+      icon={route.icon}
+      iconOnly={iconOnly}
+      imgSrc={route.imgSrc}
+      label={route.label}
+    />
   </Anchor>
 )
 
-export const AppLink = ({
+export const InternalLink = ({
   route,
   iconOnly,
 }: {
@@ -105,7 +130,12 @@ export const AppLink = ({
     sx={commonLinkStyles}
     to={route.to}
   >
-    <LinkLabel icon={route.icon} iconOnly={iconOnly} label={route.label} />
+    <LinkLabel
+      icon={route.icon}
+      iconOnly={iconOnly}
+      imgSrc={route.imgSrc}
+      label={route.label}
+    />
   </Anchor>
 )
 

@@ -5,13 +5,12 @@ import {
   LuBook,
   LuChevronsLeft,
   LuChevronsRight,
-  LuLayers,
   LuLifeBuoy,
   LuPlus,
   LuSettings,
 } from "react-icons/lu"
 import {
-  AppLink,
+  InternalLink,
   ExternalLink,
   NavButton,
   SidebarNavRoute,
@@ -30,8 +29,8 @@ const getStaticRoutes = (
 ): Record<string, SidebarNavRoute> => ({
   overview: {
     to: `/account/${accountId}`,
-    label: "Overview",
-    icon: LuLayers,
+    label: "Portal Overview",
+    imgSrc: "/portal-icon.svg",
     end: true,
   },
   createNewApp: {
@@ -48,13 +47,13 @@ const getStaticRoutes = (
   accountSettings: {
     to: `/user/profile`,
     icon: LuSettings,
-    label: "Account Settings",
+    label: "Portal Settings",
   },
   support: {
     to: "https://discord.gg/portal-rpc",
     icon: LuLifeBuoy,
     label: "Support",
-  }
+  },
 })
 
 export const Sidebar = ({ endpoints, hidden }: SidebarProps) => {
@@ -68,21 +67,22 @@ export const Sidebar = ({ endpoints, hidden }: SidebarProps) => {
       className={commonClasses.mainBackgroundColor}
       hidden={hidden}
       hiddenBreakpoint="sm"
-      p="md"
+      p={8}
+      pt={32}
       width={{ base: collapsed ? 80 : 300 }}
     >
       <ScrollArea h="100%" mx="-xs" px="xs">
         <Navbar.Section>
-          <AppLink iconOnly={collapsed} route={staticRoutes.overview} />
+          <InternalLink iconOnly={collapsed} route={staticRoutes.overview} />
           {endpoints && <SidebarApps apps={endpoints} iconOnly={collapsed} />}
-          <AppLink iconOnly={collapsed} route={staticRoutes.createNewApp} />
+          <InternalLink iconOnly={collapsed} route={staticRoutes.createNewApp} />
         </Navbar.Section>
         <Divider color="#343438" my="lg" size="xs" />
         <Navbar.Section>
           <ExternalLink iconOnly={collapsed} route={staticRoutes.docs} />
         </Navbar.Section>
         <Navbar.Section>
-          <AppLink iconOnly={collapsed} route={staticRoutes.accountSettings} />
+          <InternalLink iconOnly={collapsed} route={staticRoutes.accountSettings} />
           <ExternalLink iconOnly={collapsed} route={staticRoutes.support} />
         </Navbar.Section>
       </ScrollArea>

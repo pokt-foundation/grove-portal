@@ -14,8 +14,10 @@ export const useRoot = ({ user }: useRootProps) => {
   const { accountId } = useParams()
 
   const isPlasmic = useMemo(() => pathname === "/", [pathname])
-  const isCreateApp = useMemo(
-    () => pathname === `/account/${accountId}/create`,
+  const hideSidebar = useMemo(
+    () =>
+      pathname === `/account/${accountId}/create` ||
+      pathname === `/account/${accountId}/app-limit-exceeded`,
     [accountId, pathname],
   )
 
@@ -63,5 +65,5 @@ export const useRoot = ({ user }: useRootProps) => {
     return allRoutes.filter((r) => r.protected <= protectedLevel)
   }, [t, user])
 
-  return { isPlasmic, isCreateApp, routes }
+  return { isPlasmic, hideSidebar, routes }
 }

@@ -27,11 +27,7 @@ const AppEndpoint = ({ chain }: AppEndpointProps) => {
           <ActionIcon c="gray" size="xl">
             <RiStarLine size={18} />
           </ActionIcon>
-          <Avatar
-            radius={40}
-            size={40}
-            src="https://cryptologos.cc/logos/avalanche-avax-logo.png"
-          />
+          <Avatar radius={40} size={40} src="/avalanche-avax-logo.png" />
           <Stack spacing={0} w={200}>
             <Text truncate fw={600}>
               {chain?.description}

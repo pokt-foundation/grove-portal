@@ -25,7 +25,7 @@ export const AppHeader = ({ user, opened, onOpen }: HeaderProps) => {
           <Burger mr="xl" opened={opened} size="sm" onClick={() => onOpen(!opened)} />
         </MediaQuery>
         <Link to="/">
-          <img alt="Grove logo" loading="lazy" src="/grove-logo.svg"></img>
+          <img alt="Grove logo" height={20} loading="lazy" src="/grove-logo.svg"></img>
         </Link>
         <UserMenuDropdown user={user} />
       </Flex>

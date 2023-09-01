@@ -10,7 +10,7 @@ import {
   Box,
   MantineTheme,
 } from "@pokt-foundation/pocket-blocks"
-import { RiCheckLine, RiCloseLine } from "react-icons/ri"
+import { LuCheck } from "react-icons/lu"
 import { PayPlanType } from "~/models/portal/sdk"
 import useCommonStyles from "~/styles/commonStyles"
 
@@ -25,7 +25,7 @@ const AutoScaleList = () => {
   return (
     <List
       center
-      icon={<RiCheckLine color={theme.colors.blue[7]} size="18px" />}
+      icon={<LuCheck color={theme.colors.blue[7]} size="18px" />}
       size="sm"
       spacing="xl"
     >
@@ -34,29 +34,25 @@ const AutoScaleList = () => {
       <List.Item>No throughput limit</List.Item>
       {/*<List.Item>5 Applications</List.Item>*/}
       {/*<List.Item>10 Team Members</List.Item>*/}
-      <List.Item>Direct Customer Support</List.Item>
-      <List.Item>Unlimited Endpoints</List.Item>
-      <List.Item>Global Region Support</List.Item>
-      <List.Item>ETH Trace Supported</List.Item>
+      <List.Item>Direct Customer support</List.Item>
+      <List.Item>Access all supported chains</List.Item>
+      <List.Item>Global region support</List.Item>
+      <List.Item>ETH Trace supported</List.Item>
     </List>
   )
 }
 
 const FreeList = () => (
-  <List center icon={<RiCheckLine size="18px" />} size="sm" spacing="xl">
+  <List center icon={<LuCheck size="18px" />} size="sm" spacing="xl">
     <List.Item>100,000 relays free per day</List.Item>
-    <List.Item icon={<RiCloseLine size="18px" />}>
-      <Text td="line-through">Auto-Scale</Text>
-    </List.Item>
+    <List.Item>Cap at 100,000 Relays, zero overages</List.Item>
     <List.Item>30 request/sec throughput limit</List.Item>
     {/*<List.Item>2 Applications</List.Item>*/}
     {/*<List.Item>2 Team Members</List.Item>*/}
-    <List.Item>Community Discord Support</List.Item>
-    <List.Item>Unlimited Endpoints</List.Item>
-    <List.Item>Global Region Support</List.Item>
-    <List.Item>
-      <Text>ETH Trace Supported</Text>
-    </List.Item>
+    <List.Item>Community Discord support</List.Item>
+    <List.Item>Access all supported chains</List.Item>
+    <List.Item>Global region support</List.Item>
+    <List.Item>ETH Trace supported</List.Item>
   </List>
 )
 

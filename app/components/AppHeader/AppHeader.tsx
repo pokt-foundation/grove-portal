@@ -8,7 +8,7 @@ import {
 } from "@pokt-foundation/pocket-blocks"
 import { Form, Link, NavLink } from "@remix-run/react"
 import React, { useRef } from "react"
-import { RiAccountCircleLine, RiLogoutBoxRLine, RiUser3Line } from "react-icons/ri"
+import { LuLogOut, LuUser } from "react-icons/lu"
 import { Auth0Profile } from "remix-auth-auth0"
 
 type HeaderProps = {
@@ -66,14 +66,14 @@ function UserMenuDropdown({ user }: UserMenuDropdownProps) {
               }}
               variant="outline"
             >
-              <RiUser3Line size={22} />
+              <LuUser size={22} />
             </Avatar>
           </Menu.Target>
           <Menu.Dropdown>
-            <Menu.Item icon={<RiAccountCircleLine size={16} />}>
+            <Menu.Item icon={<LuUser size={16} />}>
               <NavLink to={`/user/profile`}>User Profile </NavLink>
             </Menu.Item>
-            <Menu.Item icon={<RiLogoutBoxRLine size={16} />}>
+            <Menu.Item icon={<LuLogOut size={16} />}>
               <UnstyledButton
                 component="span"
                 fz="sm"

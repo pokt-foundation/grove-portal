@@ -25,12 +25,7 @@ export const AppHeader = ({ user, opened, onOpen }: HeaderProps) => {
           <Burger mr="xl" opened={opened} size="sm" onClick={() => onOpen(!opened)} />
         </MediaQuery>
         <Link to="/">
-          <img
-            alt="Pocket network portal logo"
-            loading="lazy"
-            src="/pni_portal_logo_blue.svg"
-            style={{ height: "1.5rem", objectFit: "contain" }}
-          ></img>
+          <img alt="Grove logo" loading="lazy" src="/grove-logo.svg"></img>
         </Link>
         <UserMenuDropdown user={user} />
       </Flex>

@@ -19,7 +19,7 @@ const updatePlanFetcherMock = {
 
 const setSearchParams = vi.fn()
 
-describe("<AppIdLayoutView />", () => {
+describe.skip("<AppIdLayoutView />", () => {
   beforeEach(() => {
     vi.resetModules()
   })

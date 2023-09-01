@@ -1,48 +1,23 @@
-import { IconCaretLeft, Grid, Button } from "@pokt-foundation/pocket-blocks"
-import { FetcherWithComponents, Outlet } from "@remix-run/react"
-import { useEffect, useState } from "react"
+import { Divider } from "@mantine/core"
+import {
+  Button,
+  Container,
+  Flex,
+  Avatar,
+  Text,
+  Stack,
+} from "@pokt-foundation/pocket-blocks"
+import { FetcherWithComponents } from "@remix-run/react"
+import { Emoji } from "emoji-picker-react"
+import { useState } from "react"
 import { Auth0Profile } from "remix-auth-auth0"
-import AddressCard, { links as AddressCardLinks } from "./components/AddressCard"
-import KeysCard, { links as KeysCardLinks } from "./components/KeysCard"
-import LegacyBannerCard, {
-  links as LegacyBannerCardLinks,
-} from "./components/LegacyBannerCard"
-import MemberRoleCard, { links as MemberRoleCardLinks } from "./components/MemberRoleCard"
-import StopRemoveApp, { links as StopRemoveAppLinks } from "./components/StopRemoveApp"
-import styles from "./styles.css"
-import AppName from "~/components/application/AppName"
-import AppPlanDetails, {
-  links as AppPlanDetailsLinks,
-} from "~/components/application/AppPlanDetails"
-import FeedbackCard, {
-  links as FeedbackCardLinks,
-} from "~/components/application/FeedbackCard"
-import Modal, { links as ModalLinks, ModalCTA } from "~/components/Modal"
-import Nav, { links as NavLinks } from "~/components/Nav"
-import { useFeatureFlags } from "~/context/FeatureFlagContext"
-import { useTranslate } from "~/context/TranslateContext"
-import { EndpointQuery, PayPlanType, RoleName } from "~/models/portal/sdk"
+import Modal, { ModalCTA } from "~/components/Modal"
+import { Route } from "~/components/Nav"
+import { EndpointQuery } from "~/models/portal/sdk"
 import { Stripe } from "~/models/stripe/stripe.server"
-import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
-import { getRequiredClientEnvVar } from "~/utils/environment"
-import { getPlanName } from "~/utils/utils"
-
-/* c8 ignore start */
-export const links = () => {
-  return [
-    ...NavLinks(),
-    ...KeysCardLinks(),
-    ...AddressCardLinks(),
-    ...FeedbackCardLinks(),
-    ...StopRemoveAppLinks(),
-    ...ModalLinks(),
-    ...AppPlanDetailsLinks(),
-    ...LegacyBannerCardLinks(),
-    ...MemberRoleCardLinks(),
-    { rel: "stylesheet", href: styles },
-  ]
-}
-/* c8 ignore stop */
+import AppOverviewTabs from "~/routes/account.$accountId.$appId/components/AppOverviewTabs"
+import useSubscriptionSync from "~/routes/account.$accountId.$appId/hooks/useSubscriptionSync"
+import { DEFAULT_APPMOJI } from "~/routes/account_.$accountId.create/components/AppmojiPicker"
 
 type AppIdLayoutViewProps = {
   endpoint: EndpointQuery["endpoint"] | null
@@ -63,224 +38,63 @@ export default function AppIdLayoutView({
   user,
   children,
 }: AppIdLayoutViewProps) {
-  const { t } = useTranslate()
-  const { flags } = useFeatureFlags()
   const [showSuccessModal, setShowSuccessModel] = useState<boolean>(false)
   const [showErrorModal, setShowErrorModel] = useState<boolean>(false)
 
-  const [routes, setRoutes] = useState([
-    {
-      to: "/account",
-      icon: () => (
-        <span>
-          <IconCaretLeft className="pokt-icon" />
-        </span>
-      ),
-      end: true,
-    },
+  const [routes, setRoutes] = useState<Route[]>([
     {
       to: "",
-      label: t.appId.routes.overview,
+      label: "Overview",
       end: true,
     },
     {
       to: "requests",
-      label: t.appId.routes.requests,
+      label: "Requests",
     },
     {
       to: "security",
-      label: t.appId.routes.security,
+      label: "Security",
     },
     {
       to: "notifications",
-      label: t.appId.routes.notifications,
+      label: "Notifications",
     },
     {
       to: "team",
-      label: t.appId.routes.team,
+      label: "Team",
     },
   ])
 
-  useEffect(() => {
-    const success = searchParams.get("success")
-    const cancelError = searchParams.get("cancelError")
-
-    if (!success) return
-    if (success === "true") {
-      // Update plan type to paid on success
-      if (
-        endpoint &&
-        endpoint.appLimits.planType !== PayPlanType.PayAsYouGoV0 &&
-        updatePlanFetcher.state !== "submitting" &&
-        updatePlanFetcher.state !== "loading"
-      ) {
-        updatePlanFetcher.submit(
-          {
-            id: endpoint.id,
-            type: PayPlanType.PayAsYouGoV0,
-          },
-          {
-            action: "/api/admin/update-plan",
-            method: "post",
-          },
-        )
-      }
-      trackEvent(AmplitudeEvents.NewSubscription)
-      searchParams.delete("success")
-      setShowSuccessModel(true)
-    }
-
-    if (success === "false" || cancelError === "true") {
-      searchParams.delete("success")
-      searchParams.delete("cancelError")
-      setShowErrorModel(true)
-    }
-  }, [searchParams, endpoint, updatePlanFetcher, setSearchParams])
-
-  useEffect(() => {
-    if (
-      flags.STRIPE_PAYMENT === "true" &&
-      subscription &&
-      endpoint &&
-      endpoint.appLimits.planType === PayPlanType.PayAsYouGoV0 &&
-      !routes.filter((route) => route.to === "plan")[0]
-    ) {
-      setRoutes((curr) => [
-        ...curr.filter((c) => c.to !== "notifications"),
-        {
-          to: "plan",
-          label: t.appId.routes.plan,
-        },
-      ])
-    }
-    if (
-      flags.STRIPE_PAYMENT === "true" &&
-      endpoint &&
-      endpoint.appLimits.planType === PayPlanType.FreetierV0 &&
-      routes.filter((route) => route.to === "plan")[0]
-    ) {
-      setRoutes((curr) => [...curr.filter((route) => route.to !== "plan")])
-    }
-  }, [endpoint, t, routes, flags.STRIPE_PAYMENT, subscription])
-
-  useEffect(() => {
-    // Update plan type to free if plan is paid and there subscription is canceled
-    if (
-      endpoint?.appLimits.planType === PayPlanType.PayAsYouGoV0 &&
-      (!subscription || subscription.cancel_at_period_end) &&
-      updatePlanFetcher.state !== "submitting" &&
-      updatePlanFetcher.state !== "loading"
-    ) {
-      updatePlanFetcher.submit(
-        {
-          id: endpoint.id,
-          type: PayPlanType.FreetierV0,
-        },
-        {
-          action: "/api/admin/update-plan",
-          method: "post",
-        },
-      )
-    }
-  }, [endpoint, subscription, updatePlanFetcher])
-
-  useEffect(() => {
-    // Update plan type to paid if plan is free and there is a subscription
-    if (
-      endpoint?.appLimits.planType === PayPlanType.FreetierV0 &&
-      subscription &&
-      !subscription.cancel_at_period_end &&
-      updatePlanFetcher.state !== "submitting" &&
-      updatePlanFetcher.state !== "loading"
-    ) {
-      updatePlanFetcher.submit(
-        {
-          id: endpoint.id,
-          type: PayPlanType.PayAsYouGoV0,
-        },
-        {
-          action: "/api/admin/update-plan",
-          method: "post",
-        },
-      )
-    }
-  }, [endpoint, subscription, updatePlanFetcher])
-
-  const role = endpoint?.users.find((u) => u.email === user._json?.email)?.roleName
-  const isMember = role === RoleName.Member
-  const isAdmin = role === RoleName.Admin
+  useSubscriptionSync({
+    routes,
+    endpoint,
+    setRoutes,
+    subscription,
+    searchParams,
+    setSearchParams,
+    updatePlanFetcher,
+    setShowErrorModel,
+    setShowSuccessModel,
+  })
 
   return (
-    <div className="pokt-appid-layout-view">
-      <Grid gutter={32}>
-        <Grid.Col md={8}>
-          {endpoint && (
-            <Grid.Col xs={12}>
-              <div>
-                <AppName id={endpoint.id} name={endpoint.name} />
-                <Nav
-                  dropdown
-                  appId={endpoint.id}
-                  ariaLabel="Application"
-                  routes={routes}
-                />
-              </div>
-            </Grid.Col>
-          )}
-          {endpoint &&
-            getPlanName(endpoint.appLimits.planType) === "Legacy" &&
-            getRequiredClientEnvVar("FLAG_LEGACY_MESSAGING") === "true" && (
-              <LegacyBannerCard />
-            )}
-          {children}
-        </Grid.Col>
-        <Grid.Col md={4}>
-          {endpoint && (
-            <>
-              <section>
-                <AppPlanDetails
-                  dailyLimit={endpoint.appLimits.dailyLimit}
-                  id={endpoint.id}
-                  isMember={isMember}
-                  name={endpoint.name}
-                  planType={endpoint.appLimits.planType}
-                  subscription={subscription}
-                />
-              </section>
-              {role && (
-                <section>
-                  <MemberRoleCard role={role} />
-                </section>
-              )}
-              <section>
-                <KeysCard
-                  id={endpoint.id}
-                  isMember={isMember}
-                  publicKey={endpoint.apps ? endpoint.apps[0]?.publicKey : ""}
-                  secret={endpoint.gatewaySettings.secretKey}
-                />
-              </section>
-              <section>
-                <AddressCard apps={endpoint.apps} />
-              </section>
-              <section>
-                <FeedbackCard />
-              </section>
-              <section>
-                <StopRemoveApp
-                  appId={endpoint.id}
-                  apps={endpoint.apps}
-                  isAdmin={isAdmin}
-                  isMember={isMember}
-                  name={endpoint.name}
-                  planType={endpoint.appLimits.planType}
-                  subscription={subscription}
-                />
-              </section>
-            </>
-          )}
-        </Grid.Col>
-      </Grid>
+    <Container fluid pt={16} px={0}>
+      <Stack spacing="xl">
+        {endpoint && (
+          <Flex align="center" gap="sm">
+            <Avatar color="dark" radius="xl" variant="outline">
+              <Emoji size={14} unified={DEFAULT_APPMOJI} />
+            </Avatar>
+            <Text fw={600} fz="md">
+              {endpoint.name}
+            </Text>
+          </Flex>
+        )}
+        <Divider />
+        <AppOverviewTabs routes={routes} />
+        <Divider />
+      </Stack>
+      {children}
       <Modal
         opened={showSuccessModal}
         title="Congratulations!"
@@ -314,6 +128,6 @@ export default function AppIdLayoutView({
           <Button onClick={() => setShowErrorModel(false)}>Try Again</Button>
         </ModalCTA>
       </Modal>
-    </div>
+    </Container>
   )
 }

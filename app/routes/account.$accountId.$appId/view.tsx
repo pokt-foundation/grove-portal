@@ -2,15 +2,18 @@ import { Divider } from "@mantine/core"
 import {
   Button,
   Container,
-  Flex,
   Avatar,
   Text,
   Stack,
+  Group,
+  Menu,
 } from "@pokt-foundation/pocket-blocks"
 import { FetcherWithComponents } from "@remix-run/react"
 import { Emoji } from "emoji-picker-react"
 import { useState } from "react"
+import { LuTrash2 } from "react-icons/lu"
 import { Auth0Profile } from "remix-auth-auth0"
+import ContextMenuTarget from "~/components/ContextMenuTarget"
 import Modal, { ModalCTA } from "~/components/Modal"
 import { Route } from "~/components/Nav"
 import { EndpointQuery } from "~/models/portal/sdk"
@@ -81,14 +84,23 @@ export default function AppIdLayoutView({
     <Container fluid pt={16} px={0}>
       <Stack spacing="xl">
         {endpoint && (
-          <Flex align="center" gap="sm">
-            <Avatar color="dark" radius="xl" variant="outline">
-              <Emoji size={14} unified={DEFAULT_APPMOJI} />
-            </Avatar>
-            <Text fw={600} fz="md">
-              {endpoint.name}
-            </Text>
-          </Flex>
+          <Group position="apart">
+            <Group spacing="sm">
+              <Avatar color="dark" radius="xl" variant="outline">
+                <Emoji size={14} unified={DEFAULT_APPMOJI} />
+              </Avatar>
+              <Text fw={600} fz="md">
+                {endpoint.name}
+              </Text>
+            </Group>
+
+            <Menu>
+              <ContextMenuTarget />
+              <Menu.Dropdown>
+                <Menu.Item icon={<LuTrash2 size={18} />}>Delete application</Menu.Item>
+              </Menu.Dropdown>
+            </Menu>
+          </Group>
         )}
         <Divider />
         <AppOverviewTabs routes={routes} />

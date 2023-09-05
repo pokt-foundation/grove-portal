@@ -10,8 +10,9 @@ import {
   UnstyledButton,
 } from "@pokt-foundation/pocket-blocks"
 import { useParams } from "@remix-run/react"
-import { LuBook, LuMoreHorizontal } from "react-icons/lu"
+import { LuBook } from "react-icons/lu"
 import { RiStarLine } from "react-icons/ri"
+import ContextMenuTarget from "~/components/ContextMenuTarget"
 import CopyTextButton from "~/components/CopyTextButton"
 import { DataTable } from "~/components/DataTable"
 import { Blockchain, BlockchainsQuery } from "~/models/portal/sdk"
@@ -81,17 +82,7 @@ const AppEndpointsTable = ({ blockchains, searchTerm }: AppEndpointsProps) => {
                 <Flex gap="lg" justify="flex-end">
                   <CopyTextButton value={getAppEndpointUrl(chain, appId)} />
                   <Menu>
-                    <Menu.Target>
-                      <ActionIcon
-                        className={commonClasses.grayOutlinedButton}
-                        radius="xl"
-                        size={40}
-                        variant="outline"
-                      >
-                        <LuMoreHorizontal />
-                      </ActionIcon>
-                    </Menu.Target>
-
+                    <ContextMenuTarget />
                     <Menu.Dropdown>
                       <Menu.Item icon={<LuBook size={18} />}>
                         <UnstyledButton

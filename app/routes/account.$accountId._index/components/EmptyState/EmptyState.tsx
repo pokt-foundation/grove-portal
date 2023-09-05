@@ -9,9 +9,9 @@ export const EmptyState = () => {
       <Image
         withPlaceholder
         alt="Empty overview placeholder"
-        height={208}
+        height={205}
         src="/overview-empty-state.svg"
-        width={200}
+        width={122}
       />
       <Text fw={600} fz="xl">
         Create your first application

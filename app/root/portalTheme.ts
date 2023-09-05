@@ -106,7 +106,21 @@ export const portalTheme: MantineThemeOverride = {
     ],
   },
   components: {
-    ...theme.components,
+    Menu: {
+      defaultProps: {
+        position: "bottom-end",
+      },
+      styles: (theme) => ({
+        dropdown: {
+          minWidth: "270px",
+          maxWidth: "300px",
+          maxHeight: "400px",
+          overflow: "auto",
+          backgroundColor:
+            theme.colorScheme === "dark" ? theme.colors.dark[9] : theme.colors.gray[2],
+        },
+      }),
+    },
     Text: {
       styles: {
         root: {

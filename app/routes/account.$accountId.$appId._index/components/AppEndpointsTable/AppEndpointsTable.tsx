@@ -16,7 +16,6 @@ import ContextMenuTarget from "~/components/ContextMenuTarget"
 import CopyTextButton from "~/components/CopyTextButton"
 import { DataTable } from "~/components/DataTable"
 import { Blockchain, BlockchainsQuery } from "~/models/portal/sdk"
-import useCommonStyles from "~/styles/commonStyles"
 
 type AppEndpointsProps = {
   blockchains: BlockchainsQuery["blockchains"]
@@ -31,16 +30,7 @@ const getAppEndpointUrl = (
 const AppEndpointsTable = ({ blockchains, searchTerm }: AppEndpointsProps) => {
   const theme = useMantineTheme()
   const { appId } = useParams()
-  const { classes: commonClasses } = useCommonStyles()
-
   return (
-    // <Table miw={800} verticalSpacing="xl">
-    //   <tbody>
-    //     {blockchains.map((blockchain) => (
-    //       <AppEndpoint key={blockchain?.id} chain={blockchain} />
-    //     ))}
-    //   </tbody>
-    // </Table>
     blockchains && (
       <DataTable
         data={blockchains?.map((chain) => {

@@ -6,6 +6,7 @@ export const portalTheme: MantineThemeOverride = {
   headings: {
     fontWeight: 600,
   },
+  primaryShade: { light: 4, dark: 7 },
   colors: {
     dark: [
       "#C1C2C5",

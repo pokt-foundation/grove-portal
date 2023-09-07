@@ -3,7 +3,7 @@ import { useCatch, useNavigation, useOutletContext } from "@remix-run/react"
 import { Auth0Profile } from "remix-auth-auth0"
 import invariant from "tiny-invariant"
 import { AppIdOutletContext } from "../account.$accountId.$appId/route"
-import TeamView, { links as TeamViewLinks } from "./view"
+import TeamView from "./view"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { RoleName } from "~/models/portal/sdk"
 import {
@@ -12,10 +12,6 @@ import {
   sendTeamUserRemovedEmail,
 } from "~/utils/mail.server"
 import { requireUser } from "~/utils/session.server"
-
-export const links = () => {
-  return [...TeamViewLinks()]
-}
 
 export type TeamLoaderData = {
   profile: Auth0Profile

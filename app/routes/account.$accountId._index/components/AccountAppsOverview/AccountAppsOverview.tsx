@@ -1,14 +1,20 @@
-import { Box, createStyles, Flex, SimpleGrid, Text } from "@pokt-foundation/pocket-blocks"
+import {
+  Box,
+  createStyles,
+  SimpleGrid,
+  Stack,
+  Text,
+} from "@pokt-foundation/pocket-blocks"
 import React from "react"
 
-type AppStat = { label: string; val: string }
+type AppStat = { label: string; val: string; time: string }
 
 const stats: AppStat[] = [
-  { label: "Total Relays (24hrs)", val: "54,828" },
-  { label: "Average Latency (24hrs)", val: "90ms" },
-  { label: "Success % (24hrs)", val: "99.92%" },
-  { label: "Errors (24hrs)", val: "8" },
-  { label: "Uptime (30days)", val: "99.72%" },
+  { label: "Total Relays", val: "54,828", time: "24hrs" },
+  { label: "Average Latency", val: "90ms", time: "24hrs" },
+  { label: "Success", val: "99.92%", time: "24hrs" },
+  { label: "Errors", val: "8", time: "24hrs" },
+  { label: "Uptime", val: "99.72%", time: "30days" },
 ]
 
 const useStyles = createStyles((theme) => ({
@@ -34,14 +40,17 @@ export const AccountAppsOverview = () => {
         ]}
         cols={5}
       >
-        {stats.map(({ label, val }) => (
+        {stats.map(({ label, val, time }) => (
           <Box key={label} className={classes.stat}>
-            <Flex align="center" direction="column" gap={4}>
+            <Stack align="center" spacing={0}>
               <Text fw={600} fz="md">
                 {val}
               </Text>
               <Text>{label}</Text>
-            </Flex>
+              <Text color="dimmed" fz="xs" lh={1.1}>
+                {time}
+              </Text>
+            </Stack>
           </Box>
         ))}
       </SimpleGrid>

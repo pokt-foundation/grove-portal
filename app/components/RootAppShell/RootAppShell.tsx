@@ -16,12 +16,12 @@ type RootAppShellProps = {
 export const RootAppShell = ({ user, endpoints, children }: RootAppShellProps) => {
   const [opened, setOpened] = useState(false)
   const { classes: commonClasses } = useCommonStyles()
-  const { isCreateApp } = useRoot({ user })
+  const { hideSidebar } = useRoot({ user })
   const navProp = useMemo(
     () => ({
-      ...(!isCreateApp && { navbar: <Sidebar endpoints={endpoints} hidden={!opened} /> }),
+      ...(!hideSidebar && { navbar: <Sidebar endpoints={endpoints} hidden={!opened} /> }),
     }),
-    [isCreateApp, endpoints, opened],
+    [hideSidebar, endpoints, opened],
   )
 
   return (

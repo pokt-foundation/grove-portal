@@ -1,7 +1,7 @@
 import { Navbar } from "@pokt-foundation/pocket-blocks"
 import { useParams } from "@remix-run/react"
 import React, { useMemo } from "react"
-import { AppLink, SidebarNavRoute } from "~/components/Sidebar/components"
+import { InternalLink, SidebarNavRoute } from "~/components/Sidebar/components"
 import { EndpointsQuery } from "~/models/portal/sdk"
 
 type SidebarAppsProps = {
@@ -46,7 +46,11 @@ export const SidebarApps = ({ apps, iconOnly }: SidebarAppsProps) => {
   return (
     <Navbar.Section>
       {appsRoutes.map((SidebarNavRoute) => (
-        <AppLink key={SidebarNavRoute.to} iconOnly={iconOnly} route={SidebarNavRoute} />
+        <InternalLink
+          key={SidebarNavRoute.to}
+          iconOnly={iconOnly}
+          route={SidebarNavRoute}
+        />
       ))}
     </Navbar.Section>
   )

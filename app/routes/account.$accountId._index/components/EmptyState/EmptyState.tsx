@@ -5,19 +5,20 @@ export const EmptyState = () => {
   const { accountId } = useParams()
 
   return (
-    <Stack align="center" justify="center">
+    <Stack align="center" justify="center" mt={120}>
       <Image
         withPlaceholder
         alt="Empty overview placeholder"
-        height={210}
-        src="/overview-empty-state.png"
-        width={210}
+        height={208}
+        src="/overview-empty-state.svg"
+        width={200}
       />
       <Text fw={600} fz="xl">
         Create your first application
       </Text>
-      <Text fw={400} fz="sm">
-        Applications connect your project to the blockchain. Set up your first one now.
+      <Text fw={400} fz="sm" ta="center">
+        Applications connect your project to the blockchain. <br />
+        Set up your first one now.
       </Text>
       <Button
         component={Link}

@@ -30,8 +30,9 @@ type LoaderData = {
   price: Stripe.Price | void
 }
 
-export const loader: LoaderFunction = async ({ request }) => {
+export const loader: LoaderFunction = async ({ request, params }) => {
   const user = await requireUser(request)
+  const { accountId } = params
 
   const portal = initPortalClient({ token: user.accessToken })
   const endpointsResponse = await portal.endpoints().catch((e) => {
@@ -40,11 +41,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   const permissions = getUserPermissions(user.accessToken)
   const underMaxApps = () => {
-    if (!endpointsResponse || endpointsResponse.owner.length < MAX_USER_APPS) {
-      return true
-    }
-
-    return false
+    return !endpointsResponse || endpointsResponse.owner.length < MAX_USER_APPS
   }
 
   const userCanCreateApp =
@@ -54,7 +51,7 @@ export const loader: LoaderFunction = async ({ request }) => {
     underMaxApps()
 
   if (!userCanCreateApp) {
-    return redirect("/account")
+    return redirect(`/account/${accountId}/app-limit-exceeded`)
   }
 
   const priceID = getRequiredServerEnvVar("STRIPE_PRICE_ID")

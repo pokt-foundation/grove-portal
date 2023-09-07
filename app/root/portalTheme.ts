@@ -144,6 +144,18 @@ export const portalTheme: MantineThemeOverride = {
         },
       }),
     },
+    Badge: {
+      defaultProps: {
+        color: "gray",
+        fw: 400,
+        fz: "xs",
+        h: "xl",
+        tt: "capitalize",
+      },
+      styles: (theme) => ({
+        root: { backgroundColor: theme?.colors?.navy[4] },
+      }),
+    },
     TextInput: {
       defaultProps: {
         radius: "sm",

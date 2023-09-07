@@ -84,23 +84,10 @@ export default function AppIdLayoutView({
     <Container fluid pt={16} px={0}>
       <Stack spacing="xl">
         {endpoint && (
-          <Group position="apart">
-            <Group spacing="sm">
-              <Avatar color="dark" radius="xl" variant="outline">
-                <Emoji size={14} unified={DEFAULT_APPMOJI} />
-              </Avatar>
-              <Text fw={600} fz="md">
-                {endpoint.name}
-              </Text>
-            </Group>
-
-            <Menu>
-              <ContextMenuTarget />
-              <Menu.Dropdown>
-                <Menu.Item icon={<LuTrash2 size={18} />}>Delete application</Menu.Item>
-              </Menu.Dropdown>
-            </Menu>
-          </Group>
+          <ApplicationHeader
+            endpoint={endpoint as ProcessedEndpoint}
+            subscription={subscription}
+          />
         )}
         <Divider />
         <AppOverviewTabs routes={routes} />

@@ -41,7 +41,7 @@ const AppEndpointsTable = ({ blockchains, searchTerm }: AppEndpointsProps) => {
                   <ActionIcon c="gray" size="xl">
                     <RiStarLine size={18} />
                   </ActionIcon>
-                  <Avatar radius={40} size={40} src="/avalanche-avax-logo.png" />
+                  <Avatar radius={40} size={40} src="/avalanche-avax-logo.svg" />
                   <Stack spacing={0} w={200}>
                     <Text truncate fw={600}>
                       {chain?.description}

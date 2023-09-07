@@ -1,33 +1,20 @@
 import { Divider } from "@mantine/core"
-import {
-  Button,
-  Container,
-  Avatar,
-  Text,
-  Stack,
-  Group,
-  Menu,
-} from "@pokt-foundation/pocket-blocks"
-import { FetcherWithComponents } from "@remix-run/react"
-import { Emoji } from "emoji-picker-react"
-import { useState } from "react"
-import { LuTrash2 } from "react-icons/lu"
+import { Button, Container, Stack } from "@pokt-foundation/pocket-blocks"
+import { useMemo, useState } from "react"
 import { Auth0Profile } from "remix-auth-auth0"
-import ContextMenuTarget from "~/components/ContextMenuTarget"
 import Modal, { ModalCTA } from "~/components/Modal"
 import { Route } from "~/components/Nav"
-import { EndpointQuery } from "~/models/portal/sdk"
+import { EndpointQuery, ProcessedEndpoint } from "~/models/portal/sdk"
 import { Stripe } from "~/models/stripe/stripe.server"
+import ApplicationHeader from "~/routes/account.$accountId.$appId/components/ApplicationHeader"
 import AppOverviewTabs from "~/routes/account.$accountId.$appId/components/AppOverviewTabs"
 import useSubscriptionSync from "~/routes/account.$accountId.$appId/hooks/useSubscriptionSync"
-import { DEFAULT_APPMOJI } from "~/routes/account_.$accountId.create/components/AppmojiPicker"
 
 type AppIdLayoutViewProps = {
   endpoint: EndpointQuery["endpoint"] | null
   searchParams: URLSearchParams
   setSearchParams: (typeof URLSearchParams)["arguments"]
   subscription: Stripe.Subscription | undefined
-  updatePlanFetcher: FetcherWithComponents<any>
   user: Auth0Profile
   children: React.ReactNode
 }
@@ -37,12 +24,18 @@ export default function AppIdLayoutView({
   searchParams,
   setSearchParams,
   subscription,
-  updatePlanFetcher,
   user,
   children,
 }: AppIdLayoutViewProps) {
   const [showSuccessModal, setShowSuccessModel] = useState<boolean>(false)
   const [showErrorModal, setShowErrorModel] = useState<boolean>(false)
+
+  const userRole = useMemo(
+    () =>
+      endpoint?.users?.find(({ email }) => email === user?._json?.email)?.roleName ||
+      null,
+    [endpoint, user],
+  )
 
   const [routes, setRoutes] = useState<Route[]>([
     {
@@ -70,12 +63,12 @@ export default function AppIdLayoutView({
 
   useSubscriptionSync({
     routes,
+    userRole,
     endpoint,
     setRoutes,
     subscription,
     searchParams,
     setSearchParams,
-    updatePlanFetcher,
     setShowErrorModel,
     setShowSuccessModel,
   })

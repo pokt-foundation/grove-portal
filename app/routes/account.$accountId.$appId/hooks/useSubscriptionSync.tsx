@@ -1,19 +1,19 @@
-import { FetcherWithComponents } from "@remix-run/react"
+import { useFetcher } from "@remix-run/react"
 import { Dispatch, SetStateAction, useEffect, useRef } from "react"
 import { type Route } from "~/components/Nav"
 import { useFeatureFlags } from "~/context/FeatureFlagContext"
-import { EndpointQuery, PayPlanType } from "~/models/portal/sdk"
+import { EndpointQuery, PayPlanType, RoleName } from "~/models/portal/sdk"
 import { Stripe } from "~/models/stripe/stripe.server"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 
 type UseSubscriptionSync = {
   routes: Route[]
+  userRole: RoleName | null
   endpoint: EndpointQuery["endpoint"] | null
   setRoutes: Dispatch<SetStateAction<Route[]>>
   subscription: Stripe.Subscription | undefined
   searchParams: URLSearchParams
   setSearchParams: (typeof URLSearchParams)["arguments"]
-  updatePlanFetcher: FetcherWithComponents<any>
   setShowSuccessModel: (val: boolean) => void
   setShowErrorModel: Dispatch<SetStateAction<boolean>>
 }
@@ -23,19 +23,19 @@ type UpdatePlanTypeArgs = {
   planType: PayPlanType
 }
 
-// TODO: ‼️VERY IMPORTANT‼️ align with latest stage changes
 const useSubscriptionSync = ({
   routes,
+  userRole,
   endpoint,
   setRoutes,
   subscription,
   searchParams,
   setSearchParams,
-  updatePlanFetcher,
   setShowErrorModel,
   setShowSuccessModel,
 }: UseSubscriptionSync) => {
   const { flags } = useFeatureFlags()
+  const updatePlanFetcher = useFetcher()
 
   const updatePlanType = ({ endpointId, planType }: UpdatePlanTypeArgs) => {
     updatePlanFetcher.submit(
@@ -44,7 +44,7 @@ const useSubscriptionSync = ({
         type: planType,
       },
       {
-        action: `/api/${endpointId}/update-plan`,
+        action: `/api/admin/update-plan`,
         method: "post",
       },
     )
@@ -82,9 +82,10 @@ const useSubscriptionSync = ({
   }, [searchParams, endpoint, updatePlanFetcher, setSearchParams])
 
   useEffect(() => {
-    // Update plan type to free if plan is paid and there subscription is canceled
+    // Update plan type to free if plan is paid and their subscription is canceled
     if (
       endpoint?.appLimits.planType === PayPlanType.PayAsYouGoV0 &&
+      userRole === RoleName.Owner &&
       (!subscription || subscription.cancel_at_period_end) &&
       updatePlanFetcher.state !== "submitting" &&
       updatePlanFetcher.state !== "loading"
@@ -94,7 +95,7 @@ const useSubscriptionSync = ({
         planType: PayPlanType.FreetierV0,
       })
     }
-  }, [endpoint, subscription, updatePlanFetcher])
+  }, [endpoint, subscription, updatePlanFetcher, userRole])
 
   useEffect(() => {
     // Update plan type to paid if plan is free and there is a subscription

@@ -1,4 +1,3 @@
-import { useFetcher } from "@remix-run/react"
 import { vi, expect } from "vitest"
 import AppIdLayoutView from "./view"
 import { render, screen } from "test/helpers"
@@ -12,10 +11,10 @@ vi.mock("~/utils/analytics", async () => ({
   trackEvent: vi.fn(),
 }))
 
-const updatePlanFetcherMock = {
-  state: "idle",
-  submit: vi.fn(() => ({ error: false })),
-} as unknown as ReturnType<typeof useFetcher>
+// const updatePlanFetcherMock = {
+//   state: "idle",
+//   submit: vi.fn(() => ({ error: false })),
+// } as unknown as ReturnType<typeof useFetcher>
 
 const setSearchParams = vi.fn()
 
@@ -30,7 +29,6 @@ describe.skip("<AppIdLayoutView />", () => {
         searchParams={new URLSearchParams({ success: "false" })}
         setSearchParams={setSearchParams}
         subscription={subscription}
-        updatePlanFetcher={updatePlanFetcherMock}
         user={profileMockData}
       >
         <div>Test Outlet</div>
@@ -48,7 +46,6 @@ describe.skip("<AppIdLayoutView />", () => {
         searchParams={new URLSearchParams({ success: "true" })}
         setSearchParams={setSearchParams}
         subscription={subscription}
-        updatePlanFetcher={updatePlanFetcherMock}
         user={profileMockData}
       >
         <div>Test Outlet</div>
@@ -64,7 +61,6 @@ describe.skip("<AppIdLayoutView />", () => {
         searchParams={new URLSearchParams()}
         setSearchParams={setSearchParams}
         subscription={subscription}
-        updatePlanFetcher={updatePlanFetcherMock}
         user={profileMockData}
       >
         <div>Test Outlet</div>
@@ -92,7 +88,6 @@ describe.skip("<AppIdLayoutView />", () => {
         searchParams={new URLSearchParams()}
         setSearchParams={setSearchParams}
         subscription={subscription}
-        updatePlanFetcher={updatePlanFetcherMock}
         user={profileMockData}
       >
         <div>Test Outlet</div>
@@ -120,7 +115,6 @@ describe.skip("<AppIdLayoutView />", () => {
         searchParams={new URLSearchParams()}
         setSearchParams={setSearchParams}
         subscription={subscription}
-        updatePlanFetcher={updatePlanFetcherMock}
         user={profileMockData}
       >
         <div>Test Outlet</div>
@@ -149,7 +143,6 @@ describe.skip("<AppIdLayoutView />", () => {
         searchParams={new URLSearchParams()}
         setSearchParams={setSearchParams}
         subscription={subscription}
-        updatePlanFetcher={updatePlanFetcherMock}
         user={profileMockData}
       >
         <div>Test Outlet</div>
@@ -180,7 +173,6 @@ describe.skip("<AppIdLayoutView />", () => {
         searchParams={new URLSearchParams()}
         setSearchParams={setSearchParams}
         subscription={subscription}
-        updatePlanFetcher={updatePlanFetcherMock}
         user={profileMockData}
       >
         <div>Test Outlet</div>
@@ -199,7 +191,6 @@ describe.skip("<AppIdLayoutView />", () => {
         searchParams={new URLSearchParams()}
         setSearchParams={setSearchParams}
         subscription={subscription}
-        updatePlanFetcher={updatePlanFetcherMock}
         user={profileMockData}
       >
         <div>Test Outlet</div>
@@ -219,7 +210,6 @@ describe.skip("<AppIdLayoutView />", () => {
         searchParams={new URLSearchParams()}
         setSearchParams={setSearchParams}
         subscription={subscription}
-        updatePlanFetcher={updatePlanFetcherMock}
         user={profileMockData}
       >
         <div>Test Outlet</div>
@@ -241,7 +231,6 @@ describe.skip("<AppIdLayoutView />", () => {
         searchParams={new URLSearchParams()}
         setSearchParams={setSearchParams}
         subscription={subscription}
-        updatePlanFetcher={updatePlanFetcherMock}
         user={profileMockData}
       >
         <div>Test Outlet</div>

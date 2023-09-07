@@ -1,11 +1,5 @@
 import { LoaderFunction, MetaFunction, json, redirect } from "@remix-run/node"
-import {
-  Outlet,
-  useCatch,
-  useFetcher,
-  useLoaderData,
-  useSearchParams,
-} from "@remix-run/react"
+import { Outlet, useCatch, useLoaderData, useSearchParams } from "@remix-run/react"
 import { Auth0Profile } from "remix-auth-auth0"
 import invariant from "tiny-invariant"
 import AppIdLayoutView from "./view"
@@ -118,7 +112,6 @@ export default function AppIdLayout() {
     dailyNetworkRelaysPerWeek,
   } = useLoaderData() as AppIdLoaderData
   const [searchParams, setSearchParams] = useSearchParams()
-  const updatePlanFetcher = useFetcher()
 
   return (
     <AppIdLayoutView
@@ -126,7 +119,6 @@ export default function AppIdLayout() {
       searchParams={searchParams}
       setSearchParams={setSearchParams}
       subscription={subscription}
-      updatePlanFetcher={updatePlanFetcher}
       user={user}
     >
       <Outlet

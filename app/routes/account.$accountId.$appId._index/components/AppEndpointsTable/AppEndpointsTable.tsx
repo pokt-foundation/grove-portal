@@ -78,7 +78,7 @@ const AppEndpointsTable = ({ blockchains, searchTerm }: AppEndpointsProps) => {
                         <UnstyledButton
                           component="a"
                           fz="sm"
-                          href={`https://docs.portal.pokt.network/supported-methods/${chain?.blockchain}`}
+                          href={`https://docs.portal.pokt.network/supported-methods/supported-methods/${chain?.blockchain}`}
                           rel="noreferrer"
                           target="_blank"
                         >

@@ -31,7 +31,7 @@ const ApplicationHeader = ({ endpoint, subscription }: ApplicationHeaderProps) =
       <Menu>
         <ContextMenuTarget />
         <Menu.Dropdown>
-          <Menu.Item icon={<LuPencil size={18} />}>Edit application</Menu.Item>
+          <Menu.Item icon={<LuPencil size={18} />}>Edit information</Menu.Item>
           {endpoint && (
             <AppSubscription endpoint={endpoint} subscription={subscription} />
           )}

@@ -40,7 +40,7 @@ export default function AppIdLayoutView({
   const [routes, setRoutes] = useState<Route[]>([
     {
       to: "",
-      label: "Overview",
+      label: "Endpoints",
       end: true,
     },
     {

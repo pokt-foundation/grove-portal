@@ -57,9 +57,9 @@ const AppSubscription = ({ endpoint, subscription }: AppSubscriptionProps) => {
       title: <Text fw={600}>Renew Subscription</Text>,
       children: (
         <Text>
-          Your plan will be changed to 'Free' effective immediately, and you will be
+          Your plan will be renewed to 'Auto-Scale' effective immediately. You will be
           invoiced at the end of your billing period. If you change your mind, you can
-          renew your subscription until the end of your billing period.
+          stop your subscription anytime.
         </Text>
       ),
       labels: { cancel: "Cancel", confirm: "Renew subscription" },

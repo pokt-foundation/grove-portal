@@ -1,23 +1,12 @@
-import { ActionFunction, LinksFunction, json } from "@remix-run/node"
-import { useCatch, useOutletContext } from "@remix-run/react"
+import { ActionFunction, json } from "@remix-run/node"
+import { useOutletContext } from "@remix-run/react"
 import { useEffect } from "react"
 import invariant from "tiny-invariant"
 import { AppIdOutletContext } from "../account.$accountId.$appId/route"
-import NotificationsAlertForm, {
-  links as NotificationsAlertFormLinks,
-} from "./components/NotificationsAlertForm/NotificationsAlertForm"
-import styles from "./styles.css"
 import { initPortalClient } from "~/models/portal/portal.server"
+import AppNotificationsAlert from "~/routes/account.$accountId.$appId.notifications/components/NotificationsAlertForm"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { requireUser } from "~/utils/session.server"
-
-export const links: LinksFunction = () => [
-  ...NotificationsAlertFormLinks(),
-  {
-    rel: "stylesheet",
-    href: styles,
-  },
-]
 
 export const action: ActionFunction = async ({ request, params }) => {
   const { appId } = params
@@ -58,32 +47,5 @@ export default function AppNotifications() {
 
   const { endpoint } = useOutletContext<AppIdOutletContext>()
 
-  return (
-    <section className="pokt-network-app-notifications">
-      <NotificationsAlertForm endpoint={endpoint} />
-      {/* <NotificationsWeeklyBandwidthUsageCard /> */}
-    </section>
-  )
-}
-
-export const CatchBoundary = () => {
-  const caught = useCatch()
-  if (caught.status === 404) {
-    return (
-      <div className="error-container">
-        <h1>Notifications Catch Error</h1>
-        <p>{caught.statusText}</p>
-      </div>
-    )
-  }
-  throw new Error(`Unexpected caught response with status: ${caught.status}`)
-}
-
-export const ErrorBoundary = ({ error }: { error: Error }) => {
-  return (
-    <div className="error-container">
-      <h1>Notifications Error</h1>
-      <p>{error.message}</p>
-    </div>
-  )
+  return <AppNotificationsAlert endpoint={endpoint} />
 }

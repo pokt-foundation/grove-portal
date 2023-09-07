@@ -180,6 +180,14 @@ export const portalTheme: MantineThemeOverride = {
         },
       }),
     },
+    Modal: {
+      styles: (theme) => ({
+        modal: {
+          backgroundColor:
+            theme.colorScheme === "dark" ? theme.colors.dark[9] : theme.colors.gray[1],
+        },
+      }),
+    },
     Tabs: {
       styles: (theme) => ({
         tabsList: {

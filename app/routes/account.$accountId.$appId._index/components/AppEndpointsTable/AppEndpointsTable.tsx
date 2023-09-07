@@ -16,6 +16,7 @@ import ContextMenuTarget from "~/components/ContextMenuTarget"
 import CopyTextButton from "~/components/CopyTextButton"
 import { DataTable } from "~/components/DataTable"
 import { Blockchain, BlockchainsQuery } from "~/models/portal/sdk"
+import { CHAIN_DOCS_URL } from "~/utils/chainUtils"
 
 type AppEndpointsProps = {
   blockchains: BlockchainsQuery["blockchains"]
@@ -74,17 +75,22 @@ const AppEndpointsTable = ({ blockchains, searchTerm }: AppEndpointsProps) => {
                   <Menu>
                     <ContextMenuTarget />
                     <Menu.Dropdown>
-                      <Menu.Item icon={<LuBook size={18} />}>
-                        <UnstyledButton
-                          component="a"
-                          fz="sm"
-                          href={`https://docs.portal.pokt.network/supported-methods/supported-methods/${chain?.blockchain}`}
-                          rel="noreferrer"
-                          target="_blank"
-                        >
-                          Documentation
-                        </UnstyledButton>
-                      </Menu.Item>
+                      {chain?.blockchain && CHAIN_DOCS_URL[chain?.blockchain] && (
+                        <Menu.Item icon={<LuBook size={18} />}>
+                          <UnstyledButton
+                            component="a"
+                            fz="sm"
+                            href={`https://docs.portal.pokt.network/supported-methods/supported-methods/${
+                              CHAIN_DOCS_URL[chain?.blockchain]
+                            }`}
+                            rel="noreferrer"
+                            target="_blank"
+                          >
+                            Documentation
+                          </UnstyledButton>
+                        </Menu.Item>
+                      )}
+
                       <Menu.Item icon={<RiStarLine size={18} />}>
                         Mark as favorite
                       </Menu.Item>

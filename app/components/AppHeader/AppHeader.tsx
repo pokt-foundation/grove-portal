@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Burger,
   Flex,
   MediaQuery,
@@ -55,15 +54,10 @@ function UserMenuDropdown({ user }: UserMenuDropdownProps) {
           }}
         >
           <Menu.Target>
-            <Avatar
-              radius="xl"
-              sx={{
-                cursor: "pointer",
-              }}
-              variant="outline"
-            >
-              <Identicon username={user.id ?? "user default"} />
-            </Avatar>
+            <Identicon
+              alt={`${user.name ?? "user"} profile picture`}
+              username={user.id ?? "user default"}
+            />
           </Menu.Target>
           <Menu.Dropdown>
             <Menu.Item icon={<LuUser size={16} />}>

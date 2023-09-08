@@ -10,6 +10,7 @@ import { Form, Link, NavLink } from "@remix-run/react"
 import React, { useRef } from "react"
 import { LuLogOut, LuUser } from "react-icons/lu"
 import { Auth0Profile } from "remix-auth-auth0"
+import Identicon from "../Identicon"
 
 type HeaderProps = {
   user?: Auth0Profile
@@ -61,7 +62,7 @@ function UserMenuDropdown({ user }: UserMenuDropdownProps) {
               }}
               variant="outline"
             >
-              <LuUser size={22} />
+              <Identicon username={user.id ?? "user default"} />
             </Avatar>
           </Menu.Target>
           <Menu.Dropdown>

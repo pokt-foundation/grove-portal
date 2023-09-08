@@ -35,6 +35,8 @@ export const loader: LoaderFunction = async () => {
     }
     const pageMeta = plasmicData.entryCompMetas[0]
 
+    console.log(pageMeta)
+
     return json<LoaderData>({
       plasmicData,
       pageMeta,

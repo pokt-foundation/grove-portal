@@ -47,7 +47,7 @@ const getStaticRoutes = (
   accountSettings: {
     to: `/user/profile`,
     icon: LuSettings,
-    label: "Portal Settings",
+    label: "Organization Settings",
   },
   support: {
     to: "https://discord.gg/portal-rpc",

@@ -45,10 +45,10 @@ export default function AppLimitExceeded() {
       <Image
         withPlaceholder
         alt="Empty overview placeholder"
-        height={208}
+        height={216}
         mt={40}
-        src="/overview-empty-state.svg"
-        width={200}
+        src="/app-limit-exceeded.svg"
+        width={270}
       />
       <Text fw={600} fz="xl">
         Currently you are only able to create two applications.
@@ -64,8 +64,10 @@ export default function AppLimitExceeded() {
         component={Link}
         mt="xs"
         prefetch="intent"
+        size="lg"
         to={`/account`}
         variant="outline"
+        w={156}
       >
         Discard
       </Button>

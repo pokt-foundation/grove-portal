@@ -41,6 +41,5 @@ module.exports = {
     ],
     eqeqeq: "warn",
     "no-unneeded-ternary": "error",
-    "no-nested-ternary": "error",
   },
 }

@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Burger,
   Flex,
   MediaQuery,
@@ -10,6 +9,7 @@ import { Form, Link, NavLink } from "@remix-run/react"
 import React, { useRef } from "react"
 import { LuLogOut, LuUser } from "react-icons/lu"
 import { Auth0Profile } from "remix-auth-auth0"
+import Identicon from "../Identicon"
 
 type HeaderProps = {
   user?: Auth0Profile
@@ -54,15 +54,10 @@ function UserMenuDropdown({ user }: UserMenuDropdownProps) {
           }}
         >
           <Menu.Target>
-            <Avatar
-              radius="xl"
-              sx={{
-                cursor: "pointer",
-              }}
-              variant="outline"
-            >
-              <LuUser size={22} />
-            </Avatar>
+            <Identicon
+              alt={`${user.name ?? "user"} profile picture`}
+              username={user.id ?? "user default"}
+            />
           </Menu.Target>
           <Menu.Dropdown>
             <Menu.Item icon={<LuUser size={16} />}>

@@ -25,7 +25,6 @@ export const Table = <T extends IdObj>({
   const { paginatedData, totalPages, page, handlePageChange } = usePagination({
     data,
     paginate,
-    search,
     searchTerm,
   })
 

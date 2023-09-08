@@ -78,6 +78,12 @@ export const getPlanName = (planType: PayPlanType) => {
   }
 }
 
+export const PLAN_NAME = {
+  [PayPlanType.FreetierV0]: "Free",
+  [PayPlanType.PayAsYouGoV0]: "Auto-Scale",
+  [PayPlanType.Enterprise]: "Enterprise",
+  [PayPlanType.TestPlanV0]: "Test",
+}
 // Accepts the array and key
 export const groupBy = (array: any[], key: string) => {
   // Return the end result

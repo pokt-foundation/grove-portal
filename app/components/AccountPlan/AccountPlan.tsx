@@ -76,19 +76,7 @@ export const AccountPlan = ({ type, onContinue }: AccountPlanProps) => {
       w="360px"
     >
       <Stack align="center" mb="xl" spacing="xl">
-        <Badge
-          color="gray"
-          fw={400}
-          fz="xs"
-          h="xl"
-          mb="8px"
-          sx={(theme: MantineTheme) => ({
-            textTransform: "capitalize",
-            backgroundColor: theme.colors.navy[4],
-          })}
-        >
-          {isFree ? "Builder" : "Pay as you go"}
-        </Badge>
+        <Badge>{isFree ? "Builder" : "Pay as you go"}</Badge>
         <Title order={3}>{isFree ? "Free" : "Auto-Scale"}</Title>
       </Stack>
       <Text align="center" py="lg">

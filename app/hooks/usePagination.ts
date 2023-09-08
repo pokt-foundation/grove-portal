@@ -4,8 +4,7 @@ import { IdObj, PaginateProps } from "~/types/table"
 type UsePaginationProps = {
   data: IdObj[]
   paginate: boolean | PaginateProps
-  search: boolean
-  searchTerm: string
+  searchTerm?: string
 }
 
 type UsePaginationReturn = {
@@ -20,7 +19,6 @@ type UsePaginationReturn = {
 export const usePagination = ({
   data,
   paginate,
-  search,
   searchTerm,
 }: UsePaginationProps): UsePaginationReturn => {
   const [page, setPage] = useState(
@@ -34,7 +32,7 @@ export const usePagination = ({
 
   const totalData = useMemo(
     () =>
-      search && searchTerm
+      searchTerm
         ? data.filter((row) => {
             const columns = Object.values(row).map((column) =>
               typeof column === "object" ? column.value : column,
@@ -44,7 +42,7 @@ export const usePagination = ({
             return exists
           })
         : data,
-    [data, search, searchTerm],
+    [data, searchTerm],
   )
 
   const totalPages = useMemo(

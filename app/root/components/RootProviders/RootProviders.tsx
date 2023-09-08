@@ -1,3 +1,4 @@
+import { ModalsProvider } from "@mantine/modals"
 import { MantineProvider } from "@pokt-foundation/pocket-blocks"
 import React from "react"
 import { FeatureFlagsContextProvider } from "~/context/FeatureFlagContext"
@@ -15,7 +16,9 @@ const RootProviders = ({ children }: { children: React.ReactNode }) => {
     >
       <FeatureFlagsContextProvider>
         <UserContextProvider>
-          <TranslateContextProvider>{children}</TranslateContextProvider>
+          <TranslateContextProvider>
+            <ModalsProvider>{children}</ModalsProvider>
+          </TranslateContextProvider>
         </UserContextProvider>
       </FeatureFlagsContextProvider>
     </MantineProvider>

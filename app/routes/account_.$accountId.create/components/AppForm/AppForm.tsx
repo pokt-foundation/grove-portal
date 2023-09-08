@@ -11,7 +11,7 @@ import {
   TextInput,
   Tooltip,
 } from "@pokt-foundation/pocket-blocks"
-import { Form, NavLink } from "@remix-run/react"
+import { Form, NavLink, useParams } from "@remix-run/react"
 import { useEffect, useState } from "react"
 import AppmojiPicker, {
   DEFAULT_APPMOJI,
@@ -29,10 +29,11 @@ type AppFormProps = { onSubmit: (formData: FormData) => void }
 const AppForm = ({ onSubmit }: AppFormProps) => {
   const { classes } = useStyles()
   const { classes: commonClasses } = useCommonStyles()
+  const { accountId } = useParams()
+
   const [name, setName] = useState("")
   const [referral, setReferral] = useState("")
   const [appmoji, setAppmoji] = useState(DEFAULT_APPMOJI)
-  // const navigation = useNavigation()
 
   useEffect(() => {
     const rid = window.localStorage.getItem("rid")
@@ -60,7 +61,7 @@ const AppForm = ({ onSubmit }: AppFormProps) => {
               aria-label="Discard"
               component={NavLink}
               size="lg"
-              to="/account"
+              to={`/account/${accountId}`}
             />
           </Tooltip>
         </Flex>
@@ -99,7 +100,7 @@ const AppForm = ({ onSubmit }: AppFormProps) => {
             <AppmojiPicker onAppmojiSelect={(appmoji) => setAppmoji(appmoji)} />
           </Box>
         </Stack>
-        <Divider my="32px" />
+        <Divider my={32} />
         <Group position="right">
           <Button
             classNames={{ root: commonClasses.grayOutlinedButton }}

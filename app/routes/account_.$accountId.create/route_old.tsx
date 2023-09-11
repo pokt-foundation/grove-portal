@@ -28,7 +28,7 @@ import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { getErrorMessage } from "~/utils/catchError"
 import { getRequiredClientEnvVar, getRequiredServerEnvVar } from "~/utils/environment"
 import { MAX_USER_APPS } from "~/utils/pocketUtils"
-import { getUserPermissions, requireUser, Permissions } from "~/utils/session.server"
+import { getUserPermissions, requireUser, Permissions } from "~/utils/user.server"
 import { getPlanName } from "~/utils/utils"
 
 export const meta: MetaFunction = () => {

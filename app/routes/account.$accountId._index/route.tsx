@@ -11,14 +11,17 @@ import {
 import { MetaFunction } from "@remix-run/node"
 import { useRouteLoaderData } from "@remix-run/react"
 import React from "react"
+import { AccountIdLoaderData } from "../account.$accountId/route"
+import ErrorView from "~/components/ErrorView"
 import TitledCard from "~/components/TitledCard"
-import { EndpointsQuery, ProcessedEndpoint } from "~/models/portal/sdk"
+import { EndpointsQuery, PortalApp, ProcessedEndpoint } from "~/models/portal/sdk"
 import { RootLoaderData } from "~/root"
 import { AccountAppsOverview } from "~/routes/account.$accountId._index/components/AccountAppsOverview"
 import { EmptyState } from "~/routes/account.$accountId._index/components/EmptyState"
 import OverviewBarChart from "~/routes/account.$accountId._index/components/OverviewBarChart"
 import { OverviewSparkline } from "~/routes/account.$accountId._index/components/OverviewSparkline"
 import { PocketUser } from "~/routes/api.user/route"
+import { LoaderDataStruct } from "~/utils/loader"
 
 export type DashboardLoaderData = {
   endpoints: EndpointsQuery | null
@@ -53,7 +56,15 @@ const InsightsDaysPeriodSelector = () => {
 }
 
 export default function Account() {
-  const { endpoints } = useRouteLoaderData("root") as RootLoaderData
+  const { data, error, message } = useRouteLoaderData(
+    "routes/account.$accountId",
+  ) as LoaderDataStruct<AccountIdLoaderData>
+
+  if (error) {
+    return <ErrorView message={message} />
+  }
+
+  const { account } = data
 
   const sparklineData = [
     {
@@ -86,21 +97,14 @@ export default function Account() {
     },
   ]
 
-  // const ownerEndpoints = (endpoints?.owner as ProcessedEndpoint[]) ?? []
-  const ownerEndpoints = endpoints
-    ? ([
-        ...endpoints.owner,
-        ...endpoints.member,
-        ...endpoints.admin,
-      ] as ProcessedEndpoint[])
-    : []
+  const apps = account.portalApps as PortalApp[]
 
   const insightsApplicationsSelectOptions = [
     { value: "all-apps", label: "All Applications" },
-    ...ownerEndpoints.map(({ name, id }) => ({ value: id, label: name })),
+    ...apps.map(({ name, id }) => ({ value: id, label: name })),
   ]
 
-  if (ownerEndpoints.length === 0) return <EmptyState />
+  if (apps.length === 0) return <EmptyState />
 
   return (
     <Stack mb="xl" pt={22} spacing="xl">
@@ -109,22 +113,6 @@ export default function Account() {
           <AccountAppsOverview />
         </Card.Section>
       </TitledCard>
-
-      {/*{ownerEndpoints.length > 0 && (*/}
-      {/*  <TitledCard*/}
-      {/*    header={() => (*/}
-      {/*      <Group position="apart">*/}
-      {/*        <Text weight={600}>Applications</Text>*/}
-      {/*      </Group>*/}
-      {/*    )}*/}
-      {/*  >*/}
-      {/*    {ownerEndpoints.map((endpoint) => (*/}
-      {/*      <Card.Section key={endpoint.id} inheritPadding mt="md">*/}
-      {/*        <AppOverview endpoint={endpoint} />*/}
-      {/*      </Card.Section>*/}
-      {/*    ))}*/}
-      {/*  </TitledCard>*/}
-      {/*)}*/}
 
       <Stack spacing="xl">
         <Group position="apart">

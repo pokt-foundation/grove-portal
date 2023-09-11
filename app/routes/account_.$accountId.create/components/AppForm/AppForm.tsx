@@ -108,7 +108,7 @@ const AppForm = ({ onSubmit }: AppFormProps) => {
             component={NavLink}
             fw={400}
             fz="sm"
-            to="/account"
+            to={`/account/${accountId}`}
             type="button"
             variant="outline"
             w="156px"

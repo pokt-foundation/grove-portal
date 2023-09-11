@@ -1,10 +1,10 @@
 import { Button, CloseButton, Image, Stack, Text } from "@pokt-foundation/pocket-blocks"
 import { LoaderFunction, MetaFunction, redirect } from "@remix-run/node"
-import { Link, NavLink } from "@remix-run/react"
+import { Link, NavLink, useParams } from "@remix-run/react"
 import { initPortalClient } from "~/models/portal/portal.server"
 import useCommonStyles from "~/styles/commonStyles"
 import { MAX_USER_APPS } from "~/utils/pocketUtils"
-import { requireUser } from "~/utils/session.server"
+import { requireUser } from "~/utils/user.server"
 
 export const meta: MetaFunction = () => {
   return {
@@ -33,6 +33,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export default function AppLimitExceeded() {
   const { classes: commonClasses } = useCommonStyles()
+  const params = useParams()
   return (
     <Stack align="center" justify="center" mt={42}>
       <CloseButton
@@ -65,7 +66,7 @@ export default function AppLimitExceeded() {
         mt="xs"
         prefetch="intent"
         size="lg"
-        to={`/account`}
+        to={`/account/${params.accountId}`}
         variant="outline"
         w={156}
       >

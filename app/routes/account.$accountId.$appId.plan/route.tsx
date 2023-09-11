@@ -11,7 +11,7 @@ import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { getErrorMessage } from "~/utils/catchError"
 import { dayjs } from "~/utils/dayjs"
 import { getRequiredServerEnvVar } from "~/utils/environment"
-import { getPoktId, requireUser } from "~/utils/session.server"
+import { getPoktId, requireUser } from "~/utils/user.server"
 
 export const links = () => {
   return [...PlanViewLinks()]

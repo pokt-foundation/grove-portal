@@ -1,6 +1,6 @@
 import { ActionFunction, redirect } from "@remix-run/node"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { requireUser } from "~/utils/session.server"
+import { requireUser } from "~/utils/user.server"
 
 const unifyContracts = (chains: string[], values: string[]) => {
   let together = {} as { [key: string]: string[] }

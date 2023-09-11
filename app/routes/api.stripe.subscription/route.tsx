@@ -5,7 +5,7 @@ import { PayPlanType } from "~/models/portal/sdk"
 import { getSubscription, stripe, Stripe } from "~/models/stripe/stripe.server"
 import { updatePlan } from "~/routes/api.admin.update-plan/route"
 import { getErrorMessage } from "~/utils/catchError"
-import { getPoktId, requireUser } from "~/utils/session.server"
+import { getPoktId, requireUser } from "~/utils/user.server"
 
 export type StripeDeleteActionData =
   | {

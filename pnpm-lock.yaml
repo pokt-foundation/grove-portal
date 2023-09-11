@@ -79,8 +79,8 @@ specifiers:
   rehype-raw: ^6.1.1
   rehype-slug: ^5.1.0
   remark-gfm: ^3.0.1
-  remix-auth: ^3.2.2
-  remix-auth-auth0: ^1.3.7
+  remix-auth: ^3.5.1
+  remix-auth-auth0: ^1.7.0
   start-server-and-test: ^1.14.0
   stripe: ^9.9.0
   tiny-invariant: ^1.2.0
@@ -99,7 +99,7 @@ dependencies:
   '@mantine/modals': 5.10.5_7l7cohgiq6l4ncfy2pvlz3brzy
   '@mantine/remix': 5.10.5_awjq7nnjaockokutkm4uxomyfe
   '@plasmicapp/loader-react': 1.0.274_biqbaboplfbrettd7655fr4n2y
-  '@pokt-foundation/pocket-blocks': 2.0.4_yzswr6dvs2rems2osgw4v7jara
+  '@pokt-foundation/pocket-blocks': 2.0.4_b7glpv2ptzq2qmkokt3ng54igm
   '@pokt-foundation/pocketjs-isomorphic-provider': 1.2.0
   '@remix-run/node': 1.16.0
   '@remix-run/react': 1.16.0_biqbaboplfbrettd7655fr4n2y
@@ -128,8 +128,8 @@ dependencies:
   rehype-raw: 6.1.1
   rehype-slug: 5.1.0
   remark-gfm: 3.0.1
-  remix-auth: 3.4.0_xtxzivr6aypvifqnfgxiy7mqra
-  remix-auth-auth0: 1.6.0_mswud4yiue63myozn34lgb34de
+  remix-auth: 3.5.1_jgtf3k6bgc6k4j4izw76c2gdjq
+  remix-auth-auth0: 1.7.0_hi5hrzhn6wtcmf3kzdiruziykq
   stripe: 9.16.0
   tiny-invariant: 1.3.1
 
@@ -3918,7 +3918,7 @@ packages:
       react: 18.2.0
     dev: false
 
-  /@pokt-foundation/pocket-blocks/2.0.4_yzswr6dvs2rems2osgw4v7jara:
+  /@pokt-foundation/pocket-blocks/2.0.4_b7glpv2ptzq2qmkokt3ng54igm:
     resolution: {integrity: sha512-JZLxjNBTNHuRU2dz3J7J1jqFdeXgXBBjV6QWGh3lEtZ62dlXifZBiSeFpi9OJucR1FSHg9WEluLPaxsaqK60dA==}
     peerDependencies:
       react: ^16.8 || ^17.0 || ^18.0
@@ -3936,7 +3936,7 @@ packages:
       '@visx/responsive': 2.17.0_react@18.2.0
       '@visx/scale': 2.18.0
       '@visx/shape': 2.18.0_react@18.2.0
-      '@visx/xychart': 2.18.0_ascez6k7nd5fdb4das6z5m2uga
+      '@visx/xychart': 2.18.0_gdnsfz34yjhxk7a7rwjm3mpth4
       clsx: 1.2.1
       format-string-by-pattern: 1.2.2
       react: 18.2.0
@@ -4095,56 +4095,50 @@ packages:
       react: 18.2.0
     dev: false
 
-  /@react-spring/animated/9.7.2_react@18.2.0:
-    resolution: {integrity: sha512-ipvleJ99ipqlnHkz5qhSsgf/ny5aW0ZG8Q+/2Oj9cI7LCc7COdnrSO6V/v8MAX3JOoQNzfz6dye2s5Pt5jGaIA==}
+  /@react-spring/animated/9.7.3_react@18.2.0:
+    resolution: {integrity: sha512-5CWeNJt9pNgyvuSzQH+uy2pvTg8Y4/OisoscZIR8/ZNLIOI+CatFBhGZpDGTF/OzdNFsAoGk3wiUYTwoJ0YIvw==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:
-      '@react-spring/shared': 9.7.2_react@18.2.0
-      '@react-spring/types': 9.7.2
+      '@react-spring/shared': 9.7.3_react@18.2.0
+      '@react-spring/types': 9.7.3
       react: 18.2.0
     dev: false
 
-  /@react-spring/core/9.7.2_react@18.2.0:
-    resolution: {integrity: sha512-fF512edZT/gKVCA90ZRxfw1DmELeVwiL4OC2J6bMUlNr707C0h4QRoec6DjzG27uLX2MvS1CEatf9KRjwZR9/w==}
+  /@react-spring/core/9.7.3_react@18.2.0:
+    resolution: {integrity: sha512-IqFdPVf3ZOC1Cx7+M0cXf4odNLxDC+n7IN3MDcVCTIOSBfqEcBebSv+vlY5AhM0zw05PDbjKrNmBpzv/AqpjnQ==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:
-      '@react-spring/animated': 9.7.2_react@18.2.0
-      '@react-spring/rafz': 9.7.2
-      '@react-spring/shared': 9.7.2_react@18.2.0
-      '@react-spring/types': 9.7.2
+      '@react-spring/animated': 9.7.3_react@18.2.0
+      '@react-spring/shared': 9.7.3_react@18.2.0
+      '@react-spring/types': 9.7.3
       react: 18.2.0
     dev: false
 
-  /@react-spring/rafz/9.7.2:
-    resolution: {integrity: sha512-kDWMYDQto3+flkrX3vy6DU/l9pxQ4TVW91DglQEc11iDc7shF4+WVDRJvOVLX+xoMP7zyag1dMvlIgvQ+dvA/A==}
-    dev: false
-
-  /@react-spring/shared/9.7.2_react@18.2.0:
-    resolution: {integrity: sha512-6U9qkno+9DxlH5nSltnPs+kU6tYKf0bPLURX2te13aGel8YqgcpFYp5Av8DcN2x3sukinAsmzHUS/FRsdZMMBA==}
+  /@react-spring/shared/9.7.3_react@18.2.0:
+    resolution: {integrity: sha512-NEopD+9S5xYyQ0pGtioacLhL2luflh6HACSSDUZOwLHoxA5eku1UPuqcJqjwSD6luKjjLfiLOspxo43FUHKKSA==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:
-      '@react-spring/rafz': 9.7.2
-      '@react-spring/types': 9.7.2
+      '@react-spring/types': 9.7.3
       react: 18.2.0
     dev: false
 
-  /@react-spring/types/9.7.2:
-    resolution: {integrity: sha512-GEflx2Ex/TKVMHq5g5MxQDNNPNhqg+4Db9m7+vGTm8ttZiyga7YQUF24shgRNebKIjahqCuei16SZga8h1pe4g==}
+  /@react-spring/types/9.7.3:
+    resolution: {integrity: sha512-Kpx/fQ/ZFX31OtlqVEFfgaD1ACzul4NksrvIgYfIFq9JpDHFwQkMVZ10tbo0FU/grje4rcL4EIrjekl3kYwgWw==}
     dev: false
 
-  /@react-spring/web/9.7.2_biqbaboplfbrettd7655fr4n2y:
-    resolution: {integrity: sha512-7qNc7/5KShu2D05x7o2Ols2nUE7mCKfKLaY2Ix70xPMfTle1sZisoQMBFgV9w/fSLZlHZHV9P0uWJqEXQnbV4Q==}
+  /@react-spring/web/9.7.3_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-BXt6BpS9aJL/QdVqEIX9YoUy8CE6TJrU0mNCqSoxdXlIeNcEBWOfIyE6B14ENNsyQKS3wOWkiJfco0tCr/9tUg==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:
-      '@react-spring/animated': 9.7.2_react@18.2.0
-      '@react-spring/core': 9.7.2_react@18.2.0
-      '@react-spring/shared': 9.7.2_react@18.2.0
-      '@react-spring/types': 9.7.2
+      '@react-spring/animated': 9.7.3_react@18.2.0
+      '@react-spring/core': 9.7.3_react@18.2.0
+      '@react-spring/shared': 9.7.3_react@18.2.0
+      '@react-spring/types': 9.7.3
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
     dev: false
@@ -4304,8 +4298,8 @@ packages:
     resolution: {integrity: sha512-N13NRw3T2+6Xi9J//3CGLsK2OqC8NMme3d/YX+nh05K9YHWGcv8DycHJrqGScSP4T75o8IN6nqIMhVFU8ohg8w==}
     engines: {node: '>=14'}
 
-  /@remix-run/router/1.6.3:
-    resolution: {integrity: sha512-EXJysQ7J3veRECd0kZFQwYYd5sJMcq2O/m60zu1W2l3oVQ9xtub8jTOtYRE0+M2iomyG/W3Ps7+vp2kna0C27Q==}
+  /@remix-run/router/1.7.2:
+    resolution: {integrity: sha512-7Lcn7IqGMV+vizMPoEl5F0XDshcdDYtMI6uJLQdQz5CfZAwy3vvGKYSUk789qndt5dEC4HfSjviSYlSoHGL2+A==}
     engines: {node: '>=14'}
     dev: false
 
@@ -4333,11 +4327,12 @@ packages:
       set-cookie-parser: 2.6.0
       source-map: 0.7.4
 
-  /@remix-run/server-runtime/1.17.0:
-    resolution: {integrity: sha512-xcUXaOibfIFZlvuyuWouz/t3fYhHCqRoKeGxQFGd1BvQBCmPaiau7B1Ao4aJFKyY7eU/L35KCaGzZBTdIF+d5w==}
-    engines: {node: '>=14'}
+  /@remix-run/server-runtime/1.19.3:
+    resolution: {integrity: sha512-KzQ+htUsKqpBgKE2tWo7kIIGy3MyHP58Io/itUPvV+weDjApwr9tQr9PZDPA3yAY6rAzLax7BU0NMSYCXWFY5A==}
+    engines: {node: '>=14.0.0'}
     dependencies:
-      '@remix-run/router': 1.6.3
+      '@remix-run/router': 1.7.2
+      '@types/cookie': 0.4.1
       '@web3-storage/multipart-parser': 1.0.0
       cookie: 0.4.2
       set-cookie-parser: 2.6.0
@@ -4582,6 +4577,10 @@ packages:
   /@types/chai/4.3.4:
     resolution: {integrity: sha512-KnRanxnpfpjUTqTCXslZSEdLfXExwgNxYPdiO2WGUj8+HDjFi8R3k5RVKPeSCzLjCcshCAtVO2QBbVuAV4kTnw==}
     dev: true
+
+  /@types/cookie/0.4.1:
+    resolution: {integrity: sha512-XW/Aa8APYr6jSVVA1y/DEIZX0/GMKLEVekNG727R8cs56ahETkRAy/3DR7+fJyh7oUgGwNQaRfXCun0+KbWY7Q==}
+    dev: false
 
   /@types/d3-array/3.0.5:
     resolution: {integrity: sha512-Qk7fpJ6qFp+26VeQ47WY0mkwXaiq8+76RJcncDEfMc2ocRzXLO67bLFRNI4OX1aGBoPzsM5Y2T+/m1pldOgD+A==}
@@ -5308,13 +5307,13 @@ packages:
     resolution: {integrity: sha512-fUdGQBLGaSVbFTbQ6k+1nPisbqYjTjAdo9FhlwLd3W3uyXN/39Sx2z3N2579sVNBDzmCKdYNQIU0HC+/3Vqo6w==}
     dev: false
 
-  /@visx/react-spring/2.18.0_3wd34vpvb3v6pppis42lzewvam:
+  /@visx/react-spring/2.18.0_nl2cwie5bvrugroveohz4n2rui:
     resolution: {integrity: sha512-tTLqddFAlNZc7QvB7aWp4mC6z6NYbrTEU3/OyBplqNUwaI1W5S0se3fYf6xOxC88EbNoqCC7805ym2XoznknoQ==}
     peerDependencies:
       '@react-spring/web': ^9.4.5
       react: ^16.3.0-0 || ^17.0.0 || ^18.0.0
     dependencies:
-      '@react-spring/web': 9.7.2_biqbaboplfbrettd7655fr4n2y
+      '@react-spring/web': 9.7.3_biqbaboplfbrettd7655fr4n2y
       '@types/react': 18.0.28
       '@visx/axis': 2.18.0_react@18.2.0
       '@visx/grid': 2.18.0_react@18.2.0
@@ -5411,13 +5410,13 @@ packages:
       react: 18.2.0
     dev: false
 
-  /@visx/xychart/2.18.0_ascez6k7nd5fdb4das6z5m2uga:
+  /@visx/xychart/2.18.0_gdnsfz34yjhxk7a7rwjm3mpth4:
     resolution: {integrity: sha512-IMCyuoZT4ky/CthtmJMyyB6nyLa1jdgW3XBx3UPCqWrQVkOH38tHNVFTHEgLkL0TyRKroK82F+JWD3yrc1B2Xw==}
     peerDependencies:
       '@react-spring/web': ^9.4.5
       react: ^16.8.0 || ^17.0.0 || ^ 18.0.0
     dependencies:
-      '@react-spring/web': 9.7.2_biqbaboplfbrettd7655fr4n2y
+      '@react-spring/web': 9.7.3_biqbaboplfbrettd7655fr4n2y
       '@types/lodash': 4.14.191
       '@types/react': 18.0.28
       '@visx/annotation': 2.18.0_biqbaboplfbrettd7655fr4n2y
@@ -5425,7 +5424,7 @@ packages:
       '@visx/event': 2.17.0
       '@visx/glyph': 2.17.0_react@18.2.0
       '@visx/grid': 2.18.0_react@18.2.0
-      '@visx/react-spring': 2.18.0_3wd34vpvb3v6pppis42lzewvam
+      '@visx/react-spring': 2.18.0_nl2cwie5bvrugroveohz4n2rui
       '@visx/responsive': 2.17.0_react@18.2.0
       '@visx/scale': 2.18.0
       '@visx/shape': 2.18.0_react@18.2.0
@@ -6424,7 +6423,7 @@ packages:
       normalize-path: 3.0.0
       readdirp: 3.6.0
     optionalDependencies:
-      fsevents: 2.3.2
+      fsevents: 2.3.3
     dev: true
 
   /chownr/1.1.4:
@@ -8868,8 +8867,8 @@ packages:
     resolution: {integrity: sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==}
     dev: true
 
-  /fsevents/2.3.2:
-    resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==}
+  /fsevents/2.3.3:
+    resolution: {integrity: sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==}
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
     requiresBuild: true
@@ -10359,7 +10358,7 @@ packages:
     dependencies:
       universalify: 2.0.0
     optionalDependencies:
-      graceful-fs: 4.2.11
+      graceful-fs: 4.2.10
     dev: true
 
   /jsonify/0.0.1:
@@ -10489,7 +10488,7 @@ packages:
     resolution: {integrity: sha512-Kx8hMakjX03tiGTLAIdJ+lL0htKnXjEZN6hk/tozf/WOuYGdZBJrZ+rCJRbVCugsjB3jMLn9746NsQIf5VjBMw==}
     engines: {node: '>=4'}
     dependencies:
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
       parse-json: 4.0.0
       pify: 3.0.0
       strip-bom: 3.0.0
@@ -12965,40 +12964,40 @@ packages:
     resolution: {integrity: sha512-/62tYiOe6DzS5BqVsNpH/nkGlX45C/Sp6V+NtiN6JQNS1Viay7cWkazmRkrQrdFj2eshDe96SIQNIoMxqhzBOg==}
     dev: true
 
-  /remix-auth-auth0/1.6.0_mswud4yiue63myozn34lgb34de:
-    resolution: {integrity: sha512-GzFz6nm4Fg0J5e4i6xOR8vfqhwhqRKRNjoCA4Bvg3+MmCAUcrpyjgAMvJkVmYjfqcSverx9Ikd2zxNDRdn4wtg==}
+  /remix-auth-auth0/1.7.0_hi5hrzhn6wtcmf3kzdiruziykq:
+    resolution: {integrity: sha512-I6Au+6Witb6Ae1JmQEaOcKfaYCxayL5lsNJAQs4skuh0PRi2xZpB1oSH5NL9WN1+xZ29GnD56JDvSw0N/m3Qiw==}
     peerDependencies:
       remix-auth: ^3.x
     dependencies:
-      remix-auth: 3.4.0_xtxzivr6aypvifqnfgxiy7mqra
-      remix-auth-oauth2: 1.6.0_mswud4yiue63myozn34lgb34de
+      remix-auth: 3.5.1_jgtf3k6bgc6k4j4izw76c2gdjq
+      remix-auth-oauth2: 1.9.0_hi5hrzhn6wtcmf3kzdiruziykq
     transitivePeerDependencies:
       - '@remix-run/server-runtime'
       - supports-color
     dev: false
 
-  /remix-auth-oauth2/1.6.0_mswud4yiue63myozn34lgb34de:
-    resolution: {integrity: sha512-HnMgdKn/+LIKHYlbxys14g9cUMGvzMS9mbopAfnntIYWBC8MOfUy6uYyyoWJNqm3HriAE/MiEUaTnlz3B0c7uQ==}
+  /remix-auth-oauth2/1.9.0_hi5hrzhn6wtcmf3kzdiruziykq:
+    resolution: {integrity: sha512-ROSir28FVK4UCpialrW6dGbaboYGihfa/Qz5ifAoQ56fyTfXv4TwZ4R/AQxr1HVRU6WFmXNJiWDg51Q6+ZoLGQ==}
     peerDependencies:
       '@remix-run/server-runtime': ^1.0.0
       remix-auth: ^3.2.2
     dependencies:
-      '@remix-run/server-runtime': 1.17.0
+      '@remix-run/server-runtime': 1.19.3
       debug: 4.3.4
-      remix-auth: 3.4.0_xtxzivr6aypvifqnfgxiy7mqra
+      remix-auth: 3.5.1_jgtf3k6bgc6k4j4izw76c2gdjq
       uuid: 8.3.2
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  /remix-auth/3.4.0_xtxzivr6aypvifqnfgxiy7mqra:
-    resolution: {integrity: sha512-VRliJo9VRAS4sSYgMjYbi7rYRixPWU2Tb8PFZb06OIj0nONK/1KRzHf2+Y6VGZeIacepLVgan6g2IUJjayE2rQ==}
+  /remix-auth/3.5.1_jgtf3k6bgc6k4j4izw76c2gdjq:
+    resolution: {integrity: sha512-PH8JTMd2n4OoQE7xGoCMDvrPyHfDvKMNEi8VT3Lvi/g3+HlJERHWXdYBOSl0TImEYOprs8VI/nC82y47aKJrJQ==}
     peerDependencies:
       '@remix-run/react': ^1.0.0
       '@remix-run/server-runtime': ^1.0.0
     dependencies:
       '@remix-run/react': 1.16.0_biqbaboplfbrettd7655fr4n2y
-      '@remix-run/server-runtime': 1.17.0
+      '@remix-run/server-runtime': 1.19.3
       uuid: 8.3.2
     dev: false
 
@@ -13120,7 +13119,7 @@ packages:
     engines: {node: '>=14.18.0', npm: '>=8.0.0'}
     hasBin: true
     optionalDependencies:
-      fsevents: 2.3.2
+      fsevents: 2.3.3
     dev: true
 
   /run-applescript/5.0.0:
@@ -14562,7 +14561,7 @@ packages:
       resolve: 1.22.1
       rollup: 3.19.1
     optionalDependencies:
-      fsevents: 2.3.2
+      fsevents: 2.3.3
     dev: true
 
   /vitest/0.28.5_jsdom@20.0.3:

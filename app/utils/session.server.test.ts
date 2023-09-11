@@ -6,7 +6,7 @@ import {
   requireAdmin,
   requireUser,
   requireUserProfile,
-} from "./session.server"
+} from "./user.server"
 
 vi.mock("./auth.server", () => ({
   authenticator: {

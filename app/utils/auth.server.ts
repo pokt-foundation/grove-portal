@@ -12,7 +12,14 @@ export const authenticator = new Authenticator<{
   profile: Auth0Profile
 }>(sessionStorage)
 
-let auth0Strategy = new Auth0Strategy(
+export type User = {
+  accessToken: string
+  refreshToken: string
+  extraParams: Auth0ExtraParams
+  profile: Auth0Profile
+}
+
+let auth0Strategy = new Auth0Strategy<User>(
   {
     callbackURL: "/api/auth/auth0/callback",
     clientID: getRequiredServerEnvVar("AUTH0_CLIENT_ID"),

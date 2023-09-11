@@ -8,7 +8,7 @@ import AppsView, { links as AppsViewLinks } from "./view"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { getRelaysPerPeriod, RelayMetric } from "~/models/relaymeter/relaymeter.server"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
-import { getPoktId, requireUser } from "~/utils/session.server"
+import { getPoktId, requireUser } from "~/utils/user.server"
 
 export const links = () => {
   return [...AppsViewLinks()]

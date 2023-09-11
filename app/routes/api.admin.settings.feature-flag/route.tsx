@@ -1,7 +1,7 @@
 import { ActionFunction, LoaderFunction, json } from "@remix-run/node"
 import { FeatureFlags, defaultFeatureFlags } from "~/context/FeatureFlagContext"
 import { featureFlagsCookie } from "~/utils/cookies.server"
-import { requireAdmin } from "~/utils/session.server"
+import { requireAdmin } from "~/utils/user.server"
 
 export interface FeatureFlagsLoaderActionData {
   POKT_FEATURE_FLAGS: FeatureFlags

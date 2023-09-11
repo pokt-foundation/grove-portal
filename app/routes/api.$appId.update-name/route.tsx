@@ -2,7 +2,7 @@ import { ActionFunction, json } from "@remix-run/node"
 import invariant from "tiny-invariant"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { getErrorMessage } from "~/utils/catchError"
-import { requireUser } from "~/utils/session.server"
+import { requireUser } from "~/utils/user.server"
 
 export type ContactSalesActionData = {
   result: "success" | "error"

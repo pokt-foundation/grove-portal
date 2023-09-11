@@ -13,7 +13,7 @@ export const useRoot = ({ user }: useRootProps) => {
   const { pathname } = useLocation()
   const { accountId } = useParams()
 
-  const isPlasmic = useMemo(() => pathname === "/", [pathname])
+  const isLanding = useMemo(() => pathname === "/", [pathname])
   const hideSidebar = useMemo(
     () =>
       pathname === `/account/${accountId}/create` ||
@@ -65,5 +65,5 @@ export const useRoot = ({ user }: useRootProps) => {
     return allRoutes.filter((r) => r.protected <= protectedLevel)
   }, [t, user])
 
-  return { isPlasmic, hideSidebar, routes }
+  return { isLanding, hideSidebar, routes }
 }

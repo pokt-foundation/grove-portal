@@ -4,7 +4,13 @@ import { Auth0Profile } from "remix-auth-auth0"
 import invariant from "tiny-invariant"
 import AppIdLayoutView from "./view"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { BlockchainsQuery, EndpointQuery, PayPlanType } from "~/models/portal/sdk"
+import {
+  Blockchain,
+  BlockchainsQuery,
+  EndpointQuery,
+  PayPlanType,
+  PortalApp,
+} from "~/models/portal/sdk"
 import {
   getRelays,
   getRelaysPerPeriod,
@@ -13,7 +19,7 @@ import {
 import { getSubscription, Stripe } from "~/models/stripe/stripe.server"
 import { getErrorMessage } from "~/utils/catchError"
 import { dayjs } from "~/utils/dayjs"
-import { getPoktId, requireUser } from "~/utils/session.server"
+import { getPoktId, requireUser } from "~/utils/user.server"
 
 export const meta: MetaFunction = () => {
   return {

@@ -1,7 +1,7 @@
 import { ActionFunction, json, redirect } from "@remix-run/node"
 import invariant from "tiny-invariant"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { requireUser } from "~/utils/session.server"
+import { requireUser } from "~/utils/user.server"
 
 export const action: ActionFunction = async ({ request, params }) => {
   const { appId } = params

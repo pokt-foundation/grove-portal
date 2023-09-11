@@ -1,25 +1,58 @@
 import { Box, Button, Center, Group, Text, Title } from "@pokt-foundation/pocket-blocks"
-import { LoaderFunction } from "@remix-run/node"
-import { Outlet, useCatch, Link } from "@remix-run/react"
-import React from "react"
-import { Auth0Profile } from "remix-auth-auth0"
+import { json, LoaderFunction, redirect } from "@remix-run/node"
+import { Outlet, useCatch, Link, useLoaderData } from "@remix-run/react"
+import invariant from "tiny-invariant"
+import { initPortalClient } from "~/models/portal/portal.server"
 
-import { EndpointsQuery } from "~/models/portal/sdk"
+import { initAdminPortal } from "~/utils/admin"
+import { authenticator, User } from "~/utils/auth.server"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 
 const DASHBOARD_MAINTENANCE = getRequiredClientEnvVar("FLAG_MAINTENANCE_MODE_DASHBOARD")
 
-export interface DashboardLoaderData {
-  user: Awaited<Auth0Profile | undefined>
-  endpoints: EndpointsQuery | null
-  portalUserId: string | null
+export type AccountOutletContext = {
+  user: User
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
-  return null
+  const user = await authenticator.isAuthenticated(request)
+
+  if (!user) {
+    return redirect("/api/auth/auth0")
+  }
+
+  // handle edge case where user could have signed up via auth0 and yet not have an internal portalUserId
+  if (user) {
+    const portal = initPortalClient({ token: user?.accessToken })
+    const getPortalUserIdResponse = await portal.getPortalUserID().catch((e) => {
+      console.log(e)
+    })
+    const portalUserId = getPortalUserIdResponse?.getPortalUserID
+
+    if (!portalUserId && user) {
+      const email = user?.profile?._json?.email
+      const providerUserID = user?.profile?.id
+
+      invariant(email, "email is not found")
+      invariant(providerUserID, "providerUserID is not found")
+
+      const portalAdmin = await initAdminPortal(portal)
+
+      await portalAdmin.adminCreatePortalUser({
+        email,
+        providerUserID,
+      })
+    }
+  }
+
+  return json<AccountOutletContext>({
+    user,
+  })
 }
 
 export default function Account() {
+  const { user } = useLoaderData<AccountOutletContext>()
+
   if (DASHBOARD_MAINTENANCE === "true") {
     return (
       <Center className="error-container" mt="xl">
@@ -41,7 +74,7 @@ export default function Account() {
     )
   }
 
-  return <Outlet />
+  return <Outlet context={user} />
 }
 
 export const CatchBoundary = () => {

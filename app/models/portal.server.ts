@@ -13,7 +13,7 @@ import {
 import { fetch } from "@remix-run/node"
 import invariant from "tiny-invariant"
 import { getRequiredClientEnvVar } from "~/utils/environment"
-import { requireUser } from "~/utils/session.server"
+import { requireUser } from "~/utils/user.server"
 
 // LB: DAILY RELAYS
 export const getLBDailyRelays = async (

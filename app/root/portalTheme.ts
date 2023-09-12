@@ -113,7 +113,6 @@ export const portalTheme: MantineThemeOverride = {
       styles: (theme) => ({
         dropdown: {
           minWidth: "270px",
-          maxWidth: "300px",
           maxHeight: "400px",
           overflow: "auto",
           backgroundColor:

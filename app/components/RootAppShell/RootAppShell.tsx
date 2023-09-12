@@ -3,7 +3,7 @@ import React, { ReactNode, useMemo, useState } from "react"
 import { Auth0Profile } from "remix-auth-auth0"
 import { AppHeader } from "~/components/AppHeader"
 import { Sidebar } from "~/components/Sidebar"
-import { EndpointsQuery, PortalApp } from "~/models/portal/sdk"
+import { Account, PortalApp } from "~/models/portal/sdk"
 import { useRoot } from "~/root/hooks/useRoot"
 import useCommonStyles from "~/styles/commonStyles"
 
@@ -11,9 +11,10 @@ type RootAppShellProps = {
   user: Auth0Profile
   apps: PortalApp[]
   children: ReactNode
+  accounts: Account[]
 }
 
-export const RootAppShell = ({ user, apps, children }: RootAppShellProps) => {
+export const RootAppShell = ({ user, apps, children, accounts }: RootAppShellProps) => {
   const [opened, setOpened] = useState(false)
   const { classes: commonClasses } = useCommonStyles()
   const { hideSidebar } = useRoot({ user })
@@ -32,7 +33,12 @@ export const RootAppShell = ({ user, apps, children }: RootAppShellProps) => {
           height={{ base: 50, md: 70 }}
           p="md"
         >
-          <AppHeader opened={opened} user={user} onOpen={(o) => setOpened(o)} />
+          <AppHeader
+            accounts={accounts}
+            opened={opened}
+            user={user}
+            onOpen={(o) => setOpened(o)}
+          />
         </Header>
       }
       {...navProp}

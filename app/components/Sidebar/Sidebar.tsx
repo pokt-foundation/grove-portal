@@ -7,7 +7,7 @@ import {
   LuChevronsRight,
   LuLifeBuoy,
   LuPlus,
-  LuSettings,
+  LuTowerControl,
 } from "react-icons/lu"
 import {
   InternalLink,
@@ -46,8 +46,8 @@ const getStaticRoutes = (
   },
   accountSettings: {
     to: `/user/profile`,
-    icon: LuSettings,
-    label: "Organization Settings",
+    icon: LuTowerControl,
+    label: "Organization",
   },
   support: {
     to: "https://discord.gg/portal-rpc",

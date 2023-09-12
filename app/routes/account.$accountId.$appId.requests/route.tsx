@@ -17,7 +17,7 @@ import AppRequestsRateCard, {
 import { ErrorMetric, getErrorMetrics } from "~/models/errormetrics/errormetrics.server"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
-import { requireUser } from "~/utils/session.server"
+import { requireUser } from "~/utils/user.server"
 
 export const meta: MetaFunction = () => {
   return {

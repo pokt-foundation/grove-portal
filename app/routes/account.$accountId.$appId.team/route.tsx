@@ -11,7 +11,7 @@ import {
   sendTeamNewOwnerEmail,
   sendTeamUserRemovedEmail,
 } from "~/utils/mail.server"
-import { requireUser } from "~/utils/session.server"
+import { requireUser } from "~/utils/user.server"
 
 export const links = () => {
   return [...TeamViewLinks()]

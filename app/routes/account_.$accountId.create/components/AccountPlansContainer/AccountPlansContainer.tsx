@@ -8,10 +8,10 @@ import {
 } from "@pokt-foundation/pocket-blocks"
 import { NavLink } from "@remix-run/react"
 import { AccountPlan } from "~/components/AccountPlan"
-import { PayPlanType } from "~/models/portal/sdk"
+import { PayPlanTypeV2 } from "~/models/portal/sdk"
 
 type AccountPlansContainerProps = {
-  onPlanSelected: (plan: PayPlanType.FreetierV0 | PayPlanType.PayAsYouGoV0) => void
+  onPlanSelected: (plan: PayPlanTypeV2.FreetierV0 | PayPlanTypeV2.PayAsYouGoV0) => void
 }
 
 const AccountPlansContainer = ({ onPlanSelected }: AccountPlansContainerProps) => {
@@ -28,12 +28,12 @@ const AccountPlansContainer = ({ onPlanSelected }: AccountPlansContainerProps) =
 
       <Flex justify="space-evenly">
         <AccountPlan
-          type={PayPlanType.FreetierV0}
-          onContinue={() => onPlanSelected(PayPlanType.FreetierV0)}
+          type={PayPlanTypeV2.FreetierV0}
+          onContinue={() => onPlanSelected(PayPlanTypeV2.FreetierV0)}
         />
         <AccountPlan
-          type={PayPlanType.PayAsYouGoV0}
-          onContinue={() => onPlanSelected(PayPlanType.PayAsYouGoV0)}
+          type={PayPlanTypeV2.PayAsYouGoV0}
+          onContinue={() => onPlanSelected(PayPlanTypeV2.PayAsYouGoV0)}
         />
       </Flex>
       <Center mt="xl">

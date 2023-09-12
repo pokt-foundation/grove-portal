@@ -4,7 +4,7 @@ import { stripe, Stripe } from "~/models/stripe/stripe.server"
 import { authenticator } from "~/utils/auth.server"
 import { getErrorMessage } from "~/utils/catchError"
 import { getRequiredServerEnvVar } from "~/utils/environment"
-import { getPoktId, requireUser } from "~/utils/session.server"
+import { getPoktId, requireUser } from "~/utils/user.server"
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   const user = await requireUser(request)

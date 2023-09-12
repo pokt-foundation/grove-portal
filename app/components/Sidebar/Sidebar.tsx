@@ -16,11 +16,11 @@ import {
   SidebarNavRoute,
   SidebarApps,
 } from "~/components/Sidebar/components"
-import { EndpointsQuery } from "~/models/portal/sdk"
+import { EndpointsQuery, PortalApp } from "~/models/portal/sdk"
 import useCommonStyles from "~/styles/commonStyles"
 
 type SidebarProps = {
-  endpoints: EndpointsQuery | null
+  apps: PortalApp[] | null
   hidden: boolean
 }
 
@@ -56,7 +56,7 @@ const getStaticRoutes = (
   },
 })
 
-export const Sidebar = ({ endpoints, hidden }: SidebarProps) => {
+export const Sidebar = ({ apps, hidden }: SidebarProps) => {
   const { classes: commonClasses } = useCommonStyles()
   const { accountId } = useParams()
   const [collapsed, setCollapsed] = useState(false)
@@ -74,7 +74,7 @@ export const Sidebar = ({ endpoints, hidden }: SidebarProps) => {
       <ScrollArea h="100%" mx="-xs" px="xs">
         <Navbar.Section>
           <InternalLink iconOnly={collapsed} route={staticRoutes.overview} />
-          {endpoints && <SidebarApps apps={endpoints} iconOnly={collapsed} />}
+          {apps && <SidebarApps apps={apps} iconOnly={collapsed} />}
           <InternalLink iconOnly={collapsed} route={staticRoutes.createNewApp} />
         </Navbar.Section>
         <Divider color="#343438" my="lg" size="xs" />

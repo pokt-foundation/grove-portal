@@ -3,7 +3,7 @@ import { Auth0ExtraParams, Auth0Profile } from "remix-auth-auth0"
 import { Language } from "~/context/TranslateContext"
 import { UserPreference, defaultUserPreference } from "~/context/UserContext"
 import { userPrefCookie } from "~/utils/cookies.server"
-import { getUserProfile } from "~/utils/session.server"
+import { getUserProfile } from "~/utils/user.server"
 
 export type PocketUser = {
   profile: Auth0Profile

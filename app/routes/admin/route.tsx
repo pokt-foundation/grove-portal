@@ -5,7 +5,7 @@ import clsx from "clsx"
 import { Auth0Profile } from "remix-auth-auth0"
 import styles from "./styles.css"
 import Card, { links as CardLinks } from "~/components/Card"
-import { requireAdmin } from "~/utils/session.server"
+import { requireAdmin } from "~/utils/user.server"
 
 export const links: LinksFunction = () => [
   ...CardLinks(),

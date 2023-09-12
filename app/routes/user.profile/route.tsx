@@ -6,7 +6,7 @@ import invariant from "tiny-invariant"
 import ProfileView, { links as ProfileViewLinks } from "./view"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { getRequiredServerEnvVar } from "~/utils/environment"
-import { requireUser } from "~/utils/session.server"
+import { requireUser } from "~/utils/user.server"
 
 export const links: LinksFunction = () => [...ProfileViewLinks()]
 

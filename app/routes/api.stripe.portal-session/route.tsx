@@ -1,7 +1,7 @@
 import { ActionFunction, redirect, json } from "@remix-run/node"
 import invariant from "tiny-invariant"
 import { getCustomer, stripe } from "~/models/stripe/stripe.server"
-import { getPoktId, requireUser } from "~/utils/session.server"
+import { getPoktId, requireUser } from "~/utils/user.server"
 
 export const action: ActionFunction = async ({ request }) => {
   const user = await requireUser(request)

@@ -3,25 +3,25 @@ import React, { ReactNode, useMemo, useState } from "react"
 import { Auth0Profile } from "remix-auth-auth0"
 import { AppHeader } from "~/components/AppHeader"
 import { Sidebar } from "~/components/Sidebar"
-import { EndpointsQuery } from "~/models/portal/sdk"
+import { EndpointsQuery, PortalApp } from "~/models/portal/sdk"
 import { useRoot } from "~/root/hooks/useRoot"
 import useCommonStyles from "~/styles/commonStyles"
 
 type RootAppShellProps = {
   user: Auth0Profile
-  endpoints: EndpointsQuery
+  apps: PortalApp[]
   children: ReactNode
 }
 
-export const RootAppShell = ({ user, endpoints, children }: RootAppShellProps) => {
+export const RootAppShell = ({ user, apps, children }: RootAppShellProps) => {
   const [opened, setOpened] = useState(false)
   const { classes: commonClasses } = useCommonStyles()
   const { hideSidebar } = useRoot({ user })
   const navProp = useMemo(
     () => ({
-      ...(!hideSidebar && { navbar: <Sidebar endpoints={endpoints} hidden={!opened} /> }),
+      ...(!hideSidebar && { navbar: <Sidebar apps={apps} hidden={!opened} /> }),
     }),
-    [hideSidebar, endpoints, opened],
+    [hideSidebar, apps, opened],
   )
 
   return (

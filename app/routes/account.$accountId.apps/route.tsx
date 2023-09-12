@@ -19,7 +19,7 @@ import {
   getUserPermissions,
   Permissions,
   requireUser,
-} from "~/utils/session.server"
+} from "~/utils/user.server"
 
 export const links = () => {
   return [

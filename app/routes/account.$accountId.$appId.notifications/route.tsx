@@ -6,7 +6,7 @@ import { AppIdOutletContext } from "../account.$accountId.$appId/route"
 import { initPortalClient } from "~/models/portal/portal.server"
 import AppNotificationsAlert from "~/routes/account.$accountId.$appId.notifications/components/AppNotificationsAlert"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
-import { requireUser } from "~/utils/session.server"
+import { requireUser } from "~/utils/user.server"
 
 export const action: ActionFunction = async ({ request, params }) => {
   const { appId } = params

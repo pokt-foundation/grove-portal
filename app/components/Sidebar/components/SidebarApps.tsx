@@ -2,10 +2,10 @@ import { Navbar } from "@pokt-foundation/pocket-blocks"
 import { useParams } from "@remix-run/react"
 import React, { useMemo } from "react"
 import { InternalLink, SidebarNavRoute } from "~/components/Sidebar/components"
-import { EndpointsQuery } from "~/models/portal/sdk"
+import { PortalApp } from "~/models/portal/sdk"
 
 type SidebarAppsProps = {
-  apps: EndpointsQuery
+  apps: PortalApp[]
   iconOnly?: boolean
 }
 
@@ -31,16 +31,11 @@ function getRandomAppmoji(): string {
 export const SidebarApps = ({ apps, iconOnly }: SidebarAppsProps) => {
   const { accountId } = useParams()
   const appsRoutes = useMemo(() => {
-    return Object.entries(apps).flatMap(([parent, apps]) => {
-      return typeof apps === "object"
-        ? apps.map((app) => ({
-            to: `account/${accountId}/${app?.id}`,
-            label: app?.name,
-            badge: parent,
-            icon: getRandomAppmoji(),
-          }))
-        : []
-    }) as SidebarNavRoute[]
+    return apps.map((app) => ({
+      to: app.id,
+      label: app.name,
+      icon: getRandomAppmoji(),
+    })) as SidebarNavRoute[]
   }, [accountId, apps])
 
   return (

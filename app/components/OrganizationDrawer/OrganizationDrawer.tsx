@@ -90,7 +90,7 @@ const OrganizationDrawer = ({ user }: OrganizationDrawerProps) => {
         padding="sm"
         position="right"
         sx={{
-          header: {
+          ".mantine-Drawer-header": {
             display: "flex",
             justifyItems: "center",
           },

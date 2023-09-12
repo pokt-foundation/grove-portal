@@ -89,6 +89,12 @@ const OrganizationDrawer = ({ user }: OrganizationDrawerProps) => {
         overlayOpacity={0.5}
         padding="sm"
         position="right"
+        sx={{
+          header: {
+            display: "flex",
+            justifyItems: "center",
+          },
+        }}
         title={
           <Group noWrap w={252}>
             <Identicon

@@ -1,10 +1,6 @@
 import { Box, Button, Center, Group, Text, Title } from "@pokt-foundation/pocket-blocks"
 import { json, LoaderFunction, redirect } from "@remix-run/node"
 import { Outlet, useCatch, Link, useLoaderData } from "@remix-run/react"
-import invariant from "tiny-invariant"
-import { initPortalClient } from "~/models/portal/portal.server"
-
-import { initAdminPortal } from "~/utils/admin"
 import { authenticator, User } from "~/utils/auth.server"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 
@@ -19,30 +15,6 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   if (!user) {
     return redirect("/api/auth/auth0")
-  }
-
-  // handle edge case where user could have signed up via auth0 and yet not have an internal portalUserId
-  if (user) {
-    const portal = initPortalClient({ token: user?.accessToken })
-    const getPortalUserIdResponse = await portal.getPortalUserID().catch((e) => {
-      console.log(e)
-    })
-    const portalUserId = getPortalUserIdResponse?.getPortalUserID
-
-    if (!portalUserId && user) {
-      const email = user?.profile?._json?.email
-      const providerUserID = user?.profile?.id
-
-      invariant(email, "email is not found")
-      invariant(providerUserID, "providerUserID is not found")
-
-      const portalAdmin = await initAdminPortal(portal)
-
-      await portalAdmin.adminCreatePortalUser({
-        email,
-        providerUserID,
-      })
-    }
   }
 
   return json<AccountOutletContext>({

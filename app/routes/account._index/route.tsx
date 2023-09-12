@@ -1,16 +1,15 @@
 import { LoaderFunction, redirect } from "@remix-run/node"
-import { initPortalClient } from "~/models/portal/portal.server"
-import { requireUser } from "~/utils/user.server"
+import { authenticator } from "~/utils/auth.server"
+import { redirectToUserAccount } from "~/utils/user.server"
 
 export const loader: LoaderFunction = async ({ request }) => {
-  // const user = await requireUser(request, "/api/auth/auth0")
-  // const portal = initPortalClient({ token: user.accessToken })
+  const user = await authenticator.isAuthenticated(request).catch((err) => {
+    console.log(err)
+  })
 
-  // const getPortalUserIdResponse = await portal.getPortalUserID().catch((e) => {
-  //   console.log(e)
-  // })
-  // const portalUserId = getPortalUserIdResponse?.getPortalUserID
+  if (!user) {
+    return redirect("/api/auth/auth0")
+  }
 
-  // return redirect(`/account/${portalUserId}`)
-  return
+  return redirectToUserAccount(user.accessToken)
 }

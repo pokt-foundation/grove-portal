@@ -92,7 +92,7 @@ const OrganizationDrawer = ({ user }: OrganizationDrawerProps) => {
         sx={{
           ".mantine-Drawer-header": {
             display: "flex",
-            justifyItems: "center",
+            alignItems: "center",
           },
         }}
         title={

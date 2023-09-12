@@ -428,5 +428,12 @@ query getUserPortalApp($portalAppID: ID!) {
     createdAt
     updatedAt
     deleted
+    firstDateSurpassed
+    legacyFields {
+      planType
+      dailyLimit
+      customLimit
+      requestTimeout
+    }
   }
 }

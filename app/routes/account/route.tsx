@@ -1,8 +1,9 @@
 import { Box, Button, Center, Group, Text, Title } from "@pokt-foundation/pocket-blocks"
-import { json, LoaderFunction, redirect } from "@remix-run/node"
+import { json, LoaderFunction } from "@remix-run/node"
 import { Outlet, useCatch, Link, useLoaderData } from "@remix-run/react"
-import { authenticator, User } from "~/utils/auth.server"
+import { User } from "~/utils/auth.server"
 import { getRequiredClientEnvVar } from "~/utils/environment"
+import { requireUser } from "~/utils/user.server"
 
 const DASHBOARD_MAINTENANCE = getRequiredClientEnvVar("FLAG_MAINTENANCE_MODE_DASHBOARD")
 
@@ -11,11 +12,7 @@ export type AccountOutletContext = {
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
-  const user = await authenticator.isAuthenticated(request)
-
-  if (!user) {
-    return redirect("/api/auth/auth0")
-  }
+  const user = await requireUser(request)
 
   return json<AccountOutletContext>({
     user,

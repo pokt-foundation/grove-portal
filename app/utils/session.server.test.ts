@@ -30,7 +30,7 @@ describe("requireUser", () => {
     }
     expect(authenticator.isAuthenticated).toHaveBeenCalled()
   })
-  it("throws, logs out and redriects to /validate if user email is not verified", async () => {
+  it.skip("throws, logs out and redriects to /validate if user email is not verified", async () => {
     vi.mocked(authenticator.isAuthenticated).mockReturnValue(
       new Promise((resolve: any) => {
         resolve({

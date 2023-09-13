@@ -102,11 +102,8 @@ export const action: ActionFunction = async ({ request, params }) => {
   invariant(name && typeof name === "string", "app name not found")
   invariant(accountId && typeof accountId === "string", "accountId not found")
 
-  console.log({ name })
-  console.log({ subscription })
-  console.log({ accountId })
-
   try {
+    // TODO: API call not working
     const createUserPortalAppResponse = await portal
       .createUserPortalApp({
         input: {
@@ -148,13 +145,13 @@ export const action: ActionFunction = async ({ request, params }) => {
 export default function CreateApp() {
   const fetcher = useFetcher()
   const [appFromData, setAppFromData] = useState<FormData>()
-  const data = useActionData<typeof action>()
 
   useEffect(() => {
-    if (data) {
-      console.log(data)
+    if (fetcher.data && fetcher.data.error) {
+      // TODO: handle showNotification toast message
+      console.log(fetcher.data)
     }
-  }, [data])
+  }, [fetcher])
 
   return fetcher.state === "idle" ? (
     <Box maw={860} mx="auto">

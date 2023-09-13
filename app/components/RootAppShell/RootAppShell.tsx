@@ -3,7 +3,7 @@ import React, { ReactNode, useMemo, useState } from "react"
 import { Auth0Profile } from "remix-auth-auth0"
 import { AppHeader } from "~/components/AppHeader"
 import { Sidebar } from "~/components/Sidebar"
-import { EndpointsQuery, PortalApp } from "~/models/portal/sdk"
+import { PortalApp } from "~/models/portal/sdk"
 import { useRoot } from "~/root/hooks/useRoot"
 import useCommonStyles from "~/styles/commonStyles"
 

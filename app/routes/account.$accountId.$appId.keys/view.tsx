@@ -1,5 +1,12 @@
 import { Divider } from "@mantine/core"
-import { Box, Group, PasswordInput, Stack, Text } from "@pokt-foundation/pocket-blocks"
+import {
+  Box,
+  Group,
+  MantineTheme,
+  PasswordInput,
+  Stack,
+  Text,
+} from "@pokt-foundation/pocket-blocks"
 import React from "react"
 import CopyTextButton from "~/components/CopyTextButton"
 import { EndpointQuery, RoleName } from "~/models/portal/sdk"
@@ -24,7 +31,10 @@ const AppKeys = ({ endpoint, role }: AppKeysProps) => {
           <PasswordInput
             readOnly
             aria-label="Portal ID"
-            sx={{ flex: 1 }}
+            sx={(theme: MantineTheme) => ({
+              flex: 1,
+              backgroundColor: theme.colors.gray[9],
+            })}
             value={endpoint.id}
           />
           <CopyTextButton value={endpoint.id} />
@@ -45,7 +55,10 @@ const AppKeys = ({ endpoint, role }: AppKeysProps) => {
             <PasswordInput
               readOnly
               aria-label="Secret Key"
-              sx={{ flex: 1 }}
+              sx={(theme: MantineTheme) => ({
+                flex: 1,
+                backgroundColor: theme.colors.gray[9],
+              })}
               value={secretKey}
             />
             <CopyTextButton value={secretKey} />
@@ -66,7 +79,10 @@ const AppKeys = ({ endpoint, role }: AppKeysProps) => {
             <PasswordInput
               readOnly
               aria-label="Public Key"
-              sx={{ flex: 1 }}
+              sx={(theme: MantineTheme) => ({
+                flex: 1,
+                backgroundColor: theme.colors.gray[9],
+              })}
               value={publicKey}
             />
             <CopyTextButton value={publicKey} />

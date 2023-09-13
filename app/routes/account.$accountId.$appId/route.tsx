@@ -3,23 +3,13 @@ import { Outlet, useCatch, useLoaderData, useSearchParams } from "@remix-run/rea
 import { Auth0Profile } from "remix-auth-auth0"
 import invariant from "tiny-invariant"
 import AppIdLayoutView from "./view"
+import ErrorView from "~/components/ErrorView"
+import { blockchains } from "~/models/portal/portal.data"
 import { initPortalClient } from "~/models/portal/portal.server"
-import {
-  Blockchain,
-  BlockchainsQuery,
-  EndpointQuery,
-  PayPlanType,
-  PortalApp,
-} from "~/models/portal/sdk"
-import {
-  getRelays,
-  getRelaysPerPeriod,
-  RelayMetric,
-} from "~/models/relaymeter/relaymeter.server"
-import { getSubscription, Stripe } from "~/models/stripe/stripe.server"
+import { Blockchain, PortalApp } from "~/models/portal/sdk"
 import { getErrorMessage } from "~/utils/catchError"
-import { dayjs } from "~/utils/dayjs"
-import { getPoktId, requireUser } from "~/utils/user.server"
+import { LoaderDataStruct } from "~/utils/loader"
+import { requireUser } from "~/utils/user.server"
 
 export const meta: MetaFunction = () => {
   return {
@@ -28,114 +18,64 @@ export const meta: MetaFunction = () => {
 }
 
 export type AppIdLoaderData = {
-  blockchains: BlockchainsQuery["blockchains"]
-  endpoint: EndpointQuery["endpoint"]
-  relaysToday: RelayMetric
-  relaysYesterday: RelayMetric
-  dailyNetworkRelaysPerWeek: RelayMetric[]
-  subscription: Stripe.Subscription | undefined
-  user: Auth0Profile
+  app: PortalApp
+  blockchains: Blockchain[]
+  // relaysToday: RelayMetric
+  // relaysYesterday: RelayMetric
+  // dailyNetworkRelaysPerWeek: RelayMetric[]
 }
 
 export const loader: LoaderFunction = async ({ request, params }) => {
-  const url = new URL(request.url)
-  const searchParams = url.searchParams
-
-  const { appId, accountId } = params
-
-  invariant(appId, "app id not found")
-
   const user = await requireUser(request)
-  invariant(user.profile.id && user.profile.emails, "user not found")
-  const userId = getPoktId(user.profile.id)
   const portal = initPortalClient({ token: user.accessToken })
 
-  if (searchParams.get("success") === "true") {
-    try {
-      const form = new FormData()
-      form.append("id", appId)
-      form.append("type", PayPlanType.PayAsYouGoV0)
+  const { appId } = params
+  invariant(appId, "app id not found")
 
-      await fetch(url.origin + `/api/${params.appId}/update-plan`, {
-        method: "POST",
-        body: form,
-      })
-    } catch (e) {}
-  }
+  try {
+    const getUserPortalAppResponse = await portal.getUserPortalApp({ portalAppID: appId })
+    if (!getUserPortalAppResponse.getUserPortalApp) {
+      throw new Error(`Account ${params.appId} not found for user ${user.portalUserId}`)
+    }
 
-  let endpointError = false
-  let endpointErrorMessage = ""
+    const getBlockchainsResponse = await portal.blockchains()
+    if (!getBlockchainsResponse.blockchains) {
+      throw new Error("Blockchains not found")
+    }
 
-  const endpointRes = await portal
-    .endpoint({
-      endpointID: appId,
+    return json<LoaderDataStruct<AppIdLoaderData>>({
+      data: {
+        app: getUserPortalAppResponse.getUserPortalApp as PortalApp,
+        blockchains: getBlockchainsResponse.blockchains as Blockchain[],
+      },
+      error: false,
     })
-    .catch((error) => {
-      endpointError = true
-      endpointErrorMessage = getErrorMessage(error.response.errors[0].message)
+  } catch (error) {
+    return json<LoaderDataStruct<AppIdLoaderData>>({
+      data: null,
+      error: true,
+      message: getErrorMessage(error),
     })
-
-  if (endpointError) {
-    return redirect(`/account/${accountId}?error=true&message=${endpointErrorMessage}`)
   }
-
-  const endpoint = endpointRes?.endpoint
-  invariant(endpoint, "app id not found")
-
-  const uEmail = user?.profile?._json?.email ?? ""
-  const subscription = await getSubscription(uEmail, endpoint.id, userId)
-
-  const dailyNetworkRelaysPerWeek = await getRelaysPerPeriod("endpoints", 7, endpoint.id)
-  const { blockchains } = await portal.blockchains({ active: true })
-
-  // api auto adjusts to/from to begining and end of each day so putting the same time here gives us back one full day
-  const today = dayjs().utc().format()
-  const yesterday = dayjs().utc().subtract(1, "day").format()
-  const relaysToday = await getRelays("endpoints", today, today, endpoint.id)
-  const relaysYesterday = await getRelays("endpoints", yesterday, yesterday, endpoint.id)
-
-  return json<AppIdLoaderData>({
-    blockchains,
-    endpoint,
-    dailyNetworkRelaysPerWeek,
-    relaysToday,
-    relaysYesterday,
-    subscription,
-    user: user.profile,
-  })
 }
 
 export type AppIdOutletContext = AppIdLoaderData
 
 export default function AppIdLayout() {
-  const {
-    blockchains,
-    endpoint,
-    subscription,
-    user,
-    relaysToday,
-    relaysYesterday,
-    dailyNetworkRelaysPerWeek,
-  } = useLoaderData() as AppIdLoaderData
-  const [searchParams, setSearchParams] = useSearchParams()
+  const { data, error, message } = useLoaderData() as LoaderDataStruct<AppIdLoaderData>
+
+  if (error) {
+    return <ErrorView message={message} />
+  }
+
+  const { app, blockchains } = data
 
   return (
-    <AppIdLayoutView
-      endpoint={endpoint}
-      searchParams={searchParams}
-      setSearchParams={setSearchParams}
-      subscription={subscription}
-      user={user}
-    >
+    <AppIdLayoutView app={app}>
       <Outlet
         context={{
+          app,
           blockchains,
-          endpoint,
-          relaysToday,
-          relaysYesterday,
-          dailyNetworkRelaysPerWeek,
-          subscription,
-          user,
         }}
       />
     </AppIdLayoutView>

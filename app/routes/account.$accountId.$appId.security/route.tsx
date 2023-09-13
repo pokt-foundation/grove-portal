@@ -1,7 +1,7 @@
 import { MetaFunction } from "@remix-run/node"
 import { useOutletContext, useParams } from "@remix-run/react"
 import { useEffect } from "react"
-import { AppIdOutletContext } from "../account.$accountId.$appId/route"
+import { AppIdOutletContext } from "../account.$accountId.$appId/route_old"
 import SecurityView, { links as SecurityViewLinks } from "./view"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 

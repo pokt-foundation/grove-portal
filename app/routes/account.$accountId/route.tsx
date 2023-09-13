@@ -11,7 +11,6 @@ import {
   GetUserAccountsQuery,
   PortalApp,
 } from "~/models/portal/sdk"
-import { authenticator } from "~/utils/auth.server"
 import { getErrorMessage } from "~/utils/catchError"
 import { LoaderDataStruct } from "~/utils/loader"
 import { requireUser } from "~/utils/user.server"
@@ -32,12 +31,14 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     const account = await portal.getUserAccount({ accountID: accountId })
 
     if (!account.getUserAccount) {
-      throw new Error(`Account ${params.accountId} not found for user ${user.profile.id}`)
+      throw new Error(
+        `Account ${params.accountId} not found for user ${user.portalUserId}`,
+      )
     }
 
     const accounts = await portal.getUserAccounts()
     if (!accounts.getUserAccounts) {
-      throw new Error(`Accounts not found for user ${user.profile.id}`)
+      throw new Error(`Accounts not found for user ${user.portalUserId}`)
     }
 
     return json<LoaderDataStruct<AccountIdLoaderData>>({

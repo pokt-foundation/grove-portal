@@ -4,10 +4,10 @@ import { Form } from "@remix-run/react"
 import { useState } from "react"
 import { LuTrash2 } from "react-icons/lu"
 import useModals from "~/hooks/useModals"
-import { ProcessedEndpoint } from "~/models/portal/sdk"
+import { PortalApp } from "~/models/portal/sdk"
 
 type DeleteApplicationProps = {
-  endpoint: ProcessedEndpoint
+  app: PortalApp
 }
 
 const DeleteAppForm = ({ appId }: { appId: string }) => {
@@ -46,8 +46,8 @@ const DeleteAppForm = ({ appId }: { appId: string }) => {
   )
 }
 
-const DeleteApplication = ({ endpoint }: DeleteApplicationProps) => {
-  const { id: appId } = endpoint
+const DeleteApplication = ({ app }: DeleteApplicationProps) => {
+  const { id: appId } = app
   const { openContentModal } = useModals()
 
   const openDeleteModal = () => {

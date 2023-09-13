@@ -32,7 +32,7 @@ export const Application = () => {
           icon={<LuSearch />}
           placeholder="Search network"
           value={searchTerm}
-          onChange={(event) => setSearchTerm(event.currentTarget.value)}
+          onChange={(event: any) => setSearchTerm(event.currentTarget.value)}
         />
       </Flex>
       <Divider />

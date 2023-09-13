@@ -6,23 +6,23 @@ import {
   MetaFunction,
   redirect,
 } from "@remix-run/node"
-import { useActionData, useFetcher } from "@remix-run/react"
+import { useFetcher } from "@remix-run/react"
 import { useEffect, useState } from "react"
 import invariant from "tiny-invariant"
 import PortalLoader from "~/components/PortalLoader"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { PayPlanTypeV2 } from "~/models/portal/sdk"
-import { Stripe, stripe } from "~/models/stripe/stripe.server"
 import AccountPlansContainer from "~/routes/account_.$accountId.create/components/AccountPlansContainer"
 import AppForm from "~/routes/account_.$accountId.create/components/AppForm"
 import { getErrorMessage } from "~/utils/catchError"
-import { getRequiredClientEnvVar, getRequiredServerEnvVar } from "~/utils/environment"
+import { getRequiredClientEnvVar } from "~/utils/environment"
+import { seo_title_append } from "~/utils/meta"
 import { MAX_USER_APPS } from "~/utils/pocketUtils"
 import { getUserPermissions, requireUser, Permissions } from "~/utils/user.server"
 
 export const meta: MetaFunction = () => {
   return {
-    title: "Create New Application",
+    title: `Create New Application ${seo_title_append}`,
   }
 }
 

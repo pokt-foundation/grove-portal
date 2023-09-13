@@ -5,12 +5,61 @@ import {
   EndpointsQuery,
   PayPlanType,
   PendingEndpointsQuery,
+  PortalApp,
   ProcessedEndpoint,
   RoleName,
 } from "./sdk"
 
 const testEmail = "test@test.test"
 export const testPortalUserId = "userId_test"
+
+export const app: PortalApp = {
+  id: "c7ec4cdcb4e28a19972da585",
+  name: "Test Migration 2",
+  accountID: "2886d942",
+  settings: {
+    environment: "production",
+    secretKey: "a8ad77c851f9b93e71056d7dcd946dca",
+    secretKeyRequired: false,
+    favoritedBlockchainIDs: null,
+    monthlyRelayLimit: 0,
+  },
+  whitelists: {},
+  aat: {
+    a4bad02a5c85e04d843fbde4: {
+      id: "a4bad02a5c85e04d843fbde4",
+      publicKey: "3e43b4f0c28b588ebc23719d9f00a604e37bf05fb7242caa54856bb7ed8f68a8",
+      address: "1bf37afc2af521c2cf09d111f76b528f68bb9282",
+      clientPublicKey: "5ad3c2acb46626b1c5e1283e26a966177b7c6f1e04a63e0350567529b42187c5",
+      signature:
+        "ddc38126c3125dda4d178ef4f474b6fd8f8bbc3dbca425f5b78c6ae44daf4321833ad5f2b13c900fe4a3e09863f82df93c477ee66d4b63fb502a0c607d0dae0f",
+      version: "0.0.1",
+    },
+  },
+  notifications: {
+    email: {
+      type: "email",
+      active: true,
+      destination: "",
+      trigger: "",
+      events: {
+        full: true,
+        signedUp: true,
+        threeQuarters: true,
+      },
+    },
+  },
+  createdAt: "2023-04-26T16:31:21.823638Z",
+  updatedAt: "2023-04-26T16:31:21.823638Z",
+  deleted: false,
+  firstDateSurpassed: "0001-01-01T00:00:00Z",
+  legacyFields: {
+    planType: "FREETIER_V0",
+    dailyLimit: 250000,
+    customLimit: 0,
+    requestTimeout: 2000,
+  },
+}
 
 export const endpoint: ProcessedEndpoint = {
   appLimits: {

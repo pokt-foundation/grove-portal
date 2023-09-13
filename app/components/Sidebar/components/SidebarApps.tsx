@@ -31,11 +31,13 @@ function getRandomAppmoji(): string {
 export const SidebarApps = ({ apps, iconOnly }: SidebarAppsProps) => {
   const { accountId } = useParams()
   const appsRoutes = useMemo(() => {
-    return apps.map((app) => ({
-      to: app.id,
-      label: app.name,
-      icon: getRandomAppmoji(),
-    })) as SidebarNavRoute[]
+    return apps
+      .sort((a, b) => (a.name > b.name ? 1 : -1))
+      .map((app) => ({
+        to: app.id,
+        label: app.name,
+        icon: getRandomAppmoji(),
+      })) as SidebarNavRoute[]
   }, [accountId, apps])
 
   return (

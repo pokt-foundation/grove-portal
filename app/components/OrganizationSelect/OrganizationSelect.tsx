@@ -1,55 +1,57 @@
 import { Group, Menu, Text, UnstyledButton } from "@pokt-foundation/pocket-blocks"
-import React, { forwardRef } from "react"
+import { NavLink, useParams } from "@remix-run/react"
+import React from "react"
 import { LuChevronsUpDown } from "react-icons/lu"
-import { Auth0Profile } from "remix-auth-auth0"
 import Identicon from "~/components/Identicon"
+import { Account } from "~/models/portal/sdk"
 
-interface UserButtonProps extends React.ComponentPropsWithoutRef<"button"> {
-  user: Auth0Profile
+type UserItemProps = {
+  account: Account
   withIcon?: boolean
 }
 
 type OrganizationSelectProps = {
-  user: Auth0Profile
+  accounts: Account[]
+  onOrgSelect: () => void
 }
 
-const OrganizationButton = forwardRef<HTMLButtonElement, UserButtonProps>(
-  ({ user, withIcon, ...rest }: UserButtonProps, ref) => (
-    <UnstyledButton ref={ref} py={5} {...rest}>
-      <Group>
-        <Identicon
-          alt={`${user.displayName ?? "user"} profile picture`}
-          username={user.id ?? "user default"}
-        />
-
-        <Text size="sm" weight={500}>
-          {user.displayName}
-        </Text>
-
-        {withIcon && (
-          <LuChevronsUpDown size={18} style={{ marginLeft: "auto", marginRight: 7 }} />
-        )}
-      </Group>
-    </UnstyledButton>
-  ),
+const OrganizationItem = ({ account, withIcon }: UserItemProps) => (
+  <Group>
+    <Identicon alt={`${account.id} profile picture`} username={account.id} />
+    <Text size="sm" weight={500}>
+      {account.id}
+    </Text>
+    {withIcon && (
+      <LuChevronsUpDown size={18} style={{ marginLeft: "auto", marginRight: 7 }} />
+    )}
+  </Group>
 )
 
-const OrganizationSelect = ({ user }: OrganizationSelectProps) => {
+const OrganizationSelect = ({ accounts, onOrgSelect }: OrganizationSelectProps) => {
+  const { accountId } = useParams()
+  const activeAccount = accounts.find(({ id }) => id === accountId)
   return (
-    <Menu>
+    <Menu width={300}>
       <Menu.Target>
-        <OrganizationButton withIcon user={user} />
+        {activeAccount && (
+          <UnstyledButton>
+            <OrganizationItem withIcon account={activeAccount} />
+          </UnstyledButton>
+        )}
       </Menu.Target>
-      {/* TODO: Add organizations */}
-      {/*{organizations.length > 1 && (*/}
-      {/*  <Menu.Dropdown>*/}
-      {/*    {organizations.map((organization) => (*/}
-      {/*      <Menu.Item key={organization.someId}>*/}
-      {/*        <OrganizationButton user={organization.user} />*/}
-      {/*      </Menu.Item>*/}
-      {/*    ))}*/}
-      {/*  </Menu.Dropdown>*/}
-      {/*)}*/}
+      {accounts.length > 1 && (
+        <Menu.Dropdown>
+          {accounts
+            .filter(({ id }) => id !== accountId)
+            .map((accounts) => (
+              <Menu.Item key={accounts.id} p={2}>
+                <NavLink to={`/account/${accounts.id}`} onClick={onOrgSelect}>
+                  <OrganizationItem account={accounts} />
+                </NavLink>
+              </Menu.Item>
+            ))}
+        </Menu.Dropdown>
+      )}
     </Menu>
   )
 }

@@ -14,9 +14,11 @@ import { RiDiscordLine } from "react-icons/ri"
 import { Auth0Profile } from "remix-auth-auth0"
 import Identicon from "~/components/Identicon"
 import OrganizationSelect from "~/components/OrganizationSelect"
+import { Account } from "~/models/portal/sdk"
 
 type OrganizationDrawerProps = {
   user?: Auth0Profile
+  accounts: Account[]
 }
 
 type DrawerLinkProps = NavLinkProps &
@@ -65,7 +67,7 @@ const drawerExternalLinks = [
   },
 ]
 
-const OrganizationDrawer = ({ user }: OrganizationDrawerProps) => {
+const OrganizationDrawer = ({ user, accounts }: OrganizationDrawerProps) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const logoutFetcher = useFetcher()
   const logout = () => {
@@ -118,7 +120,10 @@ const OrganizationDrawer = ({ user }: OrganizationDrawerProps) => {
           <Divider my={8} />
           {user && (
             <>
-              <OrganizationSelect user={user} />
+              <OrganizationSelect
+                accounts={accounts}
+                onOrgSelect={() => setIsDrawerOpen(false)}
+              />
               <Divider my={8} />
             </>
           )}

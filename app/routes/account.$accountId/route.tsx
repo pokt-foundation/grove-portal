@@ -1,12 +1,16 @@
-import { useLoaderData } from ".pnpm/react-router@6.11.0_react@18.2.0/node_modules/react-router"
 import { json, LoaderFunction, redirect } from "@remix-run/node"
-import { Outlet } from "@remix-run/react"
+import { Outlet, useLoaderData } from "@remix-run/react"
 import { Auth0Profile } from "remix-auth-auth0"
 import invariant from "tiny-invariant"
 import ErrorView from "~/components/ErrorView"
 import RootAppShell from "~/components/RootAppShell/RootAppShell"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { GetUserAccountQuery, PortalApp } from "~/models/portal/sdk"
+import {
+  Account,
+  GetUserAccountQuery,
+  GetUserAccountsQuery,
+  PortalApp,
+} from "~/models/portal/sdk"
 import { authenticator } from "~/utils/auth.server"
 import { getErrorMessage } from "~/utils/catchError"
 import { LoaderDataStruct } from "~/utils/loader"
@@ -14,6 +18,7 @@ import { requireUser } from "~/utils/user.server"
 
 export type AccountIdLoaderData = {
   account: GetUserAccountQuery["getUserAccount"]
+  accounts: GetUserAccountsQuery["getUserAccounts"]
   user: Auth0Profile
 }
 
@@ -30,9 +35,15 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       throw new Error(`Account ${params.accountId} not found for user ${user.profile.id}`)
     }
 
+    const accounts = await portal.getUserAccounts()
+    if (!accounts.getUserAccounts) {
+      throw new Error(`Accounts not found for user ${user.profile.id}`)
+    }
+
     return json<LoaderDataStruct<AccountIdLoaderData>>({
       data: {
         account: account.getUserAccount,
+        accounts: accounts.getUserAccounts,
         user: user.profile,
       },
       error: false,
@@ -54,9 +65,14 @@ export default function AccountId() {
     return <ErrorView message={message} />
   }
 
-  const { account, user } = data
+  const { account, accounts, user } = data
+
   return (
-    <RootAppShell apps={account.portalApps as PortalApp[]} user={user}>
+    <RootAppShell
+      accounts={accounts as Account[]}
+      apps={account.portalApps as PortalApp[]}
+      user={user}
+    >
       <Outlet context={account} />
     </RootAppShell>
   )

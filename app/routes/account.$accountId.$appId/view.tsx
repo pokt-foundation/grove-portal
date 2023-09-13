@@ -44,10 +44,6 @@ export default function AppIdLayoutView({
       end: true,
     },
     {
-      to: "requests",
-      label: "Requests",
-    },
-    {
       to: "security",
       label: "Security",
     },
@@ -58,6 +54,10 @@ export default function AppIdLayoutView({
     {
       to: "team",
       label: "Team",
+    },
+    {
+      to: "keys",
+      label: "Keys",
     },
   ])
 

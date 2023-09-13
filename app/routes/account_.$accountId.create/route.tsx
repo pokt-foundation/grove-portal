@@ -9,6 +9,7 @@ import {
 import { useFetcher } from "@remix-run/react"
 import { useEffect, useState } from "react"
 import invariant from "tiny-invariant"
+import { DEFAULT_APPMOJI } from "./components/AppmojiPicker"
 import PortalLoader from "~/components/PortalLoader"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { PayPlanTypeV2 } from "~/models/portal/sdk"
@@ -64,6 +65,8 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     return redirect(`/account/${params.accountId}/app-limit-exceeded`)
   }
 
+  // TODO: Dynamically get the price
+  //
   // const priceID = getRequiredServerEnvVar("STRIPE_PRICE_ID")
   // const price = await stripe.prices.retrieve(priceID).catch((error) => {
   //   console.log(error)
@@ -92,7 +95,7 @@ export const action: ActionFunction = async ({ request, params }) => {
   const subscription = formData.get("app-subscription")
   const name = formData.get("app-name")
   const description = formData.get("app-description")
-  const appmoji = formData.get("appmoji")
+  const appmoji = formData.get("app-emoji")
   const { accountId } = params
 
   invariant(
@@ -103,7 +106,6 @@ export const action: ActionFunction = async ({ request, params }) => {
   invariant(accountId && typeof accountId === "string", "accountId not found")
 
   try {
-    // TODO: API call not working
     const createUserPortalAppResponse = await portal
       .createUserPortalApp({
         input: {
@@ -111,15 +113,13 @@ export const action: ActionFunction = async ({ request, params }) => {
           accountID: accountId,
           planType: subscription as PayPlanTypeV2,
           description: typeof description === "string" ? description : undefined,
-          appMoji: typeof appmoji === "string" ? appmoji : "1f9e9",
+          appMoji: typeof appmoji === "string" ? appmoji : DEFAULT_APPMOJI,
         },
       })
       .catch((err) => {
         console.log(err)
         throw new Error("portal api could not create new endpoint")
       })
-
-    console.log({ createUserPortalAppResponse })
 
     if (!createUserPortalAppResponse.createUserPortalApp) {
       throw new Error("portal api could not create new endpoint")

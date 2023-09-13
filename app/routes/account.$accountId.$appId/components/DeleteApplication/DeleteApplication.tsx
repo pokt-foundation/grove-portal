@@ -10,11 +10,11 @@ type DeleteApplicationProps = {
   app: PortalApp
 }
 
-const DeleteAppForm = ({ appId }: { appId: string }) => {
+const DeleteAppForm = ({ accountId, appId }: { accountId: string; appId: string }) => {
   const [deleteTextInputValue, setDeleteTextInputValue] = useState("")
 
   return (
-    <Form action={`/api/${appId}/remove`} method="post">
+    <Form action={`/api/${accountId}/${appId}/remove`} method="post">
       <Text size="sm">
         Please type ‘Delete’ to proceed. This will delete your application and all the
         data related.
@@ -53,7 +53,7 @@ const DeleteApplication = ({ app }: DeleteApplicationProps) => {
   const openDeleteModal = () => {
     openContentModal({
       title: <Text fw={600}>Delete application?</Text>,
-      children: <DeleteAppForm appId={appId} />,
+      children: <DeleteAppForm accountId={app.accountID} appId={appId} />,
     })
   }
 

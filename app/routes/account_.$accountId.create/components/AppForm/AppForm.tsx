@@ -96,7 +96,7 @@ const AppForm = ({ onSubmit }: AppFormProps) => {
               Select an emoji icon for your application - a personal touch for quick
               recognition in the dashboard, particularly in a collapsed side panel view.
             </Text>
-            <input hidden name="appmoji" type="text" value={appmoji} />
+            <input hidden name="app-emoji" type="text" value={appmoji} />
             <AppmojiPicker onAppmojiSelect={(appmoji) => setAppmoji(appmoji)} />
           </Box>
         </Stack>

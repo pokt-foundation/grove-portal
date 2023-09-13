@@ -6,7 +6,7 @@ import {
   Text,
   Tooltip,
 } from "@pokt-foundation/pocket-blocks"
-import { NavLink } from "@remix-run/react"
+import { NavLink, useParams } from "@remix-run/react"
 import { AccountPlan } from "~/components/AccountPlan"
 import { PayPlanTypeV2 } from "~/models/portal/sdk"
 
@@ -15,6 +15,8 @@ type AccountPlansContainerProps = {
 }
 
 const AccountPlansContainer = ({ onPlanSelected }: AccountPlansContainerProps) => {
+  const { accountId } = useParams()
+
   return (
     <Box>
       <Flex align="center" justify="space-between" my="32px">
@@ -22,7 +24,12 @@ const AccountPlansContainer = ({ onPlanSelected }: AccountPlansContainerProps) =
           Choose an application plan
         </Text>
         <Tooltip withArrow label="Discard" position="bottom">
-          <CloseButton aria-label="Discard" component={NavLink} size="lg" to="/account" />
+          <CloseButton
+            aria-label="Discard"
+            component={NavLink}
+            size="lg"
+            to={`/account/${accountId}`}
+          />
         </Tooltip>
       </Flex>
 

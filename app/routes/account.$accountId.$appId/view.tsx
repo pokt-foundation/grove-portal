@@ -1,10 +1,15 @@
 import { Divider } from "@mantine/core"
 import { Button, Container, Stack } from "@pokt-foundation/pocket-blocks"
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { Auth0Profile } from "remix-auth-auth0"
 import Modal, { ModalCTA } from "~/components/Modal"
 import { Route } from "~/components/Nav"
-import { EndpointQuery, PortalApp, ProcessedEndpoint } from "~/models/portal/sdk"
+import {
+  EndpointQuery,
+  PayPlanType,
+  PortalApp,
+  ProcessedEndpoint,
+} from "~/models/portal/sdk"
 import { Stripe } from "~/models/stripe/stripe.server"
 import ApplicationHeader from "~/routes/account.$accountId.$appId/components/ApplicationHeader"
 import AppOverviewTabs from "~/routes/account.$accountId.$appId/components/AppOverviewTabs"
@@ -25,18 +30,22 @@ export default function AppIdLayoutView({ app, children }: AppIdLayoutViewProps)
       label: "Endpoints",
       end: true,
     },
-    {
-      to: "requests",
-      label: "Requests",
-    },
+    // {
+    //   to: "requests",
+    //   label: "Requests",
+    // },
     {
       to: "security",
       label: "Security",
     },
-    {
-      to: "notifications",
-      label: "Notifications",
-    },
+    // {
+    //   to: "notifications",
+    //   label: "Notifications",
+    // },
+    // {
+    //   to: "team",
+    //   label: "Team",
+    // },
   ])
 
   // useSubscriptionSync({

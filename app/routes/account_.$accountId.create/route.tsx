@@ -91,8 +91,8 @@ export const action: ActionFunction = async ({ request, params }) => {
   const formData = await request.formData()
   const subscription = formData.get("app-subscription")
   const name = formData.get("app-name")
-  // const description = formData.get("app-description")
-  // const appmoji = formData.get("appmoji")
+  const description = formData.get("app-description")
+  const appmoji = formData.get("appmoji")
   const { accountId } = params
 
   invariant(
@@ -110,6 +110,8 @@ export const action: ActionFunction = async ({ request, params }) => {
           name,
           accountID: accountId,
           planType: subscription as PayPlanTypeV2,
+          description: typeof description === "string" ? description : undefined,
+          appMoji: typeof appmoji === "string" ? appmoji : "1f9e9",
         },
       })
       .catch((err) => {

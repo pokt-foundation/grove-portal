@@ -17,7 +17,7 @@ import {
   WhitelistContracts,
   WhitelistMethods,
 } from "~/models/portal/sdk"
-import { Blockchain, EndpointQuery } from "~/models/portal/sdk"
+import { Blockchain, PortalApp } from "~/models/portal/sdk"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 
 /* c8 ignore start */
@@ -27,8 +27,7 @@ export const links = () => {
 /* c8 ignore stop */
 
 type SecurityViewProps = {
-  endpoint: EndpointQuery["endpoint"]
-  appId: string | undefined
+  app: PortalApp
   blockchains: BlockchainsQuery["blockchains"]
 }
 
@@ -47,7 +46,7 @@ const SelectItem = forwardRef<HTMLDivElement, { label: string; value: string }>(
 
 SelectItem.displayName = "SelectItem"
 
-export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps) => {
+export const SecurityView = ({ app, blockchains }: SecurityViewProps) => {
   const navigation = useNavigation()
 
   type FormatData = {
@@ -77,33 +76,23 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
   const securityAction = useFetcher()
 
   const [secretKeyRequired, setSecretKeyRequired] = useState<boolean>(
-    Boolean(endpoint.gatewaySettings.secretKeyRequired),
+    Boolean(app.settings.secretKeyRequired),
   )
   const [whitelistBlockchains, setWhitelistBlockchains] = useState<string[]>(
-    endpoint.gatewaySettings.whitelistBlockchains as string[],
+    app.whitelists.blockchains as string[],
   )
   const [whitelistUserAgents, setWhitelistUserAgents] = useState<string[]>(
-    endpoint.gatewaySettings?.whitelistUserAgents as string[],
+    app.whitelists.userAgents as string[],
   )
   const [whitelistOrigins, setWhitelistOrigins] = useState<string[]>(
-    endpoint.gatewaySettings?.whitelistOrigins as string[],
+    app.whitelists.origins as string[],
   )
   const [whitelistContracts, setWhitelistContracts] = useState<
     Array<{ id: string; inputValue: string }>
-  >(
-    formatData<WhitelistContractType>(
-      endpoint.gatewaySettings?.whitelistContracts,
-      "contracts",
-    ),
-  )
+  >(formatData<WhitelistContractType>(app.whitelists.contracts, "contracts"))
   const [whitelistMethods, setWhitelistMethods] = useState<
     Array<{ id: string; inputValue: string }>
-  >(
-    formatData<WhitelistMethodType>(
-      endpoint.gatewaySettings?.whitelistMethods,
-      "methods",
-    ),
-  )
+  >(formatData<WhitelistMethodType>(app.whitelists.methods, "methods"))
 
   const [whitelistUserAgentsElement, setWhitelistUserAgentsElement] = useState<string>("")
   const [whitelistOriginsElement, setWhitelistOriginsElement] = useState<string>("")
@@ -128,8 +117,8 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
 
   return (
     <div className="security">
-      <securityAction.Form action={`/api/${appId}/settings`} method="post">
-        <input name="appID" type="hidden" value={appId} />
+      <securityAction.Form action={`/api/${app.id}/settings`} method="post">
+        <input name="appID" type="hidden" value={app.id} />
         <Card>
           <div className="pokt-card-header">
             <h3>{t.security.headings.secretKey}</h3>

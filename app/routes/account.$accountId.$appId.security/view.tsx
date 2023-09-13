@@ -1,49 +1,19 @@
 import { Divider } from "@mantine/core"
-import {
-  Button,
-  Text,
-  Switch,
-  Loader,
-  Group,
-  Box,
-  Stack,
-} from "@pokt-foundation/pocket-blocks"
-import { useFetcher, useNavigation } from "@remix-run/react"
-import React, { useState, forwardRef } from "react"
+import { Button, Text, Switch, Box, Stack } from "@pokt-foundation/pocket-blocks"
+import { useNavigation } from "@remix-run/react"
+import React, { useState } from "react"
 import { LuPlus } from "react-icons/lu"
-import { useTranslate } from "~/context/TranslateContext"
-import {
-  BlockchainsQuery,
-  Maybe,
-  WhitelistContracts,
-  WhitelistMethods,
-} from "~/models/portal/sdk"
+import { BlockchainsQuery } from "~/models/portal/sdk"
 import { Blockchain, EndpointQuery } from "~/models/portal/sdk"
-import ApprovedChains from "~/routes/account.$accountId.$appId.security/components/ApprovedChains  "
+import ApprovedChains from "~/routes/account.$accountId.$appId.security/components/ApprovedChains"
 import WhitelistUserAgents from "~/routes/account.$accountId.$appId.security/components/WhitelistUserAgents"
 import useCommonStyles from "~/styles/commonStyles"
-import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 
 type SecurityViewProps = {
   endpoint: EndpointQuery["endpoint"]
   appId: string | undefined
   blockchains: BlockchainsQuery["blockchains"]
 }
-
-type WhitelistContractType = Pick<WhitelistContracts, "blockchainID" | "contracts">
-type WhitelistMethodType = Pick<WhitelistMethods, "blockchainID" | "methods">
-
-const SelectItem = forwardRef<HTMLDivElement, { label: string; value: string }>(
-  ({ label, ...others }, ref) => (
-    <div ref={ref} {...others}>
-      <Group noWrap>
-        <Text>{label}</Text>
-      </Group>
-    </div>
-  ),
-)
-
-SelectItem.displayName = "SelectItem"
 
 export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps) => {
   const navigation = useNavigation()

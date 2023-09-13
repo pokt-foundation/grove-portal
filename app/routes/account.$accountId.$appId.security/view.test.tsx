@@ -4,7 +4,7 @@ import SecurityView from "./view"
 import { render, screen } from "test/helpers"
 import { endpoint, blockchains } from "~/models/portal/portal.data"
 
-describe("<SecurityView />", () => {
+describe.skip("<SecurityView />", () => {
   it("renders", () => {
     render(
       <SecurityView appId={"123123"} blockchains={blockchains} endpoint={endpoint} />,

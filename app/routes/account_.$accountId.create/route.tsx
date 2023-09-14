@@ -113,7 +113,7 @@ export const action: ActionFunction = async ({ request, params }) => {
           accountID: accountId,
           planType: subscription as PayPlanTypeV2,
           description: typeof description === "string" ? description : undefined,
-          appMoji: typeof appmoji === "string" ? appmoji : DEFAULT_APPMOJI,
+          appEmoji: typeof appmoji === "string" ? appmoji : DEFAULT_APPMOJI,
         },
       })
       .catch((err) => {

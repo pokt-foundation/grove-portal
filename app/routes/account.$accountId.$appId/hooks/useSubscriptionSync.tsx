@@ -1,5 +1,7 @@
+import { showNotification, updateNotification } from "@mantine/notifications"
 import { useFetcher } from "@remix-run/react"
 import { Dispatch, SetStateAction, useEffect, useRef } from "react"
+import { LuCheck } from "react-icons/lu"
 import { type Route } from "~/components/Nav"
 import { useFeatureFlags } from "~/context/FeatureFlagContext"
 import { EndpointQuery, PayPlanType, RoleName } from "~/models/portal/sdk"
@@ -57,21 +59,42 @@ const useSubscriptionSync = ({
     const cancelError = searchParams.get("cancelError")
 
     if (success === "true") {
-      // Update plan type to paid on success
+      // Update plan type to paid on success and show loading notification
       if (
         endpoint &&
         endpoint.appLimits.planType !== PayPlanType.PayAsYouGoV0 &&
         updatePlanFetcher.state !== "submitting" &&
         updatePlanFetcher.state !== "loading"
       ) {
+        showNotification({
+          id: "auto-scale-notification",
+          message: "Upgrading app to Auto-Scale",
+          loading: true,
+          autoClose: false,
+          disallowClose: true,
+        })
         updatePlanTypeRef.current({
           endpointId: endpoint.id,
           planType: PayPlanType.PayAsYouGoV0,
         })
       }
-      trackEvent(AmplitudeEvents.NewSubscription)
-      setSearchParams({})
-      setShowSuccessModel(true)
+
+      // Show success notification and clear url params
+      if (
+        endpoint &&
+        endpoint.appLimits.planType === PayPlanType.PayAsYouGoV0 &&
+        updatePlanFetcher.state !== "submitting" &&
+        updatePlanFetcher.state !== "loading"
+      ) {
+        updateNotification({
+          id: "auto-scale-notification",
+          message: "App upgraded to Auto-scale",
+          color: "green",
+          icon: <LuCheck size={18} />,
+        })
+        trackEvent(AmplitudeEvents.NewSubscription)
+        setSearchParams({})
+      }
     }
 
     if (success === "false" || cancelError === "true") {

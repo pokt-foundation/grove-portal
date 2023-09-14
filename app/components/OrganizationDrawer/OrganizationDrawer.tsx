@@ -127,9 +127,10 @@ const OrganizationDrawer = ({ user, accounts }: OrganizationDrawerProps) => {
               <Divider my={8} />
             </>
           )}
-          {drawerExternalLinks.map(({ label, to, icon, withDivider }) => (
+          {drawerExternalLinks.map(({ label, to, icon, withDivider }, index) => (
             <>
               <DrawerLink
+                key={`${label}-${index}`}
                 external
                 icon={icon}
                 label={label}

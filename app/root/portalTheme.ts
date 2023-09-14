@@ -175,13 +175,6 @@ export const portalTheme: MantineThemeOverride = {
         },
       },
     },
-    Paper: {
-      styles: {
-        root: {
-          overflow: "visible !important",
-        },
-      },
-    },
     Card: {
       styles: (theme) => ({
         root: {
@@ -201,13 +194,24 @@ export const portalTheme: MantineThemeOverride = {
     },
     Drawer: {
       styles: (theme) => ({
-        header: {
-          display: "flex",
-          justifyItems: "center",
-        },
         drawer: {
           backgroundColor:
             theme.colorScheme === "dark" ? theme.colors.dark[9] : theme.colors.gray[1],
+        },
+      }),
+    },
+    Notification: {
+      defaultProps: {
+        py: 12,
+        px: 15,
+        radius: 8,
+      },
+      styles: (theme) => ({
+        root: {
+          backgroundColor:
+            theme.colorScheme === "dark" ? theme.colors.dark[9] : theme.colors.gray[1],
+          border: "1px solid",
+          "&::before": { display: "none" },
         },
       }),
     },

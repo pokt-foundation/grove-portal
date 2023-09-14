@@ -30,10 +30,6 @@ export default function AppIdLayoutView({ app, children }: AppIdLayoutViewProps)
       label: "Endpoints",
       end: true,
     },
-    // {
-    //   to: "requests",
-    //   label: "Requests",
-    // },
     {
       to: "security",
       label: "Security",
@@ -46,6 +42,10 @@ export default function AppIdLayoutView({ app, children }: AppIdLayoutViewProps)
     //   to: "team",
     //   label: "Team",
     // },
+    {
+      to: "keys",
+      label: "Keys",
+    },
   ])
 
   useEffect(() => {

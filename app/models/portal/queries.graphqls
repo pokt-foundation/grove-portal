@@ -208,6 +208,8 @@ query getUserAccount($accountID: ID!) {
       id
       name
       accountID
+      appEmoji
+      description
       settings {
         appID
         environment
@@ -284,6 +286,8 @@ query getUserPortalApp($portalAppID: ID!) {
     id
     name
     accountID
+    appEmoji
+    description
     settings {
       appID
       environment

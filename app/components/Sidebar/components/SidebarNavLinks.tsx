@@ -8,9 +8,11 @@ import {
   UnstyledButton,
 } from "@pokt-foundation/pocket-blocks"
 import { NavLink } from "@remix-run/react"
+import { Emoji } from "emoji-picker-react"
 import React from "react"
 import { IconType } from "react-icons/lib/cjs/iconBase"
 import Tooltip from "~/components/Tooltip"
+import { DEFAULT_APPMOJI } from "~/routes/account_.$accountId.create/components/AppmojiPicker"
 
 export type SidebarNavRoute = {
   to: string
@@ -63,11 +65,7 @@ const LabelIcon = ({ icon: Icon, imgSrc, label }: LabelIconProps) => {
   }
 
   if (isEmoji) {
-    return (
-      <Text span fz="md" m={0} ta="center">
-        {Icon}
-      </Text>
-    )
+    return <Emoji size={14} unified={Icon !== "" ? Icon : DEFAULT_APPMOJI} />
   }
 
   return Icon ? <Icon size={18} /> : null

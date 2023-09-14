@@ -2,13 +2,11 @@ import { expect } from "vitest"
 import englishText from "../../locales/en"
 import SecurityView from "./view"
 import { render, screen } from "test/helpers"
-import { endpoint, blockchains } from "~/models/portal/portal.data"
+import { app, blockchains } from "~/models/portal/portal.data"
 
-describe("<SecurityView />", () => {
-  it.skip("renders", () => {
-    render(
-      <SecurityView appId={"123123"} blockchains={blockchains} endpoint={endpoint} />,
-    )
+describe.skip("<SecurityView />", () => {
+  it("renders", () => {
+    render(<SecurityView app={app} blockchains={blockchains} />)
     expect(
       screen.getByRole("heading", {
         level: 3,

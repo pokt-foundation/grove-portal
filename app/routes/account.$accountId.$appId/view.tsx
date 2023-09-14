@@ -38,15 +38,51 @@ export default function AppIdLayoutView({ app, children }: AppIdLayoutViewProps)
       to: "security",
       label: "Security",
     },
-    // {
-    //   to: "notifications",
-    //   label: "Notifications",
-    // },
+    {
+      to: "notifications",
+      label: "Notifications",
+    },
     // {
     //   to: "team",
     //   label: "Team",
     // },
   ])
+
+  useEffect(() => {
+    if (
+      app &&
+      app.legacyFields.planType === PayPlanType.PayAsYouGoV0 &&
+      !routes.filter((route) => route.to === "plan")[0]
+    ) {
+      setRoutes((curr) => [
+        ...curr.filter((c) => c.to !== "notifications"),
+        {
+          to: "plan",
+          label: "Plan",
+        },
+      ])
+    }
+    if (
+      app &&
+      app.legacyFields.planType !== PayPlanType.PayAsYouGoV0 &&
+      routes.filter((route) => route.to === "plan")[0]
+    ) {
+      setRoutes((curr) => [...curr.filter((route) => route.to !== "plan")])
+    }
+    if (
+      app &&
+      app.legacyFields.planType !== PayPlanType.PayAsYouGoV0 &&
+      !routes.filter((route) => route.to === "notifications")[0]
+    ) {
+      setRoutes((curr) => [
+        ...curr,
+        {
+          to: "notifications",
+          label: "Notifications",
+        },
+      ])
+    }
+  }, [app, routes])
 
   // useSubscriptionSync({
   //   routes,

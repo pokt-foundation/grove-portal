@@ -1,6 +1,5 @@
 import { Navbar } from "@pokt-foundation/pocket-blocks"
-import { useParams } from "@remix-run/react"
-import React, { useMemo } from "react"
+import { useMemo } from "react"
 import { InternalLink, SidebarNavRoute } from "~/components/Sidebar/components"
 import { PortalApp } from "~/models/portal/sdk"
 
@@ -11,17 +10,18 @@ type SidebarAppsProps = {
 
 function getRandomAppmoji(): string {
   const emojis: string[] = [
-    "💡",
-    "🕹️",
-    "⛰️",
-    "🚀",
-    "🔥",
-    "🐛",
-    "⚙️",
-    "📱",
-    "💻",
-    "🛠️",
-    "🎮 ",
+    "1f4a1",
+    "1f680",
+    "1f525",
+    "1f41b",
+    "1f4bb",
+    "1f528",
+    "1f4be",
+    "1f4a3",
+    "1f48e",
+    "1f3ae",
+    "2b50",
+    "1f3b1",
   ]
 
   const randomIndex: number = Math.floor(Math.random() * emojis.length)
@@ -29,16 +29,15 @@ function getRandomAppmoji(): string {
 }
 
 export const SidebarApps = ({ apps, iconOnly }: SidebarAppsProps) => {
-  const { accountId } = useParams()
   const appsRoutes = useMemo(() => {
     return apps
       .sort((a, b) => (a.name > b.name ? 1 : -1))
       .map((app) => ({
         to: app.id,
         label: app.name,
-        icon: getRandomAppmoji(),
+        icon: app.appEmoji !== "" ? app.appEmoji : getRandomAppmoji(),
       })) as SidebarNavRoute[]
-  }, [accountId, apps])
+  }, [apps])
 
   return (
     <Navbar.Section>

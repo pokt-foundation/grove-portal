@@ -2,7 +2,7 @@ import { ActionFunction, json } from "@remix-run/node"
 import { useOutletContext } from "@remix-run/react"
 import { useEffect } from "react"
 import invariant from "tiny-invariant"
-import { AppIdOutletContext } from "../account.$accountId.$appId/route_old"
+import { AppIdOutletContext } from "../account.$accountId.$appId/route"
 import { initPortalClient } from "~/models/portal/portal.server"
 import AppNotificationsAlert from "~/routes/account.$accountId.$appId.notifications/components/AppNotificationsAlert"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
@@ -45,7 +45,7 @@ export default function AppNotifications() {
     trackEvent(AmplitudeEvents.NotificationDetailsView)
   }, [])
 
-  const { endpoint } = useOutletContext<AppIdOutletContext>()
+  const { app } = useOutletContext<AppIdOutletContext>()
 
-  return <AppNotificationsAlert endpoint={endpoint} />
+  return <AppNotificationsAlert app={app} />
 }

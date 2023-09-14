@@ -17,7 +17,10 @@ const ApplicationHeader = ({ app }: ApplicationHeaderProps) => {
     <Group position="apart">
       <Group spacing="sm">
         <Avatar color="dark" radius="xl" variant="outline">
-          <Emoji size={14} unified={DEFAULT_APPMOJI} />
+          <Emoji
+            size={14}
+            unified={app.appEmoji !== "" ? app.appEmoji : DEFAULT_APPMOJI}
+          />
         </Avatar>
         <Text fw={600} fz="md">
           {app.name}

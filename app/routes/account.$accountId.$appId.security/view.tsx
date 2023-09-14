@@ -2,8 +2,8 @@ import { Divider } from "@mantine/core"
 import { Box } from "@pokt-foundation/pocket-blocks"
 import { useNavigation } from "@remix-run/react"
 import React, { useMemo } from "react"
-import { BlockchainsQuery } from "~/models/portal/sdk"
-import { Blockchain, EndpointQuery } from "~/models/portal/sdk"
+import { BlockchainsQuery, PortalApp } from "~/models/portal/sdk"
+import { Blockchain } from "~/models/portal/sdk"
 import ApprovedChains from "~/routes/account.$accountId.$appId.security/components/ApprovedChains"
 import ChainWhitelist from "~/routes/account.$accountId.$appId.security/components/ChainWhitelist"
 import PrivateSecretKey from "~/routes/account.$accountId.$appId.security/components/PrivateSecretKey"
@@ -20,43 +20,32 @@ type SecurityViewProps = {
   blockchains: BlockchainsQuery["blockchains"]
 }
 
-export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps) => {
+export const SecurityView = ({ app, blockchains }: SecurityViewProps) => {
   const navigation = useNavigation()
 
   const whiteListContracts = useMemo(
     () =>
-      formatBlockchainWhitelist<WhitelistContract>(
-        endpoint.gatewaySettings?.whitelistContracts,
-        "contracts",
-      ),
-    [endpoint.gatewaySettings?.whitelistContracts],
+      formatBlockchainWhitelist<WhitelistContract>(app.whitelists.contracts, "contracts"),
+    [app.whitelists.contracts],
   )
 
   const whiteListMethods = useMemo(
-    () =>
-      formatBlockchainWhitelist<WhitelistMethod>(
-        endpoint.gatewaySettings?.whitelistMethods,
-        "methods",
-      ),
-    [endpoint.gatewaySettings?.whitelistMethods],
+    () => formatBlockchainWhitelist<WhitelistMethod>(app.whitelists.methods, "methods"),
+    [app.whitelists.methods],
   )
 
   return (
     <Box>
-      <PrivateSecretKey secretKeyRequired={endpoint.gatewaySettings.secretKeyRequired} />
+      <PrivateSecretKey secretKeyRequired={app.settings.secretKeyRequired as boolean} />
       <Divider />
       <ApprovedChains
-        approvedChainsIds={endpoint?.gatewaySettings?.whitelistBlockchains as string[]}
+        approvedChainsIds={app.whitelists.blockchains as string[]}
         blockchains={blockchains as Blockchain[]}
       />
       <Divider />
-      <WhitelistUserAgents
-        whitelistUserAgents={endpoint.gatewaySettings?.whitelistUserAgents as string[]}
-      />
+      <WhitelistUserAgents whitelistUserAgents={app.whitelists.userAgents as string[]} />
       <Divider />
-      <WhitelistOrigins
-        whitelistOrigins={endpoint.gatewaySettings?.whitelistOrigins as string[]}
-      />
+      <WhitelistOrigins whitelistOrigins={app.whitelists.origins as string[]} />
       <Divider />
       <ChainWhitelist
         blockchains={blockchains as Blockchain[]}

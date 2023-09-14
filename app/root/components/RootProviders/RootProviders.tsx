@@ -1,4 +1,5 @@
 import { ModalsProvider } from "@mantine/modals"
+import { NotificationsProvider } from "@mantine/notifications"
 import { MantineProvider } from "@pokt-foundation/pocket-blocks"
 import React from "react"
 import { portalTheme } from "~/root/portalTheme"
@@ -11,7 +12,9 @@ const RootProviders = ({ children }: { children: React.ReactNode }) => {
       withNormalizeCSS
       theme={portalTheme}
     >
-      <ModalsProvider>{children}</ModalsProvider>
+      <NotificationsProvider position="bottom-center">
+        <ModalsProvider>{children}</ModalsProvider>
+      </NotificationsProvider>
     </MantineProvider>
   )
 }

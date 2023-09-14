@@ -10,6 +10,7 @@ import {
   GetUserAccountQuery,
   GetUserAccountsQuery,
   PortalApp,
+  PortalAppRole,
 } from "~/models/portal/sdk"
 import { getErrorMessage } from "~/utils/catchError"
 import { LoaderDataStruct } from "~/utils/loader"
@@ -19,6 +20,7 @@ export type AccountIdLoaderData = {
   account: GetUserAccountQuery["getUserAccount"]
   accounts: GetUserAccountsQuery["getUserAccounts"]
   user: Auth0Profile
+  userRoles: PortalAppRole[]
 }
 
 export const loader: LoaderFunction = async ({ request, params }) => {
@@ -46,6 +48,9 @@ export const loader: LoaderFunction = async ({ request, params }) => {
         account: account.getUserAccount,
         accounts: accounts.getUserAccounts,
         user: user.profile,
+        userRoles: account.getUserAccount.users.filter(
+          (u) => u.userID === user.portalUserId,
+        )[0].accountUserAccess.portalAppRoles,
       },
       error: false,
     })
@@ -66,7 +71,7 @@ export default function AccountId() {
     return <ErrorView message={message} />
   }
 
-  const { account, accounts, user } = data
+  const { account, accounts, user, userRoles } = data
 
   return (
     <RootAppShell
@@ -74,7 +79,7 @@ export default function AccountId() {
       apps={account.portalApps as PortalApp[]}
       user={user}
     >
-      <Outlet context={account} />
+      <Outlet context={{ account, accounts, user, userRoles }} />
     </RootAppShell>
   )
 }

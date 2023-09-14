@@ -1,12 +1,19 @@
 import { LoaderFunction, MetaFunction, json, redirect } from "@remix-run/node"
-import { Outlet, useCatch, useLoaderData, useSearchParams } from "@remix-run/react"
+import {
+  Outlet,
+  useCatch,
+  useLoaderData,
+  useOutletContext,
+  useSearchParams,
+} from "@remix-run/react"
 import { Auth0Profile } from "remix-auth-auth0"
 import invariant from "tiny-invariant"
+import { AccountIdLoaderData } from "../account.$accountId/route"
 import AppIdLayoutView from "./view"
 import ErrorView from "~/components/ErrorView"
 import { blockchains } from "~/models/portal/portal.data"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { Blockchain, PortalApp } from "~/models/portal/sdk"
+import { Blockchain, PortalApp, RoleNameV2 } from "~/models/portal/sdk"
 import { getErrorMessage } from "~/utils/catchError"
 import { LoaderDataStruct } from "~/utils/loader"
 import { requireUser } from "~/utils/user.server"
@@ -59,10 +66,13 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   }
 }
 
-export type AppIdOutletContext = AppIdLoaderData
+export type AppIdOutletContext = AppIdLoaderData & {
+  userRole: RoleNameV2
+}
 
 export default function AppIdLayout() {
   const { data, error, message } = useLoaderData() as LoaderDataStruct<AppIdLoaderData>
+  const { userRoles } = useOutletContext<AccountIdLoaderData>()
 
   if (error) {
     return <ErrorView message={message} />
@@ -76,6 +86,7 @@ export default function AppIdLayout() {
         context={{
           app,
           blockchains,
+          userRole: userRoles.find((r) => r.portalAppID === app.id)?.roleName,
         }}
       />
     </AppIdLayoutView>

@@ -9,16 +9,16 @@ import {
 } from "@pokt-foundation/pocket-blocks"
 import React from "react"
 import CopyTextButton from "~/components/CopyTextButton"
-import { EndpointQuery, RoleName } from "~/models/portal/sdk"
+import { PortalApp, RoleName, RoleNameV2 } from "~/models/portal/sdk"
 
 type AppKeysProps = {
-  endpoint: EndpointQuery["endpoint"]
-  role: RoleName | undefined
+  app: PortalApp
+  userRole: RoleNameV2
 }
 
-const AppKeys = ({ endpoint, role }: AppKeysProps) => {
-  const publicKey = endpoint.apps ? endpoint.apps[0]?.publicKey : ""
-  const secretKey = endpoint.gatewaySettings.secretKey
+const AppKeys = ({ app, userRole }: AppKeysProps) => {
+  // const publicKey = app.aats ? app.aats[0].aat.publicKey : ""
+  const secretKey = app.settings.secretKey
   return (
     <Stack spacing={0}>
       <Box px={40} py={20}>
@@ -35,15 +35,15 @@ const AppKeys = ({ endpoint, role }: AppKeysProps) => {
               flex: 1,
               backgroundColor: theme.colors.gray[9],
             })}
-            value={endpoint.id}
+            value={app.id}
           />
-          <CopyTextButton value={endpoint.id} />
+          <CopyTextButton value={app.id} />
         </Group>
       </Box>
 
       <Divider mt={28} />
 
-      {endpoint.gatewaySettings.secretKey && role !== RoleName.Member && (
+      {secretKey && userRole !== RoleNameV2.Member && (
         <Box px={40} py={20}>
           <Text fw={600}>Secret Key</Text>
           <Text fw={400} pt={8}>
@@ -68,7 +68,7 @@ const AppKeys = ({ endpoint, role }: AppKeysProps) => {
 
       <Divider mt={28} />
 
-      {publicKey && (
+      {/* {publicKey && (
         <Box px={40} py={20}>
           <Text fw={600}>Public Key</Text>
           <Text fw={400} pt={8}>
@@ -89,7 +89,7 @@ const AppKeys = ({ endpoint, role }: AppKeysProps) => {
           </Group>
         </Box>
       )}
-      <Divider mt={28} />
+      <Divider mt={28} /> */}
     </Stack>
   )
 }

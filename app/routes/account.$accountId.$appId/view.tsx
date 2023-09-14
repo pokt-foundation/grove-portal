@@ -1,6 +1,7 @@
 import { Divider } from "@mantine/core"
 import { Button, Container, Stack } from "@pokt-foundation/pocket-blocks"
 import { useEffect, useState } from "react"
+import Stripe from "stripe"
 import Modal, { ModalCTA } from "~/components/Modal"
 import { Route } from "~/components/Nav"
 import { PayPlanType, PortalApp } from "~/models/portal/sdk"
@@ -10,9 +11,14 @@ import AppOverviewTabs from "~/routes/account.$accountId.$appId/components/AppOv
 type AppIdLayoutViewProps = {
   app: PortalApp
   children: React.ReactNode
+  subscription: Stripe.Subscription | undefined
 }
 
-export default function AppIdLayoutView({ app, children }: AppIdLayoutViewProps) {
+export default function AppIdLayoutView({
+  app,
+  children,
+  subscription,
+}: AppIdLayoutViewProps) {
   const [showSuccessModal, setShowSuccessModel] = useState<boolean>(false)
   const [showErrorModal, setShowErrorModel] = useState<boolean>(false)
 
@@ -79,7 +85,7 @@ export default function AppIdLayoutView({ app, children }: AppIdLayoutViewProps)
   return (
     <Container fluid pt={16} px={0}>
       <Stack spacing="xl">
-        <ApplicationHeader app={app} />
+        <ApplicationHeader app={app} subscription={subscription} />
         <Divider />
         <AppOverviewTabs routes={routes} />
         <Divider />

@@ -1,17 +1,10 @@
-import { LoaderFunction, MetaFunction, json, redirect } from "@remix-run/node"
-import {
-  Outlet,
-  useCatch,
-  useLoaderData,
-  useOutletContext,
-  useSearchParams,
-} from "@remix-run/react"
-import { Auth0Profile } from "remix-auth-auth0"
+import { LoaderFunction, MetaFunction, json } from "@remix-run/node"
+import { Outlet, useCatch, useLoaderData, useOutletContext } from "@remix-run/react"
+import Stripe from "stripe"
 import invariant from "tiny-invariant"
 import { AccountIdLoaderData } from "../account.$accountId/route"
 import AppIdLayoutView from "./view"
 import ErrorView from "~/components/ErrorView"
-import { blockchains } from "~/models/portal/portal.data"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { Blockchain, PortalApp, RoleNameV2 } from "~/models/portal/sdk"
 import { getErrorMessage } from "~/utils/catchError"
@@ -27,6 +20,8 @@ export const meta: MetaFunction = () => {
 export type AppIdLoaderData = {
   app: PortalApp
   blockchains: Blockchain[]
+  subscription: Stripe.Subscription | undefined
+
   // relaysToday: RelayMetric
   // relaysYesterday: RelayMetric
   // dailyNetworkRelaysPerWeek: RelayMetric[]
@@ -50,10 +45,15 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       throw new Error("Blockchains not found")
     }
 
+    // TODO: Fix app subscription fetching
+    // const subscription = await getSubscription(uEmail, appId, userId)
+    const subscription = undefined
+
     return json<LoaderDataStruct<AppIdLoaderData>>({
       data: {
         app: getUserPortalAppResponse.getUserPortalApp as PortalApp,
         blockchains: getBlockchainsResponse.blockchains as Blockchain[],
+        subscription,
       },
       error: false,
     })
@@ -78,10 +78,10 @@ export default function AppIdLayout() {
     return <ErrorView message={message} />
   }
 
-  const { app, blockchains } = data
+  const { app, blockchains, subscription } = data
 
   return (
-    <AppIdLayoutView app={app}>
+    <AppIdLayoutView app={app} subscription={subscription}>
       <Outlet
         context={{
           app,

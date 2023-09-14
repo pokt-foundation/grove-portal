@@ -2,9 +2,8 @@ import { vi, expect } from "vitest"
 import AppIdLayoutView from "./view"
 import { render, screen } from "test/helpers"
 import t from "~/locales/en"
-import { app, profileMockData } from "~/models/portal/portal.data"
+import { app } from "~/models/portal/portal.data"
 import { PayPlanType } from "~/models/portal/sdk"
-import { subscription } from "~/models/stripe/stripe.data"
 
 vi.mock("~/utils/analytics", async () => ({
   ...(await vi.importActual<any>("~/utils/analytics")),
@@ -24,7 +23,7 @@ describe.skip("<AppIdLayoutView />", () => {
   })
   it("renders error modal when search param 'success = false'", () => {
     render(
-      <AppIdLayoutView app={app}>
+      <AppIdLayoutView app={app} subscription={undefined}>
         <div>Test Outlet</div>
       </AppIdLayoutView>,
     )
@@ -35,7 +34,7 @@ describe.skip("<AppIdLayoutView />", () => {
   })
   it("renders success modal when search param 'success = true'", () => {
     render(
-      <AppIdLayoutView app={app}>
+      <AppIdLayoutView app={app} subscription={undefined}>
         <div>Test Outlet</div>
       </AppIdLayoutView>,
     )
@@ -44,7 +43,7 @@ describe.skip("<AppIdLayoutView />", () => {
   })
   it("renders layout without endpoint and without search params", () => {
     render(
-      <AppIdLayoutView app={app}>
+      <AppIdLayoutView app={app} subscription={undefined}>
         <div>Test Outlet</div>
       </AppIdLayoutView>,
     )
@@ -65,7 +64,7 @@ describe.skip("<AppIdLayoutView />", () => {
   })
   it("renders layout with endpoint and without search params", () => {
     render(
-      <AppIdLayoutView app={app}>
+      <AppIdLayoutView app={app} subscription={undefined}>
         <div>Test Outlet</div>
       </AppIdLayoutView>,
     )
@@ -86,7 +85,7 @@ describe.skip("<AppIdLayoutView />", () => {
   })
   it("renders nav routes when planType is paid", () => {
     render(
-      <AppIdLayoutView app={app}>
+      <AppIdLayoutView app={app} subscription={undefined}>
         <div>Test Outlet</div>
       </AppIdLayoutView>,
     )
@@ -108,7 +107,7 @@ describe.skip("<AppIdLayoutView />", () => {
   it("renders nav routes when planType is free", () => {
     app.legacyFields.planType = PayPlanType.FreetierV0
     render(
-      <AppIdLayoutView app={app}>
+      <AppIdLayoutView app={app} subscription={undefined}>
         <div>Test Outlet</div>
       </AppIdLayoutView>,
     )
@@ -132,7 +131,7 @@ describe.skip("<AppIdLayoutView />", () => {
   it("hides legacy banner when planType is free", () => {
     app.legacyFields.planType = PayPlanType.FreetierV0
     render(
-      <AppIdLayoutView app={app}>
+      <AppIdLayoutView app={app} subscription={undefined}>
         <div>Test Outlet</div>
       </AppIdLayoutView>,
     )
@@ -144,7 +143,7 @@ describe.skip("<AppIdLayoutView />", () => {
   it("hides legacy banner when planType is paid", () => {
     app.legacyFields.planType = PayPlanType.PayAsYouGoV0
     render(
-      <AppIdLayoutView app={app}>
+      <AppIdLayoutView app={app} subscription={undefined}>
         <div>Test Outlet</div>
       </AppIdLayoutView>,
     )
@@ -157,7 +156,7 @@ describe.skip("<AppIdLayoutView />", () => {
     // @ts-ignore next
     endpoint.appLimits.planType = ""
     render(
-      <AppIdLayoutView app={app}>
+      <AppIdLayoutView app={app} subscription={undefined}>
         <div>Test Outlet</div>
       </AppIdLayoutView>,
     )
@@ -172,7 +171,7 @@ describe.skip("<AppIdLayoutView />", () => {
     ENV.FLAG_LEGACY_MESSAGING = "false"
 
     render(
-      <AppIdLayoutView app={app}>
+      <AppIdLayoutView app={app} subscription={undefined}>
         <div>Test Outlet</div>
       </AppIdLayoutView>,
     )

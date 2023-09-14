@@ -2,18 +2,18 @@ import { Menu, Text } from "@pokt-foundation/pocket-blocks"
 import { Link, useFetcher } from "@remix-run/react"
 import { LuArrowUpFromLine, LuRepeat, LuStopCircle } from "react-icons/lu"
 import useModals from "~/hooks/useModals"
-import { ProcessedEndpoint } from "~/models/portal/sdk"
+import { PortalApp } from "~/models/portal/sdk"
 import { Stripe } from "~/models/stripe/stripe.server"
 import { isFreePlan, isLegacyPlan, isPaidPlan } from "~/utils/utils"
 
 type AppSubscriptionProps = {
-  endpoint: ProcessedEndpoint
+  app: PortalApp
   subscription?: Stripe.Subscription
 }
 
-const AppSubscription = ({ endpoint, subscription }: AppSubscriptionProps) => {
-  const { id, name, appLimits } = endpoint
-  const planType = appLimits.planType
+const AppSubscription = ({ app, subscription }: AppSubscriptionProps) => {
+  const { id, name, legacyFields } = app
+  const planType = legacyFields.planType
   const fetcher = useFetcher()
   const { openConfirmationModal } = useModals()
 

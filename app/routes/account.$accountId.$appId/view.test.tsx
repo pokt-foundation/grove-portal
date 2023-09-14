@@ -55,7 +55,7 @@ describe.skip("<AppIdLayoutView />", () => {
     expect(
       screen.queryByRole("dialog", { name: /subscription error/i }),
     ).not.toBeInTheDocument()
-    expect(screen.queryByRole("heading", { name: endpoint.name })).not.toBeInTheDocument()
+    expect(screen.queryByRole("heading", { name: app.name })).not.toBeInTheDocument()
     expect(screen.queryByLabelText(/portal id/i)).not.toBeInTheDocument()
     expect(screen.queryByLabelText(/secret key/i)).not.toBeInTheDocument()
     expect(screen.queryByLabelText(/public key/i)).not.toBeInTheDocument()

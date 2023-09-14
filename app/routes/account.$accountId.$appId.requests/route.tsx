@@ -3,7 +3,7 @@ import { json, LoaderFunction, MetaFunction } from "@remix-run/node"
 import { useLoaderData, useOutletContext } from "@remix-run/react"
 import { useEffect } from "react"
 import invariant from "tiny-invariant"
-import { AppIdOutletContext } from "../account.$accountId.$appId/route_old"
+import { AppIdOutletContext } from "../account.$accountId.$appId/route"
 import AppRequestsByOriginCard, {
   links as AppRequestsByOriginCardLinks,
 } from "./components/AppRequestsByOriginCard"

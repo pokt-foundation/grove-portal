@@ -13,17 +13,20 @@ import {
 const testEmail = "test@test.test"
 export const testPortalUserId = "userId_test"
 
+// @ts-ignore
 export const app: PortalApp = {
   id: "c7ec4cdcb4e28a19972da585",
   name: "Test Migration 2",
   accountID: "2886d942",
   settings: {
+    // @ts-ignore
     environment: "production",
     secretKey: "a8ad77c851f9b93e71056d7dcd946dca",
     secretKeyRequired: false,
     favoritedBlockchainIDs: null,
     monthlyRelayLimit: 0,
   },
+  // @ts-ignore
   whitelists: {},
   aat: {
     a4bad02a5c85e04d843fbde4: {
@@ -37,6 +40,7 @@ export const app: PortalApp = {
     },
   },
   notifications: {
+    // @ts-ignore
     email: {
       type: "email",
       active: true,
@@ -54,6 +58,7 @@ export const app: PortalApp = {
   deleted: false,
   firstDateSurpassed: "0001-01-01T00:00:00Z",
   legacyFields: {
+    // @ts-ignore
     planType: "FREETIER_V0",
     dailyLimit: 250000,
     customLimit: 0,

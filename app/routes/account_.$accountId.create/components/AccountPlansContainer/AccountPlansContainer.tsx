@@ -33,7 +33,7 @@ const AccountPlansContainer = ({ onPlanSelected }: AccountPlansContainerProps) =
         </Tooltip>
       </Flex>
 
-      <Flex justify="space-evenly">
+      <Flex gap="xl" justify="space-evenly">
         <AccountPlan
           type={PayPlanTypeV2.FreetierV0}
           onContinue={() => onPlanSelected(PayPlanTypeV2.FreetierV0)}

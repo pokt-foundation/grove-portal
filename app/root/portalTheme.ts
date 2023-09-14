@@ -175,13 +175,6 @@ export const portalTheme: MantineThemeOverride = {
         },
       },
     },
-    Paper: {
-      styles: {
-        root: {
-          overflow: "visible !important",
-        },
-      },
-    },
     Card: {
       styles: (theme) => ({
         root: {

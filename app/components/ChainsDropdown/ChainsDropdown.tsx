@@ -1,12 +1,6 @@
-import {
-  Group,
-  IconSearch,
-  MantineTheme,
-  Select,
-  Text,
-  useMantineTheme,
-} from "@pokt-foundation/pocket-blocks"
+import { Group, Select, Text } from "@pokt-foundation/pocket-blocks"
 import { forwardRef, useMemo, useRef } from "react"
+import { LuSearch } from "react-icons/lu"
 import { BlockchainsQuery } from "~/models/portal/sdk"
 
 const SelectItem = forwardRef<HTMLDivElement, { label: string; value: string }>(
@@ -23,14 +17,13 @@ const SelectItem = forwardRef<HTMLDivElement, { label: string; value: string }>(
 
 SelectItem.displayName = "SelectItem"
 
-const ChainsDropdown = ({
-  chains,
-  onChange,
-}: {
+type ChainsDropdownProps = {
   chains: BlockchainsQuery["blockchains"]
   onChange: (chain: string) => void
-}) => {
-  const theme = useMantineTheme()
+  width?: string | number
+}
+
+const ChainsDropdown = ({ chains, onChange, width }: ChainsDropdownProps) => {
   const addNewChainSelectRef = useRef<HTMLInputElement>(null)
 
   const selectChainData = useMemo(() => {
@@ -56,26 +49,12 @@ const ChainsDropdown = ({
       searchable
       aria-label="Add new"
       data={selectChainData}
-      icon={<IconSearch fill={theme.colors.blue[5]} height={18} width={18} />}
+      icon={<LuSearch size={18} />}
       itemComponent={SelectItem}
-      placeholder="Add new"
+      placeholder="Search Network"
       rightSection={<></>}
       rightSectionWidth={0}
-      size="xs"
-      sx={(theme: MantineTheme) => ({
-        ".mantine-Select-dropdown": {
-          backgroundColor: theme.colors.navy ? theme.colors.navy[6] : "black",
-        },
-        ".mantine-Select-input": {
-          backgroundColor: "transparent",
-          borderColor: theme.colors.blue[5],
-        },
-        ".mantine-Select-input::placeholder": {
-          color: theme.colors.blue[5],
-          fontWeight: 600,
-          fontSize: "12px",
-        },
-      })}
+      w={width}
       onChange={onChange}
     />
   )

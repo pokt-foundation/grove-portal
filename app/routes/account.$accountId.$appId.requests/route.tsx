@@ -81,6 +81,7 @@ export const loader: LoaderFunction = async ({ request, params, context }) => {
 export default function AppIdRequests() {
   const { originClassification, errorMetrics } =
     useLoaderData() as AppIdRequestsLoaderData
+  // @ts-ignore
   const { relaysToday, relaysYesterday } = useOutletContext<AppIdOutletContext>()
 
   useEffect(() => {

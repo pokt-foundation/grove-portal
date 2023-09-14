@@ -43,8 +43,10 @@ export default function AppNotificationsAlert({ app }: NotificationsAlertFormPro
 
   const getNotificationCheckedState = useCallback(
     (level: NotificationLevel) => {
+      // @ts-ignore
       return Object.keys(notifications).length > 0 && notifications[level]
-        ? (notifications[level] as boolean)
+        ? // @ts-ignore
+          (notifications[level] as boolean)
         : DEFAULT_ALERT_PERCENTAGES[level]
     },
     [notifications],

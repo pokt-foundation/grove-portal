@@ -1,5 +1,8 @@
 import { ActionFunction, json } from "@remix-run/node"
+import { initPortalClient } from "~/models/portal/portal.server"
+import { PayPlanType } from "~/models/portal/sdk"
 import { Stripe, stripe } from "~/models/stripe/stripe.server"
+import { initAdminPortal } from "~/utils/admin"
 import { getErrorMessage } from "~/utils/catchError"
 import { getRequiredServerEnvVar } from "~/utils/environment"
 
@@ -67,23 +70,37 @@ export const action: ActionFunction = async ({ request }) => {
         const subscriptionCreated = event.data.object as Stripe.Subscription
         console.log(`Customer subscription create for ${subscriptionCreated.id}!`)
 
-        // TODO
-        // - get pocket user id from stripe customer metadata
-        // - get endpoint id from subscription metadata
-        // - hit portal ui api
-        // --- need global accessToken to modify any user data
-        // --- update user's endpoint plan_type field to be "paid_stripe"
+        const appIdCreated = subscriptionCreated.metadata.endpoint_id
+
+        await fetch(`/api/${appIdCreated}/update-plan`, {
+          method: "post",
+          headers: {
+            "Content-Type": "Application/Json",
+          },
+          body: JSON.stringify({
+            id: appIdCreated,
+            type: PayPlanType.PayAsYouGoV0,
+          }),
+        })
+
         break
       case "customer.subscription.deleted":
         const subscriptionDeleted = event.data.object as Stripe.Subscription
         console.log(`Customer subscription deleted for ${subscriptionDeleted.id}!`)
 
-        // TODO
-        // - get pocket user id from stripe customer metadata
-        // - get endpoint id from subscription metadata
-        // - hit portal ui api
-        // --- need global accessToken to modify any user data
-        // --- update user's endpoint plan_type field to be "free"
+        const appIdDeleted = subscriptionDeleted.metadata.endpoint_id
+
+        await fetch(`/api/${appIdDeleted}/update-plan`, {
+          method: "post",
+          headers: {
+            "Content-Type": "Application/Json",
+          },
+          body: JSON.stringify({
+            id: appIdDeleted,
+            type: PayPlanType.FreetierV0,
+          }),
+        })
+
         break
       default:
         // Unexpected event type

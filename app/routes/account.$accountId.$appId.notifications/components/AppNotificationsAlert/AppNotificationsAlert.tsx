@@ -34,20 +34,22 @@ function getUsagePercentage(usageLevel: string): string {
 }
 
 type NotificationsAlertFormProps = {
-  endpoint: AppIdOutletContext["endpoint"]
+  app: AppIdOutletContext["app"]
 }
 
-export default function AppNotificationsAlert({ endpoint }: NotificationsAlertFormProps) {
-  const { notificationSettings } = endpoint
+export default function AppNotificationsAlert({ app }: NotificationsAlertFormProps) {
+  const { notifications } = app
   const fetcher = useFetcher()
 
   const getNotificationCheckedState = useCallback(
     (level: NotificationLevel) => {
-      return Object.keys(notificationSettings).length > 0 && notificationSettings[level]
-        ? (notificationSettings[level] as boolean)
+      // @ts-ignore
+      return Object.keys(notifications).length > 0 && notifications[level]
+        ? // @ts-ignore
+          (notifications[level] as boolean)
         : DEFAULT_ALERT_PERCENTAGES[level]
     },
-    [notificationSettings],
+    [notifications],
   )
 
   const updateNotification = (level: string, value: string) => {

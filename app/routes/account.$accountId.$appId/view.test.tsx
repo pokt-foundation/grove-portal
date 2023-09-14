@@ -2,7 +2,7 @@ import { vi, expect } from "vitest"
 import AppIdLayoutView from "./view"
 import { render, screen } from "test/helpers"
 import t from "~/locales/en"
-import { endpoint, profileMockData } from "~/models/portal/portal.data"
+import { app, profileMockData } from "~/models/portal/portal.data"
 import { PayPlanType } from "~/models/portal/sdk"
 import { subscription } from "~/models/stripe/stripe.data"
 
@@ -24,13 +24,7 @@ describe.skip("<AppIdLayoutView />", () => {
   })
   it("renders error modal when search param 'success = false'", () => {
     render(
-      <AppIdLayoutView
-        endpoint={endpoint}
-        searchParams={new URLSearchParams({ success: "false" })}
-        setSearchParams={setSearchParams}
-        subscription={subscription}
-        user={profileMockData}
-      >
+      <AppIdLayoutView app={app}>
         <div>Test Outlet</div>
       </AppIdLayoutView>,
     )
@@ -41,13 +35,7 @@ describe.skip("<AppIdLayoutView />", () => {
   })
   it("renders success modal when search param 'success = true'", () => {
     render(
-      <AppIdLayoutView
-        endpoint={endpoint}
-        searchParams={new URLSearchParams({ success: "true" })}
-        setSearchParams={setSearchParams}
-        subscription={subscription}
-        user={profileMockData}
-      >
+      <AppIdLayoutView app={app}>
         <div>Test Outlet</div>
       </AppIdLayoutView>,
     )
@@ -56,13 +44,7 @@ describe.skip("<AppIdLayoutView />", () => {
   })
   it("renders layout without endpoint and without search params", () => {
     render(
-      <AppIdLayoutView
-        endpoint={null}
-        searchParams={new URLSearchParams()}
-        setSearchParams={setSearchParams}
-        subscription={subscription}
-        user={profileMockData}
-      >
+      <AppIdLayoutView app={app}>
         <div>Test Outlet</div>
       </AppIdLayoutView>,
     )
@@ -73,7 +55,7 @@ describe.skip("<AppIdLayoutView />", () => {
     expect(
       screen.queryByRole("dialog", { name: /subscription error/i }),
     ).not.toBeInTheDocument()
-    expect(screen.queryByRole("heading", { name: endpoint.name })).not.toBeInTheDocument()
+    expect(screen.queryByRole("heading", { name: app.name })).not.toBeInTheDocument()
     expect(screen.queryByLabelText(/portal id/i)).not.toBeInTheDocument()
     expect(screen.queryByLabelText(/secret key/i)).not.toBeInTheDocument()
     expect(screen.queryByLabelText(/public key/i)).not.toBeInTheDocument()
@@ -83,13 +65,7 @@ describe.skip("<AppIdLayoutView />", () => {
   })
   it("renders layout with endpoint and without search params", () => {
     render(
-      <AppIdLayoutView
-        endpoint={endpoint}
-        searchParams={new URLSearchParams()}
-        setSearchParams={setSearchParams}
-        subscription={subscription}
-        user={profileMockData}
-      >
+      <AppIdLayoutView app={app}>
         <div>Test Outlet</div>
       </AppIdLayoutView>,
     )
@@ -100,7 +76,7 @@ describe.skip("<AppIdLayoutView />", () => {
     expect(
       screen.queryByRole("dialog", { name: /subscription error/i }),
     ).not.toBeInTheDocument()
-    expect(screen.getByRole("heading", { name: endpoint.name })).toBeInTheDocument()
+    expect(screen.getByRole("heading", { name: app.name })).toBeInTheDocument()
     expect(screen.getByLabelText(/portal id/i)).toBeInTheDocument()
     expect(screen.getByLabelText(/secret key/i)).toBeInTheDocument()
     expect(screen.getByLabelText(/public key/i)).toBeInTheDocument()
@@ -110,13 +86,7 @@ describe.skip("<AppIdLayoutView />", () => {
   })
   it("renders nav routes when planType is paid", () => {
     render(
-      <AppIdLayoutView
-        endpoint={endpoint}
-        searchParams={new URLSearchParams()}
-        setSearchParams={setSearchParams}
-        subscription={subscription}
-        user={profileMockData}
-      >
+      <AppIdLayoutView app={app}>
         <div>Test Outlet</div>
       </AppIdLayoutView>,
     )
@@ -136,15 +106,9 @@ describe.skip("<AppIdLayoutView />", () => {
     ).not.toBeInTheDocument()
   })
   it("renders nav routes when planType is free", () => {
-    endpoint.appLimits.planType = PayPlanType.FreetierV0
+    app.legacyFields.planType = PayPlanType.FreetierV0
     render(
-      <AppIdLayoutView
-        endpoint={endpoint}
-        searchParams={new URLSearchParams()}
-        setSearchParams={setSearchParams}
-        subscription={subscription}
-        user={profileMockData}
-      >
+      <AppIdLayoutView app={app}>
         <div>Test Outlet</div>
       </AppIdLayoutView>,
     )
@@ -166,15 +130,9 @@ describe.skip("<AppIdLayoutView />", () => {
     ).not.toBeInTheDocument()
   })
   it("hides legacy banner when planType is free", () => {
-    endpoint.appLimits.planType = PayPlanType.FreetierV0
+    app.legacyFields.planType = PayPlanType.FreetierV0
     render(
-      <AppIdLayoutView
-        endpoint={endpoint}
-        searchParams={new URLSearchParams()}
-        setSearchParams={setSearchParams}
-        subscription={subscription}
-        user={profileMockData}
-      >
+      <AppIdLayoutView app={app}>
         <div>Test Outlet</div>
       </AppIdLayoutView>,
     )
@@ -184,15 +142,9 @@ describe.skip("<AppIdLayoutView />", () => {
     ).not.toBeInTheDocument()
   })
   it("hides legacy banner when planType is paid", () => {
-    endpoint.appLimits.planType = PayPlanType.PayAsYouGoV0
+    app.legacyFields.planType = PayPlanType.PayAsYouGoV0
     render(
-      <AppIdLayoutView
-        endpoint={endpoint}
-        searchParams={new URLSearchParams()}
-        setSearchParams={setSearchParams}
-        subscription={subscription}
-        user={profileMockData}
-      >
+      <AppIdLayoutView app={app}>
         <div>Test Outlet</div>
       </AppIdLayoutView>,
     )
@@ -205,13 +157,7 @@ describe.skip("<AppIdLayoutView />", () => {
     // @ts-ignore next
     endpoint.appLimits.planType = ""
     render(
-      <AppIdLayoutView
-        endpoint={endpoint}
-        searchParams={new URLSearchParams()}
-        setSearchParams={setSearchParams}
-        subscription={subscription}
-        user={profileMockData}
-      >
+      <AppIdLayoutView app={app}>
         <div>Test Outlet</div>
       </AppIdLayoutView>,
     )
@@ -226,13 +172,7 @@ describe.skip("<AppIdLayoutView />", () => {
     ENV.FLAG_LEGACY_MESSAGING = "false"
 
     render(
-      <AppIdLayoutView
-        endpoint={endpoint}
-        searchParams={new URLSearchParams()}
-        setSearchParams={setSearchParams}
-        subscription={subscription}
-        user={profileMockData}
-      >
+      <AppIdLayoutView app={app}>
         <div>Test Outlet</div>
       </AppIdLayoutView>,
     )

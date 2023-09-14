@@ -4,17 +4,17 @@ import { Form } from "@remix-run/react"
 import { useState } from "react"
 import { LuTrash2 } from "react-icons/lu"
 import useModals from "~/hooks/useModals"
-import { ProcessedEndpoint } from "~/models/portal/sdk"
+import { PortalApp } from "~/models/portal/sdk"
 
 type DeleteApplicationProps = {
-  endpoint: ProcessedEndpoint
+  app: PortalApp
 }
 
-const DeleteAppForm = ({ appId }: { appId: string }) => {
+const DeleteAppForm = ({ accountId, appId }: { accountId: string; appId: string }) => {
   const [deleteTextInputValue, setDeleteTextInputValue] = useState("")
 
   return (
-    <Form action={`/api/${appId}/remove`} method="post">
+    <Form action={`/api/${accountId}/${appId}/remove`} method="post">
       <Text size="sm">
         Please type ‘Delete’ to proceed. This will delete your application and all the
         data related.
@@ -46,14 +46,14 @@ const DeleteAppForm = ({ appId }: { appId: string }) => {
   )
 }
 
-const DeleteApplication = ({ endpoint }: DeleteApplicationProps) => {
-  const { id: appId } = endpoint
+const DeleteApplication = ({ app }: DeleteApplicationProps) => {
+  const { id: appId } = app
   const { openContentModal } = useModals()
 
   const openDeleteModal = () => {
     openContentModal({
       title: <Text fw={600}>Delete application?</Text>,
-      children: <DeleteAppForm appId={appId} />,
+      children: <DeleteAppForm accountId={app.accountID} appId={appId} />,
     })
   }
 

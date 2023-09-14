@@ -18,13 +18,16 @@ const useStyles = createStyles((theme) => ({
   },
 }))
 
-type AppmojiPickerProps = { onAppmojiSelect: (appmoji: string) => void }
+type AppmojiPickerProps = {
+  defaultValue?: string
+  onAppmojiSelect: (appmoji: string) => void
+}
 
-const AppmojiPicker = ({ onAppmojiSelect }: AppmojiPickerProps) => {
+const AppmojiPicker = ({ defaultValue, onAppmojiSelect }: AppmojiPickerProps) => {
   const { classes } = useStyles()
   const [showAppmojiPicker, setShowAppmojiPicker] = useState(false)
   const [showAppmojiPickerMenu, setShowAppmojiPickerMenu] = useState(false)
-  const [selectedAppmoji, setSelectedAppmoji] = useState(DEFAULT_APPMOJI)
+  const [selectedAppmoji, setSelectedAppmoji] = useState(defaultValue ?? DEFAULT_APPMOJI)
 
   const handleShowAppmojiPicker = () => {
     // Because of an issue with rendering the emoji picker, the menu should be rendered first and then the picker

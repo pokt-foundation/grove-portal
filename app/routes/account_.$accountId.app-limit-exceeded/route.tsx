@@ -3,12 +3,13 @@ import { LoaderFunction, MetaFunction, redirect } from "@remix-run/node"
 import { Link, NavLink, useParams } from "@remix-run/react"
 import { initPortalClient } from "~/models/portal/portal.server"
 import useCommonStyles from "~/styles/commonStyles"
+import { seo_title_append } from "~/utils/meta"
 import { MAX_USER_APPS } from "~/utils/pocketUtils"
 import { requireUser } from "~/utils/user.server"
 
 export const meta: MetaFunction = () => {
   return {
-    title: "App Limit Exceeded",
+    title: `App Limit Exceeded ${seo_title_append}`,
   }
 }
 

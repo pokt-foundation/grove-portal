@@ -45,7 +45,7 @@ export default function AppNotifications() {
     trackEvent(AmplitudeEvents.NotificationDetailsView)
   }, [])
 
-  const { endpoint } = useOutletContext<AppIdOutletContext>()
+  const { app } = useOutletContext<AppIdOutletContext>()
 
-  return <AppNotificationsAlert endpoint={endpoint} />
+  return <AppNotificationsAlert app={app} />
 }

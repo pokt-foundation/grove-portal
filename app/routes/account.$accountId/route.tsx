@@ -1,6 +1,7 @@
 import { json, LoaderFunction, redirect } from "@remix-run/node"
 import { Outlet, useLoaderData } from "@remix-run/react"
 import { Auth0Profile } from "remix-auth-auth0"
+import invariant from "tiny-invariant"
 import ErrorView from "~/components/ErrorView"
 import RootAppShell from "~/components/RootAppShell/RootAppShell"
 import { initPortalClient } from "~/models/portal/portal.server"
@@ -9,36 +10,37 @@ import {
   GetUserAccountQuery,
   GetUserAccountsQuery,
   PortalApp,
+  PortalAppRole,
 } from "~/models/portal/sdk"
-import { authenticator } from "~/utils/auth.server"
 import { getErrorMessage } from "~/utils/catchError"
 import { LoaderDataStruct } from "~/utils/loader"
+import { requireUser } from "~/utils/user.server"
 
 export type AccountIdLoaderData = {
   account: GetUserAccountQuery["getUserAccount"]
   accounts: GetUserAccountsQuery["getUserAccounts"]
   user: Auth0Profile
+  userRoles: PortalAppRole[]
 }
 
 export const loader: LoaderFunction = async ({ request, params }) => {
-  const user = await authenticator.isAuthenticated(request)
-
-  if (!user || !params.accountId) {
-    return redirect("/api/auth/auth0")
-  }
-
+  const user = await requireUser(request)
   const portal = initPortalClient({ token: user.accessToken })
+  const { accountId } = params
+  invariant(accountId, "AccountId must be set")
 
   try {
-    const account = await portal.getUserAccount({ accountID: params.accountId })
+    const account = await portal.getUserAccount({ accountID: accountId })
 
     if (!account.getUserAccount) {
-      throw new Error(`Account ${params.accountId} not found for user ${user.profile.id}`)
+      throw new Error(
+        `Account ${params.accountId} not found for user ${user.portalUserId}`,
+      )
     }
 
     const accounts = await portal.getUserAccounts()
     if (!accounts.getUserAccounts) {
-      throw new Error(`Accounts not found for user ${user.profile.id}`)
+      throw new Error(`Accounts not found for user ${user.portalUserId}`)
     }
 
     return json<LoaderDataStruct<AccountIdLoaderData>>({
@@ -46,6 +48,9 @@ export const loader: LoaderFunction = async ({ request, params }) => {
         account: account.getUserAccount,
         accounts: accounts.getUserAccounts,
         user: user.profile,
+        userRoles: account.getUserAccount.users.filter(
+          (u) => u.userID === user.portalUserId,
+        )[0].accountUserAccess.portalAppRoles,
       },
       error: false,
     })
@@ -66,7 +71,7 @@ export default function AccountId() {
     return <ErrorView message={message} />
   }
 
-  const { account, accounts, user } = data
+  const { account, accounts, user, userRoles } = data
 
   return (
     <RootAppShell
@@ -74,7 +79,7 @@ export default function AccountId() {
       apps={account.portalApps as PortalApp[]}
       user={user}
     >
-      <Outlet context={account} />
+      <Outlet context={{ account, accounts, user, userRoles }} />
     </RootAppShell>
   )
 }

@@ -1,41 +1,20 @@
 import { Divider } from "@mantine/core"
 import { Button, Container, Stack } from "@pokt-foundation/pocket-blocks"
-import { useMemo, useState } from "react"
-import { Auth0Profile } from "remix-auth-auth0"
+import { useEffect, useState } from "react"
 import Modal, { ModalCTA } from "~/components/Modal"
 import { Route } from "~/components/Nav"
-import { EndpointQuery, ProcessedEndpoint } from "~/models/portal/sdk"
-import { Stripe } from "~/models/stripe/stripe.server"
+import { PayPlanType, PortalApp } from "~/models/portal/sdk"
 import ApplicationHeader from "~/routes/account.$accountId.$appId/components/ApplicationHeader"
 import AppOverviewTabs from "~/routes/account.$accountId.$appId/components/AppOverviewTabs"
-import useSubscriptionSync from "~/routes/account.$accountId.$appId/hooks/useSubscriptionSync"
 
 type AppIdLayoutViewProps = {
-  endpoint: EndpointQuery["endpoint"] | null
-  searchParams: URLSearchParams
-  setSearchParams: (typeof URLSearchParams)["arguments"]
-  subscription: Stripe.Subscription | undefined
-  user: Auth0Profile
+  app: PortalApp
   children: React.ReactNode
 }
 
-export default function AppIdLayoutView({
-  endpoint,
-  searchParams,
-  setSearchParams,
-  subscription,
-  user,
-  children,
-}: AppIdLayoutViewProps) {
+export default function AppIdLayoutView({ app, children }: AppIdLayoutViewProps) {
   const [showSuccessModal, setShowSuccessModel] = useState<boolean>(false)
   const [showErrorModal, setShowErrorModel] = useState<boolean>(false)
-
-  const userRole = useMemo(
-    () =>
-      endpoint?.users?.find(({ email }) => email === user?._json?.email)?.roleName ||
-      null,
-    [endpoint, user],
-  )
 
   const [routes, setRoutes] = useState<Route[]>([
     {
@@ -51,37 +30,56 @@ export default function AppIdLayoutView({
       to: "notifications",
       label: "Notifications",
     },
-    {
-      to: "team",
-      label: "Team",
-    },
+    // {
+    //   to: "team",
+    //   label: "Team",
+    // },
     {
       to: "keys",
       label: "Keys",
     },
   ])
 
-  useSubscriptionSync({
-    routes,
-    userRole,
-    endpoint,
-    setRoutes,
-    subscription,
-    searchParams,
-    setSearchParams,
-    setShowErrorModel,
-    setShowSuccessModel,
-  })
+  useEffect(() => {
+    if (
+      app &&
+      app.legacyFields.planType === PayPlanType.PayAsYouGoV0 &&
+      !routes.filter((route) => route.to === "plan")[0]
+    ) {
+      setRoutes((curr) => [
+        ...curr.filter((c) => c.to !== "notifications"),
+        {
+          to: "plan",
+          label: "Plan",
+        },
+      ])
+    }
+    if (
+      app &&
+      app.legacyFields.planType !== PayPlanType.PayAsYouGoV0 &&
+      routes.filter((route) => route.to === "plan")[0]
+    ) {
+      setRoutes((curr) => [...curr.filter((route) => route.to !== "plan")])
+    }
+    if (
+      app &&
+      app.legacyFields.planType !== PayPlanType.PayAsYouGoV0 &&
+      !routes.filter((route) => route.to === "notifications")[0]
+    ) {
+      setRoutes((curr) => [
+        ...curr,
+        {
+          to: "notifications",
+          label: "Notifications",
+        },
+      ])
+    }
+  }, [app, routes])
 
   return (
     <Container fluid pt={16} px={0}>
       <Stack spacing="xl">
-        {endpoint && (
-          <ApplicationHeader
-            endpoint={endpoint as ProcessedEndpoint}
-            subscription={subscription}
-          />
-        )}
+        <ApplicationHeader app={app} />
         <Divider />
         <AppOverviewTabs routes={routes} />
         <Divider />

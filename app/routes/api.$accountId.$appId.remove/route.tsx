@@ -4,7 +4,8 @@ import { initPortalClient } from "~/models/portal/portal.server"
 import { requireUser } from "~/utils/user.server"
 
 export const action: ActionFunction = async ({ request, params }) => {
-  const { appId } = params
+  const { accountId, appId } = params
+  invariant(accountId && typeof accountId === "string", "account id not found")
   invariant(appId && typeof appId === "string", "app id not found")
 
   const user = await requireUser(request)
@@ -15,7 +16,7 @@ export const action: ActionFunction = async ({ request, params }) => {
   })
 
   if (response.removeEndpoint) {
-    return redirect("/account")
+    return redirect(`/account/${accountId}`)
   }
 
   return json({ success: false })

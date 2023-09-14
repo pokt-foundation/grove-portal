@@ -12,7 +12,8 @@ import {
   Tooltip,
 } from "@pokt-foundation/pocket-blocks"
 import { Form, NavLink, useParams } from "@remix-run/react"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
+import { PortalApp } from "~/models/portal/sdk"
 import AppmojiPicker, {
   DEFAULT_APPMOJI,
 } from "~/routes/account_.$accountId.create/components/AppmojiPicker"
@@ -24,9 +25,12 @@ const useStyles = createStyles((theme) => ({
   },
 }))
 
-type AppFormProps = { onSubmit: (formData: FormData) => void }
+type AppFormProps = {
+  app?: PortalApp
+  onSubmit: (formData: FormData) => void
+}
 
-const AppForm = ({ onSubmit }: AppFormProps) => {
+const AppForm = ({ app, onSubmit }: AppFormProps) => {
   const { classes } = useStyles()
   const { classes: commonClasses } = useCommonStyles()
   const { accountId } = useParams()
@@ -49,12 +53,16 @@ const AppForm = ({ onSubmit }: AppFormProps) => {
     onSubmit(formData)
   }
 
+  const label = useMemo(() => {
+    return app ? "Update" : "Create"
+  }, [app])
+
   return (
     <Stack>
       <Box>
         <Flex align="center" justify="space-between" my="32px">
           <Text fw={600} fz="21px">
-            Create a new application
+            {label} a new application
           </Text>
           <Tooltip withArrow label="Discard" position="bottom">
             <CloseButton
@@ -78,6 +86,7 @@ const AppForm = ({ onSubmit }: AppFormProps) => {
           <TextInput
             required
             classNames={{ label: classes.inputLabel }}
+            defaultValue={app?.name}
             description="Required"
             label="Name"
             name="app-name"
@@ -86,6 +95,7 @@ const AppForm = ({ onSubmit }: AppFormProps) => {
           />
           <TextInput
             classNames={{ label: classes.inputLabel }}
+            defaultValue={app?.description}
             description="Optional, but it can be helpful to offer additional context about your application."
             label="Description"
             name="app-description"
@@ -96,8 +106,11 @@ const AppForm = ({ onSubmit }: AppFormProps) => {
               Select an emoji icon for your application - a personal touch for quick
               recognition in the dashboard, particularly in a collapsed side panel view.
             </Text>
-            <input hidden name="appmoji" type="text" value={appmoji} />
-            <AppmojiPicker onAppmojiSelect={(appmoji) => setAppmoji(appmoji)} />
+            <input hidden name="app-emoji" type="text" value={appmoji} />
+            <AppmojiPicker
+              defaultValue={app?.appEmoji}
+              onAppmojiSelect={(appmoji) => setAppmoji(appmoji)}
+            />
           </Box>
         </Stack>
         <Divider my={32} />
@@ -126,7 +139,7 @@ const AppForm = ({ onSubmit }: AppFormProps) => {
             //   // trackEvent(AmplitudeEvents.EndpointCreation)
             // }}
           >
-            Create Application
+            {label} Application
           </Button>
         </Group>
       </Form>

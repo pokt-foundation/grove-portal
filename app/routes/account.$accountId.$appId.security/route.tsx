@@ -18,11 +18,9 @@ export const AppSecurity = () => {
     trackEvent(AmplitudeEvents.SecurityDetailsView)
   }, [])
 
-  const { blockchains, endpoint } = useOutletContext<AppIdOutletContext>()
+  const { app, blockchains } = useOutletContext<AppIdOutletContext>()
 
-  return (
-    <SecurityView appId={params.appId} blockchains={blockchains} endpoint={endpoint} />
-  )
+  return <SecurityView app={app} blockchains={blockchains} />
 }
 
 export default AppSecurity

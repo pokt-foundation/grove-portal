@@ -6,23 +6,24 @@ import {
   MetaFunction,
   redirect,
 } from "@remix-run/node"
-import { useActionData, useFetcher } from "@remix-run/react"
+import { useFetcher } from "@remix-run/react"
 import { useEffect, useState } from "react"
 import invariant from "tiny-invariant"
 import PortalLoader from "~/components/PortalLoader"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { PayPlanTypeV2 } from "~/models/portal/sdk"
-import { Stripe, stripe } from "~/models/stripe/stripe.server"
 import AccountPlansContainer from "~/routes/account_.$accountId.create/components/AccountPlansContainer"
 import AppForm from "~/routes/account_.$accountId.create/components/AppForm"
+import { DEFAULT_APPMOJI } from "~/routes/account_.$accountId.create/components/AppmojiPicker"
 import { getErrorMessage } from "~/utils/catchError"
-import { getRequiredClientEnvVar, getRequiredServerEnvVar } from "~/utils/environment"
+import { getRequiredClientEnvVar } from "~/utils/environment"
+import { seo_title_append } from "~/utils/meta"
 import { MAX_USER_APPS } from "~/utils/pocketUtils"
 import { getUserPermissions, requireUser, Permissions } from "~/utils/user.server"
 
 export const meta: MetaFunction = () => {
   return {
-    title: "Create New Application",
+    title: `Create New Application ${seo_title_append}`,
   }
 }
 
@@ -64,6 +65,8 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     return redirect(`/account/${params.accountId}/app-limit-exceeded`)
   }
 
+  // TODO: Dynamically get the price
+  //
   // const priceID = getRequiredServerEnvVar("STRIPE_PRICE_ID")
   // const price = await stripe.prices.retrieve(priceID).catch((error) => {
   //   console.log(error)
@@ -91,8 +94,8 @@ export const action: ActionFunction = async ({ request, params }) => {
   const formData = await request.formData()
   const subscription = formData.get("app-subscription")
   const name = formData.get("app-name")
-  // const description = formData.get("app-description")
-  // const appmoji = formData.get("appmoji")
+  const description = formData.get("app-description")
+  const appmoji = formData.get("app-emoji")
   const { accountId } = params
 
   invariant(
@@ -102,10 +105,6 @@ export const action: ActionFunction = async ({ request, params }) => {
   invariant(name && typeof name === "string", "app name not found")
   invariant(accountId && typeof accountId === "string", "accountId not found")
 
-  console.log({ name })
-  console.log({ subscription })
-  console.log({ accountId })
-
   try {
     const createUserPortalAppResponse = await portal
       .createUserPortalApp({
@@ -113,14 +112,14 @@ export const action: ActionFunction = async ({ request, params }) => {
           name,
           accountID: accountId,
           planType: subscription as PayPlanTypeV2,
+          description: typeof description === "string" ? description : undefined,
+          appEmoji: typeof appmoji === "string" ? appmoji : DEFAULT_APPMOJI,
         },
       })
       .catch((err) => {
         console.log(err)
         throw new Error("portal api could not create new endpoint")
       })
-
-    console.log({ createUserPortalAppResponse })
 
     if (!createUserPortalAppResponse.createUserPortalApp) {
       throw new Error("portal api could not create new endpoint")
@@ -148,13 +147,13 @@ export const action: ActionFunction = async ({ request, params }) => {
 export default function CreateApp() {
   const fetcher = useFetcher()
   const [appFromData, setAppFromData] = useState<FormData>()
-  const data = useActionData<typeof action>()
 
   useEffect(() => {
-    if (data) {
-      console.log(data)
+    if (fetcher.data && fetcher.data.error) {
+      // TODO: handle showNotification toast message
+      console.log(fetcher.data)
     }
-  }, [data])
+  }, [fetcher])
 
   return fetcher.state === "idle" ? (
     <Box maw={860} mx="auto">

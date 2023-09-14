@@ -175,6 +175,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 
 export default function Team() {
   const navigation = useNavigation()
+  // @ts-ignore
   const { endpoint } = useOutletContext<AppIdOutletContext>()
 
   return <TeamView endpoint={endpoint} state={navigation.state} />

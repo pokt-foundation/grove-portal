@@ -5,12 +5,65 @@ import {
   EndpointsQuery,
   PayPlanType,
   PendingEndpointsQuery,
+  PortalApp,
   ProcessedEndpoint,
   RoleName,
 } from "./sdk"
 
 const testEmail = "test@test.test"
 export const testPortalUserId = "userId_test"
+
+// @ts-ignore
+export const app: PortalApp = {
+  id: "c7ec4cdcb4e28a19972da585",
+  name: "Test Application",
+  accountID: "2886d942",
+  settings: {
+    // @ts-ignore
+    environment: "production",
+    secretKey: "secretKey",
+    secretKeyRequired: false,
+    favoritedBlockchainIDs: null,
+    monthlyRelayLimit: 0,
+  },
+  // @ts-ignore
+  whitelists: {},
+  aat: {
+    a4bad02a5c85e04d843fbde4: {
+      id: "id",
+      publicKey: "publicKey",
+      address: "address",
+      clientPublicKey: "clientPublicKey",
+      signature: "signature",
+      version: "0.0.1",
+    },
+  },
+  notifications: {
+    // @ts-ignore
+    email: {
+      type: "email",
+      active: true,
+      destination: "",
+      trigger: "",
+      events: {
+        full: true,
+        signedUp: true,
+        threeQuarters: true,
+      },
+    },
+  },
+  createdAt: "2023-04-26T16:31:21.823638Z",
+  updatedAt: "2023-04-26T16:31:21.823638Z",
+  deleted: false,
+  firstDateSurpassed: "0001-01-01T00:00:00Z",
+  legacyFields: {
+    // @ts-ignore
+    planType: "FREETIER_V0",
+    dailyLimit: 250000,
+    customLimit: 0,
+    requestTimeout: 2000,
+  },
+}
 
 export const endpoint: ProcessedEndpoint = {
   appLimits: {

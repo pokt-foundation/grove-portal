@@ -1,19 +1,11 @@
 import { Divider } from "@mantine/core"
 import { Button, Container, Stack } from "@pokt-foundation/pocket-blocks"
-import { useEffect, useMemo, useState } from "react"
-import { Auth0Profile } from "remix-auth-auth0"
+import { useEffect, useState } from "react"
 import Modal, { ModalCTA } from "~/components/Modal"
 import { Route } from "~/components/Nav"
-import {
-  EndpointQuery,
-  PayPlanType,
-  PortalApp,
-  ProcessedEndpoint,
-} from "~/models/portal/sdk"
-import { Stripe } from "~/models/stripe/stripe.server"
+import { PayPlanType, PortalApp } from "~/models/portal/sdk"
 import ApplicationHeader from "~/routes/account.$accountId.$appId/components/ApplicationHeader"
 import AppOverviewTabs from "~/routes/account.$accountId.$appId/components/AppOverviewTabs"
-import useSubscriptionSync from "~/routes/account.$accountId.$appId/hooks/useSubscriptionSync"
 
 type AppIdLayoutViewProps = {
   app: PortalApp
@@ -83,18 +75,6 @@ export default function AppIdLayoutView({ app, children }: AppIdLayoutViewProps)
       ])
     }
   }, [app, routes])
-
-  // useSubscriptionSync({
-  //   routes,
-  //   userRole,
-  //   endpoint,
-  //   setRoutes,
-  //   subscription,
-  //   searchParams,
-  //   setSearchParams,
-  //   setShowErrorModel,
-  //   setShowSuccessModel,
-  // })
 
   return (
     <Container fluid pt={16} px={0}>

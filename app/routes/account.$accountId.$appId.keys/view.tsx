@@ -7,9 +7,8 @@ import {
   Stack,
   Text,
 } from "@pokt-foundation/pocket-blocks"
-import React from "react"
 import CopyTextButton from "~/components/CopyTextButton"
-import { PortalApp, RoleName, RoleNameV2 } from "~/models/portal/sdk"
+import { PortalApp, RoleNameV2 } from "~/models/portal/sdk"
 
 type AppKeysProps = {
   app: PortalApp
@@ -17,7 +16,10 @@ type AppKeysProps = {
 }
 
 const AppKeys = ({ app, userRole }: AppKeysProps) => {
+  // We shouldnt be using this value. The statement about it below is not true.
+  //
   // const publicKey = app.aats ? app.aats[0].aat.publicKey : ""
+
   const secretKey = app.settings.secretKey
   return (
     <Stack spacing={0}>

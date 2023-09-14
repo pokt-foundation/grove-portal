@@ -35,7 +35,7 @@ export const SidebarApps = ({ apps, iconOnly }: SidebarAppsProps) => {
       .map((app) => ({
         to: app.id,
         label: app.name,
-        icon: app.appEmoji !== "" ? app.appEmoji : getRandomAppmoji(),
+        icon: app.appEmoji, //getRandomAppmoji(),
       })) as SidebarNavRoute[]
   }, [apps])
 

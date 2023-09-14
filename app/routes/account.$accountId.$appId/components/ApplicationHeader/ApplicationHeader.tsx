@@ -1,4 +1,5 @@
 import { Avatar, Badge, Group, Menu, Text } from "@pokt-foundation/pocket-blocks"
+import { Link } from "@remix-run/react"
 import { Emoji } from "emoji-picker-react"
 import React from "react"
 import { LuPencil } from "react-icons/lu"
@@ -31,7 +32,9 @@ const ApplicationHeader = ({ app }: ApplicationHeaderProps) => {
       <Menu>
         <ContextMenuTarget />
         <Menu.Dropdown>
-          <Menu.Item icon={<LuPencil size={18} />}>Edit information</Menu.Item>
+          <Menu.Item component={Link} icon={<LuPencil size={18} />} to={`update`}>
+            Edit information
+          </Menu.Item>
           {app && app.legacyFields.planType !== PayPlanType.PayAsYouGoV0 && (
             <DeleteApplication app={app} />
           )}

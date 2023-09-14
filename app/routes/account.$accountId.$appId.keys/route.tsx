@@ -4,5 +4,5 @@ import AppKeys from "~/routes/account.$accountId.$appId.keys/view"
 
 export default function ApplicationKeys() {
   const { app, userRole } = useOutletContext<AppIdOutletContext>()
-  return <AppKeys app={app} role={userRole} />
+  return <AppKeys app={app} userRole={userRole} />
 }

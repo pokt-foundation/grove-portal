@@ -1,17 +1,13 @@
 import {
   ActionIcon,
-  Avatar,
   Flex,
-  Grid,
-  Group,
-  Stack,
-  Text,
   TextInput,
   useMantineTheme,
 } from "@pokt-foundation/pocket-blocks"
 import { useParams } from "@remix-run/react"
 import { useMemo } from "react"
 import { LuTrash2 } from "react-icons/lu"
+import Chain from "~/components/Chain"
 import CopyTextButton from "~/components/CopyTextButton"
 import { DataTable } from "~/components/DataTable"
 import { Blockchain } from "~/models/portal/sdk"
@@ -51,19 +47,7 @@ const ChainsTable = ({
         data={selectedBlockChains?.map((chain) => {
           return {
             chain: {
-              element: (
-                <Flex gap="sm">
-                  <Avatar radius={40} size={40} src="/avalanche-avax-logo.svg" />
-                  <Stack spacing={0} w={200}>
-                    <Text truncate fw={600}>
-                      {chain?.description}
-                    </Text>
-                    <Text c="dimmed" fz="xs">
-                      {chain?.blockchain}
-                    </Text>
-                  </Stack>
-                </Flex>
-              ),
+              element: <Chain chain={chain} />,
               value: `${chain?.description} ${chain?.blockchain}`,
               cellProps: {
                 style: { minWidth: "250px" },

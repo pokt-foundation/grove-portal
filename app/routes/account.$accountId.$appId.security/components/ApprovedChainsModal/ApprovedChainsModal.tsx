@@ -56,8 +56,8 @@ const ApprovedChainsModal = ({
           />
           <ChainsDropdown
             chains={dropdownChains}
+            width={300}
             onChange={(val: string) => {
-              console.log(val)
               setSelectedBlockchainsIds((ids) => [...ids, val])
             }}
           />

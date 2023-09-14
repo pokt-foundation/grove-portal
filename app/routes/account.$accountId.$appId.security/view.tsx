@@ -1,13 +1,18 @@
 import { Divider } from "@mantine/core"
-import { Button, Text, Switch, Box, Stack } from "@pokt-foundation/pocket-blocks"
+import { Text, Switch, Box, Stack } from "@pokt-foundation/pocket-blocks"
 import { useNavigation } from "@remix-run/react"
-import React, { useState } from "react"
-import { LuPlus } from "react-icons/lu"
+import React, { useMemo, useState } from "react"
 import { BlockchainsQuery } from "~/models/portal/sdk"
 import { Blockchain, EndpointQuery } from "~/models/portal/sdk"
 import ApprovedChains from "~/routes/account.$accountId.$appId.security/components/ApprovedChains"
+import ChainWhitelist from "~/routes/account.$accountId.$appId.security/components/ChainWhitelist"
+import WhitelistOrigins from "~/routes/account.$accountId.$appId.security/components/WhitelistOrigins"
 import WhitelistUserAgents from "~/routes/account.$accountId.$appId.security/components/WhitelistUserAgents"
-import useCommonStyles from "~/styles/commonStyles"
+import {
+  formatBlockchainWhitelist,
+  WhitelistContract,
+  WhitelistMethod,
+} from "~/routes/account.$accountId.$appId.security/utils"
 
 type SecurityViewProps = {
   endpoint: EndpointQuery["endpoint"]
@@ -18,10 +23,26 @@ type SecurityViewProps = {
 export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps) => {
   const navigation = useNavigation()
 
-  const { classes: commonClasses } = useCommonStyles()
-
   const [secretKeyRequired, setSecretKeyRequired] = useState<boolean>(
     Boolean(endpoint.gatewaySettings.secretKeyRequired),
+  )
+
+  const whiteListContracts = useMemo(
+    () =>
+      formatBlockchainWhitelist<WhitelistContract>(
+        endpoint.gatewaySettings?.whitelistContracts,
+        "contracts",
+      ),
+    [endpoint.gatewaySettings?.whitelistContracts],
+  )
+
+  const whiteListMethods = useMemo(
+    () =>
+      formatBlockchainWhitelist<WhitelistMethod>(
+        endpoint.gatewaySettings?.whitelistMethods,
+        "methods",
+      ),
+    [endpoint.gatewaySettings?.whitelistMethods],
   )
 
   return (
@@ -49,45 +70,29 @@ export const SecurityView = ({ endpoint, appId, blockchains }: SecurityViewProps
       />
       <Divider />
 
-      <Stack align="flex-start" px={40} py={32}>
-        <Text fw={600}>Whitelist Origins</Text>
-        <Text>Limits requests to only the HTTP Origins specified.</Text>
-        <Button
-          className={commonClasses.grayOutlinedButton}
-          color="gray"
-          rightIcon={<LuPlus size={18} />}
-          variant="outline"
-        >
-          Add
-        </Button>
-      </Stack>
+      <WhitelistUserAgents
+        whitelistUserAgents={endpoint.gatewaySettings?.whitelistUserAgents as string[]}
+      />
       <Divider />
 
-      <Stack align="flex-start" px={40} py={32}>
-        <Text fw={600}>Whitelist Contracts</Text>
-        <Text>Limits requests to the smart contract addresses specified.</Text>
-        <Button
-          className={commonClasses.grayOutlinedButton}
-          color="gray"
-          rightIcon={<LuPlus size={18} />}
-          variant="outline"
-        >
-          Add
-        </Button>
-      </Stack>
+      <WhitelistOrigins
+        whitelistOrigins={endpoint.gatewaySettings?.whitelistOrigins as string[]}
+      />
       <Divider />
-      <Stack align="flex-start" px={40} py={32}>
-        <Text fw={600}>Whitelist Methods</Text>
-        <Text>Limits requests to use specific RPC methods.</Text>
-        <Button
-          className={commonClasses.grayOutlinedButton}
-          color="gray"
-          rightIcon={<LuPlus size={18} />}
-          variant="outline"
-        >
-          Add
-        </Button>
-      </Stack>
+
+      <ChainWhitelist
+        blockchains={blockchains as Blockchain[]}
+        type="contracts"
+        whitelists={whiteListContracts}
+      />
+      <Divider />
+
+      <ChainWhitelist
+        blockchains={blockchains as Blockchain[]}
+        type="methods"
+        whitelists={whiteListMethods}
+      />
+      <Divider />
     </Box>
   )
 }

@@ -14,9 +14,6 @@ type ApprovedChainsFormProps = {
 const ApprovedChains = ({ approvedChainsIds, blockchains }: ApprovedChainsFormProps) => {
   const { openFullScreenModal } = useModals()
 
-  console.log("approvedChainsIds")
-  console.log(approvedChainsIds)
-
   return (
     <Box px={40} py={32}>
       <Stack align="flex-start">

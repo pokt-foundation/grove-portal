@@ -17,13 +17,13 @@ const SelectItem = forwardRef<HTMLDivElement, { label: string; value: string }>(
 
 SelectItem.displayName = "SelectItem"
 
-const ChainsDropdown = ({
-  chains,
-  onChange,
-}: {
+type ChainsDropdownProps = {
   chains: BlockchainsQuery["blockchains"]
   onChange: (chain: string) => void
-}) => {
+  width?: string | number
+}
+
+const ChainsDropdown = ({ chains, onChange, width }: ChainsDropdownProps) => {
   const addNewChainSelectRef = useRef<HTMLInputElement>(null)
 
   const selectChainData = useMemo(() => {
@@ -54,7 +54,7 @@ const ChainsDropdown = ({
       placeholder="Search Network"
       rightSection={<></>}
       rightSectionWidth={0}
-      w={300}
+      w={width}
       onChange={onChange}
     />
   )

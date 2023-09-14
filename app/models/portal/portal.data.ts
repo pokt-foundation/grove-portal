@@ -16,12 +16,12 @@ export const testPortalUserId = "userId_test"
 // @ts-ignore
 export const app: PortalApp = {
   id: "c7ec4cdcb4e28a19972da585",
-  name: "Test Migration 2",
+  name: "Test Application",
   accountID: "2886d942",
   settings: {
     // @ts-ignore
     environment: "production",
-    secretKey: "a8ad77c851f9b93e71056d7dcd946dca",
+    secretKey: "secretKey",
     secretKeyRequired: false,
     favoritedBlockchainIDs: null,
     monthlyRelayLimit: 0,
@@ -30,12 +30,11 @@ export const app: PortalApp = {
   whitelists: {},
   aat: {
     a4bad02a5c85e04d843fbde4: {
-      id: "a4bad02a5c85e04d843fbde4",
-      publicKey: "3e43b4f0c28b588ebc23719d9f00a604e37bf05fb7242caa54856bb7ed8f68a8",
-      address: "1bf37afc2af521c2cf09d111f76b528f68bb9282",
-      clientPublicKey: "5ad3c2acb46626b1c5e1283e26a966177b7c6f1e04a63e0350567529b42187c5",
-      signature:
-        "ddc38126c3125dda4d178ef4f474b6fd8f8bbc3dbca425f5b78c6ae44daf4321833ad5f2b13c900fe4a3e09863f82df93c477ee66d4b63fb502a0c607d0dae0f",
+      id: "id",
+      publicKey: "publicKey",
+      address: "address",
+      clientPublicKey: "clientPublicKey",
+      signature: "signature",
       version: "0.0.1",
     },
   },

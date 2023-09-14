@@ -17,7 +17,6 @@ type ApplicationHeaderProps = {
 }
 
 const ApplicationHeader = ({ app, subscription }: ApplicationHeaderProps) => {
-  console.log({ app, subscription })
   return (
     <Group position="apart">
       <Group spacing="sm">

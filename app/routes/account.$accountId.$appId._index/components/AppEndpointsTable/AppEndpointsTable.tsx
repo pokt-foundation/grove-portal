@@ -1,10 +1,6 @@
 import {
-  ActionIcon,
-  Avatar,
   Flex,
   Menu,
-  Stack,
-  Text,
   TextInput,
   useMantineTheme,
   UnstyledButton,
@@ -14,6 +10,7 @@ import { useMemo } from "react"
 import { LuBook } from "react-icons/lu"
 import { RiStarLine } from "react-icons/ri"
 import FavoriteChain from "../FavoriteChain"
+import Chain from "~/components/Chain"
 import ContextMenuTarget from "~/components/ContextMenuTarget"
 import CopyTextButton from "~/components/CopyTextButton"
 import { DataTable } from "~/components/DataTable"
@@ -38,14 +35,15 @@ const AppEndpointsTable = ({
   const { appId } = useParams()
 
   const chains = useMemo(() => {
-    let fav = blockchains
+    const fav = blockchains
       .filter((chain) => favoriteChains?.includes(chain.id))
       .map((c) => ({
         ...c,
         favorite: true,
       }))
       .sort((a, b) => (a.blockchain > b.blockchain ? 1 : -1))
-    let other = blockchains
+
+    const other = blockchains
       .filter((chain) => !favoriteChains?.includes(chain.id))
       .map((c) => ({
         ...c,
@@ -65,19 +63,7 @@ const AppEndpointsTable = ({
               element: (
                 <Flex gap="sm">
                   <FavoriteChain blockchain={chain} favoriteChains={favoriteChains} />
-                  <Avatar
-                    radius={40}
-                    size={40}
-                    src={`/chain-logos/${chain.blockchain}.svg`}
-                  />
-                  <Stack spacing={0} w={200}>
-                    <Text truncate fw={600}>
-                      {chain.description}
-                    </Text>
-                    <Text c="dimmed" fz="xs">
-                      {chain.blockchain}
-                    </Text>
-                  </Stack>
+                  <Chain chain={chain} />
                 </Flex>
               ),
               value: `${chain.description} ${chain.blockchain}`,

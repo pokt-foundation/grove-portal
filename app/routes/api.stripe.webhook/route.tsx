@@ -72,7 +72,7 @@ export const action: ActionFunction = async ({ request }) => {
 
         const appIdCreated = subscriptionCreated.metadata.endpoint_id
 
-        await fetch(`/api/${appIdCreated}/update-plan`, {
+        await fetch("/api/admin/update-plan", {
           method: "post",
           headers: {
             "Content-Type": "Application/Json",
@@ -80,6 +80,7 @@ export const action: ActionFunction = async ({ request }) => {
           body: JSON.stringify({
             id: appIdCreated,
             type: PayPlanType.PayAsYouGoV0,
+            subscription: subscriptionCreated.id,
           }),
         })
 
@@ -90,7 +91,7 @@ export const action: ActionFunction = async ({ request }) => {
 
         const appIdDeleted = subscriptionDeleted.metadata.endpoint_id
 
-        await fetch(`/api/${appIdDeleted}/update-plan`, {
+        await fetch("/api/admin/update-plan", {
           method: "post",
           headers: {
             "Content-Type": "Application/Json",
@@ -98,6 +99,7 @@ export const action: ActionFunction = async ({ request }) => {
           body: JSON.stringify({
             id: appIdDeleted,
             type: PayPlanType.FreetierV0,
+            subscription: `deleted-${subscriptionDeleted.id}`,
           }),
         })
 

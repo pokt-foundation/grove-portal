@@ -8,7 +8,7 @@ type ChainProps = {
 const Chain = ({ chain }: ChainProps) => {
   return (
     <Flex gap="sm">
-      <Avatar radius={40} size={40} src="/avalanche-avax-logo.svg" />
+      <Avatar radius={40} size={40} src={`/chain-logos/${chain.blockchain}.svg`} />
       <Stack spacing={0} w={200}>
         <Text truncate fw={600}>
           {chain?.description}

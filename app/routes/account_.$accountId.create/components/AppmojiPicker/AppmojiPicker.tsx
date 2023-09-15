@@ -1,4 +1,5 @@
-import { ActionIcon, createStyles, Menu } from "@pokt-foundation/pocket-blocks"
+import { useClickOutside } from "@mantine/hooks"
+import { ActionIcon, Box, createStyles } from "@pokt-foundation/pocket-blocks"
 import EmojiPicker, { Emoji } from "emoji-picker-react"
 import { Theme } from "emoji-picker-react/src/types/exposedTypes"
 import { useState } from "react"
@@ -6,15 +7,13 @@ import { useState } from "react"
 export const DEFAULT_APPMOJI = "1f9e9"
 
 const useStyles = createStyles((theme) => ({
-  appmojiMenuDropdown: {
-    minWidth: "350px",
-    maxWidth: "350px",
-    maxHeight: "600px",
-    overflow: "auto",
-    padding: 0,
-  },
   appmojiActionIcon: {
     borderColor: theme.colors.dark[4],
+  },
+  appmojiPickerContainer: {
+    position: "absolute",
+    top: "40px",
+    left: "-150px",
   },
 }))
 
@@ -26,45 +25,32 @@ type AppmojiPickerProps = {
 const AppmojiPicker = ({ defaultValue, onAppmojiSelect }: AppmojiPickerProps) => {
   const { classes } = useStyles()
   const [showAppmojiPicker, setShowAppmojiPicker] = useState(false)
-  const [showAppmojiPickerMenu, setShowAppmojiPickerMenu] = useState(false)
   const [selectedAppmoji, setSelectedAppmoji] = useState(defaultValue ?? DEFAULT_APPMOJI)
-
-  const handleShowAppmojiPicker = () => {
-    // Because of an issue with rendering the emoji picker, the menu should be rendered first and then the picker
-    setShowAppmojiPickerMenu(!showAppmojiPickerMenu)
-    setTimeout(() => setShowAppmojiPicker(!showAppmojiPicker), 0)
-  }
+  const appmojiContainerRef = useClickOutside(() => setShowAppmojiPicker(false))
 
   return (
-    <Menu
-      withArrow
-      classNames={{ dropdown: classes.appmojiMenuDropdown }}
-      openDelay={500}
-      opened={showAppmojiPickerMenu}
-      position="top"
-      shadow="md"
-      width={400}
-      onChange={handleShowAppmojiPicker}
-    >
-      <Menu.Target>
-        <ActionIcon className={classes.appmojiActionIcon} size="lg" variant="outline">
-          <Emoji size={14} unified={selectedAppmoji} />
-        </ActionIcon>
-      </Menu.Target>
-      <Menu.Dropdown>
-        {showAppmojiPicker && (
+    <Box pos="relative">
+      <ActionIcon
+        className={classes.appmojiActionIcon}
+        size="lg"
+        variant="outline"
+        onClick={() => setShowAppmojiPicker(true)}
+      >
+        <Emoji size={14} unified={selectedAppmoji} />
+      </ActionIcon>
+      {showAppmojiPicker && (
+        <div ref={appmojiContainerRef} className={classes.appmojiPickerContainer}>
           <EmojiPicker
             theme={Theme.DARK}
             onEmojiClick={({ unified }) => {
               setSelectedAppmoji(unified)
               onAppmojiSelect(unified)
-              setShowAppmojiPickerMenu(false)
               setShowAppmojiPicker(false)
             }}
           />
-        )}
-      </Menu.Dropdown>
-    </Menu>
+        </div>
+      )}
+    </Box>
   )
 }
 

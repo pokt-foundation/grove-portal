@@ -7,7 +7,7 @@ type FavoriteChainProps = {
   blockchain: Blockchain & {
     favorite: boolean
   }
-  favoriteChains?: Maybe<string>
+  favoriteChains?: Maybe<string[]>
 }
 
 export const FavoriteChain = ({ blockchain, favoriteChains }: FavoriteChainProps) => {

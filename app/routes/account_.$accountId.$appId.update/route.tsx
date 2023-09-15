@@ -57,13 +57,15 @@ export const action: ActionFunction = async ({ request, params }) => {
   const name = formData.get("app-name")
   const description = formData.get("app-description")
   const appEmoji = formData.get("app-emoji")
-  const { accountId } = params
+  const { accountId, appId } = params
 
   try {
     invariant(name && typeof name === "string", "app name not found")
     invariant(accountId && typeof accountId === "string", "accountId not found")
+    invariant(appId && typeof appId === "string", "appId not found")
 
     let input: Partial<UpdatePortalApp> = {
+      appID: appId,
       name,
     }
 

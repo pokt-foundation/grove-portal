@@ -10,10 +10,10 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   const user = await requireUser(request)
   invariant(user.profile.id && user.profile.emails, "user not found")
   const userId = getPoktId(user.profile.id)
-  const { accountId } = params
 
   const url = new URL(request.url)
   const id = url.searchParams.get("app-id")
+  const accountId = url.searchParams.get("app-accountId")
   const name = url.searchParams.get("app-name")
   const referral = url.searchParams.get("referral-id")
 

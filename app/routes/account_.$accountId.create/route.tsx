@@ -129,6 +129,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 
     if (subscription === PayPlanTypeV2.PayAsYouGoV0) {
       formData.append("app-id", newApp.id)
+      formData.append("app-accountId", accountId)
 
       // setting to any because of a TS known error: https://github.com/microsoft/TypeScript/issues/19806
       const params = new URLSearchParams(formData as any).toString()

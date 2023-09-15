@@ -8,6 +8,7 @@ import { LuSearch } from "react-icons/lu"
 import invariant from "tiny-invariant"
 import { AppIdOutletContext } from "../account.$accountId.$appId/route"
 import { initPortalClient } from "~/models/portal/portal.server"
+import { PortalAppEnvironment } from "~/models/portal/sdk"
 import AppEndpointsTable from "~/routes/account.$accountId.$appId._index/components/AppEndpointsTable"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { getErrorMessage } from "~/utils/catchError"
@@ -50,6 +51,7 @@ export const action: ActionFunction = async ({ request, params }) => {
           appID: appId,
           appSettings: {
             favoritedChainIDs: newFavs,
+            environment: PortalAppEnvironment.Production,
           },
         },
       })

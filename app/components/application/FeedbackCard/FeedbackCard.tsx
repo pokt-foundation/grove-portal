@@ -17,7 +17,7 @@ export default function FeedbackCard({ className }: { className?: string }) {
   return (
     <a
       aria-label={feedback.discordAriaLabel}
-      href="https://discord.gg/grove"
+      href="https://discord.gg/build-with-grove"
       rel="noreferrer"
       target="_blank"
     >

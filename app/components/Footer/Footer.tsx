@@ -33,7 +33,7 @@ export const Footer = () => {
             <Text>
               &copy; {dayjs().format("YYYY")} Grove Infrastructure Inc.{" "}
               <Anchor
-                href="https://docs.grove.city/terms"
+                href="https://grove.city/terms"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -41,7 +41,7 @@ export const Footer = () => {
               </Anchor>{" "}
               |{" "}
               <Anchor
-                href="https://docs.grove.city/privacy"
+                href="https://grove.city/privacy"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -62,7 +62,7 @@ export const Footer = () => {
             </Anchor>
             <Anchor
               aria-label="Discord"
-              href="https://discord.gg/grove"
+              href="https://discord.gg/build-with-grove"
               rel="noreferrer"
               target="_blank"
             >

@@ -43,7 +43,7 @@ export const useRoot = ({ user }: useRootProps) => {
         protected: Protected.Public,
       },
       {
-        to: "https://support.grove.city",
+        to: "https://discord.gg/build-with-grove",
         external: true,
         label: "Support",
         icon: IconMail,

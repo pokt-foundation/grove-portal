@@ -54,7 +54,7 @@ export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) 
         el: () => (
           <Menu.Item
             component={"a"}
-            href="https://pokt.height.app/inbox?taskForm=Pokt-Technical-Support-k1jo7CqGZMvI"
+            href="https://discord.gg/build-with-grove"
             rel="noreferrer"
             target="_blank"
           >
@@ -117,7 +117,7 @@ export const Header: React.FC<HeaderProps> = ({ user, nav = "left", children }) 
               alt="Grove"
               className="pokt-header-brand"
               loading="lazy"
-              src="/grove/Portal_Color_DT.png"
+              src="/portal_logo/grove-dark.svg"
             ></img>
           </a>
         </div>

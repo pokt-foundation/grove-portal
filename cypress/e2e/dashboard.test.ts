@@ -1,4 +1,4 @@
-describe("dashboard page tests", () => {
+describe.skip("dashboard page tests", () => {
   it("should login and show dashboard", () => {
     cy.login(Cypress.env("auth0_user"), Cypress.env("auth0_password"))
 

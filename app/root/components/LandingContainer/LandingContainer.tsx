@@ -7,9 +7,8 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react"
-import React from "react"
 
-const PlasmicContainer = () => {
+const LandingContainer = ({ ENV }: { ENV: any }) => {
   return (
     <html>
       <head>
@@ -32,4 +31,4 @@ const PlasmicContainer = () => {
   )
 }
 
-export default PlasmicContainer
+export default LandingContainer

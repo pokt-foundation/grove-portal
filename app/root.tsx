@@ -13,7 +13,7 @@ import Footer, { links as FooterLinks } from "~/components/Footer"
 import Header, { links as HeaderLinks } from "~/components/Header"
 import Nav, { links as NavLinks } from "~/components/Nav"
 import Document from "~/root/components/Document"
-import PlasmicContainer from "~/root/components/PlasmicContainer"
+import LandingContainer from "~/root/components/LandingContainer"
 import RootProviders from "~/root/components/RootProviders"
 import { useRoot } from "~/root/hooks/useRoot"
 import normalizeStyles from "~/styles/normalize.css"
@@ -64,14 +64,14 @@ createEmotionCache({ key: "pni" })
 
 export default function App() {
   const { ENV, user } = useLoaderData<RootLoaderData>()
-  const { isPlasmic, routes } = useRoot({ user })
+  const { isLoggedIn, routes } = useRoot({ user })
   return (
-    <>
-      {isPlasmic ? (
-        <PlasmicContainer />
-      ) : (
-        <RootProviders>
-          <Document>
+    <RootProviders>
+      <Document>
+        {isLoggedIn ? (
+          <Outlet />
+        ) : (
+          <>
             <Header user={user}>
               <Nav ariaLabel="Main" routes={routes} />
             </Header>
@@ -81,15 +81,15 @@ export default function App() {
               </Container>
             </main>
             <Footer />
-            <script
-              dangerouslySetInnerHTML={{
-                __html: `window.ENV = ${JSON.stringify(ENV)};`,
-              }}
-            />
-          </Document>
-        </RootProviders>
-      )}
-    </>
+          </>
+        )}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.ENV = ${JSON.stringify(ENV)};`,
+          }}
+        />
+      </Document>
+    </RootProviders>
   )
 }
 

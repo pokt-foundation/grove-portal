@@ -1,21 +1,23 @@
 import { Avatar, MantineTheme } from "@pokt-foundation/pocket-blocks"
 import React, { useMemo } from "react"
-import { minidenticon } from "~/utils/identicons"
+import { minidenticon, picasso } from "~/utils/identicons"
 
 type IdenticonProps = {
-  username: string
+  seed: string
+  type: "user" | "account"
   alt?: string
-  saturation?: number
-  lightness?: number
 }
 
-export const Identicon = ({ username, saturation, lightness, alt }: IdenticonProps) => {
-  const svgURI = useMemo(
-    () =>
-      "data:image/svg+xml;utf8," +
-      encodeURIComponent(minidenticon(username, saturation, lightness)),
-    [username, saturation, lightness],
-  )
+export const Identicon = ({ seed, type, alt }: IdenticonProps) => {
+  const svgURI = useMemo(() => {
+    let svg
+    if (type === "user") {
+      svg = minidenticon(seed)
+    } else {
+      svg = picasso(seed)
+    }
+    return "data:image/svg+xml;utf8," + encodeURIComponent(svg)
+  }, [seed, type])
   return (
     <Avatar
       alt={alt}

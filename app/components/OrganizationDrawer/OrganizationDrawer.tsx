@@ -101,7 +101,8 @@ const OrganizationDrawer = ({ user, accounts }: OrganizationDrawerProps) => {
           <Group noWrap w={252}>
             <Identicon
               alt={`${user.displayName ?? "user"} profile picture`}
-              username={user.id ?? "user default"}
+              seed={user.id ?? "user default"}
+              type="user"
             />
             <Text truncate fz={12} td="underline">
               {user?.displayName}
@@ -146,7 +147,8 @@ const OrganizationDrawer = ({ user, accounts }: OrganizationDrawerProps) => {
       <UnstyledButton onClick={() => setIsDrawerOpen(true)}>
         <Identicon
           alt={`${user.name ?? "user"} profile picture`}
-          username={user.id ?? "user default"}
+          seed={user.id ?? "user default"}
+          type="user"
         />
       </UnstyledButton>
     </>

@@ -1,10 +1,21 @@
 import { Container, Grid, Button, Text, Title, Box } from "@pokt-foundation/pocket-blocks"
-import { LinksFunction } from "@remix-run/node"
+import { LinksFunction, LoaderFunction, redirect } from "@remix-run/node"
 import { Form } from "@remix-run/react"
 import styles from "./styles.css"
+import { requireUser } from "~/utils/session.server"
 
 export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: styles }]
+}
+
+export const loader: LoaderFunction = async ({ request }) => {
+  const user = await requireUser(request, "/api/auth/auth0")
+
+  if (user.profile._json?.email_verified) {
+    return redirect("/dashboard")
+  }
+
+  return
 }
 
 export default function ValidateEmail() {

@@ -20,11 +20,20 @@ export const Footer = () => {
     <footer className="pokt-footer">
       <nav aria-label="Footer" id="footer-nav">
         <Group position="apart">
+          <a href="https://grove.city" rel="noreferrer" target="_blank">
+            <img
+              alt="About Grove"
+              className="pokt-header-brand"
+              loading="lazy"
+              src="/grove/Logo_Joined_4.svg"
+              // src="/grove/Portal_Color_DT.png"
+            ></img>
+          </a>
           <div>
             <Text>
-              &copy; {dayjs().format("YYYY")} Pocket Network Inc.{" "}
+              &copy; {dayjs().format("YYYY")} Grove Infrastructure Inc.{" "}
               <Anchor
-                href="https://docs.portal.pokt.network/terms"
+                href="https://grove.city/terms"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -32,7 +41,7 @@ export const Footer = () => {
               </Anchor>{" "}
               |{" "}
               <Anchor
-                href="https://docs.portal.pokt.network/privacy"
+                href="https://grove.city/privacy"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -41,14 +50,11 @@ export const Footer = () => {
             </Text>
           </div>
           <Group>
-            <a href="https://www.pokt.network/" rel="noreferrer" target="_blank">
-              About POKT
-            </a>
-            <span aria-hidden className="vertical-split"></span>
+            {/* <span aria-hidden className="vertical-split"></span> */}
             <Anchor
               aria-label="Twitter"
               className="discord-icon"
-              href="https://twitter.com/POKTnetwork"
+              href="https://twitter.com/BuildwithGrove"
               rel="noreferrer"
               target="_blank"
             >
@@ -56,7 +62,7 @@ export const Footer = () => {
             </Anchor>
             <Anchor
               aria-label="Discord"
-              href="https://discord.gg/portal-rpc"
+              href="https://discord.gg/build-with-grove"
               rel="noreferrer"
               target="_blank"
             >

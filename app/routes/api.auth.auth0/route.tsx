@@ -1,6 +1,5 @@
 import type { ActionFunction, LoaderFunction } from "@remix-run/node"
 import { authenticator } from "~/utils/auth.server"
-import { getRequiredServerEnvVar } from "~/utils/environment"
 
 export let loader: LoaderFunction = ({ request }) => {
   const url = new URL(request.url)
@@ -12,20 +11,14 @@ export let loader: LoaderFunction = ({ request }) => {
     const signupRequest = new Request(url.toString(), request)
     return authenticator.authenticate("auth0", signupRequest, {
       successRedirect: "/dashboard",
-      failureRedirect:
-        getRequiredServerEnvVar("NODE_ENV") === "production"
-          ? "https://portal.pokt.network"
-          : url.origin,
+      failureRedirect: url.origin,
     })
   }
 
   const loginRequest = new Request(url.toString(), request)
   return authenticator.authenticate("auth0", loginRequest, {
     successRedirect: "/dashboard",
-    failureRedirect:
-      getRequiredServerEnvVar("NODE_ENV") === "production"
-        ? "https://portal.pokt.network"
-        : url.origin,
+    failureRedirect: url.origin,
   })
 }
 
@@ -38,10 +31,7 @@ export let action: ActionFunction = async ({ request }) => {
 
   if (logoutField) {
     return authenticator.logout(request, {
-      redirectTo:
-        getRequiredServerEnvVar("NODE_ENV") === "production"
-          ? "https://portal.pokt.network"
-          : url.origin,
+      redirectTo: url.origin,
     })
   }
 
@@ -51,10 +41,7 @@ export let action: ActionFunction = async ({ request }) => {
     const signupRequest = new Request(url.toString(), request)
     return authenticator.authenticate("auth0", signupRequest, {
       successRedirect: "/dashboard",
-      failureRedirect:
-        getRequiredServerEnvVar("NODE_ENV") === "production"
-          ? "https://portal.pokt.network"
-          : url.origin,
+      failureRedirect: url.origin,
     })
   }
 
@@ -62,9 +49,6 @@ export let action: ActionFunction = async ({ request }) => {
   const loginRequest = new Request(url.toString(), request)
   return authenticator.authenticate("auth0", loginRequest, {
     successRedirect: "/dashboard",
-    failureRedirect:
-      getRequiredServerEnvVar("NODE_ENV") === "production"
-        ? "https://portal.pokt.network"
-        : url.origin,
+    failureRedirect: url.origin,
   })
 }

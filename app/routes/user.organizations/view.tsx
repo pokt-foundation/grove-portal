@@ -1,10 +1,10 @@
 import { Divider } from "@mantine/core"
-import { Container, Stack, Text } from "@pokt-foundation/pocket-blocks"
+import { Stack, Text } from "@pokt-foundation/pocket-blocks"
 import OrganizationsTable from "./components/OrganizationsTable"
-import { GetUserAccountsQuery } from "~/models/portal/sdk"
+import { Account } from "~/models/portal/sdk"
 
 type UserOrganizationsProps = {
-  accounts: GetUserAccountsQuery["getUserAccounts"]
+  accounts: Account[]
 }
 
 export const UserOrganizations = ({ accounts }: UserOrganizationsProps) => {

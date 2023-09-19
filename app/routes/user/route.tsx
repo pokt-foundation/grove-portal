@@ -7,13 +7,13 @@ import AppOverviewTabs from "./components/AppOverviewTabs"
 import ErrorView from "~/components/ErrorView"
 import RootAppShell from "~/components/RootAppShell/RootAppShell"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { Account, GetUserAccountsQuery } from "~/models/portal/sdk"
+import { Account } from "~/models/portal/sdk"
 import { getErrorMessage } from "~/utils/catchError"
 import { LoaderDataStruct } from "~/utils/loader"
 import { requireUser } from "~/utils/user.server"
 
 export type UserAccountLoaderData = {
-  accounts: GetUserAccountsQuery["getUserAccounts"]
+  accounts: Account[]
   user: Auth0Profile
 }
 
@@ -29,7 +29,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
     return json<LoaderDataStruct<UserAccountLoaderData>>({
       data: {
-        accounts: accounts.getUserAccounts,
+        accounts: accounts.getUserAccounts as Account[],
         user: user.profile,
       },
       error: false,

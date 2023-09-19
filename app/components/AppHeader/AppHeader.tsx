@@ -26,10 +26,7 @@ export const AppHeader = ({ user, opened, onOpen, accounts }: HeaderProps) => {
         <Group>
           {user && (
             <>
-              <OrganizationSelect
-                accounts={accounts}
-                onOrgSelect={() => console.log("WEEEEEE")}
-              />
+              <OrganizationSelect accounts={accounts} />
             </>
           )}
           <OrganizationDrawer accounts={accounts} user={user} />

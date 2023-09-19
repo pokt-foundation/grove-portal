@@ -11,12 +11,7 @@ type IdenticonProps = {
   avatar?: boolean
 }
 
-export const Identicon = ({
-  seed, type,
-  alt,
-  size = "md",
-  avatar,
-}: IdenticonProps) => {
+export const Identicon = ({ seed, type, alt, size = "md", avatar }: IdenticonProps) => {
   const svgURI = useMemo(() => {
     let svg
     if (type === "user") {

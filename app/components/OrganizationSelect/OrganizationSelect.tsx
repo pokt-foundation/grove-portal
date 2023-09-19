@@ -18,12 +18,16 @@ type UserItemProps = {
 
 type OrganizationSelectProps = {
   accounts: Account[]
-  onOrgSelect: () => void
 }
 
 const OrganizationItem = ({ account, withIcon }: UserItemProps) => (
   <Group>
-    <Identicon alt={`${account.id} profile picture`} seed={account.id} size="sm" type="account" />
+    <Identicon
+      alt={`${account.id} profile picture`}
+      seed={account.id}
+      size="sm"
+      type="account"
+    />
     <Text size="sm" weight={500}>
       {account.id}
     </Text>
@@ -33,7 +37,7 @@ const OrganizationItem = ({ account, withIcon }: UserItemProps) => (
   </Group>
 )
 
-const OrganizationSelect = ({ accounts, onOrgSelect }: OrganizationSelectProps) => {
+const OrganizationSelect = ({ accounts }: OrganizationSelectProps) => {
   const { accountId } = useParams()
   const activeAccount = accounts.find(({ id }) => id === accountId)
   const hasMultipleAccounts = accounts.length > 1
@@ -67,7 +71,7 @@ const OrganizationSelect = ({ accounts, onOrgSelect }: OrganizationSelectProps) 
             .sort((a, b) => (a.id > b.id ? 1 : -1))
             .map((account) => (
               <Menu.Item key={account.id} disabled={account.id === accountId} p={2}>
-                <NavLink to={`/account/${account.id}`} onClick={onOrgSelect}>
+                <NavLink to={`/account/${account.id}`}>
                   <OrganizationItem account={account} />
                 </NavLink>
               </Menu.Item>

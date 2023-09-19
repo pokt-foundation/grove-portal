@@ -1,4 +1,4 @@
-import { Divider, NavLinkProps } from "@mantine/core"
+import { Divider, Indicator, NavLinkProps } from "@mantine/core"
 import {
   Drawer,
   Stack,
@@ -7,13 +7,12 @@ import {
   NavLink,
   Group,
 } from "@pokt-foundation/pocket-blocks"
-import { Link, LinkProps, useFetcher } from "@remix-run/react"
+import { Link, LinkProps, useFetcher, useParams } from "@remix-run/react"
 import React, { useState } from "react"
-import { LuBook, LuLeaf, LuLifeBuoy, LuSmile, LuUser2 } from "react-icons/lu"
+import { LuBook, LuDiamond, LuLeaf, LuLifeBuoy, LuSmile, LuUser2 } from "react-icons/lu"
 import { RiDiscordLine } from "react-icons/ri"
 import { Auth0Profile } from "remix-auth-auth0"
 import Identicon from "~/components/Identicon"
-import OrganizationSelect from "~/components/OrganizationSelect"
 import { Account } from "~/models/portal/sdk"
 
 type OrganizationDrawerProps = {
@@ -70,6 +69,8 @@ const drawerExternalLinks = [
 const OrganizationDrawer = ({ user, accounts }: OrganizationDrawerProps) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const logoutFetcher = useFetcher()
+  const { accountId } = useParams()
+
   const logout = () => {
     setIsDrawerOpen(false)
     logoutFetcher.submit(
@@ -100,6 +101,7 @@ const OrganizationDrawer = ({ user, accounts }: OrganizationDrawerProps) => {
         title={
           <Group noWrap w={252}>
             <Identicon
+              avatar
               alt={`${user.displayName ?? "user"} profile picture`}
               seed={user.id ?? "user default"}
               type="user"
@@ -118,16 +120,14 @@ const OrganizationDrawer = ({ user, accounts }: OrganizationDrawerProps) => {
             setIsDrawerOpen={setIsDrawerOpen}
             to="/user/profile"
           />
+          {/*TODO: change route to user/organizations*/}
+          <DrawerLink
+            icon={<LuDiamond size={18} />}
+            label="My Organizations"
+            setIsDrawerOpen={setIsDrawerOpen}
+            to={`/account/${accountId}/organizations`}
+          />
           <Divider my={8} />
-          {user && (
-            <>
-              <OrganizationSelect
-                accounts={accounts}
-                onOrgSelect={() => setIsDrawerOpen(false)}
-              />
-              <Divider my={8} />
-            </>
-          )}
           {drawerExternalLinks.map(({ label, to, icon, withDivider }, index) => (
             <>
               <DrawerLink
@@ -145,11 +145,14 @@ const OrganizationDrawer = ({ user, accounts }: OrganizationDrawerProps) => {
         </Stack>
       </Drawer>
       <UnstyledButton onClick={() => setIsDrawerOpen(true)}>
-        <Identicon
-          alt={`${user.name ?? "user"} profile picture`}
-          seed={user.id ?? "user default"}
-          type="user"
-        />
+        <Indicator dot inline processing color="red" offset={6} size={8}>
+          <Identicon
+            avatar
+            alt={`${user.name ?? "user"} profile picture`}
+            seed={user.id ?? "user default"}
+            type="user"
+          />
+        </Indicator>
       </UnstyledButton>
     </>
   ) : null

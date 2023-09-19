@@ -278,6 +278,12 @@ query getUserAccounts {
   getUserAccounts {
     id
     planType
+    portalApps {
+      id
+      name
+      accountID
+      appEmoji
+    }
   }
 }
 

@@ -16,7 +16,7 @@ import {
   SidebarNavRoute,
   SidebarApps,
 } from "~/components/Sidebar/components"
-import { EndpointsQuery, PortalApp } from "~/models/portal/sdk"
+import { PortalApp } from "~/models/portal/sdk"
 import useCommonStyles from "~/styles/commonStyles"
 
 type SidebarProps = {

@@ -1,8 +1,9 @@
-import { Burger, Flex, MediaQuery } from "@pokt-foundation/pocket-blocks"
+import { Burger, Flex, Group, MediaQuery } from "@pokt-foundation/pocket-blocks"
 import { Link } from "@remix-run/react"
 import React from "react"
 import { Auth0Profile } from "remix-auth-auth0"
 import OrganizationDrawer from "~/components/OrganizationDrawer"
+import OrganizationSelect from "~/components/OrganizationSelect"
 import { Account } from "~/models/portal/sdk"
 
 type HeaderProps = {
@@ -22,7 +23,17 @@ export const AppHeader = ({ user, opened, onOpen, accounts }: HeaderProps) => {
         <Link to="/">
           <img alt="Grove logo" height={20} loading="lazy" src="/grove-logo.svg"></img>
         </Link>
-        <OrganizationDrawer accounts={accounts} user={user} />
+        <Group>
+          {user && (
+            <>
+              <OrganizationSelect
+                accounts={accounts}
+                onOrgSelect={() => console.log("WEEEEEE")}
+              />
+            </>
+          )}
+          <OrganizationDrawer accounts={accounts} user={user} />
+        </Group>
       </Flex>
     </>
   )

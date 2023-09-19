@@ -1,4 +1,10 @@
-import { Group, Menu, Text, UnstyledButton } from "@pokt-foundation/pocket-blocks"
+import {
+  Group,
+  MantineTheme,
+  Menu,
+  Text,
+  UnstyledButton,
+} from "@pokt-foundation/pocket-blocks"
 import { NavLink, useParams } from "@remix-run/react"
 import React from "react"
 import { LuChevronsUpDown } from "react-icons/lu"
@@ -17,7 +23,7 @@ type OrganizationSelectProps = {
 
 const OrganizationItem = ({ account, withIcon }: UserItemProps) => (
   <Group>
-    <Identicon alt={`${account.id} profile picture`} seed={account.id} type="account" />
+    <Identicon alt={`${account.id} profile picture`} seed={account.id} size="sm" type="account" />
     <Text size="sm" weight={500}>
       {account.id}
     </Text>
@@ -30,12 +36,28 @@ const OrganizationItem = ({ account, withIcon }: UserItemProps) => (
 const OrganizationSelect = ({ accounts, onOrgSelect }: OrganizationSelectProps) => {
   const { accountId } = useParams()
   const activeAccount = accounts.find(({ id }) => id === accountId)
+  const hasMultipleAccounts = accounts.length > 1
+
   return (
-    <Menu width={300}>
+    <Menu styles={{ dropdown: { minWidth: 165 } }}>
       <Menu.Target>
         {activeAccount && (
-          <UnstyledButton>
-            <OrganizationItem withIcon account={activeAccount} />
+          <UnstyledButton
+            mr="md"
+            px={8}
+            py={4}
+            sx={(theme: MantineTheme) => ({
+              borderRadius: 4,
+              ...(hasMultipleAccounts && {
+                border: `1px solid ${
+                  theme.colorScheme === "dark"
+                    ? theme.colors.gray[8]
+                    : theme.colors.gray[3]
+                }`,
+              }),
+            })}
+          >
+            <OrganizationItem account={activeAccount} withIcon={hasMultipleAccounts} />
           </UnstyledButton>
         )}
       </Menu.Target>

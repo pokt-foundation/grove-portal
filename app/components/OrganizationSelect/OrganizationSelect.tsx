@@ -44,8 +44,8 @@ const OrganizationSelect = ({ accounts }: OrganizationSelectProps) => {
 
   return (
     <Menu styles={{ dropdown: { minWidth: 165 } }}>
-      <Menu.Target>
-        {activeAccount && (
+      {activeAccount && (
+        <Menu.Target>
           <UnstyledButton
             mr="md"
             px={8}
@@ -63,8 +63,8 @@ const OrganizationSelect = ({ accounts }: OrganizationSelectProps) => {
           >
             <OrganizationItem account={activeAccount} withIcon={hasMultipleAccounts} />
           </UnstyledButton>
-        )}
-      </Menu.Target>
+        </Menu.Target>
+      )}
       {accounts.length > 1 && (
         <Menu.Dropdown>
           {accounts

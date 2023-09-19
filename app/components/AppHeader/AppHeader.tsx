@@ -24,11 +24,7 @@ export const AppHeader = ({ user, opened, onOpen, accounts }: HeaderProps) => {
           <img alt="Grove logo" height={20} loading="lazy" src="/grove-logo.svg"></img>
         </Link>
         <Group>
-          {user && (
-            <>
-              <OrganizationSelect accounts={accounts} />
-            </>
-          )}
+          {user && <OrganizationSelect accounts={accounts} />}
           <OrganizationDrawer accounts={accounts} user={user} />
         </Group>
       </Flex>

@@ -17,7 +17,10 @@ export const useRoot = ({ user }: useRootProps) => {
   const hideSidebar = useMemo(
     () =>
       pathname === `/account/${accountId}/create` ||
-      pathname === `/account/${accountId}/app-limit-exceeded`,
+      pathname === `/account/${accountId}/app-limit-exceeded` ||
+      pathname === `/user/profile` ||
+      pathname === `/user/organizations` ||
+      pathname === `/user/invites`,
     [accountId, pathname],
   )
 

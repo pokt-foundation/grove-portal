@@ -9,7 +9,7 @@ import useCommonStyles from "~/styles/commonStyles"
 
 type RootAppShellProps = {
   user: Auth0Profile
-  apps: PortalApp[]
+  apps?: PortalApp[]
   children: ReactNode
   accounts: Account[]
 }
@@ -20,7 +20,7 @@ export const RootAppShell = ({ user, apps, children, accounts }: RootAppShellPro
   const { hideSidebar } = useRoot({ user })
   const navProp = useMemo(
     () => ({
-      ...(!hideSidebar && { navbar: <Sidebar apps={apps} hidden={!opened} /> }),
+      ...(!hideSidebar && apps && { navbar: <Sidebar apps={apps} hidden={!opened} /> }),
     }),
     [hideSidebar, apps, opened],
   )

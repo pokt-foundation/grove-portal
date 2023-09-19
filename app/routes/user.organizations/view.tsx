@@ -1,15 +1,15 @@
 import { Divider } from "@mantine/core"
-import { Container, Stack, Text } from "@pokt-foundation/pocket-blocks"
-import { GetUserAccountsQuery } from "~/models/portal/sdk"
-import OrganizationsTable from "~/routes/account.$accountId.organizations/components/OrganizationsTable"
+import { Stack, Text } from "@pokt-foundation/pocket-blocks"
+import OrganizationsTable from "./components/OrganizationsTable"
+import { Account } from "~/models/portal/sdk"
 
 type UserOrganizationsProps = {
-  accounts: GetUserAccountsQuery["getUserAccounts"]
+  accounts: Account[]
 }
 
 export const UserOrganizations = ({ accounts }: UserOrganizationsProps) => {
   return (
-    <Container>
+    <>
       <Stack>
         <Text fw={600} fz={16} pt={6}>
           My Organizations
@@ -21,7 +21,7 @@ export const UserOrganizations = ({ accounts }: UserOrganizationsProps) => {
       <Stack mt="xl">
         <OrganizationsTable accounts={accounts} />
       </Stack>
-    </Container>
+    </>
   )
 }
 

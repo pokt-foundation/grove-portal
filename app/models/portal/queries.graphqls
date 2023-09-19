@@ -360,11 +360,10 @@ query getUserPortalApp($portalAppID: ID!) {
 
 query getUserPortalApps {
   getUserPortalApps {
-     id
-     name
-     accountID
-     appEmoji
-     description
+    id
+    name
+    accountID
+    appEmoji
+    description
   }
 }
-

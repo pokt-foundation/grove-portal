@@ -354,6 +354,7 @@ query getUserPortalApp($portalAppID: ID!) {
       dailyLimit
       customLimit
       requestTimeout
+      stripeSubscriptionID
     }
   }
 }

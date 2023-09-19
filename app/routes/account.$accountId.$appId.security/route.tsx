@@ -1,5 +1,5 @@
 import { MetaFunction } from "@remix-run/node"
-import { useOutletContext, useParams } from "@remix-run/react"
+import { useOutletContext } from "@remix-run/react"
 import { useEffect } from "react"
 import { AppIdOutletContext } from "../account.$accountId.$appId/route"
 import SecurityView from "./view"
@@ -12,8 +12,6 @@ export const meta: MetaFunction = () => {
 }
 
 export const AppSecurity = () => {
-  const params = useParams()
-
   useEffect(() => {
     trackEvent(AmplitudeEvents.SecurityDetailsView)
   }, [])

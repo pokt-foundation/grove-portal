@@ -1,4 +1,4 @@
-import { json, LoaderFunction, redirect } from "@remix-run/node"
+import { json, LoaderFunction } from "@remix-run/node"
 import { Outlet, useLoaderData } from "@remix-run/react"
 import { Auth0Profile } from "remix-auth-auth0"
 import invariant from "tiny-invariant"

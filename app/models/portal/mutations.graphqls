@@ -216,3 +216,9 @@ mutation updateUserPortalApp($input: UpdatePortalApp!) {
     }
   }
 }
+
+mutation adminUpdatePortalApp($input: AdminUpdatePortalApp!) {
+  adminUpdatePortalApp(input: $input) {
+    id
+  }
+}

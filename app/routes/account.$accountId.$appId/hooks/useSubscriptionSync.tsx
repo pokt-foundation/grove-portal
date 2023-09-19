@@ -34,7 +34,6 @@ const useSubscriptionSync = ({
   searchParams,
   setSearchParams,
   setShowErrorModel,
-  setShowSuccessModel,
 }: UseSubscriptionSync) => {
   const { flags } = useFeatureFlags()
   const updatePlanFetcher = useFetcher()
@@ -102,7 +101,7 @@ const useSubscriptionSync = ({
       searchParams.delete("cancelError")
       setShowErrorModel(true)
     }
-  }, [searchParams, endpoint, updatePlanFetcher, setSearchParams])
+  }, [searchParams, endpoint, updatePlanFetcher, setSearchParams, setShowErrorModel])
 
   useEffect(() => {
     // Update plan type to free if plan is paid and their subscription is canceled
@@ -160,7 +159,7 @@ const useSubscriptionSync = ({
     ) {
       setRoutes((curr) => [...curr.filter((route) => route.to !== "plan")])
     }
-  }, [endpoint, routes, flags.STRIPE_PAYMENT, subscription])
+  }, [endpoint, routes, flags.STRIPE_PAYMENT, subscription, setRoutes])
 }
 
 export default useSubscriptionSync

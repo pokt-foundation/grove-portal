@@ -1,4 +1,4 @@
-import { MantineThemeOverride, theme } from "@pokt-foundation/pocket-blocks"
+import { MantineThemeOverride } from "@pokt-foundation/pocket-blocks"
 
 export const portalTheme: MantineThemeOverride = {
   primaryColor: "blue",

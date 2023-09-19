@@ -2,24 +2,25 @@ import { Menu, Text } from "@pokt-foundation/pocket-blocks"
 import { Link, useFetcher } from "@remix-run/react"
 import { LuArrowUpFromLine, LuRepeat, LuStopCircle } from "react-icons/lu"
 import useModals from "~/hooks/useModals"
-import { ProcessedEndpoint } from "~/models/portal/sdk"
-import { Stripe } from "~/models/stripe/stripe.server"
+import { PortalApp } from "~/models/portal/sdk"
 import { isFreePlan, isLegacyPlan, isPaidPlan } from "~/utils/utils"
 
 type AppSubscriptionProps = {
-  endpoint: ProcessedEndpoint
-  subscription?: Stripe.Subscription
+  app: PortalApp
 }
 
-const AppSubscription = ({ endpoint, subscription }: AppSubscriptionProps) => {
-  const { id, name, appLimits } = endpoint
-  const planType = appLimits.planType
+const AppSubscription = ({ app }: AppSubscriptionProps) => {
+  const planType = app.legacyFields.planType
+  const subscriptionId = app.legacyFields.stripeSubscriptionID
   const fetcher = useFetcher()
   const { openConfirmationModal } = useModals()
 
   const stopSubscription = () => {
     fetcher.submit(
-      { "app-id": id },
+      {
+        "app-id": app.id,
+        "app-accountId": app.accountID,
+      },
       {
         method: "POST",
         action: "/api/stripe/subscription",
@@ -29,7 +30,11 @@ const AppSubscription = ({ endpoint, subscription }: AppSubscriptionProps) => {
 
   const renewSubscription = () => {
     fetcher.submit(
-      { "app-id": id, "subscription-renew": "true" },
+      {
+        "app-id": app.id,
+        "app-accountId": app.accountID,
+        "subscription-renew": "true",
+      },
       {
         method: "POST",
         action: "/api/stripe/subscription",
@@ -68,21 +73,23 @@ const AppSubscription = ({ endpoint, subscription }: AppSubscriptionProps) => {
 
   return (
     <>
-      {isPaidPlan(planType) && subscription && (
+      {isPaidPlan(planType) && subscriptionId && (
         <Menu.Item icon={<LuStopCircle size={18} />} onClick={openStopSubscriptionModal}>
           Stop subscription
         </Menu.Item>
       )}
 
-      {!subscription && (isFreePlan(planType) || isLegacyPlan(planType)) && (
+      {!subscriptionId && (isFreePlan(planType) || isLegacyPlan(planType)) && (
         <Menu.Item icon={<LuArrowUpFromLine size={18} />}>
-          <Link to={`/api/stripe/checkout-session?app-id=${id}&app-name=${name}`}>
+          <Link
+            to={`/api/stripe/checkout-session?app-id=${app.id}&app-accountId=${app.accountID}&app-name=${app.name}`}
+          >
             Upgrade to Auto-Scale
           </Link>
         </Menu.Item>
       )}
 
-      {subscription && subscription.cancel_at_period_end && (
+      {isFreePlan(planType) && subscriptionId && (
         <Menu.Item icon={<LuRepeat size={18} />} onClick={openRenewSubscriptionModal}>
           Renew subscription
         </Menu.Item>

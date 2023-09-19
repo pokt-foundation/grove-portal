@@ -38,40 +38,32 @@ export default function AppIdLayoutView({ app, children }: AppIdLayoutViewProps)
       to: "keys",
       label: "Keys",
     },
+    {
+      to: "plan",
+      label: "Plan",
+    },
   ])
 
   useEffect(() => {
     if (
       app &&
       app.legacyFields.planType === PayPlanType.PayAsYouGoV0 &&
-      !routes.filter((route) => route.to === "plan")[0]
+      routes.find((route) => route.to === "notifications")
     ) {
-      setRoutes((curr) => [
-        ...curr.filter((c) => c.to !== "notifications"),
-        {
-          to: "plan",
-          label: "Plan",
-        },
-      ])
+      setRoutes((curr) => [...curr.filter((c) => c.to !== "notifications")])
     }
     if (
       app &&
       app.legacyFields.planType !== PayPlanType.PayAsYouGoV0 &&
-      routes.filter((route) => route.to === "plan")[0]
-    ) {
-      setRoutes((curr) => [...curr.filter((route) => route.to !== "plan")])
-    }
-    if (
-      app &&
-      app.legacyFields.planType !== PayPlanType.PayAsYouGoV0 &&
-      !routes.filter((route) => route.to === "notifications")[0]
+      !routes.find((route) => route.to === "notifications")
     ) {
       setRoutes((curr) => [
-        ...curr,
+        ...curr.slice(0, 2),
         {
           to: "notifications",
           label: "Notifications",
         },
+        ...curr.slice(2),
       ])
     }
   }, [app, routes])

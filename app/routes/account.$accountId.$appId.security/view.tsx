@@ -1,7 +1,6 @@
 import { Divider } from "@mantine/core"
 import { Box } from "@pokt-foundation/pocket-blocks"
-import { useNavigation } from "@remix-run/react"
-import React, { useMemo } from "react"
+import { useMemo } from "react"
 import { BlockchainsQuery, PortalApp } from "~/models/portal/sdk"
 import { Blockchain } from "~/models/portal/sdk"
 import ApprovedChains from "~/routes/account.$accountId.$appId.security/components/ApprovedChains"
@@ -21,8 +20,6 @@ type SecurityViewProps = {
 }
 
 export const SecurityView = ({ app, blockchains }: SecurityViewProps) => {
-  const navigation = useNavigation()
-
   const whiteListContracts = useMemo(
     () =>
       formatBlockchainWhitelist<WhitelistContract>(app.whitelists.contracts, "contracts"),

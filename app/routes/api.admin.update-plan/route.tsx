@@ -1,7 +1,12 @@
 import { ActionFunction, json } from "@remix-run/node"
 import invariant from "tiny-invariant"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { AdminUpdatePayPlanTypeMutationVariables, PayPlanType } from "~/models/portal/sdk"
+import {
+  AdminUpdatePayPlanTypeMutationVariables,
+  AdminUpdatePortalAppMutationVariables,
+  PayPlanType,
+  PayPlanTypeV2,
+} from "~/models/portal/sdk"
 import { subscription } from "~/models/stripe/stripe.data"
 import { initAdminPortal } from "~/utils/admin"
 import { getErrorMessage } from "~/utils/catchError"
@@ -17,7 +22,7 @@ export type UpdatePlanActionData =
 
 export type UpdatePlanArgs = {
   id: string | null
-  type: PayPlanType | null
+  type: PayPlanTypeV2 | null
   limit?: number | null
   subscription?: string | null
 }
@@ -41,19 +46,21 @@ export const updatePlan = async ({ id, type, limit, subscription }: UpdatePlanAr
 
     const portalAdmin = await initAdminPortal(portal)
 
-    const options: AdminUpdatePayPlanTypeMutationVariables = {
-      endpointID: id,
-      payPlanType: type,
+    const options: AdminUpdatePortalAppMutationVariables = {
+      input: {
+        portalAppID: id,
+        payPlanType: type,
+      },
     }
 
     if (limit) {
-      options.customLimit = limit
+      options.input.customLimit = limit
     }
-    // if (subscription) {
-    //   options.subscriptionID = subscription
-    // }
+    if (subscription) {
+      options.input.stripeSubscriptionID = subscription
+    }
 
-    await portalAdmin.adminUpdatePayPlanType(options)
+    await portalAdmin.adminUpdatePortalApp(options)
 
     return json<UpdatePlanActionData>({
       error: false,

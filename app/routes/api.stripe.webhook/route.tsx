@@ -99,7 +99,7 @@ export const action: ActionFunction = async ({ request }) => {
           body: JSON.stringify({
             id: appIdDeleted,
             type: PayPlanType.FreetierV0,
-            subscription: `deleted-${subscriptionDeleted.id}`,
+            subscription: "",
           }),
         })
 

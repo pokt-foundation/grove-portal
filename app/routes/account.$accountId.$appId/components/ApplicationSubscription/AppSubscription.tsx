@@ -88,12 +88,12 @@ const AppSubscription = ({ app }: AppSubscriptionProps) => {
           </Link>
         </Menu.Item>
       )}
-      {/* 
-      {subscriptionId && subscription.cancel_at_period_end && (
+
+      {isFreePlan(planType) && subscriptionId && (
         <Menu.Item icon={<LuRepeat size={18} />} onClick={openRenewSubscriptionModal}>
           Renew subscription
         </Menu.Item>
-      )} */}
+      )}
     </>
   )
 }

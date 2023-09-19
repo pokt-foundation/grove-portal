@@ -125,7 +125,7 @@ const OrganizationDrawer = ({ user, accounts }: OrganizationDrawerProps) => {
             icon={<LuDiamond size={18} />}
             label="My Organizations"
             setIsDrawerOpen={setIsDrawerOpen}
-            to={`/account/${accountId}/organizations`}
+            to={`/user/organizations`}
           />
           <Divider my={8} />
           {drawerExternalLinks.map(({ label, to, icon, withDivider }, index) => (

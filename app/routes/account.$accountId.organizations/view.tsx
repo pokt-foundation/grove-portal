@@ -8,8 +8,6 @@ type UserOrganizationsProps = {
 }
 
 export const UserOrganizations = ({ accounts }: UserOrganizationsProps) => {
-  console.log("accounts")
-  console.log(accounts)
   return (
     <Container>
       <Stack>

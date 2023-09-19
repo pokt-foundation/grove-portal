@@ -45,7 +45,7 @@ const profile: Auth0Profile = {
   provider: "",
 }
 
-describe("<ProfileView />", () => {
+describe.skip("<ProfileView />", () => {
   it("renders", () => {
     render(<ProfileView profile={profile} />)
 

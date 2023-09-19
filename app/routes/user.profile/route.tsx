@@ -1,17 +1,21 @@
-import { ActionFunction, LinksFunction, LoaderFunction, json } from "@remix-run/node"
-import { useActionData, useCatch, useLoaderData } from "@remix-run/react"
+import { ActionFunction, LoaderFunction, json, MetaFunction } from "@remix-run/node"
+import { useActionData, useLoaderData } from "@remix-run/react"
 import { useEffect } from "react"
 import { Auth0Profile } from "remix-auth-auth0"
 import invariant from "tiny-invariant"
-import ProfileView, { links as ProfileViewLinks } from "./view"
+import ProfileView from "./view"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { getRequiredServerEnvVar } from "~/utils/environment"
 import { requireUser } from "~/utils/user.server"
 
-export const links: LinksFunction = () => [...ProfileViewLinks()]
-
 type LoaderData = {
   profile: Auth0Profile
+}
+
+export const meta: MetaFunction = () => {
+  return {
+    title: "User Profile",
+  }
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -55,26 +59,4 @@ export default function Profile() {
   }, [])
 
   return <ProfileView actionData={actionData} profile={profile} />
-}
-
-export const CatchBoundary = () => {
-  const caught = useCatch()
-  if (caught.status === 404) {
-    return (
-      <div className="error-container">
-        <h1>Profile Catch Error</h1>
-        <p>{caught.statusText}</p>
-      </div>
-    )
-  }
-  throw new Error(`Unexpected caught response with status: ${caught.status}`)
-}
-
-export const ErrorBoundary = ({ error }: { error: Error }) => {
-  return (
-    <div className="error-container">
-      <h1>Profile Error</h1>
-      <p>{error.message}</p>
-    </div>
-  )
 }

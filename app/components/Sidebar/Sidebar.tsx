@@ -45,7 +45,7 @@ const getStaticRoutes = (
     label: "Documentation",
   },
   accountSettings: {
-    to: `/user/profile`,
+    to: `/user/organizations`,
     icon: LuTowerControl,
     label: "Organization",
   },

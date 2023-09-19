@@ -281,8 +281,9 @@ query getUserAccounts {
     portalApps {
       id
       name
-      accountID
-      appEmoji
+    }
+    users {
+      userID
     }
   }
 }
@@ -356,3 +357,14 @@ query getUserPortalApp($portalAppID: ID!) {
     }
   }
 }
+
+query getUserPortalApps {
+  getUserPortalApps {
+     id
+     name
+     accountID
+     appEmoji
+     description
+  }
+}
+

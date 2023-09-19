@@ -35,6 +35,7 @@ export const RootAppShell = ({ user, apps, children, accounts }: RootAppShellPro
         >
           <AppHeader
             accounts={accounts}
+            hasNewInvites={true}
             opened={opened}
             user={user}
             onOpen={(o) => setOpened(o)}

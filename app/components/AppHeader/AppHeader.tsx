@@ -10,10 +10,17 @@ type HeaderProps = {
   user?: Auth0Profile
   accounts: Account[]
   opened: boolean
+  hasNewInvites: boolean
   onOpen: (o: boolean) => void
 }
 
-export const AppHeader = ({ user, opened, onOpen, accounts }: HeaderProps) => {
+export const AppHeader = ({
+  user,
+  opened,
+  onOpen,
+  accounts,
+  hasNewInvites,
+}: HeaderProps) => {
   return (
     <>
       <Flex align="center" h="100%" justify="space-between">
@@ -25,7 +32,7 @@ export const AppHeader = ({ user, opened, onOpen, accounts }: HeaderProps) => {
         </Link>
         <Group>
           {user && <OrganizationSelect accounts={accounts} />}
-          <OrganizationDrawer accounts={accounts} user={user} />
+          <OrganizationDrawer hasNewInvites={hasNewInvites} user={user} />
         </Group>
       </Flex>
     </>

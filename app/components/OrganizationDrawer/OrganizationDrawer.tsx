@@ -7,17 +7,24 @@ import {
   NavLink,
   Group,
 } from "@pokt-foundation/pocket-blocks"
-import { Link, LinkProps, useFetcher, useParams } from "@remix-run/react"
+import { Link, LinkProps, useFetcher } from "@remix-run/react"
 import React, { useState } from "react"
-import { LuBook, LuDiamond, LuLeaf, LuLifeBuoy, LuSmile, LuUser2 } from "react-icons/lu"
+import {
+  LuBook,
+  LuDiamond,
+  LuLeaf,
+  LuLifeBuoy,
+  LuSmile,
+  LuTowerControl,
+  LuUser2,
+} from "react-icons/lu"
 import { RiDiscordLine } from "react-icons/ri"
 import { Auth0Profile } from "remix-auth-auth0"
 import Identicon from "~/components/Identicon"
-import { Account } from "~/models/portal/sdk"
 
 type OrganizationDrawerProps = {
   user?: Auth0Profile
-  accounts: Account[]
+  hasNewInvites: boolean
 }
 
 type DrawerLinkProps = NavLinkProps &
@@ -66,10 +73,9 @@ const drawerExternalLinks = [
   },
 ]
 
-const OrganizationDrawer = ({ user, accounts }: OrganizationDrawerProps) => {
+const OrganizationDrawer = ({ user, hasNewInvites }: OrganizationDrawerProps) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const logoutFetcher = useFetcher()
-  const { accountId } = useParams()
 
   const logout = () => {
     setIsDrawerOpen(false)
@@ -99,14 +105,14 @@ const OrganizationDrawer = ({ user, accounts }: OrganizationDrawerProps) => {
           },
         }}
         title={
-          <Group noWrap w={252}>
+          <Group noWrap pt={4} w={252}>
             <Identicon
               avatar
               alt={`${user.displayName ?? "user"} profile picture`}
               seed={user.id ?? "user default"}
               type="user"
             />
-            <Text truncate fz={12} td="underline">
+            <Text truncate fz={12}>
               {user?.displayName}
             </Text>
           </Group>
@@ -120,13 +126,28 @@ const OrganizationDrawer = ({ user, accounts }: OrganizationDrawerProps) => {
             setIsDrawerOpen={setIsDrawerOpen}
             to="/user/profile"
           />
-          {/*TODO: change route to user/organizations*/}
           <DrawerLink
-            icon={<LuDiamond size={18} />}
+            icon={<LuTowerControl size={18} />}
             label="My Organizations"
             setIsDrawerOpen={setIsDrawerOpen}
             to={`/user/organizations`}
           />
+          <Indicator
+            inline
+            disabled={!hasNewInvites}
+            label="New"
+            offset={25}
+            position="middle-end"
+            processing={true}
+            size={16}
+          >
+            <DrawerLink
+              icon={<LuDiamond size={18} />}
+              label="Invited Apps"
+              setIsDrawerOpen={setIsDrawerOpen}
+              to={`/user/invited-apps`}
+            />
+          </Indicator>
           <Divider my={8} />
           {drawerExternalLinks.map(({ label, to, icon, withDivider }, index) => (
             <>
@@ -145,7 +166,15 @@ const OrganizationDrawer = ({ user, accounts }: OrganizationDrawerProps) => {
         </Stack>
       </Drawer>
       <UnstyledButton onClick={() => setIsDrawerOpen(true)}>
-        <Indicator dot inline processing color="red" offset={6} size={8}>
+        <Indicator
+          dot
+          inline
+          processing
+          color="red"
+          disabled={!hasNewInvites}
+          offset={6}
+          size={8}
+        >
           <Identicon
             avatar
             alt={`${user.name ?? "user"} profile picture`}

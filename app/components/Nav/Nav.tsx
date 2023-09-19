@@ -50,7 +50,7 @@ export const Nav = ({ routes, dropdown = false, appId, ariaLabel }: NavProps) =>
         window.location.href = `/account/${accountId}/${appId}/${mobilePageSelect}`
       }
     }
-  }, [appId, mobilePageSelect])
+  }, [accountId, appId, mobilePageSelect])
 
   const LinkLabel = ({ route }: { route: Route }) => {
     const Icon = route.icon

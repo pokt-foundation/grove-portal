@@ -1,13 +1,7 @@
 import { ActionFunction, json } from "@remix-run/node"
 import invariant from "tiny-invariant"
 import { initPortalClient } from "~/models/portal/portal.server"
-import {
-  AdminUpdatePayPlanTypeMutationVariables,
-  AdminUpdatePortalAppMutationVariables,
-  PayPlanType,
-  PayPlanTypeV2,
-} from "~/models/portal/sdk"
-import { subscription } from "~/models/stripe/stripe.data"
+import { AdminUpdatePortalAppMutationVariables, PayPlanTypeV2 } from "~/models/portal/sdk"
 import { initAdminPortal } from "~/utils/admin"
 import { getErrorMessage } from "~/utils/catchError"
 

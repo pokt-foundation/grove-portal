@@ -1,7 +1,7 @@
 import { expect } from "vitest"
 import PlanView from "./view"
 import { render, screen } from "test/helpers"
-import { app, endpoint } from "~/models/portal/portal.data"
+import { app } from "~/models/portal/portal.data"
 import { relayMetric } from "~/models/relaymeter/relaymeter.data"
 import { invoice, subscription, useageRecord } from "~/models/stripe/stripe.data"
 

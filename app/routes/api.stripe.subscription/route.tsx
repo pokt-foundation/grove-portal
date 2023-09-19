@@ -1,6 +1,5 @@
 import { ActionFunction, json } from "@remix-run/node"
 import invariant from "tiny-invariant"
-import { P } from "vitest/dist/types-0373403c"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { PayPlanType, PayPlanTypeV2 } from "~/models/portal/sdk"
 import { getSubscription, stripe, Stripe } from "~/models/stripe/stripe.server"

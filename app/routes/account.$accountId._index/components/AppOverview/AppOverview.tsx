@@ -1,5 +1,5 @@
 import { Divider } from "@mantine/core"
-import { Box, Card, Chip, Group, Text } from "@pokt-foundation/pocket-blocks"
+import { Box, Chip, Group, Text } from "@pokt-foundation/pocket-blocks"
 import React, { useMemo } from "react"
 import UptimeChart from "~/components/UptimeChart"
 import { useUser } from "~/context/UserContext"

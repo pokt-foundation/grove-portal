@@ -42,26 +42,18 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   }
 
   const user = await requireUser(request)
-<<<<<<< HEAD
-  invariant(user.user.portalUserID && user.user.email, "user not found")
-  const userId = getPoktId(user.user.portalUserID)
-=======
->>>>>>> new_ui_fiesta
   const portal = initPortalClient({ token: user.accessToken })
 
   try {
     const getUserPortalAppResponse = await portal.getUserPortalApp({
       portalAppID: appId,
     })
-<<<<<<< HEAD
-    const uEmail = user.user.email ?? ""
-    const customer = await getCustomer(uEmail, userId)
-=======
     if (!getUserPortalAppResponse.getUserPortalApp) {
-      throw new Error(`Account ${params.appId} not found for user ${user.portalUserId}`)
+      throw new Error(
+        `Account ${params.appId} not found for user ${user.user.portalUserID}`,
+      )
     }
     const app = getUserPortalAppResponse.getUserPortalApp
->>>>>>> new_ui_fiesta
 
     let subscription
     let usageRecords

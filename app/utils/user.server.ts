@@ -3,7 +3,7 @@ import jwt_decode from "jwt-decode"
 import { Auth0Profile } from "remix-auth-auth0"
 import { authenticator } from "./auth.server"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { PayPlanTypeV2 } from "~/models/portal/sdk"
+import { PayPlanTypeV2, User } from "~/models/portal/sdk"
 
 export enum Permissions {
   PayPlanTypes = "write:pay_plan_types",
@@ -17,6 +17,9 @@ export const requireUser = async (request: Request, defaultRedirect = "/") => {
     throw redirect("/api/auth/auth0")
   }
 
+  if (!user.user) {
+    throw await authenticator.logout(request, { redirectTo: "/api/auth/auth0" })
+  }
   // todo: handle validate like the create overlay at account level
   //
   // if (!user.profile._json.email_verified) {
@@ -37,15 +40,15 @@ export const requireUser = async (request: Request, defaultRedirect = "/") => {
 export const requireUserProfile = async (
   request: Request,
   defaultRedirect = "/",
-): Promise<Auth0Profile> => {
+): Promise<User> => {
   const user = await requireUser(request, defaultRedirect)
-  return user.profile
+  return user.user
 }
 
 export const requireAdmin = async (
   request: Request,
   defaultRedirect = "/",
-): Promise<Auth0Profile> => {
+): Promise<User> => {
   let user = await authenticator.isAuthenticated(request)
 
   if (!user) {
@@ -57,7 +60,7 @@ export const requireAdmin = async (
   if (!isAdmin(permissions)) {
     throw redirect(defaultRedirect)
   }
-  return user.profile
+  return user.user
 }
 
 export const isAdmin = (permissions: string[]) => {
@@ -82,8 +85,8 @@ export const getUserPermissions = (accessToken: string) => {
 
 export const getUserId = async (request: Request) => {
   const user = await authenticator.isAuthenticated(request)
-  if (!user || !user.profile.id) return undefined
-  return getPoktId(user.profile.id)
+  if (!user || !user.user.auth0ID) return undefined
+  return getPoktId(user.user.auth0ID)
 }
 
 export const getPoktId = (id: string) => {
@@ -92,7 +95,7 @@ export const getPoktId = (id: string) => {
 
 export const getUserProfile = async (request: Request) => {
   const user = await authenticator.isAuthenticated(request)
-  return user?.profile
+  return user?.user
 }
 
 export const redirectToUserAccount = async (token: string) => {

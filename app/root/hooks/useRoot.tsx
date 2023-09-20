@@ -1,12 +1,12 @@
 import { IconBookOpen, IconMail } from "@pokt-foundation/pocket-blocks"
 import { useLocation, useParams } from "@remix-run/react"
 import { useEffect, useMemo } from "react"
-import { Auth0Profile } from "remix-auth-auth0"
 import { IconApp } from "~/components/Icons"
 import { useTranslate } from "~/context/TranslateContext"
+import { User } from "~/models/portal/sdk"
 import analyticsInit from "~/utils/analytics"
 
-type useRootProps = { user: Awaited<Auth0Profile | undefined> }
+type useRootProps = { user: Awaited<User | undefined> }
 
 export const useRoot = ({ user }: useRootProps) => {
   const { t } = useTranslate()
@@ -17,12 +17,15 @@ export const useRoot = ({ user }: useRootProps) => {
   const hideSidebar = useMemo(
     () =>
       pathname === `/account/${accountId}/create` ||
-      pathname === `/account/${accountId}/app-limit-exceeded`,
+      pathname === `/account/${accountId}/app-limit-exceeded` ||
+      pathname === `/user/profile` ||
+      pathname === `/user/organizations` ||
+      pathname === `/user/invites`,
     [accountId, pathname],
   )
 
   useEffect(() => {
-    analyticsInit({ id: user?.id ?? "" })
+    analyticsInit({ id: user?.portalUserID ?? "" })
   }, [user])
 
   const routes = useMemo(() => {

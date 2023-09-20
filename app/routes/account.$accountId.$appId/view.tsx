@@ -1,11 +1,11 @@
 import { Divider } from "@mantine/core"
 import { Button, Container, Stack } from "@pokt-foundation/pocket-blocks"
 import { useEffect, useState } from "react"
+import LinkTabs from "~/components/LinkTabs"
 import Modal, { ModalCTA } from "~/components/Modal"
 import { Route } from "~/components/Nav"
 import { PayPlanType, PortalApp } from "~/models/portal/sdk"
 import ApplicationHeader from "~/routes/account.$accountId.$appId/components/ApplicationHeader"
-import AppOverviewTabs from "~/routes/account.$accountId.$appId/components/AppOverviewTabs"
 
 type AppIdLayoutViewProps = {
   app: PortalApp
@@ -73,7 +73,7 @@ export default function AppIdLayoutView({ app, children }: AppIdLayoutViewProps)
       <Stack spacing="xl">
         <ApplicationHeader app={app} />
         <Divider />
-        <AppOverviewTabs routes={routes} />
+        <LinkTabs routes={routes} />
         <Divider />
       </Stack>
       {children}

@@ -1,18 +1,24 @@
-import { Burger, Flex, MediaQuery } from "@pokt-foundation/pocket-blocks"
+import { Burger, Flex, Group, MediaQuery } from "@pokt-foundation/pocket-blocks"
 import { Link } from "@remix-run/react"
-import React from "react"
-import { Auth0Profile } from "remix-auth-auth0"
 import OrganizationDrawer from "~/components/OrganizationDrawer"
-import { Account } from "~/models/portal/sdk"
+import OrganizationSelect from "~/components/OrganizationSelect"
+import { Account, User } from "~/models/portal/sdk"
 
 type HeaderProps = {
-  user?: Auth0Profile
+  user?: User
   accounts: Account[]
   opened: boolean
+  hasPendingInvites: boolean
   onOpen: (o: boolean) => void
 }
 
-export const AppHeader = ({ user, opened, onOpen, accounts }: HeaderProps) => {
+export const AppHeader = ({
+  user,
+  opened,
+  onOpen,
+  accounts,
+  hasPendingInvites,
+}: HeaderProps) => {
   return (
     <>
       <Flex align="center" h="100%" justify="space-between">
@@ -22,7 +28,10 @@ export const AppHeader = ({ user, opened, onOpen, accounts }: HeaderProps) => {
         <Link to="/">
           <img alt="Grove logo" height={20} loading="lazy" src="/grove-logo.svg"></img>
         </Link>
-        <OrganizationDrawer accounts={accounts} user={user} />
+        <Group>
+          {user && <OrganizationSelect accounts={accounts} />}
+          <OrganizationDrawer hasPendingInvites={hasPendingInvites} user={user} />
+        </Group>
       </Flex>
     </>
   )

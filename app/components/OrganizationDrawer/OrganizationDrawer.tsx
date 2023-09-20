@@ -1,4 +1,4 @@
-import { Divider, NavLinkProps } from "@mantine/core"
+import { Divider, Indicator, NavLinkProps } from "@mantine/core"
 import {
   Drawer,
   Stack,
@@ -9,16 +9,22 @@ import {
 } from "@pokt-foundation/pocket-blocks"
 import { Link, LinkProps, useFetcher } from "@remix-run/react"
 import React, { useState } from "react"
-import { LuBook, LuLeaf, LuLifeBuoy, LuSmile, LuUser2 } from "react-icons/lu"
+import {
+  LuBook,
+  LuDiamond,
+  LuLeaf,
+  LuLifeBuoy,
+  LuSmile,
+  LuTowerControl,
+  LuUser2,
+} from "react-icons/lu"
 import { RiDiscordLine } from "react-icons/ri"
-import { Auth0Profile } from "remix-auth-auth0"
 import Identicon from "~/components/Identicon"
-import OrganizationSelect from "~/components/OrganizationSelect"
-import { Account } from "~/models/portal/sdk"
+import { User } from "~/models/portal/sdk"
 
 type OrganizationDrawerProps = {
-  user?: Auth0Profile
-  accounts: Account[]
+  user?: User
+  hasPendingInvites: boolean
 }
 
 type DrawerLinkProps = NavLinkProps &
@@ -68,9 +74,10 @@ const drawerExternalLinks = [
   },
 ]
 
-const OrganizationDrawer = ({ user, accounts }: OrganizationDrawerProps) => {
+const OrganizationDrawer = ({ user, hasPendingInvites }: OrganizationDrawerProps) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const logoutFetcher = useFetcher()
+
   const logout = () => {
     setIsDrawerOpen(false)
     logoutFetcher.submit(
@@ -99,14 +106,15 @@ const OrganizationDrawer = ({ user, accounts }: OrganizationDrawerProps) => {
           },
         }}
         title={
-          <Group noWrap w={252}>
+          <Group noWrap pt={4} w={252}>
             <Identicon
-              alt={`${user.displayName ?? "user"} profile picture`}
-              seed={user.id ?? "user default"}
+              avatar
+              alt={`${user.portalUserID ?? "user"} profile picture`}
+              seed={user.portalUserID ?? "user default"}
               type="user"
             />
-            <Text truncate fz={12} td="underline">
-              {user?.displayName}
+            <Text truncate fz={12}>
+              {user?.email}
             </Text>
           </Group>
         }
@@ -119,16 +127,29 @@ const OrganizationDrawer = ({ user, accounts }: OrganizationDrawerProps) => {
             setIsDrawerOpen={setIsDrawerOpen}
             to="/user/profile"
           />
+          <DrawerLink
+            icon={<LuTowerControl size={18} />}
+            label="My Organizations"
+            setIsDrawerOpen={setIsDrawerOpen}
+            to={`/user/organizations`}
+          />
+          <Indicator
+            inline
+            disabled={!hasPendingInvites}
+            label="New"
+            offset={25}
+            position="middle-end"
+            processing={true}
+            size={16}
+          >
+            <DrawerLink
+              icon={<LuDiamond size={18} />}
+              label="Invited Apps"
+              setIsDrawerOpen={setIsDrawerOpen}
+              to={`/user/invited-apps`}
+            />
+          </Indicator>
           <Divider my={8} />
-          {user && (
-            <>
-              <OrganizationSelect
-                accounts={accounts}
-                onOrgSelect={() => setIsDrawerOpen(false)}
-              />
-              <Divider my={8} />
-            </>
-          )}
           {drawerExternalLinks.map(({ label, to, icon, withDivider }, index) => (
             <>
               <DrawerLink
@@ -146,11 +167,22 @@ const OrganizationDrawer = ({ user, accounts }: OrganizationDrawerProps) => {
         </Stack>
       </Drawer>
       <UnstyledButton onClick={() => setIsDrawerOpen(true)}>
-        <Identicon
-          alt={`${user.name ?? "user"} profile picture`}
-          seed={user.id ?? "user default"}
-          type="user"
-        />
+        <Indicator
+          dot
+          inline
+          processing
+          color="red"
+          disabled={!hasPendingInvites}
+          offset={6}
+          size={8}
+        >
+          <Identicon
+            avatar
+            alt={`${user.portalUserID ?? "user"} profile picture`}
+            seed={user.portalUserID ?? "user default"}
+            type="user"
+          />
+        </Indicator>
       </UnstyledButton>
     </>
   ) : null

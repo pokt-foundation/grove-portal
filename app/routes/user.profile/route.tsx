@@ -1,80 +1,81 @@
-import { ActionFunction, LinksFunction, LoaderFunction, json } from "@remix-run/node"
-import { useActionData, useCatch, useLoaderData } from "@remix-run/react"
+import { ActionFunction, LoaderFunction, json, MetaFunction } from "@remix-run/node"
+import { useActionData, useLoaderData } from "@remix-run/react"
 import { useEffect } from "react"
-import { Auth0Profile } from "remix-auth-auth0"
 import invariant from "tiny-invariant"
-import ProfileView, { links as ProfileViewLinks } from "./view"
+import { ActionPassword, actionPassword } from "./utils/actionPassword"
+import { ActionUser, actionUser } from "./utils/actionUser"
+import ProfileView from "./view"
+import { initPortalClient } from "~/models/portal/portal.server"
+import { UpdateUser, User } from "~/models/portal/sdk"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
-import { getRequiredServerEnvVar } from "~/utils/environment"
+import { LoaderDataStruct } from "~/utils/loader"
 import { requireUser } from "~/utils/user.server"
 
-export const links: LinksFunction = () => [...ProfileViewLinks()]
-
 type LoaderData = {
-  profile: Auth0Profile
+  user: User
+}
+
+export const meta: MetaFunction = () => {
+  return {
+    title: "User Profile",
+  }
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
   const user = await requireUser(request)
+
   return json<LoaderData>({
-    profile: user.profile,
+    user: user.user,
   })
 }
 
 export const action: ActionFunction = async ({ request }) => {
+  const user = await requireUser(request)
+  const portal = initPortalClient({ token: user.accessToken })
+
   const formData = await request.formData()
-  const email = formData.get("email")
-  invariant(email, "user email not found")
+  const type = formData.get("type")
 
-  try {
-    const res = await fetch(
-      `https://${getRequiredServerEnvVar("AUTH0_DOMAIN")}/dbconnections/change_password`,
-      {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({
-          client_id: getRequiredServerEnvVar("AUTH0_CLIENT_ID"),
-          email,
-          connection: getRequiredServerEnvVar("AUTH0_CONNECTION"),
-        }),
-      },
-    )
+  invariant(typeof type === "string", "Type must be set")
 
-    return res
-  } catch (e) {
-    return e
+  let response
+
+  switch (type) {
+    case "password":
+      const email = formData.get("email")
+      invariant(typeof email === "string", "user email not found")
+      response = await actionPassword(email)
+      break
+    default:
+      const checkbox = formData.get("checkbox")
+      invariant(typeof checkbox === "string", "checkbox value not found")
+
+      let input: Partial<UpdateUser> = {}
+
+      if (type === "check-product") {
+        input.updatesProduct = checkbox === "on"
+      }
+      if (type === "check-marketing") {
+        input.updatesMarketing = checkbox === "on"
+      }
+      if (type === "check-beta") {
+        input.betaTester = checkbox === "on"
+      }
+
+      response = await actionUser(portal, input)
+      break
   }
+
+  return response
 }
 
 export default function Profile() {
-  const { profile } = useLoaderData()
-  const actionData = useActionData()
+  const { user } = useLoaderData() as LoaderData
+  const actionData = useActionData() as LoaderDataStruct<ActionUser | ActionPassword>
 
   useEffect(() => {
     trackEvent(AmplitudeEvents.ProfileView)
   }, [])
 
-  return <ProfileView actionData={actionData} profile={profile} />
-}
-
-export const CatchBoundary = () => {
-  const caught = useCatch()
-  if (caught.status === 404) {
-    return (
-      <div className="error-container">
-        <h1>Profile Catch Error</h1>
-        <p>{caught.statusText}</p>
-      </div>
-    )
-  }
-  throw new Error(`Unexpected caught response with status: ${caught.status}`)
-}
-
-export const ErrorBoundary = ({ error }: { error: Error }) => {
-  return (
-    <div className="error-container">
-      <h1>Profile Error</h1>
-      <p>{error.message}</p>
-    </div>
-  )
+  return <ProfileView actionData={actionData} user={user} />
 }

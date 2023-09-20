@@ -175,6 +175,18 @@ query getPortalUserID {
   getPortalUserID
 }
 
+query getPortalUser {
+  getPortalUser {
+    portalUserID
+    email
+    iconURL
+    signedUp
+    updatesProduct
+    updatesMarketing
+    betaTester
+  }
+}
+
 query getUserAccount($accountID: ID!) {
   getUserAccount(accountID: $accountID) {
     id
@@ -182,14 +194,16 @@ query getUserAccount($accountID: ID!) {
     users {
       userID
       accountUserAccess {
-        accountID
         owner
         userID
         email
-        accepted
         portalAppRoles {
           portalAppID
           roleName
+        }
+        portalAppsAccepted {
+          portalAppID
+          accepted
         }
       }
     }
@@ -197,7 +211,6 @@ query getUserAccount($accountID: ID!) {
     partnerThroughputLimit
     partnerAppLimit
     integrations {
-      accountID
       covalentAPIKeyFree
       CovalentAPIKeyPaid
     }
@@ -274,10 +287,25 @@ query getUserAccount($accountID: ID!) {
     }
   }
 }
-query getUserAccounts {
-  getUserAccounts {
+query getUserAccounts(
+  $sortOrder: SortOrder
+  $roleNameFilters: [RoleNameV2!]
+  $accepted: Boolean
+) {
+  getUserAccounts(
+    sortOrder: $sortOrder
+    roleNameFilters: $roleNameFilters
+    accepted: $accepted
+  ) {
     id
     planType
+    portalApps {
+      id
+      name
+    }
+    users {
+      userID
+    }
   }
 }
 
@@ -288,6 +316,22 @@ query getUserPortalApp($portalAppID: ID!) {
     accountID
     appEmoji
     description
+    users {
+      userID
+      accountUserAccess {
+        owner
+        userID
+        email
+        portalAppRoles {
+          portalAppID
+          roleName
+        }
+        portalAppsAccepted {
+          portalAppID
+          accepted
+        }
+      }
+    }
     settings {
       appID
       environment
@@ -348,6 +392,40 @@ query getUserPortalApp($portalAppID: ID!) {
       customLimit
       requestTimeout
       stripeSubscriptionID
+    }
+  }
+}
+
+query getUserPortalApps(
+  $sortOrder: SortOrder
+  $roleNameFilters: [RoleNameV2!]
+  $accepted: Boolean
+) {
+  getUserPortalApps(
+    sortOrder: $sortOrder
+    roleNameFilters: $roleNameFilters
+    accepted: $accepted
+  ) {
+    id
+    name
+    accountID
+    appEmoji
+    description
+    users {
+      userID
+      accountUserAccess {
+        owner
+        userID
+        email
+        portalAppRoles {
+          portalAppID
+          roleName
+        }
+        portalAppsAccepted {
+          portalAppID
+          accepted
+        }
+      }
     }
   }
 }

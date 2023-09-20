@@ -49,7 +49,9 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       portalAppID: appId,
     })
     if (!getUserPortalAppResponse.getUserPortalApp) {
-      throw new Error(`Account ${params.appId} not found for user ${user.portalUserId}`)
+      throw new Error(
+        `Account ${params.appId} not found for user ${user.user.portalUserID}`,
+      )
     }
     const app = getUserPortalAppResponse.getUserPortalApp
 

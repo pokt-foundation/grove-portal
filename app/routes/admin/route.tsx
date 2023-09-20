@@ -2,9 +2,9 @@ import { Grid, Space, Container } from "@pokt-foundation/pocket-blocks"
 import { LoaderFunction, json, LinksFunction } from "@remix-run/node"
 import { NavLink, Outlet } from "@remix-run/react"
 import clsx from "clsx"
-import { Auth0Profile } from "remix-auth-auth0"
 import styles from "./styles.css"
 import Card, { links as CardLinks } from "~/components/Card"
+import { User } from "~/models/portal/sdk"
 import { requireAdmin } from "~/utils/user.server"
 
 export const links: LinksFunction = () => [
@@ -16,7 +16,7 @@ export const links: LinksFunction = () => [
 ]
 
 type LoaderData = {
-  admin: Awaited<Auth0Profile>
+  admin: Awaited<User>
 }
 
 export const loader: LoaderFunction = async ({ request }) => {

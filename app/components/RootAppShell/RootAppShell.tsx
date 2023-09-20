@@ -1,26 +1,32 @@
 import { AppShell, Container, Header } from "@pokt-foundation/pocket-blocks"
 import React, { ReactNode, useMemo, useState } from "react"
-import { Auth0Profile } from "remix-auth-auth0"
 import { AppHeader } from "~/components/AppHeader"
 import { Sidebar } from "~/components/Sidebar"
-import { Account, PortalApp } from "~/models/portal/sdk"
+import { Account, PortalApp, User } from "~/models/portal/sdk"
 import { useRoot } from "~/root/hooks/useRoot"
 import useCommonStyles from "~/styles/commonStyles"
 
 type RootAppShellProps = {
-  user: Auth0Profile
-  apps: PortalApp[]
+  user: User
+  apps?: PortalApp[]
+  hasPendingInvites: boolean
   children: ReactNode
   accounts: Account[]
 }
 
-export const RootAppShell = ({ user, apps, children, accounts }: RootAppShellProps) => {
+export const RootAppShell = ({
+  user,
+  apps,
+  children,
+  accounts,
+  hasPendingInvites,
+}: RootAppShellProps) => {
   const [opened, setOpened] = useState(false)
   const { classes: commonClasses } = useCommonStyles()
   const { hideSidebar } = useRoot({ user })
   const navProp = useMemo(
     () => ({
-      ...(!hideSidebar && { navbar: <Sidebar apps={apps} hidden={!opened} /> }),
+      ...(!hideSidebar && apps && { navbar: <Sidebar apps={apps} hidden={!opened} /> }),
     }),
     [hideSidebar, apps, opened],
   )
@@ -35,6 +41,7 @@ export const RootAppShell = ({ user, apps, children, accounts }: RootAppShellPro
         >
           <AppHeader
             accounts={accounts}
+            hasPendingInvites={hasPendingInvites}
             opened={opened}
             user={user}
             onOpen={(o) => setOpened(o)}

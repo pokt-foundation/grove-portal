@@ -7,7 +7,6 @@ import {
   LuChevronsRight,
   LuLifeBuoy,
   LuPlus,
-  LuTowerControl,
 } from "react-icons/lu"
 import {
   InternalLink,
@@ -16,7 +15,7 @@ import {
   SidebarNavRoute,
   SidebarApps,
 } from "~/components/Sidebar/components"
-import { EndpointsQuery, PortalApp } from "~/models/portal/sdk"
+import { PortalApp } from "~/models/portal/sdk"
 import useCommonStyles from "~/styles/commonStyles"
 
 type SidebarProps = {
@@ -43,11 +42,6 @@ const getStaticRoutes = (
     to: "https://docs.portal.pokt.network/",
     icon: LuBook,
     label: "Documentation",
-  },
-  accountSettings: {
-    to: `/user/profile`,
-    icon: LuTowerControl,
-    label: "Organization",
   },
   support: {
     to: "https://discord.gg/portal-rpc",
@@ -82,7 +76,6 @@ export const Sidebar = ({ apps, hidden }: SidebarProps) => {
           <ExternalLink iconOnly={collapsed} route={staticRoutes.docs} />
         </Navbar.Section>
         <Navbar.Section>
-          <InternalLink iconOnly={collapsed} route={staticRoutes.accountSettings} />
           <ExternalLink iconOnly={collapsed} route={staticRoutes.support} />
         </Navbar.Section>
       </ScrollArea>

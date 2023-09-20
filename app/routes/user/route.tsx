@@ -1,45 +1,27 @@
+import { Divider } from "@mantine/core"
+import { Container, Stack, Text } from "@pokt-foundation/pocket-blocks"
 import { json, LoaderFunction } from "@remix-run/node"
 import { Outlet, useLoaderData } from "@remix-run/react"
-import { Auth0Profile } from "remix-auth-auth0"
-import invariant from "tiny-invariant"
 import ErrorView from "~/components/ErrorView"
+import LinkTabs from "~/components/LinkTabs"
 import RootAppShell from "~/components/RootAppShell/RootAppShell"
 import { initPortalClient } from "~/models/portal/portal.server"
-import {
-  Account,
-  GetUserAccountQuery,
-  GetUserAccountsQuery,
-  PortalApp,
-  PortalAppRole,
-  User,
-} from "~/models/portal/sdk"
+import { Account, PortalApp, User } from "~/models/portal/sdk"
 import { getErrorMessage } from "~/utils/catchError"
 import { LoaderDataStruct } from "~/utils/loader"
 import { requireUser } from "~/utils/user.server"
 
-export type AccountIdLoaderData = {
-  account: GetUserAccountQuery["getUserAccount"]
-  accounts: GetUserAccountsQuery["getUserAccounts"]
-  user: User
+export type UserAccountLoaderData = {
+  accounts: Account[]
   hasPendingInvites: boolean
-  userRoles: PortalAppRole[]
+  user: User
 }
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   const user = await requireUser(request)
   const portal = initPortalClient({ token: user.accessToken })
-  const { accountId } = params
-  invariant(accountId, "AccountId must be set")
 
   try {
-    const account = await portal.getUserAccount({ accountID: accountId })
-
-    if (!account.getUserAccount) {
-      throw new Error(
-        `Account ${params.accountId} not found for user ${user.user.portalUserID}`,
-      )
-    }
-
     const accounts = await portal.getUserAccounts()
     if (!accounts.getUserAccounts) {
       throw new Error(`Accounts not found for user ${user.user.portalUserID}`)
@@ -47,20 +29,16 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
     const userPendingApps = await portal.getUserPortalApps({ accepted: false })
 
-    return json<LoaderDataStruct<AccountIdLoaderData>>({
+    return json<LoaderDataStruct<UserAccountLoaderData>>({
       data: {
-        account: account.getUserAccount,
-        accounts: accounts.getUserAccounts,
-        user: user.user,
+        accounts: accounts.getUserAccounts as Account[],
         hasPendingInvites: userPendingApps.getUserPortalApps.length > 0,
-        userRoles: account.getUserAccount.users.filter(
-          (u) => u.userID === user.user.portalUserID,
-        )[0].accountUserAccess.portalAppRoles,
+        user: user.user,
       },
       error: false,
     })
   } catch (error) {
-    return json<LoaderDataStruct<AccountIdLoaderData>>({
+    return json<LoaderDataStruct<UserAccountLoaderData>>({
       data: null,
       error: true,
       message: getErrorMessage(error),
@@ -68,24 +46,48 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   }
 }
 
-export default function AccountId() {
+export default function UserAccount() {
   const { data, error, message } =
-    useLoaderData() as LoaderDataStruct<AccountIdLoaderData>
+    useLoaderData() as LoaderDataStruct<UserAccountLoaderData>
 
   if (error) {
     return <ErrorView message={message} />
   }
 
-  const { account, accounts, user, userRoles, hasPendingInvites } = data
+  const { accounts, user, hasPendingInvites } = data
+
+  const routes = [
+    {
+      to: "profile",
+      label: "Profile",
+    },
+    {
+      to: "organizations",
+      label: "Organizations",
+    },
+    {
+      to: "invited-apps",
+      label: "Invited Apps",
+    },
+  ]
 
   return (
     <RootAppShell
       accounts={accounts as Account[]}
-      apps={account.portalApps as PortalApp[]}
       hasPendingInvites={hasPendingInvites}
       user={user}
     >
-      <Outlet context={{ account, accounts, user, userRoles }} />
+      <Container fluid pt={16} px={0}>
+        <Stack spacing="xl">
+          <Text fw={600} fz="md">
+            User Account
+          </Text>
+          <Divider />
+          <LinkTabs routes={routes} />
+          <Divider />
+        </Stack>
+        <Outlet context={{ accounts, user }} />
+      </Container>
     </RootAppShell>
   )
 }

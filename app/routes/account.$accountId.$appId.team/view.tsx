@@ -44,9 +44,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
   // }
 
   const userRole = useMemo(
-    () =>
-      endpoint?.users?.find(({ email }) => email === profile?._json?.email)?.roleName ||
-      null,
+    () => endpoint?.users?.find(({ email }) => email === profile.email)?.roleName || null,
     [endpoint, profile],
   )
 

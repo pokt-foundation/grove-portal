@@ -2,7 +2,7 @@ import { Flex, Button } from "@pokt-foundation/pocket-blocks"
 import { NavLink } from "@remix-run/react"
 import React from "react"
 
-type Route = {
+export type TabRoute = {
   to: string
   label?: string
   icon?: React.ReactNode | (() => JSX.Element) | React.FunctionComponent
@@ -10,16 +10,16 @@ type Route = {
   external?: boolean
 }
 
-type AppOverviewTabsProps = {
-  routes: Route[]
+type LinkTabsProps = {
+  routes: TabRoute[]
 }
 
-const AppOverviewTabs = ({ routes }: AppOverviewTabsProps) => {
+const LinkTabs = ({ routes }: LinkTabsProps) => {
   return (
     <Flex gap="xs">
-      {routes.map((route) => (
+      {routes.map((route, index) => (
         <Button
-          key={route.to}
+          key={`${route.to}-${index}`}
           color="gray"
           component={NavLink}
           end={route.end}
@@ -41,4 +41,4 @@ const AppOverviewTabs = ({ routes }: AppOverviewTabsProps) => {
   )
 }
 
-export default AppOverviewTabs
+export default LinkTabs

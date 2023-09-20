@@ -1,7 +1,7 @@
 import { MantineThemeOverride } from "@pokt-foundation/pocket-blocks"
 
 export const portalTheme: MantineThemeOverride = {
-  primaryColor: "blue",
+  primaryColor: "green",
   colorScheme: "dark",
   headings: {
     fontWeight: 600,
@@ -52,7 +52,7 @@ export const portalTheme: MantineThemeOverride = {
       "#65C971",
       "#46BD6B",
       "#40c057",
-      "#37b24d",
+      "#389F58",
       "#2f9e44",
       "#2b8a3e",
     ],

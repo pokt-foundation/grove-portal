@@ -1,7 +1,6 @@
 import { ActionFunction, LoaderFunction, json, MetaFunction } from "@remix-run/node"
 import { useActionData, useLoaderData } from "@remix-run/react"
 import { useEffect } from "react"
-import { Auth0Profile } from "remix-auth-auth0"
 import invariant from "tiny-invariant"
 import { ActionPassword, actionPassword } from "./utils/actionPassword"
 import { ActionUser, actionUser } from "./utils/actionUser"

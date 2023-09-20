@@ -38,8 +38,6 @@ export const ProfileView = ({ user, actionData }: ProfileViewProps) => {
     }
   }, [actionData])
 
-  console.log(user)
-
   return (
     <Stack spacing="xs">
       <Box px={40} py={20}>

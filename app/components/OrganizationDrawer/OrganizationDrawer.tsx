@@ -24,7 +24,7 @@ import { User } from "~/models/portal/sdk"
 
 type OrganizationDrawerProps = {
   user?: User
-  hasNewInvites: boolean
+  hasPendingInvites: boolean
 }
 
 type DrawerLinkProps = NavLinkProps &
@@ -74,7 +74,7 @@ const drawerExternalLinks = [
   },
 ]
 
-const OrganizationDrawer = ({ user, hasNewInvites }: OrganizationDrawerProps) => {
+const OrganizationDrawer = ({ user, hasPendingInvites }: OrganizationDrawerProps) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const logoutFetcher = useFetcher()
 
@@ -135,7 +135,7 @@ const OrganizationDrawer = ({ user, hasNewInvites }: OrganizationDrawerProps) =>
           />
           <Indicator
             inline
-            disabled={!hasNewInvites}
+            disabled={!hasPendingInvites}
             label="New"
             offset={25}
             position="middle-end"
@@ -172,7 +172,7 @@ const OrganizationDrawer = ({ user, hasNewInvites }: OrganizationDrawerProps) =>
           inline
           processing
           color="red"
-          disabled={!hasNewInvites}
+          disabled={!hasPendingInvites}
           offset={6}
           size={8}
         >

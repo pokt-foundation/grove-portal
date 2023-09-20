@@ -13,7 +13,7 @@ import { requireUser } from "~/utils/user.server"
 
 export type UserAccountLoaderData = {
   accounts: Account[]
-  userApps: PortalApp[]
+  hasPendingInvites: boolean
   user: User
 }
 
@@ -27,15 +27,12 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       throw new Error(`Accounts not found for user ${user.user.portalUserID}`)
     }
 
-    const userApps = await portal.getUserPortalApps()
-    if (!userApps.getUserPortalApps) {
-      throw new Error(`Apps not found for user ${user.user.portalUserID}`)
-    }
+    const userPendingApps = await portal.getUserPortalApps({ accepted: false })
 
     return json<LoaderDataStruct<UserAccountLoaderData>>({
       data: {
         accounts: accounts.getUserAccounts as Account[],
-        userApps: userApps.getUserPortalApps as PortalApp[],
+        hasPendingInvites: userPendingApps.getUserPortalApps.length > 0,
         user: user.user,
       },
       error: false,
@@ -57,7 +54,7 @@ export default function UserAccount() {
     return <ErrorView message={message} />
   }
 
-  const { accounts, user } = data
+  const { accounts, user, hasPendingInvites } = data
 
   const routes = [
     {
@@ -75,7 +72,11 @@ export default function UserAccount() {
   ]
 
   return (
-    <RootAppShell accounts={accounts as Account[]} user={user}>
+    <RootAppShell
+      accounts={accounts as Account[]}
+      hasPendingInvites={hasPendingInvites}
+      user={user}
+    >
       <Container fluid pt={16} px={0}>
         <Stack spacing="xl">
           <Text fw={600} fz="md">

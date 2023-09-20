@@ -7,7 +7,6 @@ import {
   LuChevronsRight,
   LuLifeBuoy,
   LuPlus,
-  LuTowerControl,
 } from "react-icons/lu"
 import {
   InternalLink,
@@ -44,11 +43,6 @@ const getStaticRoutes = (
     icon: LuBook,
     label: "Documentation",
   },
-  accountSettings: {
-    to: `/user/organizations`,
-    icon: LuTowerControl,
-    label: "Organization",
-  },
   support: {
     to: "https://discord.gg/portal-rpc",
     icon: LuLifeBuoy,
@@ -82,7 +76,6 @@ export const Sidebar = ({ apps, hidden }: SidebarProps) => {
           <ExternalLink iconOnly={collapsed} route={staticRoutes.docs} />
         </Navbar.Section>
         <Navbar.Section>
-          <InternalLink iconOnly={collapsed} route={staticRoutes.accountSettings} />
           <ExternalLink iconOnly={collapsed} route={staticRoutes.support} />
         </Navbar.Section>
       </ScrollArea>

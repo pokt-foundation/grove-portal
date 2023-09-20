@@ -6,7 +6,7 @@ const mg = mailgun.client({
   username: "api",
   key: getRequiredClientEnvVar("MAILGUN_API_KEY"),
 })
-const DOMAIN_NAME = "pokt.network"
+const DOMAIN_NAME = "grove.city"
 
 enum EmailTemplates {
   TeamInvite = "pocket-dashboard-team-invite",

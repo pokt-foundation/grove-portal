@@ -35,7 +35,7 @@ const AppForm = ({ app, onSubmit }: AppFormProps) => {
   const { classes: commonClasses } = useCommonStyles()
   const { accountId } = useParams()
 
-  const [name, setName] = useState("")
+  const [name, setName] = useState(app?.name ?? "")
   const [referral, setReferral] = useState("")
   const [appmoji, setAppmoji] = useState(DEFAULT_APPMOJI)
 

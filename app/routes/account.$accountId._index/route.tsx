@@ -15,7 +15,9 @@ import invariant from "tiny-invariant"
 import { AccountIdLoaderData } from "../account.$accountId/route"
 import ErrorView from "~/components/ErrorView"
 import TitledCard from "~/components/TitledCard"
-import { Configuration, ResponseDataInner, UserApi } from "~/models/dwh/sdk"
+import { initDwhClient } from "~/models/dwh/dwh.server"
+import { JSONApiResponse, AnalyticsRelaysTransactions } from "~/models/dwh/sdk"
+import { initPortalClient } from "~/models/portal/portal.server"
 import { EndpointsQuery, PortalApp } from "~/models/portal/sdk"
 import { AccountAppsOverview } from "~/routes/account.$accountId._index/components/AccountAppsOverview"
 import { EmptyState } from "~/routes/account.$accountId._index/components/EmptyState"
@@ -23,7 +25,6 @@ import OverviewBarChart from "~/routes/account.$accountId._index/components/Over
 import { OverviewSparkline } from "~/routes/account.$accountId._index/components/OverviewSparkline"
 import { PocketUser } from "~/routes/api.user/route"
 import { getErrorMessage } from "~/utils/catchError"
-import { getRequiredServerEnvVar } from "~/utils/environment"
 import { LoaderDataStruct } from "~/utils/loader"
 import { requireUser } from "~/utils/user.server"
 
@@ -39,36 +40,47 @@ export const meta: MetaFunction = () => {
 }
 
 type AccountInsightsData = {
-  relays: ResponseDataInner[] | undefined
+  relays: AnalyticsRelaysTransactions[] | undefined
 }
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   const user = await requireUser(request)
-  const dwh = new UserApi(
-    new Configuration({
-      basePath: getRequiredServerEnvVar("DWH_API_URL"),
-      apiKey: getRequiredServerEnvVar("DWH_API_KEY"),
-    }),
-  )
-
-  console.log("here")
+  const portal = initPortalClient({ token: user.accessToken })
+  const dwh = initDwhClient()
 
   try {
     const { accountId } = params
     invariant(typeof accountId === "string", "AccountId must be a set url parameter")
 
-    const relays = await dwh.analyticsRelaysCategoryGet({
+    const account = await portal.getUserAccount({ accountID: accountId })
+
+    if (!account.getUserAccount) {
+      throw new Error(
+        `Account ${params.accountId} not found for user ${user.user.portalUserID}`,
+      )
+    }
+
+    const apps = (account.getUserAccount.portalApps
+      ?.filter((app) => !app?.deleted)
+      .map((app) => app?.id) as string[]) ?? [""]
+
+    const relays = (await dwh.analyticsRelaysCategoryGetRaw({
       accountId: [accountId],
       category: "transactions",
-      from: dayjs().subtract(1, "day").toDate(),
-      to: dayjs().toDate(),
-    })
+      from: dayjs().subtract(1, "month").toDate(),
+      to: dayjs().subtract(1, "day").toDate(),
+      chainId: ["0003", "0009"],
+      chainMethod: ["eth_getBlockByNumber", "eth_blockNumber", "eth_getLogs"],
+      portalApplicationId: apps,
+    })) as JSONApiResponse<AnalyticsRelaysTransactions>
 
-    console.log({ relays: relays.data })
+    console.log({ relays })
+    const body = await relays.raw.json()
+    console.log(body.Data)
 
     return json<LoaderDataStruct<AccountInsightsData>>({
       data: {
-        relays: relays.data,
+        relays: body.Data,
       },
       error: false,
     })

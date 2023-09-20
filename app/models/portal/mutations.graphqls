@@ -78,6 +78,18 @@ mutation acceptEndpointUser($endpointID: ID!) {
 mutation adminCreatePortalUser($email: String!, $providerUserID: ID!) {
   adminCreatePortalUser(email: $email, providerUserID: $providerUserID) {
     portalUserID
+    email
+    iconURL
+    signedUp
+    updatesProduct
+    updatesMarketing
+    betaTester
+  }
+}
+
+mutation updatePortalUser($updateUser: UpdateUser!, $image: Upload) {
+  updatePortalUser(updateUser: $updateUser, image: $image) {
+    portalUserID
   }
 }
 

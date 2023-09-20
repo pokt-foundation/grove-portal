@@ -34,6 +34,7 @@ import {
   EndpointsQuery,
   PendingEndpointsQuery,
   ProcessedEndpoint,
+  User,
 } from "~/models/portal/sdk"
 import { RelayMetric } from "~/models/relaymeter/relaymeter.server"
 import { dayjs } from "~/utils/dayjs"
@@ -61,7 +62,7 @@ type AppsViewProps = {
   pendingEndpointsQuery: PendingEndpointsQuery | null
   dailyNetworkRelaysPerWeek: RelayMetric[] | null
   searchParams: URLSearchParams
-  profile: Auth0Profile
+  profile: User
 }
 
 export const AppsView = ({
@@ -74,7 +75,7 @@ export const AppsView = ({
   portalUserId,
 }: AppsViewProps) => {
   const pendingEndpoints = pendingEndpointsQuery?.pendingEndpoints as ProcessedEndpoint[]
-  const uEmail = profile?._json?.email
+  const uEmail = profile.email
   const [showErrorModal, setShowErrorModal] = useState(false)
   const notOwnerEndpoints = useMemo(() => {
     return endpoints

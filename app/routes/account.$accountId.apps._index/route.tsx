@@ -6,6 +6,7 @@ import invariant from "tiny-invariant"
 import { AllAppsOutletContext } from "../account.$accountId.apps/route"
 import AppsView, { links as AppsViewLinks } from "./view"
 import { initPortalClient } from "~/models/portal/portal.server"
+import { User } from "~/models/portal/sdk"
 import { getRelaysPerPeriod, RelayMetric } from "~/models/relaymeter/relaymeter.server"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { getPoktId, requireUser } from "~/utils/user.server"
@@ -23,7 +24,7 @@ export const meta: MetaFunction = () => {
 export type AppsLoaderData = {
   dailyNetworkRelaysPerWeek: RelayMetric[] | null
   userId: string
-  profile: Auth0Profile
+  profile: User
 }
 
 export type AppsActionData = {
@@ -34,19 +35,23 @@ export type AppsActionData = {
 
 export const loader: LoaderFunction = async ({ request }) => {
   const user = await requireUser(request)
-  invariant(user.profile.id && user.profile.emails, "user not found")
-  const userId = getPoktId(user.profile.id)
+  invariant(user.user.portalUserID && user.user.email, "user not found")
+
   let dailyNetworkRelaysPerWeek: RelayMetric[] | null = null
 
   try {
-    dailyNetworkRelaysPerWeek = await getRelaysPerPeriod("users", 7, user.profile.id)
+    dailyNetworkRelaysPerWeek = await getRelaysPerPeriod(
+      "users",
+      7,
+      user.user.portalUserID,
+    )
   } catch (e) {}
 
   return json<AppsLoaderData>(
     {
       dailyNetworkRelaysPerWeek,
-      userId,
-      profile: user.profile,
+      userId: user.user.portalUserID,
+      profile: user.user,
     },
     {
       headers: {

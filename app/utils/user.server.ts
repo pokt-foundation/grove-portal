@@ -17,6 +17,9 @@ export const requireUser = async (request: Request, defaultRedirect = "/") => {
     throw redirect("/api/auth/auth0")
   }
 
+  if (!user.user) {
+    throw await authenticator.logout(request, { redirectTo: "/api/auth/auth0" })
+  }
   // todo: handle validate like the create overlay at account level
   //
   // if (!user.profile._json.email_verified) {

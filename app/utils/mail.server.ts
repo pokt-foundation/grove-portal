@@ -28,7 +28,7 @@ const getMailgunTemplate = (
   variables: { [key: string]: string },
 ) => {
   return {
-    from: "Pocket Portal <portal@grove.city>",
+    from: "Grove Portal <portal@grove.city>",
     to,
     subject,
     template,

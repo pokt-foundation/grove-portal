@@ -61,7 +61,7 @@ export const action: ActionFunction = async ({ request, params }) => {
         portalUserID: portalUserId,
       })
 
-      const isLeaveApp = email === user.profile.email
+      const isLeaveApp = email === user.user.email
 
       return isLeaveApp
         ? redirect("/account")

@@ -1,49 +1,8 @@
 import userEvent from "@testing-library/user-event"
-import { Auth0Profile } from "remix-auth-auth0"
 import { expect } from "vitest"
-import ProfileView, { SUCCESSFUL_CHANGE_PASSWORD_MSG } from "./view"
+import ProfileView from "./view"
 import { render, screen, waitFor } from "test/helpers"
-
-const profile: Auth0Profile = {
-  id: "auth0|230rf40fgj0jf30e",
-  displayName: "profile test",
-  emails: [
-    {
-      value: "user@pokt.network",
-    },
-  ],
-  name: {
-    familyName: "pokt",
-    givenName: "user",
-    middleName: "network",
-  },
-  photos: [{ value: "" }],
-  _json: {
-    address: {
-      country: "",
-    },
-    birthdate: "",
-    email: "user@pokt.network",
-    email_verified: true,
-    family_name: "pokt",
-    gender: "",
-    given_name: "user",
-    locale: "en",
-    middle_name: "network",
-    name: "user",
-    nickname: "user",
-    phone_number: "",
-    phone_number_verified: false,
-    picture: "",
-    preferred_username: "user",
-    profile: "",
-    sub: "",
-    updated_at: "",
-    website: "",
-    zoneinfo: "",
-  },
-  provider: "",
-}
+import { profileMockData } from "~/models/portal/portal.data"
 
 describe.skip("<ProfileView />", () => {
   it("renders", () => {
@@ -59,7 +18,12 @@ describe.skip("<ProfileView />", () => {
 
   it("sends email when change password button is clicked and opens modal", async () => {
     const user = userEvent.setup()
-    render(<ProfileView actionData={SUCCESSFUL_CHANGE_PASSWORD_MSG} profile={profile} />)
+    render(
+      <ProfileView
+        actionData={{ data: { auth0: 200 }, error: false, message: "" }}
+        user={profileMockData}
+      />,
+    )
 
     const changePasswordButton = screen.getByRole("button", { name: /Change password/i })
     expect(changePasswordButton).toBeInTheDocument()

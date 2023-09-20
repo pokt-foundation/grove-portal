@@ -193,18 +193,15 @@ query getUserAccount($accountID: ID!) {
     planType
     users {
       userID
-      accountUserAccess {
-        owner
-        userID
-        email
-        portalAppRoles {
-          portalAppID
-          roleName
-        }
-        portalAppsAccepted {
-          portalAppID
-          accepted
-        }
+      owner
+      email
+      portalAppRoles {
+        portalAppID
+        roleName
+      }
+      portalAppsAccepted {
+        portalAppID
+        accepted
       }
     }
     partnerChainIDs
@@ -318,18 +315,15 @@ query getUserPortalApp($portalAppID: ID!) {
     description
     users {
       userID
-      accountUserAccess {
-        owner
-        userID
-        email
-        portalAppRoles {
-          portalAppID
-          roleName
-        }
-        portalAppsAccepted {
-          portalAppID
-          accepted
-        }
+      owner
+      email
+      portalAppRoles {
+        portalAppID
+        roleName
+      }
+      portalAppsAccepted {
+        portalAppID
+        accepted
       }
     }
     settings {
@@ -413,18 +407,15 @@ query getUserPortalApps(
     description
     users {
       userID
-      accountUserAccess {
-        owner
-        userID
-        email
-        portalAppRoles {
-          portalAppID
-          roleName
-        }
-        portalAppsAccepted {
-          portalAppID
-          accepted
-        }
+      owner
+      email
+      portalAppRoles {
+        portalAppID
+        roleName
+      }
+      portalAppsAccepted {
+        portalAppID
+        accepted
       }
     }
   }

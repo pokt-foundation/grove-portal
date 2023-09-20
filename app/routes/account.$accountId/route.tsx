@@ -55,7 +55,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
         hasPendingInvites: userPendingApps.getUserPortalApps.length > 0,
         userRoles: account.getUserAccount.users.filter(
           (u) => u.userID === user.user.portalUserID,
-        )[0].accountUserAccess.portalAppRoles,
+        )[0].portalAppRoles,
       },
       error: false,
     })

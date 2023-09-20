@@ -15,50 +15,48 @@ const InvitedAppsTable = ({ apps, user }: InvitedAppsTableProps) => {
   return (
     <DataTable
       columns={["App Name", "Role", "Status", "Organization", ""]}
-      data={apps
-        .sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1))
-        .map((app) => {
-          return {
-            appName: {
-              element: (
-                <Group>
-                  <Emoji
-                    size={14}
-                    unified={app.appEmoji !== "" ? app.appEmoji : DEFAULT_APPMOJI}
-                  />
-                  <Text> {app.name} </Text>
-                </Group>
-              ),
-            },
-            role: {
-              element: (
-                <Text tt="capitalize">
-                  {getUserRole(app, user.portalUserID)?.toLowerCase()}
+      data={apps.map((app) => {
+        return {
+          appName: {
+            element: (
+              <Group>
+                <Emoji
+                  size={14}
+                  unified={app.appEmoji !== "" ? app.appEmoji : DEFAULT_APPMOJI}
+                />
+                <Text> {app.name} </Text>
+              </Group>
+            ),
+          },
+          role: {
+            element: (
+              <Text tt="capitalize">
+                {getUserRole(app, user.portalUserID)?.toLowerCase()}
+              </Text>
+            ),
+          },
+          status: {
+            element: <InvitedAppAcceptedLabel app={app} user={user} />,
+          },
+          organization: {
+            element: (
+              <Group>
+                <Identicon
+                  alt={`${app.accountID} profile picture`}
+                  seed={app.accountID}
+                  type="account"
+                />
+                <Text size="sm" weight={500}>
+                  {app.accountID}
                 </Text>
-              ),
-            },
-            status: {
-              element: <InvitedAppAcceptedLabel app={app} user={user} />,
-            },
-            organization: {
-              element: (
-                <Group>
-                  <Identicon
-                    alt={`${app.accountID} profile picture`}
-                    seed={app.accountID}
-                    type="account"
-                  />
-                  <Text size="sm" weight={500}>
-                    {app.accountID}
-                  </Text>
-                </Group>
-              ),
-            },
-            action: {
-              element: <InvitedAppAction app={app} user={user} />,
-            },
-          }
-        })}
+              </Group>
+            ),
+          },
+          action: {
+            element: <InvitedAppAction app={app} user={user} />,
+          },
+        }
+      })}
       paginate={false}
     />
   )

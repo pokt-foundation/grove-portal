@@ -1,17 +1,11 @@
-import { Button, Group } from "@pokt-foundation/pocket-blocks"
-import styles from "./styles.css"
-import { Card, links as CardLinks } from "~/components/Card"
-import CardList, { CardListItem, links as CardListLinks } from "~/components/CardList"
-import { useTranslate } from "~/context/TranslateContext"
+import { Divider } from "@mantine/core"
+import { Button, Group, Text, Stack } from "@pokt-foundation/pocket-blocks"
+import React from "react"
+import { LuArrowUpRight, LuDownload } from "react-icons/lu"
+import { TitledCard } from "~/components/TitledCard"
 import { RelayMetric } from "~/models/relaymeter/relaymeter.server"
 import { Stripe } from "~/models/stripe/stripe.server"
 import { dayjs } from "~/utils/dayjs"
-
-/* c8 ignore start */
-export const links = () => {
-  return [...CardLinks(), ...CardListLinks(), { rel: "stylesheet", href: styles }]
-}
-/* c8 ignore stop */
 
 interface PlanLatestInvoiceCardProps {
   invoice: Stripe.Invoice
@@ -24,61 +18,65 @@ export default function AppPlanLatestInvoiceCard({
   usageRecords,
   relaysLatestInvoice,
 }: PlanLatestInvoiceCardProps) {
-  const { t } = useTranslate()
-
-  const listItems: CardListItem[] = [
+  const cardItems = [
     {
-      label: t.AppPlanLatestInvoiceCard.invoice,
+      label: "Invoice",
       value: invoice.id,
     },
     {
-      label: t.AppPlanLatestInvoiceCard.status,
+      label: "Status",
       value: invoice.paid ? "Paid" : "Open",
     },
     {
-      label: t.AppPlanLatestInvoiceCard.relaysBilled,
+      label: "Relays Billed",
       value: usageRecords.data[0].total_usage,
     },
     {
-      label: t.AppPlanLatestInvoiceCard.relaysUsed,
+      label: "Relays Used",
       value: relaysLatestInvoice.Count.Total,
     },
     {
-      label: t.AppPlanLatestInvoiceCard.dateStart,
-      value: dayjs.unix(Number(invoice.period_start)).toString(),
+      label: "Start period",
+      value: dayjs.unix(Number(invoice.period_start)).format("DD MMMM YYYY"),
     },
     {
-      label: t.AppPlanLatestInvoiceCard.dateEnd,
-      value: dayjs.unix(Number(invoice.period_end)).toString(),
+      label: "End Period",
+      value: dayjs.unix(Number(invoice.period_end)).format("DD MMMM YYYY"),
     },
   ]
 
   return (
-    <div className="pokt-app-plan-latest-invoice">
-      <Card>
-        <div className="pokt-card-header">
-          <h3>{t.AppPlanLatestInvoiceCard.title}</h3>
-        </div>
-        <CardList items={listItems} />
-        <Group mt="xl" position="right">
+    <TitledCard header={() => <Text weight={600}>Latest Invoice</Text>}>
+      <Stack px={20} py={10}>
+        {cardItems.map(({ label, value }, index) => (
+          <>
+            <Group key={`${label}-${index}`} p={12} position="apart">
+              <Text>{label}</Text> <Text>{value}</Text>
+            </Group>
+            <Divider />
+          </>
+        ))}
+        <Group grow spacing="md">
           <Button
+            color="green"
+            component="a"
+            href={invoice.invoice_pdf ?? ""}
+            rightIcon={<LuDownload size={18} />}
+          >
+            Download
+          </Button>
+          <Button
+            color="green"
             component="a"
             href={invoice.hosted_invoice_url ?? ""}
             rel="noreferrer"
+            rightIcon={<LuArrowUpRight size={18} />}
             target="_blank"
           >
-            {t.AppPlanLatestInvoiceCard.view}
-          </Button>
-          <Button
-            component="a"
-            href={invoice.invoice_pdf ?? ""}
-            rel="noreferrer"
-            target="_blank"
-          >
-            {t.AppPlanLatestInvoiceCard.download}
+            View in Stripe
           </Button>
         </Group>
-      </Card>
-    </div>
+      </Stack>
+    </TitledCard>
   )
 }

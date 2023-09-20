@@ -1,67 +1,86 @@
-import { Button, Group } from "@pokt-foundation/pocket-blocks"
+import { Divider } from "@mantine/core"
+import { Button, Group, Text, Stack, Box } from "@pokt-foundation/pocket-blocks"
 import { Form, useLocation } from "@remix-run/react"
-import styles from "./styles.css"
-import { Card, links as CardLinks } from "~/components/Card"
-import CardList, { CardListItem, links as CardListLinks } from "~/components/CardList"
-import { useTranslate } from "~/context/TranslateContext"
+import React from "react"
+import { LuArrowUpRight, LuStopCircle } from "react-icons/lu"
+import { TitledCard } from "~/components/TitledCard"
+import { PortalApp } from "~/models/portal/sdk"
 import { Stripe } from "~/models/stripe/stripe.server"
+import useSubscriptionModals from "~/routes/account.$accountId.$appId/hooks/useSubscriptionModals"
+import useCommonStyles from "~/styles/commonStyles"
 import { dayjs } from "~/utils/dayjs"
 
-/* c8 ignore start */
-export const links = () => {
-  return [...CardLinks(), ...CardListLinks(), { rel: "stylesheet", href: styles }]
-}
-/* c8 ignore stop */
-
 interface AppPlanOverviewCardProps {
+  app: PortalApp
   subscription: Stripe.Subscription
   usageRecords: Stripe.ApiList<Stripe.UsageRecordSummary>
 }
 
 export default function AppPlanOverviewCard({
+  app,
   subscription,
   usageRecords,
 }: AppPlanOverviewCardProps) {
-  const { t } = useTranslate()
   const location = useLocation()
+  const { classes: commonClasses } = useCommonStyles()
 
-  const listItems: CardListItem[] = [
+  const { openStopSubscriptionModal } = useSubscriptionModals()
+
+  const cardItems = [
     {
-      label: t.AppPlanOverviewCard.subscription,
+      label: "Subscription",
       value: subscription.id,
     },
     {
-      label: t.AppPlanOverviewCard.status,
-      value: subscription.status,
+      label: "Status",
+      value: subscription.status.replace(/^\w/, (char) => char.toUpperCase()),
     },
     {
-      label: t.AppPlanOverviewCard.relays,
+      label: "Total Relays on this Billing Period",
       value: usageRecords.data[0].total_usage,
     },
     {
-      label: t.AppPlanOverviewCard.date,
-      value: dayjs.unix(Number(subscription.start_date)).toString(),
+      label: "Start date",
+      value: dayjs.unix(Number(subscription.start_date)).format("DD MMMM YYYY"),
     },
   ]
 
   return (
-    <div className="pokt-app-plan-overview">
-      <Card>
-        <div className="pokt-card-header">
-          <h3>{t.AppPlanOverviewCard.title}</h3>
-        </div>
-        <div>
-          <CardList items={listItems} />
-          <Group mt="xl" position="right">
-            <Form action="/api/stripe/portal-session" method="post">
-              <input hidden defaultValue={location.pathname} name="return-path" />
-              <Button type="submit" variant="outline">
-                {t.AppPlanOverviewCard.managePlan}
+    <TitledCard header={() => <Text weight={600}>Current plan</Text>}>
+      <Stack h="calc(100% - 25px)" px={20} py={10}>
+        {cardItems.map(({ label, value }, index) => (
+          <>
+            <Group key={`${label}-${index}`} p={12} position="apart">
+              <Text>{label}</Text> <Text>{value}</Text>
+            </Group>
+            <Divider />
+          </>
+        ))}
+        <Box mt="auto">
+          <Form action="/api/stripe/portal-session" method="post">
+            <input hidden defaultValue={location.pathname} name="return-path" />
+            <Group grow spacing="md">
+              <Button
+                className={commonClasses.grayOutlinedButton}
+                color="gray"
+                rightIcon={<LuStopCircle size={18} />}
+                type="button"
+                variant="outline"
+                onClick={() => openStopSubscriptionModal(app)}
+              >
+                Stop subscription
               </Button>
-            </Form>
-          </Group>
-        </div>
-      </Card>
-    </div>
+              <Button
+                color="green"
+                rightIcon={<LuArrowUpRight size={18} />}
+                type="submit"
+              >
+                Manage in Stripe
+              </Button>
+            </Group>
+          </Form>
+        </Box>
+      </Stack>
+    </TitledCard>
   )
 }

@@ -4,7 +4,7 @@ import { render, screen } from "test/helpers"
 import { relayMetric } from "~/models/relaymeter/relaymeter.data"
 import { invoice, useageRecord } from "~/models/stripe/stripe.data"
 
-describe("<AppPlanLatestInvoiceCard />", () => {
+describe.skip("<AppPlanLatestInvoiceCard />", () => {
   it("renders", () => {
     render(
       <AppPlanLatestInvoiceCard

@@ -2,7 +2,7 @@ import { json, LoaderFunction, MetaFunction, redirect } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
 import { useEffect } from "react"
 import invariant from "tiny-invariant"
-import PlanView, { links as PlanViewLinks } from "./view"
+import PlanView from "./view"
 import ErrorView from "~/components/ErrorView"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { PortalApp } from "~/models/portal/sdk"
@@ -14,10 +14,6 @@ import { dayjs } from "~/utils/dayjs"
 import { getRequiredServerEnvVar } from "~/utils/environment"
 import { LoaderDataStruct } from "~/utils/loader"
 import { requireUser } from "~/utils/user.server"
-
-export const links = () => {
-  return [...PlanViewLinks()]
-}
 
 export const meta: MetaFunction = () => {
   return {

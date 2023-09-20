@@ -3,15 +3,17 @@ import { useLoaderData } from "@remix-run/react"
 import { useEffect } from "react"
 import invariant from "tiny-invariant"
 import PlanView, { links as PlanViewLinks } from "./view"
+import ErrorView from "~/components/ErrorView"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { ProcessedEndpoint } from "~/models/portal/sdk"
+import { PortalApp } from "~/models/portal/sdk"
 import { getRelays, RelayMetric } from "~/models/relaymeter/relaymeter.server"
-import { getCustomer, Stripe, stripe } from "~/models/stripe/stripe.server"
+import { Stripe, stripe } from "~/models/stripe/stripe.server"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { getErrorMessage } from "~/utils/catchError"
 import { dayjs } from "~/utils/dayjs"
 import { getRequiredServerEnvVar } from "~/utils/environment"
-import { getPoktId, requireUser } from "~/utils/user.server"
+import { LoaderDataStruct } from "~/utils/loader"
+import { requireUser } from "~/utils/user.server"
 
 export const links = () => {
   return [...PlanViewLinks()]
@@ -23,94 +25,104 @@ export const meta: MetaFunction = () => {
   }
 }
 
-export type AppPlanLoaderData =
-  | {
-      error: false
-      subscription: Stripe.Subscription
-      usageRecords: Stripe.ApiList<Stripe.UsageRecordSummary>
-      invoice: Stripe.Invoice
-      relaysLatestInvoice: RelayMetric
-      endpoint: ProcessedEndpoint
-    }
-  | {
-      error: true
-      message: string
-    }
+export type AppPlanLoaderData = {
+  app: PortalApp
+  subscription?: Stripe.Subscription
+  usageRecords?: Stripe.ApiList<Stripe.UsageRecordSummary>
+  latestInvoice?: Stripe.Invoice
+  latestInvoiceRelays?: RelayMetric
+}
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   const { appId, accountId } = params
   invariant(appId, "app id not found")
+
   if (getRequiredServerEnvVar("FLAG_STRIPE_PAYMENT") === "false") {
     return redirect(`/account/${accountId}/${params.appId}`)
   }
+
   const user = await requireUser(request)
+<<<<<<< HEAD
   invariant(user.user.portalUserID && user.user.email, "user not found")
   const userId = getPoktId(user.user.portalUserID)
+=======
+>>>>>>> new_ui_fiesta
   const portal = initPortalClient({ token: user.accessToken })
 
   try {
-    const { endpoint } = await portal.endpoint({
-      endpointID: appId,
+    const getUserPortalAppResponse = await portal.getUserPortalApp({
+      portalAppID: appId,
     })
+<<<<<<< HEAD
     const uEmail = user.user.email ?? ""
     const customer = await getCustomer(uEmail, userId)
+=======
+    if (!getUserPortalAppResponse.getUserPortalApp) {
+      throw new Error(`Account ${params.appId} not found for user ${user.portalUserId}`)
+    }
+    const app = getUserPortalAppResponse.getUserPortalApp
+>>>>>>> new_ui_fiesta
 
-    if (customer) {
-      const subscriptions = await stripe.subscriptions.list({
-        customer: customer.id,
-      })
+    let subscription
+    let usageRecords
+    let latestInvoice
+    let latestInvoiceRelays
 
-      const subscription = subscriptions.data.filter(
-        (sub) => sub.metadata.endpoint_id && sub.metadata.endpoint_id === endpoint.id,
-      )[0]
+    if (app.legacyFields.stripeSubscriptionID) {
+      subscription = await stripe.subscriptions.retrieve(
+        app.legacyFields.stripeSubscriptionID,
+      )
 
-      if (subscription) {
-        if (subscription.latest_invoice) {
-          const usageRecords = await stripe.subscriptionItems.listUsageRecordSummaries(
-            subscription.items.data[0].id,
-            { limit: 3 },
-          )
-          const invoiceLatest = await stripe.invoices.retrieve(
-            `${subscription.latest_invoice}`,
-          )
-
-          const invoicePeriodStart = dayjs
-            .unix(Number(invoiceLatest.period_start))
-            .toISOString()
-          const invoicePeriodEnd = dayjs
-            .unix(Number(invoiceLatest.period_start))
-            .toISOString()
-          const relaysLatestInvoice = await getRelays(
-            "endpoints",
-            invoicePeriodStart,
-            invoicePeriodEnd,
-            endpoint.id,
-          )
-
-          return json(
-            {
-              error: false,
-              subscription: subscription,
-              usageRecords,
-              invoice: invoiceLatest,
-              relaysLatestInvoice,
-              endpoint,
-            },
-            {
-              headers: {
-                "Cache-Control": `private, max-age=${
-                  process.env.NODE_ENV === "production" ? "3600" : "60"
-                }`,
-              },
-            },
-          )
-        }
+      if (!subscription) {
+        throw new Error(`Subscription not found for app ${app.id}`)
       }
 
-      return redirect(`/account/${accountId}/${params.appId}`)
+      usageRecords = await stripe.subscriptionItems.listUsageRecordSummaries(
+        subscription.items.data[0].id,
+        { limit: 3 },
+      )
+      if (!usageRecords) {
+        throw new Error(`Useage records not found for subscription ${subscription.id}`)
+      }
+
+      if (subscription.latest_invoice) {
+        latestInvoice = await stripe.invoices.retrieve(`${subscription.latest_invoice}`)
+        if (!latestInvoice) {
+          throw new Error(`Latest invoice not found for subscription ${subscription.id}`)
+        }
+
+        const invoicePeriodStart = dayjs
+          .unix(Number(latestInvoice.period_start))
+          .toISOString()
+        const invoicePeriodEnd = dayjs
+          .unix(Number(latestInvoice.period_start))
+          .toISOString()
+        latestInvoiceRelays = await getRelays(
+          "endpoints",
+          invoicePeriodStart,
+          invoicePeriodEnd,
+          getUserPortalAppResponse.getUserPortalApp.id,
+        )
+
+        if (!latestInvoiceRelays) {
+          throw new Error(`Relays not found for lastest invoice period on app ${app.id}`)
+        }
+      }
     }
+
+    return json<LoaderDataStruct<AppPlanLoaderData>>({
+      data: {
+        app: app as PortalApp,
+        subscription,
+        usageRecords,
+        latestInvoice,
+        latestInvoiceRelays,
+      },
+      error: false,
+    })
   } catch (error) {
-    return json({
+    return json<LoaderDataStruct<AppPlanLoaderData>>({
+      data: null,
       error: true,
       message: getErrorMessage(error),
     })
@@ -118,11 +130,15 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 }
 
 export const AppPlanDetails = () => {
-  const data = useLoaderData() as AppPlanLoaderData
+  const { data, error, message } = useLoaderData() as LoaderDataStruct<AppPlanLoaderData>
 
   useEffect(() => {
     trackEvent(AmplitudeEvents.AppPlanDetailsView)
   }, [])
+
+  if (error) {
+    return <ErrorView message={message} />
+  }
 
   return <PlanView {...data} />
 }

@@ -2,21 +2,13 @@ import { vi, expect } from "vitest"
 import AppIdLayoutView from "./view"
 import { render, screen } from "test/helpers"
 import t from "~/locales/en"
-import { app, profileMockData } from "~/models/portal/portal.data"
+import { app } from "~/models/portal/portal.data"
 import { PayPlanType } from "~/models/portal/sdk"
-import { subscription } from "~/models/stripe/stripe.data"
 
 vi.mock("~/utils/analytics", async () => ({
   ...(await vi.importActual<any>("~/utils/analytics")),
   trackEvent: vi.fn(),
 }))
-
-// const updatePlanFetcherMock = {
-//   state: "idle",
-//   submit: vi.fn(() => ({ error: false })),
-// } as unknown as ReturnType<typeof useFetcher>
-
-const setSearchParams = vi.fn()
 
 describe.skip("<AppIdLayoutView />", () => {
   beforeEach(() => {

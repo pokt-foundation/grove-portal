@@ -1,7 +1,7 @@
 import { Divider } from "@mantine/core"
 import { useDebouncedValue } from "@mantine/hooks"
 import { Box, Flex, Input, Title } from "@pokt-foundation/pocket-blocks"
-import { ActionFunction, json, MetaFunction, redirect } from "@remix-run/node"
+import { ActionFunction, json, MetaFunction } from "@remix-run/node"
 import { useOutletContext } from "@remix-run/react"
 import { useEffect, useState } from "react"
 import { LuSearch } from "react-icons/lu"

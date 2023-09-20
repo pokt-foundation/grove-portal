@@ -38,6 +38,7 @@ const DrawerLink = ({ setIsDrawerOpen, external, ...props }: DrawerLinkProps) =>
   return (
     <NavLink
       component={Link}
+      label={props.label}
       p={8}
       prefetch="intent"
       {...props}

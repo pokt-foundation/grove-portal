@@ -191,7 +191,7 @@ export const getAppAcceptedValue = (app: PortalApp, userId: string) => {
   const user = app.users.find((user) => user.userID === userId)
 
   if (user) {
-    const acceptedEntry = user.accountUserAccess.portalAppsAccepted.find(
+    const acceptedEntry = user.portalAppsAccepted.find(
       (entry) => entry.portalAppID === app.id,
     )
 
@@ -205,9 +205,7 @@ export const getUserRole = (app: PortalApp, userId: string) => {
   const user = app.users.find((user) => user.userID === userId)
 
   if (user) {
-    const role = user.accountUserAccess.portalAppRoles.find(
-      (role) => role.portalAppID === app.id,
-    )
+    const role = user.portalAppRoles.find((role) => role.portalAppID === app.id)
 
     if (role) {
       return role.roleName

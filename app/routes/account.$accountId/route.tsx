@@ -21,6 +21,7 @@ export type AccountIdLoaderData = {
   account: GetUserAccountQuery["getUserAccount"]
   accounts: GetUserAccountsQuery["getUserAccounts"]
   user: User
+  hasPendingInvites: boolean
   userRoles: PortalAppRole[]
 }
 
@@ -44,11 +45,14 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       throw new Error(`Accounts not found for user ${user.user.portalUserID}`)
     }
 
+    const userPendingApps = await portal.getUserPortalApps({ accepted: false })
+
     return json<LoaderDataStruct<AccountIdLoaderData>>({
       data: {
         account: account.getUserAccount,
         accounts: accounts.getUserAccounts,
         user: user.user,
+        hasPendingInvites: userPendingApps.getUserPortalApps.length > 0,
         userRoles: account.getUserAccount.users.filter(
           (u) => u.userID === user.user.portalUserID,
         )[0].accountUserAccess.portalAppRoles,
@@ -72,12 +76,13 @@ export default function AccountId() {
     return <ErrorView message={message} />
   }
 
-  const { account, accounts, user, userRoles } = data
+  const { account, accounts, user, userRoles, hasPendingInvites } = data
 
   return (
     <RootAppShell
       accounts={accounts as Account[]}
-      apps={account.portalApps as PortalApp[]}
+      apps={account.portalApps?.filter((app) => !app?.deleted) as PortalApp[]}
+      hasPendingInvites={hasPendingInvites}
       user={user}
     >
       <Outlet context={{ account, accounts, user, userRoles }} />

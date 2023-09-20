@@ -9,11 +9,18 @@ import useCommonStyles from "~/styles/commonStyles"
 type RootAppShellProps = {
   user: User
   apps?: PortalApp[]
+  hasPendingInvites: boolean
   children: ReactNode
   accounts: Account[]
 }
 
-export const RootAppShell = ({ user, apps, children, accounts }: RootAppShellProps) => {
+export const RootAppShell = ({
+  user,
+  apps,
+  children,
+  accounts,
+  hasPendingInvites,
+}: RootAppShellProps) => {
   const [opened, setOpened] = useState(false)
   const { classes: commonClasses } = useCommonStyles()
   const { hideSidebar } = useRoot({ user })
@@ -34,7 +41,7 @@ export const RootAppShell = ({ user, apps, children, accounts }: RootAppShellPro
         >
           <AppHeader
             accounts={accounts}
-            hasNewInvites={true}
+            hasPendingInvites={hasPendingInvites}
             opened={opened}
             user={user}
             onOpen={(o) => setOpened(o)}

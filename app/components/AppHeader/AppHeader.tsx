@@ -8,7 +8,7 @@ type HeaderProps = {
   user?: User
   accounts: Account[]
   opened: boolean
-  hasNewInvites: boolean
+  hasPendingInvites: boolean
   onOpen: (o: boolean) => void
 }
 
@@ -17,7 +17,7 @@ export const AppHeader = ({
   opened,
   onOpen,
   accounts,
-  hasNewInvites,
+  hasPendingInvites,
 }: HeaderProps) => {
   return (
     <>
@@ -30,7 +30,7 @@ export const AppHeader = ({
         </Link>
         <Group>
           {user && <OrganizationSelect accounts={accounts} />}
-          <OrganizationDrawer hasNewInvites={hasNewInvites} user={user} />
+          <OrganizationDrawer hasPendingInvites={hasPendingInvites} user={user} />
         </Group>
       </Flex>
     </>

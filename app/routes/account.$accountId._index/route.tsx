@@ -8,19 +8,24 @@ import {
   Text,
   useMantineTheme,
 } from "@pokt-foundation/pocket-blocks"
-import { MetaFunction } from "@remix-run/node"
+import { json, LoaderFunction, MetaFunction } from "@remix-run/node"
 import { useRouteLoaderData } from "@remix-run/react"
-import React from "react"
+import dayjs from "dayjs"
+import invariant from "tiny-invariant"
 import { AccountIdLoaderData } from "../account.$accountId/route"
 import ErrorView from "~/components/ErrorView"
 import TitledCard from "~/components/TitledCard"
+import { Configuration, ResponseDataInner, UserApi } from "~/models/dwh/sdk"
 import { EndpointsQuery, PortalApp } from "~/models/portal/sdk"
 import { AccountAppsOverview } from "~/routes/account.$accountId._index/components/AccountAppsOverview"
 import { EmptyState } from "~/routes/account.$accountId._index/components/EmptyState"
 import OverviewBarChart from "~/routes/account.$accountId._index/components/OverviewBarChart"
 import { OverviewSparkline } from "~/routes/account.$accountId._index/components/OverviewSparkline"
 import { PocketUser } from "~/routes/api.user/route"
+import { getErrorMessage } from "~/utils/catchError"
+import { getRequiredServerEnvVar } from "~/utils/environment"
 import { LoaderDataStruct } from "~/utils/loader"
+import { requireUser } from "~/utils/user.server"
 
 export type DashboardLoaderData = {
   endpoints: EndpointsQuery | null
@@ -30,6 +35,50 @@ export type DashboardLoaderData = {
 export const meta: MetaFunction = () => {
   return {
     title: "Account Overview",
+  }
+}
+
+type AccountInsightsData = {
+  relays: ResponseDataInner[] | undefined
+}
+
+export const loader: LoaderFunction = async ({ request, params }) => {
+  const user = await requireUser(request)
+  const dwh = new UserApi(
+    new Configuration({
+      basePath: getRequiredServerEnvVar("DWH_API_URL"),
+      apiKey: getRequiredServerEnvVar("DWH_API_KEY"),
+    }),
+  )
+
+  console.log("here")
+
+  try {
+    const { accountId } = params
+    invariant(typeof accountId === "string", "AccountId must be a set url parameter")
+
+    const relays = await dwh.analyticsRelaysCategoryGet({
+      accountId: [accountId],
+      category: "transactions",
+      from: dayjs().subtract(1, "day").toDate(),
+      to: dayjs().toDate(),
+    })
+
+    console.log({ relays: relays.data })
+
+    return json<LoaderDataStruct<AccountInsightsData>>({
+      data: {
+        relays: relays.data,
+      },
+      error: false,
+    })
+  } catch (error) {
+    console.log(error)
+    return json<LoaderDataStruct<AccountInsightsData>>({
+      data: null,
+      error: true,
+      message: getErrorMessage(error),
+    })
   }
 }
 

@@ -81,7 +81,7 @@ export default function AccountId() {
   return (
     <RootAppShell
       accounts={accounts as Account[]}
-      apps={account.portalApps as PortalApp[]}
+      apps={account.portalApps?.filter((app) => !app?.deleted) as PortalApp[]}
       hasPendingInvites={hasPendingInvites}
       user={user}
     >

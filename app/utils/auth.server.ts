@@ -4,6 +4,7 @@ import invariant from "tiny-invariant"
 import { getRequiredServerEnvVar } from "./environment"
 import { sessionStorage } from "./session.server"
 import { initPortalClient } from "~/models/portal/portal.server"
+import { User as PortalUser } from "~/models/portal/sdk"
 import { initAdminPortal } from "~/utils/admin"
 
 // Create an instance of the authenticator, pass a generic with what your
@@ -12,16 +13,18 @@ export const authenticator = new Authenticator<{
   accessToken: string
   refreshToken: string
   extraParams: Auth0ExtraParams
-  profile: Auth0Profile
-  portalUserId: string
+  user: PortalUser & {
+    auth0ID: string
+  }
 }>(sessionStorage)
 
 export type User = {
   accessToken: string
   refreshToken: string
   extraParams: Auth0ExtraParams
-  profile: Auth0Profile
-  portalUserId: string
+  user: PortalUser & {
+    auth0ID: string
+  }
 }
 
 let auth0Strategy = new Auth0Strategy(
@@ -34,21 +37,24 @@ let auth0Strategy = new Auth0Strategy(
     scope: getRequiredServerEnvVar("AUTH0_SCOPE"),
   },
   async ({ accessToken, refreshToken, extraParams, profile }): Promise<User> => {
+    const email = profile?._json?.email
+    const providerUserID = profile?.id
+
+    invariant(email, "email is not found")
+    invariant(providerUserID, "providerUserID is not found")
+
     const portal = initPortalClient({ token: accessToken })
-    const getPortalUserIdResponse = await portal.getPortalUserID().catch((e) => {
+    const getPortalUserResponse = await portal.getPortalUser().catch((e) => {
       console.log(e)
     })
 
-    let portalUserId = getPortalUserIdResponse?.getPortalUserID
+    let portalUser = {
+      ...(getPortalUserResponse?.getPortalUser as PortalUser),
+      auth0ID: providerUserID,
+    }
 
     // handle edge case where user could have signed up via auth0 and yet not have an internal portalUserId
-    if (!portalUserId) {
-      const email = profile?._json?.email
-      const providerUserID = profile?.id
-
-      invariant(email, "email is not found")
-      invariant(providerUserID, "providerUserID is not found")
-
+    if (!portalUser) {
       const portalAdmin = await initAdminPortal(portal)
 
       const user = await portalAdmin.adminCreatePortalUser({
@@ -56,10 +62,13 @@ let auth0Strategy = new Auth0Strategy(
         providerUserID,
       })
 
-      portalUserId = user.adminCreatePortalUser.portalUserID
+      portalUser = {
+        ...(user.adminCreatePortalUser as PortalUser),
+        auth0ID: providerUserID,
+      }
     }
 
-    return { accessToken, refreshToken, extraParams, profile, portalUserId }
+    return { accessToken, refreshToken, extraParams, user: portalUser }
   },
 )
 

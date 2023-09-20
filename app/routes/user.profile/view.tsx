@@ -1,39 +1,52 @@
 import { Divider } from "@mantine/core"
 import { showNotification } from "@mantine/notifications"
 import { Box, Button, Stack, Switch, Text } from "@pokt-foundation/pocket-blocks"
-import { Form } from "@remix-run/react"
+import { Form, useSubmit } from "@remix-run/react"
 import { useEffect } from "react"
-import { Auth0Profile } from "remix-auth-auth0"
+import { ActionPassword } from "./utils/actionPassword"
+import { ActionUser } from "./utils/actionUser"
 import { Identicon } from "~/components/Identicon"
+import { User } from "~/models/portal/sdk"
 import useCommonStyles from "~/styles/commonStyles"
+import { LoaderDataStruct } from "~/utils/loader"
 
 export const SUCCESSFUL_CHANGE_PASSWORD_MSG =
   "We've just sent you an email to reset your password."
 
 type ProfileViewProps = {
-  profile: Auth0Profile
-  actionData?: string
+  user: User
+  actionData?: LoaderDataStruct<ActionUser | ActionPassword>
 }
 
-export const ProfileView = ({ profile, actionData }: ProfileViewProps) => {
-  const { email } = profile._json || { nickname: "", email: "" }
+export const ProfileView = ({ user, actionData }: ProfileViewProps) => {
   const { classes: commonClasses } = useCommonStyles()
+  const submit = useSubmit()
 
   useEffect(() => {
-    if (actionData === SUCCESSFUL_CHANGE_PASSWORD_MSG) {
+    if (!actionData) return
+
+    if ((actionData.data as ActionPassword).auth0 === 200) {
       showNotification({
         message: SUCCESSFUL_CHANGE_PASSWORD_MSG,
       })
     }
+
+    if ((actionData.data as ActionUser).user) {
+      showNotification({
+        message: "User profile updated",
+      })
+    }
   }, [actionData])
+
+  console.log(user)
 
   return (
     <Stack spacing="xs">
       <Box px={40} py={20}>
         <Identicon
           avatar
-          alt={`${profile.displayName ?? "user"} profile picture`}
-          seed={profile.id ?? "user default"}
+          alt={`${user.portalUserID ?? "user"} profile picture`}
+          seed={user.portalUserID ?? "user default"}
           size="lg"
           type="user"
         />
@@ -53,12 +66,13 @@ export const ProfileView = ({ profile, actionData }: ProfileViewProps) => {
           </Text>
         </Box>
         <Form method="post">
+          <input hidden name="type" value="password" />
           <Button
             className={commonClasses.grayOutlinedButton}
             color="gray"
             name="email"
             type="submit"
-            value={email}
+            value={user.email}
             variant="outline"
           >
             Change password
@@ -70,17 +84,34 @@ export const ProfileView = ({ profile, actionData }: ProfileViewProps) => {
         <Box>
           <Text fw={600}>Product updates</Text>
           <Text pt={5}>Send me Product updates.</Text>
-          <Switch mt={8} />
+          <Form method="post" onChange={(event) => submit(event.currentTarget)}>
+            <input hidden name="type" value="check-product" />
+            <Switch
+              defaultChecked={Boolean(user.updatesProduct)}
+              mt={8}
+              name="checkbox"
+            />
+          </Form>
         </Box>
         <Box>
           <Text fw={600}>Community updates</Text>
           <Text pt={5}>Send me Community updates.</Text>
-          <Switch mt={8} />
+          <Form method="post" onChange={(event) => submit(event.currentTarget)}>
+            <input hidden name="type" value="check-marketing" />
+            <Switch
+              defaultChecked={Boolean(user.updatesMarketing)}
+              mt={8}
+              name="checkbox"
+            />
+          </Form>
         </Box>
         <Box>
           <Text fw={600}>Beta test</Text>
           <Text pt={5}>Join beta test program.</Text>
-          <Switch mt={8} />
+          <Form method="post" onChange={(event) => submit(event.currentTarget)}>
+            <input hidden name="type" value="check-beta" />
+            <Switch defaultChecked={Boolean(user.betaTester)} mt={8} name="checkbox" />
+          </Form>
         </Box>
       </Stack>
 

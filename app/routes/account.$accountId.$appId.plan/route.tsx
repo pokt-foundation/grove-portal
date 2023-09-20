@@ -44,15 +44,15 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     return redirect(`/account/${accountId}/${params.appId}`)
   }
   const user = await requireUser(request)
-  invariant(user.profile.id && user.profile.emails, "user not found")
-  const userId = getPoktId(user.profile.id)
+  invariant(user.user.portalUserID && user.user.email, "user not found")
+  const userId = getPoktId(user.user.portalUserID)
   const portal = initPortalClient({ token: user.accessToken })
 
   try {
     const { endpoint } = await portal.endpoint({
       endpointID: appId,
     })
-    const uEmail = user?.profile?._json?.email ?? ""
+    const uEmail = user.user.email ?? ""
     const customer = await getCustomer(uEmail, userId)
 
     if (customer) {

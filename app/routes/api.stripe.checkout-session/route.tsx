@@ -8,8 +8,8 @@ import { getPoktId, requireUser } from "~/utils/user.server"
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   const user = await requireUser(request)
-  invariant(user.profile.id && user.profile.emails, "user not found")
-  const userId = getPoktId(user.profile.id)
+  invariant(user.user.auth0ID && user.user.email, "user not found")
+  const userId = getPoktId(user.user.auth0ID)
 
   const url = new URL(request.url)
   const id = url.searchParams.get("app-id")
@@ -31,14 +31,14 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     // check that customer exists or create a new one
     let customer: Stripe.Customer | null = null
     const userExists = await stripe.customers.list({
-      email: user?.profile?._json?.email,
+      email: user.user.email,
     })
     if (userExists.data.length > 0) {
       customer = userExists.data.find((cust) => cust.metadata.user_id === userId) ?? null
     }
     if (!customer) {
       customer = await stripe.customers.create({
-        email: user?.profile?._json?.email,
+        email: user.user.email,
         metadata: {
           user_id: userId,
         },

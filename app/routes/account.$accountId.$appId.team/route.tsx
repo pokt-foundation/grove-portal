@@ -5,7 +5,7 @@ import invariant from "tiny-invariant"
 import { AppIdOutletContext } from "../account.$accountId.$appId/route"
 import TeamView from "./view"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { RoleName } from "~/models/portal/sdk"
+import { RoleName, User } from "~/models/portal/sdk"
 import {
   sendTeamInviteEmail,
   sendTeamNewOwnerEmail,
@@ -14,14 +14,14 @@ import {
 import { requireUser } from "~/utils/user.server"
 
 export type TeamLoaderData = {
-  profile: Auth0Profile
+  profile: User
   accessToken: string
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
   const user = await requireUser(request)
   return json<TeamLoaderData>({
-    profile: user.profile,
+    profile: user.user,
     accessToken: user.accessToken,
   })
 }
@@ -61,7 +61,7 @@ export const action: ActionFunction = async ({ request, params }) => {
         portalUserID: portalUserId,
       })
 
-      const isLeaveApp = email === user.profile._json?.email
+      const isLeaveApp = email === user.profile.email
 
       return isLeaveApp
         ? redirect("/account")

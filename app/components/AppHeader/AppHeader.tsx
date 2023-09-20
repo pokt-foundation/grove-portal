@@ -1,13 +1,11 @@
 import { Burger, Flex, Group, MediaQuery } from "@pokt-foundation/pocket-blocks"
 import { Link } from "@remix-run/react"
-import React from "react"
-import { Auth0Profile } from "remix-auth-auth0"
 import OrganizationDrawer from "~/components/OrganizationDrawer"
 import OrganizationSelect from "~/components/OrganizationSelect"
-import { Account } from "~/models/portal/sdk"
+import { Account, User } from "~/models/portal/sdk"
 
 type HeaderProps = {
-  user?: Auth0Profile
+  user?: User
   accounts: Account[]
   opened: boolean
   hasNewInvites: boolean

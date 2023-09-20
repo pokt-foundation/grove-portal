@@ -56,8 +56,8 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
   const userCanCreateApp =
     permissions.includes(Permissions.AppsUnlimited) ||
-    (user.profile.id &&
-      getRequiredClientEnvVar("GODMODE_ACCOUNTS")?.includes(user.profile.id)) ||
+    (user.user.auth0ID &&
+      getRequiredClientEnvVar("GODMODE_ACCOUNTS")?.includes(user.user.auth0ID)) ||
     underMaxApps()
 
   // ensure only users who can create new apps are allowed on this page

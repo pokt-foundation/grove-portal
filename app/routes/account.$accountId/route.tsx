@@ -11,6 +11,7 @@ import {
   GetUserAccountsQuery,
   PortalApp,
   PortalAppRole,
+  User,
 } from "~/models/portal/sdk"
 import { getErrorMessage } from "~/utils/catchError"
 import { LoaderDataStruct } from "~/utils/loader"
@@ -19,7 +20,7 @@ import { requireUser } from "~/utils/user.server"
 export type AccountIdLoaderData = {
   account: GetUserAccountQuery["getUserAccount"]
   accounts: GetUserAccountsQuery["getUserAccounts"]
-  user: Auth0Profile
+  user: User
   userRoles: PortalAppRole[]
 }
 
@@ -34,22 +35,22 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
     if (!account.getUserAccount) {
       throw new Error(
-        `Account ${params.accountId} not found for user ${user.portalUserId}`,
+        `Account ${params.accountId} not found for user ${user.user.portalUserID}`,
       )
     }
 
     const accounts = await portal.getUserAccounts()
     if (!accounts.getUserAccounts) {
-      throw new Error(`Accounts not found for user ${user.portalUserId}`)
+      throw new Error(`Accounts not found for user ${user.user.portalUserID}`)
     }
 
     return json<LoaderDataStruct<AccountIdLoaderData>>({
       data: {
         account: account.getUserAccount,
         accounts: accounts.getUserAccounts,
-        user: user.profile,
+        user: user.user,
         userRoles: account.getUserAccount.users.filter(
-          (u) => u.userID === user.portalUserId,
+          (u) => u.userID === user.user.portalUserID,
         )[0].accountUserAccess.portalAppRoles,
       },
       error: false,

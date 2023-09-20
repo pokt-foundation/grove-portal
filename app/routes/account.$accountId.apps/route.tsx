@@ -1,7 +1,6 @@
 import { Button, Grid } from "@pokt-foundation/pocket-blocks"
 import { json, LoaderFunction } from "@remix-run/node"
 import { Link, Outlet, useLoaderData, useNavigation, useParams } from "@remix-run/react"
-import { PocketUser } from "../api.user/route"
 import styles from "./styles.css"
 import FeedbackCard, {
   links as FeedbackCardLinks,
@@ -11,7 +10,7 @@ import CardList, { CardListItem, links as CardListLinks } from "~/components/Car
 import Loader, { links as LoaderLinks } from "~/components/Loader"
 import { useMatchesRoute } from "~/hooks/useMatchesRoute"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { EndpointsQuery, PendingEndpointsQuery } from "~/models/portal/sdk"
+import { EndpointsQuery, PendingEndpointsQuery, User } from "~/models/portal/sdk"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 import { MAX_USER_APPS } from "~/utils/pocketUtils"
 import {
@@ -36,7 +35,7 @@ export type AllAppsLoaderData = {
   pendingEndpoints: PendingEndpointsQuery | null
   portalUserId: string | undefined
   isEnterprise: boolean
-  user: PocketUser
+  user: User
 }
 
 export type AllAppsOutletContext = {
@@ -52,7 +51,7 @@ export const loader: LoaderFunction = async ({ request, context }) => {
     console.log(e)
   })
 
-  const userId = user.profile.id ? getPoktId(user.profile.id) : ""
+  const userId = user.user.auth0ID ? getPoktId(user.user.auth0ID) : ""
 
   const getPortalUserIdResponse = await portal.getPortalUserID().catch((e) => {
     console.log(e)
@@ -80,7 +79,7 @@ export const loader: LoaderFunction = async ({ request, context }) => {
     pendingEndpoints: pendingEndpointsResponse ?? null,
     portalUserId: portalUserId,
     isEnterprise,
-    user,
+    user: user.user,
   })
 }
 

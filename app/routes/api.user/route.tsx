@@ -1,29 +1,30 @@
 import { ActionFunction, LoaderFunction, json } from "@remix-run/node"
-import { Auth0ExtraParams, Auth0Profile } from "remix-auth-auth0"
+import { Auth0ExtraParams } from "remix-auth-auth0"
 import { Language } from "~/context/TranslateContext"
 import { UserPreference, defaultUserPreference } from "~/context/UserContext"
+import { User } from "~/models/portal/sdk"
 import { userPrefCookie } from "~/utils/cookies.server"
-import { getUserProfile } from "~/utils/user.server"
+import { requireUser } from "~/utils/user.server"
 
 export type PocketUser = {
-  profile: Auth0Profile
+  profile: User
   extraParams: Auth0ExtraParams
   accessToken: string
   refreshToken: string
 }
 
 export interface UserLoaderActionData {
-  profile: Auth0Profile | undefined
+  profile: User | undefined
   preferences: UserPreference
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
-  const userProfile = await getUserProfile(request)
+  const user = await requireUser(request)
   const cookieHeader = request.headers.get("Cookie")
   const cookie = (await userPrefCookie.parse(cookieHeader)) || defaultUserPreference
 
   const data = {
-    profile: userProfile,
+    profile: user.user,
     preferences: cookie,
   }
 
@@ -31,7 +32,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 }
 
 export const action: ActionFunction = async ({ request }) => {
-  const userProfile = await getUserProfile(request)
+  const user = await requireUser(request)
   const bodyParams = await request.formData()
   const cookieHeader = request.headers.get("Cookie")
   const cookie: UserPreference =
@@ -54,7 +55,7 @@ export const action: ActionFunction = async ({ request }) => {
   }
 
   const data = {
-    profile: userProfile,
+    profile: user.user,
     preferences: cookie,
   }
 

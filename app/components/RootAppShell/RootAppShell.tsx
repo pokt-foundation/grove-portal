@@ -1,14 +1,13 @@
 import { AppShell, Container, Header } from "@pokt-foundation/pocket-blocks"
 import React, { ReactNode, useMemo, useState } from "react"
-import { Auth0Profile } from "remix-auth-auth0"
 import { AppHeader } from "~/components/AppHeader"
 import { Sidebar } from "~/components/Sidebar"
-import { Account, PortalApp } from "~/models/portal/sdk"
+import { Account, PortalApp, User } from "~/models/portal/sdk"
 import { useRoot } from "~/root/hooks/useRoot"
 import useCommonStyles from "~/styles/commonStyles"
 
 type RootAppShellProps = {
-  user: Auth0Profile
+  user: User
   apps?: PortalApp[]
   children: ReactNode
   accounts: Account[]

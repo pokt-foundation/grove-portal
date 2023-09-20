@@ -5,8 +5,8 @@ import { getPoktId, requireUser } from "~/utils/user.server"
 
 export const action: ActionFunction = async ({ request }) => {
   const user = await requireUser(request)
-  invariant(user.profile.id && user.profile.emails, "user not found")
-  const userId = getPoktId(user.profile.id)
+  invariant(user.user.auth0ID && user.user.email, "user not found")
+  const userId = getPoktId(user.user.auth0ID)
   const url = new URL(request.url)
   const defaultReturnPath = "/account"
   const formData = await request.formData()
@@ -14,7 +14,7 @@ export const action: ActionFunction = async ({ request }) => {
   const returnPath = returnPathParam ?? defaultReturnPath
   const returnUrl = `${url.origin}${returnPath}`
 
-  const uEmail = user?.profile?._json?.email ?? ""
+  const uEmail = user.user.email ?? ""
   const customer = await getCustomer(uEmail, userId)
 
   if (customer) {

@@ -19,11 +19,11 @@ import {
   LuUser2,
 } from "react-icons/lu"
 import { RiDiscordLine } from "react-icons/ri"
-import { Auth0Profile } from "remix-auth-auth0"
 import Identicon from "~/components/Identicon"
+import { User } from "~/models/portal/sdk"
 
 type OrganizationDrawerProps = {
-  user?: Auth0Profile
+  user?: User
   hasNewInvites: boolean
 }
 
@@ -108,12 +108,12 @@ const OrganizationDrawer = ({ user, hasNewInvites }: OrganizationDrawerProps) =>
           <Group noWrap pt={4} w={252}>
             <Identicon
               avatar
-              alt={`${user.displayName ?? "user"} profile picture`}
-              seed={user.id ?? "user default"}
+              alt={`${user.portalUserID ?? "user"} profile picture`}
+              seed={user.portalUserID ?? "user default"}
               type="user"
             />
             <Text truncate fz={12}>
-              {user?.displayName}
+              {user?.email}
             </Text>
           </Group>
         }
@@ -177,8 +177,8 @@ const OrganizationDrawer = ({ user, hasNewInvites }: OrganizationDrawerProps) =>
         >
           <Identicon
             avatar
-            alt={`${user.name ?? "user"} profile picture`}
-            seed={user.id ?? "user default"}
+            alt={`${user.portalUserID ?? "user"} profile picture`}
+            seed={user.portalUserID ?? "user default"}
             type="user"
           />
         </Indicator>

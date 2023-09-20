@@ -6,7 +6,7 @@ import { profileMockData } from "~/models/portal/portal.data"
 
 describe.skip("<ProfileView />", () => {
   it("renders", () => {
-    render(<ProfileView profile={profile} />)
+    render(<ProfileView user={profileMockData} />)
 
     expect(screen.getByRole("heading", { name: /User Profile/i })).toBeInTheDocument()
     expect(screen.getByLabelText(/Email Address/i)).toBeInTheDocument()

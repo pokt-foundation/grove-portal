@@ -28,7 +28,7 @@ const getMailgunTemplate = (
   variables: { [key: string]: string },
 ) => {
   return {
-    from: "Pocket Portal <postmaster@pokt.network>",
+    from: "Pocket Portal <portal@grove.city>",
     to,
     subject,
     template,
@@ -47,10 +47,15 @@ export const sendEmail = async (
 }
 
 export const sendTeamInviteEmail = async (email: string, app: string) => {
-  return await sendEmail(email, "Your invite to POKT Portal", EmailTemplates.TeamInvite, {
-    app: app,
-    invite_link: "https://www.portal.pokt.network/dashboard/apps",
-  })
+  return await sendEmail(
+    email,
+    "Your invite to Grove Portal",
+    EmailTemplates.TeamInvite,
+    {
+      app: app,
+      invite_link: "https://www.portal.grove.city/dashboard/apps",
+    },
+  )
 }
 export const sendTeamUserRemovedEmail = async (email: string, app: string) => {
   return await sendEmail(

@@ -4,6 +4,7 @@ import { useMantineTheme } from "@pokt-foundation/pocket-blocks"
 import { UserLBDailyRelayBucket } from "@pokt-foundation/portal-types"
 import { formatNumberToSICompact } from "./formattingUtils"
 import { norm } from "./mathUtils"
+import { PortalApp } from "~/models/portal/sdk"
 
 const ONE_MILLION = 1000000
 const ONE_SECOND = 1 // Data for graphs come in second
@@ -184,4 +185,34 @@ export function formatLatencyValuesForGraphing(
     labels,
     scales,
   }
+}
+
+export const getAppAcceptedValue = (app: PortalApp, userId: string) => {
+  const user = app.users.find((user) => user.userID === userId)
+
+  if (user) {
+    const acceptedEntry = user.accountUserAccess.portalAppsAccepted.find(
+      (entry) => entry.portalAppID === app.id,
+    )
+
+    return acceptedEntry ? acceptedEntry.accepted : false
+  }
+
+  return false
+}
+
+export const getUserRole = (app: PortalApp, userId: string) => {
+  const user = app.users.find((user) => user.userID === userId)
+
+  if (user) {
+    const role = user.accountUserAccess.portalAppRoles.find(
+      (role) => role.portalAppID === app.id,
+    )
+
+    if (role) {
+      return role.roleName
+    }
+  }
+
+  return null
 }

@@ -2,11 +2,16 @@ import { Box, SimpleGrid } from "@pokt-foundation/pocket-blocks"
 import AppPlanLatestInvoiceCard from "./components/AppPlanLatestInvoiceCard"
 import AppPlanOverviewCard from "./components/AppPlanOverviewCard"
 import { AppPlanLoaderData } from "./route"
-import { PayPlanType } from "~/models/portal/sdk"
+import { PayPlanType, RoleNameV2 } from "~/models/portal/sdk"
+import { getUserRole } from "~/utils/applicationUtils"
 import { getPlanName } from "~/utils/utils"
 
 export const PlanView = (data: AppPlanLoaderData) => {
-  const { app, latestInvoice, latestInvoiceRelays, subscription, usageRecords } = data
+  const { app, latestInvoice, latestInvoiceRelays, subscription, usageRecords, user } =
+    data
+
+  const userRole = getUserRole(app, user.portalUserID)
+
   return (
     <Box py={20}>
       {app.legacyFields.planType !== PayPlanType.PayAsYouGoV0 && (
@@ -21,6 +26,7 @@ export const PlanView = (data: AppPlanLoaderData) => {
             app={app}
             subscription={subscription}
             usageRecords={usageRecords}
+            userRole={userRole as RoleNameV2}
           />
         )}
         {latestInvoice && latestInvoiceRelays && usageRecords && (

@@ -4,20 +4,23 @@ import { Form, useLocation } from "@remix-run/react"
 import React from "react"
 import { LuArrowUpRight, LuStopCircle } from "react-icons/lu"
 import { TitledCard } from "~/components/TitledCard"
-import { PortalApp } from "~/models/portal/sdk"
+import { PortalApp, RoleNameV2 } from "~/models/portal/sdk"
 import { Stripe } from "~/models/stripe/stripe.server"
 import useSubscriptionModals from "~/routes/account.$accountId.$appId/hooks/useSubscriptionModals"
 import useCommonStyles from "~/styles/commonStyles"
 import { dayjs } from "~/utils/dayjs"
+import { PLAN_NAME } from "~/utils/utils"
 
 interface AppPlanOverviewCardProps {
   app: PortalApp
+  userRole: RoleNameV2
   subscription: Stripe.Subscription
   usageRecords: Stripe.ApiList<Stripe.UsageRecordSummary>
 }
 
 export default function AppPlanOverviewCard({
   app,
+  userRole,
   subscription,
   usageRecords,
 }: AppPlanOverviewCardProps) {
@@ -28,12 +31,20 @@ export default function AppPlanOverviewCard({
 
   const cardItems = [
     {
+      label: "Current Plan",
+      value: PLAN_NAME[app.legacyFields.planType] ?? "Legacy",
+    },
+    {
       label: "Subscription",
       value: subscription.id,
     },
     {
       label: "Status",
       value: subscription.status.replace(/^\w/, (char) => char.toUpperCase()),
+    },
+    {
+      label: "Your Role",
+      value: userRole.toLowerCase().replace(/^\w/, (char) => char.toUpperCase()),
     },
     {
       label: "Total Relays on this Billing Period",
@@ -70,11 +81,7 @@ export default function AppPlanOverviewCard({
               >
                 Stop subscription
               </Button>
-              <Button
-                color="green"
-                rightIcon={<LuArrowUpRight size={18} />}
-                type="submit"
-              >
+              <Button rightIcon={<LuArrowUpRight size={18} />} type="submit">
                 Manage in Stripe
               </Button>
             </Group>

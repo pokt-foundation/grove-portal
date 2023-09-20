@@ -58,7 +58,6 @@ export default function AppPlanLatestInvoiceCard({
         ))}
         <Group grow spacing="md">
           <Button
-            color="green"
             component="a"
             href={invoice.invoice_pdf ?? ""}
             rightIcon={<LuDownload size={18} />}
@@ -66,7 +65,6 @@ export default function AppPlanLatestInvoiceCard({
             Download
           </Button>
           <Button
-            color="green"
             component="a"
             href={invoice.hosted_invoice_url ?? ""}
             rel="noreferrer"

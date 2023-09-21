@@ -1,9 +1,9 @@
 import { Group, MantineTheme, Text } from "@pokt-foundation/pocket-blocks"
 import { Emoji } from "emoji-picker-react"
-import React from "react"
+import { useMemo } from "react"
 import { DataTable } from "~/components/DataTable"
 import Identicon from "~/components/Identicon"
-import { PortalApp, User } from "~/models/portal/sdk"
+import { PortalApp, RoleNameV2, User } from "~/models/portal/sdk"
 import { DEFAULT_APPMOJI } from "~/routes/account_.$accountId.create/components/AppmojiPicker"
 import InvitedAppAction from "~/routes/user.invited-apps/components/InvitedAppAction"
 import { getAppAcceptedValue, getUserRole } from "~/utils/applicationUtils"
@@ -11,13 +11,16 @@ import { getAppAcceptedValue, getUserRole } from "~/utils/applicationUtils"
 type InvitedAppsTableProps = { apps: PortalApp[]; user: User }
 
 const InvitedAppsTable = ({ apps, user }: InvitedAppsTableProps) => {
-  const appsData = apps
-    .map((app) => ({
-      ...app,
-      accepted: getAppAcceptedValue(app, user.portalUserID),
-      role: getUserRole(app, user.portalUserID),
-    }))
-    .sort((a, b) => Number(a.accepted) - Number(b.accepted))
+  const appsData = useMemo(() => {
+    return apps
+      .map((app) => ({
+        ...app,
+        accepted: getAppAcceptedValue(app, user.portalUserID),
+        role: getUserRole(app, user.portalUserID),
+      }))
+      .sort((a, b) => Number(a.accepted) - Number(b.accepted))
+      .filter((app) => app.role !== RoleNameV2.Owner)
+  }, [apps, user])
 
   return (
     <DataTable

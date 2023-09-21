@@ -8,7 +8,7 @@ describe.skip("<SecurityView />", () => {
   it("renders", () => {
     render(
       <SecurityView
-        actionData={{ data: { app: app }, error: false, message: "" }}
+        actionData={{ data: { app: app, length: 10 }, error: false, message: "" }}
         app={app}
         blockchains={blockchains}
       />,

@@ -107,6 +107,11 @@ export const Application = () => {
         message: "Favorite chain updated",
       })
     }
+    if (actionData.error) {
+      showNotification({
+        message: actionData.message,
+      })
+    }
   }, [actionData])
 
   return (

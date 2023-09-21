@@ -7,5 +7,5 @@ export type LoaderDataStruct<T> =
   | {
       data: null
       error: true
-      message?: string
+      message: string
     }

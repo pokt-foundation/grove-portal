@@ -1,6 +1,5 @@
 import { ActionFunction, json, MetaFunction } from "@remix-run/node"
 import { useActionData, useOutletContext } from "@remix-run/react"
-import { WhiteList } from "mailgun.js/suppressions"
 import { useEffect } from "react"
 import invariant from "tiny-invariant"
 import { AppIdOutletContext } from "../account.$accountId.$appId/route"
@@ -10,7 +9,6 @@ import {
   PortalApp,
   UpdatePortalApp,
   Whitelists,
-  WhitelistsObject,
   WhitelistType,
 } from "~/models/portal/sdk"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
@@ -26,6 +24,7 @@ export const meta: MetaFunction = () => {
 
 export type SecurityActionData = {
   app: PortalApp
+  length: number
 }
 
 export const action: ActionFunction = async ({ request, params }) => {
@@ -40,60 +39,63 @@ export const action: ActionFunction = async ({ request, params }) => {
     appID: appId,
   }
 
-  const secretKeyRequired = formData.get("secretKeyRequired")
-  const whitelistJson = formData.get("whitelist")
-
-  if (secretKeyRequired) {
-    invariant(typeof secretKeyRequired === "string", "secretKeyRequired not found")
-
-    input.appSettings = {
-      secretKeyRequired: secretKeyRequired === "on",
-    }
-  }
-
-  if (whitelistJson) {
-    invariant(typeof whitelistJson === "string", "whitelist not found")
-    const whitelist: Whitelists = JSON.parse(whitelistJson)
-    input.whitelists = {
-      appWhitelists: [
-        {
-          type: WhitelistType.Origins,
-          values: whitelist.origins,
-        },
-        {
-          type: WhitelistType.Blockchains,
-          values: whitelist.blockchains,
-        },
-        {
-          type: WhitelistType.UserAgents,
-          values: whitelist.userAgents,
-        },
-      ],
-      chainWhitelists: [
-        {
-          type: WhitelistType.Contracts,
-          values: whitelist.contracts.map((contract) => ({
-            chainID: contract?.blockchainID,
-            values: contract?.contracts,
-          })),
-        },
-        {
-          type: WhitelistType.Methods,
-          values: whitelist.methods.map((contract) => ({
-            chainID: contract?.blockchainID,
-            values: contract?.methods,
-          })),
-        },
-      ],
-    }
-  }
-
   try {
+    const secretKeyRequired = formData.get("secretKeyRequired")
+    const whitelistJson = formData.get("whitelist")
+
+    if (secretKeyRequired) {
+      invariant(typeof secretKeyRequired === "string", "secretKeyRequired not found")
+
+      input.appSettings = {
+        secretKeyRequired: secretKeyRequired === "on",
+      }
+    }
+
+    if (whitelistJson) {
+      invariant(typeof whitelistJson === "string", "whitelist not found")
+      const whitelist: Whitelists = JSON.parse(whitelistJson)
+      input.whitelists = {
+        appWhitelists: [
+          {
+            type: WhitelistType.Origins,
+            values: whitelist.origins,
+          },
+          {
+            type: WhitelistType.Blockchains,
+            values: whitelist.blockchains,
+          },
+          {
+            type: WhitelistType.UserAgents,
+            values: whitelist.userAgents,
+          },
+        ],
+        chainWhitelists: [
+          {
+            type: WhitelistType.Contracts,
+            values: whitelist.contracts.map((contract) => ({
+              chainID: contract?.blockchainID,
+              values: contract?.contracts,
+            })),
+          },
+          {
+            type: WhitelistType.Methods,
+            values: whitelist.methods.map((contract) => ({
+              chainID: contract?.blockchainID,
+              values: contract?.methods,
+            })),
+          },
+        ],
+      }
+    }
+
     const response = await portal.updateUserPortalApp({ input })
+
+    console.log(response)
 
     return json<LoaderDataStruct<SecurityActionData>>({
       data: {
         app: response.updateUserPortalApp as PortalApp,
+        length: JSON.stringify(response).length,
       },
       error: false,
     })

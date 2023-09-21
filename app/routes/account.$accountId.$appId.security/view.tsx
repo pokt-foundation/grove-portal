@@ -3,7 +3,7 @@ import { showNotification } from "@mantine/notifications"
 import { Box } from "@pokt-foundation/pocket-blocks"
 import { useFetcher } from "@remix-run/react"
 import { useReducer, useEffect } from "react"
-import { SecurityActionData } from "./route"
+import { action, SecurityActionData } from "./route"
 import { DEFAULT_WHITELISTS, securityReducer } from "./utils/stateReducer"
 import {
   BlockchainsQuery,
@@ -34,28 +34,36 @@ export const SecurityView = ({ actionData, app, blockchains }: SecurityViewProps
 
   useEffect(() => {
     console.log(state)
-
     // stop it from posting on initial load
-
-    // fetcher.submit(
-    //   {
-    //     whitelist: JSON.stringify(state),
-    //   },
-    //   {
-    //     method: "post",
-    //   },
-    // )
-  }, [fetcher, state])
+    fetcher.submit(
+      {
+        whitelist: JSON.stringify(state),
+      },
+      {
+        method: "post",
+      },
+    )
+  }, [state])
 
   useEffect(() => {
     if (!actionData) return
 
-    if ((actionData.data as SecurityActionData).app) {
+    if (!actionData.error) {
       showNotification({
         message: "Security setting successfully updated",
       })
     }
   }, [actionData])
+
+  useEffect(() => {
+    if (!fetcher.data) return
+
+    if (!fetcher.data.error) {
+      showNotification({
+        message: "Security setting successfully updated",
+      })
+    }
+  }, [fetcher.data])
 
   return (
     <Box>

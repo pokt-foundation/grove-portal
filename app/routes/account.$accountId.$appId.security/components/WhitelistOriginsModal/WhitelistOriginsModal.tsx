@@ -9,14 +9,19 @@ import {
   TextInput,
 } from "@pokt-foundation/pocket-blocks"
 import { useNavigation } from "@remix-run/react"
-import React, { useState } from "react"
+import React, { Dispatch, useState } from "react"
+import { SecurityReducerActions } from "../../view"
 import ModalHeader from "~/components/ModalHeader"
 import PortalLoader from "~/components/PortalLoader"
 import AddSettingsButton from "~/routes/account.$accountId.$appId.security/components/AddSettingsButton"
 import SimpleStringTable from "~/routes/account.$accountId.$appId.security/components/SimpleStringTable"
 import useCommonStyles from "~/styles/commonStyles"
 
-const WhitelistOriginsModal = () => {
+type WhitelistOriginsModalProps = {
+  dispatch: Dispatch<SecurityReducerActions>
+}
+
+const WhitelistOriginsModal = ({ dispatch }: WhitelistOriginsModalProps) => {
   const { state } = useNavigation()
   const { classes: commonClasses } = useCommonStyles()
   // const { appId, accountId } = useParams()
@@ -34,10 +39,9 @@ const WhitelistOriginsModal = () => {
     setInputWhitelistOrigin("")
   }
 
-  // TODO: Submit origins
-  // const submitWhitelistOrigins = () => {
-  //   fetcher.submit(....)
-  // }
+  const handleSave = () => {
+    dispatch({ type: "blockchains-add", payload: selectedWhitelistOrigins })
+  }
 
   return (
     <>
@@ -91,6 +95,7 @@ const WhitelistOriginsModal = () => {
               px="xs"
               type="submit"
               w="156px"
+              onClick={handleSave}
             >
               Save
             </Button>

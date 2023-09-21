@@ -1,15 +1,20 @@
 import { Box, Stack, Text } from "@pokt-foundation/pocket-blocks"
-import React from "react"
+import React, { Dispatch } from "react"
+import { SecurityReducerActions } from "../../view"
 import useModals from "~/hooks/useModals"
 import AddSettingsButton from "~/routes/account.$accountId.$appId.security/components/AddSettingsButton"
 import SimpleStringTable from "~/routes/account.$accountId.$appId.security/components/SimpleStringTable"
 import WhitelistUserAgentsModal from "~/routes/account.$accountId.$appId.security/components/WhitelistUserAgentsModal"
 
 type WhitelistUserAgentsProps = {
+  dispatch: Dispatch<SecurityReducerActions>
   whitelistUserAgents: string[]
 }
 
-const WhitelistUserAgents = ({ whitelistUserAgents }: WhitelistUserAgentsProps) => {
+const WhitelistUserAgents = ({
+  dispatch,
+  whitelistUserAgents,
+}: WhitelistUserAgentsProps) => {
   const { openFullScreenModal } = useModals()
 
   return (
@@ -23,7 +28,7 @@ const WhitelistUserAgents = ({ whitelistUserAgents }: WhitelistUserAgentsProps) 
         <AddSettingsButton
           onClick={() =>
             openFullScreenModal({
-              children: <WhitelistUserAgentsModal />,
+              children: <WhitelistUserAgentsModal dispatch={dispatch} />,
             })
           }
         />

@@ -2,7 +2,8 @@ import { Divider } from "@mantine/core"
 import { closeAllModals } from "@mantine/modals"
 import { Button, Container, Group, LoadingOverlay } from "@pokt-foundation/pocket-blocks"
 import { useNavigation } from "@remix-run/react"
-import React, { useMemo, useState } from "react"
+import React, { Dispatch, useMemo, useState } from "react"
+import { SecurityReducerActions } from "../../view"
 import ChainsDropdown from "~/components/ChainsDropdown/ChainsDropdown"
 import ModalHeader from "~/components/ModalHeader"
 import PortalLoader from "~/components/PortalLoader"
@@ -13,11 +14,13 @@ import useCommonStyles from "~/styles/commonStyles"
 type ApprovedChainsModalProps = {
   blockchains: Blockchain[]
   approvedChainsIds: string[]
+  dispatch: Dispatch<SecurityReducerActions>
 }
 
 const ApprovedChainsModal = ({
   blockchains,
   approvedChainsIds,
+  dispatch,
 }: ApprovedChainsModalProps) => {
   const { state } = useNavigation()
   const { classes: commonClasses } = useCommonStyles()
@@ -40,10 +43,9 @@ const ApprovedChainsModal = ({
     setSelectedBlockchainsIds((ids) => ids.filter((id) => chainId !== id))
   }
 
-  // TODO: Submit chains ids
-  // const addApprovedChains = () => {
-  //   fetcher.submit(....)
-  // }
+  const handleSave = () => {
+    dispatch({ type: "blockchains-add", payload: selectedBlockchainsIds })
+  }
 
   return (
     <>
@@ -89,6 +91,7 @@ const ApprovedChainsModal = ({
               px="xs"
               type="submit"
               w="156px"
+              onClick={handleSave}
             >
               Save
             </Button>

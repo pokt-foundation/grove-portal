@@ -1,5 +1,6 @@
 import { Box, Stack, Text } from "@pokt-foundation/pocket-blocks"
-import React from "react"
+import React, { Dispatch } from "react"
+import { SecurityReducerActions } from "../../view"
 import useModals from "~/hooks/useModals"
 import { Blockchain } from "~/models/portal/sdk"
 import AddSettingsButton from "~/routes/account.$accountId.$appId.security/components/AddSettingsButton"
@@ -9,9 +10,14 @@ import ChainsTable from "~/routes/account.$accountId.$appId.security/components/
 type ApprovedChainsFormProps = {
   approvedChainsIds: string[]
   blockchains: Blockchain[]
+  dispatch: Dispatch<SecurityReducerActions>
 }
 
-const ApprovedChains = ({ approvedChainsIds, blockchains }: ApprovedChainsFormProps) => {
+const ApprovedChains = ({
+  approvedChainsIds,
+  blockchains,
+  dispatch,
+}: ApprovedChainsFormProps) => {
   const { openFullScreenModal } = useModals()
 
   return (
@@ -26,6 +32,7 @@ const ApprovedChains = ({ approvedChainsIds, blockchains }: ApprovedChainsFormPr
                 <ApprovedChainsModal
                   approvedChainsIds={approvedChainsIds}
                   blockchains={blockchains}
+                  dispatch={dispatch}
                 />
               ),
             })

@@ -1,7 +1,7 @@
-import { useFetcher } from ".pnpm/react-router-dom@6.11.0_biqbaboplfbrettd7655fr4n2y/node_modules/react-router-dom"
 import { Divider } from "@mantine/core"
 import { showNotification } from "@mantine/notifications"
 import { Box } from "@pokt-foundation/pocket-blocks"
+import { useFetcher } from "@remix-run/react"
 import { useReducer, useEffect } from "react"
 import { SecurityActionData } from "./route"
 import { DEFAULT_WHITELISTS, securityReducer } from "./utils/stateReducer"

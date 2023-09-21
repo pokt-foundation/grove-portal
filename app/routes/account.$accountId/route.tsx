@@ -1,6 +1,5 @@
 import { json, LoaderFunction } from "@remix-run/node"
 import { Outlet, useLoaderData } from "@remix-run/react"
-import { Auth0Profile } from "remix-auth-auth0"
 import invariant from "tiny-invariant"
 import ErrorView from "~/components/ErrorView"
 import RootAppShell from "~/components/RootAppShell/RootAppShell"
@@ -55,7 +54,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
         hasPendingInvites: userPendingApps.getUserPortalApps.length > 0,
         userRoles: account.getUserAccount.users.filter(
           (u) => u.userID === user.user.portalUserID,
-        )[0].accountUserAccess.portalAppRoles,
+        )[0].portalAppRoles,
       },
       error: false,
     })
@@ -81,7 +80,7 @@ export default function AccountId() {
   return (
     <RootAppShell
       accounts={accounts as Account[]}
-      apps={account.portalApps?.filter((app) => !app?.deleted) as PortalApp[]}
+      apps={account.portalApps as PortalApp[]}
       hasPendingInvites={hasPendingInvites}
       user={user}
     >

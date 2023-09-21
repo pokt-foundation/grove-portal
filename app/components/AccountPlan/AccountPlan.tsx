@@ -67,10 +67,10 @@ export const AccountPlan = ({ type, onContinue }: AccountPlanProps) => {
       shadow="sm"
       sx={(theme: MantineTheme) => ({
         ...(theme.colorScheme === "dark" && {
-          borderColor: isFree ? theme.colors.gray[8] : theme.colors.blue[7],
+          borderColor: isFree ? theme.colors.gray[8] : theme.colors.green[7],
         }),
         ...(theme.colorScheme === "light" && {
-          borderColor: isFree ? theme.colors.gray[3] : theme.colors.blue[7],
+          borderColor: isFree ? theme.colors.gray[3] : theme.colors.green[7],
         }),
       })}
       w="360px"

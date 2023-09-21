@@ -1,31 +1,39 @@
 import {
-  ActionIcon,
   Avatar,
   Flex,
   Group,
   MantineTheme,
-  Menu,
   Select,
   Text,
 } from "@pokt-foundation/pocket-blocks"
-import { LuMinusCircle, LuMoreHorizontal, LuUser } from "react-icons/lu"
+import { LuUser } from "react-icons/lu"
 import { DataTable } from "~/components/DataTable"
-import { ProcessedEndpoint, RoleName } from "~/models/portal/sdk"
+import { PortalApp, RoleName, RoleNameV2, User } from "~/models/portal/sdk"
+import TeamMemberAction from "~/routes/account.$accountId.$appId.team/components/TeamMemberAction"
 import useTeamModals from "~/routes/account.$accountId.$appId.team/hooks/useTeamModals"
-import useCommonStyles from "~/styles/commonStyles"
+import { getAppAcceptedValue, getUserRole } from "~/utils/applicationUtils"
 
-type TeamMembersTableProps = { endpoint: ProcessedEndpoint; userRole: RoleName | null }
+type TeamMembersTableProps = {
+  app: PortalApp
+  userRole: RoleNameV2 | null
+  user?: User
+}
 
-const TeamMembersTable = ({ endpoint, userRole }: TeamMembersTableProps) => {
-  const { users: members } = endpoint
-  const { classes: commonClasses } = useCommonStyles()
+const TeamMembersTable = ({ app, userRole, user }: TeamMembersTableProps) => {
+  const { openChangeRoleModal } = useTeamModals({ appId: app.id })
 
-  const { openRemoveUserModal, openChangeRoleModal } = useTeamModals({ endpoint })
+  const teamData = app.users
+    .map((user) => ({
+      ...user,
+      roleName: getUserRole(app, user.userID),
+      accepted: getAppAcceptedValue(app, user.userID),
+    }))
+    .sort((a, b) => Number(b.owner) - Number(a.owner))
 
   return (
     <DataTable
       columns={["Member", "Roles", "Status", ""]}
-      data={members.map(({ email, roleName, accepted }) => {
+      data={teamData.map(({ email, roleName, accepted, userID }, index) => {
         return {
           member: {
             element: (
@@ -39,9 +47,9 @@ const TeamMembersTable = ({ endpoint, userRole }: TeamMembersTableProps) => {
           },
           role: {
             element:
-              roleName === RoleName.Owner ? (
+              roleName === RoleNameV2.Owner ? (
                 <Text> Owner </Text>
-              ) : (
+              ) : userRole !== RoleNameV2.Member ? (
                 <Flex>
                   <Select
                     data={[
@@ -55,18 +63,21 @@ const TeamMembersTable = ({ endpoint, userRole }: TeamMembersTableProps) => {
                       },
                     ]}
                     defaultValue={roleName}
-                    disabled={!accepted || userRole === RoleName.Member}
+                    disabled={!accepted}
                     onChange={(value) =>
-                      value !== roleName && openChangeRoleModal(email, value as RoleName)
+                      value !== roleName &&
+                      openChangeRoleModal(email, userID, value as RoleName)
                     }
                   />
                 </Flex>
+              ) : (
+                <Text tt="capitalize"> {roleName?.toLowerCase()} </Text>
               ),
           },
           status: {
             element: (
               <Text>
-                {roleName === RoleName.Owner ? (
+                {roleName === RoleNameV2.Owner ? (
                   "-"
                 ) : (
                   <Text
@@ -82,34 +93,18 @@ const TeamMembersTable = ({ endpoint, userRole }: TeamMembersTableProps) => {
           },
           action: {
             element:
-              roleName !== RoleName.Owner ? (
-                <Flex justify="flex-end">
-                  <Menu>
-                    <Menu.Target>
-                      <ActionIcon
-                        className={commonClasses.grayOutlinedButton}
-                        radius="xl"
-                        size={40}
-                        variant="outline"
-                      >
-                        <LuMoreHorizontal />
-                      </ActionIcon>
-                    </Menu.Target>
-                    <Menu.Dropdown>
-                      <Menu.Item
-                        icon={<LuMinusCircle size={18} />}
-                        onClick={() => openRemoveUserModal(email)}
-                      >
-                        <Text>Remove</Text>
-                      </Menu.Item>
-                    </Menu.Dropdown>
-                  </Menu>
-                </Flex>
+              roleName !== RoleNameV2.Owner ? (
+                <TeamMemberAction
+                  appId={app.id}
+                  teamMember={teamData[index]}
+                  user={user}
+                  userRole={userRole}
+                />
               ) : null,
           },
         }
       })}
-      paginate={members.length > 10 ? { perPage: 10 } : false}
+      paginate={teamData.length > 10 ? { perPage: 10 } : false}
     />
   )
 }

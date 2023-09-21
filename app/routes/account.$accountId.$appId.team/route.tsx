@@ -1,11 +1,12 @@
 import { ActionFunction, json, LoaderFunction, redirect } from "@remix-run/node"
-import { useCatch, useNavigation, useOutletContext } from "@remix-run/react"
-import { Auth0Profile } from "remix-auth-auth0"
+import { useCatch, useOutletContext, useRouteLoaderData } from "@remix-run/react"
 import invariant from "tiny-invariant"
 import { AppIdOutletContext } from "../account.$accountId.$appId/route"
 import TeamView from "./view"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { RoleName, User } from "~/models/portal/sdk"
+import { AccountIdLoaderData } from "~/routes/account.$accountId/route"
+import { LoaderDataStruct } from "~/utils/loader"
 import {
   sendTeamInviteEmail,
   sendTeamNewOwnerEmail,
@@ -174,11 +175,12 @@ export const action: ActionFunction = async ({ request, params }) => {
 }
 
 export default function Team() {
-  const navigation = useNavigation()
-  // @ts-ignore
-  const { endpoint } = useOutletContext<AppIdOutletContext>()
+  const { app, userRole } = useOutletContext<AppIdOutletContext>()
+  const { data } = useRouteLoaderData(
+    "routes/account.$accountId",
+  ) as LoaderDataStruct<AccountIdLoaderData>
 
-  return <TeamView endpoint={endpoint} state={navigation.state} />
+  return <TeamView app={app} user={data?.user} userRole={userRole} />
 }
 
 export const CatchBoundary = () => {

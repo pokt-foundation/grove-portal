@@ -1,6 +1,6 @@
 import { Box, Stack, Text } from "@pokt-foundation/pocket-blocks"
 import React, { Dispatch } from "react"
-import { SecurityReducerActions } from "../../view"
+import { SecurityReducerActions } from "../../utils/stateReducer"
 import useModals from "~/hooks/useModals"
 import { Blockchain } from "~/models/portal/sdk"
 import AddSettingsButton from "~/routes/account.$accountId.$appId.security/components/AddSettingsButton"

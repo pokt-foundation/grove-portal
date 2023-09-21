@@ -10,7 +10,7 @@ import {
 } from "@pokt-foundation/pocket-blocks"
 import { useNavigation } from "@remix-run/react"
 import React, { Dispatch, useState } from "react"
-import { SecurityReducerActions } from "../../view"
+import { SecurityReducerActions } from "../../utils/stateReducer"
 import ModalHeader from "~/components/ModalHeader"
 import PortalLoader from "~/components/PortalLoader"
 import AddSettingsButton from "~/routes/account.$accountId.$appId.security/components/AddSettingsButton"

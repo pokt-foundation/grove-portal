@@ -122,7 +122,7 @@ const ChainWhitelistModal = ({
             <ChainWhitelistTable
               blockchainWhitelist={selectedWhiteLists}
               blockchains={blockchains}
-              onDelete={(chainId) => deleteSelectedChainWhitelist(chainId)}
+              onDelete={(chainId) => deleteSelectedChainWhitelist(chainId.blockchainID)}
             />
           )}
 

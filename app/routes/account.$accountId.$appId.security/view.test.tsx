@@ -6,7 +6,13 @@ import { app, blockchains } from "~/models/portal/portal.data"
 
 describe.skip("<SecurityView />", () => {
   it("renders", () => {
-    render(<SecurityView app={app} blockchains={blockchains} />)
+    render(
+      <SecurityView
+        actionData={{ data: { app: app, length: 10 }, error: false, message: "" }}
+        app={app}
+        blockchains={blockchains}
+      />,
+    )
     expect(
       screen.getByRole("heading", {
         level: 3,

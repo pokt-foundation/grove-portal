@@ -4,7 +4,7 @@ export type WhitelistContract = Pick<WhitelistContracts, "blockchainID" | "contr
 export type WhitelistMethod = Pick<WhitelistMethods, "blockchainID" | "methods">
 
 export type BlockchainWhitelist = {
-  blockchainId: string
+  blockchainID: string
   whitelistValue: string
 }
 
@@ -18,18 +18,10 @@ export const formatBlockchainWhitelist = <T extends WhitelistContract | Whitelis
     }
     const subArray = (curr[key] as unknown as string[]).reduce(
       (subPrev: BlockchainWhitelist[], subCurr) => {
-        return [...subPrev, { blockchainId: curr.blockchainID, whitelistValue: subCurr }]
+        return [...subPrev, { blockchainID: curr.blockchainID, whitelistValue: subCurr }]
       },
       [],
     )
     return [...prev, ...subArray]
   }, [])
 }
-
-// export const getSelectedBlockchains = (
-//   blockchains: Blockchain[],
-//   selectedBlockchainsIds: string[],
-// ) =>
-//   blockchains.filter(({ id: blockchainId }) =>
-//     selectedBlockchainsIds.some((id) => blockchainId === id),
-//   )

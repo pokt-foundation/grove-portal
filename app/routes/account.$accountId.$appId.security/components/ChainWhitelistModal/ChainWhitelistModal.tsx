@@ -11,7 +11,8 @@ import {
   CloseButton,
 } from "@pokt-foundation/pocket-blocks"
 import { useNavigation } from "@remix-run/react"
-import React, { useState } from "react"
+import React, { Dispatch, useState } from "react"
+import { SecurityReducerActions } from "../../utils/stateReducer"
 import Chain from "~/components/Chain"
 import ChainsDropdown from "~/components/ChainsDropdown/ChainsDropdown"
 import ModalHeader from "~/components/ModalHeader"
@@ -20,15 +21,20 @@ import { Blockchain } from "~/models/portal/sdk"
 import AddSettingsButton from "~/routes/account.$accountId.$appId.security/components/AddSettingsButton"
 import { whitelistInfo } from "~/routes/account.$accountId.$appId.security/components/ChainWhitelist"
 import ChainWhitelistTable from "~/routes/account.$accountId.$appId.security/components/ChainWhitelistTable"
-import { BlockchainWhitelist } from "~/routes/account.$accountId.$appId.security/utils"
+import { BlockchainWhitelist } from "~/routes/account.$accountId.$appId.security/utils/utils"
 import useCommonStyles from "~/styles/commonStyles"
 
 type ChainWhitelistModalProps = {
   blockchains: Blockchain[]
+  dispatch: Dispatch<SecurityReducerActions>
   type: "contracts" | "methods"
 }
 
-const ChainWhitelistModal = ({ blockchains, type }: ChainWhitelistModalProps) => {
+const ChainWhitelistModal = ({
+  blockchains,
+  dispatch,
+  type,
+}: ChainWhitelistModalProps) => {
   const { state } = useNavigation()
   const { classes: commonClasses } = useCommonStyles()
   // const { appId, accountId } = useParams()
@@ -39,25 +45,25 @@ const ChainWhitelistModal = ({ blockchains, type }: ChainWhitelistModalProps) =>
 
   const deleteSelectedChainWhitelist = (chainId: string) => {
     setSelectedWhiteLists((ids) =>
-      ids.filter(({ blockchainId }) => chainId !== blockchainId),
+      ids.filter(({ blockchainID }) => chainId !== blockchainID),
     )
   }
-  //
-  // TODO: Submit whitelist based on { type }
-  // const addChainWhitelist = () => {
-  //   fetcher.submit(....)
-  // }
 
   const addBlockchainWhiteList = () => {
     setSelectedWhiteLists((whitelists) => [
       ...whitelists,
       {
-        blockchainId: dropdownSelectedChain?.id as string,
+        blockchainID: dropdownSelectedChain?.id as string,
         whitelistValue: inputWhitelistValue,
       },
     ])
     setDropdownSelectedChain(undefined)
     setInputWhitelistValue("")
+  }
+
+  const handleSave = () => {
+    dispatch({ type: `${type}-add`, payload: selectedWhiteLists })
+    closeAllModals()
   }
 
   return (
@@ -116,7 +122,7 @@ const ChainWhitelistModal = ({ blockchains, type }: ChainWhitelistModalProps) =>
             <ChainWhitelistTable
               blockchainWhitelist={selectedWhiteLists}
               blockchains={blockchains}
-              onDelete={(chainId) => deleteSelectedChainWhitelist(chainId)}
+              onDelete={(chainId) => deleteSelectedChainWhitelist(chainId.blockchainID)}
             />
           )}
 
@@ -141,6 +147,7 @@ const ChainWhitelistModal = ({ blockchains, type }: ChainWhitelistModalProps) =>
               px="xs"
               type="submit"
               w="156px"
+              onClick={handleSave}
             >
               Save
             </Button>

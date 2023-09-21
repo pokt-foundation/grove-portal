@@ -9,14 +9,19 @@ import {
   TextInput,
 } from "@pokt-foundation/pocket-blocks"
 import { useNavigation } from "@remix-run/react"
-import React, { useState } from "react"
+import React, { Dispatch, useState } from "react"
+import { SecurityReducerActions } from "../../utils/stateReducer"
 import ModalHeader from "~/components/ModalHeader"
 import PortalLoader from "~/components/PortalLoader"
 import AddSettingsButton from "~/routes/account.$accountId.$appId.security/components/AddSettingsButton"
 import SimpleStringTable from "~/routes/account.$accountId.$appId.security/components/SimpleStringTable"
 import useCommonStyles from "~/styles/commonStyles"
 
-const WhitelistUserAgentsModal = () => {
+type WhitelistUserAgentsModalProps = {
+  dispatch: Dispatch<SecurityReducerActions>
+}
+
+const WhitelistUserAgentsModal = ({ dispatch }: WhitelistUserAgentsModalProps) => {
   const { state } = useNavigation()
   const { classes: commonClasses } = useCommonStyles()
   // const { appId, accountId } = useParams()
@@ -33,10 +38,10 @@ const WhitelistUserAgentsModal = () => {
     setInputUserAgent("")
   }
 
-  // TODO: Submit agents ids
-  // const submitUserAgents = () => {
-  //   fetcher.submit(....)
-  // }
+  const handleSave = () => {
+    dispatch({ type: "userAgents-add", payload: selectedUserAgents })
+    closeAllModals()
+  }
 
   return (
     <>
@@ -90,6 +95,7 @@ const WhitelistUserAgentsModal = () => {
               px="xs"
               type="submit"
               w="156px"
+              onClick={handleSave}
             >
               Save
             </Button>

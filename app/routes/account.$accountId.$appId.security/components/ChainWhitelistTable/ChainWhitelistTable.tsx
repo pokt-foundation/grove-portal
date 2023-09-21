@@ -10,13 +10,13 @@ import Chain from "~/components/Chain"
 import CopyTextButton from "~/components/CopyTextButton"
 import { DataTable } from "~/components/DataTable"
 import { Blockchain } from "~/models/portal/sdk"
-import { BlockchainWhitelist } from "~/routes/account.$accountId.$appId.security/utils"
+import { BlockchainWhitelist } from "~/routes/account.$accountId.$appId.security/utils/utils"
 import useCommonStyles from "~/styles/commonStyles"
 
 type ChainsTableProps = {
   blockchains: Blockchain[]
   blockchainWhitelist: BlockchainWhitelist[]
-  onDelete: (val: string) => void
+  onDelete: (val: BlockchainWhitelist) => void
 }
 
 const ChainWhitelistTable = ({
@@ -29,8 +29,9 @@ const ChainWhitelistTable = ({
 
   const data = useMemo(
     () =>
-      blockchainWhitelist.map(({ blockchainId, whitelistValue }) => {
-        const blockchain = blockchains.find((c) => c?.id === blockchainId)
+      blockchainWhitelist.map(({ blockchainID, whitelistValue }) => {
+        const blockchain = blockchains.find((c) => c?.id === blockchainID)
+
         return {
           ...blockchain,
           whitelistValue,
@@ -70,7 +71,12 @@ const ChainWhitelistTable = ({
                     radius="xl"
                     size={40}
                     variant="outline"
-                    onClick={() => onDelete(chain.id as string)}
+                    onClick={() =>
+                      onDelete({
+                        blockchainID: chain.id as string,
+                        whitelistValue: chain.whitelistValue,
+                      })
+                    }
                   >
                     <LuTrash2 size={18} />
                   </ActionIcon>

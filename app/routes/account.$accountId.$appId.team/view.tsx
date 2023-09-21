@@ -1,22 +1,22 @@
 import { Divider } from "@mantine/core"
 import { closeAllModals } from "@mantine/modals"
 import { Box, Button, Flex, Text, Title } from "@pokt-foundation/pocket-blocks"
-import { useActionData, useLoaderData } from "@remix-run/react"
-import { Transition } from "@remix-run/react/dist/transition"
-import React, { useEffect, useMemo, useState } from "react"
-import { ActionData, TeamLoaderData } from "./route"
+import { useActionData } from "@remix-run/react"
+import React, { useEffect, useState } from "react"
+import { ActionData } from "./route"
 import NotificationMessage, { NotificationType } from "~/components/NotificationMessage"
 import useModals from "~/hooks/useModals"
-import { EndpointQuery, ProcessedEndpoint, RoleName } from "~/models/portal/sdk"
+import { PortalApp, RoleNameV2, User } from "~/models/portal/sdk"
 import InviteMemberFrom from "~/routes/account.$accountId.$appId.team/components/InviteMemberForm"
 import TeamMembersTable from "~/routes/account.$accountId.$appId.team/components/TeamMembersTable"
 
 type TeamViewProps = {
-  state: Transition["state"]
-  endpoint: EndpointQuery["endpoint"]
+  app: PortalApp
+  userRole: RoleNameV2
+  user?: User
 }
 
-function TeamView({ state, endpoint }: TeamViewProps) {
+function TeamView({ app, userRole, user }: TeamViewProps) {
   const [notificationMessageProps, setNotificationMessageProps] =
     useState<NotificationType>({
       type: "info",
@@ -26,31 +26,11 @@ function TeamView({ state, endpoint }: TeamViewProps) {
     })
 
   const actionData = useActionData<ActionData>()
-  const { profile } = useLoaderData<TeamLoaderData>()
   const { openFullScreenModal } = useModals()
-  // const inviteFetcher = useFetcher()
-
-  // const handleResendInviteEmail = (email: string, app: string) => {
-  //   inviteFetcher.submit(
-  //     {
-  //       "email-address": email,
-  //       "app-name": app,
-  //       type: "resend",
-  //     },
-  //     {
-  //       method: "post",
-  //     },
-  //   )
-  // }
-
-  const userRole = useMemo(
-    () => endpoint?.users?.find(({ email }) => email === profile.email)?.roleName || null,
-    [endpoint, profile],
-  )
 
   const openInviteMemberModal = () =>
     openFullScreenModal({
-      children: <InviteMemberFrom endpointName={endpoint?.name} />,
+      children: <InviteMemberFrom endpointName={app.name} />,
     })
 
   useEffect(() => {
@@ -112,7 +92,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
     <Box>
       <Flex align="center" justify="space-between" my="xl">
         <Title order={5}>Team members</Title>
-        {userRole !== RoleName.Member && (
+        {userRole !== RoleNameV2.Member && (
           <Button size="md" onClick={openInviteMemberModal}>
             Invite new member
           </Button>
@@ -140,9 +120,7 @@ function TeamView({ state, endpoint }: TeamViewProps) {
         </NotificationMessage>
       )}
 
-      {endpoint && (
-        <TeamMembersTable endpoint={endpoint as ProcessedEndpoint} userRole={userRole} />
-      )}
+      <TeamMembersTable app={app} user={user} userRole={userRole} />
     </Box>
   )
 }

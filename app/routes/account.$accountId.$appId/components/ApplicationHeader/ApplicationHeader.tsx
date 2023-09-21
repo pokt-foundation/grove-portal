@@ -1,4 +1,4 @@
-import { Avatar, Badge, Group, Menu, Text } from "@pokt-foundation/pocket-blocks"
+import { Avatar, Badge, Box, Group, Menu, Text } from "@pokt-foundation/pocket-blocks"
 import { Link } from "@remix-run/react"
 import { Emoji } from "emoji-picker-react"
 import React from "react"
@@ -8,7 +8,7 @@ import ContextMenuTarget from "~/components/ContextMenuTarget"
 import { PayPlanType, PortalApp } from "~/models/portal/sdk"
 import DeleteApplication from "~/routes/account.$accountId.$appId/components/DeleteApplication"
 import { DEFAULT_APPMOJI } from "~/routes/account_.$accountId.create/components/AppmojiPicker"
-import { PLAN_NAME } from "~/utils/utils"
+import { getPlanName } from "~/utils/utils"
 
 type ApplicationHeaderProps = {
   app: PortalApp
@@ -18,16 +18,22 @@ const ApplicationHeader = ({ app }: ApplicationHeaderProps) => {
   return (
     <Group position="apart">
       <Group spacing="sm">
-        <Avatar color="dark" radius="xl" variant="outline">
+        <Avatar size="lg">
           <Emoji
-            size={14}
+            size={32}
             unified={app.appEmoji !== "" ? app.appEmoji : DEFAULT_APPMOJI}
           />
         </Avatar>
-        <Text fw={600} fz="md">
-          {app.name}
-        </Text>
-        <Badge>{PLAN_NAME[app.legacyFields.planType] ?? "Legacy"}</Badge>
+        <Box>
+          <Text fw={600} fz={24}>
+            {app.name}
+          </Text>
+          <Group spacing={8}>
+            <Text mr={8}>{getPlanName(app.legacyFields.planType)}</Text>
+            <Text>App ID</Text>
+            <Badge radius="sm">{app.id}</Badge>
+          </Group>
+        </Box>
       </Group>
 
       <Menu>

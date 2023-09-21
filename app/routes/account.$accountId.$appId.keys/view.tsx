@@ -46,29 +46,30 @@ const AppKeys = ({ app, userRole }: AppKeysProps) => {
       <Divider mt={28} />
 
       {secretKey && userRole !== RoleNameV2.Member && (
-        <Box px={40} py={20}>
-          <Text fw={600}>Secret Key</Text>
-          <Text fw={400} pt={8}>
-            Security feature for apps. If “Private Secret Key Required” is selected in the
-            security settings, the secret key will need to be sent along with the request
-            using HTTP Basic Authentication.
-          </Text>
-          <Group mt={20}>
-            <PasswordInput
-              readOnly
-              aria-label="Secret Key"
-              sx={(theme: MantineTheme) => ({
-                flex: 1,
-                backgroundColor: theme.colors.gray[9],
-              })}
-              value={secretKey}
-            />
-            <CopyTextButton value={secretKey} />
-          </Group>
-        </Box>
+        <>
+          <Box px={40} py={20}>
+            <Text fw={600}>Secret Key</Text>
+            <Text fw={400} pt={8}>
+              Security feature for apps. If “Private Secret Key Required” is selected in
+              the security settings, the secret key will need to be sent along with the
+              request using HTTP Basic Authentication.
+            </Text>
+            <Group mt={20}>
+              <PasswordInput
+                readOnly
+                aria-label="Secret Key"
+                sx={(theme: MantineTheme) => ({
+                  flex: 1,
+                  backgroundColor: theme.colors.gray[9],
+                })}
+                value={secretKey}
+              />
+              <CopyTextButton value={secretKey} />
+            </Group>
+          </Box>
+          <Divider mt={28} />
+        </>
       )}
-
-      <Divider mt={28} />
 
       {/* {publicKey && (
         <Box px={40} py={20}>

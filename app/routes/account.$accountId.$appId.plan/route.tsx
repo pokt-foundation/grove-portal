@@ -2,10 +2,10 @@ import { json, LoaderFunction, MetaFunction, redirect } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
 import { useEffect } from "react"
 import invariant from "tiny-invariant"
-import PlanView, { links as PlanViewLinks } from "./view"
+import PlanView from "./view"
 import ErrorView from "~/components/ErrorView"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { PortalApp } from "~/models/portal/sdk"
+import { PortalApp, User } from "~/models/portal/sdk"
 import { getRelays, RelayMetric } from "~/models/relaymeter/relaymeter.server"
 import { Stripe, stripe } from "~/models/stripe/stripe.server"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
@@ -14,10 +14,6 @@ import { dayjs } from "~/utils/dayjs"
 import { getRequiredServerEnvVar } from "~/utils/environment"
 import { LoaderDataStruct } from "~/utils/loader"
 import { requireUser } from "~/utils/user.server"
-
-export const links = () => {
-  return [...PlanViewLinks()]
-}
 
 export const meta: MetaFunction = () => {
   return {
@@ -31,6 +27,7 @@ export type AppPlanLoaderData = {
   usageRecords?: Stripe.ApiList<Stripe.UsageRecordSummary>
   latestInvoice?: Stripe.Invoice
   latestInvoiceRelays?: RelayMetric
+  user: User
 }
 
 export const loader: LoaderFunction = async ({ request, params }) => {
@@ -109,6 +106,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
         usageRecords,
         latestInvoice,
         latestInvoiceRelays,
+        user: user.user,
       },
       error: false,
     })

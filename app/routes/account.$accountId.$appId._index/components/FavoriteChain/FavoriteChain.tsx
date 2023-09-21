@@ -1,5 +1,6 @@
 import { ActionIcon } from "@mantine/core"
 import { Form } from "@remix-run/react"
+import { useState } from "react"
 import { RiStarFill, RiStarLine } from "react-icons/ri"
 import { Blockchain, Maybe } from "~/models/portal/sdk"
 
@@ -11,6 +12,8 @@ type FavoriteChainProps = {
 }
 
 export const FavoriteChain = ({ blockchain, favoriteChains }: FavoriteChainProps) => {
+  const [isFavorite, setIsFavorite] = useState(blockchain.favorite)
+
   return (
     <Form method="post">
       <input hidden readOnly name="isFavorite" value={String(!blockchain.favorite)} />
@@ -22,12 +25,13 @@ export const FavoriteChain = ({ blockchain, favoriteChains }: FavoriteChainProps
         value={JSON.stringify(favoriteChains) ?? "[]"}
       />
       <ActionIcon
-        c={blockchain.favorite ? "yellow" : "gray"}
+        c={isFavorite ? "yellow" : "gray"}
         size="xl"
         title={`Set blockchain ${blockchain.blockchain} as favorite`}
         type="submit"
+        onChange={() => setIsFavorite((s) => !s)}
       >
-        {blockchain.favorite ? <RiStarFill size={18} /> : <RiStarLine size={18} />}
+        {isFavorite ? <RiStarFill size={18} /> : <RiStarLine size={18} />}
       </ActionIcon>
     </Form>
   )

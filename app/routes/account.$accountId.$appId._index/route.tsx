@@ -1,23 +1,29 @@
 import { Divider } from "@mantine/core"
 import { useDebouncedValue } from "@mantine/hooks"
+import { showNotification } from "@mantine/notifications"
 import { Box, Flex, Input, Title } from "@pokt-foundation/pocket-blocks"
 import { ActionFunction, json, MetaFunction } from "@remix-run/node"
-import { useOutletContext } from "@remix-run/react"
+import { useActionData, useOutletContext } from "@remix-run/react"
 import { useEffect, useState } from "react"
 import { LuSearch } from "react-icons/lu"
 import invariant from "tiny-invariant"
 import { AppIdOutletContext } from "../account.$accountId.$appId/route"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { PortalAppEnvironment } from "~/models/portal/sdk"
+import { PortalApp, PortalAppEnvironment } from "~/models/portal/sdk"
 import AppEndpointsTable from "~/routes/account.$accountId.$appId._index/components/AppEndpointsTable"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { getErrorMessage } from "~/utils/catchError"
+import { LoaderDataStruct } from "~/utils/loader"
 import { requireUser } from "~/utils/user.server"
 
 export const meta: MetaFunction = () => {
   return {
     title: "Application Details",
   }
+}
+
+export type AppIdActionData = {
+  app: PortalApp
 }
 
 export const action: ActionFunction = async ({ request, params }) => {
@@ -68,9 +74,15 @@ export const action: ActionFunction = async ({ request, params }) => {
       )
     }
 
-    return null
+    return json<LoaderDataStruct<AppIdActionData>>({
+      data: {
+        app: udpateUserPortalAppResponse.updateUserPortalApp as PortalApp,
+      },
+      error: false,
+    })
   } catch (error) {
-    return json({
+    return json<LoaderDataStruct<AppIdActionData>>({
+      data: null,
       error: true,
       message: getErrorMessage(error),
     })
@@ -81,10 +93,26 @@ export const Application = () => {
   const { app, blockchains } = useOutletContext<AppIdOutletContext>()
   const [searchTerm, setSearchTerm] = useState("")
   const [debouncedSearchTerm] = useDebouncedValue(searchTerm, 200)
+  const actionData = useActionData() as LoaderDataStruct<AppIdActionData>
 
   useEffect(() => {
     trackEvent(AmplitudeEvents.AppDetailsView)
   }, [])
+
+  useEffect(() => {
+    if (!actionData) return
+
+    if (!actionData.error) {
+      showNotification({
+        message: "Favorite chain updated",
+      })
+    }
+    if (actionData.error) {
+      showNotification({
+        message: actionData.message,
+      })
+    }
+  }, [actionData])
 
   return (
     <Box>

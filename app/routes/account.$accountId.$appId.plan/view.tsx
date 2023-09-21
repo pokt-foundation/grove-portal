@@ -28,8 +28,8 @@ export const PlanView = (data: AppPlanLoaderData) => {
             title="Renew subscription"
             variant="outline"
           >
-            Your current plan is free. We are no longer charging you for relays. Upgrade
-            your plan to auto-scale.
+            Your current plan is free. We are no longer charging you for relays. Access to
+            your subscription will close after the end of your current billing period.
           </Alert>
         ) : (
           <FreeAppPlan app={app} />

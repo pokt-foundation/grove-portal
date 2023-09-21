@@ -16,7 +16,8 @@ import useCommonStyles from "~/styles/commonStyles"
 
 type AccountPlanProps = {
   type: PayPlanTypeV2.PayAsYouGoV0 | PayPlanTypeV2.FreetierV0
-  onContinue: () => void
+  onContinue?: () => void
+  disableFree?: boolean
 }
 
 const AutoScaleList = () => {
@@ -56,7 +57,11 @@ const FreeList = () => (
   </List>
 )
 
-export const AccountPlan = ({ type, onContinue }: AccountPlanProps) => {
+export const AccountPlan = ({
+  type,
+  onContinue,
+  disableFree = false,
+}: AccountPlanProps) => {
   const isFree = type === PayPlanTypeV2.FreetierV0
   const { classes: commonClasses } = useCommonStyles()
 
@@ -90,11 +95,12 @@ export const AccountPlan = ({ type, onContinue }: AccountPlanProps) => {
           fullWidth
           classNames={{ root: commonClasses.grayOutlinedButton }}
           color="gray"
+          disabled={disableFree}
           radius="xl"
           variant="outline"
           onClick={onContinue}
         >
-          Continue with Free
+          {disableFree ? "Current plan" : "Continue with Free"}
         </Button>
       ) : (
         <Button fullWidth radius="xl" onClick={onContinue}>

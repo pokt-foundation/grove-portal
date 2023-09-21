@@ -69,7 +69,7 @@ const InvitedAppAction = ({ app, user }: InvitedAppActionProps) => {
           >
             Decline
           </Button>
-          <Button color="green">Accept</Button>
+          <Button>Accept</Button>
         </>
       )}
     </Group>

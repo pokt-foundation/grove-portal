@@ -2,14 +2,14 @@ import { Divider } from "@mantine/core"
 import { Button, Group, Text, Stack, Box } from "@pokt-foundation/pocket-blocks"
 import { Form, useLocation } from "@remix-run/react"
 import React from "react"
-import { LuArrowUpRight, LuStopCircle } from "react-icons/lu"
+import { LuArrowUpRight, LuRepeat, LuStopCircle } from "react-icons/lu"
 import { TitledCard } from "~/components/TitledCard"
 import { PortalApp, RoleNameV2 } from "~/models/portal/sdk"
 import { Stripe } from "~/models/stripe/stripe.server"
 import useSubscriptionModals from "~/routes/account.$accountId.$appId/hooks/useSubscriptionModals"
 import useCommonStyles from "~/styles/commonStyles"
 import { dayjs } from "~/utils/dayjs"
-import { PLAN_NAME } from "~/utils/utils"
+import { getPlanName } from "~/utils/utils"
 
 interface AppPlanOverviewCardProps {
   app: PortalApp
@@ -27,16 +27,19 @@ export default function AppPlanOverviewCard({
   const location = useLocation()
   const { classes: commonClasses } = useCommonStyles()
 
-  const { openStopSubscriptionModal } = useSubscriptionModals()
+  const { openStopSubscriptionModal, openRenewSubscriptionModal } =
+    useSubscriptionModals()
+
+  const appPlanType = app.legacyFields.planType
 
   const cardItems = [
     {
-      label: "Current Plan",
-      value: PLAN_NAME[app.legacyFields.planType] ?? "Legacy",
-    },
-    {
       label: "Subscription",
       value: subscription.id,
+    },
+    {
+      label: "Current Plan",
+      value: getPlanName(appPlanType),
     },
     {
       label: "Status",
@@ -71,16 +74,28 @@ export default function AppPlanOverviewCard({
           <Form action="/api/stripe/portal-session" method="post">
             <input hidden defaultValue={location.pathname} name="return-path" />
             <Group grow spacing="md">
-              <Button
-                className={commonClasses.grayOutlinedButton}
-                color="gray"
-                rightIcon={<LuStopCircle size={18} />}
-                type="button"
-                variant="outline"
-                onClick={() => openStopSubscriptionModal(app)}
-              >
-                Stop subscription
-              </Button>
+              {appPlanType === "PAY_AS_YOU_GO_V0" ? (
+                <Button
+                  className={commonClasses.grayOutlinedButton}
+                  color="gray"
+                  rightIcon={<LuStopCircle size={18} />}
+                  type="button"
+                  variant="outline"
+                  onClick={() => openStopSubscriptionModal(app)}
+                >
+                  Stop subscription
+                </Button>
+              ) : (
+                <Button
+                  rightIcon={<LuRepeat size={18} />}
+                  type="button"
+                  variant="outline"
+                  onClick={() => openRenewSubscriptionModal(app)}
+                >
+                  Renew subscription
+                </Button>
+              )}
+
               <Button rightIcon={<LuArrowUpRight size={18} />} type="submit">
                 Manage in Stripe
               </Button>

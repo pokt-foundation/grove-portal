@@ -64,10 +64,10 @@ export function isLegacyPlan(planType: PayPlanType) {
 export const getPlanName = (planType: PayPlanType) => {
   switch (planType) {
     case PayPlanType.FreetierV0: {
-      return "Always Free"
+      return "Free"
     }
     case PayPlanType.PayAsYouGoV0: {
-      return "Pay As You Go"
+      return "Auto-Scale"
     }
     case PayPlanType.Enterprise: {
       return "Enterprise"

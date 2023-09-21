@@ -122,9 +122,6 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 export const AppPlanDetails = () => {
   const { data, error, message } = useLoaderData() as LoaderDataStruct<AppPlanLoaderData>
 
-  console.log("data")
-  console.log(data)
-
   useEffect(() => {
     trackEvent(AmplitudeEvents.AppPlanDetailsView)
   }, [])

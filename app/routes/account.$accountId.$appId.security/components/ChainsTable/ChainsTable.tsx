@@ -35,8 +35,8 @@ const ChainsTable = ({
 
   const selectedBlockChains = useMemo(
     () =>
-      blockchains.filter(({ id: blockchainId }) =>
-        selectedBlockchainsIds.some((id) => blockchainId === id),
+      blockchains.filter(({ id: blockchainID }) =>
+        selectedBlockchainsIds.some((id) => blockchainID === id),
       ),
     [blockchains, selectedBlockchainsIds],
   )

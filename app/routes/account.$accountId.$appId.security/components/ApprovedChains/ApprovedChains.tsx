@@ -43,7 +43,7 @@ const ApprovedChains = ({
         <ChainsTable
           blockchains={blockchains}
           selectedBlockchainsIds={approvedChainsIds}
-          onDeleteChain={() => console.log("DELETE")}
+          onDeleteChain={(id) => dispatch({ type: "blockchains-remove", payload: id })}
         />
       )}
     </Box>

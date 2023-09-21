@@ -1,11 +1,18 @@
 import { ActionFunction, json, MetaFunction } from "@remix-run/node"
 import { useActionData, useOutletContext } from "@remix-run/react"
+import { WhiteList } from "mailgun.js/suppressions"
 import { useEffect } from "react"
 import invariant from "tiny-invariant"
 import { AppIdOutletContext } from "../account.$accountId.$appId/route"
 import SecurityView from "./view"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { PortalApp, UpdatePortalApp, WhitelistsObject } from "~/models/portal/sdk"
+import {
+  PortalApp,
+  UpdatePortalApp,
+  Whitelists,
+  WhitelistsObject,
+  WhitelistType,
+} from "~/models/portal/sdk"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { getErrorMessage } from "~/utils/catchError"
 import { LoaderDataStruct } from "~/utils/loader"
@@ -46,8 +53,39 @@ export const action: ActionFunction = async ({ request, params }) => {
 
   if (whitelistJson) {
     invariant(typeof whitelistJson === "string", "whitelist not found")
-    const whitelist: WhitelistsObject = JSON.parse(whitelistJson)
-    input.whitelists = whitelist
+    const whitelist: Whitelists = JSON.parse(whitelistJson)
+    input.whitelists = {
+      appWhitelists: [
+        {
+          type: WhitelistType.Origins,
+          values: whitelist.origins,
+        },
+        {
+          type: WhitelistType.Blockchains,
+          values: whitelist.blockchains,
+        },
+        {
+          type: WhitelistType.UserAgents,
+          values: whitelist.userAgents,
+        },
+      ],
+      chainWhitelists: [
+        {
+          type: WhitelistType.Contracts,
+          values: whitelist.contracts.map((contract) => ({
+            chainID: contract?.blockchainID,
+            values: contract?.contracts,
+          })),
+        },
+        {
+          type: WhitelistType.Methods,
+          values: whitelist.methods.map((contract) => ({
+            chainID: contract?.blockchainID,
+            values: contract?.methods,
+          })),
+        },
+      ],
+    }
   }
 
   try {

@@ -29,7 +29,7 @@ const WhitelistOrigins = ({ dispatch, whitelistOrigins }: WhitelistOriginsProps)
       {whitelistOrigins.length > 0 && (
         <SimpleStringTable
           data={whitelistOrigins}
-          onDelete={() => console.log("DELETE")}
+          onDelete={(id) => dispatch({ type: "origins-remove", payload: id })}
         />
       )}
     </Box>

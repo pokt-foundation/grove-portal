@@ -40,7 +40,8 @@ const WhitelistOriginsModal = ({ dispatch }: WhitelistOriginsModalProps) => {
   }
 
   const handleSave = () => {
-    dispatch({ type: "blockchains-add", payload: selectedWhitelistOrigins })
+    dispatch({ type: "origins-add", payload: selectedWhitelistOrigins })
+    closeAllModals()
   }
 
   return (

@@ -9,40 +9,35 @@ import { LuTrash2 } from "react-icons/lu"
 import Chain from "~/components/Chain"
 import CopyTextButton from "~/components/CopyTextButton"
 import { DataTable } from "~/components/DataTable"
-import { Blockchain, WhitelistContractsV2, WhitelistMethodsV2 } from "~/models/portal/sdk"
-import { BlockchainWhitelist } from "~/routes/account.$accountId.$appId.security/utils"
+import { Blockchain } from "~/models/portal/sdk"
+import { BlockchainWhitelist } from "~/routes/account.$accountId.$appId.security/utils/utils"
 import useCommonStyles from "~/styles/commonStyles"
 
 type ChainsTableProps = {
   blockchains: Blockchain[]
-  blockchainWhitelist: WhitelistContractsV2[] | WhitelistMethodsV2[]
-  onDelete: (val: string) => void
-  type: "contracts" | "methods"
+  blockchainWhitelist: BlockchainWhitelist[]
+  onDelete: (val: BlockchainWhitelist) => void
 }
 
 const ChainWhitelistTable = ({
   blockchains,
   blockchainWhitelist,
   onDelete,
-  type,
 }: ChainsTableProps) => {
   const theme = useMantineTheme()
   const { classes: commonClasses } = useCommonStyles()
 
   const data = useMemo(
     () =>
-      blockchainWhitelist.map((item) => {
-        const blockchain = blockchains.find((c) => c?.id === item.blockchainID)
-
-        // @ts-ignore
-        const value = item[type]
+      blockchainWhitelist.map(({ blockchainID, whitelistValue }) => {
+        const blockchain = blockchains.find((c) => c?.id === blockchainID)
 
         return {
           ...blockchain,
-          whitelistValue: value,
+          whitelistValue,
         }
       }),
-    [blockchainWhitelist, blockchains, type],
+    [blockchainWhitelist, blockchains],
   )
 
   return (
@@ -76,7 +71,12 @@ const ChainWhitelistTable = ({
                     radius="xl"
                     size={40}
                     variant="outline"
-                    onClick={() => onDelete(chain.id as string)}
+                    onClick={() =>
+                      onDelete({
+                        blockchainID: chain.id as string,
+                        whitelistValue: chain.whitelistValue,
+                      })
+                    }
                   >
                     <LuTrash2 size={18} />
                   </ActionIcon>

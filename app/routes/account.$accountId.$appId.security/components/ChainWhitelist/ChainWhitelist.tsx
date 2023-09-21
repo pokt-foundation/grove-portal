@@ -1,6 +1,7 @@
 import { Box, Stack, Text } from "@pokt-foundation/pocket-blocks"
-import React from "react"
-import { SecurityReducerActions } from "../../view"
+import React, { Dispatch, useMemo } from "react"
+import { SecurityReducerActions } from "../../utils/stateReducer"
+import { BlockchainWhitelist } from "../../utils/utils"
 import useModals from "~/hooks/useModals"
 import { Blockchain, WhitelistContractsV2, WhitelistMethodsV2 } from "~/models/portal/sdk"
 import AddSettingsButton from "~/routes/account.$accountId.$appId.security/components/AddSettingsButton"
@@ -32,6 +33,17 @@ const ChainWhitelist = ({
   type,
 }: ChainWhitelistProps) => {
   const { openFullScreenModal } = useModals()
+  const blockchainWhitelist: BlockchainWhitelist[] = useMemo(() => {
+    return whitelists
+      .map((list) => {
+        // @ts-ignore
+        return list[type].map((str: string) => ({
+          blockchainID: list.blockchainID,
+          whitelistValue: str,
+        }))
+      })
+      .flat()
+  }, [type, whitelists])
 
   return (
     <Box px={40} py={32}>
@@ -41,17 +53,22 @@ const ChainWhitelist = ({
         <AddSettingsButton
           onClick={() =>
             openFullScreenModal({
-              children: <ChainWhitelistModal blockchains={blockchains} type={type} />,
+              children: (
+                <ChainWhitelistModal
+                  blockchains={blockchains}
+                  dispatch={dispatch}
+                  type={type}
+                />
+              ),
             })
           }
         />
       </Stack>
       {whitelists.length > 0 && (
         <ChainWhitelistTable
-          blockchainWhitelist={whitelists}
+          blockchainWhitelist={blockchainWhitelist}
           blockchains={blockchains}
-          type={type}
-          onDelete={() => console.log("DELETE")}
+          onDelete={(contract) => dispatch({ type: `${type}-remove`, payload: contract })}
         />
       )}
     </Box>

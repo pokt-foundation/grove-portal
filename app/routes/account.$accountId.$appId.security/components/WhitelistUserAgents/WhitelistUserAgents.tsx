@@ -36,7 +36,7 @@ const WhitelistUserAgents = ({
       {whitelistUserAgents.length > 0 && (
         <SimpleStringTable
           data={whitelistUserAgents}
-          onDelete={() => console.log("DELETE")}
+          onDelete={(id) => dispatch({ type: "userAgents-remove", payload: id })}
         />
       )}
     </Box>

@@ -1,16 +1,15 @@
+import { useFetcher } from ".pnpm/react-router-dom@6.11.0_biqbaboplfbrettd7655fr4n2y/node_modules/react-router-dom"
 import { Divider } from "@mantine/core"
 import { showNotification } from "@mantine/notifications"
 import { Box } from "@pokt-foundation/pocket-blocks"
-import { useReducer, useEffect, useMemo, ReducerState, ReducerAction } from "react"
+import { useReducer, useEffect } from "react"
 import { SecurityActionData } from "./route"
-import { blockchains } from "~/models/portal/portal.data"
+import { DEFAULT_WHITELISTS, securityReducer } from "./utils/stateReducer"
 import {
   BlockchainsQuery,
   PortalApp,
   WhitelistContractsV2,
   WhitelistMethodsV2,
-  Whitelists,
-  WhitelistsObject,
 } from "~/models/portal/sdk"
 import { Blockchain } from "~/models/portal/sdk"
 import ApprovedChains from "~/routes/account.$accountId.$appId.security/components/ApprovedChains"
@@ -19,43 +18,6 @@ import PrivateSecretKey from "~/routes/account.$accountId.$appId.security/compon
 import WhitelistOrigins from "~/routes/account.$accountId.$appId.security/components/WhitelistOrigins"
 import WhitelistUserAgents from "~/routes/account.$accountId.$appId.security/components/WhitelistUserAgents"
 import { LoaderDataStruct } from "~/utils/loader"
-
-export type SecurityReducerActions =
-  | { type: "origins-add"; payload: string[] }
-  | { type: "origins-remove"; payload: string }
-  | { type: "blockchains-add"; payload: string[] }
-  | { type: "blockchains-remove"; payload: string }
-  | { type: "userAgents-add"; payload: string[] }
-  | { type: "userAgents-remove"; payload: string }
-  | { type: "contracts-add" }
-  | { type: "contracts-remove" }
-  | { type: "methods-add" }
-  | { type: "methods-remove" }
-
-const DEFAULT_WHITELISTS: Whitelists = {
-  blockchains: [],
-  contracts: [],
-  methods: [],
-  origins: [],
-  userAgents: [],
-}
-
-function securityReducer(state: Whitelists, action: SecurityReducerActions) {
-  let s
-
-  switch (action.type) {
-    case "blockchains-add":
-      s = { ...state, blockchains: [...state.blockchains, ...action.payload] }
-      break
-    default:
-      s = state
-      break
-  }
-
-  // update db
-
-  return s
-}
 
 type SecurityViewProps = {
   actionData?: LoaderDataStruct<SecurityActionData>
@@ -68,6 +30,22 @@ export const SecurityView = ({ actionData, app, blockchains }: SecurityViewProps
     securityReducer,
     app.whitelists ?? DEFAULT_WHITELISTS,
   )
+  const fetcher = useFetcher()
+
+  useEffect(() => {
+    console.log(state)
+
+    // stop it from posting on initial load
+
+    // fetcher.submit(
+    //   {
+    //     whitelist: JSON.stringify(state),
+    //   },
+    //   {
+    //     method: "post",
+    //   },
+    // )
+  }, [fetcher, state])
 
   useEffect(() => {
     if (!actionData) return
@@ -84,7 +62,7 @@ export const SecurityView = ({ actionData, app, blockchains }: SecurityViewProps
       <PrivateSecretKey secretKeyRequired={app.settings.secretKeyRequired as boolean} />
       <Divider />
       <ApprovedChains
-        approvedChainsIds={app.whitelists.blockchains as string[]}
+        approvedChainsIds={state.blockchains as string[]}
         blockchains={blockchains as Blockchain[]}
         dispatch={dispatch}
       />

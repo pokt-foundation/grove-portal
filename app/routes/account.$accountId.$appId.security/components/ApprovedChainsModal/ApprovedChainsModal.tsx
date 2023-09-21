@@ -31,9 +31,9 @@ const ApprovedChainsModal = ({
   const dropdownChains = useMemo(
     () =>
       blockchains.filter(
-        ({ id: blockchainId }) =>
-          !selectedBlockchainsIds.some((id) => id === blockchainId) &&
-          !approvedChainsIds.some((id) => id === blockchainId),
+        ({ id: blockchainID }) =>
+          !selectedBlockchainsIds.some((id) => id === blockchainID) &&
+          !approvedChainsIds.some((id) => id === blockchainID),
       ),
     [blockchains, selectedBlockchainsIds, approvedChainsIds],
   )
@@ -45,6 +45,7 @@ const ApprovedChainsModal = ({
 
   const handleSave = () => {
     dispatch({ type: "blockchains-add", payload: selectedBlockchainsIds })
+    closeAllModals()
   }
 
   return (

@@ -39,7 +39,8 @@ const WhitelistUserAgentsModal = ({ dispatch }: WhitelistUserAgentsModalProps) =
   }
 
   const handleSave = () => {
-    dispatch({ type: "blockchains-add", payload: selectedUserAgents })
+    dispatch({ type: "userAgents-add", payload: selectedUserAgents })
+    closeAllModals()
   }
 
   return (

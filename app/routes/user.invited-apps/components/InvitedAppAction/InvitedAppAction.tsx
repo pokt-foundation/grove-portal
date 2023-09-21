@@ -1,6 +1,7 @@
 import { Menu, Text, ActionIcon, Button, Group } from "@pokt-foundation/pocket-blocks"
+import { Form, Link, useNavigation } from "@remix-run/react"
 import React from "react"
-import { LuMinusCircle, LuMoreHorizontal } from "react-icons/lu"
+import { LuArrowUpRight, LuMinusCircle, LuMoreHorizontal } from "react-icons/lu"
 import useModals from "~/hooks/useModals"
 import { PortalApp } from "~/models/portal/sdk"
 import useCommonStyles from "~/styles/commonStyles"
@@ -9,7 +10,7 @@ type InvitedAppActionProps = { app: PortalApp & { accepted: boolean } }
 
 const InvitedAppAction = ({ app }: InvitedAppActionProps) => {
   const { classes: commonClasses } = useCommonStyles()
-  // const fetcher = useFetcher()
+  const navigation = useNavigation()
   const { openConfirmationModal } = useModals()
   const { name, accepted } = app
 
@@ -50,6 +51,11 @@ const InvitedAppAction = ({ app }: InvitedAppActionProps) => {
             </ActionIcon>
           </Menu.Target>
           <Menu.Dropdown>
+            <Menu.Item icon={<LuArrowUpRight size={18} />}>
+              <Link to={`/account/${app.accountID}/${app.id}`}>
+                <Text tt="capitalize">Go to application</Text>
+              </Link>
+            </Menu.Item>
             <Menu.Item
               icon={<LuMinusCircle size={18} />}
               onClick={() => openLeaveAppModal()}
@@ -59,16 +65,30 @@ const InvitedAppAction = ({ app }: InvitedAppActionProps) => {
           </Menu.Dropdown>
         </Menu>
       ) : (
-        <>
-          <Button
-            className={commonClasses.grayOutlinedButton}
-            color="gray"
-            variant="outline"
-          >
-            Decline
-          </Button>
-          <Button>Accept</Button>
-        </>
+        <Form method="post">
+          <input hidden name="portalAppId" value={app.id} />
+          <Group position="right">
+            <Button
+              className={commonClasses.grayOutlinedButton}
+              color="gray"
+              disabled={navigation.state === "loading"}
+              name="invite_response"
+              type="submit"
+              value="decline"
+              variant="outline"
+            >
+              Decline
+            </Button>
+            <Button
+              disabled={navigation.state === "loading"}
+              name="invite_response"
+              type="submit"
+              value="accept"
+            >
+              Accept
+            </Button>
+          </Group>
+        </Form>
       )}
     </Group>
   )

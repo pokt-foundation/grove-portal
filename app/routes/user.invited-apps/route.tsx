@@ -1,5 +1,9 @@
-import { json, LoaderFunction, MetaFunction } from "@remix-run/node"
+import { useActionData } from ".pnpm/react-router@6.11.0_react@18.2.0/node_modules/react-router"
+import { showNotification } from "@mantine/notifications"
+import { ActionFunction, json, LoaderFunction, MetaFunction } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
+import { useEffect } from "react"
+import invariant from "tiny-invariant"
 import UserInvitedApps from "./view"
 import ErrorView from "~/components/ErrorView"
 import { initPortalClient } from "~/models/portal/portal.server"
@@ -17,6 +21,42 @@ export const meta: MetaFunction = () => {
 export type UserInvitedAppsLoaderData = {
   apps: PortalApp[]
   user: User
+}
+export type UserInvitedAppsActionData = {
+  success: Boolean
+}
+
+export const action: ActionFunction = async ({ request }) => {
+  const user = await requireUser(request)
+  const portal = initPortalClient({ token: user.accessToken })
+
+  const formData = await request.formData()
+
+  try {
+    const invite_response = formData.get("invite_response")
+
+    let res = false
+    if (invite_response) {
+      const portalAppID = formData.get("portalAppId")
+      invariant(typeof portalAppID === "string", "portalAppId must be set")
+
+      const updateUserResponse = await portal.updateUserAcceptAccount({ portalAppID })
+      res = updateUserResponse.updateUserAcceptAccount
+    }
+
+    return json<LoaderDataStruct<UserInvitedAppsActionData>>({
+      data: {
+        success: res,
+      },
+      error: false,
+    })
+  } catch (error) {
+    return json<LoaderDataStruct<UserInvitedAppsActionData>>({
+      data: null,
+      error: true,
+      message: getErrorMessage(error),
+    })
+  }
 }
 
 export const loader: LoaderFunction = async ({ request, params }) => {
@@ -48,6 +88,23 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 export default function InvitedApps() {
   const { data, error, message } =
     useLoaderData<LoaderDataStruct<UserInvitedAppsLoaderData>>()
+  const actionData = useActionData() as LoaderDataStruct<UserInvitedAppsActionData>
+
+  useEffect(() => {
+    if (!actionData) return
+
+    if (!actionData.error) {
+      showNotification({
+        message: "Invite response saved",
+      })
+    }
+
+    if (actionData.error) {
+      showNotification({
+        message: actionData.message,
+      })
+    }
+  }, [actionData])
 
   if (error) {
     return <ErrorView message={message} />

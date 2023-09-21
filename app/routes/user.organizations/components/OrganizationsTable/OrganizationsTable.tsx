@@ -1,6 +1,7 @@
-import { Button, Group, Text } from "@pokt-foundation/pocket-blocks"
+import { ActionIcon, Button, Group, Menu, Text } from "@pokt-foundation/pocket-blocks"
 import { Link } from "@remix-run/react"
 import React from "react"
+import { LuMoreHorizontal, LuArrowUpRight } from "react-icons/lu"
 import { DataTable } from "~/components/DataTable"
 import Identicon from "~/components/Identicon"
 import { Account } from "~/models/portal/sdk"
@@ -48,16 +49,27 @@ const OrganizationsTable = ({ accounts }: OrganizationsTableProps) => {
           },
           action: {
             element: (
-              <Button
-                className={commonClasses.grayOutlinedButton}
-                color="gray"
-                component={Link}
-                prefetch="intent"
-                to={`/account/${account.id}`}
-                variant="outline"
-              >
-                Go to organization
-              </Button>
+              <Group position="right" spacing="md">
+                <Menu>
+                  <Menu.Target>
+                    <ActionIcon
+                      className={commonClasses.grayOutlinedButton}
+                      radius="xl"
+                      size={40}
+                      variant="outline"
+                    >
+                      <LuMoreHorizontal />
+                    </ActionIcon>
+                  </Menu.Target>
+                  <Menu.Dropdown>
+                    <Menu.Item icon={<LuArrowUpRight size={18} />}>
+                      <Link to={`/account/${account.id}`}>
+                        <Text tt="capitalize">Go to organization</Text>
+                      </Link>
+                    </Menu.Item>
+                  </Menu.Dropdown>
+                </Menu>
+              </Group>
             ),
           },
         }

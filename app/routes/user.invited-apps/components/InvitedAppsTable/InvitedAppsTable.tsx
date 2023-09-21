@@ -1,21 +1,28 @@
-import { Group, Text } from "@pokt-foundation/pocket-blocks"
+import { Group, MantineTheme, Text } from "@pokt-foundation/pocket-blocks"
 import { Emoji } from "emoji-picker-react"
 import React from "react"
 import { DataTable } from "~/components/DataTable"
 import Identicon from "~/components/Identicon"
 import { PortalApp, User } from "~/models/portal/sdk"
 import { DEFAULT_APPMOJI } from "~/routes/account_.$accountId.create/components/AppmojiPicker"
-import InvitedAppAcceptedLabel from "~/routes/user.invited-apps/components/InvitedAppAcceptedLabel"
 import InvitedAppAction from "~/routes/user.invited-apps/components/InvitedAppAction"
-import { getUserRole } from "~/utils/applicationUtils"
+import { getAppAcceptedValue, getUserRole } from "~/utils/applicationUtils"
 
 type InvitedAppsTableProps = { apps: PortalApp[]; user: User }
 
 const InvitedAppsTable = ({ apps, user }: InvitedAppsTableProps) => {
+  const appsData = apps
+    .map((app) => ({
+      ...app,
+      accepted: getAppAcceptedValue(app, user.portalUserID),
+      role: getUserRole(app, user.portalUserID),
+    }))
+    .sort((a, b) => Number(a.accepted) - Number(b.accepted))
+
   return (
     <DataTable
       columns={["App Name", "Role", "Status", "Organization", ""]}
-      data={apps.map((app) => {
+      data={appsData.map((app) => {
         return {
           appName: {
             element: (
@@ -36,7 +43,15 @@ const InvitedAppsTable = ({ apps, user }: InvitedAppsTableProps) => {
             ),
           },
           status: {
-            element: <InvitedAppAcceptedLabel app={app} user={user} />,
+            element: (
+              <Text
+                sx={(theme: MantineTheme) => ({
+                  color: app.accepted ? theme.colors.green[6] : theme.colors.yellow[7],
+                })}
+              >
+                {app.accepted ? "Accepted" : "Pending"}
+              </Text>
+            ),
           },
           organization: {
             element: (
@@ -53,7 +68,7 @@ const InvitedAppsTable = ({ apps, user }: InvitedAppsTableProps) => {
             ),
           },
           action: {
-            element: <InvitedAppAction app={app} user={user} />,
+            element: <InvitedAppAction app={app} />,
           },
         }
       })}

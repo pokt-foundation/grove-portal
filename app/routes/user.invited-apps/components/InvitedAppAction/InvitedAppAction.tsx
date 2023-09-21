@@ -2,20 +2,18 @@ import { Menu, Text, ActionIcon, Button, Group } from "@pokt-foundation/pocket-b
 import React from "react"
 import { LuMinusCircle, LuMoreHorizontal } from "react-icons/lu"
 import useModals from "~/hooks/useModals"
-import { PortalApp, User } from "~/models/portal/sdk"
+import { PortalApp } from "~/models/portal/sdk"
 import useCommonStyles from "~/styles/commonStyles"
-import { getAppAcceptedValue } from "~/utils/applicationUtils"
 
-type InvitedAppActionProps = { app: PortalApp; user: User }
+type InvitedAppActionProps = { app: PortalApp & { accepted: boolean } }
 
-const InvitedAppAction = ({ app, user }: InvitedAppActionProps) => {
+const InvitedAppAction = ({ app }: InvitedAppActionProps) => {
   const { classes: commonClasses } = useCommonStyles()
   // const fetcher = useFetcher()
   const { openConfirmationModal } = useModals()
-  const { name } = app
-  const accepted = getAppAcceptedValue(app, user.portalUserID)
+  const { name, accepted } = app
 
-  const leaveApp = (email: string) => {
+  const leaveApp = () => {
     // fetcher.submit(
     //     {
     //       props here...
@@ -25,7 +23,7 @@ const InvitedAppAction = ({ app, user }: InvitedAppActionProps) => {
     //     },
     // )
 
-    console.log("leaving app...", email)
+    console.log("leaving app...", app.name)
   }
 
   const openLeaveAppModal = () =>
@@ -34,7 +32,7 @@ const InvitedAppAction = ({ app, user }: InvitedAppActionProps) => {
       children: <Text>Are you sure you want to leave {name}?</Text>,
       labels: { cancel: "Cancel", confirm: "Leave" },
       confirmProps: { color: "red" },
-      onConfirm: () => leaveApp(name),
+      onConfirm: () => leaveApp(),
     })
 
   return (

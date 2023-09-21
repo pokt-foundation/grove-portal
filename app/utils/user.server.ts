@@ -98,43 +98,17 @@ export const getUserProfile = async (request: Request) => {
   return user?.user
 }
 
-export const redirectToUserAccount = async (token: string) => {
-  const portal = initPortalClient({ token: token })
+export const redirectToUserAccount = async (token: string, userId: string) => {
+  const portal = initPortalClient({ token })
   const accounts = await portal.getUserAccounts()
-  let account: { id: string | null; planType: PayPlanTypeV2 | null } = {
-    id: null,
-    planType: null,
+
+  let account = accounts.getUserAccounts.find((account) =>
+    account?.users.some((user) => user.userID === userId && user.owner),
+  )
+
+  if (!account) {
+    account = accounts.getUserAccounts[0]
   }
 
-  accounts.getUserAccounts.forEach((acc) => {
-    if (acc) {
-      if (acc.planType === PayPlanTypeV2.FreetierV0) {
-        account = {
-          id: acc.id,
-          planType: acc.planType,
-        }
-      }
-      if (acc.planType === PayPlanTypeV2.PayAsYouGoV0) {
-        account = {
-          id: acc.id,
-          planType: acc.planType,
-        }
-      }
-      if (acc.planType === PayPlanTypeV2.Enterprise) {
-        account = {
-          id: acc.id,
-          planType: acc.planType,
-        }
-      }
-
-      if (account.id === null) {
-        account = {
-          id: acc.id,
-          planType: acc.planType,
-        }
-      }
-    }
-  })
-
-  return redirect(`/account/${account.id}`)
+  return redirect(`/account/${account?.id}`)
 }

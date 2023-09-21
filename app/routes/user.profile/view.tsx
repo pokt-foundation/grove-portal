@@ -25,15 +25,19 @@ export const ProfileView = ({ user, actionData }: ProfileViewProps) => {
   useEffect(() => {
     if (!actionData) return
 
-    if ((actionData.data as ActionPassword).auth0 === 200) {
+    if (!actionData.error && (actionData.data as ActionPassword).auth0 === 200) {
       showNotification({
         message: SUCCESSFUL_CHANGE_PASSWORD_MSG,
       })
     }
-
-    if ((actionData.data as ActionUser).user) {
+    if (!actionData.error && (actionData.data as ActionUser).user) {
       showNotification({
         message: "User profile updated",
+      })
+    }
+    if (actionData.error) {
+      showNotification({
+        message: actionData.message,
       })
     }
   }, [actionData])

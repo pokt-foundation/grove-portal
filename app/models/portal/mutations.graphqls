@@ -235,8 +235,8 @@ mutation adminUpdatePortalApp($input: AdminUpdatePortalApp!) {
   }
 }
 
-mutation updateUserAcceptAccount($portalAppID: String!) {
-  updateUserAcceptAccount(portalAppID: $portalAppID)
+mutation updateUserAcceptAccount($portalAppID: String!, $accepted: Boolean!) {
+  updateUserAcceptAccount(portalAppID: $portalAppID, accepted: $accepted)
 }
 
 mutation updateUserAccountRole($input: UpdateAccountUserRole!) {

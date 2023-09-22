@@ -8,6 +8,7 @@ import {
 } from "@pokt-foundation/pocket-blocks"
 import { LuUser } from "react-icons/lu"
 import { DataTable } from "~/components/DataTable"
+import Identicon from "~/components/Identicon"
 import { PortalApp, RoleName, RoleNameV2, User } from "~/models/portal/sdk"
 import TeamMemberAction from "~/routes/account.$accountId.$appId.team/components/TeamMemberAction"
 import useTeamModals from "~/routes/account.$accountId.$appId.team/hooks/useTeamModals"
@@ -38,8 +39,13 @@ const TeamMembersTable = ({ app, userRole, user }: TeamMembersTableProps) => {
           member: {
             element: (
               <Group>
-                <Avatar color="blue" radius="xl">
-                  <LuUser size={24} />
+                <Avatar radius="xl">
+                  <Identicon
+                    alt={`${userID} profile picture`}
+                    seed={userID}
+                    size="md"
+                    type="user"
+                  />
                 </Avatar>
                 <Text> {email} </Text>
               </Group>
@@ -92,15 +98,15 @@ const TeamMembersTable = ({ app, userRole, user }: TeamMembersTableProps) => {
             ),
           },
           action: {
-            element:
-              roleName !== RoleNameV2.Owner ? (
-                <TeamMemberAction
-                  appId={app.id}
-                  teamMember={teamData[index]}
-                  user={user}
-                  userRole={userRole}
-                />
-              ) : null,
+            element: roleName !== RoleNameV2.Owner && (
+              <TeamMemberAction
+                appId={app.id}
+                status={accepted}
+                teamMember={teamData[index]}
+                user={user}
+                userRole={userRole}
+              />
+            ),
           },
         }
       })}

@@ -47,8 +47,11 @@ const OrganizationSelect = ({ accounts }: OrganizationSelectProps) => {
   )
 
   const menuAccounts = useMemo(() => {
-    const filteredAccounts = accounts.filter(({ id }) => id !== accountId)
-    return [activeAccount, ...filteredAccounts] as Account[]
+    if (activeAccount) {
+      const filteredAccounts = accounts.filter(({ id }) => id !== accountId)
+      return [activeAccount, ...filteredAccounts] as Account[]
+    }
+    return accounts
   }, [accountId, accounts, activeAccount])
 
   return (

@@ -36,10 +36,6 @@ const useTeamModals = ({ appId }: useTeamModalsProps) => {
     )
   }
 
-  const leaveTeam = (userId: string) => {
-    console.log("Leave team....", userId)
-  }
-
   const changeMemberRole = (userId: string, role: RoleName, email: string) => {
     fetcher.submit(
       {
@@ -83,7 +79,7 @@ const useTeamModals = ({ appId }: useTeamModalsProps) => {
       children: <Text>Are you sure you want to leave the team?</Text>,
       labels: { cancel: "Cancel", confirm: "Leave" },
       confirmProps: { color: "red" },
-      onConfirm: () => leaveTeam(userId),
+      onConfirm: () => removeTeamMember(userId, email),
     })
 
   const openChangeRoleModal = (email: string, userId: string, role: RoleName) =>
@@ -107,7 +103,6 @@ const useTeamModals = ({ appId }: useTeamModalsProps) => {
       title: <Text fw={600}>Remove user</Text>,
       children: <Text>Are you sure you want to resend an email to {email}?</Text>,
       labels: { cancel: "Cancel", confirm: "Resend" },
-      confirmProps: { color: "red" },
       onConfirm: () => resendEmail(email),
     })
 

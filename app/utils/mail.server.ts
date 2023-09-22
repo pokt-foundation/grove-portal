@@ -54,7 +54,7 @@ export const sendTeamInviteEmail = async (email: string, app: string) => {
     {
       app: app,
       // TODO: Change to correct invite link
-      invite_link: "https://www.portal.grove.city/account",
+      invite_link: "https://www.portal.grove.city/user/invited-apps",
     },
   )
 }

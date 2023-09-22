@@ -1,5 +1,5 @@
 import { ActionIcon, Flex, Menu, Text } from "@pokt-foundation/pocket-blocks"
-import React from "react"
+import React, { useMemo } from "react"
 import { LuMinusCircle, LuMoreHorizontal, LuSend } from "react-icons/lu"
 import { AccountUserAccess, RoleNameV2, User } from "~/models/portal/sdk"
 import useTeamModals from "~/routes/account.$accountId.$appId.team/hooks/useTeamModals"
@@ -25,118 +25,105 @@ const TeamMemberAction = ({
     { appId: appId },
   )
 
-  const MemberRoleAction = () => {
-    return teamMember.userID === user?.portalUserID ? (
-      // MEMEBER --CAN-- TAKE ACTION ON THEMSELVES
-      <Menu>
-        <Menu.Target>
-          <ActionIcon
-            className={commonClasses.grayOutlinedButton}
-            radius="xl"
-            size={40}
-            variant="outline"
-          >
-            <LuMoreHorizontal />
-          </ActionIcon>
-        </Menu.Target>
-        <Menu.Dropdown>
-          <Menu.Item
-            icon={<LuMinusCircle size={18} />}
-            onClick={() => openLeaveTeamModal(teamMember.email, teamMember.userID)}
-          >
-            <Text>Leave</Text>
-          </Menu.Item>
-        </Menu.Dropdown>
-      </Menu>
-    ) : // MEMEBER --CANNOT-- TAKE ACTION ON OTHER USERS
-    null
-  }
+  const menuItems = useMemo(() => {
+    let items = []
 
-  const AdminRoleAction = () => {
-    return (
-      <Menu>
-        <Menu.Target>
-          <ActionIcon
-            className={commonClasses.grayOutlinedButton}
-            radius="xl"
-            size={40}
-            variant="outline"
-          >
-            <LuMoreHorizontal />
-          </ActionIcon>
-        </Menu.Target>
-        <Menu.Dropdown>
-          {teamMember.userID === user?.portalUserID ? (
-            // ADMIN --CAN-- TAKE ACTION ON THEMSELVES
-            <Menu.Item
-              icon={<LuMinusCircle size={18} />}
-              onClick={() => openLeaveTeamModal(teamMember.email, teamMember.userID)}
-            >
-              <Text>Leave</Text>
-            </Menu.Item>
-          ) : (
-            // ADMIN --CAN-- TAKE ACTION ON OTHER USERS
-            <>
-              <Menu.Item
-                icon={<LuMinusCircle size={18} />}
-                onClick={() => openRemoveUserModal(teamMember.email, teamMember.userID)}
-              >
-                <Text>Remove</Text>
-              </Menu.Item>
-              {!status && (
-                <Menu.Item
-                  icon={<LuSend size={18} />}
-                  onClick={() => openResendEmailModal(teamMember.email)}
-                >
-                  <Text>Resend Email</Text>
-                </Menu.Item>
-              )}
-            </>
-          )}
-        </Menu.Dropdown>
-      </Menu>
-    )
-  }
+    switch (userRole) {
+      case RoleNameV2.Owner:
+        if (teamMember.userID === user?.portalUserID) {
+          // OWNER --CANNOT-- LEAVE THEIR OWN APP
+        } else {
+          // OWNER --CAN--REMOVE OTHER USERS
+          items.push({
+            icon: <LuMinusCircle size={18} />,
+            onClick: () => openRemoveUserModal(teamMember.email, teamMember.userID),
+            label: "Remove",
+          })
+          if (!status) {
+            // OWNER --CAN-- RESEND EMAIL TO OTHER USERS
+            items.push({
+              icon: <LuSend size={18} />,
+              onClick: () => openResendEmailModal(teamMember.email),
+              label: "Resend Email",
+            })
+          }
+        }
+        break
+      case RoleNameV2.Admin:
+        if (teamMember.userID === user?.portalUserID) {
+          // ADMIN --CAN--REMOVE THEMSELVES
+          items.push({
+            icon: <LuMinusCircle size={18} />,
+            onClick: () => openRemoveUserModal(teamMember.email, teamMember.userID),
+            label: "Remove",
+          })
+        } else {
+          // ADMIN --CAN--REMOVE OTHER USERS
+          items.push({
+            icon: <LuMinusCircle size={18} />,
+            onClick: () => openRemoveUserModal(teamMember.email, teamMember.userID),
+            label: "Remove",
+          })
+          if (!status) {
+            // ADMIN --CAN-- RESEND EMAIL TO OTHER USERS
+            items.push({
+              icon: <LuSend size={18} />,
+              onClick: () => openResendEmailModal(teamMember.email),
+              label: "Resend Email",
+            })
+          }
+        }
+        break
+      case RoleNameV2.Member:
+      default:
+        if (teamMember.userID === user?.portalUserID) {
+          // MEMEBER --CAN-- LEAVE APP THEMSELVES
+          items.push({
+            icon: <LuMinusCircle size={18} />,
+            onClick: () => openLeaveTeamModal(teamMember.email, teamMember.userID),
+            label: "Leave",
+          })
+        } else {
+          // MEMEBER --CANNOT-- TAKE ACTION ON OTHER USERS
+        }
+        break
+    }
 
-  const OwnerRoleAction = () => {
-    return teamMember.userID === user?.portalUserID ? null : ( // OWNER --CANNOT-- LEAVE THEIR OWN APP
-      // OWNER --CAN-- TAKE ACTION ON OTHER USERS
-      <Menu>
-        <Menu.Target>
-          <ActionIcon
-            className={commonClasses.grayOutlinedButton}
-            radius="xl"
-            size={40}
-            variant="outline"
-          >
-            <LuMoreHorizontal />
-          </ActionIcon>
-        </Menu.Target>
-        <Menu.Dropdown>
-          <Menu.Item
-            icon={<LuMinusCircle size={18} />}
-            onClick={() => openRemoveUserModal(teamMember.email, teamMember.userID)}
-          >
-            <Text>Remove</Text>
-          </Menu.Item>
-          {!status && (
-            <Menu.Item
-              icon={<LuSend size={18} />}
-              onClick={() => openResendEmailModal(teamMember.email)}
-            >
-              <Text>Resend Email</Text>
-            </Menu.Item>
-          )}
-        </Menu.Dropdown>
-      </Menu>
-    )
-  }
+    return items
+  }, [
+    userRole,
+    teamMember.userID,
+    teamMember.email,
+    user?.portalUserID,
+    status,
+    openRemoveUserModal,
+    openResendEmailModal,
+    openLeaveTeamModal,
+  ])
 
   return (
     <Flex justify="flex-end">
-      {userRole === RoleNameV2.Member && <MemberRoleAction />}
-      {userRole === RoleNameV2.Admin && <AdminRoleAction />}
-      {userRole === RoleNameV2.Owner && <OwnerRoleAction />}
+      {menuItems.length > 0 && (
+        <Menu>
+          <Menu.Target>
+            <ActionIcon
+              className={commonClasses.grayOutlinedButton}
+              radius="xl"
+              size={40}
+              variant="outline"
+            >
+              <LuMoreHorizontal />
+            </ActionIcon>
+          </Menu.Target>
+          <Menu.Dropdown>
+            {menuItems.map((item, index) => (
+              <Menu.Item key={index} icon={item.icon} onClick={item.onClick}>
+                <Text>{item.label}</Text>
+              </Menu.Item>
+            ))}
+          </Menu.Dropdown>
+        </Menu>
+      )}
     </Flex>
   )
 }

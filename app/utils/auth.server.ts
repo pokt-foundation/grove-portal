@@ -15,6 +15,7 @@ export const authenticator = new Authenticator<{
   extraParams: Auth0ExtraParams
   user: PortalUser & {
     auth0ID: string
+    email_verified?: boolean
   }
 }>(sessionStorage)
 
@@ -24,6 +25,7 @@ export type User = {
   extraParams: Auth0ExtraParams
   user: PortalUser & {
     auth0ID: string
+    email_verified?: boolean
   }
 }
 
@@ -51,6 +53,7 @@ let auth0Strategy = new Auth0Strategy(
     let portalUser = {
       ...(getPortalUserResponse?.getPortalUser as PortalUser),
       auth0ID: providerUserID,
+      email_verified: profile._json?.email_verified,
     }
 
     // handle edge case where user could have signed up via auth0 and yet not have an internal portalUserId
@@ -65,6 +68,7 @@ let auth0Strategy = new Auth0Strategy(
       portalUser = {
         ...(user.adminCreatePortalUser as PortalUser),
         auth0ID: providerUserID,
+        email_verified: profile._json?.email_verified,
       }
     }
 

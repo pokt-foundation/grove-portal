@@ -20,11 +20,10 @@ export const requireUser = async (request: Request, defaultRedirect = "/") => {
   if (!user.user) {
     throw await authenticator.logout(request, { redirectTo: "/api/auth/auth0" })
   }
-  // todo: handle validate like the create overlay at account level
-  //
-  // if (!user.profile._json.email_verified) {
-  //   throw await authenticator.logout(request, { redirectTo: "/validate" })
-  // }
+
+  if (!user.user.email_verified) {
+    throw redirect("/user/email-verification")
+  }
 
   const decode = jwt_decode<{
     exp: number

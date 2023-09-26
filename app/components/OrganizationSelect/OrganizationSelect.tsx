@@ -49,7 +49,10 @@ const OrganizationSelect = ({ accounts }: OrganizationSelectProps) => {
   const menuAccounts = useMemo(() => {
     if (activeAccount) {
       const filteredAccounts = accounts.filter(({ id }) => id !== accountId)
-      return [activeAccount, ...filteredAccounts] as Account[]
+      return [
+        activeAccount,
+        ...filteredAccounts.sort((a, b) => (a.id > b.id ? 1 : -1)),
+      ] as Account[]
     }
     return accounts
   }, [accountId, accounts, activeAccount])

@@ -14,11 +14,12 @@ import AppForm from "./components/AppForm"
 import { DEFAULT_APPMOJI } from "./components/AppmojiPicker"
 import PortalLoader from "~/components/PortalLoader"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { PayPlanTypeV2 } from "~/models/portal/sdk"
+import { Account, PayPlanTypeV2 } from "~/models/portal/sdk"
 import { getErrorMessage } from "~/utils/catchError"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 import { MAX_USER_APPS } from "~/utils/planUtils"
 import { seo_title_append } from "~/utils/seo"
+import isUserAccountOwner from "~/utils/user"
 import { getUserPermissions, requireUser, Permissions } from "~/utils/user.server"
 
 export const meta: MetaFunction = () => {
@@ -31,12 +32,11 @@ export const meta: MetaFunction = () => {
 //   price: Stripe.Price | void
 // }
 
-export const loader: LoaderFunction = async ({ request, params }) => {
+export const loader: LoaderFunction = async ({ request, params, context }) => {
   const user = await requireUser(request)
   const portal = initPortalClient({ token: user.accessToken })
   const { accountId } = params
   const permissions = getUserPermissions(user.accessToken)
-
   invariant(accountId, "AccountId must be set")
 
   const getUserAccountResponse = await portal
@@ -49,6 +49,17 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     return redirect(`/account/${params.accountId}`)
   }
 
+  const getUserAccountsResponse = await portal.getUserAccounts()
+  if (!getUserAccountsResponse.getUserAccounts) {
+    return redirect(`/account/${params.accountId}`)
+  }
+
+  const isUserOwner = isUserAccountOwner({
+    accounts: getUserAccountsResponse.getUserAccounts as Account[],
+    accountId: accountId as string,
+    user: user.user,
+  })
+
   const portalApps = getUserAccountResponse.getUserAccount.portalApps
   const underMaxApps = () => {
     return !portalApps || portalApps.length < MAX_USER_APPS
@@ -60,6 +71,9 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       getRequiredClientEnvVar("GODMODE_ACCOUNTS")?.includes(user.user.auth0ID)) ||
     underMaxApps()
 
+  if (!isUserOwner) {
+    return redirect(`/account/${params.accountId}`)
+  }
   // ensure only users who can create new apps are allowed on this page
   if (!userCanCreateApp) {
     return redirect(`/account/${params.accountId}/app-limit-exceeded`)

@@ -3,7 +3,7 @@ import { Link } from "@remix-run/react"
 import { LuArrowUpFromLine, LuRepeat, LuStopCircle } from "react-icons/lu"
 import { PortalApp } from "~/models/portal/sdk"
 import useSubscriptionModals from "~/routes/account.$accountId.$appId/hooks/useSubscriptionModals"
-import { isFreePlan, isLegacyPlan, isPaidPlan } from "~/utils/utils"
+import { isFreePlan, isLegacyPlan, isPaidPlan } from "~/utils/planUtils"
 
 type AppSubscriptionProps = {
   app: PortalApp

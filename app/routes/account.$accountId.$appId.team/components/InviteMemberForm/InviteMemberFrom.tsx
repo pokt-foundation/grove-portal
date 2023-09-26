@@ -82,11 +82,6 @@ const InviteMemberFrom = () => {
                 type="submit"
                 value="true"
                 w="156px"
-                onClick={() =>
-                  setTimeout(() => {
-                    closeAllModals()
-                  }, 1000)
-                }
               >
                 Invite
               </Button>

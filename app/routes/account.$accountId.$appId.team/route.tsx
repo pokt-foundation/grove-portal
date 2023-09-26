@@ -1,22 +1,22 @@
-import { useActionData } from ".pnpm/react-router@6.11.0_react@18.2.0/node_modules/react-router"
 import { showNotification } from "@mantine/notifications"
-import { ActionFunction, json, LoaderFunction, redirect } from "@remix-run/node"
-import { useCatch, useOutletContext, useRouteLoaderData } from "@remix-run/react"
+import { ActionFunction, json, LoaderFunction } from "@remix-run/node"
+import {
+  useActionData,
+  useCatch,
+  useOutletContext,
+  useRouteLoaderData,
+} from "@remix-run/react"
 import { useEffect } from "react"
 import invariant from "tiny-invariant"
 import { AppIdOutletContext } from "../account.$accountId.$appId/route"
 import TeamView from "./view"
 import ErrorView from "~/components/ErrorView"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { RoleName, RoleNameV2, User } from "~/models/portal/sdk"
+import { RoleNameV2, User } from "~/models/portal/sdk"
 import { AccountIdLoaderData } from "~/routes/account.$accountId/route"
 import { getErrorMessage } from "~/utils/catchError"
 import { LoaderDataStruct } from "~/utils/loader"
-import {
-  sendTeamInviteEmail,
-  sendTeamNewOwnerEmail,
-  sendTeamUserRemovedEmail,
-} from "~/utils/mail.server"
+import { sendTeamInviteEmail, sendTeamUserRemovedEmail } from "~/utils/mail.server"
 import { requireUser } from "~/utils/user.server"
 
 export type TeamLoaderData = {
@@ -186,7 +186,7 @@ export default function Team() {
 
   const { user } = data
 
-  return <TeamView app={app} user={user} userRole={userRole} />
+  return <TeamView actionData={actionData} app={app} user={user} userRole={userRole} />
 }
 
 export const CatchBoundary = () => {

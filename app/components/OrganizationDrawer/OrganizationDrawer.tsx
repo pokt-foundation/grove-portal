@@ -151,9 +151,8 @@ const OrganizationDrawer = ({ user, hasPendingInvites }: OrganizationDrawerProps
           </Indicator>
           <Divider my={8} />
           {drawerExternalLinks.map(({ label, to, icon, withDivider }, index) => (
-            <>
+            <React.Fragment key={`${label}-${index}`}>
               <DrawerLink
-                key={`${label}-${index}`}
                 external
                 icon={icon}
                 label={label}
@@ -161,7 +160,7 @@ const OrganizationDrawer = ({ user, hasPendingInvites }: OrganizationDrawerProps
                 to={to}
               />
               {withDivider && <Divider my={8} />}
-            </>
+            </React.Fragment>
           ))}
           <NavLink label="Sign out" p={8} onClick={logout} />
         </Stack>

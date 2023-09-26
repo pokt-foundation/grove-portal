@@ -302,6 +302,7 @@ query getUserAccounts(
     }
     users {
       userID
+      owner
     }
   }
 }

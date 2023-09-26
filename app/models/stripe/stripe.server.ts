@@ -37,9 +37,7 @@ export const getSubscription = async (
     customer: customer.id,
   })
 
-  const subscription = subscriptions.data.find(
+  return subscriptions.data.find(
     (sub) => sub.metadata.endpoint_id && sub.metadata.endpoint_id === endpointId,
   )
-
-  return subscription
 }

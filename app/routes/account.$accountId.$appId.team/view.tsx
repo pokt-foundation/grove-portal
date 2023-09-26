@@ -1,92 +1,40 @@
 import { Divider } from "@mantine/core"
-import { closeAllModals } from "@mantine/modals"
-import { Box, Button, Flex, Text, Title } from "@pokt-foundation/pocket-blocks"
-import { useActionData } from "@remix-run/react"
-import React, { useEffect, useState } from "react"
-import { ActionData } from "./route"
-import NotificationMessage, { NotificationType } from "~/components/NotificationMessage"
+import { closeModal } from "@mantine/modals"
+import { Box, Button, Flex, Title } from "@pokt-foundation/pocket-blocks"
+import { useEffect } from "react"
 import useModals from "~/hooks/useModals"
 import { PortalApp, RoleNameV2, User } from "~/models/portal/sdk"
 import InviteMemberFrom from "~/routes/account.$accountId.$appId.team/components/InviteMemberForm"
 import TeamMembersTable from "~/routes/account.$accountId.$appId.team/components/TeamMembersTable"
+import { TeamActionData } from "~/routes/account.$accountId.$appId.team/route"
+import { LoaderDataStruct } from "~/utils/loader"
 
 type TeamViewProps = {
+  actionData: LoaderDataStruct<TeamActionData>
   app: PortalApp
   userRole: RoleNameV2
-  user?: User
+  user: User
 }
 
-function TeamView({ app, userRole, user }: TeamViewProps) {
-  const [notificationMessageProps, setNotificationMessageProps] =
-    useState<NotificationType>({
-      type: "info",
-      title: "",
-      description: "",
-      isActive: false,
-    })
+const INVITE_MEMBER_MODAL_ID = "invite-member-modal"
 
-  const actionData = useActionData<ActionData>()
-  const { openFullScreenModal } = useModals()
-
+function TeamView({ actionData, app, userRole, user }: TeamViewProps) {
+  const { openFullScreenModal, modals } = useModals()
   const openInviteMemberModal = () =>
     openFullScreenModal({
-      children: <InviteMemberFrom endpointName={app.name} />,
+      modalId: INVITE_MEMBER_MODAL_ID,
+      children: <InviteMemberFrom />,
     })
 
   useEffect(() => {
-    if (actionData) {
-      if (actionData.type === "delete") {
-        if (actionData.error) {
-          setNotificationMessageProps({
-            type: "error",
-            title: "Error deleting the user",
-            description: "Please, try again",
-            isActive: true,
-          })
-          // setConfirmationModalProps({ type: "error", isActive: true })
-          return
-        }
-
-        setNotificationMessageProps({
-          type: "success",
-          isActive: true,
-          title: "User removed",
-          description: `We have sent a confirmation to ${actionData.email}.`,
-        })
-      } else if (actionData.type === "invite") {
-        if (actionData.error) {
-          setNotificationMessageProps({
-            type: "error",
-            isActive: true,
-            title: "Invite error",
-            description: "We had some issues with the invite. Please try again later.",
-          })
-          closeAllModals()
-          return
-        }
-
-        setNotificationMessageProps({
-          type: "success",
-          isActive: true,
-          title: "Invite sent",
-          description: `We have sent an invitation to ${actionData.email}. You can review the invite status below.`,
-        })
-
-        closeAllModals()
-      } else if (actionData.type === "updateRole") {
-        if (actionData.error) {
-          setNotificationMessageProps({
-            type: "error",
-            isActive: true,
-            title: "Ownership transfer failed",
-            description:
-              "The user has already reached the maximum number of applications that can be owned.",
-          })
-          return
-        }
-      }
+    if (
+      actionData &&
+      modals.length > 0 &&
+      modals.some(({ id }) => id === INVITE_MEMBER_MODAL_ID)
+    ) {
+      closeModal(INVITE_MEMBER_MODAL_ID)
     }
-  }, [actionData])
+  }, [actionData, modals])
 
   return (
     <Box>
@@ -99,27 +47,6 @@ function TeamView({ app, userRole, user }: TeamViewProps) {
         )}
       </Flex>
       <Divider />
-
-      {/*{state === "loading" && <Loader />}*/}
-      {actionData && (
-        <NotificationMessage
-          withCloseButton
-          isActive={notificationMessageProps.isActive}
-          title={notificationMessageProps.title}
-          type={notificationMessageProps.type}
-          onClose={() =>
-            setNotificationMessageProps({
-              ...notificationMessageProps,
-              isActive: false,
-            })
-          }
-        >
-          <Text color="white" size="sm">
-            {notificationMessageProps.description}
-          </Text>
-        </NotificationMessage>
-      )}
-
       <TeamMembersTable app={app} user={user} userRole={userRole} />
     </Box>
   )

@@ -1,44 +1,65 @@
+import { showNotification } from "@mantine/notifications"
 import { Text } from "@pokt-foundation/pocket-blocks"
 import { useFetcher } from "@remix-run/react"
+import { useEffect } from "react"
 import useModals from "~/hooks/useModals"
-import { RoleName } from "~/models/portal/sdk"
+import { PortalApp, RoleName } from "~/models/portal/sdk"
 
 type useTeamModalsProps = {
-  appId: string
+  app: PortalApp
 }
 
-const useTeamModals = ({ appId }: useTeamModalsProps) => {
+const useTeamModals = ({ app }: useTeamModalsProps) => {
   const fetcher = useFetcher()
   const { openConfirmationModal } = useModals()
+  const { accountID: accountId, id: appId } = app
 
-  const removeTeamMember = (userId: string) => {
+  useEffect(() => {
+    if (!fetcher.data) return
+
+    showNotification({
+      message: fetcher.data.message,
+    })
+  }, [fetcher.data])
+
+  const removeTeamMember = (userId: string, email: string) => {
     fetcher.submit(
       {
-        // "app-name": app.name,
-        "portal-user-id": userId,
-        appId,
-        type: "delete",
+        user_delete: "true",
+        user_id: userId,
+        user_email: email,
       },
       {
         method: "POST",
+        action: `/account/${accountId}/${appId}/team`,
       },
     )
   }
 
-  const leaveTeam = (userId: string) => {
-    console.log("Leave team....", userId)
-  }
-
-  const changeMemberRole = (userId: string, role: RoleName) => {
+  const changeMemberRole = (userId: string, role: RoleName, email: string) => {
     fetcher.submit(
       {
-        "portal-user-id": userId,
-        roleName: role,
-        type: "updateRole",
-        transferOwnership: "false",
+        user_update: "true",
+        user_id: userId,
+        user_role: role,
+        user_email: email,
       },
       {
         method: "POST",
+        action: `/account/${accountId}/${appId}/team`,
+      },
+    )
+  }
+
+  const resendEmail = (email: string) => {
+    fetcher.submit(
+      {
+        user_resend: "true",
+        user_email: email,
+      },
+      {
+        method: "POST",
+        action: `/account/${accountId}/${appId}/team`,
       },
     )
   }
@@ -49,7 +70,7 @@ const useTeamModals = ({ appId }: useTeamModalsProps) => {
       children: <Text>Are you sure you want to remove {email} from your team?</Text>,
       labels: { cancel: "Cancel", confirm: "Remove" },
       confirmProps: { color: "red" },
-      onConfirm: () => removeTeamMember(userId),
+      onConfirm: () => removeTeamMember(userId, email),
     })
 
   const openLeaveTeamModal = (email: string, userId: string) =>
@@ -58,7 +79,7 @@ const useTeamModals = ({ appId }: useTeamModalsProps) => {
       children: <Text>Are you sure you want to leave the team?</Text>,
       labels: { cancel: "Cancel", confirm: "Leave" },
       confirmProps: { color: "red" },
-      onConfirm: () => leaveTeam(userId),
+      onConfirm: () => removeTeamMember(userId, email),
     })
 
   const openChangeRoleModal = (email: string, userId: string, role: RoleName) =>
@@ -74,10 +95,23 @@ const useTeamModals = ({ appId }: useTeamModalsProps) => {
         </Text>
       ),
       labels: { cancel: "Cancel", confirm: "Change" },
-      onConfirm: () => changeMemberRole(userId, role),
+      onConfirm: () => changeMemberRole(userId, role, email),
     })
 
-  return { openRemoveUserModal, openChangeRoleModal, openLeaveTeamModal }
+  const openResendEmailModal = (email: string) =>
+    openConfirmationModal({
+      title: <Text fw={600}>Remove user</Text>,
+      children: <Text>Are you sure you want to resend an email to {email}?</Text>,
+      labels: { cancel: "Cancel", confirm: "Resend" },
+      onConfirm: () => resendEmail(email),
+    })
+
+  return {
+    openRemoveUserModal,
+    openChangeRoleModal,
+    openLeaveTeamModal,
+    openResendEmailModal,
+  }
 }
 
 export default useTeamModals

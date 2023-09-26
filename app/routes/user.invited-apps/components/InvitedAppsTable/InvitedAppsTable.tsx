@@ -71,7 +71,7 @@ const InvitedAppsTable = ({ apps, user }: InvitedAppsTableProps) => {
             ),
           },
           action: {
-            element: <InvitedAppAction app={app} />,
+            element: <InvitedAppAction app={app} user={user} />,
           },
         }
       })}

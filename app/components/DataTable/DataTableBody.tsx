@@ -12,12 +12,12 @@ export const DataTableBody = ({ paginatedData, rowAsLink, data }: TableBodyProps
   return (
     <tbody>
       {paginatedData.length > 0 ? (
-        paginatedData.map((item) => {
+        paginatedData.map((item, index) => {
           const { id, ...itemData } = item
           const tableData = Object.entries(itemData)
 
           return (
-            <tr key={id}>
+            <tr key={`${id}-${index}`}>
               {rowAsLink ? (
                 <Link
                   style={{

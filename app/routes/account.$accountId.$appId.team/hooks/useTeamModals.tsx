@@ -1,18 +1,18 @@
 import { showNotification } from "@mantine/notifications"
 import { Text } from "@pokt-foundation/pocket-blocks"
-import { useFetcher, useParams } from "@remix-run/react"
+import { useFetcher } from "@remix-run/react"
 import { useEffect } from "react"
 import useModals from "~/hooks/useModals"
-import { RoleName } from "~/models/portal/sdk"
+import { PortalApp, RoleName } from "~/models/portal/sdk"
 
 type useTeamModalsProps = {
-  appId: string
+  app: PortalApp
 }
 
-const useTeamModals = ({ appId }: useTeamModalsProps) => {
+const useTeamModals = ({ app }: useTeamModalsProps) => {
   const fetcher = useFetcher()
   const { openConfirmationModal } = useModals()
-  const { accountId } = useParams()
+  const { accountID: accountId, id: appId } = app
 
   useEffect(() => {
     if (!fetcher.data) return

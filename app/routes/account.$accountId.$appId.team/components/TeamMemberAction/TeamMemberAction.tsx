@@ -1,12 +1,12 @@
 import { ActionIcon, Flex, Menu, Text } from "@pokt-foundation/pocket-blocks"
 import React, { useMemo } from "react"
 import { LuMinusCircle, LuMoreHorizontal, LuSend } from "react-icons/lu"
-import { AccountUserAccess, RoleNameV2, User } from "~/models/portal/sdk"
+import { AccountUserAccess, PortalApp, RoleNameV2, User } from "~/models/portal/sdk"
 import useTeamModals from "~/routes/account.$accountId.$appId.team/hooks/useTeamModals"
 import useCommonStyles from "~/styles/commonStyles"
 
 type TeamMemberActionProps = {
-  appId: string
+  app: PortalApp
   userRole: RoleNameV2 | null
   user?: User
   teamMember: AccountUserAccess & { accepted: boolean; roleName: RoleNameV2 | null }
@@ -15,14 +15,14 @@ type TeamMemberActionProps = {
 
 const TeamMemberAction = ({
   user,
-  appId,
+  app,
   userRole,
   teamMember,
   status,
 }: TeamMemberActionProps) => {
   const { classes: commonClasses } = useCommonStyles()
   const { openRemoveUserModal, openLeaveTeamModal, openResendEmailModal } = useTeamModals(
-    { appId: appId },
+    { app },
   )
 
   const menuItems = useMemo(() => {

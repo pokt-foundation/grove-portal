@@ -23,7 +23,7 @@ function TeamView({ actionData, app, userRole, user }: TeamViewProps) {
   const openInviteMemberModal = () =>
     openFullScreenModal({
       modalId: INVITE_MEMBER_MODAL_ID,
-      children: <InviteMemberFrom endpointName={app.name} />,
+      children: <InviteMemberFrom />,
     })
 
   useEffect(() => {

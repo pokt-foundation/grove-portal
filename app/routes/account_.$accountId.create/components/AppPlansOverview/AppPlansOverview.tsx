@@ -14,47 +14,50 @@ interface AppPlansOverviewProps {
 }
 
 export default function AppPlansOverview({ planType }: AppPlansOverviewProps) {
-  const planDetails: {
+  const planDetails = {
     [PayPlanType.PayAsYouGoV0]: {
-      title: "Pay As You Go"
-      description: "250k free relays per day, per app. Beyond that, pay only for what you use. The counter resets every 24h but you’ll only get billed monthly. Even better, after 24 months of paid relays, you’ll receive POKT to stake for continued service. No more payments."
-      description2: "No more sunk costs. Just fast, reliable infrastructure."
-      pricing: "Pay per relay + 250K Free Relays"
-      relayLimit: "No limit"
-      appsLimit: "Up to 2 Applicaitions"
-      chainAccess: "No limit"
-    }
+      title: "Pay As You Go",
+      description:
+        "250k free relays per day, per app. Beyond that, pay only for what you use. The counter resets every 24h but you’ll only get billed monthly. Even better, after 24 months of paid relays, you’ll receive POKT to stake for continued service. No more payments.",
+      description2: "No more sunk costs. Just fast, reliable infrastructure.",
+      pricing: "Pay per relay + 250K Free Relays",
+      relayLimit: "No limit",
+      appsLimit: "Up to 2 Applicaitions",
+      chainAccess: "No limit",
+    },
     [PayPlanType.FreetierV0]: {
-      title: "Always Free"
-      description: "Access to reliable, fast infrastructure. Free up to 250k relays per day."
-      description2: ""
-      pricing: "$0.00"
-      relayLimit: "250k per app per day"
-      appsLimit: "Up to 2 Applicaitions"
-      chainAccess: "No limit"
-    }
+      title: "Always Free",
+      description:
+        "Access to reliable, fast infrastructure. Free up to 250k relays per day.",
+      description2: "",
+      pricing: "$0.00",
+      relayLimit: "250k per app per day",
+      appsLimit: "Up to 2 Applicaitions",
+      chainAccess: "No limit",
+    },
     [PayPlanType.TestPlanV0]: {
-      title: "Always Free"
-      description: "Access to reliable, fast infrastructure. Free up to 250k relays per day."
-      description2: ""
-      pricing: "$0.00"
-      relayLimit: "250k per app per day"
-      appsLimit: "Up to 2 Applicaitions"
-      chainAccess: "No limit"
-    }
+      title: "Always Free",
+      description:
+        "Access to reliable, fast infrastructure. Free up to 250k relays per day.",
+      description2: "",
+      pricing: "$0.00",
+      relayLimit: "250k per app per day",
+      appsLimit: "Up to 2 Applicaitions",
+      chainAccess: "No limit",
+    },
     [PayPlanType.Enterprise]: {
-      title: "Enterprise"
-      description: "Custom plans for large scale apps."
-      description2: ""
-      pricing: "Contact Us"
-      relayLimit: ""
-      appsLimit: ""
-      chainAccess: ""
-    }
+      title: "Enterprise",
+      description: "Custom plans for large scale apps.",
+      description2: "",
+      pricing: "Contact Us",
+      relayLimit: "",
+      appsLimit: "",
+      chainAccess: "",
+    },
     enterpriseSolutions: {
-      description: "Custom plans for large scale apps."
-      contactUS: "Contact Us"
-    }
+      description: "Custom plans for large scale apps.",
+      contactUS: "Contact Us",
+    },
   }
 
   return (
@@ -89,7 +92,7 @@ export default function AppPlansOverview({ planType }: AppPlansOverviewProps) {
 
         <Grid.Col md={1} xs={5}>
           <Title className="plan-data-highlights" mt={20} order={5}>
-            {AppPlansOverview.planDetailsTitles.chainAccess}
+            Chain Access
           </Title>
           <Text mt={16}>Chain Access</Text>
         </Grid.Col>

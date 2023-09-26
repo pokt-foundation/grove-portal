@@ -17,10 +17,10 @@ import {
   WhitelistContractsV2,
   WhitelistMethodsV2,
 } from "~/models/portal/sdk"
-import { LoaderDataStruct } from "~/utils/loader"
+import { DataStruct } from "~/types/global"
 
 type SecurityViewProps = {
-  actionData?: LoaderDataStruct<SecurityActionData>
+  actionData?: DataStruct<SecurityActionData>
   app: PortalApp
   blockchains: BlockchainsQuery["blockchains"]
 }

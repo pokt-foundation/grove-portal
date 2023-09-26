@@ -8,14 +8,14 @@ import { ActionUser } from "./utils/actionUser"
 import { Identicon } from "~/components/Identicon"
 import { User } from "~/models/portal/sdk"
 import useCommonStyles from "~/styles/commonStyles"
-import { LoaderDataStruct } from "~/utils/loader"
+import { DataStruct } from "~/types/global"
 
 export const SUCCESSFUL_CHANGE_PASSWORD_MSG =
   "We've just sent you an email to reset your password."
 
 type ProfileViewProps = {
   user: User
-  actionData?: LoaderDataStruct<ActionUser | ActionPassword>
+  actionData?: DataStruct<ActionUser | ActionPassword>
 }
 
 export const ProfileView = ({ user, actionData }: ProfileViewProps) => {

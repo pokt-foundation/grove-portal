@@ -9,7 +9,7 @@ type AppSubscriptionProps = {
   app: PortalApp
 }
 
-const AppSubscription = ({ app }: AppSubscriptionProps) => {
+const ApplicationSubscription = ({ app }: AppSubscriptionProps) => {
   const planType = app.legacyFields.planType
   const subscriptionId = app.legacyFields.stripeSubscriptionID
 
@@ -49,4 +49,4 @@ const AppSubscription = ({ app }: AppSubscriptionProps) => {
   )
 }
 
-export default AppSubscription
+export default ApplicationSubscription

@@ -12,8 +12,8 @@ import {
   PortalAppRole,
   User,
 } from "~/models/portal/sdk"
+import { DataStruct } from "~/types/global"
 import { getErrorMessage } from "~/utils/catchError"
-import { LoaderDataStruct } from "~/utils/loader"
 import { requireUser } from "~/utils/user.server"
 
 export type AccountIdLoaderData = {
@@ -46,7 +46,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
     const userPendingApps = await portal.getUserPortalApps({ accepted: false })
 
-    return json<LoaderDataStruct<AccountIdLoaderData>>({
+    return json<DataStruct<AccountIdLoaderData>>({
       data: {
         account: account.getUserAccount,
         accounts: accounts.getUserAccounts,
@@ -59,7 +59,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       error: false,
     })
   } catch (error) {
-    return json<LoaderDataStruct<AccountIdLoaderData>>({
+    return json<DataStruct<AccountIdLoaderData>>({
       data: null,
       error: true,
       message: getErrorMessage(error),
@@ -68,8 +68,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 }
 
 export default function AccountId() {
-  const { data, error, message } =
-    useLoaderData() as LoaderDataStruct<AccountIdLoaderData>
+  const { data, error, message } = useLoaderData() as DataStruct<AccountIdLoaderData>
 
   if (error) {
     return <ErrorView message={message} />

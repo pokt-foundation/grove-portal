@@ -6,7 +6,7 @@ import TeamView from "./view"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { RoleName, User } from "~/models/portal/sdk"
 import { AccountIdLoaderData } from "~/routes/account.$accountId/route"
-import { LoaderDataStruct } from "~/utils/loader"
+import { DataStruct } from "~/types/global"
 import {
   sendTeamInviteEmail,
   sendTeamNewOwnerEmail,
@@ -178,7 +178,7 @@ export default function Team() {
   const { app, userRole } = useOutletContext<AppIdOutletContext>()
   const { data } = useRouteLoaderData(
     "routes/account.$accountId",
-  ) as LoaderDataStruct<AccountIdLoaderData>
+  ) as DataStruct<AccountIdLoaderData>
 
   return <TeamView app={app} user={data?.user} userRole={userRole} />
 }

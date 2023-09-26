@@ -3,8 +3,8 @@ import { LoaderFunction, MetaFunction, redirect } from "@remix-run/node"
 import { Link, NavLink, useParams } from "@remix-run/react"
 import { initPortalClient } from "~/models/portal/portal.server"
 import useCommonStyles from "~/styles/commonStyles"
-import { seo_title_append } from "~/utils/meta"
-import { MAX_USER_APPS } from "~/utils/pocketUtils"
+import { MAX_USER_APPS } from "~/utils/planUtils"
+import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
 
 export const meta: MetaFunction = () => {

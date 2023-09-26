@@ -3,7 +3,6 @@ import { NavLink, useParams } from "@remix-run/react"
 import clsx from "clsx"
 import React, { useEffect, useState } from "react"
 import styles from "./styles.css"
-// import { useTranslate } from "~/context/TranslateContext"
 // import { IconApp, IconNetwork } from "~/components/shared/Icons"
 
 /* c8 ignore start */

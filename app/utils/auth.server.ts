@@ -5,7 +5,7 @@ import { getRequiredServerEnvVar } from "./environment"
 import { sessionStorage } from "./session.server"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { User as PortalUser } from "~/models/portal/sdk"
-import { initAdminPortal } from "~/utils/admin"
+import { initAdminPortal } from "~/utils/adminPortal"
 
 // Create an instance of the authenticator, pass a generic with what your
 // strategies will return and will be stored in the session

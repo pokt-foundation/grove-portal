@@ -1,6 +1,5 @@
 import { Text } from "@pokt-foundation/pocket-blocks"
 import { Link } from "@remix-run/react"
-import { useTranslate } from "~/context/TranslateContext"
 import { TableBodyProps, TableDataArray } from "~/types/table"
 
 const renderTableCell = ([key, value]: TableDataArray) => (
@@ -8,8 +7,6 @@ const renderTableCell = ([key, value]: TableDataArray) => (
 )
 
 export const TableBody = ({ paginatedData, rowAsLink, data }: TableBodyProps) => {
-  const { t } = useTranslate()
-
   return (
     <tbody>
       {paginatedData.length > 0 ? (
@@ -41,7 +38,7 @@ export const TableBody = ({ paginatedData, rowAsLink, data }: TableBodyProps) =>
             className="empty-search"
             colSpan={data?.length && data[0].length ? Object.keys(data[0]).length : 0}
           >
-            <Text align="center">{t.search.emptySearch}</Text>
+            <Text align="center">Nothing found.</Text>
           </td>
         </tr>
       )}

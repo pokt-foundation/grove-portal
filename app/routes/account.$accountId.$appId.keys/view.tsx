@@ -70,29 +70,6 @@ const AppKeys = ({ app, userRole }: AppKeysProps) => {
           <Divider mt={28} />
         </>
       )}
-
-      {/* {publicKey && (
-        <Box px={40} py={20}>
-          <Text fw={600}>Public Key</Text>
-          <Text fw={400} pt={8}>
-            Unique identifier for a given app that will allow you to inspect the app's
-            activity on-chain.
-          </Text>
-          <Group mt={20}>
-            <PasswordInput
-              readOnly
-              aria-label="Public Key"
-              sx={(theme: MantineTheme) => ({
-                flex: 1,
-                backgroundColor: theme.colors.gray[9],
-              })}
-              value={publicKey}
-            />
-            <CopyTextButton value={publicKey} />
-          </Group>
-        </Box>
-      )}
-      <Divider mt={28} /> */}
     </Stack>
   )
 }

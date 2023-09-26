@@ -9,10 +9,8 @@ import {
   useSearchParams,
 } from "@remix-run/react"
 import React, { useEffect } from "react"
-import { useTranslate } from "~/context/TranslateContext"
 
 const Document = ({ children, title }: { children: React.ReactNode; title?: string }) => {
-  const { language } = useTranslate()
   const [params] = useSearchParams()
 
   useEffect(() => {
@@ -23,7 +21,7 @@ const Document = ({ children, title }: { children: React.ReactNode; title?: stri
   }, [params])
 
   return (
-    <html lang={language}>
+    <html>
       <head>
         {title && <title>{title}</title>}
         <StylesPlaceholder />

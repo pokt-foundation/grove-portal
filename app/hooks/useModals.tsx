@@ -1,9 +1,15 @@
-import { openConfirmModal, openModal } from "@mantine/modals"
+import {
+  openConfirmModal,
+  openModal,
+  useModals as MantineUseModals,
+} from "@mantine/modals"
 import { ModalSettings, OpenConfirmModal } from "@mantine/modals/lib/context"
 import { useMantineTheme } from "@pokt-foundation/pocket-blocks"
 
 const useModals = () => {
   const theme = useMantineTheme()
+
+  const { modals } = MantineUseModals()
 
   const commonModalProps: ModalSettings = {
     centered: true,
@@ -37,7 +43,12 @@ const useModals = () => {
     })
   }
 
-  return { openConfirmationModal, openContentModal, openFullScreenModal }
+  return {
+    openConfirmationModal,
+    openContentModal,
+    openFullScreenModal,
+    modals,
+  }
 }
 
 export default useModals

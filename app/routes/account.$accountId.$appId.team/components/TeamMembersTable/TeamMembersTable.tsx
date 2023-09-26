@@ -6,7 +6,6 @@ import {
   Select,
   Text,
 } from "@pokt-foundation/pocket-blocks"
-import { LuUser } from "react-icons/lu"
 import { DataTable } from "~/components/DataTable"
 import Identicon from "~/components/Identicon"
 import { PortalApp, RoleName, RoleNameV2, User } from "~/models/portal/sdk"
@@ -21,7 +20,7 @@ type TeamMembersTableProps = {
 }
 
 const TeamMembersTable = ({ app, userRole, user }: TeamMembersTableProps) => {
-  const { openChangeRoleModal } = useTeamModals({ appId: app.id })
+  const { openChangeRoleModal } = useTeamModals({ app })
 
   const teamData = app.users
     .map((user) => ({
@@ -100,7 +99,7 @@ const TeamMembersTable = ({ app, userRole, user }: TeamMembersTableProps) => {
           action: {
             element: roleName !== RoleNameV2.Owner && (
               <TeamMemberAction
-                appId={app.id}
+                app={app}
                 status={accepted}
                 teamMember={teamData[index]}
                 user={user}

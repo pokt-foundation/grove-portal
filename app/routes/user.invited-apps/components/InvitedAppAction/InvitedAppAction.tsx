@@ -2,39 +2,18 @@ import { Menu, Text, ActionIcon, Button, Group } from "@pokt-foundation/pocket-b
 import { Form, Link, useNavigation } from "@remix-run/react"
 import React from "react"
 import { LuArrowUpRight, LuMinusCircle, LuMoreHorizontal } from "react-icons/lu"
-import useModals from "~/hooks/useModals"
-import { PortalApp } from "~/models/portal/sdk"
+import { PortalApp, User } from "~/models/portal/sdk"
+import useTeamModals from "~/routes/account.$accountId.$appId.team/hooks/useTeamModals"
 import useCommonStyles from "~/styles/commonStyles"
 
-type InvitedAppActionProps = { app: PortalApp & { accepted: boolean } }
+type InvitedAppActionProps = { app: PortalApp & { accepted: boolean }; user: User }
 
-const InvitedAppAction = ({ app }: InvitedAppActionProps) => {
+const InvitedAppAction = ({ app, user }: InvitedAppActionProps) => {
   const { classes: commonClasses } = useCommonStyles()
   const navigation = useNavigation()
-  const { openConfirmationModal } = useModals()
-  const { name, accepted } = app
+  const { accepted } = app
 
-  const leaveApp = () => {
-    // fetcher.submit(
-    //     {
-    //       props here...
-    //     },
-    //     {
-    //       method: "POST",
-    //     },
-    // )
-
-    console.log("leaving app...", app.name)
-  }
-
-  const openLeaveAppModal = () =>
-    openConfirmationModal({
-      title: <Text fw={600}>Leave App</Text>,
-      children: <Text>Are you sure you want to leave {name}?</Text>,
-      labels: { cancel: "Cancel", confirm: "Leave" },
-      confirmProps: { color: "red" },
-      onConfirm: () => leaveApp(),
-    })
+  const { openLeaveTeamModal } = useTeamModals({ app })
 
   return (
     <Group grow={!accepted} position="right" spacing="md">
@@ -58,7 +37,7 @@ const InvitedAppAction = ({ app }: InvitedAppActionProps) => {
             </Menu.Item>
             <Menu.Item
               icon={<LuMinusCircle size={18} />}
-              onClick={() => openLeaveAppModal()}
+              onClick={() => openLeaveTeamModal(user.email, user.portalUserID)}
             >
               <Text>Leave</Text>
             </Menu.Item>

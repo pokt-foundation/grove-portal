@@ -1,6 +1,6 @@
 import { showNotification } from "@mantine/notifications"
 import { AppShell, Container, Header } from "@pokt-foundation/pocket-blocks"
-import { Link, useLocation } from "@remix-run/react"
+import { Link, useLocation, useParams } from "@remix-run/react"
 import React, { ReactNode, useEffect, useMemo, useState } from "react"
 import { LuShapes } from "react-icons/lu"
 import { AppHeader } from "~/components/AppHeader"
@@ -28,12 +28,24 @@ export const RootAppShell = ({
   const { classes: commonClasses } = useCommonStyles()
   const { hideSidebar } = useRoot({ user })
   const { pathname } = useLocation()
+  const { accountId } = useParams()
+
+  const isUserOwner = useMemo(
+    () =>
+      accounts
+        .find(({ id }) => accountId === id)
+        ?.users.some((u) => u.userID === user.portalUserID && u.owner) as boolean,
+    [accountId, accounts, user.portalUserID],
+  )
 
   const navProp = useMemo(
     () => ({
-      ...(!hideSidebar && apps && { navbar: <Sidebar apps={apps} hidden={!opened} /> }),
+      ...(!hideSidebar &&
+        apps && {
+          navbar: <Sidebar apps={apps} canCreateApps={isUserOwner} hidden={!opened} />,
+        }),
     }),
-    [hideSidebar, apps, opened],
+    [hideSidebar, apps, opened, isUserOwner],
   )
 
   useEffect(() => {

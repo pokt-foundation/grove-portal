@@ -10,6 +10,7 @@ export enum Permissions {
 }
 
 export const requireUser = async (request: Request, defaultRedirect = "/") => {
+  const url = new URL(request.url)
   const user = await authenticator.isAuthenticated(request)
 
   if (!user) {
@@ -20,7 +21,7 @@ export const requireUser = async (request: Request, defaultRedirect = "/") => {
     throw await authenticator.logout(request, { redirectTo: "/api/auth/auth0" })
   }
 
-  if (!user.user.email_verified) {
+  if (!user.user.email_verified && url.pathname !== "/user/email-verification") {
     throw redirect("/user/email-verification")
   }
 

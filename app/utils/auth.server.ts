@@ -1,5 +1,5 @@
 import { Authenticator } from "remix-auth"
-import { Auth0ExtraParams, Auth0Profile, Auth0Strategy } from "remix-auth-auth0"
+import { Auth0ExtraParams, Auth0Strategy } from "remix-auth-auth0"
 import invariant from "tiny-invariant"
 import { getRequiredServerEnvVar } from "./environment"
 import { sessionStorage } from "./session.server"
@@ -18,7 +18,7 @@ export const authenticator = new Authenticator<{
   }
 }>(sessionStorage)
 
-export type User = {
+export type AuthUser = {
   accessToken: string
   refreshToken: string
   extraParams: Auth0ExtraParams
@@ -36,7 +36,7 @@ let auth0Strategy = new Auth0Strategy(
     audience: getRequiredServerEnvVar("AUTH0_AUDIENCE"),
     scope: getRequiredServerEnvVar("AUTH0_SCOPE"),
   },
-  async ({ accessToken, refreshToken, extraParams, profile }): Promise<User> => {
+  async ({ accessToken, refreshToken, extraParams, profile }): Promise<AuthUser> => {
     const email = profile?._json?.email
     const providerUserID = profile?.id
 

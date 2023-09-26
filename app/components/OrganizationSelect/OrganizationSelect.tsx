@@ -6,7 +6,7 @@ import {
   UnstyledButton,
 } from "@pokt-foundation/pocket-blocks"
 import { NavLink, useParams } from "@remix-run/react"
-import React from "react"
+import React, { useMemo } from "react"
 import { LuChevronsUpDown } from "react-icons/lu"
 import Identicon from "~/components/Identicon"
 import { Account } from "~/models/portal/sdk"
@@ -39,8 +39,20 @@ const OrganizationItem = ({ account, withIcon }: UserItemProps) => (
 
 const OrganizationSelect = ({ accounts }: OrganizationSelectProps) => {
   const { accountId } = useParams()
-  const activeAccount = accounts.find(({ id }) => id === accountId)
   const hasMultipleAccounts = accounts.length > 1
+
+  const activeAccount = useMemo(
+    () => accounts.find(({ id }) => id === accountId),
+    [accountId, accounts],
+  )
+
+  const menuAccounts = useMemo(() => {
+    if (activeAccount) {
+      const filteredAccounts = accounts.filter(({ id }) => id !== accountId)
+      return [activeAccount, ...filteredAccounts] as Account[]
+    }
+    return accounts
+  }, [accountId, accounts, activeAccount])
 
   return (
     <Menu styles={{ dropdown: { minWidth: 165 } }}>
@@ -65,17 +77,15 @@ const OrganizationSelect = ({ accounts }: OrganizationSelectProps) => {
           </UnstyledButton>
         </Menu.Target>
       )}
-      {accounts.length > 1 && (
+      {menuAccounts.length > 1 && (
         <Menu.Dropdown>
-          {accounts
-            .sort((a, b) => (a.id > b.id ? 1 : -1))
-            .map((account) => (
-              <Menu.Item key={account.id} disabled={account.id === accountId} p={2}>
-                <NavLink to={`/account/${account.id}`}>
-                  <OrganizationItem account={account} />
-                </NavLink>
-              </Menu.Item>
-            ))}
+          {menuAccounts.map((account) => (
+            <Menu.Item key={account.id} disabled={account.id === accountId} p={2}>
+              <NavLink to={`/account/${account.id}`}>
+                <OrganizationItem account={account} />
+              </NavLink>
+            </Menu.Item>
+          ))}
         </Menu.Dropdown>
       )}
     </Menu>

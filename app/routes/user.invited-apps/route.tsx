@@ -40,7 +40,10 @@ export const action: ActionFunction = async ({ request }) => {
       const portalAppID = formData.get("portalAppId")
       invariant(typeof portalAppID === "string", "portalAppId must be set")
 
-      const updateUserResponse = await portal.updateUserAcceptAccount({ portalAppID })
+      const updateUserResponse = await portal.updateUserAcceptAccount({
+        portalAppID,
+        accepted: invite_response === "accept",
+      })
       res = updateUserResponse.updateUserAcceptAccount
     }
 

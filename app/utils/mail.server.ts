@@ -6,7 +6,7 @@ const mg = mailgun.client({
   username: "api",
   key: getRequiredClientEnvVar("MAILGUN_API_KEY"),
 })
-const DOMAIN_NAME = "pokt.network"
+const DOMAIN_NAME = "grove.city"
 
 enum EmailTemplates {
   TeamInvite = "pocket-dashboard-team-invite",
@@ -28,7 +28,7 @@ const getMailgunTemplate = (
   variables: { [key: string]: string },
 ) => {
   return {
-    from: "Pocket Portal <postmaster@pokt.network>",
+    from: "Grove Portal <portal@grove.city>",
     to,
     subject,
     template,
@@ -47,11 +47,16 @@ export const sendEmail = async (
 }
 
 export const sendTeamInviteEmail = async (email: string, app: string) => {
-  return await sendEmail(email, "Your invite to POKT Portal", EmailTemplates.TeamInvite, {
-    app: app,
-    // TODO: Change to correct invite link
-    invite_link: "https://www.portal.pokt.network/account",
-  })
+  return await sendEmail(
+    email,
+    "Your invite to Grove Portal",
+    EmailTemplates.TeamInvite,
+    {
+      app: app,
+      // TODO: Change to correct invite link
+      invite_link: "https://www.portal.grove.city/user/invited-apps",
+    },
+  )
 }
 export const sendTeamUserRemovedEmail = async (email: string, app: string) => {
   return await sendEmail(

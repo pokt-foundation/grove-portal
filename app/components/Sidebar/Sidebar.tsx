@@ -21,6 +21,7 @@ import useCommonStyles from "~/styles/commonStyles"
 type SidebarProps = {
   apps: PortalApp[] | null
   hidden: boolean
+  canCreateApps: boolean
 }
 
 const getStaticRoutes = (
@@ -50,7 +51,7 @@ const getStaticRoutes = (
   },
 })
 
-export const Sidebar = ({ apps, hidden }: SidebarProps) => {
+export const Sidebar = ({ apps, hidden, canCreateApps }: SidebarProps) => {
   const { classes: commonClasses } = useCommonStyles()
   const { accountId } = useParams()
   const [collapsed, setCollapsed] = useState(false)
@@ -69,7 +70,9 @@ export const Sidebar = ({ apps, hidden }: SidebarProps) => {
         <Navbar.Section>
           <InternalLink iconOnly={collapsed} route={staticRoutes.overview} />
           {apps && <SidebarApps apps={apps} iconOnly={collapsed} />}
-          <InternalLink iconOnly={collapsed} route={staticRoutes.createNewApp} />
+          {canCreateApps && (
+            <InternalLink iconOnly={collapsed} route={staticRoutes.createNewApp} />
+          )}
         </Navbar.Section>
         <Divider color="#343438" my="lg" size="xs" />
         <Navbar.Section>

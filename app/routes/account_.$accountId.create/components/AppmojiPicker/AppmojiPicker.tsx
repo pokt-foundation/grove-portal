@@ -13,7 +13,6 @@ const useStyles = createStyles((theme) => ({
   appmojiPickerContainer: {
     position: "absolute",
     top: "40px",
-    left: "-150px",
   },
 }))
 

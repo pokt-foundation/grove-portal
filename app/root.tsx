@@ -57,35 +57,35 @@ export default function App() {
   )
 }
 
-// export const CatchBoundary = () => {
-//   const caught = useCatch()
-//
-//   if (caught.status === 404) {
-//     return (
-//       <RootProviders>
-//         <Document title={`${caught.status} ${caught.statusText}`}>
-//           <Center className="error-container" mt="xl">
-//             <Alert color="red" title={`Application Error: ${caught.status}`}>
-//               {caught.statusText}
-//             </Alert>
-//           </Center>
-//         </Document>
-//       </RootProviders>
-//     )
-//   }
-//   throw new Error(`Unexpected caught response with status: ${caught.status}`)
-// }
-//
-// export const ErrorBoundary = ({ error }: { error: Error }) => {
-//   return (
-//     <RootProviders>
-//       <Document title="Uh-oh!">
-//         <div className="error-container">
-//           <dialog color="red" title="Application Error">
-//             {error.message}
-//           </dialog>
-//         </div>
-//       </Document>
-//     </RootProviders>
-//   )
-// }
+export const CatchBoundary = () => {
+  const caught = useCatch()
+
+  if (caught.status === 404) {
+    return (
+      <RootProviders>
+        <Document title={`${caught.status} ${caught.statusText}`}>
+          <Center className="error-container" mt="xl">
+            <Alert color="red" title={`Application Error: ${caught.status}`}>
+              {caught.statusText}
+            </Alert>
+          </Center>
+        </Document>
+      </RootProviders>
+    )
+  }
+  throw new Error(`Unexpected caught response with status: ${caught.status}`)
+}
+
+export const ErrorBoundary = ({ error }: { error: Error }) => {
+  return (
+    <RootProviders>
+      <Document title="Uh-oh!">
+        <div className="error-container">
+          <dialog color="red" title="Application Error">
+            {error.message}
+          </dialog>
+        </div>
+      </Document>
+    </RootProviders>
+  )
+}

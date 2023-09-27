@@ -1,7 +1,5 @@
-import { IconBookOpen, IconMail } from "@pokt-foundation/pocket-blocks"
 import { useLocation, useParams } from "@remix-run/react"
 import { useEffect, useMemo } from "react"
-import { IconApp } from "~/components/Icons"
 import { User } from "~/models/portal/sdk"
 import analyticsInit from "~/utils/analytics"
 
@@ -26,45 +24,5 @@ export const useRoot = ({ user }: useRootProps) => {
     analyticsInit({ id: user?.portalUserID ?? "" })
   }, [user])
 
-  const routes = useMemo(() => {
-    enum Protected {
-      Public = 0,
-      Private = 1,
-      PrivateAdmin = 2,
-      Admin = 3,
-    }
-
-    const allRoutes = [
-      {
-        to: "/account",
-        label: "Account",
-        icon: IconApp,
-        protected: Protected.Public, // show this link to all. dashboard layout handles redirect to login.
-      },
-      {
-        to: "https://docs.portal.pokt.network/",
-        external: true,
-        label: "Docs",
-        icon: IconBookOpen,
-        protected: Protected.Public,
-      },
-      {
-        to: "https://support.pokt.network",
-        external: true,
-        label: "Support",
-        icon: IconMail,
-        protected: Protected.Public,
-      },
-    ]
-
-    let protectedLevel = Protected.Public
-
-    if (user) {
-      protectedLevel = Protected.Private
-    }
-
-    return allRoutes.filter((r) => r.protected <= protectedLevel)
-  }, [user])
-
-  return { isLanding, hideSidebar, routes }
+  return { isLanding, hideSidebar }
 }

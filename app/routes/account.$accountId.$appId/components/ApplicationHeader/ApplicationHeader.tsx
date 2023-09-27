@@ -29,9 +29,11 @@ const ApplicationHeader = ({ app }: ApplicationHeaderProps) => {
             {app.name}
           </Text>
           <Group spacing={8}>
-            <Text mr={8}>{getPlanName(app.legacyFields.planType)}</Text>
+            <Text mr={12}>{getPlanName(app.legacyFields.planType)}</Text>
             <Text>App ID</Text>
-            <Badge radius="sm">{app.id}</Badge>
+            <Badge px={6} radius="sm">
+              {app.id}
+            </Badge>
           </Group>
         </Box>
       </Group>

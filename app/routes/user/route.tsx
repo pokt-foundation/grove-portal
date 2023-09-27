@@ -1,7 +1,8 @@
 import { Divider } from "@mantine/core"
-import { Container, Stack, Text } from "@pokt-foundation/pocket-blocks"
+import { Container, Stack, Text, Button } from "@pokt-foundation/pocket-blocks"
 import { json, LoaderFunction } from "@remix-run/node"
-import { Outlet, useLoaderData } from "@remix-run/react"
+import { NavLink, Outlet, useLoaderData } from "@remix-run/react"
+import { LuArrowLeft } from "react-icons/lu"
 import ErrorView from "~/components/ErrorView"
 import LinkTabs from "~/components/LinkTabs"
 import RootAppShell from "~/components/RootAppShell/RootAppShell"
@@ -77,6 +78,18 @@ export default function UserAccount() {
       user={user}
     >
       <Container fluid pt={16} px={0}>
+        <Button
+          compact
+          color="gray"
+          component={NavLink}
+          leftIcon={<LuArrowLeft size={18} />}
+          mb="xl"
+          ml={-15}
+          to="/account"
+          variant="subtle"
+        >
+          Back
+        </Button>
         <Stack spacing="xl">
           <Text fw={600} fz="md">
             User Account

@@ -10,6 +10,9 @@ const useTableStyles = createStyles((theme) => ({
     "& tbody tr td": {
       borderColor: "rgba(55,58,64, 0.5)",
     },
+    "& thead tr th": {
+      borderColor: "rgba(55,58,64, 0.5)",
+    },
   },
 }))
 

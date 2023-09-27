@@ -2,7 +2,7 @@ import { Divider } from "@mantine/core"
 import { showNotification } from "@mantine/notifications"
 import { Box } from "@pokt-foundation/pocket-blocks"
 import { useFetcher } from "@remix-run/react"
-import { useReducer, useEffect } from "react"
+import { useReducer, useEffect, useRef } from "react"
 import ApprovedChains from "./components/ApprovedChains"
 import ChainWhitelist from "./components/ChainWhitelist"
 import PrivateSecretKey from "./components/PrivateSecretKey"
@@ -31,17 +31,22 @@ export const SecurityView = ({ actionData, app, blockchains }: SecurityViewProps
     app.whitelists ?? DEFAULT_WHITELISTS,
   )
   const fetcher = useFetcher()
+  const isInitialRender = useRef(true)
 
+  // ٍRun effect only when state changes excluding the first render
   useEffect(() => {
-    // stop it from posting on initial load
-    fetcher.submit(
-      {
-        whitelist: JSON.stringify(state),
-      },
-      {
-        method: "post",
-      },
-    )
+    if (isInitialRender.current) {
+      isInitialRender.current = false
+    } else {
+      fetcher.submit(
+        {
+          whitelist: JSON.stringify(state),
+        },
+        {
+          method: "post",
+        },
+      )
+    }
   }, [state])
 
   useEffect(() => {

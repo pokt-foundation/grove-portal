@@ -21,8 +21,8 @@ export const requireUser = async (request: Request, defaultRedirect = "/") => {
     throw await authenticator.logout(request, { redirectTo: "/api/auth/auth0" })
   }
 
-  if (!user.user.email_verified && url.pathname !== "/user/email-verification") {
-    throw redirect("/user/email-verification")
+  if (!user.user.email_verified) {
+    throw await authenticator.logout(request, { redirectTo: "/email-verification" })
   }
 
   const decode = jwt_decode<{

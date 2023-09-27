@@ -9,16 +9,17 @@ import {
 import { useFetcher } from "@remix-run/react"
 import { useEffect, useState } from "react"
 import invariant from "tiny-invariant"
+import AccountPlansContainer from "./components/AccountPlansContainer"
+import AppForm from "./components/AppForm"
+import { DEFAULT_APPMOJI } from "./components/AppmojiPicker"
 import PortalLoader from "~/components/PortalLoader"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { PayPlanTypeV2 } from "~/models/portal/sdk"
-import AccountPlansContainer from "~/routes/account_.$accountId.create/components/AccountPlansContainer"
-import AppForm from "~/routes/account_.$accountId.create/components/AppForm"
-import { DEFAULT_APPMOJI } from "~/routes/account_.$accountId.create/components/AppmojiPicker"
+import { Account, PayPlanTypeV2 } from "~/models/portal/sdk"
 import { getErrorMessage } from "~/utils/catchError"
 import { getRequiredClientEnvVar } from "~/utils/environment"
-import { seo_title_append } from "~/utils/meta"
-import { MAX_USER_APPS } from "~/utils/pocketUtils"
+import { MAX_USER_APPS } from "~/utils/planUtils"
+import { seo_title_append } from "~/utils/seo"
+import isUserAccountOwner from "~/utils/user"
 import { getUserPermissions, requireUser, Permissions } from "~/utils/user.server"
 
 export const meta: MetaFunction = () => {
@@ -36,7 +37,6 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   const portal = initPortalClient({ token: user.accessToken })
   const { accountId } = params
   const permissions = getUserPermissions(user.accessToken)
-
   invariant(accountId, "AccountId must be set")
 
   const getUserAccountResponse = await portal
@@ -49,6 +49,17 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     return redirect(`/account/${params.accountId}`)
   }
 
+  const getUserAccountsResponse = await portal.getUserAccounts()
+  if (!getUserAccountsResponse.getUserAccounts) {
+    return redirect(`/account/${params.accountId}`)
+  }
+
+  const isUserOwner = isUserAccountOwner({
+    accounts: getUserAccountsResponse.getUserAccounts as Account[],
+    accountId: accountId as string,
+    user: user.user,
+  })
+
   const portalApps = getUserAccountResponse.getUserAccount.portalApps
   const underMaxApps = () => {
     return !portalApps || portalApps.length < MAX_USER_APPS
@@ -60,6 +71,9 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       getRequiredClientEnvVar("GODMODE_ACCOUNTS")?.includes(user.user.auth0ID)) ||
     underMaxApps()
 
+  if (!isUserOwner) {
+    return redirect(`/account/${params.accountId}`)
+  }
   // ensure only users who can create new apps are allowed on this page
   if (!userCanCreateApp) {
     return redirect(`/account/${params.accountId}/app-limit-exceeded`)

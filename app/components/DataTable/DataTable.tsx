@@ -1,8 +1,17 @@
+import { createStyles } from "@mantine/core"
 import { Table, Box } from "@pokt-foundation/pocket-blocks"
 import { DataTableBody } from "./DataTableBody"
 import { DataTablePagination } from "./DataTablePagination"
 import { DataTableProps, IdObj } from "~/components/DataTable/dataTable.d"
 import { usePagination } from "~/hooks/usePagination"
+
+const useTableStyles = createStyles((theme) => ({
+  table: {
+    "& tbody tr td": {
+      borderColor: "rgba(55,58,64, 0.5)",
+    },
+  },
+}))
 
 export const DataTable = <T extends IdObj>({
   data,
@@ -17,9 +26,11 @@ export const DataTable = <T extends IdObj>({
     searchTerm,
   })
 
+  const { classes } = useTableStyles()
+
   return (
     <Box>
-      <Table verticalSpacing="xl">
+      <Table className={classes.table} verticalSpacing="xl">
         {columns && (
           <thead>
             <tr>

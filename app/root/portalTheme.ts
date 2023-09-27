@@ -155,6 +155,9 @@ export const portalTheme: MantineThemeOverride = {
         root: { backgroundColor: theme?.colors?.navy[4] },
       }),
     },
+    Divider: {
+      defaultProps: { opacity: "50%" },
+    },
     TextInput: {
       defaultProps: {
         radius: "sm",

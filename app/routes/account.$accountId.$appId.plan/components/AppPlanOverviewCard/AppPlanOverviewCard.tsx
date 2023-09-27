@@ -9,7 +9,7 @@ import { Stripe } from "~/models/stripe/stripe.server"
 import useSubscriptionModals from "~/routes/account.$accountId.$appId/hooks/useSubscriptionModals"
 import useCommonStyles from "~/styles/commonStyles"
 import { dayjs } from "~/utils/dayjs"
-import { getPlanName } from "~/utils/utils"
+import { getPlanName } from "~/utils/planUtils"
 
 interface AppPlanOverviewCardProps {
   app: PortalApp

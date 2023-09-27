@@ -15,7 +15,7 @@ import { initPortalClient } from "~/models/portal/portal.server"
 import { PortalApp, UpdatePortalApp } from "~/models/portal/sdk"
 import AppForm from "~/routes/account_.$accountId.create/components/AppForm"
 import { getErrorMessage } from "~/utils/catchError"
-import { seo_title_append } from "~/utils/meta"
+import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
 
 export const meta: MetaFunction = () => {

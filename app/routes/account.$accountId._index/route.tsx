@@ -10,22 +10,15 @@ import {
 } from "@pokt-foundation/pocket-blocks"
 import { MetaFunction } from "@remix-run/node"
 import { useRouteLoaderData } from "@remix-run/react"
-import React from "react"
 import { AccountIdLoaderData } from "../account.$accountId/route"
+import { AccountAppsOverview } from "./components/AccountAppsOverview"
+import { EmptyState } from "./components/EmptyState"
+import OverviewBarChart from "./components/OverviewBarChart"
+import { OverviewSparkline } from "./components/OverviewSparkline"
 import ErrorView from "~/components/ErrorView"
 import TitledCard from "~/components/TitledCard"
-import { EndpointsQuery, PortalApp } from "~/models/portal/sdk"
-import { AccountAppsOverview } from "~/routes/account.$accountId._index/components/AccountAppsOverview"
-import { EmptyState } from "~/routes/account.$accountId._index/components/EmptyState"
-import OverviewBarChart from "~/routes/account.$accountId._index/components/OverviewBarChart"
-import { OverviewSparkline } from "~/routes/account.$accountId._index/components/OverviewSparkline"
-import { PocketUser } from "~/routes/api.user/route"
-import { LoaderDataStruct } from "~/utils/loader"
-
-export type DashboardLoaderData = {
-  endpoints: EndpointsQuery | null
-  user: PocketUser
-}
+import { PortalApp } from "~/models/portal/sdk"
+import type { DataStruct } from "~/types/global"
 
 export const meta: MetaFunction = () => {
   return {
@@ -57,7 +50,7 @@ const InsightsDaysPeriodSelector = () => {
 export default function Account() {
   const { data, error, message } = useRouteLoaderData(
     "routes/account.$accountId",
-  ) as LoaderDataStruct<AccountIdLoaderData>
+  ) as DataStruct<AccountIdLoaderData>
 
   if (error) {
     return <ErrorView message={message} />

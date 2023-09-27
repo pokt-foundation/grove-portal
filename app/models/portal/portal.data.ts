@@ -1,10 +1,7 @@
-import { Auth0Profile } from "remix-auth-auth0"
 import {
   AppStatus,
   Blockchain,
-  EndpointsQuery,
   PayPlanType,
-  PendingEndpointsQuery,
   PortalApp,
   ProcessedEndpoint,
   RoleName,
@@ -122,15 +119,6 @@ export const endpoint: ProcessedEndpoint = {
     covalentAPIKeyPaid: "",
   },
 }
-
-export const endpoints: EndpointsQuery = {
-  admin: [endpoint],
-  member: [endpoint],
-  owner: [endpoint],
-  __typename: "Query",
-}
-
-export const pendingEndpoints: PendingEndpointsQuery = { pendingEndpoints: [endpoint] }
 
 export const blockchains: Blockchain[] = [
   {

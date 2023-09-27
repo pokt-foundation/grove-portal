@@ -3,24 +3,24 @@ import { showNotification } from "@mantine/notifications"
 import { Box } from "@pokt-foundation/pocket-blocks"
 import { useFetcher } from "@remix-run/react"
 import { useReducer, useEffect } from "react"
-import { action, SecurityActionData } from "./route"
+import ApprovedChains from "./components/ApprovedChains"
+import ChainWhitelist from "./components/ChainWhitelist"
+import PrivateSecretKey from "./components/PrivateSecretKey"
+import WhitelistOrigins from "./components/WhitelistOrigins"
+import WhitelistUserAgents from "./components/WhitelistUserAgents"
+import { SecurityActionData } from "./route"
 import { DEFAULT_WHITELISTS, securityReducer } from "./utils/stateReducer"
+import { Blockchain } from "~/models/portal/sdk"
 import {
   BlockchainsQuery,
   PortalApp,
   WhitelistContractsV2,
   WhitelistMethodsV2,
 } from "~/models/portal/sdk"
-import { Blockchain } from "~/models/portal/sdk"
-import ApprovedChains from "~/routes/account.$accountId.$appId.security/components/ApprovedChains"
-import ChainWhitelist from "~/routes/account.$accountId.$appId.security/components/ChainWhitelist"
-import PrivateSecretKey from "~/routes/account.$accountId.$appId.security/components/PrivateSecretKey"
-import WhitelistOrigins from "~/routes/account.$accountId.$appId.security/components/WhitelistOrigins"
-import WhitelistUserAgents from "~/routes/account.$accountId.$appId.security/components/WhitelistUserAgents"
-import { LoaderDataStruct } from "~/utils/loader"
+import { DataStruct } from "~/types/global"
 
 type SecurityViewProps = {
-  actionData?: LoaderDataStruct<SecurityActionData>
+  actionData?: DataStruct<SecurityActionData>
   app: PortalApp
   blockchains: BlockchainsQuery["blockchains"]
 }
@@ -33,7 +33,6 @@ export const SecurityView = ({ actionData, app, blockchains }: SecurityViewProps
   const fetcher = useFetcher()
 
   useEffect(() => {
-    console.log(state)
     // stop it from posting on initial load
     fetcher.submit(
       {

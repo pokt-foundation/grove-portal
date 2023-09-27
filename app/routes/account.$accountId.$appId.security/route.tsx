@@ -11,9 +11,9 @@ import {
   Whitelists,
   WhitelistType,
 } from "~/models/portal/sdk"
+import { DataStruct } from "~/types/global"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { getErrorMessage } from "~/utils/catchError"
-import { LoaderDataStruct } from "~/utils/loader"
 import { requireUser } from "~/utils/user.server"
 
 export const meta: MetaFunction = () => {
@@ -92,7 +92,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 
     console.log(response)
 
-    return json<LoaderDataStruct<SecurityActionData>>({
+    return json<DataStruct<SecurityActionData>>({
       data: {
         app: response.updateUserPortalApp as PortalApp,
         length: JSON.stringify(response).length,
@@ -100,7 +100,7 @@ export const action: ActionFunction = async ({ request, params }) => {
       error: false,
     })
   } catch (error) {
-    return json<LoaderDataStruct<SecurityActionData>>({
+    return json<DataStruct<SecurityActionData>>({
       data: null,
       error: true,
       message: getErrorMessage(error),
@@ -109,7 +109,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 }
 
 export const AppSecurity = () => {
-  const actionData = useActionData() as LoaderDataStruct<SecurityActionData>
+  const actionData = useActionData() as DataStruct<SecurityActionData>
 
   useEffect(() => {
     trackEvent(AmplitudeEvents.SecurityDetailsView)

@@ -3,7 +3,7 @@ import { useFetcher } from "@remix-run/react"
 import { useCallback } from "react"
 import { AppIdOutletContext } from "~/routes/account.$accountId.$appId/route"
 import { formatNumberToSICompact } from "~/utils/formattingUtils"
-import { FREE_TIER_MAX_RELAYS } from "~/utils/pocketUtils"
+import { FREE_TIER_MAX_RELAYS } from "~/utils/planUtils"
 
 type NotificationLevel = "quarter" | "half" | "threeQuarters" | "full"
 

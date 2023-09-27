@@ -1,4 +1,4 @@
-import { ActionIcon, Button, Group, Menu, Text } from "@pokt-foundation/pocket-blocks"
+import { ActionIcon, Group, Menu, Text } from "@pokt-foundation/pocket-blocks"
 import { Link } from "@remix-run/react"
 import React from "react"
 import { LuMoreHorizontal, LuArrowUpRight } from "react-icons/lu"

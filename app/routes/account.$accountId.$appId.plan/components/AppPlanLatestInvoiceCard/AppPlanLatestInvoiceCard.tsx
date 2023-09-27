@@ -49,12 +49,12 @@ export default function AppPlanLatestInvoiceCard({
     <TitledCard header={() => <Text weight={600}>Latest Invoice</Text>}>
       <Stack px={20} py={10}>
         {cardItems.map(({ label, value }, index) => (
-          <>
-            <Group key={`${label}-${index}`} p={12} position="apart">
+          <React.Fragment key={`${label}-${index}`}>
+            <Group p={12} position="apart">
               <Text>{label}</Text> <Text>{value}</Text>
             </Group>
             <Divider />
-          </>
+          </React.Fragment>
         ))}
         <Group grow spacing="md">
           <Button

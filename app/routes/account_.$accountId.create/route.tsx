@@ -32,7 +32,7 @@ export const meta: MetaFunction = () => {
 //   price: Stripe.Price | void
 // }
 
-export const loader: LoaderFunction = async ({ request, params, context }) => {
+export const loader: LoaderFunction = async ({ request, params }) => {
   const user = await requireUser(request)
   const portal = initPortalClient({ token: user.accessToken })
   const { accountId } = params

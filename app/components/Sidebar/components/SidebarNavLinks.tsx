@@ -7,12 +7,12 @@ import {
   MantineTheme,
   Text,
   UnstyledButton,
+  Tooltip,
 } from "@pokt-foundation/pocket-blocks"
 import { NavLink } from "@remix-run/react"
 import { Emoji } from "emoji-picker-react"
 import React from "react"
 import { IconType } from "react-icons/lib/cjs/iconBase"
-import Tooltip from "~/components/Tooltip"
 import { DEFAULT_APPMOJI } from "~/routes/account_.$accountId.create/components/AppmojiPicker"
 
 export type SidebarNavRoute = {

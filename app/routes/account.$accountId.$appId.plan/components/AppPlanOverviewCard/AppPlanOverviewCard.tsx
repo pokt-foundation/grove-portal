@@ -63,12 +63,12 @@ export default function AppPlanOverviewCard({
     <TitledCard header={() => <Text weight={600}>Current plan</Text>}>
       <Stack h="calc(100% - 25px)" px={20} py={10}>
         {cardItems.map(({ label, value }, index) => (
-          <>
-            <Group key={`${label}-${index}`} p={12} position="apart">
+          <React.Fragment key={`${label}-${index}`}>
+            <Group p={12} position="apart">
               <Text>{label}</Text> <Text>{value}</Text>
             </Group>
             <Divider />
-          </>
+          </React.Fragment>
         ))}
         <Box mt="auto">
           <Form action="/api/stripe/portal-session" method="post">

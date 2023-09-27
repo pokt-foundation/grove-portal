@@ -81,18 +81,14 @@ const TeamMembersTable = ({ app, userRole, user }: TeamMembersTableProps) => {
           },
           status: {
             element: (
-              <Text>
-                {roleName === RoleNameV2.Owner ? (
-                  "-"
-                ) : (
-                  <Text
-                    sx={(theme: MantineTheme) => ({
-                      color: accepted ? theme.colors.green[6] : theme.colors.yellow[7],
-                    })}
-                  >
-                    {accepted ? "Accepted" : "Pending"}
-                  </Text>
-                )}
+              <Text
+                sx={(theme: MantineTheme) => ({
+                  ...(roleName !== RoleNameV2.Owner && {
+                    color: accepted ? theme.colors.green[6] : theme.colors.yellow[7],
+                  }),
+                })}
+              >
+                {roleName === RoleNameV2.Owner ? "-" : accepted ? "Accepted" : "Pending"}
               </Text>
             ),
           },

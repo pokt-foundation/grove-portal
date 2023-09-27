@@ -1,7 +1,6 @@
 import { Alert, Center, createEmotionCache } from "@pokt-foundation/pocket-blocks"
 import { LinksFunction, LoaderFunction, MetaFunction, json } from "@remix-run/node"
 import { Outlet, useCatch, useLoaderData } from "@remix-run/react"
-import { links as NavLinks } from "~/components/Nav"
 import Document from "~/root/components/Document"
 import RootProviders from "~/root/components/RootProviders"
 import normalizeStyles from "~/styles/normalize.css"
@@ -15,7 +14,6 @@ export const links: LinksFunction = () => {
     { rel: "icon", href: "/favicon.ico" },
     { rel: "preconnect", href: "https://fonts.googleapis.com" },
     { rel: "preconnect", href: "https://fonts.gstatic.com" },
-    ...NavLinks(),
   ]
 }
 

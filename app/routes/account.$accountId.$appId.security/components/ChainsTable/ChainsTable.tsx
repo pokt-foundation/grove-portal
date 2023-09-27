@@ -59,6 +59,7 @@ const ChainsTable = ({
               endpointUrl: {
                 element: (
                   <TextInput
+                    readOnly
                     bg={theme.colors.gray[9]}
                     miw={300}
                     value={getAppEndpointUrl(chain, appId)}
@@ -92,48 +93,4 @@ const ChainsTable = ({
     )
   )
 }
-// return (
-//     selectedBlockChains && (
-//         <>
-//           {selectedBlockChains?.map((chain) => (
-//               <Grid key={chain?.id} px={20} py={24}>
-//                 <Grid.Col span={3}>
-//                   <Flex gap="sm">
-//                     <Avatar radius={40} size={40} src="/avalanche-avax-logo.svg" />
-//                     <Stack spacing={0} w={160}>
-//                       <Text truncate fw={600}>
-//                         {chain?.description}
-//                       </Text>
-//                       <Text c="dimmed" fz="xs">
-//                         {chain?.blockchain}
-//                       </Text>
-//                     </Stack>
-//                   </Flex>
-//                 </Grid.Col>
-//                 <Grid.Col span="auto">
-//                   <TextInput
-//                       bg={theme.colors.gray[9]}
-//                       miw={300}
-//                       value={getAppEndpointUrl(chain, appId)}
-//                   />
-//                 </Grid.Col>
-//                 <Grid.Col span="content">
-//                   <Group position="right" spacing="lg">
-//                     <CopyTextButton value={getAppEndpointUrl(chain, appId)} />
-//                     <ActionIcon
-//                         className={commonClasses.grayOutlinedButton}
-//                         radius="xl"
-//                         size={40}
-//                         variant="outline"
-//                         onClick={() => onDeleteChain(chain.id)}
-//                     >
-//                       <LuTrash2 size={18} />
-//                     </ActionIcon>
-//                   </Group>
-//                 </Grid.Col>
-//               </Grid>
-//           ))}
-//         </>
-//     )
-// )
 export default ChainsTable

@@ -2,14 +2,12 @@ import { IconBookOpen, IconMail } from "@pokt-foundation/pocket-blocks"
 import { useLocation, useParams } from "@remix-run/react"
 import { useEffect, useMemo } from "react"
 import { IconApp } from "~/components/Icons"
-import { useTranslate } from "~/context/TranslateContext"
 import { User } from "~/models/portal/sdk"
 import analyticsInit from "~/utils/analytics"
 
 type useRootProps = { user: Awaited<User | undefined> }
 
 export const useRoot = ({ user }: useRootProps) => {
-  const { t } = useTranslate()
   const { pathname } = useLocation()
   const { accountId } = useParams()
 
@@ -39,14 +37,14 @@ export const useRoot = ({ user }: useRootProps) => {
     const allRoutes = [
       {
         to: "/account",
-        label: t.dashboard.routes.apps,
+        label: "Account",
         icon: IconApp,
         protected: Protected.Public, // show this link to all. dashboard layout handles redirect to login.
       },
       {
         to: "https://docs.portal.pokt.network/",
         external: true,
-        label: t.dashboard.routes.docs,
+        label: "Docs",
         icon: IconBookOpen,
         protected: Protected.Public,
       },
@@ -66,7 +64,7 @@ export const useRoot = ({ user }: useRootProps) => {
     }
 
     return allRoutes.filter((r) => r.protected <= protectedLevel)
-  }, [t, user])
+  }, [user])
 
   return { isLanding, hideSidebar, routes }
 }

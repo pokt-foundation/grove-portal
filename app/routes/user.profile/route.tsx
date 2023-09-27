@@ -7,8 +7,8 @@ import { ActionUser, actionUser } from "./utils/actionUser"
 import ProfileView from "./view"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { UpdateUser, User } from "~/models/portal/sdk"
+import { DataStruct } from "~/types/global"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
-import { LoaderDataStruct } from "~/utils/loader"
 import { requireUser } from "~/utils/user.server"
 
 type LoaderData = {
@@ -71,7 +71,7 @@ export const action: ActionFunction = async ({ request }) => {
 
 export default function Profile() {
   const { user } = useLoaderData() as LoaderData
-  const actionData = useActionData() as LoaderDataStruct<ActionUser | ActionPassword>
+  const actionData = useActionData() as DataStruct<ActionUser | ActionPassword>
 
   useEffect(() => {
     trackEvent(AmplitudeEvents.ProfileView)

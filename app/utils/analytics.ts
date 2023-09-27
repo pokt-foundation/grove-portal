@@ -1,6 +1,5 @@
 import * as amplitude from "@amplitude/analytics-browser"
 import { getRequiredClientEnvVar } from "./environment"
-import { log } from "./log"
 
 export const AmplitudeEvents = {
   // SignupComplete: "SIGNUP_COMPLETE",
@@ -49,7 +48,7 @@ export default function analyticsInit(user?: { id: string }) {
       },
     })
   } catch (error) {
-    log(error, "error")
+    console.log(error)
   }
 }
 
@@ -57,6 +56,6 @@ export function trackEvent(str: string, props?: { [key: string]: string }) {
   try {
     amplitude.track(str, props)
   } catch (error) {
-    log(error, "error")
+    console.log(error)
   }
 }

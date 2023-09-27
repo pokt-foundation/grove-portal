@@ -14,14 +14,14 @@ const DeleteAppForm = ({ accountId, appId }: { accountId: string; appId: string 
   const [deleteTextInputValue, setDeleteTextInputValue] = useState("")
 
   return (
-    <Form action={`/api/${accountId}/${appId}/remove`} method="post">
+    <Form method="post">
       <Text size="sm">
         Please type ‘Delete’ to proceed. This will delete your application and all the
         data related.
       </Text>
       <TextInput
         mt="md"
-        name="delete-input"
+        name="delete_input"
         onChange={(e) => setDeleteTextInputValue(e.target.value)}
       />
       <Group grow mt={32}>
@@ -36,7 +36,9 @@ const DeleteAppForm = ({ accountId, appId }: { accountId: string; appId: string 
         <Button
           color="red"
           disabled={deleteTextInputValue.toLowerCase() !== "delete"}
+          name="delete_application"
           type="submit"
+          value="true"
           onClick={() => closeAllModals()}
         >
           Delete

@@ -3,13 +3,13 @@ import { Link } from "@remix-run/react"
 import { LuArrowUpFromLine, LuRepeat, LuStopCircle } from "react-icons/lu"
 import { PortalApp } from "~/models/portal/sdk"
 import useSubscriptionModals from "~/routes/account.$accountId.$appId/hooks/useSubscriptionModals"
-import { isFreePlan, isLegacyPlan, isPaidPlan } from "~/utils/utils"
+import { isFreePlan, isLegacyPlan, isPaidPlan } from "~/utils/planUtils"
 
 type AppSubscriptionProps = {
   app: PortalApp
 }
 
-const AppSubscription = ({ app }: AppSubscriptionProps) => {
+const ApplicationSubscription = ({ app }: AppSubscriptionProps) => {
   const planType = app.legacyFields.planType
   const subscriptionId = app.legacyFields.stripeSubscriptionID
 
@@ -49,4 +49,4 @@ const AppSubscription = ({ app }: AppSubscriptionProps) => {
   )
 }
 
-export default AppSubscription
+export default ApplicationSubscription

@@ -7,10 +7,10 @@ import { PortalApp, RoleNameV2, User } from "~/models/portal/sdk"
 import InviteMemberFrom from "~/routes/account.$accountId.$appId.team/components/InviteMemberForm"
 import TeamMembersTable from "~/routes/account.$accountId.$appId.team/components/TeamMembersTable"
 import { TeamActionData } from "~/routes/account.$accountId.$appId.team/route"
-import { LoaderDataStruct } from "~/utils/loader"
+import { DataStruct } from "~/types/global"
 
 type TeamViewProps = {
-  actionData: LoaderDataStruct<TeamActionData>
+  actionData: DataStruct<TeamActionData>
   app: PortalApp
   userRole: RoleNameV2
   user: User

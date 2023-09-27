@@ -11,9 +11,9 @@ import { AppIdOutletContext } from "../account.$accountId.$appId/route"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { PortalApp, PortalAppEnvironment } from "~/models/portal/sdk"
 import AppEndpointsTable from "~/routes/account.$accountId.$appId._index/components/AppEndpointsTable"
+import { DataStruct } from "~/types/global"
 import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { getErrorMessage } from "~/utils/catchError"
-import { LoaderDataStruct } from "~/utils/loader"
 import { requireUser } from "~/utils/user.server"
 
 export const meta: MetaFunction = () => {
@@ -74,14 +74,14 @@ export const action: ActionFunction = async ({ request, params }) => {
       )
     }
 
-    return json<LoaderDataStruct<AppIdActionData>>({
+    return json<DataStruct<AppIdActionData>>({
       data: {
         app: udpateUserPortalAppResponse.updateUserPortalApp as PortalApp,
       },
       error: false,
     })
   } catch (error) {
-    return json<LoaderDataStruct<AppIdActionData>>({
+    return json<DataStruct<AppIdActionData>>({
       data: null,
       error: true,
       message: getErrorMessage(error),
@@ -93,7 +93,7 @@ export const Application = () => {
   const { app, blockchains } = useOutletContext<AppIdOutletContext>()
   const [searchTerm, setSearchTerm] = useState("")
   const [debouncedSearchTerm] = useDebouncedValue(searchTerm, 200)
-  const actionData = useActionData() as LoaderDataStruct<AppIdActionData>
+  const actionData = useActionData() as DataStruct<AppIdActionData>
 
   useEffect(() => {
     trackEvent(AmplitudeEvents.AppDetailsView)

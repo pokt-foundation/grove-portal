@@ -2,9 +2,9 @@ import { Alert, Box, MantineTheme, SimpleGrid } from "@pokt-foundation/pocket-bl
 import { LuAlertCircle } from "react-icons/lu"
 import AppPlanLatestInvoiceCard from "./components/AppPlanLatestInvoiceCard"
 import AppPlanOverviewCard from "./components/AppPlanOverviewCard"
+import FreeAppPlan from "./components/FreeAppPlan"
 import { AppPlanLoaderData } from "./route"
 import { PayPlanType, RoleNameV2 } from "~/models/portal/sdk"
-import FreeAppPlan from "~/routes/account.$accountId.$appId.plan/components/FreeAppPlan"
 import { getUserRole } from "~/utils/applicationUtils"
 
 export const PlanView = (data: AppPlanLoaderData) => {

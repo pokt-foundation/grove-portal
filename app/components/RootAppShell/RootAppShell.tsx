@@ -8,6 +8,7 @@ import { Sidebar } from "~/components/Sidebar"
 import { Account, PortalApp, User } from "~/models/portal/sdk"
 import { useRoot } from "~/root/hooks/useRoot"
 import useCommonStyles from "~/styles/commonStyles"
+import isUserAccountOwner from "~/utils/user"
 
 type RootAppShellProps = {
   user: User
@@ -31,11 +32,8 @@ export const RootAppShell = ({
   const { accountId } = useParams()
 
   const isUserOwner = useMemo(
-    () =>
-      accounts
-        .find(({ id }) => accountId === id)
-        ?.users.some((u) => u.userID === user.portalUserID && u.owner) as boolean,
-    [accountId, accounts, user.portalUserID],
+    () => isUserAccountOwner({ accounts, accountId: accountId as string, user }),
+    [accountId, accounts, user],
   )
 
   const navProp = useMemo(

@@ -1,4 +1,4 @@
-import { LoaderFunction, MetaFunction, json } from "@remix-run/node"
+import { LoaderFunction, MetaFunction, json, ActionFunction } from "@remix-run/node"
 import { Outlet, useCatch, useLoaderData, useOutletContext } from "@remix-run/react"
 import invariant from "tiny-invariant"
 import { AccountIdLoaderData } from "../account.$accountId/route"
@@ -6,8 +6,8 @@ import AppIdLayoutView from "./view"
 import ErrorView from "~/components/ErrorView"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { Blockchain, PortalApp, RoleNameV2 } from "~/models/portal/sdk"
+import { DataStruct } from "~/types/global"
 import { getErrorMessage } from "~/utils/catchError"
-import { LoaderDataStruct } from "~/utils/loader"
 import { requireUser } from "~/utils/user.server"
 
 export const meta: MetaFunction = () => {
@@ -44,7 +44,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       throw new Error("Blockchains not found")
     }
 
-    return json<LoaderDataStruct<AppIdLoaderData>>({
+    return json<DataStruct<AppIdLoaderData>>({
       data: {
         app: getUserPortalAppResponse.getUserPortalApp as PortalApp,
         blockchains: getBlockchainsResponse.blockchains as Blockchain[],
@@ -52,7 +52,45 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       error: false,
     })
   } catch (error) {
-    return json<LoaderDataStruct<AppIdLoaderData>>({
+    return json<DataStruct<AppIdLoaderData>>({
+      data: null,
+      error: true,
+      message: getErrorMessage(error),
+    })
+  }
+}
+
+export type AppIdActionData = {
+  success: boolean
+}
+
+export const action: ActionFunction = async ({ request, params }) => {
+  const user = await requireUser(request)
+  const portal = initPortalClient({ token: user.accessToken })
+  const formData = await request.formData()
+  const { accountId, appId } = params
+  invariant(typeof accountId === "string", "accountId must be set")
+  invariant(typeof appId === "string", "appId must be set")
+
+  try {
+    const delete_application = formData.get("delete_application")
+
+    let res = false
+    if (delete_application === "true") {
+      // delete application via api
+      //
+      // const deleteAppResponse = await portal.updateUserAcceptAccount({ portalAppID })
+      // res = updateUserResponse.updateUserAcceptAccount
+    }
+
+    return json<DataStruct<AppIdActionData>>({
+      data: {
+        success: res,
+      },
+      error: false,
+    })
+  } catch (error) {
+    return json<DataStruct<AppIdActionData>>({
       data: null,
       error: true,
       message: getErrorMessage(error),
@@ -65,7 +103,7 @@ export type AppIdOutletContext = AppIdLoaderData & {
 }
 
 export default function AppIdLayout() {
-  const { data, error, message } = useLoaderData() as LoaderDataStruct<AppIdLoaderData>
+  const { data, error, message } = useLoaderData() as DataStruct<AppIdLoaderData>
   const { userRoles } = useOutletContext<AccountIdLoaderData>()
 
   if (error) {

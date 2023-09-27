@@ -8,8 +8,8 @@ import UserInvitedApps from "./view"
 import ErrorView from "~/components/ErrorView"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { PortalApp, SortOrder, User } from "~/models/portal/sdk"
+import { DataStruct } from "~/types/global"
 import { getErrorMessage } from "~/utils/catchError"
-import { LoaderDataStruct } from "~/utils/loader"
 import { requireUser } from "~/utils/user.server"
 
 export const meta: MetaFunction = () => {
@@ -47,14 +47,14 @@ export const action: ActionFunction = async ({ request }) => {
       res = updateUserResponse.updateUserAcceptAccount
     }
 
-    return json<LoaderDataStruct<UserInvitedAppsActionData>>({
+    return json<DataStruct<UserInvitedAppsActionData>>({
       data: {
         success: res,
       },
       error: false,
     })
   } catch (error) {
-    return json<LoaderDataStruct<UserInvitedAppsActionData>>({
+    return json<DataStruct<UserInvitedAppsActionData>>({
       data: null,
       error: true,
       message: getErrorMessage(error),
@@ -72,7 +72,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       throw new Error(`Apps not found for user ${user.user.portalUserID}`)
     }
 
-    return json<LoaderDataStruct<UserInvitedAppsLoaderData>>({
+    return json<DataStruct<UserInvitedAppsLoaderData>>({
       data: {
         apps: userApps.getUserPortalApps as PortalApp[],
         user: user.user,
@@ -80,7 +80,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       error: false,
     })
   } catch (error) {
-    return json<LoaderDataStruct<UserInvitedAppsLoaderData>>({
+    return json<DataStruct<UserInvitedAppsLoaderData>>({
       data: null,
       error: true,
       message: getErrorMessage(error),
@@ -89,9 +89,8 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 }
 
 export default function InvitedApps() {
-  const { data, error, message } =
-    useLoaderData<LoaderDataStruct<UserInvitedAppsLoaderData>>()
-  const actionData = useActionData() as LoaderDataStruct<UserInvitedAppsActionData>
+  const { data, error, message } = useLoaderData<DataStruct<UserInvitedAppsLoaderData>>()
+  const actionData = useActionData() as DataStruct<UserInvitedAppsActionData>
 
   useEffect(() => {
     if (!actionData) return

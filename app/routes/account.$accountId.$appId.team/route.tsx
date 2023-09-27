@@ -14,8 +14,8 @@ import ErrorView from "~/components/ErrorView"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { RoleNameV2, User } from "~/models/portal/sdk"
 import { AccountIdLoaderData } from "~/routes/account.$accountId/route"
+import { DataStruct } from "~/types/global"
 import { getErrorMessage } from "~/utils/catchError"
-import { LoaderDataStruct } from "~/utils/loader"
 import { sendTeamInviteEmail, sendTeamUserRemovedEmail } from "~/utils/mail.server"
 import { requireUser } from "~/utils/user.server"
 
@@ -148,7 +148,7 @@ export const action: ActionFunction = async ({ request, params }) => {
       message = `Invite email resent to user ${user_email}`
     }
 
-    return json<LoaderDataStruct<TeamActionData>>({
+    return json<DataStruct<TeamActionData>>({
       data: {
         success: res,
         type,
@@ -157,7 +157,7 @@ export const action: ActionFunction = async ({ request, params }) => {
       message,
     })
   } catch (error) {
-    return json<LoaderDataStruct<TeamActionData>>({
+    return json<DataStruct<TeamActionData>>({
       data: null,
       error: true,
       message: getErrorMessage(error),
@@ -169,8 +169,8 @@ export default function Team() {
   const { app, userRole } = useOutletContext<AppIdOutletContext>()
   const { data, error, message } = useRouteLoaderData(
     "routes/account.$accountId",
-  ) as LoaderDataStruct<AccountIdLoaderData>
-  const actionData = useActionData() as LoaderDataStruct<TeamActionData>
+  ) as DataStruct<AccountIdLoaderData>
+  const actionData = useActionData() as DataStruct<TeamActionData>
 
   useEffect(() => {
     if (!actionData) return

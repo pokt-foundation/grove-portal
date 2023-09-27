@@ -1,11 +1,11 @@
 import { Divider } from "@mantine/core"
 import { Button, Container, Stack } from "@pokt-foundation/pocket-blocks"
 import { useEffect, useState } from "react"
+import ApplicationHeader from "./components/ApplicationHeader"
 import LinkTabs from "~/components/LinkTabs"
 import Modal, { ModalCTA } from "~/components/Modal"
 import { Route } from "~/components/Nav"
 import { PayPlanType, PortalApp } from "~/models/portal/sdk"
-import ApplicationHeader from "~/routes/account.$accountId.$appId/components/ApplicationHeader"
 
 type AppIdLayoutViewProps = {
   app: PortalApp

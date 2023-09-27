@@ -31,7 +31,9 @@ export const AppHeader = ({
           <img alt="Grove logo" height={20} loading="lazy" src="/grove-logo.svg"></img>
         </Link>
         <Group>
-          {user && <OrganizationSelect accounts={accounts} />}
+          {user && accounts && accounts.length < 0 && (
+            <OrganizationSelect accounts={accounts} />
+          )}
           <OrganizationDrawer hasPendingInvites={hasPendingInvites} user={user} />
         </Group>
       </Flex>

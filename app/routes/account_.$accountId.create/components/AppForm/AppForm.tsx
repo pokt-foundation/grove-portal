@@ -89,6 +89,7 @@ const AppForm = ({ app, onSubmit }: AppFormProps) => {
             defaultValue={app?.name}
             description="Required"
             label="Name"
+            maxLength={40}
             name="app-name"
             w="200px"
             onChange={(e) => setName(e.target.value)}

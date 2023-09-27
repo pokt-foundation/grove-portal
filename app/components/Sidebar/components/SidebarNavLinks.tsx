@@ -1,6 +1,7 @@
 import { CSSObject } from "@mantine/core"
 import {
   Anchor,
+  Box,
   Flex,
   Group,
   MantineTheme,
@@ -65,7 +66,11 @@ const LabelIcon = ({ icon: Icon, imgSrc, label }: LabelIconProps) => {
   }
 
   if (isEmoji) {
-    return <Emoji size={14} unified={Icon !== "" ? Icon : DEFAULT_APPMOJI} />
+    return (
+      <Box ml={2}>
+        <Emoji size={14} unified={Icon !== "" ? Icon : DEFAULT_APPMOJI} />
+      </Box>
+    )
   }
 
   return Icon ? <Icon size={18} /> : null

@@ -64,7 +64,7 @@ export const Sidebar = ({ apps, hidden, canCreateApps }: SidebarProps) => {
       hiddenBreakpoint="sm"
       p={8}
       pt={32}
-      width={{ base: collapsed ? 80 : 300 }}
+      width={{ base: collapsed ? 60 : 300 }}
     >
       <ScrollArea h="100%" mx="-xs" px="xs">
         <Navbar.Section>

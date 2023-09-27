@@ -8,11 +8,12 @@ import { initPortalClient } from "~/models/portal/portal.server"
 import { Blockchain, PortalApp, RoleNameV2 } from "~/models/portal/sdk"
 import { DataStruct } from "~/types/global"
 import { getErrorMessage } from "~/utils/catchError"
+import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
 
 export const meta: MetaFunction = () => {
   return {
-    title: "Application Overview",
+    title: `Application Overview ${seo_title_append}`,
   }
 }
 

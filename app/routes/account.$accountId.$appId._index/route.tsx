@@ -12,13 +12,13 @@ import { initPortalClient } from "~/models/portal/portal.server"
 import { PortalApp, PortalAppEnvironment } from "~/models/portal/sdk"
 import AppEndpointsTable from "~/routes/account.$accountId.$appId._index/components/AppEndpointsTable"
 import { DataStruct } from "~/types/global"
-import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { getErrorMessage } from "~/utils/catchError"
+import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
 
 export const meta: MetaFunction = () => {
   return {
-    title: "Application Details",
+    title: `Application Endpoints ${seo_title_append}`,
   }
 }
 
@@ -94,10 +94,6 @@ export const Application = () => {
   const [searchTerm, setSearchTerm] = useState("")
   const [debouncedSearchTerm] = useDebouncedValue(searchTerm, 200)
   const actionData = useActionData() as DataStruct<AppIdActionData>
-
-  useEffect(() => {
-    trackEvent(AmplitudeEvents.AppDetailsView)
-  }, [])
 
   useEffect(() => {
     if (!actionData) return

@@ -24,7 +24,7 @@ import { getUserPermissions, requireUser, Permissions } from "~/utils/user.serve
 
 export const meta: MetaFunction = () => {
   return {
-    title: `Create New Application ${seo_title_append}`,
+    title: `Create Application ${seo_title_append}`,
   }
 }
 

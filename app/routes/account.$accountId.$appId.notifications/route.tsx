@@ -1,12 +1,17 @@
-import { ActionFunction, json } from "@remix-run/node"
+import { ActionFunction, json, MetaFunction } from "@remix-run/node"
 import { useOutletContext } from "@remix-run/react"
-import { useEffect } from "react"
 import invariant from "tiny-invariant"
 import { AppIdOutletContext } from "../account.$accountId.$appId/route"
 import { initPortalClient } from "~/models/portal/portal.server"
 import AppNotificationsAlert from "~/routes/account.$accountId.$appId.notifications/components/AppNotificationsAlert"
-import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
+import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
+
+export const meta: MetaFunction = () => {
+  return {
+    title: `Application Notifications ${seo_title_append}`,
+  }
+}
 
 export const action: ActionFunction = async ({ request, params }) => {
   const { appId } = params
@@ -41,10 +46,6 @@ export const action: ActionFunction = async ({ request, params }) => {
 }
 
 export default function AppNotifications() {
-  useEffect(() => {
-    trackEvent(AmplitudeEvents.NotificationDetailsView)
-  }, [])
-
   const { app } = useOutletContext<AppIdOutletContext>()
 
   return <AppNotificationsAlert app={app} />

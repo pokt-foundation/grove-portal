@@ -10,11 +10,12 @@ import { initPortalClient } from "~/models/portal/portal.server"
 import { PortalApp, SortOrder, User } from "~/models/portal/sdk"
 import { DataStruct } from "~/types/global"
 import { getErrorMessage } from "~/utils/catchError"
+import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
 
 export const meta: MetaFunction = () => {
   return {
-    title: "Invited apps",
+    title: `User Invited Apps ${seo_title_append}`,
   }
 }
 

@@ -3,7 +3,7 @@ import { useLocation, useParams } from "@remix-run/react"
 import { useEffect, useMemo } from "react"
 import { IconApp } from "~/components/Icons"
 import { User } from "~/models/portal/sdk"
-import analyticsInit from "~/utils/analytics"
+import { trackPage } from "~/utils/analytics"
 
 type useRootProps = { user: Awaited<User | undefined> }
 
@@ -23,8 +23,8 @@ export const useRoot = ({ user }: useRootProps) => {
   )
 
   useEffect(() => {
-    analyticsInit({ id: user?.portalUserID ?? "" })
-  }, [user])
+    trackPage(pathname, document.title)
+  }, [pathname])
 
   const routes = useMemo(() => {
     enum Protected {

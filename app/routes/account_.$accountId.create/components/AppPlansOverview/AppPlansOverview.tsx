@@ -80,7 +80,7 @@ export default function AppPlansOverview({ planType }: AppPlansOverviewProps) {
           <Title className="plan-data-highlights" mt={20} order={5}>
             Pricing
           </Title>
-          <Text mt={16}>{parse(planDetails[planType].pricing)}</Text>
+          <Text mt={16}>{planDetails[planType].pricing}</Text>
         </Grid.Col>
 
         <Grid.Col md={1} xs={5}>

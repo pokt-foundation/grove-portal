@@ -10,7 +10,7 @@ import { requireUser } from "~/utils/user.server"
 
 export const meta: MetaFunction = () => {
   return {
-    title: `App Limit Exceeded ${seo_title_append}`,
+    title: `App Creation Limit Exceeded ${seo_title_append}`,
   }
 }
 

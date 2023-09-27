@@ -1,6 +1,5 @@
 import { Anchor, Box, Title, Text, Grid } from "@pokt-foundation/pocket-blocks"
 import { Link } from "@remix-run/react"
-import parse from "html-react-parser"
 import styles from "./styles.css"
 import { PayPlanType } from "~/models/portal/sdk"
 

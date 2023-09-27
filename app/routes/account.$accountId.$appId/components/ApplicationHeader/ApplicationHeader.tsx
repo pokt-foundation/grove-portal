@@ -8,7 +8,7 @@ import ContextMenuTarget from "~/components/ContextMenuTarget"
 import { PayPlanType, PortalApp } from "~/models/portal/sdk"
 import DeleteApplication from "~/routes/account.$accountId.$appId/components/DeleteApplication"
 import { DEFAULT_APPMOJI } from "~/routes/account_.$accountId.create/components/AppmojiPicker"
-import { getPlanName } from "~/utils/utils"
+import { getPlanName } from "~/utils/planUtils"
 
 type ApplicationHeaderProps = {
   app: PortalApp

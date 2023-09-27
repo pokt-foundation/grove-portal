@@ -33,7 +33,6 @@ export const SecurityView = ({ actionData, app, blockchains }: SecurityViewProps
   const fetcher = useFetcher()
 
   useEffect(() => {
-    console.log(state)
     // stop it from posting on initial load
     fetcher.submit(
       {

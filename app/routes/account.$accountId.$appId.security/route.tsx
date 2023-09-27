@@ -1,6 +1,5 @@
 import { ActionFunction, json, MetaFunction } from "@remix-run/node"
 import { useActionData, useOutletContext } from "@remix-run/react"
-import { useEffect } from "react"
 import invariant from "tiny-invariant"
 import { AppIdOutletContext } from "../account.$accountId.$appId/route"
 import SecurityView from "./view"
@@ -12,13 +11,13 @@ import {
   WhitelistType,
 } from "~/models/portal/sdk"
 import { DataStruct } from "~/types/global"
-import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
 import { getErrorMessage } from "~/utils/catchError"
+import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
 
 export const meta: MetaFunction = () => {
   return {
-    title: "Application Security",
+    title: `Application Security ${seo_title_append}`,
   }
 }
 
@@ -110,10 +109,6 @@ export const action: ActionFunction = async ({ request, params }) => {
 
 export const AppSecurity = () => {
   const actionData = useActionData() as DataStruct<SecurityActionData>
-
-  useEffect(() => {
-    trackEvent(AmplitudeEvents.SecurityDetailsView)
-  }, [])
 
   const { app, blockchains } = useOutletContext<AppIdOutletContext>()
 

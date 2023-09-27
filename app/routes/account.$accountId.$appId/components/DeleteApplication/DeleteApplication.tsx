@@ -4,7 +4,9 @@ import { Form } from "@remix-run/react"
 import { useState } from "react"
 import { LuTrash2 } from "react-icons/lu"
 import useModals from "~/hooks/useModals"
+import { app } from "~/models/portal/portal.data"
 import { PortalApp } from "~/models/portal/sdk"
+import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
 
 type DeleteApplicationProps = {
   app: PortalApp
@@ -39,7 +41,14 @@ const DeleteAppForm = ({ accountId, appId }: { accountId: string; appId: string 
           name="delete_application"
           type="submit"
           value="true"
-          onClick={() => closeAllModals()}
+          onClick={() => {
+            closeAllModals()
+            trackEvent({
+              category: AnalyticCategories.app,
+              action: AnalyticActions.app_delete,
+              label: app.id,
+            })
+          }}
         >
           Delete
         </Button>

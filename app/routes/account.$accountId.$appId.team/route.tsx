@@ -1,5 +1,5 @@
 import { showNotification } from "@mantine/notifications"
-import { ActionFunction, json, LoaderFunction } from "@remix-run/node"
+import { ActionFunction, json, LoaderFunction, MetaFunction } from "@remix-run/node"
 import {
   useActionData,
   useCatch,
@@ -17,7 +17,14 @@ import { AccountIdLoaderData } from "~/routes/account.$accountId/route"
 import { DataStruct } from "~/types/global"
 import { getErrorMessage } from "~/utils/catchError"
 import { sendTeamInviteEmail, sendTeamUserRemovedEmail } from "~/utils/mail.server"
+import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
+
+export const meta: MetaFunction = () => {
+  return {
+    title: `Application Team ${seo_title_append}`,
+  }
+}
 
 export type TeamLoaderData = {
   profile: User

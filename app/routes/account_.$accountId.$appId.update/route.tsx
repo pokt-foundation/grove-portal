@@ -20,7 +20,7 @@ import { requireUser } from "~/utils/user.server"
 
 export const meta: MetaFunction = () => {
   return {
-    title: `Update New Application ${seo_title_append}`,
+    title: `Update Application ${seo_title_append}`,
   }
 }
 

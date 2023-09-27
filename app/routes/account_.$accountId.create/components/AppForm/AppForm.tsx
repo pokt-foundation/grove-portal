@@ -18,6 +18,7 @@ import AppmojiPicker, {
   DEFAULT_APPMOJI,
 } from "~/routes/account_.$accountId.create/components/AppmojiPicker"
 import useCommonStyles from "~/styles/commonStyles"
+import { trackEvent, AnalyticCategories, AnalyticActions } from "~/utils/analytics"
 
 const useStyles = createStyles((theme) => ({
   inputLabel: {
@@ -136,9 +137,13 @@ const AppForm = ({ app, onSubmit }: AppFormProps) => {
             px="xs"
             type="submit"
             w="156px"
-            // onClick={(event) => {
-            //   // trackEvent(AmplitudeEvents.EndpointCreation)
-            // }}
+            onClick={() => {
+              trackEvent({
+                category: AnalyticCategories.app,
+                action: AnalyticActions.app_update,
+                label: `${label} ${app?.id}`,
+              })
+            }}
           >
             {label} Application
           </Button>

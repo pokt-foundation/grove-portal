@@ -19,10 +19,11 @@ import ErrorView from "~/components/ErrorView"
 import TitledCard from "~/components/TitledCard"
 import { PortalApp } from "~/models/portal/sdk"
 import type { DataStruct } from "~/types/global"
+import { seo_title_append } from "~/utils/seo"
 
 export const meta: MetaFunction = () => {
   return {
-    title: "Account Overview",
+    title: `Account Insights ${seo_title_append}`,
   }
 }
 

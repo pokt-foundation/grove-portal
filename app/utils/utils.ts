@@ -37,3 +37,5 @@ export const groupBy = (array: any[], key: string) => {
     return result
   }, {}) // empty object is the initial value for result object
 }
+
+export const DISCORD_PATH = "https://discord.gg/build-with-grove"

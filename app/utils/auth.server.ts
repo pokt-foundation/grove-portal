@@ -15,6 +15,7 @@ export const authenticator = new Authenticator<{
   extraParams: Auth0ExtraParams
   user: PortalUser & {
     auth0ID: string
+    email_verified?: boolean
   }
 }>(sessionStorage)
 
@@ -24,6 +25,7 @@ export type AuthUser = {
   extraParams: Auth0ExtraParams
   user: PortalUser & {
     auth0ID: string
+    email_verified?: boolean
   }
 }
 
@@ -43,18 +45,11 @@ let auth0Strategy = new Auth0Strategy(
     invariant(email, "email is not found")
     invariant(providerUserID, "providerUserID is not found")
 
+    let portalUser: AuthUser["user"]
+
     const portal = initPortalClient({ token: accessToken })
-    const getPortalUserResponse = await portal.getPortalUser().catch((e) => {
-      console.log(e)
-    })
-
-    let portalUser = {
-      ...(getPortalUserResponse?.getPortalUser as PortalUser),
-      auth0ID: providerUserID,
-    }
-
-    // handle edge case where user could have signed up via auth0 and yet not have an internal portalUserId
-    if (!portalUser) {
+    const getPortalUserResponse = await portal.getPortalUser().catch(async (error) => {
+      // handle edge case where user could have signed up via auth0 and yet not have an internal portalUserId
       const portalAdmin = await initAdminPortal(portal)
 
       const user = await portalAdmin.adminCreatePortalUser({
@@ -65,7 +60,14 @@ let auth0Strategy = new Auth0Strategy(
       portalUser = {
         ...(user.adminCreatePortalUser as PortalUser),
         auth0ID: providerUserID,
+        email_verified: profile._json?.email_verified,
       }
+    })
+
+    portalUser = {
+      ...(getPortalUserResponse?.getPortalUser as PortalUser),
+      auth0ID: providerUserID,
+      email_verified: profile._json?.email_verified,
     }
 
     return { accessToken, refreshToken, extraParams, user: portalUser }

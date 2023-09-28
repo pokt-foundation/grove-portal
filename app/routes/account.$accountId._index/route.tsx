@@ -55,64 +55,63 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       )
     }
 
-    const apps = (account.getUserAccount.portalApps
-      ?.filter((app) => !app?.deleted)
-      .map((app) => app?.id) as string[]) ?? [""]
-
-    const relays = (await dwh.analyticsRelaysCategoryGetRaw({
+    const dwhReponse = await dwh.analyticsRelaysCategoryQueryTypeGroupByGet({
       accountId: [accountId],
       category: "transactions",
+      queryType: "full",
+      groupBy: "none",
       from: dayjs().subtract(1, "month").toDate(),
       to: dayjs().subtract(1, "day").toDate(),
-      // portalApplicationId: apps,
-    })) as JSONApiResponse<AnalyticsRelaysTransactions>
+    })
+
+    console.log(dwhReponse)
 
     // console.log({ relays })
-    const body = await relays.raw.json()
+    // const body = await dwhReponse.json()
     // console.log(body.Data)
 
-    const aggregatedRelays = body.Data.reduce(
-      (prev: any, curr: any) => {
-        let avg_latency = prev.avg_latency + curr.avg_roundtrip_time
-        let count_total = prev.count_total + curr.cnt
-        let curr_count_error = (curr.cnt * curr.error_rate) / 100
-        let count_error = prev.count_error + curr_count_error
+    // const aggregatedRelays = body.Data.reduce(
+    //   (prev: any, curr: any) => {
+    //     let avg_latency = prev.avg_latency + curr.avg_roundtrip_time
+    //     let count_total = prev.count_total + curr.cnt
+    //     let curr_count_error = (curr.cnt * curr.error_rate) / 100
+    //     let count_error = prev.count_error + curr_count_error
 
-        return {
-          from: curr.from,
-          to: curr.to,
-          avg_latency,
-          count_total,
-          count_error,
-        }
-      },
-      {
-        from: "",
-        to: "",
-        avg_latency: 0,
-        count_total: 0,
-        count_error: 0,
-      },
-    )
+    //     return {
+    //       from: curr.from,
+    //       to: curr.to,
+    //       avg_latency,
+    //       count_total,
+    //       count_error,
+    //     }
+    //   },
+    //   {
+    //     from: "",
+    //     to: "",
+    //     avg_latency: 0,
+    //     count_total: 0,
+    //     count_error: 0,
+    //   },
+    // )
 
     return json<DataStruct<AccountInsightsData>>({
       data: {
         account: account.getUserAccount as Account,
-        aggregate: {
-          ...aggregatedRelays,
-          count_error: Number(aggregatedRelays.count_error).toFixed(0),
-          avg_latency: `${Number(aggregatedRelays.avg_latency / body.Data.length).toFixed(
-            2,
-          )} ms`,
-          rate_success: `${Number(
-            ((aggregatedRelays.count_total - aggregatedRelays.count_error) /
-              aggregatedRelays.count_total) *
-              100,
-          ).toFixed(2)}%`,
-          rate_error: `${Number(
-            (aggregatedRelays.count_error / aggregatedRelays.count_total) * 100,
-          ).toFixed(2)}%`,
-        },
+        // aggregate: {
+        //   ...aggregatedRelays,
+        //   count_error: Number(aggregatedRelays.count_error).toFixed(0),
+        //   avg_latency: `${Number(aggregatedRelays.avg_latency / body.Data.length).toFixed(
+        //     2,
+        //   )} ms`,
+        //   rate_success: `${Number(
+        //     ((aggregatedRelays.count_total - aggregatedRelays.count_error) /
+        //       aggregatedRelays.count_total) *
+        //       100,
+        //   ).toFixed(2)}%`,
+        //   rate_error: `${Number(
+        //     (aggregatedRelays.count_error / aggregatedRelays.count_total) * 100,
+        //   ).toFixed(2)}%`,
+        // },
       },
       error: false,
     })

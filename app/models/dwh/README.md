@@ -5,7 +5,7 @@
 # Run Command
 
 - run from root of repo
-- `openapi-generator generate -i ./app/models/dwh/openapi.yaml -g typescript-fetch -o ./app/models/dwh/sdk.ts`
+- `openapi-generator generate -i ./app/models/dwh/openapi.yaml -g typescript-fetch -o ./app/models/dwh/sdk`
 
 # Environment
 

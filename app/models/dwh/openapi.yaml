@@ -1,12 +1,17 @@
-openapi: "3.1.0"
+openapi: "3.0.0"
 info:
   title: Portal DWH Service API
   version: "1.0"
   description: Service that provides data from DWH to the Portal
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+
 servers:
   - url: /api/v1
 security:
   - apiKey: []
+
 paths:
   /healthcheck:
     get:
@@ -18,7 +23,8 @@ paths:
           description: The service is healthy.
         "503":
           description: The service is not healthy.
-  /analytics/relays/{category}:
+
+  /analytics/relays/{category}/{query_type}/{group_by}:
     get:
       tags:
         - "user"
@@ -45,6 +51,24 @@ paths:
             enum:
               - transactions
               - errors
+        - name: query_type
+          in: path
+          required: true
+          description: Full query returns all the data, reduced query returns only the aggregated values.
+          schema:
+            type: string
+            enum:
+              - full
+              - reduced
+        - name: group_by
+          in: path
+          required: true
+          description: The category of a metric to get insights of.
+          schema:
+            type: string
+            enum:
+              - day
+              - none
         - name: account_id
           in: query
           required: true
@@ -73,13 +97,18 @@ paths:
             type: array
             items:
               type: string
+        - name: pagination
+          in: query
+          required: false
+          schema:
+            $ref: "#/components/schemas/Pagination"
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Response"
+                $ref: "#/components/schemas/ResponseAnalyticsRelays"
         "204":
           description: No content
           content:
@@ -88,22 +117,57 @@ paths:
                 $ref: "#/components/schemas/Error"
         "401":
           $ref: "#/components/responses/Unauthorized"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
         "404":
           $ref: "#/components/responses/NotFound"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
         default:
           description: Unexpected error
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+
+  /logs:
+    get:
+      tags:
+        - "user"
+      summary: Retrieve application error messages.
+      parameters:
+        - name: portal_application_id
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+        - name: pagination
+          in: query
+          required: false
+          schema:
+            $ref: "#/components/schemas/Pagination"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseLogs"
+        "204":
+          description: No content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
 components:
   responses:
     Unauthorized:
@@ -124,6 +188,7 @@ components:
       type: apiKey
       name: Portal-DWH-Service-Api-Key
       in: header
+
   schemas:
     Error:
       type: object
@@ -132,7 +197,8 @@ components:
           type: integer
         message:
           type: string
-    AnalyticsGrowth:
+
+    MetaQueryAnalyticsRelays:
       type: object
       properties:
         from:
@@ -141,12 +207,64 @@ components:
         to:
           type: string
           format: date
-        cnt:
+        account_id:
+          type: array
+          items:
+            type: string
+        portal_application_id:
+          type: array
+          items:
+            type: string
+        chain_id:
+          type: array
+          items:
+            type: string
+        chain_method:
+          type: array
+          items:
+            type: string
+
+    MetaPathAnalyticsRelays:
+      type: object
+      properties:
+        category:
+          type: string
+          enum:
+            - transactions
+            - errors
+        query_type:
+          type: string
+          enum:
+            - full
+            - reduced
+        group_by:
+          type: string
+          enum:
+            - day
+            - none
+
+    MetaLogs:
+      type: object
+      properties:
+        portal_application_id:
+          type: array
+          items:
+            type: string
+
+    Pagination:
+      type: object
+      properties:
+        limit:
           type: integer
-        growth_rate:
-          type: number
-          format: float
-    AnalyticsRelaysTransactions:
+          format: int32
+          default: 100
+          minimum: 10
+          maximum: 1000
+        after_id:
+          type: integer
+          format: int32
+
+    AnalyticsRelaysTransactionsFull:
       type: object
       properties:
         from:
@@ -163,15 +281,49 @@ components:
           type: string
         chain_method:
           type: string
-        error_rate:
+        rate_success:
           type: number
           format: float
-        cnt:
+        count_total:
           type: integer
-        avg_roundtrip_time:
+        avg_latency:
           type: number
           format: float
-    AnalyticsRelaysErrors:
+
+    AnalyticsRelaysTransactionsReduced:
+      type: object
+      properties:
+        from:
+          type: string
+          format: date
+        to:
+          type: string
+          format: date
+        rate_success:
+          type: number
+          format: float
+        count_total:
+          type: integer
+        avg_latency:
+          type: number
+          format: float
+
+    AnalyticsRelaysTransactionsReducedGroupByDay:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        rate_success:
+          type: number
+          format: float
+        count_total:
+          type: integer
+        avg_latency:
+          type: number
+          format: float
+
+    AnalyticsRelaysErrorsFull:
       type: object
       properties:
         from:
@@ -182,6 +334,56 @@ components:
           format: date
         account_id:
           type: string
+        portal_application_id:
+          type: string
+        chain_id:
+          type: string
+        chain_method:
+          type: string
+        rate_success:
+          type: number
+          format: float
+        count_total:
+          type: integer
+        avg_latency:
+          type: number
+          format: float
+
+    AnalyticsRelaysErrorsReduced:
+      type: object
+      properties:
+        from:
+          type: string
+          format: date
+        to:
+          type: string
+          format: date
+        error_type:
+          type: string
+        error_name:
+          type: string
+        count_total:
+          type: integer
+
+    AnalyticsRelaysErrorsReducedGroupByDay:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        error_type:
+          type: string
+        error_name:
+          type: string
+        count_total:
+          type: integer
+
+    Logs:
+      type: object
+      properties:
+        ts:
+          type: string
+          format: timestamp
         portal_application_id:
           type: string
         chain_id:
@@ -192,14 +394,45 @@ components:
           type: string
         error_name:
           type: string
-        cnt:
-          type: integer
-    Response:
+        error_message:
+          type: string
+
+    ResponseAnalyticsRelays:
       type: object
       properties:
+        meta:
+          type: object
+          properties:
+            query:
+              $ref: "#/components/schemas/MetaQueryAnalyticsRelays"
+            path:
+              $ref: "#/components/schemas/MetaPathAnalyticsRelays"
         data:
           type: array
           items:
             oneOf:
-              - $ref: "#/components/schemas/AnalyticsRelaysTransactions"
-              - $ref: "#/components/schemas/AnalyticsRelaysErrors"
+              - $ref: "#/components/schemas/AnalyticsRelaysTransactionsFull"
+              - $ref: "#/components/schemas/AnalyticsRelaysTransactionsReduced"
+              - $ref: "#/components/schemas/AnalyticsRelaysTransactionsReducedGroupByDay"
+              - $ref: "#/components/schemas/AnalyticsRelaysErrorsFull"
+              - $ref: "#/components/schemas/AnalyticsRelaysErrorsReduced"
+              - $ref: "#/components/schemas/AnalyticsRelaysErrorsReducedGroupByDay"
+              - $ref: "#/components/schemas/Logs"
+
+    ResponseLogs:
+      type: object
+      properties:
+        meta:
+          $ref: "#/components/schemas/MetaLogs"
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Logs"
+
+tags:
+  - name: "system"
+    description: "Operations related to api-server"
+  - name: "user"
+    description: "Operations related to individual portal users and their applications"
+  - name: "product"
+    description: "Operations related to the portal data as a whole"

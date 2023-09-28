@@ -1,4 +1,4 @@
 /* tslint:disable */
 /* eslint-disable */
-export * from "./SystemApi"
-export * from "./UserApi"
+export * from './SystemApi';
+export * from './UserApi';

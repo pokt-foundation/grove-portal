@@ -41,7 +41,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   invariant(accountId, "AccountId must be set")
 
   const getUserAccountResponse = await portal
-    .getUserAccount({ accountID: accountId })
+    .getUserAccount({ accountID: accountId, accepted: true })
     .catch((e) => {
       console.log(e)
     })
@@ -50,7 +50,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     return redirect(`/account/${params.accountId}`)
   }
 
-  const getUserAccountsResponse = await portal.getUserAccounts()
+  const getUserAccountsResponse = await portal.getUserAccounts({ accepted: true })
   if (!getUserAccountsResponse.getUserAccounts) {
     return redirect(`/account/${params.accountId}`)
   }

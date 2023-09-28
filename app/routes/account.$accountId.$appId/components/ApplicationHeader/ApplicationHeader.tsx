@@ -41,6 +41,7 @@ const ApplicationHeader = ({ app }: ApplicationHeaderProps) => {
             <CopyButton value={app.id}>
               {({ copied, copy }) => (
                 <Badge
+                  color={copied ? "green" : "gray"}
                   px={6}
                   radius="sm"
                   style={{ cursor: "pointer", textTransform: "lowercase" }}

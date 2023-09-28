@@ -121,6 +121,7 @@ export default function AppIdLayout() {
   const { userRoles } = useOutletContext<AccountIdLoaderData>()
   const actionData = useActionData() as DataStruct<AppIdActionData>
 
+  // handle all notifications at the layout level
   useEffect(() => {
     if (!actionData) return
 

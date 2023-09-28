@@ -1,4 +1,3 @@
-import { showNotification } from "@mantine/notifications"
 import {
   ActionFunction,
   json,
@@ -6,8 +5,7 @@ import {
   MetaFunction,
   redirect,
 } from "@remix-run/node"
-import { useActionData, useOutletContext } from "@remix-run/react"
-import { useEffect } from "react"
+import { useOutletContext } from "@remix-run/react"
 import invariant from "tiny-invariant"
 import { AppIdOutletContext } from "../account.$accountId.$appId/route"
 import { initPortalClient } from "~/models/portal/portal.server"
@@ -88,17 +86,6 @@ export const action: ActionFunction = async ({ request, params }) => {
 
 export default function AppNotifications() {
   const { app } = useOutletContext<AppIdOutletContext>()
-  const actionData = useActionData() as DataStruct<AppNotificationsActionData>
-
-  useEffect(() => {
-    if (!actionData) return
-
-    if (actionData.message) {
-      showNotification({
-        message: actionData.message,
-      })
-    }
-  }, [actionData])
 
   return <AppNotificationsAlert app={app} />
 }

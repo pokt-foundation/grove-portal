@@ -24,7 +24,7 @@ const ApprovedChains = ({
     <Box px={40} py={32}>
       <Stack align="flex-start">
         <Text fw={600}>Approved Chains</Text>
-        <Text>Limits the Endpoints to be used only with specific chains.</Text>
+        <Text>Limit the chains that can be used for this application.</Text>
         <AddSettingsButton
           onClick={() =>
             openFullScreenModal({

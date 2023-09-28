@@ -17,6 +17,7 @@ import {
 } from "~/components/Sidebar/components"
 import { PortalApp } from "~/models/portal/sdk"
 import useCommonStyles from "~/styles/commonStyles"
+import { DISCORD_PATH } from "~/utils/utils"
 
 type SidebarProps = {
   apps: PortalApp[] | null
@@ -29,7 +30,7 @@ const getStaticRoutes = (
 ): Record<string, SidebarNavRoute> => ({
   overview: {
     to: `/account/${accountId}`,
-    label: "Portal Overview",
+    label: "Organization Overview",
     imgSrc: "/portal-icon.svg",
     end: true,
   },
@@ -45,7 +46,7 @@ const getStaticRoutes = (
     label: "Documentation",
   },
   support: {
-    to: "https://discord.gg/portal-rpc",
+    to: DISCORD_PATH,
     icon: LuLifeBuoy,
     label: "Support",
   },

@@ -32,17 +32,27 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   const portal = initPortalClient({ token: user.accessToken })
 
   try {
-    const userApps = await portal.getUserPortalApps({
+    const userAppsInvited = await portal.getUserPortalApps({
       sortOrder: SortOrder.Asc,
       accepted: true,
     })
-    if (!userApps.getUserPortalApps) {
+    const userAppsPending = await portal.getUserPortalApps({
+      sortOrder: SortOrder.Asc,
+      accepted: false,
+    })
+    if (!userAppsInvited.getUserPortalApps) {
+      throw new Error(`Apps not found for user ${user.user.portalUserID}`)
+    }
+    if (!userAppsPending.getUserPortalApps) {
       throw new Error(`Apps not found for user ${user.user.portalUserID}`)
     }
 
     return json<DataStruct<UserInvitedAppsLoaderData>>({
       data: {
-        apps: userApps.getUserPortalApps as PortalApp[],
+        apps: [
+          ...userAppsInvited.getUserPortalApps,
+          ...userAppsPending.getUserPortalApps,
+        ] as PortalApp[],
         user: user.user,
       },
       error: false,

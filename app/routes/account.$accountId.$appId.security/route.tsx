@@ -111,18 +111,6 @@ export const action: ActionFunction = async ({ request, params }) => {
 }
 
 export const AppSecurity = () => {
-  const actionData = useActionData() as DataStruct<SecurityActionData>
-
-  useEffect(() => {
-    if (!actionData) return
-
-    if (actionData.message) {
-      showNotification({
-        message: actionData.message,
-      })
-    }
-  }, [actionData])
-
   const { app, blockchains } = useOutletContext<AppIdOutletContext>()
 
   return <SecurityView app={app} blockchains={blockchains} />

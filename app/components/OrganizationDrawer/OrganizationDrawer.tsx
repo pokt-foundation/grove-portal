@@ -21,6 +21,7 @@ import {
 import { RiDiscordLine } from "react-icons/ri"
 import Identicon from "~/components/Identicon"
 import { User } from "~/models/portal/sdk"
+import { DISCORD_PATH } from "~/utils/utils"
 
 type OrganizationDrawerProps = {
   user?: User
@@ -56,19 +57,19 @@ const drawerExternalLinks = [
   },
   {
     label: "Support",
-    to: "https://discord.gg/portal-rpc",
+    to: DISCORD_PATH,
     icon: <LuLifeBuoy size={18} />,
   },
   {
     label: "Feedback",
-    to: "https://discord.gg/portal-rpc",
+    to: DISCORD_PATH,
     icon: <LuSmile size={18} />,
     withDivider: true,
   },
   { label: "About Grove", to: "https://grove.city/", icon: <LuLeaf size={18} /> },
   {
     label: "Join the conversation",
-    to: "https://discord.gg/portal-rpc",
+    to: DISCORD_PATH,
     icon: <RiDiscordLine size={18} />,
     withDivider: true,
   },

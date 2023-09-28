@@ -10,7 +10,7 @@ const PrivateSecretKey = ({ secretKeyRequired }: PrivateSecretKeyProps) => {
 
   return (
     <Stack px={40} py={32}>
-      <Text fw={600}>Private Secret Key Required</Text>
+      <Text fw={600}>Secret Key Required</Text>
       <Text>
         To maximize the security of your application, you should activate the private
         secret key for all requests and enable the use of whitelisted user-agents and

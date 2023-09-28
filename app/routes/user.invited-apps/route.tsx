@@ -27,6 +27,35 @@ export type UserInvitedAppsActionData = {
   success: Boolean
 }
 
+export const loader: LoaderFunction = async ({ request, params }) => {
+  const user = await requireUser(request)
+  const portal = initPortalClient({ token: user.accessToken })
+
+  try {
+    const userApps = await portal.getUserPortalApps({
+      sortOrder: SortOrder.Asc,
+      accepted: true,
+    })
+    if (!userApps.getUserPortalApps) {
+      throw new Error(`Apps not found for user ${user.user.portalUserID}`)
+    }
+
+    return json<DataStruct<UserInvitedAppsLoaderData>>({
+      data: {
+        apps: userApps.getUserPortalApps as PortalApp[],
+        user: user.user,
+      },
+      error: false,
+    })
+  } catch (error) {
+    return json<DataStruct<UserInvitedAppsLoaderData>>({
+      data: null,
+      error: true,
+      message: getErrorMessage(error),
+    })
+  }
+}
+
 export const action: ActionFunction = async ({ request }) => {
   const user = await requireUser(request)
   const portal = initPortalClient({ token: user.accessToken })
@@ -53,35 +82,10 @@ export const action: ActionFunction = async ({ request }) => {
         success: res,
       },
       error: false,
+      message: "Invite response saved",
     })
   } catch (error) {
     return json<DataStruct<UserInvitedAppsActionData>>({
-      data: null,
-      error: true,
-      message: getErrorMessage(error),
-    })
-  }
-}
-
-export const loader: LoaderFunction = async ({ request, params }) => {
-  const user = await requireUser(request)
-  const portal = initPortalClient({ token: user.accessToken })
-
-  try {
-    const userApps = await portal.getUserPortalApps({ sortOrder: SortOrder.Asc })
-    if (!userApps.getUserPortalApps) {
-      throw new Error(`Apps not found for user ${user.user.portalUserID}`)
-    }
-
-    return json<DataStruct<UserInvitedAppsLoaderData>>({
-      data: {
-        apps: userApps.getUserPortalApps as PortalApp[],
-        user: user.user,
-      },
-      error: false,
-    })
-  } catch (error) {
-    return json<DataStruct<UserInvitedAppsLoaderData>>({
       data: null,
       error: true,
       message: getErrorMessage(error),
@@ -96,13 +100,7 @@ export default function InvitedApps() {
   useEffect(() => {
     if (!actionData) return
 
-    if (!actionData.error) {
-      showNotification({
-        message: "Invite response saved",
-      })
-    }
-
-    if (actionData.error) {
+    if (actionData.message) {
       showNotification({
         message: actionData.message,
       })

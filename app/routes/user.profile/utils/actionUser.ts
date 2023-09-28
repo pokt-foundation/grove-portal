@@ -22,6 +22,7 @@ export const actionUser = async (
         user: updatePortalUserResponse.updatePortalUser as User,
       },
       error: false,
+      message: "User profile updated",
     })
   } catch (error) {
     return json<DataStruct<ActionUser>>({

@@ -8,7 +8,6 @@ import ChainWhitelist from "./components/ChainWhitelist"
 import PrivateSecretKey from "./components/PrivateSecretKey"
 import WhitelistOrigins from "./components/WhitelistOrigins"
 import WhitelistUserAgents from "./components/WhitelistUserAgents"
-import { SecurityActionData } from "./route"
 import { DEFAULT_WHITELISTS, securityReducer } from "./utils/stateReducer"
 import { Blockchain } from "~/models/portal/sdk"
 import {
@@ -17,15 +16,13 @@ import {
   WhitelistContractsV2,
   WhitelistMethodsV2,
 } from "~/models/portal/sdk"
-import { DataStruct } from "~/types/global"
 
 type SecurityViewProps = {
-  actionData?: DataStruct<SecurityActionData>
   app: PortalApp
   blockchains: BlockchainsQuery["blockchains"]
 }
 
-export const SecurityView = ({ actionData, app, blockchains }: SecurityViewProps) => {
+export const SecurityView = ({ app, blockchains }: SecurityViewProps) => {
   const [state, dispatch] = useReducer(
     securityReducer,
     app.whitelists ?? DEFAULT_WHITELISTS,
@@ -50,21 +47,11 @@ export const SecurityView = ({ actionData, app, blockchains }: SecurityViewProps
   }, [state])
 
   useEffect(() => {
-    if (!actionData) return
-
-    if (!actionData.error) {
-      showNotification({
-        message: "Security setting successfully updated",
-      })
-    }
-  }, [actionData])
-
-  useEffect(() => {
     if (!fetcher.data) return
 
-    if (!fetcher.data.error) {
+    if (fetcher.data.message) {
       showNotification({
-        message: "Security setting successfully updated",
+        message: fetcher.data.message,
       })
     }
   }, [fetcher.data])

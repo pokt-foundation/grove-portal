@@ -79,6 +79,7 @@ export const action: ActionFunction = async ({ request, params }) => {
         app: udpateUserPortalAppResponse.updateUserPortalApp as PortalApp,
       },
       error: false,
+      message: "Favorite chain updated",
     })
   } catch (error) {
     return json<DataStruct<AppIdActionData>>({
@@ -98,12 +99,7 @@ export const Application = () => {
   useEffect(() => {
     if (!actionData) return
 
-    if (!actionData.error) {
-      showNotification({
-        message: "Favorite chain updated",
-      })
-    }
-    if (actionData.error) {
+    if (actionData.message) {
       showNotification({
         message: actionData.message,
       })

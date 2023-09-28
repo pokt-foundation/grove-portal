@@ -8,7 +8,6 @@ import {
   useSearchParams,
 } from "@remix-run/react"
 import React, { useEffect } from "react"
-import RootProviders from "../RootProviders"
 
 const Document = ({ children, title }: { children: React.ReactNode; title?: string }) => {
   const [params] = useSearchParams()
@@ -45,7 +44,7 @@ const Document = ({ children, title }: { children: React.ReactNode; title?: stri
         <Links />
       </head>
       <body>
-        <RootProviders>{children}</RootProviders>
+        {children}
         <ScrollRestoration />
         <Scripts />
         <LiveReload />

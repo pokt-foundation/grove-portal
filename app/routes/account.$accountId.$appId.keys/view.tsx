@@ -6,6 +6,7 @@ import {
   PasswordInput,
   Stack,
   Text,
+  TextInput,
 } from "@pokt-foundation/pocket-blocks"
 import CopyTextButton from "~/components/CopyTextButton"
 import { PortalApp, RoleNameV2 } from "~/models/portal/sdk"
@@ -30,9 +31,9 @@ const AppKeys = ({ app, userRole }: AppKeysProps) => {
           each endpoint.
         </Text>
         <Group mt={20}>
-          <PasswordInput
+          <TextInput
             readOnly
-            aria-label="Portal ID"
+            aria-label="App ID"
             sx={(theme: MantineTheme) => ({
               flex: 1,
               backgroundColor: theme.colors.gray[9],

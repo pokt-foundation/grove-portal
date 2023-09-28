@@ -32,7 +32,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   let userAccounts
 
   try {
-    const account = await portal.getUserAccount({ accountID: accountId })
+    const account = await portal.getUserAccount({ accountID: accountId, accepted: true })
 
     if (!account.getUserAccount) {
       throw new Error(
@@ -40,7 +40,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       )
     }
 
-    userAccounts = await portal.getUserAccounts()
+    userAccounts = await portal.getUserAccounts({ accepted: true })
     if (!userAccounts.getUserAccounts) {
       throw new Error(`Accounts not found for user ${user.user.portalUserID}`)
     }

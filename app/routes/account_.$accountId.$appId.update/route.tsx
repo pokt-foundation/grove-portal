@@ -1,4 +1,5 @@
 import { useLoaderData } from ".pnpm/react-router@6.11.0_react@18.2.0/node_modules/react-router"
+import { showNotification } from "@mantine/notifications"
 import { Box, LoadingOverlay } from "@pokt-foundation/pocket-blocks"
 import {
   ActionFunction,
@@ -10,10 +11,12 @@ import {
 import { useFetcher } from "@remix-run/react"
 import { useEffect } from "react"
 import invariant from "tiny-invariant"
+import ErrorView from "~/components/ErrorView"
 import PortalLoader from "~/components/PortalLoader"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { PortalApp, UpdatePortalApp } from "~/models/portal/sdk"
 import AppForm from "~/routes/account_.$accountId.create/components/AppForm"
+import { DataStruct } from "~/types/global"
 import { getErrorMessage } from "~/utils/catchError"
 import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
@@ -24,7 +27,7 @@ export const meta: MetaFunction = () => {
   }
 }
 
-type LoaderData = {
+type UpdateAppLoaderData = {
   app: PortalApp
 }
 
@@ -35,19 +38,30 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
   invariant(appId, "AppId must be set")
 
-  const getUserPortalAppResponse = await portal
-    .getUserPortalApp({ portalAppID: appId })
-    .catch((e) => {
-      console.log(e)
+  try {
+    const getUserPortalAppResponse = await portal
+      .getUserPortalApp({ portalAppID: appId })
+      .catch((e) => {
+        console.log(e)
+      })
+
+    if (!getUserPortalAppResponse) {
+      return redirect(`/account/${accountId}`)
+    }
+
+    return json<DataStruct<UpdateAppLoaderData>>({
+      data: {
+        app: getUserPortalAppResponse.getUserPortalApp as PortalApp,
+      },
+      error: false,
     })
-
-  if (!getUserPortalAppResponse) {
-    return redirect(`/account/${accountId}`)
+  } catch (error) {
+    return json<DataStruct<UpdateAppLoaderData>>({
+      data: null,
+      error: true,
+      message: getErrorMessage(error),
+    })
   }
-
-  return json({
-    app: getUserPortalAppResponse.getUserPortalApp,
-  })
 }
 
 export const action: ActionFunction = async ({ request, params }) => {
@@ -100,16 +114,23 @@ export const action: ActionFunction = async ({ request, params }) => {
   }
 }
 
-export default function CreateApp() {
+export default function UpdateApp() {
   const fetcher = useFetcher()
-  const { app } = useLoaderData() as LoaderData
+  const { data, error, message } = useLoaderData() as DataStruct<UpdateAppLoaderData>
 
   useEffect(() => {
     if (fetcher.data && fetcher.data.error) {
-      // TODO: handle showNotification toast message
-      console.log(fetcher.data)
+      showNotification({
+        message: fetcher.data.message,
+      })
     }
   }, [fetcher])
+
+  if (error) {
+    return <ErrorView message={message} />
+  }
+
+  const { app } = data
 
   return fetcher.state === "idle" ? (
     <Box maw={860} mx="auto">

@@ -182,9 +182,11 @@ export default function Team() {
   useEffect(() => {
     if (!actionData) return
 
-    showNotification({
-      message: actionData.message,
-    })
+    if (actionData.message) {
+      showNotification({
+        message: actionData.message,
+      })
+    }
   }, [actionData])
 
   if (error) {

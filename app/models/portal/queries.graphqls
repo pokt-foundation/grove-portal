@@ -33,8 +33,18 @@ query getPortalUser {
   }
 }
 
-query getUserAccount($accountID: ID!) {
-  getUserAccount(accountID: $accountID) {
+query getUserAccount(
+  $accountID: ID!
+  $accepted: Boolean!
+  $sortOrder: SortOrder
+  $roleNameFilters: [RoleNameV2!]
+) {
+  getUserAccount(
+    accountID: $accountID
+    accepted: $accepted
+    sortOrder: $sortOrder
+    roleNameFilters: $roleNameFilters
+  ) {
     id
     planType
     users {
@@ -133,7 +143,7 @@ query getUserAccount($accountID: ID!) {
 query getUserAccounts(
   $sortOrder: SortOrder
   $roleNameFilters: [RoleNameV2!]
-  $accepted: Boolean
+  $accepted: Boolean!
 ) {
   getUserAccounts(
     sortOrder: $sortOrder
@@ -240,7 +250,7 @@ query getUserPortalApp($portalAppID: ID!) {
 query getUserPortalApps(
   $sortOrder: SortOrder
   $roleNameFilters: [RoleNameV2!]
-  $accepted: Boolean
+  $accepted: Boolean!
 ) {
   getUserPortalApps(
     sortOrder: $sortOrder

@@ -250,3 +250,7 @@ mutation createAccountUser($input: CreateAccountUserAccess!) {
 mutation removeAccountUser($input: UpdateRemoveAccountUser!) {
   removeAccountUser(input: $input)
 }
+
+mutation deleteUserPortalApp($portalAppID: String!) {
+  deleteUserPortalApp(portalAppID: $portalAppID)
+}

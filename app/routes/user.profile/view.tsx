@@ -1,46 +1,17 @@
 import { Divider } from "@mantine/core"
-import { showNotification } from "@mantine/notifications"
 import { Box, Button, Stack, Switch, Text } from "@pokt-foundation/pocket-blocks"
 import { Form, useSubmit } from "@remix-run/react"
-import { useEffect } from "react"
-import { ActionPassword } from "./utils/actionPassword"
-import { ActionUser } from "./utils/actionUser"
 import { Identicon } from "~/components/Identicon"
 import { User } from "~/models/portal/sdk"
 import useCommonStyles from "~/styles/commonStyles"
-import { DataStruct } from "~/types/global"
-
-export const SUCCESSFUL_CHANGE_PASSWORD_MSG =
-  "We've just sent you an email to reset your password."
 
 type ProfileViewProps = {
   user: User
-  actionData?: DataStruct<ActionUser | ActionPassword>
 }
 
-export const ProfileView = ({ user, actionData }: ProfileViewProps) => {
+export const ProfileView = ({ user }: ProfileViewProps) => {
   const { classes: commonClasses } = useCommonStyles()
   const submit = useSubmit()
-
-  useEffect(() => {
-    if (!actionData) return
-
-    if (!actionData.error && (actionData.data as ActionPassword).auth0 === 200) {
-      showNotification({
-        message: SUCCESSFUL_CHANGE_PASSWORD_MSG,
-      })
-    }
-    if (!actionData.error && (actionData.data as ActionUser).user) {
-      showNotification({
-        message: "User profile updated",
-      })
-    }
-    if (actionData.error) {
-      showNotification({
-        message: actionData.message,
-      })
-    }
-  }, [actionData])
 
   return (
     <Stack spacing="xs">
@@ -116,19 +87,6 @@ export const ProfileView = ({ user, actionData }: ProfileViewProps) => {
           </Form>
         </Box>
       </Stack>
-
-      {/*<Divider />*/}
-      {/*<Stack  py={20}>*/}
-      {/*  <Box>*/}
-      {/*    <Text fw={600}>Delete my account</Text>*/}
-      {/*    <Text pt={5}>By deleting your account, all apps you own will be removed.</Text>*/}
-      {/*  </Box>*/}
-      {/*  <Form method="post">*/}
-      {/*  <Button color="gray" name="email" type="submit" value={email} variant="outline">*/}
-      {/*    Delete account*/}
-      {/*  </Button>*/}
-      {/*  </Form>*/}
-      {/*</Stack>*/}
     </Stack>
   )
 }

@@ -61,26 +61,20 @@ export const action: ActionFunction = async ({ request }) => {
           await stripe.subscriptionItems.update(subscription.items.data[0].id, {
             metadata: sessionCompleted.metadata,
           })
+
+          // update application plan and store subscription id
+          await fetch("/api/admin/update-plan", {
+            method: "post",
+            headers: {
+              "Content-Type": "Application/Json",
+            },
+            body: JSON.stringify({
+              id: sessionCompleted.metadata?.endpoint_id,
+              type: PayPlanType.PayAsYouGoV0,
+              subscription: sessionCompleted.subscription,
+            }),
+          })
         }
-
-        break
-      case "customer.subscription.created":
-        const subscriptionCreated = event.data.object as Stripe.Subscription
-        console.log(`Customer subscription create for ${subscriptionCreated.id}!`)
-
-        const appIdCreated = subscriptionCreated.metadata.endpoint_id
-
-        await fetch("/api/admin/update-plan", {
-          method: "post",
-          headers: {
-            "Content-Type": "Application/Json",
-          },
-          body: JSON.stringify({
-            id: appIdCreated,
-            type: PayPlanType.PayAsYouGoV0,
-            subscription: subscriptionCreated.id,
-          }),
-        })
 
         break
       case "customer.subscription.deleted":
@@ -105,6 +99,7 @@ export const action: ActionFunction = async ({ request }) => {
       default:
         // Unexpected event type
         console.log(`Unhandled event type ${event.type}.`)
+        return json({ message: "Unhandled event type" }, 404)
     }
   }
 

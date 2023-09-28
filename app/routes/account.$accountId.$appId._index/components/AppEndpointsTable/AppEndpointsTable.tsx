@@ -1,3 +1,5 @@
+import { useFetcher } from ".pnpm/react-router-dom@6.11.0_biqbaboplfbrettd7655fr4n2y/node_modules/react-router-dom"
+import { showNotification } from "@mantine/notifications"
 import {
   Flex,
   Menu,
@@ -6,9 +8,9 @@ import {
   UnstyledButton,
 } from "@pokt-foundation/pocket-blocks"
 import { useParams } from "@remix-run/react"
-import { useMemo } from "react"
+import { useEffect, useMemo } from "react"
 import { LuBook } from "react-icons/lu"
-import { RiStarLine } from "react-icons/ri"
+import { RiStarLine, RiStarFill } from "react-icons/ri"
 import FavoriteChain from "../FavoriteChain"
 import Chain from "~/components/Chain"
 import ContextMenuTarget from "~/components/ContextMenuTarget"
@@ -33,6 +35,7 @@ const AppEndpointsTable = ({
 }: AppEndpointsProps) => {
   const theme = useMantineTheme()
   const { appId } = useParams()
+  const fetcher = useFetcher()
 
   const chains = useMemo(() => {
     const fav = blockchains
@@ -53,6 +56,17 @@ const AppEndpointsTable = ({
 
     return [...fav, ...other]
   }, [favoriteChains, blockchains])
+
+  // handle notification for menu fetcher action
+  useEffect(() => {
+    if (!fetcher.data) return
+
+    if (fetcher.data.message) {
+      showNotification({
+        message: fetcher.data.message,
+      })
+    }
+  }, [fetcher.data])
 
   return (
     blockchains && (
@@ -105,8 +119,28 @@ const AppEndpointsTable = ({
                         </Menu.Item>
                       )}
 
-                      <Menu.Item icon={<RiStarLine size={18} />}>
-                        Mark as favorite
+                      <Menu.Item
+                        icon={
+                          chain.favorite ? (
+                            <RiStarFill size={18} />
+                          ) : (
+                            <RiStarLine size={18} />
+                          )
+                        }
+                        onClick={() =>
+                          fetcher.submit(
+                            {
+                              isFavorite: String(!chain.favorite),
+                              chainId: chain.id,
+                              favoriteChains: JSON.stringify(favoriteChains),
+                            },
+                            {
+                              method: "post",
+                            },
+                          )
+                        }
+                      >
+                        {chain.favorite ? "Remove favorite" : "Mark as favorite"}
                       </Menu.Item>
                     </Menu.Dropdown>
                   </Menu>

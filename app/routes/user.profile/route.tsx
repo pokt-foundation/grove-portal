@@ -1,24 +1,23 @@
 import { ActionFunction, LoaderFunction, json, MetaFunction } from "@remix-run/node"
 import { useActionData, useLoaderData } from "@remix-run/react"
-import { useEffect } from "react"
 import invariant from "tiny-invariant"
 import { ActionPassword, actionPassword } from "./utils/actionPassword"
 import { ActionUser, actionUser } from "./utils/actionUser"
 import ProfileView from "./view"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { UpdateUser, User } from "~/models/portal/sdk"
-import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
-import { LoaderDataStruct } from "~/utils/loader"
+import { DataStruct } from "~/types/global"
+import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
-
-type LoaderData = {
-  user: User
-}
 
 export const meta: MetaFunction = () => {
   return {
-    title: "User Profile",
+    title: `User Profile ${seo_title_append}`,
   }
+}
+
+type LoaderData = {
+  user: User
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -71,11 +70,7 @@ export const action: ActionFunction = async ({ request }) => {
 
 export default function Profile() {
   const { user } = useLoaderData() as LoaderData
-  const actionData = useActionData() as LoaderDataStruct<ActionUser | ActionPassword>
-
-  useEffect(() => {
-    trackEvent(AmplitudeEvents.ProfileView)
-  }, [])
+  const actionData = useActionData() as DataStruct<ActionUser | ActionPassword>
 
   return <ProfileView actionData={actionData} user={user} />
 }

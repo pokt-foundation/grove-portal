@@ -1,14 +1,15 @@
 import { Divider } from "@mantine/core"
-import { Container, Stack, Text } from "@pokt-foundation/pocket-blocks"
+import { Container, Stack, Text, Button } from "@pokt-foundation/pocket-blocks"
 import { json, LoaderFunction } from "@remix-run/node"
-import { Outlet, useLoaderData } from "@remix-run/react"
+import { NavLink, Outlet, useLoaderData } from "@remix-run/react"
+import { LuArrowLeft } from "react-icons/lu"
 import ErrorView from "~/components/ErrorView"
 import LinkTabs from "~/components/LinkTabs"
 import RootAppShell from "~/components/RootAppShell/RootAppShell"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { Account, PortalApp, User } from "~/models/portal/sdk"
+import { Account, User } from "~/models/portal/sdk"
+import { DataStruct } from "~/types/global"
 import { getErrorMessage } from "~/utils/catchError"
-import { LoaderDataStruct } from "~/utils/loader"
 import { requireUser } from "~/utils/user.server"
 
 export type UserAccountLoaderData = {
@@ -29,7 +30,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
     const userPendingApps = await portal.getUserPortalApps({ accepted: false })
 
-    return json<LoaderDataStruct<UserAccountLoaderData>>({
+    return json<DataStruct<UserAccountLoaderData>>({
       data: {
         accounts: accounts.getUserAccounts as Account[],
         hasPendingInvites: userPendingApps.getUserPortalApps.length > 0,
@@ -38,7 +39,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       error: false,
     })
   } catch (error) {
-    return json<LoaderDataStruct<UserAccountLoaderData>>({
+    return json<DataStruct<UserAccountLoaderData>>({
       data: null,
       error: true,
       message: getErrorMessage(error),
@@ -47,8 +48,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 }
 
 export default function UserAccount() {
-  const { data, error, message } =
-    useLoaderData() as LoaderDataStruct<UserAccountLoaderData>
+  const { data, error, message } = useLoaderData() as DataStruct<UserAccountLoaderData>
 
   if (error) {
     return <ErrorView message={message} />
@@ -78,6 +78,18 @@ export default function UserAccount() {
       user={user}
     >
       <Container fluid pt={16} px={0}>
+        <Button
+          compact
+          color="gray"
+          component={NavLink}
+          leftIcon={<LuArrowLeft size={18} />}
+          mb="xl"
+          ml={-15}
+          to="/account"
+          variant="subtle"
+        >
+          Back
+        </Button>
         <Stack spacing="xl">
           <Text fw={600} fz="md">
             User Account

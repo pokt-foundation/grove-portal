@@ -4,7 +4,9 @@ import { Form } from "@remix-run/react"
 import { useState } from "react"
 import { LuTrash2 } from "react-icons/lu"
 import useModals from "~/hooks/useModals"
+import { app } from "~/models/portal/portal.data"
 import { PortalApp } from "~/models/portal/sdk"
+import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
 
 type DeleteApplicationProps = {
   app: PortalApp
@@ -14,14 +16,14 @@ const DeleteAppForm = ({ accountId, appId }: { accountId: string; appId: string 
   const [deleteTextInputValue, setDeleteTextInputValue] = useState("")
 
   return (
-    <Form action={`/api/${accountId}/${appId}/remove`} method="post">
+    <Form method="post">
       <Text size="sm">
         Please type ‘Delete’ to proceed. This will delete your application and all the
         data related.
       </Text>
       <TextInput
         mt="md"
-        name="delete-input"
+        name="delete_input"
         onChange={(e) => setDeleteTextInputValue(e.target.value)}
       />
       <Group grow mt={32}>
@@ -36,8 +38,17 @@ const DeleteAppForm = ({ accountId, appId }: { accountId: string; appId: string 
         <Button
           color="red"
           disabled={deleteTextInputValue.toLowerCase() !== "delete"}
+          name="delete_application"
           type="submit"
-          onClick={() => closeAllModals()}
+          value="true"
+          onClick={() => {
+            closeAllModals()
+            trackEvent({
+              category: AnalyticCategories.app,
+              action: AnalyticActions.app_delete,
+              label: app.id,
+            })
+          }}
         >
           Delete
         </Button>

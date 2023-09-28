@@ -12,9 +12,9 @@ import {
   PortalAppRole,
   User,
 } from "~/models/portal/sdk"
+import { DataStruct } from "~/types/global"
 import { getErrorMessage } from "~/utils/catchError"
-import { LoaderDataStruct } from "~/utils/loader"
-import { requireUser } from "~/utils/user.server"
+import { redirectToUserAccount, requireUser } from "~/utils/user.server"
 
 export type AccountIdLoaderData = {
   account: GetUserAccountQuery["getUserAccount"]
@@ -29,6 +29,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   const portal = initPortalClient({ token: user.accessToken })
   const { accountId } = params
   invariant(accountId, "AccountId must be set")
+  let userAccounts
 
   try {
     const account = await portal.getUserAccount({ accountID: accountId })
@@ -39,17 +40,17 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       )
     }
 
-    const accounts = await portal.getUserAccounts()
-    if (!accounts.getUserAccounts) {
+    userAccounts = await portal.getUserAccounts()
+    if (!userAccounts.getUserAccounts) {
       throw new Error(`Accounts not found for user ${user.user.portalUserID}`)
     }
 
     const userPendingApps = await portal.getUserPortalApps({ accepted: false })
 
-    return json<LoaderDataStruct<AccountIdLoaderData>>({
+    return json<DataStruct<AccountIdLoaderData>>({
       data: {
         account: account.getUserAccount,
-        accounts: accounts.getUserAccounts,
+        accounts: userAccounts.getUserAccounts,
         user: user.user,
         hasPendingInvites: userPendingApps.getUserPortalApps.length > 0,
         userRoles: account.getUserAccount.users.filter(
@@ -59,17 +60,30 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       error: false,
     })
   } catch (error) {
-    return json<LoaderDataStruct<AccountIdLoaderData>>({
-      data: null,
-      error: true,
-      message: getErrorMessage(error),
-    })
+    /**
+     * Handle when an invalid account is manually entered & the case when the
+     * user is part of only one app within an org and he leaves the team
+     */
+
+    let ownerAccount = userAccounts?.getUserAccounts?.find(
+      (account) =>
+        account?.users?.find((u) => u.userID === user.user.portalUserID)?.owner,
+    )
+
+    if (accountId !== ownerAccount?.id) {
+      return redirectToUserAccount(user)
+    } else {
+      return json<DataStruct<AccountIdLoaderData>>({
+        data: null,
+        error: true,
+        message: getErrorMessage(error),
+      })
+    }
   }
 }
 
 export default function AccountId() {
-  const { data, error, message } =
-    useLoaderData() as LoaderDataStruct<AccountIdLoaderData>
+  const { data, error, message } = useLoaderData() as DataStruct<AccountIdLoaderData>
 
   if (error) {
     return <ErrorView message={message} />

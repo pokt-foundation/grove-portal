@@ -24,19 +24,17 @@ export const Identicon = ({ seed, type, alt, size = "md", avatar }: IdenticonPro
   return (
     <Avatar
       alt={alt}
-      radius="xl"
+      radius={avatar ? "xl" : "sm"}
       size={size}
       src={svgURI}
       sx={(theme: MantineTheme) => ({
         cursor: "pointer",
         ...(avatar && {
-          backgroundColor:
-            theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.colors.navy[0],
           border: `1px solid ${
             theme.colorScheme === "dark" ? theme.colors.gray[8] : theme.colors.gray[3]
           }`,
+          padding: 3,
         }),
-        padding: 3,
       })}
       variant="outline"
     />

@@ -1,28 +1,38 @@
 import { Button, CloseButton, Image, Stack, Text } from "@pokt-foundation/pocket-blocks"
 import { LoaderFunction, MetaFunction, redirect } from "@remix-run/node"
 import { Link, NavLink, useParams } from "@remix-run/react"
+import invariant from "tiny-invariant"
 import { initPortalClient } from "~/models/portal/portal.server"
 import useCommonStyles from "~/styles/commonStyles"
-import { seo_title_append } from "~/utils/meta"
-import { MAX_USER_APPS } from "~/utils/pocketUtils"
+import { MAX_USER_APPS } from "~/utils/planUtils"
+import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
 
 export const meta: MetaFunction = () => {
   return {
-    title: `App Limit Exceeded ${seo_title_append}`,
+    title: `App Creation Limit Exceeded ${seo_title_append}`,
   }
 }
 
-export const loader: LoaderFunction = async ({ request }) => {
+export const loader: LoaderFunction = async ({ request, params }) => {
   const user = await requireUser(request)
+  const { accountId } = params
 
   const portal = initPortalClient({ token: user.accessToken })
-  const endpointsResponse = await portal.endpoints().catch((e) => {
-    console.log(e)
-  })
+  invariant(accountId, "AccountId must be set")
+  const getUserAccountResponse = await portal
+    .getUserAccount({ accountID: accountId })
+    .catch((e) => {
+      console.log(e)
+    })
 
+  if (!getUserAccountResponse) {
+    return redirect(`/account/${params.accountId}`)
+  }
+
+  const portalApps = getUserAccountResponse.getUserAccount.portalApps
   const underMaxApps = () => {
-    return !endpointsResponse || endpointsResponse.owner.length < MAX_USER_APPS
+    return !portalApps || portalApps.length < MAX_USER_APPS
   }
 
   if (underMaxApps()) {

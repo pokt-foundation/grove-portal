@@ -1,15 +1,11 @@
-import { IconBookOpen, IconMail } from "@pokt-foundation/pocket-blocks"
 import { useLocation, useParams } from "@remix-run/react"
 import { useEffect, useMemo } from "react"
-import { IconApp } from "~/components/Icons"
-import { useTranslate } from "~/context/TranslateContext"
 import { User } from "~/models/portal/sdk"
-import analyticsInit from "~/utils/analytics"
+import { trackPage } from "~/utils/analytics"
 
 type useRootProps = { user: Awaited<User | undefined> }
 
 export const useRoot = ({ user }: useRootProps) => {
-  const { t } = useTranslate()
   const { pathname } = useLocation()
   const { accountId } = useParams()
 
@@ -25,48 +21,8 @@ export const useRoot = ({ user }: useRootProps) => {
   )
 
   useEffect(() => {
-    analyticsInit({ id: user?.portalUserID ?? "" })
-  }, [user])
+    trackPage(pathname, document.title)
+  }, [pathname])
 
-  const routes = useMemo(() => {
-    enum Protected {
-      Public = 0,
-      Private = 1,
-      PrivateAdmin = 2,
-      Admin = 3,
-    }
-
-    const allRoutes = [
-      {
-        to: "/account",
-        label: t.dashboard.routes.apps,
-        icon: IconApp,
-        protected: Protected.Public, // show this link to all. dashboard layout handles redirect to login.
-      },
-      {
-        to: "https://docs.portal.pokt.network/",
-        external: true,
-        label: t.dashboard.routes.docs,
-        icon: IconBookOpen,
-        protected: Protected.Public,
-      },
-      {
-        to: "https://support.pokt.network",
-        external: true,
-        label: "Support",
-        icon: IconMail,
-        protected: Protected.Public,
-      },
-    ]
-
-    let protectedLevel = Protected.Public
-
-    if (user) {
-      protectedLevel = Protected.Private
-    }
-
-    return allRoutes.filter((r) => r.protected <= protectedLevel)
-  }, [t, user])
-
-  return { isLanding, hideSidebar, routes }
+  return { isLanding, hideSidebar }
 }

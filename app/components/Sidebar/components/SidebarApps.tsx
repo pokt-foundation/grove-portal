@@ -8,26 +8,6 @@ type SidebarAppsProps = {
   iconOnly?: boolean
 }
 
-function getRandomAppmoji(): string {
-  const emojis: string[] = [
-    "1f4a1",
-    "1f680",
-    "1f525",
-    "1f41b",
-    "1f4bb",
-    "1f528",
-    "1f4be",
-    "1f4a3",
-    "1f48e",
-    "1f3ae",
-    "2b50",
-    "1f3b1",
-  ]
-
-  const randomIndex: number = Math.floor(Math.random() * emojis.length)
-  return emojis[randomIndex]
-}
-
 export const SidebarApps = ({ apps, iconOnly }: SidebarAppsProps) => {
   const appsRoutes = useMemo(() => {
     return apps
@@ -35,7 +15,7 @@ export const SidebarApps = ({ apps, iconOnly }: SidebarAppsProps) => {
       .map((app) => ({
         to: app.id,
         label: app.name,
-        icon: app.appEmoji, //getRandomAppmoji(),
+        icon: app.appEmoji,
       })) as SidebarNavRoute[]
   }, [apps])
 

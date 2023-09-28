@@ -1,6 +1,5 @@
 import { json, LoaderFunction, MetaFunction, redirect } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
-import { useEffect } from "react"
 import invariant from "tiny-invariant"
 import PlanView from "./view"
 import ErrorView from "~/components/ErrorView"
@@ -8,16 +7,16 @@ import { initPortalClient } from "~/models/portal/portal.server"
 import { PortalApp, User } from "~/models/portal/sdk"
 import { getRelays, RelayMetric } from "~/models/relaymeter/relaymeter.server"
 import { Stripe, stripe } from "~/models/stripe/stripe.server"
-import { AmplitudeEvents, trackEvent } from "~/utils/analytics"
+import { DataStruct } from "~/types/global"
 import { getErrorMessage } from "~/utils/catchError"
 import { dayjs } from "~/utils/dayjs"
 import { getRequiredServerEnvVar } from "~/utils/environment"
-import { LoaderDataStruct } from "~/utils/loader"
+import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
 
 export const meta: MetaFunction = () => {
   return {
-    title: "Application Plan Details",
+    title: `Application Plan ${seo_title_append}`,
   }
 }
 
@@ -99,7 +98,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       }
     }
 
-    return json<LoaderDataStruct<AppPlanLoaderData>>({
+    return json<DataStruct<AppPlanLoaderData>>({
       data: {
         app: app as PortalApp,
         subscription,
@@ -111,7 +110,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       error: false,
     })
   } catch (error) {
-    return json<LoaderDataStruct<AppPlanLoaderData>>({
+    return json<DataStruct<AppPlanLoaderData>>({
       data: null,
       error: true,
       message: getErrorMessage(error),
@@ -120,11 +119,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 }
 
 export const AppPlanDetails = () => {
-  const { data, error, message } = useLoaderData() as LoaderDataStruct<AppPlanLoaderData>
-
-  useEffect(() => {
-    trackEvent(AmplitudeEvents.AppPlanDetailsView)
-  }, [])
+  const { data, error, message } = useLoaderData() as DataStruct<AppPlanLoaderData>
 
   if (error) {
     return <ErrorView message={message} />

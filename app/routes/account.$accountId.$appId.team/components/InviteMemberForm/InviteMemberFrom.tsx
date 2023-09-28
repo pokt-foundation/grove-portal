@@ -11,21 +11,13 @@ import {
   LoadingOverlay,
 } from "@pokt-foundation/pocket-blocks"
 import { Form, useNavigation, useParams } from "@remix-run/react"
-import React, { useState } from "react"
 import ModalHeader from "~/components/ModalHeader"
 import PortalLoader from "~/components/PortalLoader"
 import { RoleName } from "~/models/portal/sdk"
 import useCommonStyles from "~/styles/commonStyles"
 
-type InviteMemberFromProps = {
-  endpointName: string
-}
-
-const InviteMemberFrom = ({ endpointName }: InviteMemberFromProps) => {
+const InviteMemberFrom = () => {
   const { state } = useNavigation()
-
-  const [inviteEmail, setInviteEmail] = useState("")
-  const [selectedRle, setSelectedRole] = useState(RoleName.Member)
   const { classes: commonClasses } = useCommonStyles()
   const { appId, accountId } = useParams()
 
@@ -44,14 +36,11 @@ const InviteMemberFrom = ({ endpointName }: InviteMemberFromProps) => {
                 required
                 description="Required"
                 label="Email address"
-                name="email-address"
+                name="user_email"
                 placeholder="new@server.com"
                 type="email"
-                value={inviteEmail}
                 w="300px"
-                onChange={(e) => setInviteEmail(e.target.value)}
               />
-              <input hidden readOnly name="app-name" value={endpointName} />
               <Flex>
                 <Select
                   required
@@ -67,11 +56,9 @@ const InviteMemberFrom = ({ endpointName }: InviteMemberFromProps) => {
                   ]}
                   description="Required"
                   label="Role"
-                  value={selectedRle}
-                  onChange={(value) => setSelectedRole(value as RoleName)}
+                  name="user_role"
                 />
               </Flex>
-              <input hidden readOnly name="app-subscription" value={selectedRle} />
             </Stack>
             <Divider my={32} />
             <Group position="right">
@@ -88,13 +75,12 @@ const InviteMemberFrom = ({ endpointName }: InviteMemberFromProps) => {
                 Discard
               </Button>
               <Button
-                disabled={inviteEmail === ""}
                 fw={400}
                 fz="sm"
-                name="type"
+                name="user_invite"
                 px="xs"
                 type="submit"
-                value="invite"
+                value="true"
                 w="156px"
               >
                 Invite

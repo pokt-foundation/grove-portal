@@ -3,12 +3,12 @@ import { Link } from "@remix-run/react"
 import { Emoji } from "emoji-picker-react"
 import React from "react"
 import { LuPencil } from "react-icons/lu"
-import AppSubscription from "../ApplicationSubscription"
+import ApplicationSubscription from "../ApplicationSubscription"
 import ContextMenuTarget from "~/components/ContextMenuTarget"
 import { PayPlanType, PortalApp } from "~/models/portal/sdk"
 import DeleteApplication from "~/routes/account.$accountId.$appId/components/DeleteApplication"
 import { DEFAULT_APPMOJI } from "~/routes/account_.$accountId.create/components/AppmojiPicker"
-import { getPlanName } from "~/utils/utils"
+import { getPlanName } from "~/utils/planUtils"
 
 type ApplicationHeaderProps = {
   app: PortalApp
@@ -29,9 +29,11 @@ const ApplicationHeader = ({ app }: ApplicationHeaderProps) => {
             {app.name}
           </Text>
           <Group spacing={8}>
-            <Text mr={8}>{getPlanName(app.legacyFields.planType)}</Text>
+            <Text mr={12}>{getPlanName(app.legacyFields.planType)}</Text>
             <Text>App ID</Text>
-            <Badge radius="sm">{app.id}</Badge>
+            <Badge px={6} radius="sm">
+              {app.id}
+            </Badge>
           </Group>
         </Box>
       </Group>
@@ -39,7 +41,7 @@ const ApplicationHeader = ({ app }: ApplicationHeaderProps) => {
       <Menu>
         <ContextMenuTarget />
         <Menu.Dropdown>
-          {app && <AppSubscription app={app} />}
+          {app && <ApplicationSubscription app={app} />}
           <Menu.Item component={Link} icon={<LuPencil size={18} />} to={`update`}>
             Edit information
           </Menu.Item>

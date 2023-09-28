@@ -9,7 +9,7 @@ import { Stripe } from "~/models/stripe/stripe.server"
 import useSubscriptionModals from "~/routes/account.$accountId.$appId/hooks/useSubscriptionModals"
 import useCommonStyles from "~/styles/commonStyles"
 import { dayjs } from "~/utils/dayjs"
-import { getPlanName } from "~/utils/utils"
+import { getPlanName } from "~/utils/planUtils"
 
 interface AppPlanOverviewCardProps {
   app: PortalApp
@@ -63,12 +63,12 @@ export default function AppPlanOverviewCard({
     <TitledCard header={() => <Text weight={600}>Current plan</Text>}>
       <Stack h="calc(100% - 25px)" px={20} py={10}>
         {cardItems.map(({ label, value }, index) => (
-          <>
-            <Group key={`${label}-${index}`} p={12} position="apart">
+          <React.Fragment key={`${label}-${index}`}>
+            <Group p={12} position="apart">
               <Text>{label}</Text> <Text>{value}</Text>
             </Group>
             <Divider />
-          </>
+          </React.Fragment>
         ))}
         <Box mt="auto">
           <Form action="/api/stripe/portal-session" method="post">

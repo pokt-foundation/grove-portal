@@ -1,39 +1,19 @@
 import { Menu, Text, ActionIcon, Button, Group } from "@pokt-foundation/pocket-blocks"
+import { Form, Link, useNavigation } from "@remix-run/react"
 import React from "react"
-import { LuMinusCircle, LuMoreHorizontal } from "react-icons/lu"
-import useModals from "~/hooks/useModals"
-import { PortalApp } from "~/models/portal/sdk"
+import { LuArrowUpRight, LuMinusCircle, LuMoreHorizontal } from "react-icons/lu"
+import { PortalApp, User } from "~/models/portal/sdk"
+import useTeamModals from "~/routes/account.$accountId.$appId.team/hooks/useTeamModals"
 import useCommonStyles from "~/styles/commonStyles"
 
-type InvitedAppActionProps = { app: PortalApp & { accepted: boolean } }
+type InvitedAppActionProps = { app: PortalApp & { accepted: boolean }; user: User }
 
-const InvitedAppAction = ({ app }: InvitedAppActionProps) => {
+const InvitedAppAction = ({ app, user }: InvitedAppActionProps) => {
   const { classes: commonClasses } = useCommonStyles()
-  // const fetcher = useFetcher()
-  const { openConfirmationModal } = useModals()
-  const { name, accepted } = app
+  const navigation = useNavigation()
+  const { accepted } = app
 
-  const leaveApp = () => {
-    // fetcher.submit(
-    //     {
-    //       props here...
-    //     },
-    //     {
-    //       method: "POST",
-    //     },
-    // )
-
-    console.log("leaving app...", app.name)
-  }
-
-  const openLeaveAppModal = () =>
-    openConfirmationModal({
-      title: <Text fw={600}>Leave App</Text>,
-      children: <Text>Are you sure you want to leave {name}?</Text>,
-      labels: { cancel: "Cancel", confirm: "Leave" },
-      confirmProps: { color: "red" },
-      onConfirm: () => leaveApp(),
-    })
+  const { openLeaveTeamModal } = useTeamModals({ app })
 
   return (
     <Group grow={!accepted} position="right" spacing="md">
@@ -50,25 +30,44 @@ const InvitedAppAction = ({ app }: InvitedAppActionProps) => {
             </ActionIcon>
           </Menu.Target>
           <Menu.Dropdown>
+            <Menu.Item icon={<LuArrowUpRight size={18} />}>
+              <Link to={`/account/${app.accountID}/${app.id}`}>
+                <Text tt="capitalize">Go to application</Text>
+              </Link>
+            </Menu.Item>
             <Menu.Item
               icon={<LuMinusCircle size={18} />}
-              onClick={() => openLeaveAppModal()}
+              onClick={() => openLeaveTeamModal(user.email, user.portalUserID)}
             >
               <Text>Leave</Text>
             </Menu.Item>
           </Menu.Dropdown>
         </Menu>
       ) : (
-        <>
-          <Button
-            className={commonClasses.grayOutlinedButton}
-            color="gray"
-            variant="outline"
-          >
-            Decline
-          </Button>
-          <Button>Accept</Button>
-        </>
+        <Form method="post">
+          <input hidden name="portalAppId" value={app.id} />
+          <Group position="right">
+            <Button
+              className={commonClasses.grayOutlinedButton}
+              color="gray"
+              disabled={navigation.state === "loading"}
+              name="invite_response"
+              type="submit"
+              value="decline"
+              variant="outline"
+            >
+              Decline
+            </Button>
+            <Button
+              disabled={navigation.state === "loading"}
+              name="invite_response"
+              type="submit"
+              value="accept"
+            >
+              Accept
+            </Button>
+          </Group>
+        </Form>
       )}
     </Group>
   )

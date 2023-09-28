@@ -13,29 +13,24 @@ import { useRouteLoaderData } from "@remix-run/react"
 import dayjs from "dayjs"
 import invariant from "tiny-invariant"
 import { AccountIdLoaderData } from "../account.$accountId/route"
+import { AccountAppsOverview } from "./components/AccountAppsOverview"
+import { EmptyState } from "./components/EmptyState"
+import OverviewBarChart from "./components/OverviewBarChart"
+import { OverviewSparkline } from "./components/OverviewSparkline"
 import ErrorView from "~/components/ErrorView"
 import TitledCard from "~/components/TitledCard"
 import { initDwhClient } from "~/models/dwh/dwh.server"
-import { JSONApiResponse, AnalyticsRelaysTransactions } from "~/models/dwh/sdk"
+import { AnalyticsRelaysTransactions, JSONApiResponse } from "~/models/dwh/sdk"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { EndpointsQuery, PortalApp } from "~/models/portal/sdk"
-import { AccountAppsOverview } from "~/routes/account.$accountId._index/components/AccountAppsOverview"
-import { EmptyState } from "~/routes/account.$accountId._index/components/EmptyState"
-import OverviewBarChart from "~/routes/account.$accountId._index/components/OverviewBarChart"
-import { OverviewSparkline } from "~/routes/account.$accountId._index/components/OverviewSparkline"
-import { PocketUser } from "~/routes/api.user/route"
+import { PortalApp } from "~/models/portal/sdk"
+import type { DataStruct } from "~/types/global"
 import { getErrorMessage } from "~/utils/catchError"
-import { LoaderDataStruct } from "~/utils/loader"
+import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
-
-export type DashboardLoaderData = {
-  endpoints: EndpointsQuery | null
-  user: PocketUser
-}
 
 export const meta: MetaFunction = () => {
   return {
-    title: "Account Overview",
+    title: `Account Insights ${seo_title_append}`,
   }
 }
 
@@ -78,7 +73,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     const body = await relays.raw.json()
     console.log(body.Data)
 
-    return json<LoaderDataStruct<AccountInsightsData>>({
+    return json<DataStruct<AccountInsightsData>>({
       data: {
         relays: body.Data,
       },
@@ -86,7 +81,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     })
   } catch (error) {
     console.log(error)
-    return json<LoaderDataStruct<AccountInsightsData>>({
+    return json<DataStruct<AccountInsightsData>>({
       data: null,
       error: true,
       message: getErrorMessage(error),
@@ -118,7 +113,7 @@ const InsightsDaysPeriodSelector = () => {
 export default function Account() {
   const { data, error, message } = useRouteLoaderData(
     "routes/account.$accountId",
-  ) as LoaderDataStruct<AccountIdLoaderData>
+  ) as DataStruct<AccountIdLoaderData>
 
   if (error) {
     return <ErrorView message={message} />

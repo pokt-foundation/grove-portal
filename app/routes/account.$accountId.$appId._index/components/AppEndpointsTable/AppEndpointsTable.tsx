@@ -75,6 +75,7 @@ const AppEndpointsTable = ({
             endpointUrl: {
               element: (
                 <TextInput
+                  readOnly
                   bg={theme.colors.gray[9]}
                   miw={300}
                   value={getAppEndpointUrl(chain, appId)}

@@ -1,17 +1,18 @@
 import { CSSObject } from "@mantine/core"
 import {
   Anchor,
+  Box,
   Flex,
   Group,
   MantineTheme,
   Text,
   UnstyledButton,
+  Tooltip,
 } from "@pokt-foundation/pocket-blocks"
 import { NavLink } from "@remix-run/react"
 import { Emoji } from "emoji-picker-react"
 import React from "react"
 import { IconType } from "react-icons/lib/cjs/iconBase"
-import Tooltip from "~/components/Tooltip"
 import { DEFAULT_APPMOJI } from "~/routes/account_.$accountId.create/components/AppmojiPicker"
 
 export type SidebarNavRoute = {
@@ -65,7 +66,11 @@ const LabelIcon = ({ icon: Icon, imgSrc, label }: LabelIconProps) => {
   }
 
   if (isEmoji) {
-    return <Emoji size={14} unified={Icon !== "" ? Icon : DEFAULT_APPMOJI} />
+    return (
+      <Box mx={1}>
+        <Emoji size={16} unified={Icon !== "" ? Icon : DEFAULT_APPMOJI} />
+      </Box>
+    )
   }
 
   return Icon ? <Icon size={18} /> : null

@@ -14,7 +14,7 @@ const PortalLoader = ({ message }: PortalLoaderProps) => {
   const { classes } = useStyles()
   return (
     <Stack align="center" justify="center">
-      <Rive className={classes.rive} src="/portal-loader.riv" />
+      <Rive className={classes.rive} src="/rive/portal-loader.riv" />
       {message && <Text> {message} </Text>}
     </Stack>
   )

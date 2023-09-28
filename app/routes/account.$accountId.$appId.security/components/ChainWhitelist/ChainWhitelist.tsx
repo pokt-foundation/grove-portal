@@ -1,14 +1,16 @@
 import { Box, Stack, Text } from "@pokt-foundation/pocket-blocks"
-import React from "react"
+import React, { Dispatch, useMemo } from "react"
+import { SecurityReducerActions } from "../../utils/stateReducer"
+import { BlockchainWhitelist } from "../../utils/utils"
 import useModals from "~/hooks/useModals"
-import { Blockchain } from "~/models/portal/sdk"
+import { Blockchain, WhitelistContractsV2, WhitelistMethodsV2 } from "~/models/portal/sdk"
 import AddSettingsButton from "~/routes/account.$accountId.$appId.security/components/AddSettingsButton"
 import ChainWhitelistModal from "~/routes/account.$accountId.$appId.security/components/ChainWhitelistModal"
 import ChainWhitelistTable from "~/routes/account.$accountId.$appId.security/components/ChainWhitelistTable"
-import { BlockchainWhitelist } from "~/routes/account.$accountId.$appId.security/utils"
 
 type ChainWhitelistProps = {
-  whitelists: BlockchainWhitelist[]
+  dispatch: Dispatch<SecurityReducerActions>
+  whitelists: WhitelistContractsV2[] | WhitelistMethodsV2[]
   blockchains: Blockchain[]
   type: "contracts" | "methods"
 }
@@ -24,8 +26,24 @@ export const whitelistInfo = {
   },
 }
 
-const ChainWhitelist = ({ whitelists, blockchains, type }: ChainWhitelistProps) => {
+const ChainWhitelist = ({
+  dispatch,
+  whitelists,
+  blockchains,
+  type,
+}: ChainWhitelistProps) => {
   const { openFullScreenModal } = useModals()
+  const blockchainWhitelist: BlockchainWhitelist[] = useMemo(() => {
+    return whitelists
+      .map((list) => {
+        // @ts-ignore
+        return list[type].map((str: string) => ({
+          blockchainID: list.blockchainID,
+          whitelistValue: str,
+        }))
+      })
+      .flat()
+  }, [type, whitelists])
 
   return (
     <Box px={40} py={32}>
@@ -35,16 +53,22 @@ const ChainWhitelist = ({ whitelists, blockchains, type }: ChainWhitelistProps) 
         <AddSettingsButton
           onClick={() =>
             openFullScreenModal({
-              children: <ChainWhitelistModal blockchains={blockchains} type={type} />,
+              children: (
+                <ChainWhitelistModal
+                  blockchains={blockchains}
+                  dispatch={dispatch}
+                  type={type}
+                />
+              ),
             })
           }
         />
       </Stack>
       {whitelists.length > 0 && (
         <ChainWhitelistTable
-          blockchainWhitelist={whitelists}
+          blockchainWhitelist={blockchainWhitelist}
           blockchains={blockchains}
-          onDelete={() => console.log("DELETE")}
+          onDelete={(contract) => dispatch({ type: `${type}-remove`, payload: contract })}
         />
       )}
     </Box>

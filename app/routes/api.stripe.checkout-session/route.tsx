@@ -71,6 +71,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       ],
       mode: "subscription",
       metadata,
+      allow_promotion_codes: true,
       success_url: `${returnUrl}?success=true&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${returnUrl}?success=false`,
     })

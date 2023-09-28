@@ -1,37 +1,50 @@
 import {
-  ActionIcon,
   Avatar,
   Flex,
   Group,
   MantineTheme,
-  Menu,
   Select,
   Text,
 } from "@pokt-foundation/pocket-blocks"
-import { LuMinusCircle, LuMoreHorizontal, LuUser } from "react-icons/lu"
 import { DataTable } from "~/components/DataTable"
-import { ProcessedEndpoint, RoleName } from "~/models/portal/sdk"
+import Identicon from "~/components/Identicon"
+import { PortalApp, RoleName, RoleNameV2, User } from "~/models/portal/sdk"
+import TeamMemberAction from "~/routes/account.$accountId.$appId.team/components/TeamMemberAction"
 import useTeamModals from "~/routes/account.$accountId.$appId.team/hooks/useTeamModals"
-import useCommonStyles from "~/styles/commonStyles"
+import { getAppAcceptedValue, getUserRole } from "~/utils/applicationUtils"
 
-type TeamMembersTableProps = { endpoint: ProcessedEndpoint; userRole: RoleName | null }
+type TeamMembersTableProps = {
+  app: PortalApp
+  userRole: RoleNameV2 | null
+  user?: User
+}
 
-const TeamMembersTable = ({ endpoint, userRole }: TeamMembersTableProps) => {
-  const { users: members } = endpoint
-  const { classes: commonClasses } = useCommonStyles()
+const TeamMembersTable = ({ app, userRole, user }: TeamMembersTableProps) => {
+  const { openChangeRoleModal } = useTeamModals({ app })
 
-  const { openRemoveUserModal, openChangeRoleModal } = useTeamModals({ endpoint })
+  const teamData = app.users
+    .map((user) => ({
+      ...user,
+      roleName: getUserRole(app, user.userID),
+      accepted: getAppAcceptedValue(app, user.userID),
+    }))
+    .sort((a, b) => Number(b.owner) - Number(a.owner))
 
   return (
     <DataTable
       columns={["Member", "Roles", "Status", ""]}
-      data={members.map(({ email, roleName, accepted }) => {
+      data={teamData.map(({ email, roleName, accepted, userID }, index) => {
         return {
           member: {
             element: (
               <Group>
-                <Avatar color="blue" radius="xl">
-                  <LuUser size={24} />
+                <Avatar radius="xl">
+                  <Identicon
+                    alt={`${userID} profile picture`}
+                    seed={userID}
+                    size="md"
+                    type="user"
+                  />
                 </Avatar>
                 <Text> {email} </Text>
               </Group>
@@ -39,9 +52,9 @@ const TeamMembersTable = ({ endpoint, userRole }: TeamMembersTableProps) => {
           },
           role: {
             element:
-              roleName === RoleName.Owner ? (
+              roleName === RoleNameV2.Owner ? (
                 <Text> Owner </Text>
-              ) : (
+              ) : userRole !== RoleNameV2.Member ? (
                 <Flex>
                   <Select
                     data={[
@@ -55,61 +68,44 @@ const TeamMembersTable = ({ endpoint, userRole }: TeamMembersTableProps) => {
                       },
                     ]}
                     defaultValue={roleName}
-                    disabled={!accepted || userRole === RoleName.Member}
+                    disabled={!accepted}
                     onChange={(value) =>
-                      value !== roleName && openChangeRoleModal(email, value as RoleName)
+                      value !== roleName &&
+                      openChangeRoleModal(email, userID, value as RoleName)
                     }
                   />
                 </Flex>
+              ) : (
+                <Text tt="capitalize"> {roleName?.toLowerCase()} </Text>
               ),
           },
           status: {
             element: (
-              <Text>
-                {roleName === RoleName.Owner ? (
-                  "-"
-                ) : (
-                  <Text
-                    sx={(theme: MantineTheme) => ({
-                      color: accepted ? theme.colors.green[6] : theme.colors.yellow[7],
-                    })}
-                  >
-                    {accepted ? "Accepted" : "Pending"}
-                  </Text>
-                )}
+              <Text
+                sx={(theme: MantineTheme) => ({
+                  ...(roleName !== RoleNameV2.Owner && {
+                    color: accepted ? theme.colors.green[6] : theme.colors.yellow[7],
+                  }),
+                })}
+              >
+                {roleName === RoleNameV2.Owner ? "-" : accepted ? "Accepted" : "Pending"}
               </Text>
             ),
           },
           action: {
-            element:
-              roleName !== RoleName.Owner ? (
-                <Flex justify="flex-end">
-                  <Menu>
-                    <Menu.Target>
-                      <ActionIcon
-                        className={commonClasses.grayOutlinedButton}
-                        radius="xl"
-                        size={40}
-                        variant="outline"
-                      >
-                        <LuMoreHorizontal />
-                      </ActionIcon>
-                    </Menu.Target>
-                    <Menu.Dropdown>
-                      <Menu.Item
-                        icon={<LuMinusCircle size={18} />}
-                        onClick={() => openRemoveUserModal(email)}
-                      >
-                        <Text>Remove</Text>
-                      </Menu.Item>
-                    </Menu.Dropdown>
-                  </Menu>
-                </Flex>
-              ) : null,
+            element: roleName !== RoleNameV2.Owner && (
+              <TeamMemberAction
+                app={app}
+                status={accepted}
+                teamMember={teamData[index]}
+                user={user}
+                userRole={userRole}
+              />
+            ),
           },
         }
       })}
-      paginate={members.length > 10 ? { perPage: 10 } : false}
+      paginate={teamData.length > 10 ? { perPage: 10 } : false}
     />
   )
 }

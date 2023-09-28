@@ -2,6 +2,7 @@ import { Text } from "@pokt-foundation/pocket-blocks"
 import { useFetcher } from "@remix-run/react"
 import useModals from "~/hooks/useModals"
 import { PortalApp } from "~/models/portal/sdk"
+import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
 
 const useSubscriptionModals = () => {
   const fetcher = useFetcher()
@@ -46,7 +47,14 @@ const useSubscriptionModals = () => {
       ),
       labels: { cancel: "Cancel", confirm: "Stop subscription" },
       confirmProps: { color: "red" },
-      onConfirm: () => stopSubscription(app),
+      onConfirm: () => {
+        stopSubscription(app)
+        trackEvent({
+          category: AnalyticCategories.app,
+          action: AnalyticActions.app_subscription_stop,
+          label: app.id,
+        })
+      },
     })
 
   const openRenewSubscriptionModal = (app: PortalApp) =>
@@ -60,7 +68,14 @@ const useSubscriptionModals = () => {
         </Text>
       ),
       labels: { cancel: "Cancel", confirm: "Renew subscription" },
-      onConfirm: () => renewSubscription(app),
+      onConfirm: () => {
+        renewSubscription(app)
+        trackEvent({
+          category: AnalyticCategories.app,
+          action: AnalyticActions.app_subscription_renew,
+          label: app.id,
+        })
+      },
     })
 
   return { openStopSubscriptionModal, openRenewSubscriptionModal }

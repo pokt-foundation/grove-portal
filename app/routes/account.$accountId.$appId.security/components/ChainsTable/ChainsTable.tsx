@@ -35,8 +35,8 @@ const ChainsTable = ({
 
   const selectedBlockChains = useMemo(
     () =>
-      blockchains.filter(({ id: blockchainId }) =>
-        selectedBlockchainsIds.some((id) => blockchainId === id),
+      blockchains.filter(({ id: blockchainID }) =>
+        selectedBlockchainsIds.some((id) => blockchainID === id),
       ),
     [blockchains, selectedBlockchainsIds],
   )
@@ -44,94 +44,53 @@ const ChainsTable = ({
   return (
     selectedBlockChains && (
       <DataTable
-        data={selectedBlockChains?.map((chain) => {
-          return {
-            chain: {
-              element: <Chain chain={chain} />,
-              value: `${chain?.description} ${chain?.blockchain}`,
-              cellProps: {
-                style: { minWidth: "250px" },
-                width: "30%",
+        data={selectedBlockChains
+          ?.sort((a, b) => (a.blockchain > b.blockchain ? 1 : -1))
+          .map((chain) => {
+            return {
+              chain: {
+                element: <Chain chain={chain} />,
+                value: `${chain?.description} ${chain?.blockchain}`,
+                cellProps: {
+                  style: { minWidth: "250px" },
+                  width: "30%",
+                },
               },
-            },
-            endpointUrl: {
-              element: (
-                <TextInput
-                  bg={theme.colors.gray[9]}
-                  miw={300}
-                  value={getAppEndpointUrl(chain, appId)}
-                />
-              ),
-            },
-            action: {
-              element: (
-                <Flex gap="lg" justify="flex-end">
-                  <CopyTextButton value={getAppEndpointUrl(chain, appId)} />
-                  <ActionIcon
-                    className={commonClasses.grayOutlinedButton}
-                    radius="xl"
-                    size={40}
-                    variant="outline"
-                    onClick={() => onDeleteChain(chain.id)}
-                  >
-                    <LuTrash2 size={18} />
-                  </ActionIcon>
-                </Flex>
-              ),
-              cellProps: {
-                style: { minWidth: "130px" },
-                width: "130px",
+              endpointUrl: {
+                element: (
+                  <TextInput
+                    readOnly
+                    bg={theme.colors.gray[9]}
+                    miw={300}
+                    value={getAppEndpointUrl(chain, appId)}
+                  />
+                ),
               },
-            },
-          }
-        })}
+              action: {
+                element: (
+                  <Flex gap="lg" justify="flex-end">
+                    <CopyTextButton value={getAppEndpointUrl(chain, appId)} />
+                    <ActionIcon
+                      className={commonClasses.grayOutlinedButton}
+                      radius="xl"
+                      size={40}
+                      variant="outline"
+                      onClick={() => onDeleteChain(chain.id)}
+                    >
+                      <LuTrash2 size={18} />
+                    </ActionIcon>
+                  </Flex>
+                ),
+                cellProps: {
+                  style: { minWidth: "130px" },
+                  width: "130px",
+                },
+              },
+            }
+          })}
         paginate={false}
       />
     )
   )
 }
-// return (
-//     selectedBlockChains && (
-//         <>
-//           {selectedBlockChains?.map((chain) => (
-//               <Grid key={chain?.id} px={20} py={24}>
-//                 <Grid.Col span={3}>
-//                   <Flex gap="sm">
-//                     <Avatar radius={40} size={40} src="/avalanche-avax-logo.svg" />
-//                     <Stack spacing={0} w={160}>
-//                       <Text truncate fw={600}>
-//                         {chain?.description}
-//                       </Text>
-//                       <Text c="dimmed" fz="xs">
-//                         {chain?.blockchain}
-//                       </Text>
-//                     </Stack>
-//                   </Flex>
-//                 </Grid.Col>
-//                 <Grid.Col span="auto">
-//                   <TextInput
-//                       bg={theme.colors.gray[9]}
-//                       miw={300}
-//                       value={getAppEndpointUrl(chain, appId)}
-//                   />
-//                 </Grid.Col>
-//                 <Grid.Col span="content">
-//                   <Group position="right" spacing="lg">
-//                     <CopyTextButton value={getAppEndpointUrl(chain, appId)} />
-//                     <ActionIcon
-//                         className={commonClasses.grayOutlinedButton}
-//                         radius="xl"
-//                         size={40}
-//                         variant="outline"
-//                         onClick={() => onDeleteChain(chain.id)}
-//                     >
-//                       <LuTrash2 size={18} />
-//                     </ActionIcon>
-//                   </Group>
-//                 </Grid.Col>
-//               </Grid>
-//           ))}
-//         </>
-//     )
-// )
 export default ChainsTable

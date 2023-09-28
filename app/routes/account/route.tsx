@@ -1,7 +1,7 @@
 import { Box, Button, Center, Group, Text, Title } from "@pokt-foundation/pocket-blocks"
 import { json, LoaderFunction } from "@remix-run/node"
 import { Outlet, useCatch, Link, useLoaderData } from "@remix-run/react"
-import { User } from "~/utils/auth.server"
+import { User } from "~/models/portal/sdk"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 import { requireUser } from "~/utils/user.server"
 
@@ -11,11 +11,20 @@ export type AccountOutletContext = {
   user: User
 }
 
+type DashboardLoaderResponse = {
+  notice: {
+    active: string
+    type: string
+    title: string
+    message: string
+  }
+}
+
 export const loader: LoaderFunction = async ({ request }) => {
   const user = await requireUser(request)
 
   return json<AccountOutletContext>({
-    user,
+    user: user.user,
   })
 }
 

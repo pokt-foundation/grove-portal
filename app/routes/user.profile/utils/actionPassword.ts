@@ -1,7 +1,7 @@
 import { json } from "@remix-run/node"
+import { DataStruct } from "~/types/global"
 import { getErrorMessage } from "~/utils/catchError"
 import { getRequiredServerEnvVar } from "~/utils/environment"
-import { LoaderDataStruct } from "~/utils/loader"
 
 export type ActionPassword = { auth0: number }
 
@@ -20,14 +20,14 @@ export const actionPassword = async (email: string) => {
       },
     )
 
-    return json<LoaderDataStruct<ActionPassword>>({
+    return json<DataStruct<ActionPassword>>({
       data: {
         auth0: res.status,
       },
       error: false,
     })
   } catch (error) {
-    return json<LoaderDataStruct<ActionPassword>>({
+    return json<DataStruct<ActionPassword>>({
       data: null,
       error: true,
       message: getErrorMessage(error),

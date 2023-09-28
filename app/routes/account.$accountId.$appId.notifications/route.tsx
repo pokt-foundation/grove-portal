@@ -1,4 +1,3 @@
-import { showNotification } from "@mantine/notifications"
 import {
   ActionFunction,
   json,
@@ -6,8 +5,7 @@ import {
   MetaFunction,
   redirect,
 } from "@remix-run/node"
-import { useActionData, useOutletContext } from "@remix-run/react"
-import { useEffect } from "react"
+import { useOutletContext } from "@remix-run/react"
 import invariant from "tiny-invariant"
 import { AppIdOutletContext } from "../account.$accountId.$appId/route"
 import { initPortalClient } from "~/models/portal/portal.server"

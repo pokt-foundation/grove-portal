@@ -105,6 +105,15 @@ export const portalTheme: MantineThemeOverride = {
       "#681170",
     ],
   },
+  globalStyles: (theme) => ({
+    body: {
+      ...theme.fn.fontStyles(),
+      backgroundColor:
+        theme.colorScheme === "dark" ? theme.colors.dark[9] : theme.colors.gray[2],
+      lineHeight: theme.lineHeight,
+      fontSize: "14px",
+    },
+  }),
   components: {
     Menu: {
       defaultProps: {

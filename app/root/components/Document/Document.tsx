@@ -1,5 +1,4 @@
 import { StylesPlaceholder } from "@mantine/remix"
-import { Global } from "@pokt-foundation/pocket-blocks"
 import {
   Links,
   LiveReload,
@@ -26,19 +25,6 @@ const Document = ({ children, title }: { children: React.ReactNode; title?: stri
       <head>
         {title && <title>{title}</title>}
         <StylesPlaceholder />
-        <Global
-          styles={(theme) => ({
-            body: {
-              ...theme.fn.fontStyles(),
-              backgroundColor:
-                theme.colorScheme === "dark"
-                  ? theme.colors.dark[9]
-                  : theme.colors.gray[2],
-              lineHeight: theme.lineHeight,
-              fontSize: "14px",
-            },
-          })}
-        />
         {/* Google tag (gtag.js) */}
         <script
           async

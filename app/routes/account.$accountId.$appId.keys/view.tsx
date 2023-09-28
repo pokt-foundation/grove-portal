@@ -24,7 +24,7 @@ const AppKeys = ({ app, userRole }: AppKeysProps) => {
   return (
     <Stack spacing={0}>
       <Box px={40} py={20}>
-        <Text fw={600}>Portal ID</Text>
+        <Text fw={600}>App ID</Text>
         <Text fw={400} pt={8}>
           Unique identifier for the app. This string is included as part of the URL for
           each endpoint.

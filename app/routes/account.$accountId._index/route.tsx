@@ -9,10 +9,9 @@ import {
   useMantineTheme,
 } from "@pokt-foundation/pocket-blocks"
 import { json, LoaderFunction, MetaFunction } from "@remix-run/node"
-import { useRouteLoaderData } from "@remix-run/react"
+import { useLoaderData } from "@remix-run/react"
 import dayjs from "dayjs"
 import invariant from "tiny-invariant"
-import { AccountIdLoaderData } from "../account.$accountId/route"
 import { AccountAppsOverview } from "./components/AccountAppsOverview"
 import { EmptyState } from "./components/EmptyState"
 import OverviewBarChart from "./components/OverviewBarChart"
@@ -22,7 +21,7 @@ import TitledCard from "~/components/TitledCard"
 import { initDwhClient } from "~/models/dwh/dwh.server"
 import { AnalyticsRelaysTransactions, JSONApiResponse } from "~/models/dwh/sdk"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { PortalApp } from "~/models/portal/sdk"
+import { Account, PortalApp } from "~/models/portal/sdk"
 import type { DataStruct } from "~/types/global"
 import { getErrorMessage } from "~/utils/catchError"
 import { seo_title_append } from "~/utils/seo"
@@ -35,7 +34,8 @@ export const meta: MetaFunction = () => {
 }
 
 type AccountInsightsData = {
-  relays: AnalyticsRelaysTransactions[] | undefined
+  account: Account
+  aggregate: AnalyticsRelaysTransactions[] | undefined
 }
 
 export const loader: LoaderFunction = async ({ request, params }) => {
@@ -47,7 +47,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     const { accountId } = params
     invariant(typeof accountId === "string", "AccountId must be a set url parameter")
 
-    const account = await portal.getUserAccount({ accountID: accountId })
+    const account = await portal.getUserAccount({ accountID: accountId, accepted: true })
 
     if (!account.getUserAccount) {
       throw new Error(
@@ -64,18 +64,55 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       category: "transactions",
       from: dayjs().subtract(1, "month").toDate(),
       to: dayjs().subtract(1, "day").toDate(),
-      chainId: ["0003", "0009"],
-      chainMethod: ["eth_getBlockByNumber", "eth_blockNumber", "eth_getLogs"],
-      portalApplicationId: apps,
+      // portalApplicationId: apps,
     })) as JSONApiResponse<AnalyticsRelaysTransactions>
 
-    console.log({ relays })
+    // console.log({ relays })
     const body = await relays.raw.json()
-    console.log(body.Data)
+    // console.log(body.Data)
+
+    const aggregatedRelays = body.Data.reduce(
+      (prev: any, curr: any) => {
+        let avg_latency = prev.avg_latency + curr.avg_roundtrip_time
+        let count_total = prev.count_total + curr.cnt
+        let curr_count_error = (curr.cnt * curr.error_rate) / 100
+        let count_error = prev.count_error + curr_count_error
+
+        return {
+          from: curr.from,
+          to: curr.to,
+          avg_latency,
+          count_total,
+          count_error,
+        }
+      },
+      {
+        from: "",
+        to: "",
+        avg_latency: 0,
+        count_total: 0,
+        count_error: 0,
+      },
+    )
 
     return json<DataStruct<AccountInsightsData>>({
       data: {
-        relays: body.Data,
+        account: account.getUserAccount as Account,
+        aggregate: {
+          ...aggregatedRelays,
+          count_error: Number(aggregatedRelays.count_error).toFixed(0),
+          avg_latency: `${Number(aggregatedRelays.avg_latency / body.Data.length).toFixed(
+            2,
+          )} ms`,
+          rate_success: `${Number(
+            ((aggregatedRelays.count_total - aggregatedRelays.count_error) /
+              aggregatedRelays.count_total) *
+              100,
+          ).toFixed(2)}%`,
+          rate_error: `${Number(
+            (aggregatedRelays.count_error / aggregatedRelays.count_total) * 100,
+          ).toFixed(2)}%`,
+        },
       },
       error: false,
     })
@@ -110,16 +147,14 @@ const InsightsDaysPeriodSelector = () => {
   )
 }
 
-export default function Account() {
-  const { data, error, message } = useRouteLoaderData(
-    "routes/account.$accountId",
-  ) as DataStruct<AccountIdLoaderData>
+export default function AccountInsights() {
+  const { data, error, message } = useLoaderData() as DataStruct<AccountInsightsData>
 
   if (error) {
     return <ErrorView message={message} />
   }
 
-  const { account } = data
+  const { account, aggregate } = data
 
   const sparklineData = [
     {
@@ -165,7 +200,7 @@ export default function Account() {
     <Stack mb="xl" pt={22} spacing="xl">
       <TitledCard header={() => <Text weight={600}>Portal Overview</Text>}>
         <Card.Section>
-          <AccountAppsOverview />
+          <AccountAppsOverview aggregate={aggregate} />
         </Card.Section>
       </TitledCard>
 

@@ -28,7 +28,19 @@ const useStyles = createStyles((theme) => ({
   },
 }))
 
-export const AccountAppsOverview = () => {
+type AccountAppsOverviewProps = {
+  aggregate: {
+    from: string
+    to: string
+    avg_latency: number
+    count_total: number
+    count_error: number
+    rate_success: number
+    rate_error: number
+  }
+}
+
+export const AccountAppsOverview = ({ aggregate }: AccountAppsOverviewProps) => {
   const { classes } = useStyles()
 
   return (
@@ -40,19 +52,21 @@ export const AccountAppsOverview = () => {
         ]}
         cols={5}
       >
-        {stats.map(({ label, val, time }) => (
-          <Box key={label} className={classes.stat}>
-            <Stack align="center" spacing={0}>
-              <Text fw={600} fz="md">
-                {val}
-              </Text>
-              <Text>{label}</Text>
-              <Text color="dimmed" fz="xs" lh={1.1}>
+        {Object.entries(aggregate)
+          .filter(([key]) => key !== "to" && key !== "from")
+          .map(([key, value]) => (
+            <Box key={key} className={classes.stat}>
+              <Stack align="center" spacing={0}>
+                <Text fw={600} fz="md">
+                  {value}
+                </Text>
+                <Text>{key.replace("_", " ")}</Text>
+                {/* <Text color="dimmed" fz="xs" lh={1.1}>
                 {time}
-              </Text>
-            </Stack>
-          </Box>
-        ))}
+              </Text> */}
+              </Stack>
+            </Box>
+          ))}
       </SimpleGrid>
     </>
   )

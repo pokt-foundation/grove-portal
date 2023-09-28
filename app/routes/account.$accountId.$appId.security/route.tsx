@@ -1,5 +1,7 @@
+import { showNotification } from "@mantine/notifications"
 import { ActionFunction, json, MetaFunction } from "@remix-run/node"
 import { useActionData, useOutletContext } from "@remix-run/react"
+import { useEffect } from "react"
 import invariant from "tiny-invariant"
 import { AppIdOutletContext } from "../account.$accountId.$appId/route"
 import SecurityView from "./view"
@@ -97,6 +99,7 @@ export const action: ActionFunction = async ({ request, params }) => {
         length: JSON.stringify(response).length,
       },
       error: false,
+      message: "Security setting successfully updated",
     })
   } catch (error) {
     return json<DataStruct<SecurityActionData>>({
@@ -110,9 +113,19 @@ export const action: ActionFunction = async ({ request, params }) => {
 export const AppSecurity = () => {
   const actionData = useActionData() as DataStruct<SecurityActionData>
 
+  useEffect(() => {
+    if (!actionData) return
+
+    if (actionData.message) {
+      showNotification({
+        message: actionData.message,
+      })
+    }
+  }, [actionData])
+
   const { app, blockchains } = useOutletContext<AppIdOutletContext>()
 
-  return <SecurityView actionData={actionData} app={app} blockchains={blockchains} />
+  return <SecurityView app={app} blockchains={blockchains} />
 }
 
 export default AppSecurity

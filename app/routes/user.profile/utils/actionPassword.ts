@@ -25,6 +25,7 @@ export const actionPassword = async (email: string) => {
         auth0: res.status,
       },
       error: false,
+      message: "We've just sent you an email to reset your password.",
     })
   } catch (error) {
     return json<DataStruct<ActionPassword>>({

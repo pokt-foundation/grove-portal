@@ -36,7 +36,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   }
 
   if (underMaxApps()) {
-    return redirect("/account")
+    return redirect(`/account/${params.accountId}`)
   }
 
   return null

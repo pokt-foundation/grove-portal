@@ -1,3 +1,4 @@
+import { showNotification } from "@mantine/notifications"
 import { Box, LoadingOverlay } from "@pokt-foundation/pocket-blocks"
 import {
   ActionFunction,
@@ -165,8 +166,9 @@ export default function CreateApp() {
 
   useEffect(() => {
     if (fetcher.data && fetcher.data.error) {
-      // TODO: handle showNotification toast message
-      console.log(fetcher.data)
+      showNotification({
+        message: fetcher.data.message,
+      })
     }
   }, [fetcher])
 
@@ -184,12 +186,6 @@ export default function CreateApp() {
       ) : (
         <AppForm onSubmit={(formData) => setAppFromData(formData)} />
       )}
-      {/* TODO: Handle error messages and failures differently */}
-      {/*{action && (*/}
-      {/*  <Card>*/}
-      {/*    <p>{action.message}</p>*/}
-      {/*  </Card>*/}
-      {/*)}*/}
     </Box>
   ) : (
     <LoadingOverlay

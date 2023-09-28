@@ -27,42 +27,6 @@ export type UserInvitedAppsActionData = {
   success: Boolean
 }
 
-export const action: ActionFunction = async ({ request }) => {
-  const user = await requireUser(request)
-  const portal = initPortalClient({ token: user.accessToken })
-
-  const formData = await request.formData()
-
-  try {
-    const invite_response = formData.get("invite_response")
-
-    let res = false
-    if (invite_response) {
-      const portalAppID = formData.get("portalAppId")
-      invariant(typeof portalAppID === "string", "portalAppId must be set")
-
-      const updateUserResponse = await portal.updateUserAcceptAccount({
-        portalAppID,
-        accepted: invite_response === "accept",
-      })
-      res = updateUserResponse.updateUserAcceptAccount
-    }
-
-    return json<DataStruct<UserInvitedAppsActionData>>({
-      data: {
-        success: res,
-      },
-      error: false,
-    })
-  } catch (error) {
-    return json<DataStruct<UserInvitedAppsActionData>>({
-      data: null,
-      error: true,
-      message: getErrorMessage(error),
-    })
-  }
-}
-
 export const loader: LoaderFunction = async ({ request, params }) => {
   const user = await requireUser(request)
   const portal = initPortalClient({ token: user.accessToken })
@@ -89,6 +53,43 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   }
 }
 
+export const action: ActionFunction = async ({ request }) => {
+  const user = await requireUser(request)
+  const portal = initPortalClient({ token: user.accessToken })
+
+  const formData = await request.formData()
+
+  try {
+    const invite_response = formData.get("invite_response")
+
+    let res = false
+    if (invite_response) {
+      const portalAppID = formData.get("portalAppId")
+      invariant(typeof portalAppID === "string", "portalAppId must be set")
+
+      const updateUserResponse = await portal.updateUserAcceptAccount({
+        portalAppID,
+        accepted: invite_response === "accept",
+      })
+      res = updateUserResponse.updateUserAcceptAccount
+    }
+
+    return json<DataStruct<UserInvitedAppsActionData>>({
+      data: {
+        success: res,
+      },
+      error: false,
+      message: "Invite response saved",
+    })
+  } catch (error) {
+    return json<DataStruct<UserInvitedAppsActionData>>({
+      data: null,
+      error: true,
+      message: getErrorMessage(error),
+    })
+  }
+}
+
 export default function InvitedApps() {
   const { data, error, message } = useLoaderData<DataStruct<UserInvitedAppsLoaderData>>()
   const actionData = useActionData() as DataStruct<UserInvitedAppsActionData>
@@ -96,13 +97,7 @@ export default function InvitedApps() {
   useEffect(() => {
     if (!actionData) return
 
-    if (!actionData.error) {
-      showNotification({
-        message: "Invite response saved",
-      })
-    }
-
-    if (actionData.error) {
+    if (actionData.message) {
       showNotification({
         message: actionData.message,
       })

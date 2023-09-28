@@ -100,12 +100,6 @@ const OrganizationDrawer = ({ user, hasPendingInvites }: OrganizationDrawerProps
         overlayOpacity={0.5}
         padding="sm"
         position="right"
-        sx={{
-          ".mantine-Drawer-header": {
-            display: "flex",
-            alignItems: "center",
-          },
-        }}
         title={
           <Group noWrap pt={4} w={252}>
             <Identicon

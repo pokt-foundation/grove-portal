@@ -3,6 +3,7 @@ import { Form } from "@remix-run/react"
 import { useEffect, useState } from "react"
 import { RiStarFill, RiStarLine } from "react-icons/ri"
 import { Blockchain, Maybe } from "~/models/portal/sdk"
+import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
 
 type FavoriteChainProps = {
   blockchain: Blockchain & {
@@ -37,7 +38,14 @@ export const FavoriteChain = ({ blockchain, favoriteChains }: FavoriteChainProps
         size="xl"
         title={`Set blockchain ${blockchain.blockchain} as favorite`}
         type="submit"
-        onClick={() => setIsFavorite((s) => !s)}
+        onClick={() => {
+          setIsFavorite((s) => !s)
+          trackEvent({
+            category: AnalyticCategories.app,
+            action: AnalyticActions.app_chain_favorite,
+            label: `${blockchain.favorite ? "Remove" : "Add"} favorite ${blockchain.id}`,
+          })
+        }}
       >
         {isFavorite ? <RiStarFill size={18} /> : <RiStarLine size={18} />}
       </ActionIcon>

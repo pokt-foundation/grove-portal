@@ -140,7 +140,7 @@ const AppForm = ({ app, onSubmit }: AppFormProps) => {
             onClick={() => {
               trackEvent({
                 category: AnalyticCategories.app,
-                action: AnalyticActions.app_update,
+                action: app ? AnalyticActions.app_update : AnalyticActions.app_create,
                 label: `${label} ${app?.id}`,
               })
             }}

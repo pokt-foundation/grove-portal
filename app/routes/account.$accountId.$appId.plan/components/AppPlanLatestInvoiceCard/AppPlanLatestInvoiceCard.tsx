@@ -3,8 +3,10 @@ import { Button, Group, Text, Stack } from "@pokt-foundation/pocket-blocks"
 import React from "react"
 import { LuArrowUpRight, LuDownload } from "react-icons/lu"
 import { TitledCard } from "~/components/TitledCard"
+import { app } from "~/models/portal/portal.data"
 import { RelayMetric } from "~/models/relaymeter/relaymeter.server"
 import { Stripe } from "~/models/stripe/stripe.server"
+import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
 import { dayjs } from "~/utils/dayjs"
 
 interface PlanLatestInvoiceCardProps {
@@ -61,6 +63,13 @@ export default function AppPlanLatestInvoiceCard({
             component="a"
             href={invoice.invoice_pdf ?? ""}
             rightIcon={<LuDownload size={18} />}
+            onClick={() => {
+              trackEvent({
+                category: AnalyticCategories.app,
+                action: AnalyticActions.app_plan_invoice_download,
+                label: app.id,
+              })
+            }}
           >
             Download
           </Button>
@@ -70,6 +79,13 @@ export default function AppPlanLatestInvoiceCard({
             rel="noreferrer"
             rightIcon={<LuArrowUpRight size={18} />}
             target="_blank"
+            onClick={() => {
+              trackEvent({
+                category: AnalyticCategories.app,
+                action: AnalyticActions.app_plan_invoice_view,
+                label: app.id,
+              })
+            }}
           >
             View in Stripe
           </Button>

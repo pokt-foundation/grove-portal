@@ -17,6 +17,7 @@ import ContextMenuTarget from "~/components/ContextMenuTarget"
 import CopyTextButton from "~/components/CopyTextButton"
 import { DataTable } from "~/components/DataTable"
 import { Blockchain, Maybe } from "~/models/portal/sdk"
+import { trackEvent, AnalyticCategories, AnalyticActions } from "~/utils/analytics"
 import { CHAIN_DOCS_URL } from "~/utils/chainUtils"
 
 type AppEndpointsProps = {
@@ -113,6 +114,13 @@ const AppEndpointsTable = ({
                             }`}
                             rel="noreferrer"
                             target="_blank"
+                            onClick={() => {
+                              trackEvent({
+                                category: AnalyticCategories.app,
+                                action: AnalyticActions.app_chain_docs,
+                                label: chain.id,
+                              })
+                            }}
                           >
                             Documentation
                           </UnstyledButton>
@@ -127,7 +135,14 @@ const AppEndpointsTable = ({
                             <RiStarLine size={18} />
                           )
                         }
-                        onClick={() =>
+                        onClick={() => {
+                          trackEvent({
+                            category: AnalyticCategories.app,
+                            action: AnalyticActions.app_chain_favorite,
+                            label: `${chain.favorite ? "Remove" : "Add"} favorite ${
+                              chain.id
+                            }`,
+                          })
                           fetcher.submit(
                             {
                               isFavorite: String(!chain.favorite),
@@ -138,7 +153,7 @@ const AppEndpointsTable = ({
                               method: "post",
                             },
                           )
-                        }
+                        }}
                       >
                         {chain.favorite ? "Remove favorite" : "Mark as favorite"}
                       </Menu.Item>

@@ -3,6 +3,7 @@ import { useNavigate } from "@remix-run/react"
 import React from "react"
 import { AccountPlan } from "~/components/AccountPlan"
 import { PayPlanTypeV2, PortalApp } from "~/models/portal/sdk"
+import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
 
 type FreeAppPlanProps = {
   app: PortalApp
@@ -23,11 +24,16 @@ const FreeAppPlan = ({ app }: FreeAppPlanProps) => {
         <AccountPlan disableFree type={PayPlanTypeV2.FreetierV0} />
         <AccountPlan
           type={PayPlanTypeV2.PayAsYouGoV0}
-          onContinue={() =>
+          onContinue={() => {
+            trackEvent({
+              category: AnalyticCategories.app,
+              action: AnalyticActions.app_plan_upgrade,
+              label: app.id,
+            })
             navigate(
               `/api/stripe/checkout-session?app-id=${app.id}&app-accountId=${app.accountID}&app-name=${app.name}`,
             )
-          }
+          }}
         />
       </Group>
     </Stack>

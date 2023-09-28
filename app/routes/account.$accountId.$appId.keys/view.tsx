@@ -10,6 +10,7 @@ import {
 } from "@pokt-foundation/pocket-blocks"
 import CopyTextButton from "~/components/CopyTextButton"
 import { PortalApp, RoleNameV2 } from "~/models/portal/sdk"
+import { trackEvent, AnalyticCategories, AnalyticActions } from "~/utils/analytics"
 
 type AppKeysProps = {
   app: PortalApp
@@ -30,7 +31,16 @@ const AppKeys = ({ app, userRole }: AppKeysProps) => {
           Unique identifier for the app. This string is included as part of the URL for
           each endpoint.
         </Text>
-        <Group mt={20}>
+        <Group
+          mt={20}
+          onClick={() => {
+            trackEvent({
+              category: AnalyticCategories.app,
+              action: AnalyticActions.app_keys_app_id,
+              label: app.id,
+            })
+          }}
+        >
           <TextInput
             readOnly
             aria-label="App ID"
@@ -55,7 +65,15 @@ const AppKeys = ({ app, userRole }: AppKeysProps) => {
               the security settings, the secret key will need to be sent along with the
               request using HTTP Basic Authentication.
             </Text>
-            <Group mt={20}>
+            <Group
+              mt={20}
+              onClick={() => {
+                trackEvent({
+                  category: AnalyticCategories.app,
+                  action: AnalyticActions.app_keys_secret,
+                })
+              }}
+            >
               <PasswordInput
                 readOnly
                 aria-label="Secret Key"

@@ -15,6 +15,7 @@ import ContextMenuTarget from "~/components/ContextMenuTarget"
 import { PayPlanType, PortalApp } from "~/models/portal/sdk"
 import DeleteApplication from "~/routes/account.$accountId.$appId/components/DeleteApplication"
 import { DEFAULT_APPMOJI } from "~/routes/account_.$accountId.create/components/AppmojiPicker"
+import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
 import { getPlanName } from "~/utils/planUtils"
 
 type ApplicationHeaderProps = {
@@ -46,7 +47,14 @@ const ApplicationHeader = ({ app }: ApplicationHeaderProps) => {
                   radius="sm"
                   style={{ cursor: "pointer", textTransform: "lowercase" }}
                   variant={copied ? "outline" : "light"}
-                  onClick={copy}
+                  onClick={() => {
+                    copy()
+                    trackEvent({
+                      category: AnalyticCategories.app,
+                      action: AnalyticActions.app_copy_id,
+                      label: app.id,
+                    })
+                  }}
                 >
                   {app.id}
                 </Badge>

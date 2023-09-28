@@ -21,7 +21,7 @@ export const links: LinksFunction = () => {
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
   description:
-    "Pocket Portal, your gateway to Web3 done right. The Portal acts as your one-stop-shop to manage, and monitor your application's connection to blockchain data.",
+    "Grove Portal, your gateway to Web3 done right. The Grove Portal acts as your one-stop-shop to manage, and monitor your application's connection to blockchain data.",
   viewport: "width=device-width,initial-scale=1",
 })
 

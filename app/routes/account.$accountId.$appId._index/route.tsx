@@ -94,17 +94,6 @@ export const Application = () => {
   const { app, blockchains } = useOutletContext<AppIdOutletContext>()
   const [searchTerm, setSearchTerm] = useState("")
   const [debouncedSearchTerm] = useDebouncedValue(searchTerm, 200)
-  const actionData = useActionData() as DataStruct<AppIdActionData>
-
-  useEffect(() => {
-    if (!actionData) return
-
-    if (actionData.message) {
-      showNotification({
-        message: actionData.message,
-      })
-    }
-  }, [actionData])
 
   return (
     <Box>

@@ -88,17 +88,6 @@ export const action: ActionFunction = async ({ request, params }) => {
 
 export default function AppNotifications() {
   const { app } = useOutletContext<AppIdOutletContext>()
-  const actionData = useActionData() as DataStruct<AppNotificationsActionData>
-
-  useEffect(() => {
-    if (!actionData) return
-
-    if (actionData.message) {
-      showNotification({
-        message: actionData.message,
-      })
-    }
-  }, [actionData])
 
   return <AppNotificationsAlert app={app} />
 }

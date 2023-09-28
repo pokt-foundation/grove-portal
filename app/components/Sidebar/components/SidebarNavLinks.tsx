@@ -67,8 +67,8 @@ const LabelIcon = ({ icon: Icon, imgSrc, label }: LabelIconProps) => {
 
   if (isEmoji) {
     return (
-      <Box ml={2}>
-        <Emoji size={14} unified={Icon !== "" ? Icon : DEFAULT_APPMOJI} />
+      <Box mx={1}>
+        <Emoji size={16} unified={Icon !== "" ? Icon : DEFAULT_APPMOJI} />
       </Box>
     )
   }

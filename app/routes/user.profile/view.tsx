@@ -44,7 +44,7 @@ export const ProfileView = ({ user, actionData }: ProfileViewProps) => {
 
   return (
     <Stack spacing="xs">
-      <Box px={40} py={20}>
+      <Box py={20}>
         <Identicon
           avatar
           alt={`${user.portalUserID ?? "user"} profile picture`}
@@ -60,7 +60,7 @@ export const ProfileView = ({ user, actionData }: ProfileViewProps) => {
         </Text>
       </Box>
       <Divider />
-      <Stack px={40} py={20}>
+      <Stack py={20}>
         <Box>
           <Text fw={600}>Password</Text>
           <Text pt={5}>
@@ -82,7 +82,7 @@ export const ProfileView = ({ user, actionData }: ProfileViewProps) => {
         </Form>
       </Stack>
       <Divider />
-      <Stack px={40} py={20} spacing={24}>
+      <Stack py={20} spacing={24}>
         <Box>
           <Text fw={600}>Product updates</Text>
           <Text pt={5}>Send me Product updates.</Text>
@@ -118,7 +118,7 @@ export const ProfileView = ({ user, actionData }: ProfileViewProps) => {
       </Stack>
 
       {/*<Divider />*/}
-      {/*<Stack px={40} py={20}>*/}
+      {/*<Stack  py={20}>*/}
       {/*  <Box>*/}
       {/*    <Text fw={600}>Delete my account</Text>*/}
       {/*    <Text pt={5}>By deleting your account, all apps you own will be removed.</Text>*/}

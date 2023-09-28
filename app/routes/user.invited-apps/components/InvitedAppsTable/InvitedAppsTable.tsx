@@ -1,31 +1,20 @@
 import { Group, MantineTheme, Text } from "@pokt-foundation/pocket-blocks"
 import { Emoji } from "emoji-picker-react"
-import { useMemo } from "react"
 import { DataTable } from "~/components/DataTable"
 import Identicon from "~/components/Identicon"
 import { PortalApp, RoleNameV2, User } from "~/models/portal/sdk"
 import { DEFAULT_APPMOJI } from "~/routes/account_.$accountId.create/components/AppmojiPicker"
 import InvitedAppAction from "~/routes/user.invited-apps/components/InvitedAppAction"
-import { getAppAcceptedValue, getUserRole } from "~/utils/applicationUtils"
 
-type InvitedAppsTableProps = { apps: PortalApp[]; user: User }
+type InvitedApp = PortalApp & { accepted: boolean; role: RoleNameV2 | null }
+
+type InvitedAppsTableProps = { apps: InvitedApp[]; user: User }
 
 const InvitedAppsTable = ({ apps, user }: InvitedAppsTableProps) => {
-  const appsData = useMemo(() => {
-    return apps
-      .map((app) => ({
-        ...app,
-        accepted: getAppAcceptedValue(app, user.portalUserID),
-        role: getUserRole(app, user.portalUserID),
-      }))
-      .sort((a, b) => Number(a.accepted) - Number(b.accepted))
-      .filter((app) => app.role !== RoleNameV2.Owner)
-  }, [apps, user])
-
   return (
     <DataTable
       columns={["App Name", "Role", "Status", "Organization", ""]}
-      data={appsData.map((app) => {
+      data={apps.map((app) => {
         return {
           appName: {
             element: (
@@ -39,11 +28,7 @@ const InvitedAppsTable = ({ apps, user }: InvitedAppsTableProps) => {
             ),
           },
           role: {
-            element: (
-              <Text tt="capitalize">
-                {getUserRole(app, user.portalUserID)?.toLowerCase()}
-              </Text>
-            ),
+            element: <Text tt="capitalize">{app.role?.toLowerCase()}</Text>,
           },
           status: {
             element: (

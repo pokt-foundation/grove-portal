@@ -1,4 +1,10 @@
-import { ActionFunction, json, MetaFunction } from "@remix-run/node"
+import {
+  ActionFunction,
+  json,
+  LoaderFunction,
+  MetaFunction,
+  redirect,
+} from "@remix-run/node"
 import { useOutletContext } from "@remix-run/react"
 import invariant from "tiny-invariant"
 import { AppIdOutletContext } from "../account.$accountId.$appId/route"
@@ -11,6 +17,23 @@ export const meta: MetaFunction = () => {
   return {
     title: `Application Notifications ${seo_title_append}`,
   }
+}
+
+export const loader: LoaderFunction = async ({ request, params }) => {
+  const user = await requireUser(request)
+  const portal = initPortalClient({ token: user.accessToken })
+  const { appId, accountId } = params
+  invariant(appId, "app id not found")
+  const getUserPortalAppResponse = await portal.getUserPortalApp({ portalAppID: appId })
+  const canViewRoute =
+    getUserPortalAppResponse?.getUserPortalApp?.legacyFields.planType !==
+    "PAY_AS_YOU_GO_V0"
+
+  if (!canViewRoute) {
+    return redirect(`/account/${accountId}/${appId}`)
+  }
+
+  return null
 }
 
 export const action: ActionFunction = async ({ request, params }) => {

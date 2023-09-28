@@ -30,10 +30,6 @@ export default function AppIdLayoutView({ app, children }: AppIdLayoutViewProps)
       label: "Security",
     },
     {
-      to: "notifications",
-      label: "Notifications",
-    },
-    {
       to: "team",
       label: "Team",
     },

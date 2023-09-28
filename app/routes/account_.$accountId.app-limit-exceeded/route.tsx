@@ -21,7 +21,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   const portal = initPortalClient({ token: user.accessToken })
   invariant(accountId, "AccountId must be set")
   const getUserAccountResponse = await portal
-    .getUserAccount({ accountID: accountId })
+    .getUserAccount({ accountID: accountId, accepted: true })
     .catch((e) => {
       console.log(e)
     })

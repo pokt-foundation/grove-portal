@@ -32,7 +32,10 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   const portal = initPortalClient({ token: user.accessToken })
 
   try {
-    const userApps = await portal.getUserPortalApps({ sortOrder: SortOrder.Asc })
+    const userApps = await portal.getUserPortalApps({
+      sortOrder: SortOrder.Asc,
+      accepted: true,
+    })
     if (!userApps.getUserPortalApps) {
       throw new Error(`Apps not found for user ${user.user.portalUserID}`)
     }

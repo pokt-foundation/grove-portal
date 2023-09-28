@@ -1,7 +1,14 @@
-import { Avatar, Badge, Box, Group, Menu, Text } from "@pokt-foundation/pocket-blocks"
+import {
+  Avatar,
+  Badge,
+  Box,
+  CopyButton,
+  Group,
+  Menu,
+  Text,
+} from "@pokt-foundation/pocket-blocks"
 import { Link } from "@remix-run/react"
 import { Emoji } from "emoji-picker-react"
-import React from "react"
 import { LuPencil } from "react-icons/lu"
 import ApplicationSubscription from "../ApplicationSubscription"
 import ContextMenuTarget from "~/components/ContextMenuTarget"
@@ -31,9 +38,20 @@ const ApplicationHeader = ({ app }: ApplicationHeaderProps) => {
           <Group spacing={8}>
             <Text mr={12}>{getPlanName(app.legacyFields.planType)}</Text>
             <Text>App ID</Text>
-            <Badge px={6} radius="sm">
-              {app.id}
-            </Badge>
+            <CopyButton value={app.id}>
+              {({ copied, copy }) => (
+                <Badge
+                  color={copied ? "green" : "gray"}
+                  px={6}
+                  radius="sm"
+                  style={{ cursor: "pointer", textTransform: "lowercase" }}
+                  variant={copied ? "outline" : "light"}
+                  onClick={copy}
+                >
+                  {app.id}
+                </Badge>
+              )}
+            </CopyButton>
           </Group>
         </Box>
       </Group>

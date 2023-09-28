@@ -23,7 +23,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   const portal = initPortalClient({ token: user.accessToken })
 
   try {
-    const accounts = await portal.getUserAccounts()
+    const accounts = await portal.getUserAccounts({ accepted: true })
     if (!accounts.getUserAccounts) {
       throw new Error(`Accounts not found for user ${user.user.portalUserID}`)
     }

@@ -1,3 +1,4 @@
+import { showNotification } from "@mantine/notifications"
 import { Box, LoadingOverlay } from "@pokt-foundation/pocket-blocks"
 import {
   ActionFunction,
@@ -40,7 +41,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   invariant(accountId, "AccountId must be set")
 
   const getUserAccountResponse = await portal
-    .getUserAccount({ accountID: accountId })
+    .getUserAccount({ accountID: accountId, accepted: true })
     .catch((e) => {
       console.log(e)
     })
@@ -49,7 +50,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     return redirect(`/account/${params.accountId}`)
   }
 
-  const getUserAccountsResponse = await portal.getUserAccounts()
+  const getUserAccountsResponse = await portal.getUserAccounts({ accepted: true })
   if (!getUserAccountsResponse.getUserAccounts) {
     return redirect(`/account/${params.accountId}`)
   }
@@ -165,8 +166,9 @@ export default function CreateApp() {
 
   useEffect(() => {
     if (fetcher.data && fetcher.data.error) {
-      // TODO: handle showNotification toast message
-      console.log(fetcher.data)
+      showNotification({
+        message: fetcher.data.message,
+      })
     }
   }, [fetcher])
 
@@ -184,12 +186,6 @@ export default function CreateApp() {
       ) : (
         <AppForm onSubmit={(formData) => setAppFromData(formData)} />
       )}
-      {/* TODO: Handle error messages and failures differently */}
-      {/*{action && (*/}
-      {/*  <Card>*/}
-      {/*    <p>{action.message}</p>*/}
-      {/*  </Card>*/}
-      {/*)}*/}
     </Box>
   ) : (
     <LoadingOverlay

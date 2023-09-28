@@ -10,6 +10,8 @@ import invariant from "tiny-invariant"
 import { AppIdOutletContext } from "../account.$accountId.$appId/route"
 import { initPortalClient } from "~/models/portal/portal.server"
 import AppNotificationsAlert from "~/routes/account.$accountId.$appId.notifications/components/AppNotificationsAlert"
+import { DataStruct } from "~/types/global"
+import { getErrorMessage } from "~/utils/catchError"
 import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
 
@@ -34,6 +36,10 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   }
 
   return null
+}
+
+export type AppNotificationsActionData = {
+  success: boolean
 }
 
 export const action: ActionFunction = async ({ request, params }) => {
@@ -62,9 +68,19 @@ export const action: ActionFunction = async ({ request, params }) => {
       },
     })
 
-    return json<boolean>(true)
-  } catch (e) {
-    return json<any>(e)
+    return json<DataStruct<AppNotificationsActionData>>({
+      data: {
+        success: true,
+      },
+      error: false,
+      message: "Notification setting updated",
+    })
+  } catch (error) {
+    return json<DataStruct<AppNotificationsActionData>>({
+      data: null,
+      error: true,
+      message: getErrorMessage(error),
+    })
   }
 }
 

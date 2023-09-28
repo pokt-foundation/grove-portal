@@ -1,5 +1,13 @@
+import { showNotification } from "@mantine/notifications"
 import { LoaderFunction, MetaFunction, json, ActionFunction } from "@remix-run/node"
-import { Outlet, useCatch, useLoaderData, useOutletContext } from "@remix-run/react"
+import {
+  Outlet,
+  useActionData,
+  useCatch,
+  useLoaderData,
+  useOutletContext,
+} from "@remix-run/react"
+import { useEffect } from "react"
 import invariant from "tiny-invariant"
 import { AccountIdLoaderData } from "../account.$accountId/route"
 import AppIdLayoutView from "./view"
@@ -80,8 +88,12 @@ export const action: ActionFunction = async ({ request, params }) => {
     if (delete_application === "true") {
       // delete application via api
       //
-      // const deleteAppResponse = await portal.updateUserAcceptAccount({ portalAppID })
-      // res = updateUserResponse.updateUserAcceptAccount
+      const deleteAppResponse = await portal.deleteUserPortalApp({ portalAppID: appId })
+      res = deleteAppResponse.deleteUserPortalApp
+
+      if (!res) {
+        throw new Error(`Error deleting application: ${appId}`)
+      }
     }
 
     return json<DataStruct<AppIdActionData>>({
@@ -89,6 +101,7 @@ export const action: ActionFunction = async ({ request, params }) => {
         success: res,
       },
       error: false,
+      message: "Application was successfully deleted",
     })
   } catch (error) {
     return json<DataStruct<AppIdActionData>>({
@@ -106,6 +119,18 @@ export type AppIdOutletContext = AppIdLoaderData & {
 export default function AppIdLayout() {
   const { data, error, message } = useLoaderData() as DataStruct<AppIdLoaderData>
   const { userRoles } = useOutletContext<AccountIdLoaderData>()
+  const actionData = useActionData() as DataStruct<AppIdActionData>
+
+  // handle all notifications at the layout level
+  useEffect(() => {
+    if (!actionData) return
+
+    if (actionData.message) {
+      showNotification({
+        message: actionData.message,
+      })
+    }
+  }, [actionData])
 
   if (error) {
     return <ErrorView message={message} />

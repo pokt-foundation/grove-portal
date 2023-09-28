@@ -99,7 +99,7 @@ export const getUserProfile = async (request: Request) => {
 
 export const redirectToUserAccount = async (user: AuthUser) => {
   const portal = initPortalClient({ token: user.accessToken })
-  const accounts = await portal.getUserAccounts()
+  const accounts = await portal.getUserAccounts({ accepted: true })
   let account = accounts.getUserAccounts[0] as Partial<Account>
 
   let owner = accounts.getUserAccounts.find(

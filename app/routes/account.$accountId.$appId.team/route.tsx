@@ -179,14 +179,6 @@ export default function Team() {
   ) as DataStruct<AccountIdLoaderData>
   const actionData = useActionData() as DataStruct<TeamActionData>
 
-  useEffect(() => {
-    if (!actionData) return
-
-    showNotification({
-      message: actionData.message,
-    })
-  }, [actionData])
-
   if (error) {
     return <ErrorView message={message} />
   }

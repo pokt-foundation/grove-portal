@@ -1,10 +1,9 @@
 import { Divider } from "@mantine/core"
 import { useDebouncedValue } from "@mantine/hooks"
-import { showNotification } from "@mantine/notifications"
 import { Box, Flex, Input, Title } from "@pokt-foundation/pocket-blocks"
 import { ActionFunction, json, MetaFunction } from "@remix-run/node"
-import { useActionData, useOutletContext } from "@remix-run/react"
-import { useEffect, useState } from "react"
+import { useOutletContext } from "@remix-run/react"
+import { useState } from "react"
 import { LuSearch } from "react-icons/lu"
 import invariant from "tiny-invariant"
 import { AppIdOutletContext } from "../account.$accountId.$appId/route"
@@ -79,6 +78,7 @@ export const action: ActionFunction = async ({ request, params }) => {
         app: udpateUserPortalAppResponse.updateUserPortalApp as PortalApp,
       },
       error: false,
+      message: "Favorite chain updated",
     })
   } catch (error) {
     return json<DataStruct<AppIdActionData>>({
@@ -93,22 +93,6 @@ export const Application = () => {
   const { app, blockchains } = useOutletContext<AppIdOutletContext>()
   const [searchTerm, setSearchTerm] = useState("")
   const [debouncedSearchTerm] = useDebouncedValue(searchTerm, 200)
-  const actionData = useActionData() as DataStruct<AppIdActionData>
-
-  useEffect(() => {
-    if (!actionData) return
-
-    if (!actionData.error) {
-      showNotification({
-        message: "Favorite chain updated",
-      })
-    }
-    if (actionData.error) {
-      showNotification({
-        message: actionData.message,
-      })
-    }
-  }, [actionData])
 
   return (
     <Box>

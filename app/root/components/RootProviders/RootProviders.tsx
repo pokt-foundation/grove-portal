@@ -1,8 +1,7 @@
+import { ModalsProvider } from "@mantine/modals"
+import { NotificationsProvider } from "@mantine/notifications"
 import { MantineProvider } from "@pokt-foundation/pocket-blocks"
 import React from "react"
-import { FeatureFlagsContextProvider } from "~/context/FeatureFlagContext"
-import { TranslateContextProvider } from "~/context/TranslateContext"
-import { UserContextProvider } from "~/context/UserContext"
 import { portalTheme } from "~/root/portalTheme"
 
 const RootProviders = ({ children }: { children: React.ReactNode }) => {
@@ -13,11 +12,9 @@ const RootProviders = ({ children }: { children: React.ReactNode }) => {
       withNormalizeCSS
       theme={portalTheme}
     >
-      <FeatureFlagsContextProvider>
-        <UserContextProvider>
-          <TranslateContextProvider>{children}</TranslateContextProvider>
-        </UserContextProvider>
-      </FeatureFlagsContextProvider>
+      <NotificationsProvider position="bottom-center">
+        <ModalsProvider>{children}</ModalsProvider>
+      </NotificationsProvider>
     </MantineProvider>
   )
 }

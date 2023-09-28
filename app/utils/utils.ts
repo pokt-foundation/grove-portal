@@ -1,5 +1,3 @@
-import { PayPlanType } from "~/models/portal/sdk"
-
 export function log(...messages: unknown[]): void {
   if (process.env.NODE_ENV !== "production") {
     console.log(messages)
@@ -27,55 +25,6 @@ export function shorten(string: string, characters = 4): string {
     return string
   }
   return string.slice(0, characters) + "…"
-}
-
-export function isFreePlan(planType: PayPlanType) {
-  if (planType !== PayPlanType.FreetierV0) {
-    return false
-  }
-  return true
-}
-
-export function isPaidPlan(planType: PayPlanType) {
-  if (planType !== PayPlanType.PayAsYouGoV0) {
-    return false
-  }
-  return true
-}
-
-export function isEnterprisePlan(planType: PayPlanType) {
-  if (planType !== PayPlanType.Enterprise) {
-    return false
-  }
-  return true
-}
-
-export function isLegacyPlan(planType: PayPlanType) {
-  if (
-    planType === PayPlanType.PayAsYouGoV0 ||
-    planType === PayPlanType.FreetierV0 ||
-    planType === PayPlanType.Enterprise
-  ) {
-    return false
-  }
-  return true
-}
-
-export const getPlanName = (planType: PayPlanType) => {
-  switch (planType) {
-    case PayPlanType.FreetierV0: {
-      return "Always Free"
-    }
-    case PayPlanType.PayAsYouGoV0: {
-      return "Pay As You Go"
-    }
-    case PayPlanType.Enterprise: {
-      return "Enterprise"
-    }
-    default: {
-      return "Legacy"
-    }
-  }
 }
 
 // Accepts the array and key

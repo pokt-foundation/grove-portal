@@ -4,20 +4,21 @@ import { stripe, Stripe } from "~/models/stripe/stripe.server"
 import { authenticator } from "~/utils/auth.server"
 import { getErrorMessage } from "~/utils/catchError"
 import { getRequiredServerEnvVar } from "~/utils/environment"
-import { getPoktId, requireUser } from "~/utils/session.server"
+import { getPoktId, requireUser } from "~/utils/user.server"
 
-export const loader: LoaderFunction = async ({ request }) => {
+export const loader: LoaderFunction = async ({ request, params }) => {
   const user = await requireUser(request)
-  invariant(user.profile.id && user.profile.emails, "user not found")
-  const userId = getPoktId(user.profile.id)
+  invariant(user.user.auth0ID && user.user.email, "user not found")
+  const userId = getPoktId(user.user.auth0ID)
 
   const url = new URL(request.url)
   const id = url.searchParams.get("app-id")
+  const accountId = url.searchParams.get("app-accountId")
   const name = url.searchParams.get("app-name")
   const referral = url.searchParams.get("referral-id")
 
   if (getRequiredServerEnvVar("FLAG_STRIPE_PAYMENT") === "false") {
-    return redirect(`/dashboard/apps/${id}`)
+    return redirect(`/account/${accountId}/${id}`)
   }
 
   try {
@@ -30,14 +31,14 @@ export const loader: LoaderFunction = async ({ request }) => {
     // check that customer exists or create a new one
     let customer: Stripe.Customer | null = null
     const userExists = await stripe.customers.list({
-      email: user?.profile?._json?.email,
+      email: user.user.email,
     })
     if (userExists.data.length > 0) {
       customer = userExists.data.find((cust) => cust.metadata.user_id === userId) ?? null
     }
     if (!customer) {
       customer = await stripe.customers.create({
-        email: user?.profile?._json?.email,
+        email: user.user.email,
         metadata: {
           user_id: userId,
         },
@@ -59,7 +60,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
     // create stripe checkout session and redirect to stripe hosted checkout page
     // TODO: metadata doesnt seem to be sending here: https://stripe.com/docs/api/checkout/sessions/object
-    const returnUrl = `${url.origin}/dashboard/apps/${id}`
+    const returnUrl = `${url.origin}/account/${accountId}/${id}`
     const session = await stripe.checkout.sessions.create({
       customer: customer.id,
       billing_address_collection: "auto",
@@ -83,7 +84,7 @@ export const loader: LoaderFunction = async ({ request }) => {
       error: "true",
       message: getErrorMessage(error),
     })
-    return redirect(`/dashboard/apps/${id}?${params}`)
+    return redirect(`/account/${accountId}/${id}?${params}`)
   }
 }
 

@@ -1,16 +1,67 @@
-import { Auth0Profile } from "remix-auth-auth0"
 import {
   AppStatus,
   Blockchain,
-  EndpointsQuery,
   PayPlanType,
-  PendingEndpointsQuery,
+  PortalApp,
   ProcessedEndpoint,
   RoleName,
+  User,
 } from "./sdk"
 
 const testEmail = "test@test.test"
 export const testPortalUserId = "userId_test"
+
+// @ts-ignore
+export const app: PortalApp = {
+  id: "c7ec4cdcb4e28a19972da585",
+  name: "Test Application",
+  accountID: "2886d942",
+  settings: {
+    // @ts-ignore
+    environment: "production",
+    secretKey: "secretKey",
+    secretKeyRequired: false,
+    favoritedBlockchainIDs: null,
+    monthlyRelayLimit: 0,
+  },
+  // @ts-ignore
+  whitelists: {},
+  aat: {
+    a4bad02a5c85e04d843fbde4: {
+      id: "id",
+      publicKey: "publicKey",
+      address: "address",
+      clientPublicKey: "clientPublicKey",
+      signature: "signature",
+      version: "0.0.1",
+    },
+  },
+  notifications: {
+    // @ts-ignore
+    email: {
+      type: "email",
+      active: true,
+      destination: "",
+      trigger: "",
+      events: {
+        full: true,
+        signedUp: true,
+        threeQuarters: true,
+      },
+    },
+  },
+  createdAt: "2023-04-26T16:31:21.823638Z",
+  updatedAt: "2023-04-26T16:31:21.823638Z",
+  deleted: false,
+  firstDateSurpassed: "0001-01-01T00:00:00Z",
+  legacyFields: {
+    // @ts-ignore
+    planType: "FREETIER_V0",
+    dailyLimit: 250000,
+    customLimit: 0,
+    requestTimeout: 2000,
+  },
+}
 
 export const endpoint: ProcessedEndpoint = {
   appLimits: {
@@ -68,15 +119,6 @@ export const endpoint: ProcessedEndpoint = {
     covalentAPIKeyPaid: "",
   },
 }
-
-export const endpoints: EndpointsQuery = {
-  admin: [endpoint],
-  member: [endpoint],
-  owner: [endpoint],
-  __typename: "Query",
-}
-
-export const pendingEndpoints: PendingEndpointsQuery = { pendingEndpoints: [endpoint] }
 
 export const blockchains: Blockchain[] = [
   {
@@ -534,45 +576,13 @@ export const teamsMockData = [
   },
 ] as const
 
-export const profileMockData: Auth0Profile = {
-  provider: "auth0",
-  displayName: testEmail,
-  id: "auth0|53bede86ac0efcc90f641962",
-  name: {
-    familyName: "",
-    givenName: "",
-    middleName: "",
-  },
-  emails: [{ value: testEmail }],
-  photos: [
-    {
-      value:
-        "https://s.gravatar.com/avatar/c24291e8d1c27961558174cd37c09632?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fde.png",
-    },
-  ],
-  _json: {
-    sub: "auth0|53bede86ac0efcc90f641962",
-    nickname: "test",
-    name: testEmail,
-    picture:
-      "https://s.gravatar.com/avatar/c24291e8d1c27961558174cd37c09632?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fde.png",
-    updated_at: "2023-03-06T17:08:45.125Z",
-    email: testEmail,
-    email_verified: true,
-    given_name: "",
-    family_name: "",
-    middle_name: "",
-    preferred_username: "",
-    profile: "",
-    website: "",
-    gender: "",
-    birthdate: "",
-    zoneinfo: "",
-    locale: "",
-    phone_number: "",
-    phone_number_verified: false,
-    address: {
-      country: "",
-    },
-  },
+export const profileMockData: User & { auth0ID: string } = {
+  auth0ID: "auth0|230rf40fgj0jf30e",
+  portalUserID: "123456",
+  email: "user@pokt.network",
+  iconURL: "",
+  signedUp: false,
+  updatesProduct: false,
+  updatesMarketing: false,
+  betaTester: false,
 }

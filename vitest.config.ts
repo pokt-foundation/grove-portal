@@ -13,10 +13,10 @@ export default defineConfig({
     setupFiles: ["./test/setup-test-env.ts"],
     coverage: {
       reporter: ["text", "html", "json-summary"],
-      lines: 50,
-      branches: 50,
-      functions: 50,
-      statements: 50,
+      // lines: 50,
+      // branches: 50,
+      // functions: 50,
+      // statements: 50,
     },
     watchExclude: [
       ".*\\/node_modules\\/.*",

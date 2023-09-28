@@ -78,5 +78,175 @@ mutation acceptEndpointUser($endpointID: ID!) {
 mutation adminCreatePortalUser($email: String!, $providerUserID: ID!) {
   adminCreatePortalUser(email: $email, providerUserID: $providerUserID) {
     portalUserID
+    email
+    iconURL
+    signedUp
+    updatesProduct
+    updatesMarketing
+    betaTester
   }
+}
+
+mutation updatePortalUser($updateUser: UpdateUser!, $image: Upload) {
+  updatePortalUser(updateUser: $updateUser, image: $image) {
+    portalUserID
+  }
+}
+
+mutation createUserPortalApp($input: CreateUserPortalApp!) {
+  createUserPortalApp(input: $input) {
+    id
+    name
+    accountID
+    settings {
+      appID
+      environment
+      secretKey
+      secretKeyRequired
+      favoritedChainIDs
+      monthlyRelayLimit
+    }
+    whitelists {
+      origins
+      userAgents
+      blockchains
+      contracts {
+        blockchainID
+        contracts
+      }
+      methods {
+        blockchainID
+        methods
+      }
+    }
+    aats {
+      protocolAppID
+      aat {
+        id
+        appID
+        publicKey
+        address
+        clientPublicKey
+        signature
+        version
+      }
+    }
+    notifications {
+      notificationType
+      appNotification {
+        appID
+        type
+        active
+        destination
+        trigger
+        events {
+          full
+          half
+          quarter
+          signedUp
+          threeQuarters
+        }
+      }
+    }
+    createdAt
+    updatedAt
+    deleted
+    firstDateSurpassed
+    legacyFields {
+      planType
+      dailyLimit
+      customLimit
+      requestTimeout
+    }
+  }
+}
+
+mutation updateUserPortalApp($input: UpdatePortalApp!) {
+  updateUserPortalApp(input: $input) {
+    id
+    name
+    accountID
+    settings {
+      appID
+      environment
+      secretKey
+      secretKeyRequired
+      favoritedChainIDs
+      monthlyRelayLimit
+    }
+    whitelists {
+      origins
+      userAgents
+      blockchains
+      contracts {
+        blockchainID
+        contracts
+      }
+      methods {
+        blockchainID
+        methods
+      }
+    }
+    aats {
+      protocolAppID
+      aat {
+        id
+        appID
+        publicKey
+        address
+        clientPublicKey
+        signature
+        version
+      }
+    }
+    notifications {
+      notificationType
+      appNotification {
+        appID
+        type
+        active
+        destination
+        trigger
+        events {
+          full
+          half
+          quarter
+          signedUp
+          threeQuarters
+        }
+      }
+    }
+    createdAt
+    updatedAt
+    deleted
+    firstDateSurpassed
+    legacyFields {
+      planType
+      dailyLimit
+      customLimit
+      requestTimeout
+    }
+  }
+}
+
+mutation adminUpdatePortalApp($input: AdminUpdatePortalApp!) {
+  adminUpdatePortalApp(input: $input) {
+    id
+  }
+}
+
+mutation updateUserAcceptAccount($portalAppID: String!, $accepted: Boolean!) {
+  updateUserAcceptAccount(portalAppID: $portalAppID, accepted: $accepted)
+}
+
+mutation updateUserAccountRole($input: UpdateAccountUserRole!) {
+  updateUserAccountRole(input: $input)
+}
+
+mutation createAccountUser($input: CreateAccountUserAccess!) {
+  createAccountUser(input: $input)
+}
+
+mutation removeAccountUser($input: UpdateRemoveAccountUser!) {
+  removeAccountUser(input: $input)
 }

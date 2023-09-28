@@ -1,73 +1,99 @@
-import { List, MediaQuery, useMantineTheme } from "@pokt-foundation/pocket-blocks"
-import { useState } from "react"
-import SidebarLeftButton from "~/components/Icons/SidebarLeftButton"
-import SidebarRightButton from "~/components/Icons/SidebarRightButton"
-import LinksGroup, { LinksGroupProps } from "~/components/LinksGroup/LinksGroup"
+import { Divider, MediaQuery, Navbar, ScrollArea } from "@pokt-foundation/pocket-blocks"
+import { useParams } from "@remix-run/react"
+import React, { useMemo, useState } from "react"
+import {
+  LuBook,
+  LuChevronsLeft,
+  LuChevronsRight,
+  LuLifeBuoy,
+  LuPlus,
+} from "react-icons/lu"
+import {
+  InternalLink,
+  ExternalLink,
+  NavButton,
+  SidebarNavRoute,
+  SidebarApps,
+} from "~/components/Sidebar/components"
+import { PortalApp } from "~/models/portal/sdk"
+import useCommonStyles from "~/styles/commonStyles"
 
 type SidebarProps = {
-  data: LinksGroupProps[]
+  apps: PortalApp[] | null
+  hidden: boolean
+  canCreateApps: boolean
 }
 
-export function Sidebar({ data }: SidebarProps) {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
-  const theme = useMantineTheme()
+const getStaticRoutes = (
+  accountId: string | undefined,
+): Record<string, SidebarNavRoute> => ({
+  overview: {
+    to: `/account/${accountId}`,
+    label: "Portal Overview",
+    imgSrc: "/portal-icon.svg",
+    end: true,
+  },
+  createNewApp: {
+    to: `/account/${accountId}/create`,
+    label: "New Application",
+    icon: LuPlus,
+    end: true,
+  },
+  docs: {
+    to: "https://docs.portal.pokt.network/",
+    icon: LuBook,
+    label: "Documentation",
+  },
+  support: {
+    to: "https://discord.gg/portal-rpc",
+    icon: LuLifeBuoy,
+    label: "Support",
+  },
+})
+
+export const Sidebar = ({ apps, hidden, canCreateApps }: SidebarProps) => {
+  const { classes: commonClasses } = useCommonStyles()
+  const { accountId } = useParams()
+  const [collapsed, setCollapsed] = useState(false)
+  const staticRoutes = useMemo(() => getStaticRoutes(accountId), [accountId])
 
   return (
-    <>
-      <MediaQuery smallerThan="md" styles={{ display: "none" }}>
-        <List
-          unstyled
-          withPadding
-          m={0}
-          sx={{
-            height: "100vh",
-            padding: "0 8px 8px 0",
-            width: 300,
-            top: 0,
-            position: "sticky",
-            background: theme.colors.navy[7],
-            overflowY: "auto",
-          }}
-        >
-          {data.map((item) => (
-            <LinksGroup {...item} key={item.label} />
-          ))}
-        </List>
+    <Navbar
+      className={commonClasses.mainBackgroundColor}
+      hidden={hidden}
+      hiddenBreakpoint="sm"
+      p={8}
+      pt={32}
+      width={{ base: collapsed ? 60 : 300 }}
+    >
+      <ScrollArea h="100%" mx="-xs" px="xs">
+        <Navbar.Section>
+          <InternalLink iconOnly={collapsed} route={staticRoutes.overview} />
+          {apps && <SidebarApps apps={apps} iconOnly={collapsed} />}
+          {canCreateApps && (
+            <InternalLink iconOnly={collapsed} route={staticRoutes.createNewApp} />
+          )}
+        </Navbar.Section>
+        <Divider color="#343438" my="lg" size="xs" />
+        <Navbar.Section>
+          <ExternalLink iconOnly={collapsed} route={staticRoutes.docs} />
+        </Navbar.Section>
+        <Navbar.Section>
+          <ExternalLink iconOnly={collapsed} route={staticRoutes.support} />
+        </Navbar.Section>
+      </ScrollArea>
+      <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
+        <Navbar.Section>
+          <NavButton
+            icon={collapsed ? LuChevronsRight : LuChevronsLeft}
+            iconOnly={collapsed}
+            label="Collapse sidebar"
+            onClick={() => setCollapsed(!collapsed)}
+          />
+        </Navbar.Section>
       </MediaQuery>
-      <MediaQuery largerThan="md" styles={{ display: "none" }}>
-        <List
-          unstyled
-          withPadding
-          m={0}
-          sx={{
-            background: theme.colors.navy[7],
-            height: "100vh",
-            left: isSidebarOpen ? 0 : "calc(-300px + 45px)",
-            maxWidth: 300,
-            padding: "0 8px",
-            position: "absolute",
-            top: 88,
-            transition: "left ease-in-out .3s",
-            width: "100%",
-            zIndex: 9999,
-          }}
-        >
-          <List.Item
-            sx={{
-              display: "flex",
-              listStyle: "none",
-              justifyContent: "flex-end",
-              paddingTop: "20px",
-            }}
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          >
-            {isSidebarOpen ? <SidebarLeftButton /> : <SidebarRightButton />}
-          </List.Item>
-          {isSidebarOpen
-            ? data.map((item) => <LinksGroup {...item} key={item.label} />)
-            : null}
-        </List>
-      </MediaQuery>
-    </>
+    </Navbar>
   )
 }
+
+export default Sidebar

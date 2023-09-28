@@ -1,10 +1,10 @@
 import formData from "form-data"
 import Mailgun from "mailgun.js"
-import { getRequiredClientEnvVar } from "~/utils/environment"
+import { getRequiredServerEnvVar } from "~/utils/environment"
 const mailgun = new Mailgun(formData)
 const mg = mailgun.client({
   username: "api",
-  key: getRequiredClientEnvVar("MAILGUN_API_KEY"),
+  key: getRequiredServerEnvVar("MAILGUN_API_KEY"),
 })
 const DOMAIN_NAME = "grove.city"
 
@@ -53,7 +53,8 @@ export const sendTeamInviteEmail = async (email: string, app: string) => {
     EmailTemplates.TeamInvite,
     {
       app: app,
-      invite_link: "https://www.portal.grove.city/dashboard/apps",
+      // TODO: Change to correct invite link
+      invite_link: "https://www.portal.grove.city/user/invited-apps",
     },
   )
 }

@@ -10,15 +10,15 @@ export let loader: LoaderFunction = ({ request }) => {
     url.searchParams.append("screen_hint", "signup")
     const signupRequest = new Request(url.toString(), request)
     return authenticator.authenticate("auth0", signupRequest, {
-      successRedirect: "/dashboard",
-      failureRedirect: url.origin,
+      successRedirect: "/account",
+      failureRedirect: "/",
     })
   }
 
   const loginRequest = new Request(url.toString(), request)
   return authenticator.authenticate("auth0", loginRequest, {
-    successRedirect: "/dashboard",
-    failureRedirect: url.origin,
+    successRedirect: "/account",
+    failureRedirect: "/",
   })
 }
 
@@ -40,8 +40,8 @@ export let action: ActionFunction = async ({ request }) => {
     url.searchParams.append("prompt", "login")
     const signupRequest = new Request(url.toString(), request)
     return authenticator.authenticate("auth0", signupRequest, {
-      successRedirect: "/dashboard",
-      failureRedirect: url.origin,
+      successRedirect: "/account",
+      failureRedirect: "/",
     })
   }
 

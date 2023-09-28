@@ -1,157 +1,3 @@
-query endpoints {
-  owner: endpoints(filter: OWNER) {
-    appLimits {
-      dailyLimit
-      planType
-      publicKey
-    }
-    createdAt
-    gigastake
-    id
-    name
-    status
-    updatedAt
-    userId
-    users {
-      roleName
-      email
-      accepted
-      userID
-    }
-  }
-  admin: endpoints(filter: ADMIN) {
-    appLimits {
-      dailyLimit
-      planType
-      publicKey
-    }
-    createdAt
-    gigastake
-    id
-    name
-    status
-    updatedAt
-    userId
-    users {
-      roleName
-      email
-      accepted
-    }
-  }
-  member: endpoints(filter: MEMBER) {
-    appLimits {
-      dailyLimit
-      planType
-      publicKey
-    }
-    createdAt
-    gigastake
-    id
-    name
-    status
-    updatedAt
-    userId
-    users {
-      roleName
-      email
-      accepted
-    }
-  }
-}
-
-query endpoint($endpointID: ID!) {
-  endpoint(endpointID: $endpointID) {
-    appLimits {
-      dailyLimit
-      planType
-      publicKey
-    }
-    apps {
-      address
-      appId
-      chain
-      publicKey
-      stake
-      unstakingTime
-      stakedTokens
-      status
-      jailed
-    }
-    createdAt
-    gatewaySettings {
-      secretKey
-      secretKeyRequired
-      whitelistBlockchains
-      whitelistContracts {
-        blockchainID
-        contracts
-      }
-      whitelistMethods {
-        blockchainID
-        methods
-      }
-      whitelistOrigins
-      whitelistUserAgents
-    }
-    gigastake
-    id
-    name
-    notificationSettings {
-      full
-      half
-      quarter
-      signedUp
-      threeQuarters
-    }
-    status
-    updatedAt
-    userId
-    users {
-      userID
-      roleName
-      email
-      accepted
-    }
-    integrations {
-      covalentAPIKeyFree
-      covalentAPIKeyPaid
-    }
-  }
-}
-
-query endpointUser($endpointID: ID!) {
-  endpoint(endpointID: $endpointID) {
-    users {
-      userID
-      roleName
-      email
-      accepted
-    }
-  }
-}
-
-query pendingEndpoints($portalUserID: ID!) {
-  pendingEndpoints(portalUserID: $portalUserID) {
-    appLimits {
-      dailyLimit
-      planType
-      publicKey
-    }
-    createdAt
-    gigastake
-    id
-    name
-    status
-    updatedAt
-    userId
-    users {
-      roleName
-      email
-      accepted
-    }
-  }
-}
-
 query blockchains($active: Boolean) {
   blockchains(active: $active) {
     id
@@ -173,4 +19,251 @@ query getUserJWT($username: String!, $password: String!) {
 
 query getPortalUserID {
   getPortalUserID
+}
+
+query getPortalUser {
+  getPortalUser {
+    portalUserID
+    email
+    iconURL
+    signedUp
+    updatesProduct
+    updatesMarketing
+    betaTester
+  }
+}
+
+query getUserAccount($accountID: ID!) {
+  getUserAccount(accountID: $accountID) {
+    id
+    planType
+    users {
+      userID
+      owner
+      email
+      portalAppRoles {
+        portalAppID
+        roleName
+      }
+      portalAppsAccepted {
+        portalAppID
+        accepted
+      }
+    }
+    partnerChainIDs
+    partnerThroughputLimit
+    partnerAppLimit
+    integrations {
+      covalentAPIKeyFree
+      CovalentAPIKeyPaid
+    }
+    createdAt
+    updatedAt
+    deleted
+    portalApps {
+      id
+      name
+      accountID
+      appEmoji
+      description
+      settings {
+        appID
+        environment
+        secretKey
+        secretKeyRequired
+        favoritedChainIDs
+        monthlyRelayLimit
+      }
+      whitelists {
+        origins
+        userAgents
+        blockchains
+        contracts {
+          blockchainID
+          contracts
+        }
+        methods {
+          blockchainID
+          methods
+        }
+      }
+      aats {
+        protocolAppID
+        aat {
+          id
+          appID
+          publicKey
+          address
+          clientPublicKey
+          signature
+          version
+        }
+      }
+      notifications {
+        notificationType
+        appNotification {
+          appID
+          type
+          active
+          destination
+          trigger
+          events {
+            full
+            half
+            quarter
+            signedUp
+            threeQuarters
+          }
+        }
+      }
+      createdAt
+      updatedAt
+      deleted
+    }
+    plan {
+      id
+      type
+      chainIDs
+      monthlyRelayLimit
+      ThroughputLimit
+      appLimit
+    }
+  }
+}
+query getUserAccounts(
+  $sortOrder: SortOrder
+  $roleNameFilters: [RoleNameV2!]
+  $accepted: Boolean
+) {
+  getUserAccounts(
+    sortOrder: $sortOrder
+    roleNameFilters: $roleNameFilters
+    accepted: $accepted
+  ) {
+    id
+    planType
+    portalApps {
+      id
+      name
+    }
+    users {
+      userID
+      owner
+    }
+  }
+}
+
+query getUserPortalApp($portalAppID: ID!) {
+  getUserPortalApp(portalAppID: $portalAppID) {
+    id
+    name
+    accountID
+    appEmoji
+    description
+    users {
+      userID
+      owner
+      email
+      portalAppRoles {
+        portalAppID
+        roleName
+      }
+      portalAppsAccepted {
+        portalAppID
+        accepted
+      }
+    }
+    settings {
+      appID
+      environment
+      secretKey
+      secretKeyRequired
+      favoritedChainIDs
+      monthlyRelayLimit
+    }
+    whitelists {
+      origins
+      userAgents
+      blockchains
+      contracts {
+        blockchainID
+        contracts
+      }
+      methods {
+        blockchainID
+        methods
+      }
+    }
+    aats {
+      protocolAppID
+      aat {
+        id
+        appID
+        publicKey
+        address
+        clientPublicKey
+        signature
+        version
+      }
+    }
+    notifications {
+      notificationType
+      appNotification {
+        appID
+        type
+        active
+        destination
+        trigger
+        events {
+          full
+          half
+          quarter
+          signedUp
+          threeQuarters
+        }
+      }
+    }
+    createdAt
+    updatedAt
+    deleted
+    firstDateSurpassed
+    legacyFields {
+      planType
+      dailyLimit
+      customLimit
+      requestTimeout
+      stripeSubscriptionID
+    }
+  }
+}
+
+query getUserPortalApps(
+  $sortOrder: SortOrder
+  $roleNameFilters: [RoleNameV2!]
+  $accepted: Boolean
+) {
+  getUserPortalApps(
+    sortOrder: $sortOrder
+    roleNameFilters: $roleNameFilters
+    accepted: $accepted
+  ) {
+    id
+    name
+    accountID
+    appEmoji
+    description
+    users {
+      userID
+      owner
+      email
+      portalAppRoles {
+        portalAppID
+        roleName
+      }
+      portalAppsAccepted {
+        portalAppID
+        accepted
+      }
+    }
+  }
 }

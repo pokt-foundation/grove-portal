@@ -16,7 +16,7 @@ const DeleteAppForm = ({ accountId, appId }: { accountId: string; appId: string 
   const [deleteTextInputValue, setDeleteTextInputValue] = useState("")
 
   return (
-    <Form method="post">
+    <Form action={`/account/${accountId}/${appId}`} method="post">
       <Text size="sm">
         Please type ‘Delete’ to proceed. This will delete your application and all the
         data related.

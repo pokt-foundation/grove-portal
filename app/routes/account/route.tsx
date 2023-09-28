@@ -11,6 +11,15 @@ export type AccountOutletContext = {
   user: User
 }
 
+type DashboardLoaderResponse = {
+  notice: {
+    active: string
+    type: string
+    title: string
+    message: string
+  }
+}
+
 export const loader: LoaderFunction = async ({ request }) => {
   const user = await requireUser(request)
 

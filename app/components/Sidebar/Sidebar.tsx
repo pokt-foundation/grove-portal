@@ -29,7 +29,7 @@ const getStaticRoutes = (
 ): Record<string, SidebarNavRoute> => ({
   overview: {
     to: `/account/${accountId}`,
-    label: "Portal Overview",
+    label: "Organization Overview",
     imgSrc: "/portal-icon.svg",
     end: true,
   },

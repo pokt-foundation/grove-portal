@@ -136,13 +136,17 @@ export default function AccountInsights() {
     date: dayjs(day.from).format("MMM DD"),
     val: day.countTotal ?? 0,
   }))
+  const dailyLatencyData = daily.map((day) => ({
+    date: dayjs(day.from).format("MMM DD"),
+    val: day.avgLatency ?? 0,
+  }))
   const dailySuccessData = daily.map((day) => ({
     date: dayjs(day.from).format("MMM DD"),
     val: day.rateSuccess ?? 0,
   }))
-  const dailyLatencyData = daily.map((day) => ({
+  const dailyErrorData = daily.map((day) => ({
     date: dayjs(day.from).format("MMM DD"),
-    val: day.avgLatency ?? 0,
+    val: day.rateError ?? 0,
   }))
 
   return (
@@ -193,7 +197,7 @@ export default function AccountInsights() {
           <TitledCard
             header={() => (
               <Group position="apart">
-                <Text weight={600}>Success %</Text>
+                <Text weight={600}>Success Rate</Text>
                 <InsightsDaysPeriodSelector />
               </Group>
             )}
@@ -209,13 +213,16 @@ export default function AccountInsights() {
         <TitledCard
           header={() => (
             <Group position="apart">
-              <Text weight={600}>Total Errors</Text>
+              <Text weight={600}>Error Rate</Text>
               <InsightsDaysPeriodSelector />
             </Group>
           )}
         >
           <Card.Section inheritPadding>
-            <OverviewBarChart title="542,499" />
+            <OverviewSparkline
+              sparklineData={dailyErrorData}
+              title={commify(aggregate.rateError ?? 0)}
+            />
           </Card.Section>
         </TitledCard>
       </Stack>

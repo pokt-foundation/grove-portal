@@ -6,6 +6,9 @@ function initDwhClient(): UserApi {
     new Configuration({
       basePath: getRequiredServerEnvVar("DWH_API_URL"),
       apiKey: getRequiredServerEnvVar("DWH_API_KEY"),
+      headers: {
+        "Content-Type": "application/json",
+      },
     }),
   )
 

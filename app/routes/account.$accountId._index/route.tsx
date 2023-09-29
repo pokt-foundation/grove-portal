@@ -58,34 +58,60 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       )
     }
 
-    const aggregateReponse = (await dwh.analyticsRelaysAggragatedCategoryGet({
+    // const dailyReponse = await dwh.analyticsRelaysAggragatedCategoryGet({
+    //   category: "account_id",
+    //   categoryValue: [accountId],
+    //   from: dayjs().subtract(1, "month").toDate(),
+    //   to: dayjs().toDate(),
+    // })
+
+    // console.log(dailyReponse.data)
+
+    const days = 30
+
+    const aggregateReponse = await dwh.analyticsRelaysDailyCategoryGet({
       category: "account_id",
       categoryValue: [accountId],
-      from: dayjs().subtract(1, "month").toDate(),
-      to: dayjs().subtract(1, "day").toDate(),
-    })) as AnalyticsRelaysAggregated
+      from: dayjs().subtract(days, "day").toDate(),
+      to: dayjs().toDate(),
+    })
 
-    console.log(aggregateReponse)
+    const getDays = Array.from(Array(days + 1).keys())
+    const getAggregateForDay = async (day: number) => {
+      const thisDay = dayjs().subtract(day, "day").toDate()
+      const aggregateReponse = await dwh.analyticsRelaysDailyCategoryGet({
+        category: "account_id",
+        categoryValue: [accountId],
+        from: thisDay,
+        to: thisDay,
+      })
+      return (
+        aggregateReponse.data![0] ?? {
+          from: thisDay,
+          to: thisDay,
+          countTotal: 0,
+          avgLatency: 0,
+          rateSuccess: 0,
+          rateError: 0,
+        }
+      )
+    }
 
-    const dailyReponse = (await dwh.analyticsRelaysDailyCategoryGet({
-      category: "account_id",
-      categoryValue: [accountId],
-      from: dayjs().subtract(1, "month").toDate(),
-      to: dayjs().subtract(1, "day").toDate(),
-    })) as AnalyticsRelaysDaily[]
-
-    console.log(dailyReponse)
+    const dailyResponse = await Promise.all(
+      getDays.map(async (day) => {
+        return await getAggregateForDay(day)
+      }),
+    )
 
     return json<DataStruct<AccountInsightsData>>({
       data: {
         account: account.getUserAccount as Account,
-        aggregate: aggregateReponse,
-        daily: dailyReponse,
+        aggregate: (aggregateReponse.data![0] as AnalyticsRelaysAggregated) ?? undefined,
+        daily: (dailyResponse.reverse() as AnalyticsRelaysDaily[]) ?? undefined, //dailyReponse.data as AnalyticsRelaysDaily[],
       },
       error: false,
     })
   } catch (error) {
-    console.log(error)
     return json<DataStruct<AccountInsightsData>>({
       data: null,
       error: true,
@@ -160,7 +186,7 @@ export default function AccountInsights() {
       <Stack spacing="xl">
         <Group position="apart">
           <Text fw={600}>Insights</Text>
-          <Select data={insightsApplicationsSelectOptions} defaultValue="all-apps" />
+          {/* <Select data={insightsApplicationsSelectOptions} defaultValue="all-apps" /> */}
         </Group>
         <TitledCard
           header={() => (
@@ -172,6 +198,7 @@ export default function AccountInsights() {
         >
           <Card.Section inheritPadding>
             <OverviewSparkline
+              label=" relays"
               sparklineData={dailyTotalData}
               title={commify(aggregate.countTotal ?? 0)}
             />
@@ -189,6 +216,7 @@ export default function AccountInsights() {
           >
             <Card.Section inheritPadding>
               <OverviewSparkline
+                label="ms"
                 sparklineData={dailyLatencyData}
                 title={commify(aggregate.avgLatency ?? 0)}
               />
@@ -204,6 +232,7 @@ export default function AccountInsights() {
           >
             <Card.Section inheritPadding>
               <OverviewSparkline
+                label="%"
                 sparklineData={dailySuccessData}
                 title={commify(aggregate.rateSuccess ?? 0)}
               />
@@ -220,6 +249,7 @@ export default function AccountInsights() {
         >
           <Card.Section inheritPadding>
             <OverviewSparkline
+              label="%"
               sparklineData={dailyErrorData}
               title={commify(aggregate.rateError ?? 0)}
             />

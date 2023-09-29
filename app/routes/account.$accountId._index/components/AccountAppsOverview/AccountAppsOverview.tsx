@@ -16,6 +16,13 @@ const labels: Record<keyof AnalyticsRelaysAggregated, string> = {
   date: "Date",
 }
 
+const order: (keyof AnalyticsRelaysAggregated)[] = [
+  "countTotal",
+  "avgLatency",
+  "rateSuccess",
+  "rateError",
+]
+
 const useStyles = createStyles((theme) => ({
   stat: {
     padding: "24px 20px",
@@ -49,23 +56,21 @@ export const AccountAppsOverview = ({ aggregate }: AccountAppsOverviewProps) => 
           { maxWidth: "sm", cols: 1 },
           { maxWidth: "md", cols: 2 },
         ]}
-        cols={5}
+        cols={order.length}
       >
-        {Object.entries(aggregate)
-          .filter(([key]) => key !== "to" && key !== "from")
-          .map(([key, value]) => (
-            <Box key={key} className={classes.stat}>
-              <Stack align="center" spacing={0}>
-                <Text fw={600} fz="md">
-                  {value}
-                </Text>
-                <Text>{labels[key as keyof AnalyticsRelaysAggregated]}</Text>
-                {/* <Text color="dimmed" fz="xs" lh={1.1}>
+        {order.map((key) => (
+          <Box key={key} className={classes.stat}>
+            <Stack align="center" spacing={0}>
+              <Text fw={600} fz="md">
+                {String(aggregate[key])}
+              </Text>
+              <Text>{labels[key as keyof AnalyticsRelaysAggregated]}</Text>
+              {/* <Text color="dimmed" fz="xs" lh={1.1}>
                 {time}
               </Text> */}
-              </Stack>
-            </Box>
-          ))}
+            </Stack>
+          </Box>
+        ))}
       </SimpleGrid>
     </>
   )

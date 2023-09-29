@@ -3,15 +3,28 @@ import React from "react"
 import Sparkline from "~/components/Sparkline"
 import { ChartData } from "~/types/global"
 
-type OverviewSparklineProps = { title: string; sparklineData: ChartData[] }
+type OverviewSparklineProps = {
+  label?: string
+  title: string
+  sparklineData: ChartData[]
+}
 
-export const OverviewSparkline = ({ title, sparklineData }: OverviewSparklineProps) => {
+export const OverviewSparkline = ({
+  label = "relays",
+  title,
+  sparklineData,
+}: OverviewSparklineProps) => {
   return (
     <Box h="350px" pt="xl">
       <Text fw="600" fz="md" mb="lg">
         {title}
       </Text>
-      <Sparkline data={sparklineData} xAxisDataKey="date" yAxisDataKey="val" />
+      <Sparkline
+        data={sparklineData}
+        label={label}
+        xAxisDataKey="date"
+        yAxisDataKey="val"
+      />
     </Box>
   )
 }

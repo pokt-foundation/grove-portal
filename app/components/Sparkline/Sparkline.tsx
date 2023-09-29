@@ -11,17 +11,24 @@ import {
   TooltipProps,
 } from "recharts"
 import { ChartData } from "~/types/global"
+import { formatNumberToSICompact } from "~/utils/formattingUtils"
 
 type SparkLineProps = {
   data: ChartData[]
+  label: string
   xAxisDataKey: string
   yAxisDataKey: string
 }
 
-const Sparkline = ({ data, xAxisDataKey, yAxisDataKey }: SparkLineProps) => {
+const Sparkline = ({
+  data,
+  label = " relays",
+  xAxisDataKey,
+  yAxisDataKey,
+}: SparkLineProps) => {
   const theme = useMantineTheme()
 
-  const CustomTooltip = ({ active, payload, label }: any) => {
+  const CustomTooltip = ({ active, payload, label, valueLabel }: any) => {
     if (active && payload && payload.length) {
       return (
         <Box
@@ -32,7 +39,10 @@ const Sparkline = ({ data, xAxisDataKey, yAxisDataKey }: SparkLineProps) => {
           }}
         >
           <Text className="label">Date: {label}</Text>
-          <Text className="desc">{payload[0].value} relays</Text>
+          <Text className="desc">
+            {payload[0].value}
+            {valueLabel}
+          </Text>
         </Box>
       )
     }
@@ -53,6 +63,7 @@ const Sparkline = ({ data, xAxisDataKey, yAxisDataKey }: SparkLineProps) => {
         />
         <XAxis
           dataKey={xAxisDataKey}
+          minTickGap={15}
           padding={{ left: 30, right: 30 }}
           stroke={theme.colors.gray[8]}
           tick={{ fill: theme.colors.gray[6] }}
@@ -64,11 +75,12 @@ const Sparkline = ({ data, xAxisDataKey, yAxisDataKey }: SparkLineProps) => {
           dataKey={yAxisDataKey}
           includeHidden={true}
           minTickGap={0}
+          padding={{ top: 40 }}
           tick={{ fill: theme.colors.gray[6] }}
-          tickFormatter={(val) => (val === 0 ? val : `${val}k`)}
+          tickFormatter={(val) => (val === 0 ? val : `${formatNumberToSICompact(val)}`)}
           tickLine={false}
         />
-        <Tooltip content={<CustomTooltip />} />
+        <Tooltip content={<CustomTooltip valueLabel={label} />} />
         <Line
           activeDot={{ stroke: theme.colors.blue[5], strokeWidth: 1 }}
           dataKey="val"

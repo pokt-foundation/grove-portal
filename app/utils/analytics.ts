@@ -23,6 +23,7 @@ export const AnalyticActions = {
   app_team_remove: "Remove Memeber From Team",
   app_team_change_role: "Update Memeber Role In Team",
   app_team_resend: "Resend Memeber Invite To Team",
+  org_update: "Update Organization",
   user_profile_change_password: "Update User Profile Password",
   user_profile_product_updates: "Update User Profile Product Updates",
   user_profile_marketing_updates: "Update User Profile Marketing Updates",

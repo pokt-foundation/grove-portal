@@ -29,7 +29,7 @@ const OrganizationItem = ({ account, withIcon }: UserItemProps) => (
       type="account"
     />
     <Text size="sm" weight={500}>
-      {account.id}
+      {account.name ? account.name : account.id}
     </Text>
     {withIcon && (
       <LuChevronsUpDown size={18} style={{ marginLeft: "auto", marginRight: 7 }} />

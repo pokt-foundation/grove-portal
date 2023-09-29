@@ -10,7 +10,12 @@ type UserOrganizationsProps = {
 export const UserOrganizations = ({ accounts, user }: UserOrganizationsProps) => {
   return (
     <Box pt="xl">
-      <Text>See and access to the organizations you are part of.</Text>
+      <Text>
+        Below is a list of all the organizations you're affiliated with. This overview
+        allows you to seamlessly navigate, manage, or switch between different
+        organizational portals. Whether you're an owner or a member, you can quickly
+        access and engage with each organization's settings and data from here.
+      </Text>
 
       <Stack mt="xl">
         <OrganizationsTable accounts={accounts} user={user} />

@@ -2,6 +2,7 @@ import { Text, Switch, Group, Stack } from "@pokt-foundation/pocket-blocks"
 import { useFetcher } from "@remix-run/react"
 import { useCallback } from "react"
 import { AppIdOutletContext } from "~/routes/account.$accountId.$appId/route"
+import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
 import { formatNumberToSICompact } from "~/utils/formattingUtils"
 import { FREE_TIER_MAX_RELAYS } from "~/utils/planUtils"
 
@@ -80,7 +81,14 @@ export default function AppNotificationsAlert({ app }: NotificationsAlertFormPro
               defaultChecked={getNotificationCheckedState(level)}
               disabled={fetcher.state === "submitting"}
               name={level}
-              onChange={(event) => updateNotification(level, event.currentTarget.value)}
+              onChange={(event) => {
+                updateNotification(level, event.currentTarget.value)
+                trackEvent({
+                  category: AnalyticCategories.app,
+                  action: AnalyticActions.app_notifications,
+                  label: level,
+                })
+              }}
             />
           </Group>
         ))}

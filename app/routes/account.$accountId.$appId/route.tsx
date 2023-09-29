@@ -1,3 +1,4 @@
+import { redirect } from ".pnpm/react-router@6.11.0_react@18.2.0/node_modules/react-router"
 import { showNotification } from "@mantine/notifications"
 import { LoaderFunction, MetaFunction, json, ActionFunction } from "@remix-run/node"
 import {
@@ -37,7 +38,8 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   const user = await requireUser(request)
   const portal = initPortalClient({ token: user.accessToken })
 
-  const { appId } = params
+  const { accountId, appId } = params
+  invariant(accountId, "account id not found")
   invariant(appId, "app id not found")
 
   try {
@@ -61,6 +63,14 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       error: false,
     })
   } catch (error) {
+    /**
+     * Handle when an invalid app is manually entered & the case when the
+     * an application is deleted
+     */
+    if (getErrorMessage(error).includes("portal app not found")) {
+      return redirect(`/account/${accountId}`)
+    }
+
     return json<DataStruct<AppIdLoaderData>>({
       data: null,
       error: true,
@@ -84,25 +94,18 @@ export const action: ActionFunction = async ({ request, params }) => {
   try {
     const delete_application = formData.get("delete_application")
 
-    let res = false
     if (delete_application === "true") {
       // delete application via api
       //
       const deleteAppResponse = await portal.deleteUserPortalApp({ portalAppID: appId })
-      res = deleteAppResponse.deleteUserPortalApp
 
-      if (!res) {
+      if (!deleteAppResponse.deleteUserPortalApp) {
         throw new Error(`Error deleting application: ${appId}`)
       }
     }
 
-    return json<DataStruct<AppIdActionData>>({
-      data: {
-        success: res,
-      },
-      error: false,
-      message: "Application was successfully deleted",
-    })
+    // app no longer exists to redirect back to account
+    return redirect(`/account/${accountId}`)
   } catch (error) {
     return json<DataStruct<AppIdActionData>>({
       data: null,
@@ -121,6 +124,7 @@ export default function AppIdLayout() {
   const { userRoles } = useOutletContext<AccountIdLoaderData>()
   const actionData = useActionData() as DataStruct<AppIdActionData>
 
+  // handle all notifications at the layout level
   useEffect(() => {
     if (!actionData) return
 

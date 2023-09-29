@@ -254,3 +254,9 @@ mutation removeAccountUser($input: UpdateRemoveAccountUser!) {
 mutation deleteUserPortalApp($portalAppID: String!) {
   deleteUserPortalApp(portalAppID: $portalAppID)
 }
+
+mutation updateUserAccount($input: UpdateAccount!) {
+  updateUserAccount(input: $input) {
+    id
+  }
+}

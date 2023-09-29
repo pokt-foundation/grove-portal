@@ -46,6 +46,7 @@ query getUserAccount(
     roleNameFilters: $roleNameFilters
   ) {
     id
+    name
     planType
     users {
       userID
@@ -151,6 +152,7 @@ query getUserAccounts(
     accepted: $accepted
   ) {
     id
+    name
     planType
     portalApps {
       id

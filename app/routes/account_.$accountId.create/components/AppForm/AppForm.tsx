@@ -63,7 +63,7 @@ const AppForm = ({ app, onSubmit }: AppFormProps) => {
       <Box>
         <Flex align="center" justify="space-between" my="32px">
           <Text fw={600} fz="21px">
-            {label} a new application
+            {label} your application
           </Text>
           <Tooltip withArrow label="Discard" position="bottom">
             <CloseButton

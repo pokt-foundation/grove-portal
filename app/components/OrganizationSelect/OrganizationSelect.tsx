@@ -25,7 +25,7 @@ const OrganizationItem = ({ account, withIcon }: UserItemProps) => (
     <Identicon
       alt={`${account.id} profile picture`}
       seed={account.id}
-      size="sm"
+      size="xs"
       type="account"
     />
     <Text size="sm" weight={500}>

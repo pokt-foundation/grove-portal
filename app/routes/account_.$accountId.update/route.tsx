@@ -1,5 +1,5 @@
 import { showNotification } from "@mantine/notifications"
-import { Box } from "@pokt-foundation/pocket-blocks"
+import { Box, LoadingOverlay } from "@pokt-foundation/pocket-blocks"
 import {
   ActionFunction,
   json,
@@ -7,11 +7,12 @@ import {
   MetaFunction,
   redirect,
 } from "@remix-run/node"
-import { useActionData, useLoaderData } from "@remix-run/react"
+import { useActionData, useLoaderData, useNavigation } from "@remix-run/react"
 import { useEffect } from "react"
 import invariant from "tiny-invariant"
 import OrganizationForm from "./components/OrganizationForm"
 import ErrorView from "~/components/ErrorView"
+import PortalLoader from "~/components/PortalLoader"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { Account } from "~/models/portal/sdk"
 import { DataStruct } from "~/types/global"
@@ -117,6 +118,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 export default function UpdateAccount() {
   const { data, error, message } = useLoaderData() as DataStruct<AccountUpdateData>
   const actionData = useActionData() as DataStruct<AccountUpdateData>
+  const { state } = useNavigation()
 
   useEffect(() => {
     if (!actionData) return
@@ -134,9 +136,14 @@ export default function UpdateAccount() {
 
   const { account } = data
 
-  return (
+  return state === "idle" ? (
     <Box maw={860} mx="auto">
       <OrganizationForm account={account} />
     </Box>
+  ) : (
+    <LoadingOverlay
+      visible
+      loader={<PortalLoader message="Updating your organization..." />}
+    />
   )
 }

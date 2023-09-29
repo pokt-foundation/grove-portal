@@ -39,7 +39,7 @@ const OrganizationForm = ({ account }: OrganizationFormProps) => {
       <Box>
         <Flex align="center" justify="space-between" my="32px">
           <Text fw={600} fz="21px">
-            Update your organization
+            Organization Name
           </Text>
           <Tooltip withArrow label="Discard" position="bottom">
             <CloseButton
@@ -50,7 +50,10 @@ const OrganizationForm = ({ account }: OrganizationFormProps) => {
             />
           </Tooltip>
         </Flex>
-        <Text>An 'organization' ...</Text>
+        <Text>
+          An accurate organization name helps team members identify their workspace.
+          Ensure it's current and relevant by updating it here.
+        </Text>
       </Box>
       <Divider mb="md" mt="xl" />
       <Form method="post">

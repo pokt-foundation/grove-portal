@@ -67,7 +67,7 @@ const OrganizationsTable = ({ accounts, user }: OrganizationsTableProps) => {
                       {isUserAccountOwner({ accounts, accountId: account.id, user }) && (
                         <Menu.Item icon={<LuPencil size={18} />}>
                           <Link to={`/account/${account.id}/update`}>
-                            <Text tt="capitalize">Edit information</Text>
+                            <Text tt="capitalize">Change name</Text>
                           </Link>
                         </Menu.Item>
                       )}

@@ -23,11 +23,11 @@ const useStyles = createStyles((theme) => ({
   },
 }))
 
-type AppFormProps = {
+type OrganizationFormProps = {
   account: Account
 }
 
-const AppForm = ({ account }: AppFormProps) => {
+const OrganizationForm = ({ account }: OrganizationFormProps) => {
   const { classes } = useStyles()
   const { classes: commonClasses } = useCommonStyles()
   const { accountId } = useParams()
@@ -105,4 +105,4 @@ const AppForm = ({ account }: AppFormProps) => {
   )
 }
 
-export default AppForm
+export default OrganizationForm

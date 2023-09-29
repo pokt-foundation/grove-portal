@@ -1,5 +1,5 @@
 import { showNotification } from "@mantine/notifications"
-import { Box, LoadingOverlay } from "@pokt-foundation/pocket-blocks"
+import { Box } from "@pokt-foundation/pocket-blocks"
 import {
   ActionFunction,
   json,
@@ -10,11 +10,10 @@ import {
 import { useActionData, useLoaderData } from "@remix-run/react"
 import { useEffect } from "react"
 import invariant from "tiny-invariant"
-import AppForm from "./components/AppForm"
+import OrganizationForm from "./components/OrganizationForm"
 import ErrorView from "~/components/ErrorView"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { Account, PayPlanTypeV2 } from "~/models/portal/sdk"
-import { DEFAULT_APPMOJI } from "~/routes/account_.$accountId.create/components/AppmojiPicker"
+import { Account } from "~/models/portal/sdk"
 import { DataStruct } from "~/types/global"
 import { getErrorMessage } from "~/utils/catchError"
 import { seo_title_append } from "~/utils/seo"
@@ -137,7 +136,7 @@ export default function UpdateAccount() {
 
   return (
     <Box maw={860} mx="auto">
-      <AppForm account={account} />
+      <OrganizationForm account={account} />
     </Box>
   )
 }

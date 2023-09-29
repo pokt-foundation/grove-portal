@@ -4,6 +4,7 @@ import React from "react"
 import { LuArrowUpRight, LuDownload } from "react-icons/lu"
 import { TitledCard } from "~/components/TitledCard"
 import { app } from "~/models/portal/portal.data"
+import { type RoleNameV2 } from "~/models/portal/sdk"
 import { RelayMetric } from "~/models/relaymeter/relaymeter.server"
 import { Stripe } from "~/models/stripe/stripe.server"
 import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
@@ -13,12 +14,14 @@ interface PlanLatestInvoiceCardProps {
   invoice: Stripe.Invoice
   usageRecords: Stripe.ApiList<Stripe.UsageRecordSummary>
   relaysLatestInvoice: RelayMetric
+  userRole: RoleNameV2
 }
 
 export default function AppPlanLatestInvoiceCard({
   invoice,
   usageRecords,
   relaysLatestInvoice,
+  userRole,
 }: PlanLatestInvoiceCardProps) {
   const cardItems = [
     {
@@ -58,38 +61,40 @@ export default function AppPlanLatestInvoiceCard({
             <Divider />
           </React.Fragment>
         ))}
-        <Group grow spacing="md">
-          <Button
-            component="a"
-            href={invoice.invoice_pdf ?? ""}
-            rightIcon={<LuDownload size={18} />}
-            onClick={() => {
-              trackEvent({
-                category: AnalyticCategories.app,
-                action: AnalyticActions.app_plan_invoice_download,
-                label: app.id,
-              })
-            }}
-          >
-            Download
-          </Button>
-          <Button
-            component="a"
-            href={invoice.hosted_invoice_url ?? ""}
-            rel="noreferrer"
-            rightIcon={<LuArrowUpRight size={18} />}
-            target="_blank"
-            onClick={() => {
-              trackEvent({
-                category: AnalyticCategories.app,
-                action: AnalyticActions.app_plan_invoice_view,
-                label: app.id,
-              })
-            }}
-          >
-            View in Stripe
-          </Button>
-        </Group>
+        {userRole !== "MEMBER" && (
+          <Group grow spacing="md">
+            <Button
+              component="a"
+              href={invoice.invoice_pdf ?? ""}
+              rightIcon={<LuDownload size={18} />}
+              onClick={() => {
+                trackEvent({
+                  category: AnalyticCategories.app,
+                  action: AnalyticActions.app_plan_invoice_download,
+                  label: app.id,
+                })
+              }}
+            >
+              Download
+            </Button>
+            <Button
+              component="a"
+              href={invoice.hosted_invoice_url ?? ""}
+              rel="noreferrer"
+              rightIcon={<LuArrowUpRight size={18} />}
+              target="_blank"
+              onClick={() => {
+                trackEvent({
+                  category: AnalyticCategories.app,
+                  action: AnalyticActions.app_plan_invoice_view,
+                  label: app.id,
+                })
+              }}
+            >
+              View in Stripe
+            </Button>
+          </Group>
+        )}
       </Stack>
     </TitledCard>
   )

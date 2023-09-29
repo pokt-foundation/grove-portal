@@ -61,7 +61,7 @@ export default function AppPlanOverviewCard({
 
   return (
     <TitledCard header={() => <Text weight={600}>Current plan</Text>}>
-      <Stack h="calc(100% - 25px)" px={20} py={10}>
+      <Stack px={20} py={10}>
         {cardItems.map(({ label, value }, index) => (
           <React.Fragment key={`${label}-${index}`}>
             <Group p={12} position="apart">
@@ -70,38 +70,40 @@ export default function AppPlanOverviewCard({
             <Divider />
           </React.Fragment>
         ))}
-        <Box mt="auto">
-          <Form action="/api/stripe/portal-session" method="post">
-            <input hidden defaultValue={location.pathname} name="return-path" />
-            <Group grow spacing="md">
-              {appPlanType === "PAY_AS_YOU_GO_V0" ? (
-                <Button
-                  className={commonClasses.grayOutlinedButton}
-                  color="gray"
-                  rightIcon={<LuStopCircle size={18} />}
-                  type="button"
-                  variant="outline"
-                  onClick={() => openStopSubscriptionModal(app)}
-                >
-                  Stop subscription
-                </Button>
-              ) : (
-                <Button
-                  rightIcon={<LuRepeat size={18} />}
-                  type="button"
-                  variant="outline"
-                  onClick={() => openRenewSubscriptionModal(app)}
-                >
-                  Renew subscription
-                </Button>
-              )}
+        {userRole !== "MEMBER" && (
+          <Box mt="auto">
+            <Form action="/api/stripe/portal-session" method="post">
+              <input hidden defaultValue={location.pathname} name="return-path" />
+              <Group grow spacing="md">
+                {appPlanType === "PAY_AS_YOU_GO_V0" ? (
+                  <Button
+                    className={commonClasses.grayOutlinedButton}
+                    color="gray"
+                    rightIcon={<LuStopCircle size={18} />}
+                    type="button"
+                    variant="outline"
+                    onClick={() => openStopSubscriptionModal(app)}
+                  >
+                    Stop subscription
+                  </Button>
+                ) : (
+                  <Button
+                    rightIcon={<LuRepeat size={18} />}
+                    type="button"
+                    variant="outline"
+                    onClick={() => openRenewSubscriptionModal(app)}
+                  >
+                    Renew subscription
+                  </Button>
+                )}
 
-              <Button rightIcon={<LuArrowUpRight size={18} />} type="submit">
-                Manage in Stripe
-              </Button>
-            </Group>
-          </Form>
-        </Box>
+                <Button rightIcon={<LuArrowUpRight size={18} />} type="submit">
+                  Manage in Stripe
+                </Button>
+              </Group>
+            </Form>
+          </Box>
+        )}
       </Stack>
     </TitledCard>
   )

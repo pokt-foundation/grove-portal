@@ -4,9 +4,10 @@ import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analyti
 
 type PrivateSecretKeyProps = {
   secretKeyRequired: boolean
+  readOnly: boolean
 }
 
-const PrivateSecretKey = ({ secretKeyRequired }: PrivateSecretKeyProps) => {
+const PrivateSecretKey = ({ secretKeyRequired, readOnly }: PrivateSecretKeyProps) => {
   const submit = useSubmit()
   const { appId } = useParams()
 
@@ -22,6 +23,7 @@ const PrivateSecretKey = ({ secretKeyRequired }: PrivateSecretKeyProps) => {
         <Switch
           aria-label="Private Secret Key Required"
           defaultChecked={Boolean(secretKeyRequired)}
+          disabled={readOnly}
           id="secretRequired"
           name="secretKeyRequired"
           onChange={() => {

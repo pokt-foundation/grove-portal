@@ -9,11 +9,13 @@ import WhitelistUserAgentsModal from "~/routes/account.$accountId.$appId.securit
 type WhitelistUserAgentsProps = {
   dispatch: Dispatch<SecurityReducerActions>
   whitelistUserAgents: string[]
+  readOnly: boolean
 }
 
 const WhitelistUserAgents = ({
   dispatch,
   whitelistUserAgents,
+  readOnly,
 }: WhitelistUserAgentsProps) => {
   const { openFullScreenModal } = useModals()
 
@@ -26,6 +28,7 @@ const WhitelistUserAgents = ({
           all User-Agents will be accepted.
         </Text>
         <AddSettingsButton
+          disabled={readOnly}
           onClick={() =>
             openFullScreenModal({
               children: <WhitelistUserAgentsModal dispatch={dispatch} />,

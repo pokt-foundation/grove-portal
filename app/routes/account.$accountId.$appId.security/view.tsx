@@ -9,7 +9,7 @@ import PrivateSecretKey from "./components/PrivateSecretKey"
 import WhitelistOrigins from "./components/WhitelistOrigins"
 import WhitelistUserAgents from "./components/WhitelistUserAgents"
 import { DEFAULT_WHITELISTS, securityReducer } from "./utils/stateReducer"
-import { Blockchain } from "~/models/portal/sdk"
+import { type Blockchain, type RoleNameV2 } from "~/models/portal/sdk"
 import {
   BlockchainsQuery,
   PortalApp,
@@ -21,15 +21,17 @@ import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analyti
 type SecurityViewProps = {
   app: PortalApp
   blockchains: BlockchainsQuery["blockchains"]
+  userRole: RoleNameV2
 }
 
-export const SecurityView = ({ app, blockchains }: SecurityViewProps) => {
+export const SecurityView = ({ app, blockchains, userRole }: SecurityViewProps) => {
   const [state, dispatch] = useReducer(
     securityReducer,
     app.whitelists ?? DEFAULT_WHITELISTS,
   )
   const fetcher = useFetcher()
   const isInitialRender = useRef(true)
+  const isReadOnly = userRole === "MEMBER"
 
   // ٍRun effect only when state changes excluding the first render
   useEffect(() => {
@@ -64,27 +66,34 @@ export const SecurityView = ({ app, blockchains }: SecurityViewProps) => {
 
   return (
     <Box>
-      <PrivateSecretKey secretKeyRequired={app.settings.secretKeyRequired as boolean} />
+      <PrivateSecretKey
+        readOnly={isReadOnly}
+        secretKeyRequired={app.settings.secretKeyRequired as boolean}
+      />
       <Divider />
       <ApprovedChains
         approvedChainsIds={state.blockchains as string[]}
         blockchains={blockchains as Blockchain[]}
         dispatch={dispatch}
+        readOnly={isReadOnly}
       />
       <Divider />
       <WhitelistUserAgents
         dispatch={dispatch}
+        readOnly={isReadOnly}
         whitelistUserAgents={state.userAgents as string[]}
       />
       <Divider />
       <WhitelistOrigins
         dispatch={dispatch}
+        readOnly={isReadOnly}
         whitelistOrigins={state.origins as string[]}
       />
       <Divider />
       <ChainWhitelist
         blockchains={blockchains as Blockchain[]}
         dispatch={dispatch}
+        readOnly={isReadOnly}
         type="contracts"
         whitelists={state.contracts as WhitelistContractsV2[]}
       />
@@ -92,6 +101,7 @@ export const SecurityView = ({ app, blockchains }: SecurityViewProps) => {
       <ChainWhitelist
         blockchains={blockchains as Blockchain[]}
         dispatch={dispatch}
+        readOnly={isReadOnly}
         type="methods"
         whitelists={state.methods as WhitelistMethodsV2[]}
       />

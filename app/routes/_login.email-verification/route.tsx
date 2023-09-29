@@ -1,6 +1,5 @@
-import { ActionFunction } from ".pnpm/react-router@6.11.0_react@18.2.0/node_modules/react-router"
 import { Card, Title, Text, Box, Grid } from "@pokt-foundation/pocket-blocks"
-import { LoaderFunction, MetaFunction, redirect } from "@remix-run/node"
+import { ActionFunction, LoaderFunction, MetaFunction, redirect } from "@remix-run/node"
 import Rive from "@rive-app/react-canvas"
 import { authenticator } from "~/utils/auth.server"
 import { seo_title_append } from "~/utils/seo"

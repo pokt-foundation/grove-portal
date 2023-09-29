@@ -11,12 +11,14 @@ type ApprovedChainsFormProps = {
   approvedChainsIds: string[]
   blockchains: Blockchain[]
   dispatch: Dispatch<SecurityReducerActions>
+  readOnly: boolean
 }
 
 const ApprovedChains = ({
   approvedChainsIds,
   blockchains,
   dispatch,
+  readOnly,
 }: ApprovedChainsFormProps) => {
   const { openFullScreenModal } = useModals()
 
@@ -26,6 +28,7 @@ const ApprovedChains = ({
         <Text fw={600}>Approved Chains</Text>
         <Text>Limit the chains that can be used for this application.</Text>
         <AddSettingsButton
+          disabled={readOnly}
           onClick={() =>
             openFullScreenModal({
               children: (

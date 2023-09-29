@@ -1,4 +1,3 @@
-import { useFetcher } from ".pnpm/react-router-dom@6.11.0_biqbaboplfbrettd7655fr4n2y/node_modules/react-router-dom"
 import { showNotification } from "@mantine/notifications"
 import {
   Flex,
@@ -7,7 +6,7 @@ import {
   useMantineTheme,
   UnstyledButton,
 } from "@pokt-foundation/pocket-blocks"
-import { useParams } from "@remix-run/react"
+import { useFetcher, useParams } from "@remix-run/react"
 import { useEffect, useMemo } from "react"
 import { LuBook } from "react-icons/lu"
 import { RiStarLine, RiStarFill } from "react-icons/ri"
@@ -24,6 +23,7 @@ type AppEndpointsProps = {
   blockchains: Blockchain[]
   favoriteChains?: Maybe<string[]>
   searchTerm: string
+  readOnly: boolean
 }
 
 const getAppEndpointUrl = (chain: Blockchain, appId: string | undefined) =>
@@ -33,6 +33,7 @@ const AppEndpointsTable = ({
   blockchains,
   favoriteChains,
   searchTerm,
+  readOnly,
 }: AppEndpointsProps) => {
   const theme = useMantineTheme()
   const { appId } = useParams()
@@ -77,7 +78,11 @@ const AppEndpointsTable = ({
             chain: {
               element: (
                 <Flex gap="sm">
-                  <FavoriteChain blockchain={chain} favoriteChains={favoriteChains} />
+                  <FavoriteChain
+                    blockchain={chain}
+                    favoriteChains={favoriteChains}
+                    readOnly={readOnly}
+                  />
                   <Chain chain={chain} />
                 </Flex>
               ),

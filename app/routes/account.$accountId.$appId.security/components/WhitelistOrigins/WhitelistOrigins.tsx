@@ -9,8 +9,13 @@ import WhitelistOriginsModal from "~/routes/account.$accountId.$appId.security/c
 type WhitelistOriginsProps = {
   dispatch: Dispatch<SecurityReducerActions>
   whitelistOrigins: string[]
+  readOnly: boolean
 }
-const WhitelistOrigins = ({ dispatch, whitelistOrigins }: WhitelistOriginsProps) => {
+const WhitelistOrigins = ({
+  dispatch,
+  whitelistOrigins,
+  readOnly,
+}: WhitelistOriginsProps) => {
   const { openFullScreenModal } = useModals()
 
   return (
@@ -19,6 +24,7 @@ const WhitelistOrigins = ({ dispatch, whitelistOrigins }: WhitelistOriginsProps)
         <Text fw={600}>Whitelist Origins</Text>
         <Text>Limits requests to only the HTTP Origins specified.</Text>
         <AddSettingsButton
+          disabled={readOnly}
           onClick={() =>
             openFullScreenModal({
               children: <WhitelistOriginsModal dispatch={dispatch} />,

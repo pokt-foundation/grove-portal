@@ -1,7 +1,6 @@
-import { useActionData } from ".pnpm/react-router@6.11.0_react@18.2.0/node_modules/react-router"
 import { showNotification } from "@mantine/notifications"
 import { ActionFunction, json, LoaderFunction, MetaFunction } from "@remix-run/node"
-import { useLoaderData } from "@remix-run/react"
+import { useActionData, useLoaderData } from "@remix-run/react"
 import { useEffect } from "react"
 import invariant from "tiny-invariant"
 import UserInvitedApps from "./view"

@@ -12,7 +12,7 @@ import { Emoji } from "emoji-picker-react"
 import { LuPencil } from "react-icons/lu"
 import ApplicationSubscription from "../ApplicationSubscription"
 import ContextMenuTarget from "~/components/ContextMenuTarget"
-import { PayPlanType, PortalApp } from "~/models/portal/sdk"
+import { PayPlanType, PortalApp, RoleNameV2 } from "~/models/portal/sdk"
 import DeleteApplication from "~/routes/account.$accountId.$appId/components/DeleteApplication"
 import { DEFAULT_APPMOJI } from "~/routes/account_.$accountId.create/components/AppmojiPicker"
 import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
@@ -20,9 +20,10 @@ import { getPlanName } from "~/utils/planUtils"
 
 type ApplicationHeaderProps = {
   app: PortalApp
+  userRole: RoleNameV2
 }
 
-const ApplicationHeader = ({ app }: ApplicationHeaderProps) => {
+const ApplicationHeader = ({ app, userRole }: ApplicationHeaderProps) => {
   return (
     <Group position="apart">
       <Group spacing="sm">
@@ -64,18 +65,20 @@ const ApplicationHeader = ({ app }: ApplicationHeaderProps) => {
         </Box>
       </Group>
 
-      <Menu>
-        <ContextMenuTarget />
-        <Menu.Dropdown>
-          {app && <ApplicationSubscription app={app} />}
-          <Menu.Item component={Link} icon={<LuPencil size={18} />} to={`update`}>
-            Edit information
-          </Menu.Item>
-          {app && app.legacyFields.planType !== PayPlanType.PayAsYouGoV0 && (
-            <DeleteApplication app={app} />
-          )}
-        </Menu.Dropdown>
-      </Menu>
+      {userRole !== "MEMBER" && (
+        <Menu>
+          <ContextMenuTarget />
+          <Menu.Dropdown>
+            {app && <ApplicationSubscription app={app} />}
+            <Menu.Item component={Link} icon={<LuPencil size={18} />} to={`update`}>
+              Edit information
+            </Menu.Item>
+            {app && app.legacyFields.planType !== PayPlanType.PayAsYouGoV0 && (
+              <DeleteApplication app={app} />
+            )}
+          </Menu.Dropdown>
+        </Menu>
+      )}
     </Group>
   )
 }

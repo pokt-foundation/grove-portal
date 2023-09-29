@@ -3,10 +3,11 @@ import { Container, Stack } from "@pokt-foundation/pocket-blocks"
 import { useEffect, useState } from "react"
 import ApplicationHeader from "./components/ApplicationHeader"
 import LinkTabs from "~/components/LinkTabs"
-import { PayPlanType, PortalApp } from "~/models/portal/sdk"
+import { PayPlanType, PortalApp, RoleNameV2 } from "~/models/portal/sdk"
 
 type AppIdLayoutViewProps = {
   app: PortalApp
+  userRole: RoleNameV2
   children: React.ReactNode
 }
 
@@ -18,7 +19,11 @@ export type Route = {
   external?: boolean
 }
 
-export default function AppIdLayoutView({ app, children }: AppIdLayoutViewProps) {
+export default function AppIdLayoutView({
+  app,
+  userRole,
+  children,
+}: AppIdLayoutViewProps) {
   const [routes, setRoutes] = useState<Route[]>([
     {
       to: "",
@@ -70,7 +75,7 @@ export default function AppIdLayoutView({ app, children }: AppIdLayoutViewProps)
   return (
     <Container fluid pt={16} px={0}>
       <Stack spacing="xl">
-        <ApplicationHeader app={app} />
+        <ApplicationHeader app={app} userRole={userRole} />
         <Divider />
         <LinkTabs routes={routes} />
         <Divider />

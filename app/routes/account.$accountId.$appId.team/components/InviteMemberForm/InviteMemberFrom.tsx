@@ -15,6 +15,7 @@ import ModalHeader from "~/components/ModalHeader"
 import PortalLoader from "~/components/PortalLoader"
 import { RoleName } from "~/models/portal/sdk"
 import useCommonStyles from "~/styles/commonStyles"
+import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
 
 const InviteMemberFrom = () => {
   const { state } = useNavigation()
@@ -82,6 +83,13 @@ const InviteMemberFrom = () => {
                 type="submit"
                 value="true"
                 w="156px"
+                onClick={() => {
+                  trackEvent({
+                    category: AnalyticCategories.app,
+                    action: AnalyticActions.app_team_invite,
+                    label: appId,
+                  })
+                }}
               >
                 Invite
               </Button>

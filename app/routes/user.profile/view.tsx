@@ -4,6 +4,7 @@ import { Form, useSubmit } from "@remix-run/react"
 import { Identicon } from "~/components/Identicon"
 import { User } from "~/models/portal/sdk"
 import useCommonStyles from "~/styles/commonStyles"
+import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
 
 type ProfileViewProps = {
   user: User
@@ -47,6 +48,12 @@ export const ProfileView = ({ user }: ProfileViewProps) => {
             type="submit"
             value={user.email}
             variant="outline"
+            onClick={() => {
+              trackEvent({
+                category: AnalyticCategories.user,
+                action: AnalyticActions.user_profile_change_password,
+              })
+            }}
           >
             Change password
           </Button>
@@ -63,6 +70,13 @@ export const ProfileView = ({ user }: ProfileViewProps) => {
               defaultChecked={Boolean(user.updatesProduct)}
               mt={8}
               name="checkbox"
+              onChange={() => {
+                trackEvent({
+                  category: AnalyticCategories.user,
+                  action: AnalyticActions.user_profile_product_updates,
+                  label: user.updatesProduct ? "No" : "Yes",
+                })
+              }}
             />
           </Form>
         </Box>
@@ -75,6 +89,13 @@ export const ProfileView = ({ user }: ProfileViewProps) => {
               defaultChecked={Boolean(user.updatesMarketing)}
               mt={8}
               name="checkbox"
+              onChange={() => {
+                trackEvent({
+                  category: AnalyticCategories.user,
+                  action: AnalyticActions.user_profile_marketing_updates,
+                  label: user.updatesMarketing ? "No" : "Yes",
+                })
+              }}
             />
           </Form>
         </Box>
@@ -86,7 +107,18 @@ export const ProfileView = ({ user }: ProfileViewProps) => {
           </Text>
           <Form method="post" onChange={(event) => submit(event.currentTarget)}>
             <input hidden name="type" value="check-beta" />
-            <Switch defaultChecked={Boolean(user.betaTester)} mt={8} name="checkbox" />
+            <Switch
+              defaultChecked={Boolean(user.betaTester)}
+              mt={8}
+              name="checkbox"
+              onChange={() => {
+                trackEvent({
+                  category: AnalyticCategories.user,
+                  action: AnalyticActions.user_profile_beta_testing,
+                  label: user.betaTester ? "No" : "Yes",
+                })
+              }}
+            />
           </Form>
         </Box>
       </Stack>

@@ -16,6 +16,7 @@ import {
   WhitelistContractsV2,
   WhitelistMethodsV2,
 } from "~/models/portal/sdk"
+import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
 
 type SecurityViewProps = {
   app: PortalApp
@@ -35,6 +36,11 @@ export const SecurityView = ({ app, blockchains }: SecurityViewProps) => {
     if (isInitialRender.current) {
       isInitialRender.current = false
     } else {
+      trackEvent({
+        category: AnalyticCategories.app,
+        action: AnalyticActions.app_settings_update,
+        label: app.id,
+      })
       fetcher.submit(
         {
           whitelist: JSON.stringify(state),
@@ -44,7 +50,7 @@ export const SecurityView = ({ app, blockchains }: SecurityViewProps) => {
         },
       )
     }
-  }, [state])
+  }, [state, app.id])
 
   useEffect(() => {
     if (!fetcher.data) return

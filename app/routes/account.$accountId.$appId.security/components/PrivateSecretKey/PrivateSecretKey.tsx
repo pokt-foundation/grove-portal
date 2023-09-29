@@ -1,5 +1,6 @@
 import { Stack, Switch, Text } from "@pokt-foundation/pocket-blocks"
-import { Form, useSubmit } from "@remix-run/react"
+import { Form, useParams, useSubmit } from "@remix-run/react"
+import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
 
 type PrivateSecretKeyProps = {
   secretKeyRequired: boolean
@@ -7,6 +8,7 @@ type PrivateSecretKeyProps = {
 
 const PrivateSecretKey = ({ secretKeyRequired }: PrivateSecretKeyProps) => {
   const submit = useSubmit()
+  const { appId } = useParams()
 
   return (
     <Stack px={40} py={32}>
@@ -22,6 +24,13 @@ const PrivateSecretKey = ({ secretKeyRequired }: PrivateSecretKeyProps) => {
           defaultChecked={Boolean(secretKeyRequired)}
           id="secretRequired"
           name="secretKeyRequired"
+          onChange={() => {
+            trackEvent({
+              category: AnalyticCategories.app,
+              action: AnalyticActions.app_settings_update,
+              label: appId,
+            })
+          }}
         />
       </Form>
     </Stack>

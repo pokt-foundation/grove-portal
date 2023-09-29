@@ -1,22 +1,16 @@
 import { ActionIcon, Group, Menu, Text } from "@pokt-foundation/pocket-blocks"
 import { Link } from "@remix-run/react"
-import { useMemo } from "react"
 import { LuMoreHorizontal, LuArrowUpRight, LuPencil } from "react-icons/lu"
 import { DataTable } from "~/components/DataTable"
 import Identicon from "~/components/Identicon"
 import { Account, User } from "~/models/portal/sdk"
 import useCommonStyles from "~/styles/commonStyles"
+import isUserAccountOwner from "~/utils/user"
 
 type OrganizationsTableProps = { accounts: Account[]; user: User }
 
 const OrganizationsTable = ({ accounts, user }: OrganizationsTableProps) => {
   const { classes: commonClasses } = useCommonStyles()
-
-  const ownerAccount = useMemo(() => {
-    return accounts.find(
-      (account) => account?.users?.find((u) => u.userID === user.portalUserID)?.owner,
-    )
-  }, [accounts, user])
 
   return accounts.length > 0 ? (
     <DataTable
@@ -70,7 +64,7 @@ const OrganizationsTable = ({ accounts, user }: OrganizationsTableProps) => {
                       </ActionIcon>
                     </Menu.Target>
                     <Menu.Dropdown>
-                      {ownerAccount && (
+                      {isUserAccountOwner({ accounts, accountId: account.id, user }) && (
                         <Menu.Item icon={<LuPencil size={18} />}>
                           <Link to={`/account/${account.id}/update`}>
                             <Text tt="capitalize">Edit information</Text>

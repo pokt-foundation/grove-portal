@@ -34,7 +34,7 @@ type AppFormProps = {
 const AppForm = ({ app, onSubmit }: AppFormProps) => {
   const { classes } = useStyles()
   const { classes: commonClasses } = useCommonStyles()
-  const { accountId } = useParams()
+  const { accountId, appId } = useParams()
 
   const [name, setName] = useState(app?.name ?? "")
   const [referral, setReferral] = useState("")
@@ -123,7 +123,7 @@ const AppForm = ({ app, onSubmit }: AppFormProps) => {
             component={NavLink}
             fw={400}
             fz="sm"
-            to={`/account/${accountId}`}
+            to={`/account/${accountId}${appId ? `/${appId}` : ""}`}
             type="button"
             variant="outline"
             w="156px"

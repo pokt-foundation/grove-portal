@@ -1,75 +1,56 @@
-import formData from "form-data"
-import Mailgun from "mailgun.js"
+import Mailjet from "node-mailjet"
 import { getRequiredServerEnvVar } from "~/utils/environment"
-const mailgun = new Mailgun(formData)
-const mg = mailgun.client({
-  username: "api",
-  key: getRequiredServerEnvVar("MAILGUN_API_KEY"),
-})
-const DOMAIN_NAME = "grove.city"
 
-enum EmailTemplates {
-  TeamInvite = "pocket-dashboard-team-invite",
-  TeamUserRemoved = "pocket-dashboard-team-user-removed",
-  TeamNewOwner = "pocket-dashboard-team-new-owner",
-  NotificationChanged = "pocket-dashboard-notifications-changed",
-  NotificationSignup = "pocket-dashboard-notifications-signup",
-  NotificationThreshold = "pocket-dashboard-notifications-threshold-hit",
-  PasswordReset = "pocket-dashboard-password-reset",
-  Signup = "pocket-dashboard-signup",
-  Feedback = "pocket-portal-feedback-box",
-  Unstake = "pocket-portal-unstake-notification",
-}
+const mailjet = Mailjet.apiConnect(
+  getRequiredServerEnvVar("MAILJET_API_KEY"),
+  getRequiredServerEnvVar("MAILJET_API_SECRET"),
+)
 
-const getMailgunTemplate = (
-  to: string,
-  subject: string,
-  template: EmailTemplates,
-  variables: { [key: string]: string },
-) => {
-  return {
-    from: "Grove Portal <portal@grove.city>",
-    to,
-    subject,
-    template,
-    "h:X-Mailgun-Variables": JSON.stringify(variables),
-  }
+enum EmailTemplateID {
+  TeamInvite = 5140190,
+  TeamUserRemoved = 5140647,
 }
 
 export const sendEmail = async (
   to: string,
   subject: string,
-  template: EmailTemplates,
+  template: EmailTemplateID,
   variables: { [key: string]: string },
 ) => {
-  const mailgunData = getMailgunTemplate(to, subject, template, variables)
-  await mg.messages.create(DOMAIN_NAME, mailgunData)
+  return await mailjet.post("send", { version: "v3.1" }).request({
+    Messages: [
+      {
+        From: {
+          Email: "portal@grove.city",
+          Name: "Grove Portal",
+        },
+        To: [
+          {
+            Email: to,
+            Name: to,
+          },
+        ],
+        TemplateID: template,
+        TemplateLanguage: true,
+        Subject: subject,
+        Variables: variables,
+      },
+    ],
+  })
 }
 
 export const sendTeamInviteEmail = async (email: string, app: string) => {
   return await sendEmail(
     email,
-    "Your invite to Grove Portal",
-    EmailTemplates.TeamInvite,
+    "You're invited to Grove Portal",
+    EmailTemplateID.TeamInvite,
     {
       app: app,
-      // TODO: Change to correct invite link
-      invite_link: "https://www.portal.grove.city/user/invited-apps",
     },
   )
 }
 export const sendTeamUserRemovedEmail = async (email: string, app: string) => {
-  return await sendEmail(
-    email,
-    `You have been removed from ${app}`,
-    EmailTemplates.TeamUserRemoved,
-    {
-      app: app,
-    },
-  )
-}
-export const sendTeamNewOwnerEmail = async (email: string, app: string) => {
-  return await sendEmail(email, `New owner of ${app}`, EmailTemplates.TeamNewOwner, {
+  return await sendEmail(email, "Team access removed", EmailTemplateID.TeamUserRemoved, {
     app: app,
   })
 }

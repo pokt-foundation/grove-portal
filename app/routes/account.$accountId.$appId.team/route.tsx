@@ -93,7 +93,10 @@ export const action: ActionFunction = async ({ request, params }) => {
       }
 
       // todo: send user email with app name?
-      await sendTeamInviteEmail(user_email, appId)
+      await sendTeamInviteEmail(user_email, appId).catch((error) => {
+        console.log(error)
+        message = message + ", however email notification failed."
+      })
     }
 
     if (user_delete) {
@@ -117,7 +120,10 @@ export const action: ActionFunction = async ({ request, params }) => {
       }
 
       // todo: send remove email with app name?
-      await sendTeamUserRemovedEmail(user_email, appId)
+      await sendTeamUserRemovedEmail(user_email, appId).catch((error) => {
+        console.log(error)
+        message = message + ", however email notification failed."
+      })
     }
     if (user_update) {
       const user_id = formData.get("user_id")
@@ -149,7 +155,10 @@ export const action: ActionFunction = async ({ request, params }) => {
       invariant(typeof user_email === "string", "user_email must be set")
 
       // todo: send user email with app name?
-      await sendTeamInviteEmail(user_email, appId)
+      await sendTeamInviteEmail(user_email, appId).catch((error) => {
+        console.log(error)
+        throw new Error(`Invite email failed to send to user ${user_email}`)
+      })
 
       res = true
       message = `Invite email resent to user ${user_email}`

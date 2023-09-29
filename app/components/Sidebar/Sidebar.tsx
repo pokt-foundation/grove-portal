@@ -29,13 +29,13 @@ const getStaticRoutes = (
   accountId: string | undefined,
 ): Record<string, SidebarNavRoute> => ({
   overview: {
-    to: `/account/${accountId}`,
+    to: `/org/${accountId}`,
     label: "Organization Overview",
     imgSrc: "/portal-icon.svg",
     end: true,
   },
   createNewApp: {
-    to: `/account/${accountId}/create`,
+    to: `/org/${accountId}/create`,
     label: "New Application",
     icon: LuPlus,
     end: true,

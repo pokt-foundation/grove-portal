@@ -15,7 +15,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   const user = await authenticator.isAuthenticated(request)
 
   if (user) {
-    return redirect("/account")
+    return redirect("/org")
   }
 
   return null

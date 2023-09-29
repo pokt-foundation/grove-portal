@@ -31,7 +31,7 @@ export default function NotFound404({ message }: NotFound404Props) {
         component={Link}
         mt="xl"
         size="sm"
-        to="/account"
+        to="/org"
         variant="outline"
       >
         Back to Overview

@@ -8,7 +8,7 @@ export const action: ActionFunction = async ({ request }) => {
   invariant(user.user.auth0ID && user.user.email, "user not found")
   const userId = getPoktId(user.user.auth0ID)
   const url = new URL(request.url)
-  const defaultReturnPath = "/account"
+  const defaultReturnPath = "/org"
   const formData = await request.formData()
   const returnPathParam = formData.get("return-path") as string | null
   const returnPath = returnPathParam ?? defaultReturnPath

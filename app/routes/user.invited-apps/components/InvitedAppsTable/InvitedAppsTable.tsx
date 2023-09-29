@@ -3,7 +3,7 @@ import { Emoji } from "emoji-picker-react"
 import { DataTable } from "~/components/DataTable"
 import Identicon from "~/components/Identicon"
 import { PortalApp, RoleNameV2, User } from "~/models/portal/sdk"
-import { DEFAULT_APPMOJI } from "~/routes/account_.$accountId.create/components/AppmojiPicker"
+import { DEFAULT_APPMOJI } from "~/routes/org_.$accountId.create/components/AppmojiPicker"
 import InvitedAppAction from "~/routes/user.invited-apps/components/InvitedAppAction"
 
 type InvitedApp = PortalApp & { accepted: boolean; role: RoleNameV2 | null }

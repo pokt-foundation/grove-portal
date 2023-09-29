@@ -27,7 +27,7 @@ export const AppHeader = ({
         <MediaQuery largerThan="sm" styles={{ display: "none" }}>
           <Burger mr="xl" opened={opened} size="sm" onClick={() => onOpen(!opened)} />
         </MediaQuery>
-        <Link to={accountId ? `/account/${accountId}` : "/"}>
+        <Link to={accountId ? `/org/${accountId}` : "/"}>
           <img alt="Grove logo" height={20} loading="lazy" src="/grove-logo.svg"></img>
         </Link>
         <Group>

@@ -85,7 +85,7 @@ export default function UserAccount() {
           leftIcon={<LuArrowLeft size={18} />}
           mb="xl"
           ml={-15}
-          to="/account"
+          to="/org"
           variant="subtle"
         >
           Back

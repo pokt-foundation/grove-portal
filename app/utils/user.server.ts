@@ -110,5 +110,5 @@ export const redirectToUserAccount = async (user: AuthUser) => {
     account = owner as Account
   }
 
-  return redirect(`/account/${account.id}`)
+  return redirect(`/org/${account.id}`)
 }

@@ -3,7 +3,7 @@ import { Form, Link, useNavigation } from "@remix-run/react"
 import React from "react"
 import { LuArrowUpRight, LuMinusCircle, LuMoreHorizontal } from "react-icons/lu"
 import { PortalApp, User } from "~/models/portal/sdk"
-import useTeamModals from "~/routes/account.$accountId.$appId.team/hooks/useTeamModals"
+import useTeamModals from "~/routes/org.$accountId.$appId.team/hooks/useTeamModals"
 import useCommonStyles from "~/styles/commonStyles"
 
 type InvitedAppActionProps = { app: PortalApp & { accepted: boolean }; user: User }
@@ -31,7 +31,7 @@ const InvitedAppAction = ({ app, user }: InvitedAppActionProps) => {
           </Menu.Target>
           <Menu.Dropdown>
             <Menu.Item icon={<LuArrowUpRight size={18} />}>
-              <Link to={`/account/${app.accountID}/${app.id}`}>
+              <Link to={`/org/${app.accountID}/${app.id}`}>
                 <Text tt="capitalize">Go to application</Text>
               </Link>
             </Menu.Item>

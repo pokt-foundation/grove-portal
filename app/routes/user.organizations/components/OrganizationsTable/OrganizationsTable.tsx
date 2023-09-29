@@ -63,7 +63,7 @@ const OrganizationsTable = ({ accounts }: OrganizationsTableProps) => {
                   </Menu.Target>
                   <Menu.Dropdown>
                     <Menu.Item icon={<LuArrowUpRight size={18} />}>
-                      <Link to={`/account/${account.id}`}>
+                      <Link to={`/org/${account.id}`}>
                         <Text tt="capitalize">Go to organization</Text>
                       </Link>
                     </Menu.Item>

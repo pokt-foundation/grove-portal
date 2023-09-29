@@ -18,7 +18,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   const referral = url.searchParams.get("referral-id")
 
   if (getRequiredServerEnvVar("FLAG_STRIPE_PAYMENT") === "false") {
-    return redirect(`/account/${accountId}/${id}`)
+    return redirect(`/org/${accountId}/${id}`)
   }
 
   try {
@@ -60,7 +60,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
     // create stripe checkout session and redirect to stripe hosted checkout page
     // TODO: metadata doesnt seem to be sending here: https://stripe.com/docs/api/checkout/sessions/object
-    const returnUrl = `${url.origin}/account/${accountId}/${id}`
+    const returnUrl = `${url.origin}/org/${accountId}/${id}`
     const session = await stripe.checkout.sessions.create({
       customer: customer.id,
       billing_address_collection: "auto",
@@ -84,7 +84,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       error: "true",
       message: getErrorMessage(error),
     })
-    return redirect(`/account/${accountId}/${id}?${params}`)
+    return redirect(`/org/${accountId}/${id}?${params}`)
   }
 }
 

@@ -84,7 +84,7 @@ const OrganizationSelect = ({ accounts }: OrganizationSelectProps) => {
         <Menu.Dropdown>
           {menuAccounts.map((account) => (
             <Menu.Item key={account.id} disabled={account.id === accountId} p={2}>
-              <NavLink to={`/account/${account.id}`}>
+              <NavLink to={`/org/${account.id}`}>
                 <OrganizationItem account={account} />
               </NavLink>
             </Menu.Item>

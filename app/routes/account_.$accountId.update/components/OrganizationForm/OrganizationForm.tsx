@@ -64,7 +64,7 @@ const OrganizationForm = ({ account }: OrganizationFormProps) => {
             defaultValue={name}
             description="Required"
             label="Name"
-            maxLength={40}
+            maxLength={20}
             name="account_name"
             w="200px"
             onChange={(e) => setName(e.target.value)}
@@ -100,7 +100,7 @@ const OrganizationForm = ({ account }: OrganizationFormProps) => {
               })
             }}
           >
-            Update Organization
+            Update
           </Button>
         </Group>
       </Form>

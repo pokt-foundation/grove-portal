@@ -33,6 +33,8 @@ export const AnalyticActions = {
   user_profile_product_updates: "user_profile_product_updates",
   user_profile_marketing_updates: "user_profile_marketing_updates",
   user_profile_beta_testing: "user_profile_beta_testing",
+  user_invites_accept: "user_invites_accept",
+  user_invites_decline: "user_invites_decline",
 }
 
 type TrackEventProps = {

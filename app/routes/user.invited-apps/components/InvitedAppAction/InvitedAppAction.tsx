@@ -5,6 +5,7 @@ import { LuArrowUpRight, LuMinusCircle, LuMoreHorizontal } from "react-icons/lu"
 import { PortalApp, User } from "~/models/portal/sdk"
 import useTeamModals from "~/routes/account.$accountId.$appId.team/hooks/useTeamModals"
 import useCommonStyles from "~/styles/commonStyles"
+import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
 
 type InvitedAppActionProps = { app: PortalApp & { accepted: boolean }; user: User }
 
@@ -55,6 +56,13 @@ const InvitedAppAction = ({ app, user }: InvitedAppActionProps) => {
               type="submit"
               value="decline"
               variant="outline"
+              onClick={() => {
+                trackEvent({
+                  category: AnalyticCategories.user,
+                  action: AnalyticActions.user_invites_decline,
+                  label: app.id,
+                })
+              }}
             >
               Decline
             </Button>
@@ -63,6 +71,13 @@ const InvitedAppAction = ({ app, user }: InvitedAppActionProps) => {
               name="invite_response"
               type="submit"
               value="accept"
+              onClick={() => {
+                trackEvent({
+                  category: AnalyticCategories.user,
+                  action: AnalyticActions.user_invites_accept,
+                  label: app.id,
+                })
+              }}
             >
               Accept
             </Button>

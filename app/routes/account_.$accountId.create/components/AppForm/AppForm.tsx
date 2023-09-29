@@ -34,7 +34,7 @@ type AppFormProps = {
 const AppForm = ({ app, onSubmit }: AppFormProps) => {
   const { classes } = useStyles()
   const { classes: commonClasses } = useCommonStyles()
-  const { accountId } = useParams()
+  const { accountId, appId } = useParams()
 
   const [name, setName] = useState(app?.name ?? "")
   const [referral, setReferral] = useState("")
@@ -63,7 +63,7 @@ const AppForm = ({ app, onSubmit }: AppFormProps) => {
       <Box>
         <Flex align="center" justify="space-between" my="32px">
           <Text fw={600} fz="21px">
-            {label} a new application
+            {label} your application
           </Text>
           <Tooltip withArrow label="Discard" position="bottom">
             <CloseButton
@@ -123,7 +123,7 @@ const AppForm = ({ app, onSubmit }: AppFormProps) => {
             component={NavLink}
             fw={400}
             fz="sm"
-            to={`/account/${accountId}`}
+            to={`/account/${accountId}${appId ? `/${appId}` : ""}`}
             type="button"
             variant="outline"
             w="156px"

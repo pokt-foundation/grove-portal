@@ -98,7 +98,7 @@ export default function UserAccount() {
           <LinkTabs routes={routes} />
           <Divider />
         </Stack>
-        <Outlet context={{ accounts, user }} />
+        <Outlet context={{ data, error, message }} />
       </Container>
     </RootAppShell>
   )

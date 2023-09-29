@@ -19,11 +19,13 @@ import { OverviewSparkline } from "./components/OverviewSparkline"
 import ErrorView from "~/components/ErrorView"
 import TitledCard from "~/components/TitledCard"
 import { initDwhClient } from "~/models/dwh/dwh.server"
-import { AnalyticsRelaysTransactions, JSONApiResponse } from "~/models/dwh/sdk"
+import { AnalyticsRelaysAggregated } from "~/models/dwh/sdk/models/AnalyticsRelaysAggregated"
+import { AnalyticsRelaysDaily } from "~/models/dwh/sdk/models/AnalyticsRelaysDaily"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { Account, PortalApp } from "~/models/portal/sdk"
 import type { DataStruct } from "~/types/global"
 import { getErrorMessage } from "~/utils/catchError"
+import { commify } from "~/utils/formattingUtils"
 import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
 
@@ -35,7 +37,8 @@ export const meta: MetaFunction = () => {
 
 type AccountInsightsData = {
   account: Account
-  aggregate: AnalyticsRelaysTransactions[] | undefined
+  aggregate: AnalyticsRelaysAggregated | undefined
+  daily: AnalyticsRelaysDaily[] | undefined
 }
 
 export const loader: LoaderFunction = async ({ request, params }) => {
@@ -55,63 +58,29 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       )
     }
 
-    const dwhReponse = await dwh.analyticsRelaysCategoryQueryTypeGroupByGet({
-      accountId: [accountId],
-      category: "transactions",
-      queryType: "full",
-      groupBy: "none",
+    const aggregateReponse = (await dwh.analyticsRelaysAggragatedCategoryGet({
+      category: "account_id",
+      categoryValue: [accountId],
       from: dayjs().subtract(1, "month").toDate(),
       to: dayjs().subtract(1, "day").toDate(),
-    })
+    })) as AnalyticsRelaysAggregated
 
-    console.log(dwhReponse)
+    console.log(aggregateReponse)
 
-    // console.log({ relays })
-    // const body = await dwhReponse.json()
-    // console.log(body.Data)
+    const dailyReponse = (await dwh.analyticsRelaysDailyCategoryGet({
+      category: "account_id",
+      categoryValue: [accountId],
+      from: dayjs().subtract(1, "month").toDate(),
+      to: dayjs().subtract(1, "day").toDate(),
+    })) as AnalyticsRelaysDaily[]
 
-    // const aggregatedRelays = body.Data.reduce(
-    //   (prev: any, curr: any) => {
-    //     let avg_latency = prev.avg_latency + curr.avg_roundtrip_time
-    //     let count_total = prev.count_total + curr.cnt
-    //     let curr_count_error = (curr.cnt * curr.error_rate) / 100
-    //     let count_error = prev.count_error + curr_count_error
-
-    //     return {
-    //       from: curr.from,
-    //       to: curr.to,
-    //       avg_latency,
-    //       count_total,
-    //       count_error,
-    //     }
-    //   },
-    //   {
-    //     from: "",
-    //     to: "",
-    //     avg_latency: 0,
-    //     count_total: 0,
-    //     count_error: 0,
-    //   },
-    // )
+    console.log(dailyReponse)
 
     return json<DataStruct<AccountInsightsData>>({
       data: {
         account: account.getUserAccount as Account,
-        // aggregate: {
-        //   ...aggregatedRelays,
-        //   count_error: Number(aggregatedRelays.count_error).toFixed(0),
-        //   avg_latency: `${Number(aggregatedRelays.avg_latency / body.Data.length).toFixed(
-        //     2,
-        //   )} ms`,
-        //   rate_success: `${Number(
-        //     ((aggregatedRelays.count_total - aggregatedRelays.count_error) /
-        //       aggregatedRelays.count_total) *
-        //       100,
-        //   ).toFixed(2)}%`,
-        //   rate_error: `${Number(
-        //     (aggregatedRelays.count_error / aggregatedRelays.count_total) * 100,
-        //   ).toFixed(2)}%`,
-        // },
+        aggregate: aggregateReponse,
+        daily: dailyReponse,
       },
       error: false,
     })
@@ -153,47 +122,28 @@ export default function AccountInsights() {
     return <ErrorView message={message} />
   }
 
-  const { account, aggregate } = data
-
-  const sparklineData = [
-    {
-      date: "Jul 15",
-      val: 0,
-    },
-    {
-      date: "Jul 16",
-      val: 65,
-    },
-    {
-      date: "Jul 17",
-      val: 20,
-    },
-    {
-      date: "Jul 18",
-      val: 51,
-    },
-    {
-      date: "Jul 19",
-      val: 162,
-    },
-    {
-      date: "Jul 20",
-      val: 25,
-    },
-    {
-      date: "Jul 21",
-      val: 180,
-    },
-  ]
+  const { account, aggregate, daily } = data
 
   const apps = account.portalApps as PortalApp[]
-
   const insightsApplicationsSelectOptions = [
     { value: "all-apps", label: "All Applications" },
     ...apps.map(({ name, id }) => ({ value: id, label: name })),
   ]
 
-  if (apps.length === 0) return <EmptyState />
+  if (apps.length === 0 || !aggregate || !daily) return <EmptyState />
+
+  const dailyTotalData = daily.map((day) => ({
+    date: dayjs(day.from).format("MMM DD"),
+    val: day.countTotal ?? 0,
+  }))
+  const dailySuccessData = daily.map((day) => ({
+    date: dayjs(day.from).format("MMM DD"),
+    val: day.rateSuccess ?? 0,
+  }))
+  const dailyLatencyData = daily.map((day) => ({
+    date: dayjs(day.from).format("MMM DD"),
+    val: day.avgLatency ?? 0,
+  }))
 
   return (
     <Stack mb="xl" pt={22} spacing="xl">
@@ -217,7 +167,10 @@ export default function AccountInsights() {
           )}
         >
           <Card.Section inheritPadding>
-            <OverviewSparkline sparklineData={sparklineData} title="542,499" />
+            <OverviewSparkline
+              sparklineData={dailyTotalData}
+              title={commify(aggregate.countTotal ?? 0)}
+            />
           </Card.Section>
         </TitledCard>
 
@@ -231,7 +184,10 @@ export default function AccountInsights() {
             )}
           >
             <Card.Section inheritPadding>
-              <OverviewSparkline sparklineData={sparklineData} title="542,499" />
+              <OverviewSparkline
+                sparklineData={dailyLatencyData}
+                title={commify(aggregate.avgLatency ?? 0)}
+              />
             </Card.Section>
           </TitledCard>
           <TitledCard
@@ -243,7 +199,10 @@ export default function AccountInsights() {
             )}
           >
             <Card.Section inheritPadding>
-              <OverviewSparkline sparklineData={sparklineData} title="542,499" />
+              <OverviewSparkline
+                sparklineData={dailySuccessData}
+                title={commify(aggregate.rateSuccess ?? 0)}
+              />
             </Card.Section>
           </TitledCard>
         </SimpleGrid>

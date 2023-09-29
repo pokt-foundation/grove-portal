@@ -5,17 +5,16 @@ import {
   Stack,
   Text,
 } from "@pokt-foundation/pocket-blocks"
-import React from "react"
+import { AnalyticsRelaysAggregated } from "~/models/dwh/sdk/models/AnalyticsRelaysAggregated"
 
-type AppStat = { label: string; val: string; time: string }
-
-const stats: AppStat[] = [
-  { label: "Total Relays", val: "54,828", time: "24hrs" },
-  { label: "Average Latency", val: "90ms", time: "24hrs" },
-  { label: "Success", val: "99.92%", time: "24hrs" },
-  { label: "Errors", val: "8", time: "24hrs" },
-  { label: "Uptime", val: "99.72%", time: "30days" },
-]
+const labels: Record<keyof AnalyticsRelaysAggregated, string> = {
+  avgLatency: "Average Latency",
+  countTotal: "Total Relays",
+  rateSuccess: "Success Rate",
+  rateError: "Error Rate",
+  categoryValue: "Organization",
+  date: "Date",
+}
 
 const useStyles = createStyles((theme) => ({
   stat: {
@@ -29,19 +28,19 @@ const useStyles = createStyles((theme) => ({
 }))
 
 type AccountAppsOverviewProps = {
-  aggregate: {
-    from: string
-    to: string
-    avg_latency: number
-    count_total: number
-    count_error: number
-    rate_success: number
-    rate_error: number
-  }
+  aggregate: AnalyticsRelaysAggregated | undefined
 }
 
 export const AccountAppsOverview = ({ aggregate }: AccountAppsOverviewProps) => {
   const { classes } = useStyles()
+
+  if (!aggregate) {
+    return (
+      <>
+        <div>undefined</div>
+      </>
+    )
+  }
 
   return (
     <>
@@ -60,7 +59,7 @@ export const AccountAppsOverview = ({ aggregate }: AccountAppsOverviewProps) => 
                 <Text fw={600} fz="md">
                   {value}
                 </Text>
-                <Text>{key.replace("_", " ")}</Text>
+                <Text>{labels[key as keyof AnalyticsRelaysAggregated]}</Text>
                 {/* <Text color="dimmed" fz="xs" lh={1.1}>
                 {time}
               </Text> */}

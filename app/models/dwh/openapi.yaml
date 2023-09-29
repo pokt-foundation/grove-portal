@@ -6,12 +6,10 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0
-
 servers:
   - url: /api/v1
 security:
   - apiKey: []
-
 paths:
   /healthcheck:
     get:
@@ -24,7 +22,140 @@ paths:
         "503":
           description: The service is not healthy.
 
-  /analytics/relays/{category}/{query_type}/{group_by}:
+  /analytics/relays/aggragated/{category}:
+    get:
+      tags:
+        - "user"
+      summary: Relays analytics retrieve aggregated values of a chosen metric category between selected dates.
+      parameters:
+        - name: from
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: to
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: category_value
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+        - name: category
+          in: path
+          required: true
+          description: The category of a metric to get insights of.
+          schema:
+            type: string
+            enum:
+              - account_id
+              - application_id
+
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Response"
+        "204":
+          description: No content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          $ref: "#/components/responses/NotFound"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /analytics/relays/daily/{category}:
+    get:
+      tags:
+        - "user"
+      summary: Relays analytics retrieve aggregated values of a chosen metric category between selected dates.
+      parameters:
+        - name: from
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: to
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: category_value
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+        - name: category
+          in: path
+          required: true
+          description: The category of a metric to get insights of.
+          schema:
+            type: string
+            enum:
+              - account_id
+              - application_id
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Response"
+        "204":
+          description: No content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          $ref: "#/components/responses/NotFound"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /analytics/relays/{category}:
     get:
       tags:
         - "user"
@@ -51,24 +182,6 @@ paths:
             enum:
               - transactions
               - errors
-        - name: query_type
-          in: path
-          required: true
-          description: Full query returns all the data, reduced query returns only the aggregated values.
-          schema:
-            type: string
-            enum:
-              - full
-              - reduced
-        - name: group_by
-          in: path
-          required: true
-          description: The category of a metric to get insights of.
-          schema:
-            type: string
-            enum:
-              - day
-              - none
         - name: account_id
           in: query
           required: true
@@ -97,18 +210,13 @@ paths:
             type: array
             items:
               type: string
-        - name: pagination
-          in: query
-          required: false
-          schema:
-            $ref: "#/components/schemas/Pagination"
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseAnalyticsRelays"
+                $ref: "#/components/schemas/Response"
         "204":
           description: No content
           content:
@@ -117,20 +225,27 @@ paths:
                 $ref: "#/components/schemas/Error"
         "401":
           $ref: "#/components/responses/Unauthorized"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "404":
           $ref: "#/components/responses/NotFound"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         default:
           description: Unexpected error
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-
   /logs:
     get:
       tags:
         - "user"
-      summary: Retrieve application error messages.
+      summary: Retrieve application error messages by given timestamp range.
       parameters:
         - name: portal_application_id
           in: query
@@ -139,18 +254,13 @@ paths:
             type: array
             items:
               type: string
-        - name: pagination
-          in: query
-          required: false
-          schema:
-            $ref: "#/components/schemas/Pagination"
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseLogs"
+                $ref: "#/components/schemas/Response"
         "204":
           description: No content
           content:
@@ -159,15 +269,22 @@ paths:
                 $ref: "#/components/schemas/Error"
         "401":
           $ref: "#/components/responses/Unauthorized"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "404":
           $ref: "#/components/responses/NotFound"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         default:
           description: Unexpected error
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-
 components:
   responses:
     Unauthorized:
@@ -198,123 +315,18 @@ components:
         message:
           type: string
 
-    MetaQueryAnalyticsRelays:
-      type: object
-      properties:
-        from:
-          type: string
-          format: date
-        to:
-          type: string
-          format: date
-        account_id:
-          type: array
-          items:
-            type: string
-        portal_application_id:
-          type: array
-          items:
-            type: string
-        chain_id:
-          type: array
-          items:
-            type: string
-        chain_method:
-          type: array
-          items:
-            type: string
-
-    MetaPathAnalyticsRelays:
-      type: object
-      properties:
-        category:
-          type: string
-          enum:
-            - transactions
-            - errors
-        query_type:
-          type: string
-          enum:
-            - full
-            - reduced
-        group_by:
-          type: string
-          enum:
-            - day
-            - none
-
-    MetaLogs:
-      type: object
-      properties:
-        portal_application_id:
-          type: array
-          items:
-            type: string
-
-    Pagination:
-      type: object
-      properties:
-        limit:
-          type: integer
-          format: int32
-          default: 100
-          minimum: 10
-          maximum: 1000
-        after_id:
-          type: integer
-          format: int32
-
-    AnalyticsRelaysTransactionsFull:
-      type: object
-      properties:
-        from:
-          type: string
-          format: date
-        to:
-          type: string
-          format: date
-        account_id:
-          type: string
-        portal_application_id:
-          type: string
-        chain_id:
-          type: string
-        chain_method:
-          type: string
-        rate_success:
-          type: number
-          format: float
-        count_total:
-          type: integer
-        avg_latency:
-          type: number
-          format: float
-
-    AnalyticsRelaysTransactionsReduced:
-      type: object
-      properties:
-        from:
-          type: string
-          format: date
-        to:
-          type: string
-          format: date
-        rate_success:
-          type: number
-          format: float
-        count_total:
-          type: integer
-        avg_latency:
-          type: number
-          format: float
-
-    AnalyticsRelaysTransactionsReducedGroupByDay:
+    AnalyticsRelaysAggregated:
       type: object
       properties:
         date:
           type: string
           format: date
+        category_value:
+          type: string
         rate_success:
+          type: number
+          format: float
+        rate_error:
           type: number
           format: float
         count_total:
@@ -323,7 +335,30 @@ components:
           type: number
           format: float
 
-    AnalyticsRelaysErrorsFull:
+    AnalyticsRelaysDaily:
+      type: object
+      properties:
+        from:
+          type: string
+          format: date
+        to:
+          type: string
+          format: date
+        category_value:
+          type: string
+        rate_success:
+          type: number
+          format: float
+        rate_error:
+          type: number
+          format: float
+        count_total:
+          type: integer
+        avg_latency:
+          type: number
+          format: float
+
+    AnalyticsRelaysTransactions:
       type: object
       properties:
         from:
@@ -340,16 +375,15 @@ components:
           type: string
         chain_method:
           type: string
-        rate_success:
+        error_rate:
           type: number
           format: float
-        count_total:
+        cnt:
           type: integer
-        avg_latency:
+        avg_roundtrip_time:
           type: number
           format: float
-
-    AnalyticsRelaysErrorsReduced:
+    AnalyticsRelaysErrors:
       type: object
       properties:
         from:
@@ -358,26 +392,20 @@ components:
         to:
           type: string
           format: date
+        account_id:
+          type: string
+        portal_application_id:
+          type: string
+        chain_id:
+          type: string
+        chain_method:
+          type: string
         error_type:
           type: string
         error_name:
           type: string
-        count_total:
+        cnt:
           type: integer
-
-    AnalyticsRelaysErrorsReducedGroupByDay:
-      type: object
-      properties:
-        date:
-          type: string
-          format: date
-        error_type:
-          type: string
-        error_name:
-          type: string
-        count_total:
-          type: integer
-
     Logs:
       type: object
       properties:
@@ -396,38 +424,18 @@ components:
           type: string
         error_message:
           type: string
-
-    ResponseAnalyticsRelays:
+    Response:
       type: object
       properties:
-        meta:
-          type: object
-          properties:
-            query:
-              $ref: "#/components/schemas/MetaQueryAnalyticsRelays"
-            path:
-              $ref: "#/components/schemas/MetaPathAnalyticsRelays"
         data:
           type: array
           items:
             oneOf:
-              - $ref: "#/components/schemas/AnalyticsRelaysTransactionsFull"
-              - $ref: "#/components/schemas/AnalyticsRelaysTransactionsReduced"
-              - $ref: "#/components/schemas/AnalyticsRelaysTransactionsReducedGroupByDay"
-              - $ref: "#/components/schemas/AnalyticsRelaysErrorsFull"
-              - $ref: "#/components/schemas/AnalyticsRelaysErrorsReduced"
-              - $ref: "#/components/schemas/AnalyticsRelaysErrorsReducedGroupByDay"
+              - $ref: "#/components/schemas/AnalyticsRelaysAggregated"
+              - $ref: "#/components/schemas/AnalyticsRelaysDaily"
+              - $ref: "#/components/schemas/AnalyticsRelaysTransactions"
+              - $ref: "#/components/schemas/AnalyticsRelaysErrors"
               - $ref: "#/components/schemas/Logs"
-
-    ResponseLogs:
-      type: object
-      properties:
-        meta:
-          $ref: "#/components/schemas/MetaLogs"
-        data:
-          type: array
-          items:
-            $ref: "#/components/schemas/Logs"
 
 tags:
   - name: "system"

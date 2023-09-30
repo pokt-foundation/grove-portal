@@ -39,6 +39,7 @@ const WhitelistUserAgents = ({
       {whitelistUserAgents.length > 0 && (
         <SimpleStringTable
           data={whitelistUserAgents}
+          readOnly={readOnly}
           onDelete={(id) => dispatch({ type: "userAgents-remove", payload: id })}
         />
       )}

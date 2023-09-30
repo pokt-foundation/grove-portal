@@ -71,6 +71,7 @@ const ChainWhitelist = ({
         <ChainWhitelistTable
           blockchainWhitelist={blockchainWhitelist}
           blockchains={blockchains}
+          readOnly={readOnly}
           onDelete={(contract) => dispatch({ type: `${type}-remove`, payload: contract })}
         />
       )}

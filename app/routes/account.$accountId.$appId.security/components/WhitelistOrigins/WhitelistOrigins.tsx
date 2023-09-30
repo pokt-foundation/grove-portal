@@ -35,6 +35,7 @@ const WhitelistOrigins = ({
       {whitelistOrigins.length > 0 && (
         <SimpleStringTable
           data={whitelistOrigins}
+          readOnly={readOnly}
           onDelete={(id) => dispatch({ type: "origins-remove", payload: id })}
         />
       )}

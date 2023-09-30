@@ -16,12 +16,14 @@ import useCommonStyles from "~/styles/commonStyles"
 type ChainsTableProps = {
   blockchains: Blockchain[]
   blockchainWhitelist: BlockchainWhitelist[]
+  readOnly: boolean
   onDelete: (val: BlockchainWhitelist) => void
 }
 
 const ChainWhitelistTable = ({
   blockchains,
   blockchainWhitelist,
+  readOnly,
   onDelete,
 }: ChainsTableProps) => {
   const theme = useMantineTheme()
@@ -67,20 +69,22 @@ const ChainWhitelistTable = ({
               element: (
                 <Flex gap="lg" justify="flex-end">
                   <CopyTextButton value={chain.whitelistValue} />
-                  <ActionIcon
-                    className={commonClasses.grayOutlinedButton}
-                    radius="xl"
-                    size={40}
-                    variant="outline"
-                    onClick={() =>
-                      onDelete({
-                        blockchainID: chain.id as string,
-                        whitelistValue: chain.whitelistValue,
-                      })
-                    }
-                  >
-                    <LuTrash2 size={18} />
-                  </ActionIcon>
+                  {!readOnly && (
+                    <ActionIcon
+                      className={commonClasses.grayOutlinedButton}
+                      radius="xl"
+                      size={40}
+                      variant="outline"
+                      onClick={() =>
+                        onDelete({
+                          blockchainID: chain.id as string,
+                          whitelistValue: chain.whitelistValue,
+                        })
+                      }
+                    >
+                      <LuTrash2 size={18} />
+                    </ActionIcon>
+                  )}
                 </Flex>
               ),
               cellProps: {

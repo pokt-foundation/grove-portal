@@ -45,6 +45,7 @@ const ApprovedChains = ({
       {approvedChainsIds.length > 0 && (
         <ChainsTable
           blockchains={blockchains}
+          readOnly={readOnly}
           selectedBlockchainsIds={approvedChainsIds}
           onDeleteChain={(id) => dispatch({ type: "blockchains-remove", payload: id })}
         />

@@ -85,7 +85,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 }
 
 export default function AppNotifications() {
-  const { app } = useOutletContext<AppIdOutletContext>()
+  const { app, userRole } = useOutletContext<AppIdOutletContext>()
 
-  return <AppNotificationsAlert app={app} />
+  return <AppNotificationsAlert app={app} userRole={userRole} />
 }

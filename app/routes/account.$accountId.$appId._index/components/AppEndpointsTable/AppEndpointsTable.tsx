@@ -132,36 +132,38 @@ const AppEndpointsTable = ({
                         </Menu.Item>
                       )}
 
-                      <Menu.Item
-                        icon={
-                          chain.favorite ? (
-                            <RiStarFill size={18} />
-                          ) : (
-                            <RiStarLine size={18} />
-                          )
-                        }
-                        onClick={() => {
-                          trackEvent({
-                            category: AnalyticCategories.app,
-                            action: AnalyticActions.app_chain_favorite,
-                            label: `${chain.favorite ? "Remove" : "Add"} favorite ${
-                              chain.id
-                            }`,
-                          })
-                          fetcher.submit(
-                            {
-                              isFavorite: String(!chain.favorite),
-                              chainId: chain.id,
-                              favoriteChains: JSON.stringify(favoriteChains),
-                            },
-                            {
-                              method: "post",
-                            },
-                          )
-                        }}
-                      >
-                        {chain.favorite ? "Remove favorite" : "Mark as favorite"}
-                      </Menu.Item>
+                      {!readOnly && (
+                        <Menu.Item
+                          icon={
+                            chain.favorite ? (
+                              <RiStarFill size={18} />
+                            ) : (
+                              <RiStarLine size={18} />
+                            )
+                          }
+                          onClick={() => {
+                            trackEvent({
+                              category: AnalyticCategories.app,
+                              action: AnalyticActions.app_chain_favorite,
+                              label: `${chain.favorite ? "Remove" : "Add"} favorite ${
+                                chain.id
+                              }`,
+                            })
+                            fetcher.submit(
+                              {
+                                isFavorite: String(!chain.favorite),
+                                chainId: chain.id,
+                                favoriteChains: JSON.stringify(favoriteChains),
+                              },
+                              {
+                                method: "post",
+                              },
+                            )
+                          }}
+                        >
+                          {chain.favorite ? "Remove favorite" : "Mark as favorite"}
+                        </Menu.Item>
+                      )}
                     </Menu.Dropdown>
                   </Menu>
                 </Flex>

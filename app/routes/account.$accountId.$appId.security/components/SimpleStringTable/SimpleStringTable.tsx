@@ -11,7 +11,7 @@ import useCommonStyles from "~/styles/commonStyles"
 
 type SimpleStringTableProps = {
   data: string[]
-  readOnly: boolean
+  readOnly?: boolean
   onDelete: (value: string) => void
 }
 

@@ -17,7 +17,7 @@ type ChainsTableProps = {
   blockchains: Blockchain[]
   selectedBlockchainsIds: string[]
   onDeleteChain: (chainId: string) => void
-  readOnly: boolean
+  readOnly?: boolean
 }
 
 const getAppEndpointUrl = (

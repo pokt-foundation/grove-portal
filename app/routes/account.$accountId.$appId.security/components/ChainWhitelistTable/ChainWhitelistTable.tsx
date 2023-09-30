@@ -16,7 +16,7 @@ import useCommonStyles from "~/styles/commonStyles"
 type ChainsTableProps = {
   blockchains: Blockchain[]
   blockchainWhitelist: BlockchainWhitelist[]
-  readOnly: boolean
+  readOnly?: boolean
   onDelete: (val: BlockchainWhitelist) => void
 }
 

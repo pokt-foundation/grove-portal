@@ -1,5 +1,4 @@
-import { Divider } from "@mantine/core"
-import { Container, Stack, Text, Button } from "@pokt-foundation/pocket-blocks"
+import { Container, Stack, Button } from "@pokt-foundation/pocket-blocks"
 import { json, LoaderFunction } from "@remix-run/node"
 import { NavLink, Outlet, useLoaderData } from "@remix-run/react"
 import { LuArrowLeft } from "react-icons/lu"
@@ -91,12 +90,7 @@ export default function UserAccount() {
           Back
         </Button>
         <Stack spacing="xl">
-          <Text fw={600} fz="md">
-            User Account
-          </Text>
-          <Divider />
           <LinkTabs routes={routes} />
-          <Divider />
         </Stack>
         <Outlet context={{ data, error, message }} />
       </Container>

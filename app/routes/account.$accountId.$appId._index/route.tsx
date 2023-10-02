@@ -90,14 +90,13 @@ export const action: ActionFunction = async ({ request, params }) => {
 }
 
 export const Application = () => {
-  const { app, blockchains } = useOutletContext<AppIdOutletContext>()
+  const { app, blockchains, userRole } = useOutletContext<AppIdOutletContext>()
   const [searchTerm, setSearchTerm] = useState("")
   const [debouncedSearchTerm] = useDebouncedValue(searchTerm, 200)
 
   return (
     <Box>
-      <Flex align="center" justify="space-between" my="xl">
-        <Title order={5}>Endpoints</Title>
+      <Flex align="center" justify="flex-end" my="xl">
         <Input
           icon={<LuSearch />}
           placeholder="Search network"
@@ -109,6 +108,7 @@ export const Application = () => {
       <AppEndpointsTable
         blockchains={blockchains}
         favoriteChains={app.settings.favoritedChainIDs}
+        readOnly={userRole === "MEMBER"}
         searchTerm={debouncedSearchTerm}
       />
     </Box>

@@ -1,6 +1,10 @@
-import { redirect } from ".pnpm/react-router@6.11.0_react@18.2.0/node_modules/react-router"
-import { showNotification } from "@mantine/notifications"
-import { LoaderFunction, MetaFunction, json, ActionFunction } from "@remix-run/node"
+import {
+  LoaderFunction,
+  MetaFunction,
+  json,
+  ActionFunction,
+  redirect,
+} from "@remix-run/node"
 import {
   Outlet,
   useActionData,
@@ -8,11 +12,12 @@ import {
   useLoaderData,
   useOutletContext,
 } from "@remix-run/react"
-import { useEffect } from "react"
+import React from "react"
 import invariant from "tiny-invariant"
 import { AccountIdLoaderData } from "../account.$accountId/route"
 import AppIdLayoutView from "./view"
 import ErrorView from "~/components/ErrorView"
+import useActionNotification from "~/hooks/useActionNotification"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { Blockchain, PortalApp, RoleNameV2 } from "~/models/portal/sdk"
 import { DataStruct } from "~/types/global"
@@ -125,29 +130,22 @@ export default function AppIdLayout() {
   const actionData = useActionData() as DataStruct<AppIdActionData>
 
   // handle all notifications at the layout level
-  useEffect(() => {
-    if (!actionData) return
-
-    if (actionData.message) {
-      showNotification({
-        message: actionData.message,
-      })
-    }
-  }, [actionData])
+  useActionNotification(actionData)
 
   if (error) {
     return <ErrorView message={message} />
   }
 
   const { app, blockchains } = data
+  const userRole = userRoles.find((r) => r.portalAppID === app.id)?.roleName as RoleNameV2
 
   return (
-    <AppIdLayoutView app={app}>
+    <AppIdLayoutView app={app} userRole={userRole}>
       <Outlet
         context={{
           app,
           blockchains,
-          userRole: userRoles.find((r) => r.portalAppID === app.id)?.roleName,
+          userRole,
         }}
       />
     </AppIdLayoutView>

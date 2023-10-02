@@ -23,11 +23,11 @@ const useStyles = createStyles((theme) => ({
   },
 }))
 
-type OrganizationFormProps = {
+type AccountFormProps = {
   account: Account
 }
 
-const OrganizationForm = ({ account }: OrganizationFormProps) => {
+const AccountForm = ({ account }: AccountFormProps) => {
   const { classes } = useStyles()
   const { classes: commonClasses } = useCommonStyles()
   const { accountId } = useParams()
@@ -39,7 +39,7 @@ const OrganizationForm = ({ account }: OrganizationFormProps) => {
       <Box>
         <Flex align="center" justify="space-between" my="32px">
           <Text fw={600} fz="21px">
-            Organization Name
+            Account Name
           </Text>
           <Tooltip withArrow label="Discard" position="bottom">
             <CloseButton
@@ -51,8 +51,8 @@ const OrganizationForm = ({ account }: OrganizationFormProps) => {
           </Tooltip>
         </Flex>
         <Text>
-          An accurate organization name helps team members identify their workspace.
-          Ensure it's current and relevant by updating it here.
+          An accurate account name helps team members identify their workspace. Ensure
+          it's current and relevant by updating it here.
         </Text>
       </Box>
       <Divider mb="md" mt="xl" />
@@ -64,7 +64,7 @@ const OrganizationForm = ({ account }: OrganizationFormProps) => {
             defaultValue={name}
             description="Required"
             label="Name"
-            maxLength={40}
+            maxLength={20}
             name="account_name"
             w="200px"
             onChange={(e) => setName(e.target.value)}
@@ -95,12 +95,12 @@ const OrganizationForm = ({ account }: OrganizationFormProps) => {
             onClick={() => {
               trackEvent({
                 category: AnalyticCategories.app,
-                action: AnalyticActions.org_update,
+                action: AnalyticActions.account_update,
                 label: account.id,
               })
             }}
           >
-            Update Organization
+            Update
           </Button>
         </Group>
       </Form>
@@ -108,4 +108,4 @@ const OrganizationForm = ({ account }: OrganizationFormProps) => {
   )
 }
 
-export default OrganizationForm
+export default AccountForm

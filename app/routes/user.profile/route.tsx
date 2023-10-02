@@ -1,11 +1,10 @@
-import { showNotification } from "@mantine/notifications"
 import { ActionFunction, LoaderFunction, json, MetaFunction } from "@remix-run/node"
 import { useActionData, useLoaderData } from "@remix-run/react"
-import { useEffect } from "react"
 import invariant from "tiny-invariant"
 import { ActionPassword, actionPassword } from "./utils/actionPassword"
 import { ActionUser, actionUser } from "./utils/actionUser"
 import ProfileView from "./view"
+import useActionNotification from "~/hooks/useActionNotification"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { UpdateUser, User } from "~/models/portal/sdk"
 import { DataStruct } from "~/types/global"
@@ -74,15 +73,7 @@ export default function Profile() {
   const { user } = useLoaderData() as LoaderData
   const actionData = useActionData() as DataStruct<ActionUser | ActionPassword>
 
-  useEffect(() => {
-    if (!actionData) return
-
-    if (actionData.message) {
-      showNotification({
-        message: actionData.message,
-      })
-    }
-  }, [actionData])
+  useActionNotification(actionData)
 
   return <ProfileView user={user} />
 }

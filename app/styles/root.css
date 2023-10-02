@@ -115,4 +115,5 @@ button.pokt-button-with__icon:hover {
 .mantine-Drawer-header {
   display: flex;
   align-items: center;
+  margin-bottom: 16px;
 }

@@ -1,7 +1,7 @@
 import { Burger, Flex, Group, MediaQuery } from "@pokt-foundation/pocket-blocks"
 import { Link, useParams } from "@remix-run/react"
-import OrganizationDrawer from "~/components/OrganizationDrawer"
-import OrganizationSelect from "~/components/OrganizationSelect"
+import AccountDrawer from "~/components/AccountDrawer"
+import AccountSelect from "~/components/AccountSelect"
 import { Account, User } from "~/models/portal/sdk"
 import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
 
@@ -44,10 +44,10 @@ export const AppHeader = ({
           <img alt="Grove logo" height={20} loading="lazy" src="/grove-logo.svg"></img>
         </Link>
         <Group>
-          {user && accounts && accounts.length > 0 && (
-            <OrganizationSelect accounts={accounts} />
+          {user && accounts && accounts.length > 1 && (
+            <AccountSelect accounts={accounts} />
           )}
-          <OrganizationDrawer hasPendingInvites={hasPendingInvites} user={user} />
+          <AccountDrawer hasPendingInvites={hasPendingInvites} user={user} />
         </Group>
       </Flex>
     </>

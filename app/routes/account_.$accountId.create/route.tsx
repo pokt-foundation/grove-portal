@@ -1,4 +1,3 @@
-import { showNotification } from "@mantine/notifications"
 import { Box, LoadingOverlay } from "@pokt-foundation/pocket-blocks"
 import {
   ActionFunction,
@@ -8,12 +7,13 @@ import {
   redirect,
 } from "@remix-run/node"
 import { useFetcher } from "@remix-run/react"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import invariant from "tiny-invariant"
 import AccountPlansContainer from "./components/AccountPlansContainer"
 import AppForm from "./components/AppForm"
 import { DEFAULT_APPMOJI } from "./components/AppmojiPicker"
 import PortalLoader from "~/components/PortalLoader"
+import useActionNotification from "~/hooks/useActionNotification"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { Account, PayPlanTypeV2 } from "~/models/portal/sdk"
 import { getErrorMessage } from "~/utils/catchError"
@@ -164,13 +164,7 @@ export default function CreateApp() {
   const fetcher = useFetcher()
   const [appFromData, setAppFromData] = useState<FormData>()
 
-  useEffect(() => {
-    if (fetcher.data && fetcher.data.error) {
-      showNotification({
-        message: fetcher.data.message,
-      })
-    }
-  }, [fetcher])
+  useActionNotification(fetcher.data)
 
   return fetcher.state === "idle" ? (
     <Box maw={860} mx="auto">

@@ -1,7 +1,7 @@
-import { showNotification } from "@mantine/notifications"
 import { Text } from "@pokt-foundation/pocket-blocks"
 import { useFetcher } from "@remix-run/react"
-import { useEffect } from "react"
+import React from "react"
+import useActionNotification from "~/hooks/useActionNotification"
 import useModals from "~/hooks/useModals"
 import { PortalApp, RoleName } from "~/models/portal/sdk"
 import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
@@ -15,13 +15,7 @@ const useTeamModals = ({ app }: useTeamModalsProps) => {
   const { openConfirmationModal } = useModals()
   const { accountID: accountId, id: appId } = app
 
-  useEffect(() => {
-    if (!fetcher.data) return
-
-    showNotification({
-      message: fetcher.data.message,
-    })
-  }, [fetcher.data])
+  useActionNotification(fetcher.data)
 
   const removeTeamMember = (userId: string, email: string) => {
     trackEvent({

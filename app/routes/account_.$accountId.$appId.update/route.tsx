@@ -1,4 +1,3 @@
-import { showNotification } from "@mantine/notifications"
 import { Box, LoadingOverlay } from "@pokt-foundation/pocket-blocks"
 import {
   ActionFunction,
@@ -8,10 +7,10 @@ import {
   redirect,
 } from "@remix-run/node"
 import { useFetcher, useLoaderData } from "@remix-run/react"
-import { useEffect } from "react"
 import invariant from "tiny-invariant"
 import ErrorView from "~/components/ErrorView"
 import PortalLoader from "~/components/PortalLoader"
+import useActionNotification from "~/hooks/useActionNotification"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { PortalApp, UpdatePortalApp } from "~/models/portal/sdk"
 import AppForm from "~/routes/account_.$accountId.create/components/AppForm"
@@ -133,13 +132,7 @@ export default function UpdateApp() {
   const fetcher = useFetcher()
   const { data, error, message } = useLoaderData() as DataStruct<UpdateAppLoaderData>
 
-  useEffect(() => {
-    if (fetcher.data && fetcher.data.error) {
-      showNotification({
-        message: fetcher.data.message,
-      })
-    }
-  }, [fetcher])
+  useActionNotification(fetcher.data)
 
   if (error) {
     return <ErrorView message={message} />

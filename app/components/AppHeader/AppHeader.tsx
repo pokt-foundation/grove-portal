@@ -1,7 +1,7 @@
 import { Burger, Flex, Group, MediaQuery } from "@pokt-foundation/pocket-blocks"
 import { Link, useParams } from "@remix-run/react"
-import OrganizationDrawer from "~/components/OrganizationDrawer"
-import OrganizationSelect from "~/components/OrganizationSelect"
+import AccountDrawer from "~/components/AccountDrawer"
+import AccountSelect from "~/components/AccountSelect"
 import { Account, User } from "~/models/portal/sdk"
 import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
 
@@ -45,9 +45,9 @@ export const AppHeader = ({
         </Link>
         <Group>
           {user && accounts && accounts.length > 1 && (
-            <OrganizationSelect accounts={accounts} />
+            <AccountSelect accounts={accounts} />
           )}
-          <OrganizationDrawer hasPendingInvites={hasPendingInvites} user={user} />
+          <AccountDrawer hasPendingInvites={hasPendingInvites} user={user} />
         </Group>
       </Flex>
     </>

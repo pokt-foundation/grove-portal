@@ -8,7 +8,7 @@ import {
 } from "@remix-run/node"
 import { useActionData, useLoaderData, useNavigation } from "@remix-run/react"
 import invariant from "tiny-invariant"
-import OrganizationForm from "./components/OrganizationForm"
+import AccountForm from "./components/AccountForm"
 import ErrorView from "~/components/ErrorView"
 import PortalLoader from "~/components/PortalLoader"
 import useActionNotification from "~/hooks/useActionNotification"
@@ -97,11 +97,11 @@ export const action: ActionFunction = async ({ request, params }) => {
       })
       .catch((err) => {
         console.log(err)
-        throw new Error("Unable to update organization")
+        throw new Error("Unable to update account")
       })
 
     if (!updateUserAccountResponse.updateUserAccount) {
-      throw new Error("Unable to update organization")
+      throw new Error("Unable to update account")
     }
 
     return redirect(`/account/${accountId}`)
@@ -129,12 +129,12 @@ export default function UpdateAccount() {
 
   return state === "idle" ? (
     <Box maw={860} mx="auto">
-      <OrganizationForm account={account} />
+      <AccountForm account={account} />
     </Box>
   ) : (
     <LoadingOverlay
       visible
-      loader={<PortalLoader message="Updating your organization..." />}
+      loader={<PortalLoader message="Updating your account..." />}
     />
   )
 }

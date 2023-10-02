@@ -16,7 +16,7 @@ type LinkTabsProps = {
 
 const LinkTabs = ({ routes }: LinkTabsProps) => {
   return (
-    <Flex gap="xs">
+    <Flex gap="xs" py="md">
       {routes.map((route, index) => (
         <Button
           key={`${route.to}-${index}`}

@@ -2,7 +2,6 @@ import {
   Card,
   Group,
   Button,
-  // Select,
   SimpleGrid,
   Stack,
   Text,
@@ -13,17 +12,13 @@ import { json, LoaderFunction, MetaFunction } from "@remix-run/node"
 import { Form, useLoaderData, useNavigation, useSearchParams } from "@remix-run/react"
 import dayjs from "dayjs"
 import invariant from "tiny-invariant"
-import { AccountAppsOverview } from "./components/AccountAppsOverview"
-import { EmptyState } from "./components/EmptyState"
-// import OverviewBarChart from "./components/OverviewBarChart"
-import { OverviewSparkline } from "./components/OverviewSparkline"
 import ErrorView from "~/components/ErrorView"
 import TitledCard from "~/components/TitledCard"
 import { getAggregateRelays, getTotalRelays } from "~/models/dwh/dwh.server"
 import { AnalyticsRelaysAggregated } from "~/models/dwh/sdk/models/AnalyticsRelaysAggregated"
 import { AnalyticsRelaysDaily } from "~/models/dwh/sdk/models/AnalyticsRelaysDaily"
-import { initPortalClient } from "~/models/portal/portal.server"
-import { Account, PortalApp } from "~/models/portal/sdk"
+import { AccountAppsOverview } from "~/routes/account.$accountId._index/components/AccountAppsOverview"
+import { OverviewSparkline } from "~/routes/account.$accountId._index/components/OverviewSparkline"
 import type { DataStruct } from "~/types/global"
 import { getErrorMessage } from "~/utils/catchError"
 import { commify } from "~/utils/formattingUtils"
@@ -32,55 +27,44 @@ import { requireUser } from "~/utils/user.server"
 
 export const meta: MetaFunction = () => {
   return {
-    title: `Account Insights ${seo_title_append}`,
+    title: `Application Insights ${seo_title_append}`,
   }
 }
 
-type AccountInsightsData = {
-  account: Account
+type AppInsightsData = {
   total: AnalyticsRelaysDaily
   aggregate: AnalyticsRelaysAggregated[]
 }
 
 export const loader: LoaderFunction = async ({ request, params }) => {
-  const user = await requireUser(request)
-  const portal = initPortalClient({ token: user.accessToken })
+  await requireUser(request)
   const url = new URL(request.url)
   const daysParam = Number(url.searchParams.get("days") ?? "7")
 
   try {
-    const { accountId } = params
-    invariant(typeof accountId === "string", "AccountId must be a set url parameter")
-
-    const account = await portal.getUserAccount({ accountID: accountId, accepted: true })
-
-    if (!account.getUserAccount) {
-      throw new Error(
-        `Account ${params.accountId} not found for user ${user.user.portalUserID}`,
-      )
-    }
+    const { appId } = params
+    invariant(typeof appId === "string", "AppId must be a set url parameter")
 
     const aggregate = await getAggregateRelays({
-      category: "account_id",
-      categoryValue: [accountId],
+      category: "application_id",
+      categoryValue: [appId],
       days: daysParam,
     })
     const total = await getTotalRelays({
-      category: "account_id",
-      categoryValue: [accountId],
+      category: "application_id",
+      categoryValue: [appId],
       days: daysParam,
     })
 
-    return json<DataStruct<AccountInsightsData>>({
+    return json<DataStruct<AppInsightsData>>({
       data: {
-        account: account.getUserAccount as Account,
         total: (total as AnalyticsRelaysDaily) ?? undefined,
         aggregate: (aggregate as AnalyticsRelaysAggregated[]) ?? undefined, //dailyReponse.data as AnalyticsRelaysDaily[],
       },
       error: false,
     })
   } catch (error) {
-    return json<DataStruct<AccountInsightsData>>({
+    return json<DataStruct<AppInsightsData>>({
       data: null,
       error: true,
       message: getErrorMessage(error),
@@ -150,44 +134,38 @@ const InsightsDaysPeriodSelector = () => {
   )
 }
 
-export default function AccountInsights() {
-  const { data, error, message } = useLoaderData() as DataStruct<AccountInsightsData>
+export default function ApplicationInsights() {
+  const { data, error, message } = useLoaderData() as DataStruct<AppInsightsData>
 
   if (error) {
     return <ErrorView message={message} />
   }
 
-  const { account, total, aggregate } = data
+  const { total, aggregate } = data
 
-  const apps = account.portalApps as PortalApp[]
-
-  if (apps.length === 0) return <EmptyState />
-
-  const aggregateTotalData = aggregate.map((day) => ({
+  const aggregateTotalData = aggregate?.map((day) => ({
     date: dayjs(day.date).format("MMM DD"),
     val: day.countTotal ?? null,
   }))
-  const aggregateLatencyData = aggregate.map((day) => ({
+  const aggregateLatencyData = aggregate?.map((day) => ({
     date: dayjs(day.date).format("MMM DD"),
     val: day.avgLatency ?? null,
   }))
-  const aggregateSuccessData = aggregate.map((day) => ({
+  const aggregateSuccessData = aggregate?.map((day) => ({
     date: dayjs(day.date).format("MMM DD"),
     val: day.rateSuccess ?? null,
   }))
-  const aggregateErrorData = aggregate.map((day) => ({
+  const aggregateErrorData = aggregate?.map((day) => ({
     date: dayjs(day.date).format("MMM DD"),
     val: day.rateError ?? null,
   }))
-
-  // console.log(aggregateTotalData)
 
   return (
     <Stack mb="xl" pt={22} spacing="xl">
       <TitledCard
         header={() => (
           <Group position="apart">
-            <Text weight={600}>Organization Overview</Text>
+            <Text weight={600}>Application Overview</Text>
             <InsightsDaysPeriodSelector />
           </Group>
         )}
@@ -202,7 +180,7 @@ export default function AccountInsights() {
           header={() => (
             <Group position="apart">
               <Text weight={600}>
-                Total Relays{" "}
+                Total Relays
                 <Badge ml="sm" px={6} radius="sm">
                   {commify(total?.countTotal ?? 0)}
                 </Badge>

@@ -1,5 +1,5 @@
 import { Divider } from "@mantine/core"
-import { Container, Stack } from "@pokt-foundation/pocket-blocks"
+import { Container, Stack, ScrollArea } from "@pokt-foundation/pocket-blocks"
 import { useEffect, useState } from "react"
 import ApplicationHeader from "./components/ApplicationHeader"
 import LinkTabs from "~/components/LinkTabs"
@@ -21,9 +21,17 @@ export type Route = {
 export default function AppIdLayoutView({ app, children }: AppIdLayoutViewProps) {
   const [routes, setRoutes] = useState<Route[]>([
     {
+      to: "insights",
+      label: "Insights",
+    },
+    {
       to: "",
       label: "Endpoints",
       end: true,
+    },
+    {
+      to: "logs",
+      label: "Logs",
     },
     {
       to: "security",
@@ -57,22 +65,24 @@ export default function AppIdLayoutView({ app, children }: AppIdLayoutViewProps)
       !routes.find((route) => route.to === "notifications")
     ) {
       setRoutes((curr) => [
-        ...curr.slice(0, 2),
+        ...curr.slice(0, 4),
         {
           to: "notifications",
           label: "Notifications",
         },
-        ...curr.slice(2),
+        ...curr.slice(4),
       ])
     }
   }, [app, routes])
 
   return (
     <Container fluid pt={16} px={0}>
-      <Stack spacing="xl">
+      <Stack spacing="xs">
         <ApplicationHeader app={app} />
         <Divider />
-        <LinkTabs routes={routes} />
+        <ScrollArea style={{ width: "100%" }}>
+          <LinkTabs routes={routes} />
+        </ScrollArea>
         <Divider />
       </Stack>
       {children}

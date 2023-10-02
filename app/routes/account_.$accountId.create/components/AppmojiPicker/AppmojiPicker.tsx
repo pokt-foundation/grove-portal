@@ -4,7 +4,7 @@ import EmojiPicker, { Emoji } from "emoji-picker-react"
 import { Theme } from "emoji-picker-react/src/types/exposedTypes"
 import { useState } from "react"
 
-export const DEFAULT_APPMOJI = "1f9e9"
+export const DEFAULT_APPMOJI = "1f333"
 
 const useStyles = createStyles((theme) => ({
   appmojiActionIcon: {

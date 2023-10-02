@@ -65,9 +65,6 @@ export const AccountAppsOverview = ({ aggregate }: AccountAppsOverviewProps) => 
                 {String(aggregate[key])}
               </Text>
               <Text>{labels[key as keyof AnalyticsRelaysAggregated]}</Text>
-              {/* <Text color="dimmed" fz="xs" lh={1.1}>
-                {time}
-              </Text> */}
             </Stack>
           </Box>
         ))}

@@ -22,7 +22,7 @@ paths:
         "503":
           description: The service is not healthy.
 
-  /analytics/relays/aggragated/{category}:
+  /analytics/relays/aggregated/{category}:
     get:
       tags:
         - "user"

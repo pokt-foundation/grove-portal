@@ -2,7 +2,7 @@ import { getRequiredClientEnvVar } from "./environment"
 
 export const AnalyticCategories = {
   user: "User Account",
-  org: "Organization",
+  account: "Account",
   app: "Application",
 }
 
@@ -29,7 +29,7 @@ export const AnalyticActions = {
   app_team_change_role: "app_team_change_role",
   app_team_resend: "app_team_resend",
   user_header_menu: "user_header_menu",
-  org_update: "Update Organization",
+  account_update: "Update Account",
   user_profile_change_password: "user_profile_change_password",
   user_profile_product_updates: "user_profile_product_updates",
   user_profile_marketing_updates: "user_profile_marketing_updates",

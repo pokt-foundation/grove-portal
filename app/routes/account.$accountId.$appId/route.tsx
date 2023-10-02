@@ -1,4 +1,3 @@
-import { showNotification } from "@mantine/notifications"
 import {
   LoaderFunction,
   MetaFunction,
@@ -13,11 +12,12 @@ import {
   useLoaderData,
   useOutletContext,
 } from "@remix-run/react"
-import { useEffect } from "react"
+import React from "react"
 import invariant from "tiny-invariant"
 import { AccountIdLoaderData } from "../account.$accountId/route"
 import AppIdLayoutView from "./view"
 import ErrorView from "~/components/ErrorView"
+import useActionNotification from "~/hooks/useActionNotification"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { Blockchain, PortalApp, RoleNameV2 } from "~/models/portal/sdk"
 import { DataStruct } from "~/types/global"
@@ -130,15 +130,7 @@ export default function AppIdLayout() {
   const actionData = useActionData() as DataStruct<AppIdActionData>
 
   // handle all notifications at the layout level
-  useEffect(() => {
-    if (!actionData) return
-
-    if (actionData.message) {
-      showNotification({
-        message: actionData.message,
-      })
-    }
-  }, [actionData])
+  useActionNotification(actionData)
 
   if (error) {
     return <ErrorView message={message} />

@@ -27,7 +27,7 @@ const InviteMemberFrom = () => {
       {state === "idle" ? (
         <Container>
           <ModalHeader
-            subtitle="A member is a unique user who can access to your organization’s apps. "
+            subtitle="A member is a unique user who can access to your accounts’s apps. "
             title="Invite member"
             onDiscard={closeAllModals}
           />

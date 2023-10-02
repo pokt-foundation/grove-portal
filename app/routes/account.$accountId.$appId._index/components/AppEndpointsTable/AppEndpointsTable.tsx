@@ -1,4 +1,3 @@
-import { showNotification } from "@mantine/notifications"
 import {
   Flex,
   Menu,
@@ -7,7 +6,7 @@ import {
   UnstyledButton,
 } from "@pokt-foundation/pocket-blocks"
 import { useFetcher, useParams } from "@remix-run/react"
-import { useEffect, useMemo } from "react"
+import React, { useMemo } from "react"
 import { LuBook } from "react-icons/lu"
 import { RiStarLine, RiStarFill } from "react-icons/ri"
 import FavoriteChain from "../FavoriteChain"
@@ -15,6 +14,7 @@ import Chain from "~/components/Chain"
 import ContextMenuTarget from "~/components/ContextMenuTarget"
 import CopyTextButton from "~/components/CopyTextButton"
 import { DataTable } from "~/components/DataTable"
+import useActionNotification from "~/hooks/useActionNotification"
 import { Blockchain, Maybe } from "~/models/portal/sdk"
 import { trackEvent, AnalyticCategories, AnalyticActions } from "~/utils/analytics"
 import { CHAIN_DOCS_URL } from "~/utils/chainUtils"
@@ -39,6 +39,9 @@ const AppEndpointsTable = ({
   const { appId } = useParams()
   const fetcher = useFetcher()
 
+  // handle notification for menu fetcher action
+  useActionNotification(fetcher.data)
+
   const chains = useMemo(() => {
     const fav = blockchains
       .filter((chain) => favoriteChains?.includes(chain.id))
@@ -59,17 +62,6 @@ const AppEndpointsTable = ({
     return [...fav, ...other]
   }, [favoriteChains, blockchains])
 
-  // handle notification for menu fetcher action
-  useEffect(() => {
-    if (!fetcher.data) return
-
-    if (fetcher.data.message) {
-      showNotification({
-        message: fetcher.data.message,
-      })
-    }
-  }, [fetcher.data])
-
   return (
     blockchains && (
       <DataTable
@@ -81,7 +73,7 @@ const AppEndpointsTable = ({
                   <FavoriteChain
                     blockchain={chain}
                     favoriteChains={favoriteChains}
-                    readOnly={readOnly}
+                    readOnly={false}
                   />
                   <Chain chain={chain} />
                 </Flex>

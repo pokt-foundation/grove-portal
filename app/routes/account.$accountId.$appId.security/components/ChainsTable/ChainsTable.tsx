@@ -17,6 +17,7 @@ type ChainsTableProps = {
   blockchains: Blockchain[]
   selectedBlockchainsIds: string[]
   onDeleteChain: (chainId: string) => void
+  readOnly?: boolean
 }
 
 const getAppEndpointUrl = (
@@ -28,6 +29,7 @@ const ChainsTable = ({
   blockchains,
   selectedBlockchainsIds,
   onDeleteChain,
+  readOnly,
 }: ChainsTableProps) => {
   const theme = useMantineTheme()
   const { appId } = useParams()
@@ -70,15 +72,17 @@ const ChainsTable = ({
                 element: (
                   <Flex gap="lg" justify="flex-end">
                     <CopyTextButton value={getAppEndpointUrl(chain, appId)} />
-                    <ActionIcon
-                      className={commonClasses.grayOutlinedButton}
-                      radius="xl"
-                      size={40}
-                      variant="outline"
-                      onClick={() => onDeleteChain(chain.id)}
-                    >
-                      <LuTrash2 size={18} />
-                    </ActionIcon>
+                    {!readOnly && (
+                      <ActionIcon
+                        className={commonClasses.grayOutlinedButton}
+                        radius="xl"
+                        size={40}
+                        variant="outline"
+                        onClick={() => onDeleteChain(chain.id)}
+                      >
+                        <LuTrash2 size={18} />
+                      </ActionIcon>
+                    )}
                   </Flex>
                 ),
                 cellProps: {

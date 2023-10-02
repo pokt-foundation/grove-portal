@@ -1,4 +1,3 @@
-import { useLoaderData } from ".pnpm/react-router@6.11.0_react@18.2.0/node_modules/react-router"
 import { showNotification } from "@mantine/notifications"
 import { Box, LoadingOverlay } from "@pokt-foundation/pocket-blocks"
 import {
@@ -8,7 +7,7 @@ import {
   MetaFunction,
   redirect,
 } from "@remix-run/node"
-import { useFetcher } from "@remix-run/react"
+import { useFetcher, useLoaderData } from "@remix-run/react"
 import { useEffect } from "react"
 import invariant from "tiny-invariant"
 import ErrorView from "~/components/ErrorView"
@@ -17,6 +16,7 @@ import { initPortalClient } from "~/models/portal/portal.server"
 import { PortalApp, UpdatePortalApp } from "~/models/portal/sdk"
 import AppForm from "~/routes/account_.$accountId.create/components/AppForm"
 import { DataStruct } from "~/types/global"
+import { getUserRole } from "~/utils/applicationUtils"
 import { getErrorMessage } from "~/utils/catchError"
 import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
@@ -47,6 +47,21 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
     if (!getUserPortalAppResponse) {
       return redirect(`/account/${accountId}`)
+    }
+
+    const getUserAccountsResponse = await portal.getUserAccounts({ accepted: true })
+    if (!getUserAccountsResponse.getUserAccounts) {
+      return redirect(`/account/${params.accountId}`)
+    }
+
+    const isUserMember =
+      getUserRole(
+        getUserPortalAppResponse.getUserPortalApp as PortalApp,
+        user.user.portalUserID,
+      ) === "MEMBER"
+
+    if (isUserMember) {
+      return redirect(`/account/${params.accountId}/${appId}`)
     }
 
     return json<DataStruct<UpdateAppLoaderData>>({

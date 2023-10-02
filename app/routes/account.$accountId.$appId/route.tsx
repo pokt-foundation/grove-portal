@@ -1,6 +1,11 @@
-import { redirect } from ".pnpm/react-router@6.11.0_react@18.2.0/node_modules/react-router"
 import { showNotification } from "@mantine/notifications"
-import { LoaderFunction, MetaFunction, json, ActionFunction } from "@remix-run/node"
+import {
+  LoaderFunction,
+  MetaFunction,
+  json,
+  ActionFunction,
+  redirect,
+} from "@remix-run/node"
 import {
   Outlet,
   useActionData,
@@ -140,14 +145,15 @@ export default function AppIdLayout() {
   }
 
   const { app, blockchains } = data
+  const userRole = userRoles.find((r) => r.portalAppID === app.id)?.roleName as RoleNameV2
 
   return (
-    <AppIdLayoutView app={app}>
+    <AppIdLayoutView app={app} userRole={userRole}>
       <Outlet
         context={{
           app,
           blockchains,
-          userRole: userRoles.find((r) => r.portalAppID === app.id)?.roleName,
+          userRole,
         }}
       />
     </AppIdLayoutView>

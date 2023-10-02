@@ -90,7 +90,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 }
 
 export const Application = () => {
-  const { app, blockchains } = useOutletContext<AppIdOutletContext>()
+  const { app, blockchains, userRole } = useOutletContext<AppIdOutletContext>()
   const [searchTerm, setSearchTerm] = useState("")
   const [debouncedSearchTerm] = useDebouncedValue(searchTerm, 200)
 
@@ -109,6 +109,7 @@ export const Application = () => {
       <AppEndpointsTable
         blockchains={blockchains}
         favoriteChains={app.settings.favoritedChainIDs}
+        readOnly={userRole === "MEMBER"}
         searchTerm={debouncedSearchTerm}
       />
     </Box>

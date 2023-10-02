@@ -5,14 +5,17 @@ import AppPlanOverviewCard from "./components/AppPlanOverviewCard"
 import FreeAppPlan from "./components/FreeAppPlan"
 import { AppPlanLoaderData } from "./route"
 import { PayPlanType, RoleNameV2 } from "~/models/portal/sdk"
-import { getUserRole } from "~/utils/applicationUtils"
 
-export const PlanView = (data: AppPlanLoaderData) => {
-  const { app, latestInvoice, latestInvoiceRelays, subscription, usageRecords, user } =
-    data
+type PlanViewProps = AppPlanLoaderData & { userRole: RoleNameV2 }
 
-  const userRole = getUserRole(app, user.portalUserID)
-
+export const PlanView = ({
+  app,
+  latestInvoice,
+  latestInvoiceRelays,
+  subscription,
+  usageRecords,
+  userRole,
+}: PlanViewProps) => {
   return (
     <Box py={20}>
       {app.legacyFields.planType !== PayPlanType.PayAsYouGoV0 &&
@@ -40,7 +43,7 @@ export const PlanView = (data: AppPlanLoaderData) => {
             app={app}
             subscription={subscription}
             usageRecords={usageRecords}
-            userRole={userRole as RoleNameV2}
+            userRole={userRole}
           />
         )}
         {latestInvoice && latestInvoiceRelays && usageRecords && (
@@ -48,6 +51,7 @@ export const PlanView = (data: AppPlanLoaderData) => {
             invoice={latestInvoice}
             relaysLatestInvoice={latestInvoiceRelays}
             usageRecords={usageRecords}
+            userRole={userRole}
           />
         )}
       </SimpleGrid>

@@ -11,10 +11,11 @@ import useCommonStyles from "~/styles/commonStyles"
 
 type SimpleStringTableProps = {
   data: string[]
+  readOnly?: boolean
   onDelete: (value: string) => void
 }
 
-const SimpleStringTable = ({ data, onDelete }: SimpleStringTableProps) => {
+const SimpleStringTable = ({ data, readOnly, onDelete }: SimpleStringTableProps) => {
   const theme = useMantineTheme()
   const { classes: commonClasses } = useCommonStyles()
 
@@ -35,15 +36,17 @@ const SimpleStringTable = ({ data, onDelete }: SimpleStringTableProps) => {
               element: (
                 <Flex gap="lg" justify="flex-end">
                   <CopyTextButton value={value} />
-                  <ActionIcon
-                    className={commonClasses.grayOutlinedButton}
-                    radius="xl"
-                    size={40}
-                    variant="outline"
-                    onClick={() => onDelete(value)}
-                  >
-                    <LuTrash2 size={18} />
-                  </ActionIcon>
+                  {!readOnly && (
+                    <ActionIcon
+                      className={commonClasses.grayOutlinedButton}
+                      radius="xl"
+                      size={40}
+                      variant="outline"
+                      onClick={() => onDelete(value)}
+                    >
+                      <LuTrash2 size={18} />
+                    </ActionIcon>
+                  )}
                 </Flex>
               ),
               cellProps: {

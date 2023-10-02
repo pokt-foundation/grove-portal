@@ -1,6 +1,6 @@
 import { MetaFunction } from "@remix-run/node"
 import { useOutletContext } from "@remix-run/react"
-import UserOrganizations from "./view"
+import UserAccounts from "./view"
 import ErrorView from "~/components/ErrorView"
 import { UserAccountLoaderData } from "~/routes/user/route"
 import { DataStruct } from "~/types/global"
@@ -8,11 +8,11 @@ import { seo_title_append } from "~/utils/seo"
 
 export const meta: MetaFunction = () => {
   return {
-    title: `User Organizations ${seo_title_append}`,
+    title: `User Accounts ${seo_title_append}`,
   }
 }
 
-export default function Organizations() {
+export default function Accounts() {
   const { data, error, message } = useOutletContext<DataStruct<UserAccountLoaderData>>()
 
   if (error) {
@@ -21,5 +21,5 @@ export default function Organizations() {
 
   const { accounts, user } = data
 
-  return <UserOrganizations accounts={accounts} user={user} />
+  return <UserAccounts accounts={accounts} user={user} />
 }

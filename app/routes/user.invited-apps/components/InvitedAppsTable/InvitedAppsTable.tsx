@@ -13,7 +13,7 @@ type InvitedAppsTableProps = { apps: InvitedApp[]; user: User }
 const InvitedAppsTable = ({ apps, user }: InvitedAppsTableProps) => {
   return (
     <DataTable
-      columns={["App Name", "Role", "Status", "Organization", ""]}
+      columns={["App Name", "Role", "Status", "Account", ""]}
       data={apps.map((app) => {
         return {
           appName: {
@@ -41,7 +41,7 @@ const InvitedAppsTable = ({ apps, user }: InvitedAppsTableProps) => {
               </Text>
             ),
           },
-          organization: {
+          account: {
             element: (
               <Group>
                 <Identicon

@@ -9,9 +9,9 @@ import { Account, User } from "~/models/portal/sdk"
 import useCommonStyles from "~/styles/commonStyles"
 import isUserAccountOwner from "~/utils/user"
 
-type OrganizationsTableProps = { accounts: Account[]; user: User }
+type AccountsTableProps = { accounts: Account[]; user: User }
 
-const OrganizationsTable = ({ accounts, user }: OrganizationsTableProps) => {
+const AccountsTable = ({ accounts, user }: AccountsTableProps) => {
   const { classes: commonClasses } = useCommonStyles()
 
   const sortedAccounts = useMemo(() => {
@@ -27,7 +27,7 @@ const OrganizationsTable = ({ accounts, user }: OrganizationsTableProps) => {
 
   return sortedAccounts.length > 0 ? (
     <DataTable
-      columns={["Organization", "No. Members", "No. Applications", ""]}
+      columns={["Account", "No. Members", "No. Applications", ""]}
       data={sortedAccounts.map((account) => {
         const isAccountOwner = isUserAccountOwner({
           accounts,
@@ -35,13 +35,10 @@ const OrganizationsTable = ({ accounts, user }: OrganizationsTableProps) => {
           user,
         })
         return {
-          organization: {
+          account: {
             element: (
               <Group>
-                <Tooltip
-                  disabled={!isAccountOwner}
-                  label="You are the organization owner"
-                >
+                <Tooltip disabled={!isAccountOwner} label="You are the account owner">
                   <Indicator disabled={!isAccountOwner} label={<LuCrown />} size={16}>
                     <Identicon
                       alt={`${account.id} profile picture`}
@@ -96,7 +93,7 @@ const OrganizationsTable = ({ accounts, user }: OrganizationsTableProps) => {
                     )}
                     <Menu.Item icon={<LuArrowUpRight size={18} />}>
                       <Link to={`/account/${account.id}`}>
-                        <Text tt="capitalize">Go to organization</Text>
+                        <Text tt="capitalize">Go to account</Text>
                       </Link>
                     </Menu.Item>
                   </Menu.Dropdown>
@@ -111,4 +108,4 @@ const OrganizationsTable = ({ accounts, user }: OrganizationsTableProps) => {
   ) : null
 }
 
-export default OrganizationsTable
+export default AccountsTable

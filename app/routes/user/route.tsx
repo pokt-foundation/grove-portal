@@ -62,8 +62,8 @@ export default function UserAccount() {
       label: "Profile",
     },
     {
-      to: "organizations",
-      label: "Organizations",
+      to: "accounts",
+      label: "Accounts",
     },
     {
       to: "invited-apps",

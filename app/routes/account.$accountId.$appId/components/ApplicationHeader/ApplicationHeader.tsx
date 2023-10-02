@@ -37,8 +37,8 @@ const ApplicationHeader = ({ app, userRole }: ApplicationHeaderProps) => {
           <Text fw={600} fz={24}>
             {app.name}
           </Text>
-          <Group spacing={8}>
-            <Text mr={12}>{getPlanName(app.legacyFields.planType)}</Text>
+          <Group spacing={4}>
+            <Text mr="xl">{getPlanName(app.legacyFields.planType)}</Text>
             <Text>App ID</Text>
             <CopyButton value={app.id}>
               {({ copied, copy }) => (

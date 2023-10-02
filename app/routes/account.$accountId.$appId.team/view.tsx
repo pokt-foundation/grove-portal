@@ -38,8 +38,7 @@ function TeamView({ actionData, app, userRole, user }: TeamViewProps) {
 
   return (
     <Box>
-      <Flex align="center" justify="space-between" my="xl">
-        <Title order={5}>Team members</Title>
+      <Flex align="center" justify="flex-end" my="xl">
         {userRole !== RoleNameV2.Member && (
           <Button size="md" onClick={openInviteMemberModal}>
             Invite new member

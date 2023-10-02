@@ -96,8 +96,7 @@ export const Application = () => {
 
   return (
     <Box>
-      <Flex align="center" justify="space-between" my="xl">
-        <Title order={5}>Endpoints</Title>
+      <Flex align="center" justify="flex-end" my="xl">
         <Input
           icon={<LuSearch />}
           placeholder="Search network"

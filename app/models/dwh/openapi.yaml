@@ -89,7 +89,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
 
-  /analytics/relays/daily/{category}:
+  /analytics/relays/total/{category}:
     get:
       tags:
         - "user"
@@ -335,7 +335,7 @@ components:
           type: number
           format: float
 
-    AnalyticsRelaysDaily:
+    AnalyticsRelaysTotal:
       type: object
       properties:
         from:
@@ -432,7 +432,7 @@ components:
           items:
             oneOf:
               - $ref: "#/components/schemas/AnalyticsRelaysAggregated"
-              - $ref: "#/components/schemas/AnalyticsRelaysDaily"
+              - $ref: "#/components/schemas/AnalyticsRelaysTotal"
               - $ref: "#/components/schemas/AnalyticsRelaysTransactions"
               - $ref: "#/components/schemas/AnalyticsRelaysErrors"
               - $ref: "#/components/schemas/Logs"

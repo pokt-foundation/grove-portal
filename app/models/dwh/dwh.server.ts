@@ -34,7 +34,7 @@ export const getTotalRelays = async ({
   const dwh = initDwhClient()
 
   let total
-  const totalReponse = await dwh.analyticsRelaysDailyCategoryGet({
+  const totalReponse = await dwh.analyticsRelaysTotalCategoryGet({
     category,
     categoryValue,
     from: dayjs().subtract(days, "day").toDate(),
@@ -66,22 +66,24 @@ export const getAggregateRelays = async ({
   const dwh = initDwhClient()
 
   let aggregate
-  const aggregateResponse = await dwh.analyticsRelaysAggregatedCategoryGetRaw({
+  const aggregateResponse = await dwh.analyticsRelaysAggregatedCategoryGet({
     category,
     categoryValue,
     from: dayjs().subtract(days, "day").toDate(),
     to: dayjs().toDate(),
   })
 
-  const aggregateJsonData = (await aggregateResponse.raw.json()) as {
-    Data: AnalyticsRelaysAggregated[]
-  }
+  console.log(aggregateResponse)
 
-  const aggregateData = aggregateJsonData.Data.map(
-    ResponseDataInnerFromJSON,
-  ) as AnalyticsRelaysAggregated[]
+  // const aggregateJsonData = (await aggregateResponse.raw.json()) as {
+  //   Data: AnalyticsRelaysAggregated[]
+  // }
 
-  if (!aggregateData) {
+  // const aggregateData = aggregateJsonData.Data.map(
+  //   ResponseDataInnerFromJSON,
+  // ) as AnalyticsRelaysAggregated[]
+
+  if (!aggregateResponse.data) {
     console.log("empty aggregate data")
     // empty state data
     aggregate = Array.from(Array(days).keys())
@@ -94,7 +96,9 @@ export const getAggregateRelays = async ({
       }))
       .reverse()
   } else {
-    aggregate = aggregateData.sort((a, b) => (dayjs(a.date).isBefore(b.date) ? -1 : 1))
+    aggregate = (aggregateResponse.data as AnalyticsRelaysAggregated[]).sort((a, b) =>
+      dayjs(a.date).isBefore(b.date) ? -1 : 1,
+    )
 
     // handle days with no data
     if (aggregate.length < days) {
@@ -102,9 +106,9 @@ export const getAggregateRelays = async ({
         .reverse()
         .map((index) => {
           let day = dayjs().subtract(index, "day").toDate()
-          const dateExists = aggregateData.find((data) =>
-            dayjs(data.date).isSame(day, "day"),
-          )
+          const dateExists = (
+            aggregateResponse.data as AnalyticsRelaysAggregated[]
+          )?.find((data) => dayjs(data.date).isSame(day, "day"))
           if (dateExists) {
             return dateExists
           } else {

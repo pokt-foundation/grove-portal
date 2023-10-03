@@ -1,27 +1,24 @@
 import {
   Card,
   Group,
-  Button,
-  // Select,
   SimpleGrid,
   Stack,
   Text,
-  useMantineTheme,
   Badge,
 } from "@pokt-foundation/pocket-blocks"
 import { json, LoaderFunction, MetaFunction } from "@remix-run/node"
-import { Form, useLoaderData, useNavigation, useSearchParams } from "@remix-run/react"
+import { useLoaderData } from "@remix-run/react"
 import dayjs from "dayjs"
 import invariant from "tiny-invariant"
 import { AccountAppsOverview } from "./components/AccountAppsOverview"
+import { ChartPeriodSelector } from "./components/ChartPeriodSelector"
 import { EmptyState } from "./components/EmptyState"
-// import OverviewBarChart from "./components/OverviewBarChart"
 import { OverviewSparkline } from "./components/OverviewSparkline"
 import ErrorView from "~/components/ErrorView"
 import TitledCard from "~/components/TitledCard"
 import { getAggregateRelays, getTotalRelays } from "~/models/dwh/dwh.server"
 import { AnalyticsRelaysAggregated } from "~/models/dwh/sdk/models/AnalyticsRelaysAggregated"
-import { AnalyticsRelaysDaily } from "~/models/dwh/sdk/models/AnalyticsRelaysDaily"
+import { AnalyticsRelaysTotal } from "~/models/dwh/sdk/models/AnalyticsRelaysTotal"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { Account, PortalApp } from "~/models/portal/sdk"
 import type { DataStruct } from "~/types/global"
@@ -38,7 +35,7 @@ export const meta: MetaFunction = () => {
 
 type AccountInsightsData = {
   account: Account
-  total: AnalyticsRelaysDaily
+  total: AnalyticsRelaysTotal
   aggregate: AnalyticsRelaysAggregated[]
 }
 
@@ -74,7 +71,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     return json<DataStruct<AccountInsightsData>>({
       data: {
         account: account.getUserAccount as Account,
-        total: (total as AnalyticsRelaysDaily) ?? undefined,
+        total: (total as AnalyticsRelaysTotal) ?? undefined,
         aggregate: (aggregate as AnalyticsRelaysAggregated[]) ?? undefined, //dailyReponse.data as AnalyticsRelaysDaily[],
       },
       error: false,
@@ -86,68 +83,6 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       message: getErrorMessage(error),
     })
   }
-}
-
-const InsightsDaysPeriodSelector = () => {
-  const theme = useMantineTheme()
-  const navigation = useNavigation()
-  const [searchParams] = useSearchParams()
-  const daysParam = searchParams.get("days") ?? "7"
-  // Static component for now
-  return (
-    <Form>
-      <Button.Group>
-        <Button
-          bg={daysParam === "7" ? theme.colors.dark[7] : theme.colors.dark[9]}
-          loading={!!(daysParam === "7" && navigation.state === "loading")}
-          name="days"
-          radius="sm"
-          size="xs"
-          type="submit"
-          value={7}
-          variant="default"
-        >
-          7d
-        </Button>
-        <Button
-          bg={daysParam === "30" ? theme.colors.dark[7] : theme.colors.dark[9]}
-          loading={!!(daysParam === "30" && navigation.state === "loading")}
-          name="days"
-          radius="sm"
-          size="xs"
-          type="submit"
-          value={30}
-          variant="default"
-        >
-          30d
-        </Button>
-        <Button
-          bg={daysParam === "60" ? theme.colors.dark[7] : theme.colors.dark[9]}
-          loading={!!(daysParam === "60" && navigation.state === "loading")}
-          name="days"
-          radius="sm"
-          size="xs"
-          type="submit"
-          value={60}
-          variant="default"
-        >
-          60d
-        </Button>
-        <Button
-          bg={daysParam === "90" ? theme.colors.dark[7] : theme.colors.dark[9]}
-          loading={!!(daysParam === "90" && navigation.state === "loading")}
-          name="days"
-          radius="sm"
-          size="xs"
-          type="submit"
-          value={90}
-          variant="default"
-        >
-          90d
-        </Button>
-      </Button.Group>
-    </Form>
-  )
 }
 
 export default function AccountInsights() {
@@ -188,7 +123,7 @@ export default function AccountInsights() {
         header={() => (
           <Group position="apart">
             <Text weight={600}>Organization Overview</Text>
-            <InsightsDaysPeriodSelector />
+            <ChartPeriodSelector />
           </Group>
         )}
       >
@@ -207,7 +142,7 @@ export default function AccountInsights() {
                   {commify(total?.countTotal ?? 0)}
                 </Badge>
               </Text>
-              <InsightsDaysPeriodSelector />
+              <ChartPeriodSelector />
             </Group>
           )}
         >
@@ -226,7 +161,7 @@ export default function AccountInsights() {
                     {commify(total?.avgLatency ?? 0)}ms
                   </Badge>
                 </Text>
-                <InsightsDaysPeriodSelector />
+                <ChartPeriodSelector />
               </Group>
             )}
           >
@@ -243,7 +178,7 @@ export default function AccountInsights() {
                     {commify(total?.rateSuccess ?? 0)}%
                   </Badge>
                 </Text>
-                <InsightsDaysPeriodSelector />
+                <ChartPeriodSelector />
               </Group>
             )}
           >
@@ -261,7 +196,7 @@ export default function AccountInsights() {
                   {commify(total?.rateError ?? 0)}%
                 </Badge>
               </Text>
-              <InsightsDaysPeriodSelector />
+              <ChartPeriodSelector />
             </Group>
           )}
         >

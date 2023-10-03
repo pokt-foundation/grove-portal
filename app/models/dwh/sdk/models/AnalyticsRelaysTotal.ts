@@ -16,67 +16,74 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface AnalyticsRelaysAggregated
+ * @interface AnalyticsRelaysTotal
  */
-export interface AnalyticsRelaysAggregated {
+export interface AnalyticsRelaysTotal {
     /**
      * 
      * @type {Date}
-     * @memberof AnalyticsRelaysAggregated
+     * @memberof AnalyticsRelaysTotal
      */
-    date?: Date;
+    from?: Date;
+    /**
+     * 
+     * @type {Date}
+     * @memberof AnalyticsRelaysTotal
+     */
+    to?: Date;
     /**
      * 
      * @type {string}
-     * @memberof AnalyticsRelaysAggregated
+     * @memberof AnalyticsRelaysTotal
      */
     categoryValue?: string;
     /**
      * 
      * @type {number}
-     * @memberof AnalyticsRelaysAggregated
+     * @memberof AnalyticsRelaysTotal
      */
     rateSuccess?: number;
     /**
      * 
      * @type {number}
-     * @memberof AnalyticsRelaysAggregated
+     * @memberof AnalyticsRelaysTotal
      */
     rateError?: number;
     /**
      * 
      * @type {number}
-     * @memberof AnalyticsRelaysAggregated
+     * @memberof AnalyticsRelaysTotal
      */
     countTotal?: number;
     /**
      * 
      * @type {number}
-     * @memberof AnalyticsRelaysAggregated
+     * @memberof AnalyticsRelaysTotal
      */
     avgLatency?: number;
 }
 
 /**
- * Check if a given object implements the AnalyticsRelaysAggregated interface.
+ * Check if a given object implements the AnalyticsRelaysTotal interface.
  */
-export function instanceOfAnalyticsRelaysAggregated(value: object): boolean {
+export function instanceOfAnalyticsRelaysTotal(value: object): boolean {
     let isInstance = true;
 
     return isInstance;
 }
 
-export function AnalyticsRelaysAggregatedFromJSON(json: any): AnalyticsRelaysAggregated {
-    return AnalyticsRelaysAggregatedFromJSONTyped(json, false);
+export function AnalyticsRelaysTotalFromJSON(json: any): AnalyticsRelaysTotal {
+    return AnalyticsRelaysTotalFromJSONTyped(json, false);
 }
 
-export function AnalyticsRelaysAggregatedFromJSONTyped(json: any, ignoreDiscriminator: boolean): AnalyticsRelaysAggregated {
+export function AnalyticsRelaysTotalFromJSONTyped(json: any, ignoreDiscriminator: boolean): AnalyticsRelaysTotal {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'date': !exists(json, 'date') ? undefined : (new Date(json['date'])),
+        'from': !exists(json, 'from') ? undefined : (new Date(json['from'])),
+        'to': !exists(json, 'to') ? undefined : (new Date(json['to'])),
         'categoryValue': !exists(json, 'category_value') ? undefined : json['category_value'],
         'rateSuccess': !exists(json, 'rate_success') ? undefined : json['rate_success'],
         'rateError': !exists(json, 'rate_error') ? undefined : json['rate_error'],
@@ -85,7 +92,7 @@ export function AnalyticsRelaysAggregatedFromJSONTyped(json: any, ignoreDiscrimi
     };
 }
 
-export function AnalyticsRelaysAggregatedToJSON(value?: AnalyticsRelaysAggregated | null): any {
+export function AnalyticsRelaysTotalToJSON(value?: AnalyticsRelaysTotal | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -94,7 +101,8 @@ export function AnalyticsRelaysAggregatedToJSON(value?: AnalyticsRelaysAggregate
     }
     return {
         
-        'date': value.date === undefined ? undefined : (value.date.toISOString().substring(0,10)),
+        'from': value.from === undefined ? undefined : (value.from.toISOString().substring(0,10)),
+        'to': value.to === undefined ? undefined : (value.to.toISOString().substring(0,10)),
         'category_value': value.categoryValue,
         'rate_success': value.rateSuccess,
         'rate_error': value.rateError,

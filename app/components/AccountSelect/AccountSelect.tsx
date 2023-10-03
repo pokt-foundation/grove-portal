@@ -82,6 +82,8 @@ const AccountSelect = ({ accounts }: AccountSelectProps) => {
       )}
       {menuAccounts.length > 1 && (
         <Menu.Dropdown>
+          <Menu.Label>My Accounts</Menu.Label>
+          <Menu.Divider />
           {menuAccounts.map((account) => (
             <Menu.Item key={account.id} disabled={account.id === accountId} p={2}>
               <NavLink to={`/account/${account.id}`}>

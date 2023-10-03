@@ -21,7 +21,7 @@ import {
 import { RiDiscordLine } from "react-icons/ri"
 import Identicon from "~/components/Identicon"
 import { User } from "~/models/portal/sdk"
-import { DISCORD_PATH } from "~/utils/utils"
+import { DISCORD_PATH, DOCS_PATH } from "~/utils/utils"
 
 type AccountDrawerProps = {
   user?: User
@@ -52,7 +52,7 @@ const DrawerLink = ({ setIsDrawerOpen, external, ...props }: DrawerLinkProps) =>
 const drawerExternalLinks = [
   {
     label: "Documentation",
-    to: "https://docs.portal.pokt.network/",
+    to: DOCS_PATH,
     icon: <LuBook size={18} />,
   },
   {

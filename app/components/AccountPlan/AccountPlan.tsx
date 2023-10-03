@@ -4,7 +4,6 @@ import {
   Button,
   Badge,
   List,
-  useMantineTheme,
   Stack,
   Title,
   Box,
@@ -21,15 +20,8 @@ type AccountPlanProps = {
 }
 
 const AutoScaleList = () => {
-  const theme = useMantineTheme()
-
   return (
-    <List
-      center
-      icon={<LuCheck color={theme.colors.blue[7]} size="18px" />}
-      size="sm"
-      spacing="xl"
-    >
+    <List center icon={<LuCheck size="18px" />} size="sm" spacing="xl">
       <List.Item>100,000 relays free per day</List.Item>
       <List.Item>Auto-Scale at $7.456 / additional million</List.Item>
       <List.Item>No throughput limit</List.Item>
@@ -104,7 +96,7 @@ export const AccountPlan = ({
           {isEnterprise && "Custom"}
         </Badge>
         <Title order={3}>
-          {isFree && "Free"}
+          {isFree && "Starter"}
           {isPay && "Auto-Scale"}
           {isEnterprise && "Enterprise"}
         </Title>
@@ -128,7 +120,7 @@ export const AccountPlan = ({
           variant="outline"
           onClick={onContinue}
         >
-          {disableFree ? "Current plan" : "Continue with Free"}
+          {disableFree ? "Current plan" : "Continue with Starter"}
         </Button>
       )}
       {isPay && (

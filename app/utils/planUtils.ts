@@ -26,7 +26,7 @@ export function isLegacyPlan(planType: PayPlanType) {
 export const getPlanName = (planType: PayPlanType) => {
   switch (planType) {
     case PayPlanType.FreetierV0: {
-      return "Free"
+      return "Starter"
     }
     case PayPlanType.PayAsYouGoV0: {
       return "Auto-Scale"

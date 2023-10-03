@@ -40,14 +40,13 @@ const commonLinkStyles = (theme: MantineTheme): CSSObject => ({
   color: theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
   "&:hover": {
     backgroundColor:
-      theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.gray[0],
+      theme.colorScheme === "dark" ? "rgba(37,38,43,0.50)" : "rgba(250,250,250,0.50)",
     textDecoration: "none",
   },
 
   "&.active": {
     backgroundColor:
       theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.colors.gray[0],
-    fontWeight: 600,
   },
 })
 

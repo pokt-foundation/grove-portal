@@ -1,6 +1,9 @@
+import { Divider } from "@mantine/core"
 import { Text, Switch, Group, Stack } from "@pokt-foundation/pocket-blocks"
 import { useFetcher } from "@remix-run/react"
+import React from "react"
 import { useCallback } from "react"
+import useActionNotification from "~/hooks/useActionNotification"
 import { PortalApp, RoleNameV2 } from "~/models/portal/sdk"
 import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
 import { formatNumberToSICompact } from "~/utils/formattingUtils"
@@ -68,33 +71,38 @@ export default function AppNotificationsAlert({
     )
   }
 
+  useActionNotification(fetcher.data)
+
   return (
-    <Stack>
-      <Text pb={16} pt={36} px={20}>
+    <Stack pt={36}>
+      <Text pb={16}>
         Set up usage alerts to be warned when you are approaching your relay limits. We
         will send an email when your usage crosses the thresholds specified below.
       </Text>
       <Stack my={16} spacing={32}>
-        {NOTIFICATIONS_ALERT_LEVELS.map((level) => (
-          <Group key={level} position="apart">
-            <Text px={20}>
-              {getUsagePercentage(level)} of{" "}
-              {formatNumberToSICompact(FREE_TIER_MAX_RELAYS)} relays per day
-            </Text>
-            <Switch
-              defaultChecked={getNotificationCheckedState(level)}
-              disabled={fetcher.state === "submitting" || userRole === "MEMBER"}
-              name={level}
-              onChange={(event) => {
-                updateNotification(level, event.currentTarget.value)
-                trackEvent({
-                  category: AnalyticCategories.app,
-                  action: AnalyticActions.app_notifications,
-                  label: level,
-                })
-              }}
-            />
-          </Group>
+        {NOTIFICATIONS_ALERT_LEVELS.map((level, index) => (
+          <React.Fragment key={level}>
+            <Group position="apart" px={20}>
+              <Text>
+                {getUsagePercentage(level)} of{" "}
+                {formatNumberToSICompact(FREE_TIER_MAX_RELAYS)} relays per day
+              </Text>
+              <Switch
+                defaultChecked={getNotificationCheckedState(level)}
+                disabled={userRole === "MEMBER"}
+                name={level}
+                onChange={(event) => {
+                  updateNotification(level, event.currentTarget.value)
+                  trackEvent({
+                    category: AnalyticCategories.app,
+                    action: AnalyticActions.app_notifications,
+                    label: level,
+                  })
+                }}
+              />
+            </Group>
+            {index !== NOTIFICATIONS_ALERT_LEVELS.length - 1 && <Divider />}
+          </React.Fragment>
         ))}
       </Stack>
     </Stack>

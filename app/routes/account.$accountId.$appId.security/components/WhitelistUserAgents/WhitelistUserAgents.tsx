@@ -20,7 +20,7 @@ const WhitelistUserAgents = ({
   const { openFullScreenModal } = useModals()
 
   return (
-    <Box px={40} py={32}>
+    <Box py={32}>
       <Stack align="flex-start">
         <Text fw={600}>Whitelist User-Agents</Text>
         <Text>

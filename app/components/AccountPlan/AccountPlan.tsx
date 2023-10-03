@@ -15,7 +15,7 @@ import { PayPlanTypeV2 } from "~/models/portal/sdk"
 import useCommonStyles from "~/styles/commonStyles"
 
 type AccountPlanProps = {
-  type: PayPlanTypeV2.PayAsYouGoV0 | PayPlanTypeV2.FreetierV0
+  type: PayPlanTypeV2.PayAsYouGoV0 | PayPlanTypeV2.FreetierV0 | PayPlanTypeV2.Enterprise
   onContinue?: () => void
   disableFree?: boolean
 }
@@ -32,6 +32,22 @@ const AutoScaleList = () => {
     >
       <List.Item>100,000 relays free per day</List.Item>
       <List.Item>Auto-Scale at $7.456 / additional million</List.Item>
+      <List.Item>No throughput limit</List.Item>
+      {/*<List.Item>5 Applications</List.Item>*/}
+      {/*<List.Item>10 Team Members</List.Item>*/}
+      <List.Item>Direct Customer support</List.Item>
+      <List.Item>Access all supported chains</List.Item>
+      <List.Item>Global region support</List.Item>
+      <List.Item>ETH Trace supported</List.Item>
+    </List>
+  )
+}
+
+const EnterpriseList = () => {
+  return (
+    <List center icon={<LuCheck size="18px" />} size="sm" spacing="xl">
+      <List.Item>Custom relays per day</List.Item>
+      <List.Item>Custom volume plans</List.Item>
       <List.Item>No throughput limit</List.Item>
       {/*<List.Item>5 Applications</List.Item>*/}
       {/*<List.Item>10 Team Members</List.Item>*/}
@@ -63,6 +79,8 @@ export const AccountPlan = ({
   disableFree = false,
 }: AccountPlanProps) => {
   const isFree = type === PayPlanTypeV2.FreetierV0
+  const isPay = type === PayPlanTypeV2.PayAsYouGoV0
+  const isEnterprise = type === PayPlanTypeV2.Enterprise
   const { classes: commonClasses } = useCommonStyles()
 
   return (
@@ -72,25 +90,35 @@ export const AccountPlan = ({
       shadow="sm"
       sx={(theme: MantineTheme) => ({
         ...(theme.colorScheme === "dark" && {
-          borderColor: isFree ? theme.colors.gray[8] : theme.colors.green[7],
+          borderColor: isPay ? theme.colors.green[7] : theme.colors.gray[8],
         }),
         ...(theme.colorScheme === "light" && {
-          borderColor: isFree ? theme.colors.gray[3] : theme.colors.green[7],
+          borderColor: isPay ? theme.colors.green[7] : theme.colors.gray[3],
         }),
       })}
-      w="360px"
     >
       <Stack align="center" mb="xl" spacing="xl">
-        <Badge>{isFree ? "Builder" : "Pay as you go"}</Badge>
-        <Title order={3}>{isFree ? "Free" : "Auto-Scale"}</Title>
+        <Badge>
+          {isFree && "Builder"}
+          {isPay && "Pay as you go"}
+          {isEnterprise && "Custom"}
+        </Badge>
+        <Title order={3}>
+          {isFree && "Free"}
+          {isPay && "Auto-Scale"}
+          {isEnterprise && "Enterprise"}
+        </Title>
       </Stack>
       <Text align="center" py="lg">
-        {isFree
-          ? "For developers looking to get started reading and writing data from any integrated chains."
-          : "For projects needing to scale, pay only for the RPC requests above the free threshold."}
+        {isFree &&
+          "For developers looking to get started reading and writing data from any integrated chains."}
+        {isPay &&
+          "For projects needing to scale, pay only for the RPC requests above the free threshold."}
+        {isEnterprise &&
+          "Drive innovation and partner with the top decentralized infrastructure in all web3."}
       </Text>
 
-      {isFree ? (
+      {isFree && (
         <Button
           fullWidth
           classNames={{ root: commonClasses.grayOutlinedButton }}
@@ -102,13 +130,29 @@ export const AccountPlan = ({
         >
           {disableFree ? "Current plan" : "Continue with Free"}
         </Button>
-      ) : (
+      )}
+      {isPay && (
         <Button fullWidth radius="xl" onClick={onContinue}>
           Continue with Auto-Scale
         </Button>
       )}
+      {isEnterprise && (
+        <Button
+          fullWidth
+          classNames={{ root: commonClasses.grayOutlinedButton }}
+          color="gray"
+          radius="xl"
+          onClick={onContinue}
+        >
+          Talk to Sales
+        </Button>
+      )}
 
-      <Box mt="md">{isFree ? <FreeList /> : <AutoScaleList />}</Box>
+      <Box mt="md">
+        {isFree && <FreeList />}
+        {isPay && <AutoScaleList />}
+        {isEnterprise && <EnterpriseList />}
+      </Box>
     </Card>
   )
 }

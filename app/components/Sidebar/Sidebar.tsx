@@ -88,7 +88,7 @@ export const Sidebar = ({ apps, hidden, canCreateApps }: SidebarProps) => {
           <NavButton
             icon={collapsed ? LuChevronsRight : LuChevronsLeft}
             iconOnly={collapsed}
-            label="Collapse sidebar"
+            label={`${collapsed ? "Expand" : "Collapse"} sidebar`}
             onClick={() => setCollapsed(!collapsed)}
           />
         </Navbar.Section>

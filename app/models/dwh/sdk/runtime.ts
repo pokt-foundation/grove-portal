@@ -152,6 +152,7 @@ export class BaseAPI {
     if (response && response.status >= 200 && response.status < 300) {
       return response
     }
+    console.log(response)
     throw new ResponseError(response, "Response returned an error code")
   }
 

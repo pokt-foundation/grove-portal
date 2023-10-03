@@ -81,16 +81,6 @@ export const getAggregateRelays = async ({
       throw new Error(error)
     })
 
-  console.log(aggregateResponse)
-
-  // const aggregateJsonData = (await aggregateResponse.raw.json()) as {
-  //   Data: AnalyticsRelaysAggregated[]
-  // }
-
-  // const aggregateData = aggregateJsonData.Data.map(
-  //   ResponseDataInnerFromJSON,
-  // ) as AnalyticsRelaysAggregated[]
-
   if (!aggregateResponse.data) {
     console.log("empty aggregate data")
     // empty state data

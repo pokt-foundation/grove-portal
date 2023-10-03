@@ -34,12 +34,16 @@ export const getTotalRelays = async ({
   const dwh = initDwhClient()
 
   let total
-  const totalReponse = await dwh.analyticsRelaysTotalCategoryGet({
-    category,
-    categoryValue,
-    from: dayjs().subtract(days, "day").toDate(),
-    to: dayjs().toDate(),
-  })
+  const totalReponse = await dwh
+    .analyticsRelaysTotalCategoryGet({
+      category,
+      categoryValue,
+      from: dayjs().subtract(days, "day").toDate(),
+      to: dayjs().toDate(),
+    })
+    .catch((error) => {
+      throw new Error(error)
+    })
 
   if (!totalReponse.data || totalReponse.data.length < 1) {
     // empty state data
@@ -66,12 +70,16 @@ export const getAggregateRelays = async ({
   const dwh = initDwhClient()
 
   let aggregate
-  const aggregateResponse = await dwh.analyticsRelaysAggregatedCategoryGet({
-    category,
-    categoryValue,
-    from: dayjs().subtract(days, "day").toDate(),
-    to: dayjs().toDate(),
-  })
+  const aggregateResponse = await dwh
+    .analyticsRelaysAggregatedCategoryGet({
+      category,
+      categoryValue,
+      from: dayjs().subtract(days, "day").toDate(),
+      to: dayjs().toDate(),
+    })
+    .catch((error) => {
+      throw new Error(error)
+    })
 
   console.log(aggregateResponse)
 

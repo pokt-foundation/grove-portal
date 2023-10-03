@@ -14,6 +14,7 @@ function arrayBufferToBufferCycle(ab: ArrayBuffer) {
 }
 
 export const action: ActionFunction = async ({ request }) => {
+  const url = new URL(request.url)
   // This is your Stripe CLI webhook secret for testing your endpoint locally.
   const endpointSecret = getRequiredServerEnvVar("STRIPE_WEBHOOK_SECRET")
 
@@ -62,18 +63,18 @@ export const action: ActionFunction = async ({ request }) => {
             metadata: sessionCompleted.metadata,
           })
 
-          // update application plan and store subscription id
-          await fetch("/api/admin/update-plan", {
-            method: "post",
-            headers: {
-              "Content-Type": "Application/Json",
-            },
-            body: JSON.stringify({
-              id: sessionCompleted.metadata?.endpoint_id,
-              type: PayPlanType.PayAsYouGoV0,
-              subscription: sessionCompleted.subscription,
-            }),
-          })
+          if (sessionCompleted.metadata?.endpoint_id) {
+            const formData = new FormData()
+            formData.set("id", sessionCompleted.metadata.endpoint_id)
+            formData.set("type", PayPlanType.PayAsYouGoV0)
+            formData.set("subscription", sessionCompleted.subscription)
+
+            // update application plan and store subscription id
+            await fetch(`${url.origin}/api/admin/update-plan`, {
+              method: "post",
+              body: formData,
+            })
+          }
         }
 
         break
@@ -83,16 +84,14 @@ export const action: ActionFunction = async ({ request }) => {
 
         const appIdDeleted = subscriptionDeleted.metadata.endpoint_id
 
+        const formData = new FormData()
+        formData.set("id", appIdDeleted)
+        formData.set("type", PayPlanType.FreetierV0)
+        formData.set("subscription", "")
+
         await fetch("/api/admin/update-plan", {
           method: "post",
-          headers: {
-            "Content-Type": "Application/Json",
-          },
-          body: JSON.stringify({
-            id: appIdDeleted,
-            type: PayPlanType.FreetierV0,
-            subscription: "",
-          }),
+          body: formData,
         })
 
         break

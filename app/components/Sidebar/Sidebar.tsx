@@ -17,7 +17,7 @@ import {
 } from "~/components/Sidebar/components"
 import { PortalApp } from "~/models/portal/sdk"
 import useCommonStyles from "~/styles/commonStyles"
-import { DISCORD_PATH } from "~/utils/utils"
+import { DISCORD_PATH, DOCS_PATH } from "~/utils/utils"
 
 type SidebarProps = {
   apps: PortalApp[] | null
@@ -41,7 +41,7 @@ const getStaticRoutes = (
     end: true,
   },
   docs: {
-    to: "https://docs.portal.pokt.network/",
+    to: DOCS_PATH,
     icon: LuBook,
     label: "Documentation",
   },
@@ -88,7 +88,7 @@ export const Sidebar = ({ apps, hidden, canCreateApps }: SidebarProps) => {
           <NavButton
             icon={collapsed ? LuChevronsRight : LuChevronsLeft}
             iconOnly={collapsed}
-            label="Collapse sidebar"
+            label={`${collapsed ? "Expand" : "Collapse"} sidebar`}
             onClick={() => setCollapsed(!collapsed)}
           />
         </Navbar.Section>

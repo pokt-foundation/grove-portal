@@ -18,6 +18,7 @@ import useActionNotification from "~/hooks/useActionNotification"
 import { Blockchain, Maybe } from "~/models/portal/sdk"
 import { trackEvent, AnalyticCategories, AnalyticActions } from "~/utils/analytics"
 import { CHAIN_DOCS_URL } from "~/utils/chainUtils"
+import { DOCS_PATH } from "~/utils/utils"
 
 type AppEndpointsProps = {
   blockchains: Blockchain[]
@@ -106,7 +107,7 @@ const AppEndpointsTable = ({
                           <UnstyledButton
                             component="a"
                             fz="sm"
-                            href={`https://docs.portal.pokt.network/supported-methods/supported-methods/${
+                            href={`${DOCS_PATH}/supported-methods/supported-methods/${
                               CHAIN_DOCS_URL[chain.blockchain]
                             }`}
                             rel="noreferrer"

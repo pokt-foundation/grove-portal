@@ -48,7 +48,7 @@ const ChainWhitelist = ({
   }, [type, whitelists])
 
   return (
-    <Box px={40} py={32}>
+    <Box py={32}>
       <Stack align="flex-start">
         <Text fw={600}>{whitelistInfo[type].title}</Text>
         <Text>{whitelistInfo[type].subtitle}</Text>

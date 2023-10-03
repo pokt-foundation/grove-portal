@@ -25,7 +25,7 @@ const AppKeys = ({ app, userRole }: AppKeysProps) => {
   const secretKey = app.settings.secretKey
   return (
     <Stack spacing={0}>
-      <Box px={40} py={20}>
+      <Box py={20}>
         <Text fw={600}>App ID</Text>
         <Text fw={400} pt={8}>
           Unique identifier for the app. This string is included as part of the URL for
@@ -58,7 +58,7 @@ const AppKeys = ({ app, userRole }: AppKeysProps) => {
 
       {secretKey && userRole !== RoleNameV2.Member && (
         <>
-          <Box px={40} py={20}>
+          <Box py={20}>
             <Text fw={600}>Secret Key</Text>
             <Text fw={400} pt={8}>
               Security feature for apps. If “Private Secret Key Required” is selected in

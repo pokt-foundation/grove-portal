@@ -6,6 +6,7 @@ import {
   UnstyledButton,
   NavLink,
   Group,
+  MantineTheme,
 } from "@pokt-foundation/pocket-blocks"
 import { Link, LinkProps, useFetcher } from "@remix-run/react"
 import React, { useState } from "react"
@@ -44,6 +45,21 @@ const DrawerLink = ({ setIsDrawerOpen, external, ...props }: DrawerLinkProps) =>
       prefetch="intent"
       {...props}
       {...externalProps}
+      sx={(theme: MantineTheme) => ({
+        borderRadius: theme.radius.sm,
+        "&:hover": {
+          backgroundColor:
+            theme.colorScheme === "dark"
+              ? "rgba(37,38,43,0.50)"
+              : "rgba(250,250,250,0.50)",
+          textDecoration: "none",
+        },
+
+        "&.active": {
+          backgroundColor:
+            theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.colors.gray[0],
+        },
+      })}
       onClick={() => setIsDrawerOpen(false)}
     />
   )

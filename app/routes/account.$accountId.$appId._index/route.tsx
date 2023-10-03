@@ -1,10 +1,10 @@
-import { Divider } from "@mantine/core"
-import { useDebouncedValue } from "@mantine/hooks"
-import { Box, Flex, Input, Title } from "@pokt-foundation/pocket-blocks"
+import { Affix, Divider, Transition } from "@mantine/core"
+import { useDebouncedValue, useWindowScroll } from "@mantine/hooks"
+import { Box, Flex, Input, Button } from "@pokt-foundation/pocket-blocks"
 import { ActionFunction, json, MetaFunction } from "@remix-run/node"
 import { useOutletContext } from "@remix-run/react"
 import { useState } from "react"
-import { LuSearch } from "react-icons/lu"
+import { LuArrowUp, LuSearch } from "react-icons/lu"
 import invariant from "tiny-invariant"
 import { AppIdOutletContext } from "../account.$accountId.$appId/route"
 import { initPortalClient } from "~/models/portal/portal.server"
@@ -93,9 +93,10 @@ export const Application = () => {
   const { app, blockchains, userRole } = useOutletContext<AppIdOutletContext>()
   const [searchTerm, setSearchTerm] = useState("")
   const [debouncedSearchTerm] = useDebouncedValue(searchTerm, 200)
+  const [scroll, scrollTo] = useWindowScroll()
 
   return (
-    <Box>
+    <Box mb={70}>
       <Flex align="center" justify="flex-end" my="xl">
         <Input
           icon={<LuSearch />}
@@ -111,6 +112,20 @@ export const Application = () => {
         readOnly={userRole === "MEMBER"}
         searchTerm={debouncedSearchTerm}
       />
+      <Affix position={{ bottom: 20, right: 20 }}>
+        <Transition mounted={scroll.y > 20} transition="slide-up">
+          {(transitionStyles) => (
+            <Button
+              leftIcon={<LuArrowUp size={16} />}
+              size="sm"
+              style={transitionStyles}
+              onClick={() => scrollTo({ y: 0 })}
+            >
+              Scroll to top
+            </Button>
+          )}
+        </Transition>
+      </Affix>
     </Box>
   )
 }

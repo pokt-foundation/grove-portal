@@ -14,6 +14,7 @@ function arrayBufferToBufferCycle(ab: ArrayBuffer) {
 }
 
 export const action: ActionFunction = async ({ request }) => {
+  const url = new URL(request.url)
   // This is your Stripe CLI webhook secret for testing your endpoint locally.
   const endpointSecret = getRequiredServerEnvVar("STRIPE_WEBHOOK_SECRET")
 
@@ -63,7 +64,7 @@ export const action: ActionFunction = async ({ request }) => {
           })
 
           // update application plan and store subscription id
-          await fetch("/api/admin/update-plan", {
+          await fetch(`${url.origin}/api/admin/update-plan`, {
             method: "post",
             headers: {
               "Content-Type": "Application/Json",

@@ -1,0 +1,15 @@
+.openapi-generator-ignore
+apis/SystemApi.ts
+apis/UserApi.ts
+apis/index.ts
+index.ts
+models/AnalyticsRelaysAggregated.ts
+models/AnalyticsRelaysErrors.ts
+models/AnalyticsRelaysTotal.ts
+models/AnalyticsRelaysTransactions.ts
+models/Logs.ts
+models/ModelError.ts
+models/Response.ts
+models/ResponseDataInner.ts
+models/index.ts
+runtime.ts

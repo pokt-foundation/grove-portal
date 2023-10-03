@@ -1,5 +1,5 @@
 export type ChartData = {
-  [key: string]: string | number
+  [key: string]: string | number | null
 }
 
 export type DataStruct<T> =

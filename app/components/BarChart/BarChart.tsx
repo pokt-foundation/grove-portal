@@ -1,4 +1,4 @@
-import { useMantineTheme } from "@pokt-foundation/pocket-blocks"
+import { Box, Text, useMantineTheme } from "@pokt-foundation/pocket-blocks"
 import React, { useState } from "react"
 import {
   CartesianGrid,
@@ -21,6 +21,26 @@ const BarChart = ({ data, xAxisDataKey, yAxisDataKey }: BarChartProps) => {
   const theme = useMantineTheme()
   const [focusedBar, setFocusedBar] = useState<number | null>()
   const [mouseLeave, setMouseLeave] = useState(true)
+
+  const CustomTooltip = ({ active, payload, label }: any) => {
+    if (active && payload && payload.length) {
+      return (
+        <Box
+          p="sm"
+          style={{
+            backgroundColor: theme.colors.dark[9],
+            border: `1px solid ${theme.colors.dark[4]}`,
+          }}
+        >
+          <Text className="label">Date: {label}</Text>
+          <Text className="desc">{payload[0].value} relays</Text>
+        </Box>
+      )
+    }
+
+    return null
+  }
+
   return (
     <ResponsiveContainer height="100%" width="100%">
       <RechartsBarChart
@@ -41,6 +61,7 @@ const BarChart = ({ data, xAxisDataKey, yAxisDataKey }: BarChartProps) => {
         {/* style={{ transform: "translate(-5px, -5px)" }} }} */}
         {/* tick={{ stroke: "red", strokeWidth: 2, x: 50, cx: 60, y: 100 }} */}
         <CartesianGrid
+          strokeDasharray="3 3"
           strokeWidth={0.2}
           style={{ fill: theme.colors.gray[8] }}
           vertical={false}
@@ -62,12 +83,20 @@ const BarChart = ({ data, xAxisDataKey, yAxisDataKey }: BarChartProps) => {
           tickFormatter={(val) => (val === 0 ? val : `${val}k`)}
           tickLine={false}
         />
-        <Tooltip cursor={false} />
-        <Bar dataKey="val" fill={theme.colors.blue[7]} strokeWidth={3}>
+        <Tooltip content={<CustomTooltip />} cursor={false} />
+        <Bar
+          background={false}
+          dataKey="val"
+          fill={"none"}
+          maxBarSize={15}
+          stroke={theme.colors.blue[7]}
+          strokeWidth={1}
+        >
           {data.map((entry, index) => (
             <Cell
               key={`${entry.val}-${index}`}
-              fillOpacity={focusedBar === index || mouseLeave ? 1 : 0.2}
+              fill={focusedBar === index ? theme.colors.blue[7] : "none"}
+              // fillOpacity={focusedBar === index || mouseLeave ? 1 : 0.2}
             />
           ))}
         </Bar>

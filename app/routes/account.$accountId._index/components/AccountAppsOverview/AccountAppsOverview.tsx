@@ -5,16 +5,22 @@ import {
   Stack,
   Text,
 } from "@pokt-foundation/pocket-blocks"
-import React from "react"
+import { AnalyticsRelaysAggregated } from "~/models/dwh/sdk/models/AnalyticsRelaysAggregated"
 
-type AppStat = { label: string; val: string; time: string }
+const labels: Record<keyof AnalyticsRelaysAggregated, string> = {
+  avgLatency: "Average Latency",
+  countTotal: "Total Relays",
+  rateSuccess: "Success Rate",
+  rateError: "Error Rate",
+  categoryValue: "Organization",
+  date: "Date",
+}
 
-const stats: AppStat[] = [
-  { label: "Total Relays", val: "54,828", time: "24hrs" },
-  { label: "Average Latency", val: "90ms", time: "24hrs" },
-  { label: "Success", val: "99.92%", time: "24hrs" },
-  { label: "Errors", val: "8", time: "24hrs" },
-  { label: "Uptime", val: "99.72%", time: "30days" },
+const order: (keyof AnalyticsRelaysAggregated)[] = [
+  "countTotal",
+  "avgLatency",
+  "rateSuccess",
+  "rateError",
 ]
 
 const useStyles = createStyles((theme) => ({
@@ -28,8 +34,20 @@ const useStyles = createStyles((theme) => ({
   },
 }))
 
-export const AccountAppsOverview = () => {
+type AccountAppsOverviewProps = {
+  aggregate: AnalyticsRelaysAggregated | undefined
+}
+
+export const AccountAppsOverview = ({ aggregate }: AccountAppsOverviewProps) => {
   const { classes } = useStyles()
+
+  if (!aggregate) {
+    return (
+      <>
+        <div>undefined</div>
+      </>
+    )
+  }
 
   return (
     <>
@@ -38,18 +56,15 @@ export const AccountAppsOverview = () => {
           { maxWidth: "sm", cols: 1 },
           { maxWidth: "md", cols: 2 },
         ]}
-        cols={5}
+        cols={order.length}
       >
-        {stats.map(({ label, val, time }) => (
-          <Box key={label} className={classes.stat}>
+        {order.map((key) => (
+          <Box key={key} className={classes.stat}>
             <Stack align="center" spacing={0}>
               <Text fw={600} fz="md">
-                {val}
+                {String(aggregate[key])}
               </Text>
-              <Text>{label}</Text>
-              <Text color="dimmed" fz="xs" lh={1.1}>
-                {time}
-              </Text>
+              <Text>{labels[key as keyof AnalyticsRelaysAggregated]}</Text>
             </Stack>
           </Box>
         ))}

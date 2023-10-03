@@ -25,7 +25,7 @@ type ApplicationHeaderProps = {
 
 const ApplicationHeader = ({ app, userRole }: ApplicationHeaderProps) => {
   return (
-    <Group position="apart">
+    <Group mb="lg" position="apart">
       <Group spacing="sm">
         <Avatar size="lg">
           <Emoji

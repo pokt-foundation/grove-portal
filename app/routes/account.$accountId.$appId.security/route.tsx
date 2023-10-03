@@ -1,7 +1,5 @@
-import { showNotification } from "@mantine/notifications"
 import { ActionFunction, json, MetaFunction } from "@remix-run/node"
-import { useActionData, useOutletContext } from "@remix-run/react"
-import { useEffect } from "react"
+import { useOutletContext } from "@remix-run/react"
 import invariant from "tiny-invariant"
 import { AppIdOutletContext } from "../account.$accountId.$appId/route"
 import SecurityView from "./view"
@@ -90,8 +88,6 @@ export const action: ActionFunction = async ({ request, params }) => {
     }
 
     const response = await portal.updateUserPortalApp({ input })
-
-    console.log(response)
 
     return json<DataStruct<SecurityActionData>>({
       data: {

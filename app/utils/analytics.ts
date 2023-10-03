@@ -20,6 +20,7 @@ export const AnalyticActions = {
   app_subscription_renew: "app_subscription_renew",
   app_notifications: "app_notifications",
   app_plan_upgrade: "app_plan_upgrade",
+  app_plan_enterprise: "app_plan_enterprise",
   app_plan_manage: "app_plan_manage",
   app_plan_invoice_download: "app_plan_invoice_download",
   app_plan_invoice_view: "app_plan_invoice_view",

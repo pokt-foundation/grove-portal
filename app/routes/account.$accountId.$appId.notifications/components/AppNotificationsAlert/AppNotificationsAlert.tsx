@@ -75,7 +75,7 @@ export default function AppNotificationsAlert({
 
   return (
     <Stack pt={36}>
-      <Text pb={16} px={20}>
+      <Text pb={16}>
         Set up usage alerts to be warned when you are approaching your relay limits. We
         will send an email when your usage crosses the thresholds specified below.
       </Text>

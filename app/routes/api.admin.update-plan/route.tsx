@@ -5,14 +5,10 @@ import { AdminUpdatePortalAppMutationVariables, PayPlanTypeV2 } from "~/models/p
 import { initAdminPortal } from "~/utils/adminPortal"
 import { getErrorMessage } from "~/utils/catchError"
 
-export type UpdatePlanActionData =
-  | {
-      error: false
-    }
-  | {
-      error: true
-      message: string
-    }
+export type UpdatePlanActionData = {
+  error: boolean
+  message: string
+}
 
 export type UpdatePlanArgs = {
   id: string | null
@@ -58,6 +54,7 @@ export const updatePlan = async ({ id, type, limit, subscription }: UpdatePlanAr
 
     return json<UpdatePlanActionData>({
       error: false,
+      message: `Application ${id} has successfully been updated to ${type}`,
     })
   } catch (error) {
     return json<UpdatePlanActionData>({

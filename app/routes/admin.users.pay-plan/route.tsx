@@ -8,6 +8,7 @@ import {
 import { MetaFunction } from "@remix-run/node"
 import { useFetcher } from "@remix-run/react"
 import { useState } from "react"
+import useActionNotification from "~/hooks/useActionNotification"
 import { PayPlanType } from "~/models/portal/sdk"
 
 export const meta: MetaFunction = () => {
@@ -21,6 +22,8 @@ export default function CustomPayPlan() {
   const { Form, ...updatePlanFetcher } = useFetcher()
 
   const plans = Object.values(PayPlanType)
+
+  useActionNotification(updatePlanFetcher.data)
 
   return (
     <Container size="lg">

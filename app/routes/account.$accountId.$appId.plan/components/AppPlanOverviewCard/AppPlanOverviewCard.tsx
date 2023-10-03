@@ -34,20 +34,20 @@ export default function AppPlanOverviewCard({
 
   const cardItems = [
     {
-      label: "Subscription",
-      value: subscription.id,
+      label: "Plan Type",
+      value: getPlanName(appPlanType),
     },
     {
-      label: "Current Plan",
-      value: getPlanName(appPlanType),
+      label: "Subscription",
+      value: subscription.id,
     },
     {
       label: "Status",
       value: subscription.status.replace(/^\w/, (char) => char.toUpperCase()),
     },
     {
-      label: "Your Role",
-      value: userRole.toLowerCase().replace(/^\w/, (char) => char.toUpperCase()),
+      label: "Free Daily Relays",
+      value: app.legacyFields.dailyLimit,
     },
     {
       label: "Total Relays on this Billing Period",

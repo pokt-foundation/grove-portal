@@ -15,6 +15,7 @@ import ModalHeader from "~/components/ModalHeader"
 import PortalLoader from "~/components/PortalLoader"
 import { RoleName } from "~/models/portal/sdk"
 import useCommonStyles from "~/styles/commonStyles"
+import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
 
 const InviteMemberFrom = () => {
   const { state } = useNavigation()
@@ -26,7 +27,7 @@ const InviteMemberFrom = () => {
       {state === "idle" ? (
         <Container>
           <ModalHeader
-            subtitle="A member is a unique user who can access to your organization’s apps. "
+            subtitle="A member is a unique user who can access to your accounts’s apps. "
             title="Invite member"
             onDiscard={closeAllModals}
           />
@@ -82,6 +83,13 @@ const InviteMemberFrom = () => {
                 type="submit"
                 value="true"
                 w="156px"
+                onClick={() => {
+                  trackEvent({
+                    category: AnalyticCategories.app,
+                    action: AnalyticActions.app_team_invite,
+                    label: appId,
+                  })
+                }}
               >
                 Invite
               </Button>

@@ -1,5 +1,3 @@
-import { useFetcher } from ".pnpm/react-router-dom@6.11.0_biqbaboplfbrettd7655fr4n2y/node_modules/react-router-dom"
-import { showNotification } from "@mantine/notifications"
 import {
   Flex,
   Menu,
@@ -7,8 +5,8 @@ import {
   useMantineTheme,
   UnstyledButton,
 } from "@pokt-foundation/pocket-blocks"
-import { useParams } from "@remix-run/react"
-import { useEffect, useMemo } from "react"
+import { useFetcher, useParams } from "@remix-run/react"
+import React, { useMemo } from "react"
 import { LuBook } from "react-icons/lu"
 import { RiStarLine, RiStarFill } from "react-icons/ri"
 import FavoriteChain from "../FavoriteChain"
@@ -16,13 +14,16 @@ import Chain from "~/components/Chain"
 import ContextMenuTarget from "~/components/ContextMenuTarget"
 import CopyTextButton from "~/components/CopyTextButton"
 import { DataTable } from "~/components/DataTable"
+import useActionNotification from "~/hooks/useActionNotification"
 import { Blockchain, Maybe } from "~/models/portal/sdk"
+import { trackEvent, AnalyticCategories, AnalyticActions } from "~/utils/analytics"
 import { CHAIN_DOCS_URL } from "~/utils/chainUtils"
 
 type AppEndpointsProps = {
   blockchains: Blockchain[]
   favoriteChains?: Maybe<string[]>
   searchTerm: string
+  readOnly: boolean
 }
 
 const getAppEndpointUrl = (chain: Blockchain, appId: string | undefined) =>
@@ -32,10 +33,14 @@ const AppEndpointsTable = ({
   blockchains,
   favoriteChains,
   searchTerm,
+  readOnly,
 }: AppEndpointsProps) => {
   const theme = useMantineTheme()
   const { appId } = useParams()
   const fetcher = useFetcher()
+
+  // handle notification for menu fetcher action
+  useActionNotification(fetcher.data)
 
   const chains = useMemo(() => {
     const fav = blockchains
@@ -57,17 +62,6 @@ const AppEndpointsTable = ({
     return [...fav, ...other]
   }, [favoriteChains, blockchains])
 
-  // handle notification for menu fetcher action
-  useEffect(() => {
-    if (!fetcher.data) return
-
-    if (fetcher.data.message) {
-      showNotification({
-        message: fetcher.data.message,
-      })
-    }
-  }, [fetcher.data])
-
   return (
     blockchains && (
       <DataTable
@@ -76,7 +70,11 @@ const AppEndpointsTable = ({
             chain: {
               element: (
                 <Flex gap="sm">
-                  <FavoriteChain blockchain={chain} favoriteChains={favoriteChains} />
+                  <FavoriteChain
+                    blockchain={chain}
+                    favoriteChains={favoriteChains}
+                    readOnly={false}
+                  />
                   <Chain chain={chain} />
                 </Flex>
               ),
@@ -113,35 +111,51 @@ const AppEndpointsTable = ({
                             }`}
                             rel="noreferrer"
                             target="_blank"
+                            onClick={() => {
+                              trackEvent({
+                                category: AnalyticCategories.app,
+                                action: AnalyticActions.app_chain_docs,
+                                label: chain.id,
+                              })
+                            }}
                           >
                             Documentation
                           </UnstyledButton>
                         </Menu.Item>
                       )}
 
-                      <Menu.Item
-                        icon={
-                          chain.favorite ? (
-                            <RiStarFill size={18} />
-                          ) : (
-                            <RiStarLine size={18} />
-                          )
-                        }
-                        onClick={() =>
-                          fetcher.submit(
-                            {
-                              isFavorite: String(!chain.favorite),
-                              chainId: chain.id,
-                              favoriteChains: JSON.stringify(favoriteChains),
-                            },
-                            {
-                              method: "post",
-                            },
-                          )
-                        }
-                      >
-                        {chain.favorite ? "Remove favorite" : "Mark as favorite"}
-                      </Menu.Item>
+                      {!readOnly && (
+                        <Menu.Item
+                          icon={
+                            chain.favorite ? (
+                              <RiStarFill size={18} />
+                            ) : (
+                              <RiStarLine size={18} />
+                            )
+                          }
+                          onClick={() => {
+                            trackEvent({
+                              category: AnalyticCategories.app,
+                              action: AnalyticActions.app_chain_favorite,
+                              label: `${chain.favorite ? "Remove" : "Add"} favorite ${
+                                chain.id
+                              }`,
+                            })
+                            fetcher.submit(
+                              {
+                                isFavorite: String(!chain.favorite),
+                                chainId: chain.id,
+                                favoriteChains: JSON.stringify(favoriteChains),
+                              },
+                              {
+                                method: "post",
+                              },
+                            )
+                          }}
+                        >
+                          {chain.favorite ? "Remove favorite" : "Mark as favorite"}
+                        </Menu.Item>
+                      )}
                     </Menu.Dropdown>
                   </Menu>
                 </Flex>

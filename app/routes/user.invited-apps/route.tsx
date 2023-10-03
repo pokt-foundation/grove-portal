@@ -1,11 +1,10 @@
-import { useActionData } from ".pnpm/react-router@6.11.0_react@18.2.0/node_modules/react-router"
-import { showNotification } from "@mantine/notifications"
 import { ActionFunction, json, LoaderFunction, MetaFunction } from "@remix-run/node"
-import { useLoaderData } from "@remix-run/react"
-import { useEffect } from "react"
+import { useActionData, useLoaderData } from "@remix-run/react"
+import React from "react"
 import invariant from "tiny-invariant"
 import UserInvitedApps from "./view"
 import ErrorView from "~/components/ErrorView"
+import useActionNotification from "~/hooks/useActionNotification"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { PortalApp, SortOrder, User } from "~/models/portal/sdk"
 import { DataStruct } from "~/types/global"
@@ -107,15 +106,7 @@ export default function InvitedApps() {
   const { data, error, message } = useLoaderData<DataStruct<UserInvitedAppsLoaderData>>()
   const actionData = useActionData() as DataStruct<UserInvitedAppsActionData>
 
-  useEffect(() => {
-    if (!actionData) return
-
-    if (actionData.message) {
-      showNotification({
-        message: actionData.message,
-      })
-    }
-  }, [actionData])
+  useActionNotification(actionData)
 
   if (error) {
     return <ErrorView message={message} />

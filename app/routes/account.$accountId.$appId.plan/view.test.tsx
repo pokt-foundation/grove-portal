@@ -2,6 +2,7 @@ import { expect } from "vitest"
 import PlanView from "./view"
 import { render, screen } from "test/helpers"
 import { app, profileMockData } from "~/models/portal/portal.data"
+import { RoleNameV2 } from "~/models/portal/sdk"
 import { relayMetric } from "~/models/relaymeter/relaymeter.data"
 import { invoice, subscription, useageRecord } from "~/models/stripe/stripe.data"
 
@@ -15,6 +16,7 @@ describe("<PlanView />", () => {
         subscription={subscription}
         usageRecords={useageRecord}
         user={profileMockData}
+        userRole={RoleNameV2.Admin}
       />,
     )
 

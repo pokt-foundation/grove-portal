@@ -1,5 +1,10 @@
-import { showNotification } from "@mantine/notifications"
-import { LoaderFunction, MetaFunction, json, ActionFunction } from "@remix-run/node"
+import {
+  LoaderFunction,
+  MetaFunction,
+  json,
+  ActionFunction,
+  redirect,
+} from "@remix-run/node"
 import {
   Outlet,
   useActionData,
@@ -7,11 +12,12 @@ import {
   useLoaderData,
   useOutletContext,
 } from "@remix-run/react"
-import { useEffect } from "react"
+import React from "react"
 import invariant from "tiny-invariant"
 import { AccountIdLoaderData } from "../account.$accountId/route"
 import AppIdLayoutView from "./view"
 import ErrorView from "~/components/ErrorView"
+import useActionNotification from "~/hooks/useActionNotification"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { Blockchain, PortalApp, RoleNameV2 } from "~/models/portal/sdk"
 import { DataStruct } from "~/types/global"
@@ -37,7 +43,8 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   const user = await requireUser(request)
   const portal = initPortalClient({ token: user.accessToken })
 
-  const { appId } = params
+  const { accountId, appId } = params
+  invariant(accountId, "account id not found")
   invariant(appId, "app id not found")
 
   try {
@@ -61,6 +68,14 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       error: false,
     })
   } catch (error) {
+    /**
+     * Handle when an invalid app is manually entered & the case when the
+     * an application is deleted
+     */
+    if (getErrorMessage(error).includes("portal app not found")) {
+      return redirect(`/account/${accountId}`)
+    }
+
     return json<DataStruct<AppIdLoaderData>>({
       data: null,
       error: true,
@@ -84,25 +99,18 @@ export const action: ActionFunction = async ({ request, params }) => {
   try {
     const delete_application = formData.get("delete_application")
 
-    let res = false
     if (delete_application === "true") {
       // delete application via api
       //
       const deleteAppResponse = await portal.deleteUserPortalApp({ portalAppID: appId })
-      res = deleteAppResponse.deleteUserPortalApp
 
-      if (!res) {
+      if (!deleteAppResponse.deleteUserPortalApp) {
         throw new Error(`Error deleting application: ${appId}`)
       }
     }
 
-    return json<DataStruct<AppIdActionData>>({
-      data: {
-        success: res,
-      },
-      error: false,
-      message: "Application was successfully deleted",
-    })
+    // app no longer exists to redirect back to account
+    return redirect(`/account/${accountId}`)
   } catch (error) {
     return json<DataStruct<AppIdActionData>>({
       data: null,
@@ -122,29 +130,22 @@ export default function AppIdLayout() {
   const actionData = useActionData() as DataStruct<AppIdActionData>
 
   // handle all notifications at the layout level
-  useEffect(() => {
-    if (!actionData) return
-
-    if (actionData.message) {
-      showNotification({
-        message: actionData.message,
-      })
-    }
-  }, [actionData])
+  useActionNotification(actionData)
 
   if (error) {
     return <ErrorView message={message} />
   }
 
   const { app, blockchains } = data
+  const userRole = userRoles.find((r) => r.portalAppID === app.id)?.roleName as RoleNameV2
 
   return (
-    <AppIdLayoutView app={app}>
+    <AppIdLayoutView app={app} userRole={userRole}>
       <Outlet
         context={{
           app,
           blockchains,
-          userRole: userRoles.find((r) => r.portalAppID === app.id)?.roleName,
+          userRole,
         }}
       />
     </AppIdLayoutView>

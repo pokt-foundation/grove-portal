@@ -16,20 +16,20 @@ type UserItemProps = {
   withIcon?: boolean
 }
 
-type OrganizationSelectProps = {
+type AccountSelectProps = {
   accounts: Account[]
 }
 
-const OrganizationItem = ({ account, withIcon }: UserItemProps) => (
+const AccountItem = ({ account, withIcon }: UserItemProps) => (
   <Group>
     <Identicon
       alt={`${account.id} profile picture`}
       seed={account.id}
-      size="sm"
+      size="xs"
       type="account"
     />
     <Text size="sm" weight={500}>
-      {account.id}
+      {account.name ? account.name : account.id}
     </Text>
     {withIcon && (
       <LuChevronsUpDown size={18} style={{ marginLeft: "auto", marginRight: 7 }} />
@@ -37,7 +37,7 @@ const OrganizationItem = ({ account, withIcon }: UserItemProps) => (
   </Group>
 )
 
-const OrganizationSelect = ({ accounts }: OrganizationSelectProps) => {
+const AccountSelect = ({ accounts }: AccountSelectProps) => {
   const { accountId } = useParams()
   const hasMultipleAccounts = accounts.length > 1
 
@@ -76,7 +76,7 @@ const OrganizationSelect = ({ accounts }: OrganizationSelectProps) => {
               }),
             })}
           >
-            <OrganizationItem account={activeAccount} withIcon={hasMultipleAccounts} />
+            <AccountItem account={activeAccount} withIcon={hasMultipleAccounts} />
           </UnstyledButton>
         </Menu.Target>
       )}
@@ -85,7 +85,7 @@ const OrganizationSelect = ({ accounts }: OrganizationSelectProps) => {
           {menuAccounts.map((account) => (
             <Menu.Item key={account.id} disabled={account.id === accountId} p={2}>
               <NavLink to={`/account/${account.id}`}>
-                <OrganizationItem account={account} />
+                <AccountItem account={account} />
               </NavLink>
             </Menu.Item>
           ))}
@@ -95,4 +95,4 @@ const OrganizationSelect = ({ accounts }: OrganizationSelectProps) => {
   )
 }
 
-export default OrganizationSelect
+export default AccountSelect

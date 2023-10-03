@@ -1,9 +1,10 @@
-import { showNotification } from "@mantine/notifications"
 import { Text } from "@pokt-foundation/pocket-blocks"
 import { useFetcher } from "@remix-run/react"
-import { useEffect } from "react"
+import React from "react"
+import useActionNotification from "~/hooks/useActionNotification"
 import useModals from "~/hooks/useModals"
 import { PortalApp, RoleName } from "~/models/portal/sdk"
+import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
 
 type useTeamModalsProps = {
   app: PortalApp
@@ -14,15 +15,14 @@ const useTeamModals = ({ app }: useTeamModalsProps) => {
   const { openConfirmationModal } = useModals()
   const { accountID: accountId, id: appId } = app
 
-  useEffect(() => {
-    if (!fetcher.data) return
-
-    showNotification({
-      message: fetcher.data.message,
-    })
-  }, [fetcher.data])
+  useActionNotification(fetcher.data)
 
   const removeTeamMember = (userId: string, email: string) => {
+    trackEvent({
+      category: AnalyticCategories.app,
+      action: AnalyticActions.app_team_remove,
+      label: appId,
+    })
     fetcher.submit(
       {
         user_delete: "true",
@@ -37,6 +37,11 @@ const useTeamModals = ({ app }: useTeamModalsProps) => {
   }
 
   const changeMemberRole = (userId: string, role: RoleName, email: string) => {
+    trackEvent({
+      category: AnalyticCategories.app,
+      action: AnalyticActions.app_team_change_role,
+      label: appId,
+    })
     fetcher.submit(
       {
         user_update: "true",
@@ -52,6 +57,11 @@ const useTeamModals = ({ app }: useTeamModalsProps) => {
   }
 
   const resendEmail = (email: string) => {
+    trackEvent({
+      category: AnalyticCategories.app,
+      action: AnalyticActions.app_team_resend,
+      label: appId,
+    })
     fetcher.submit(
       {
         user_resend: "true",

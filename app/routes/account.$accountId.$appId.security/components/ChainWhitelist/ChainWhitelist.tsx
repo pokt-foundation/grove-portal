@@ -13,6 +13,7 @@ type ChainWhitelistProps = {
   whitelists: WhitelistContractsV2[] | WhitelistMethodsV2[]
   blockchains: Blockchain[]
   type: "contracts" | "methods"
+  readOnly: boolean
 }
 
 export const whitelistInfo = {
@@ -31,6 +32,7 @@ const ChainWhitelist = ({
   whitelists,
   blockchains,
   type,
+  readOnly,
 }: ChainWhitelistProps) => {
   const { openFullScreenModal } = useModals()
   const blockchainWhitelist: BlockchainWhitelist[] = useMemo(() => {
@@ -51,6 +53,7 @@ const ChainWhitelist = ({
         <Text fw={600}>{whitelistInfo[type].title}</Text>
         <Text>{whitelistInfo[type].subtitle}</Text>
         <AddSettingsButton
+          disabled={readOnly}
           onClick={() =>
             openFullScreenModal({
               children: (
@@ -68,6 +71,7 @@ const ChainWhitelist = ({
         <ChainWhitelistTable
           blockchainWhitelist={blockchainWhitelist}
           blockchains={blockchains}
+          readOnly={readOnly}
           onDelete={(contract) => dispatch({ type: `${type}-remove`, payload: contract })}
         />
       )}

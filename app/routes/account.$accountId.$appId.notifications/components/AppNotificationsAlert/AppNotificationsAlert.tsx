@@ -1,7 +1,8 @@
 import { Text, Switch, Group, Stack } from "@pokt-foundation/pocket-blocks"
 import { useFetcher } from "@remix-run/react"
 import { useCallback } from "react"
-import { AppIdOutletContext } from "~/routes/account.$accountId.$appId/route"
+import { PortalApp, RoleNameV2 } from "~/models/portal/sdk"
+import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
 import { formatNumberToSICompact } from "~/utils/formattingUtils"
 import { FREE_TIER_MAX_RELAYS } from "~/utils/planUtils"
 
@@ -34,10 +35,14 @@ function getUsagePercentage(usageLevel: string): string {
 }
 
 type NotificationsAlertFormProps = {
-  app: AppIdOutletContext["app"]
+  app: PortalApp
+  userRole: RoleNameV2
 }
 
-export default function AppNotificationsAlert({ app }: NotificationsAlertFormProps) {
+export default function AppNotificationsAlert({
+  app,
+  userRole,
+}: NotificationsAlertFormProps) {
   const { notifications } = app
   const fetcher = useFetcher()
 
@@ -78,9 +83,16 @@ export default function AppNotificationsAlert({ app }: NotificationsAlertFormPro
             </Text>
             <Switch
               defaultChecked={getNotificationCheckedState(level)}
-              disabled={fetcher.state === "submitting"}
+              disabled={fetcher.state === "submitting" || userRole === "MEMBER"}
               name={level}
-              onChange={(event) => updateNotification(level, event.currentTarget.value)}
+              onChange={(event) => {
+                updateNotification(level, event.currentTarget.value)
+                trackEvent({
+                  category: AnalyticCategories.app,
+                  action: AnalyticActions.app_notifications,
+                  label: level,
+                })
+              }}
             />
           </Group>
         ))}

@@ -23,7 +23,7 @@ import Identicon from "~/components/Identicon"
 import { User } from "~/models/portal/sdk"
 import { DISCORD_PATH } from "~/utils/utils"
 
-type OrganizationDrawerProps = {
+type AccountDrawerProps = {
   user?: User
   hasPendingInvites: boolean
 }
@@ -75,7 +75,7 @@ const drawerExternalLinks = [
   },
 ]
 
-const OrganizationDrawer = ({ user, hasPendingInvites }: OrganizationDrawerProps) => {
+const AccountDrawer = ({ user, hasPendingInvites }: AccountDrawerProps) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const logoutFetcher = useFetcher()
 
@@ -100,12 +100,6 @@ const OrganizationDrawer = ({ user, hasPendingInvites }: OrganizationDrawerProps
         overlayOpacity={0.5}
         padding="sm"
         position="right"
-        sx={{
-          ".mantine-Drawer-header": {
-            display: "flex",
-            alignItems: "center",
-          },
-        }}
         title={
           <Group noWrap pt={4} w={252}>
             <Identicon
@@ -130,9 +124,9 @@ const OrganizationDrawer = ({ user, hasPendingInvites }: OrganizationDrawerProps
           />
           <DrawerLink
             icon={<LuTowerControl size={18} />}
-            label="My Organizations"
+            label="My Accounts"
             setIsDrawerOpen={setIsDrawerOpen}
-            to={`/user/organizations`}
+            to={`/user/accounts`}
           />
           <Indicator
             inline
@@ -188,4 +182,4 @@ const OrganizationDrawer = ({ user, hasPendingInvites }: OrganizationDrawerProps
   ) : null
 }
 
-export default OrganizationDrawer
+export default AccountDrawer

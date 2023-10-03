@@ -1,5 +1,5 @@
 import { json, LoaderFunction, MetaFunction, redirect } from "@remix-run/node"
-import { useLoaderData } from "@remix-run/react"
+import { useLoaderData, useOutletContext } from "@remix-run/react"
 import invariant from "tiny-invariant"
 import PlanView from "./view"
 import ErrorView from "~/components/ErrorView"
@@ -7,6 +7,7 @@ import { initPortalClient } from "~/models/portal/portal.server"
 import { PortalApp, User } from "~/models/portal/sdk"
 import { getRelays, RelayMetric } from "~/models/relaymeter/relaymeter.server"
 import { Stripe, stripe } from "~/models/stripe/stripe.server"
+import { AppIdOutletContext } from "~/routes/account.$accountId.$appId/route"
 import { DataStruct } from "~/types/global"
 import { getErrorMessage } from "~/utils/catchError"
 import { dayjs } from "~/utils/dayjs"
@@ -120,12 +121,13 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
 export const AppPlanDetails = () => {
   const { data, error, message } = useLoaderData() as DataStruct<AppPlanLoaderData>
+  const { userRole } = useOutletContext<AppIdOutletContext>()
 
   if (error) {
     return <ErrorView message={message} />
   }
 
-  return <PlanView {...data} />
+  return <PlanView {...data} userRole={userRole} />
 }
 
 export default AppPlanDetails

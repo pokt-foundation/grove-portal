@@ -68,7 +68,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     return json<DataStruct<AccountInsightsData>>({
       data: null,
       error: true,
-      message: getErrorMessage(error),
+      message: String(error),
     })
   }
 }

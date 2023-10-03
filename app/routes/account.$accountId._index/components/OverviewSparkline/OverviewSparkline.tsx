@@ -1,4 +1,4 @@
-import { Box, Space, Text } from "@pokt-foundation/pocket-blocks"
+import { Box, LoadingOverlay, Space, Text } from "@pokt-foundation/pocket-blocks"
 import React from "react"
 import Sparkline from "~/components/Sparkline"
 import { ChartData } from "~/types/global"
@@ -7,12 +7,14 @@ type OverviewSparklineProps = {
   label?: string
   title?: string
   sparklineData: ChartData[]
+  isLoading?: boolean
 }
 
 export const OverviewSparkline = ({
   label = "relays",
   title,
   sparklineData,
+  isLoading,
 }: OverviewSparklineProps) => {
   const height = 350
   return (
@@ -24,6 +26,7 @@ export const OverviewSparkline = ({
       ) : (
         <Space mb="lg" />
       )}
+      <LoadingOverlay overlayBlur={1} visible={!!isLoading} />
       <Sparkline
         data={sparklineData}
         height={height}

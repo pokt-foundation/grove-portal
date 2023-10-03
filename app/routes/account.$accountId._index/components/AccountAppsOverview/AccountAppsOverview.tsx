@@ -1,6 +1,7 @@
 import {
   Box,
   createStyles,
+  Loader,
   SimpleGrid,
   Stack,
   Text,
@@ -36,9 +37,13 @@ const useStyles = createStyles((theme) => ({
 
 type AccountAppsOverviewProps = {
   aggregate: AnalyticsRelaysAggregated | undefined
+  isLoading?: boolean
 }
 
-export const AccountAppsOverview = ({ aggregate }: AccountAppsOverviewProps) => {
+export const AccountAppsOverview = ({
+  aggregate,
+  isLoading,
+}: AccountAppsOverviewProps) => {
   const { classes } = useStyles()
 
   if (!aggregate) {
@@ -62,7 +67,7 @@ export const AccountAppsOverview = ({ aggregate }: AccountAppsOverviewProps) => 
           <Box key={key} className={classes.stat}>
             <Stack align="center" spacing={0}>
               <Text fw={600} fz="md">
-                {String(aggregate[key])}
+                {isLoading ? <Loader size="sm" /> : String(aggregate[key])}
               </Text>
               <Text>{labels[key as keyof AnalyticsRelaysAggregated]}</Text>
             </Stack>

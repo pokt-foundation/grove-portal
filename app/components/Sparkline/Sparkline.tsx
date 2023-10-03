@@ -8,7 +8,6 @@ import {
   Tooltip,
   XAxis,
   YAxis,
-  TooltipProps,
 } from "recharts"
 import { ChartData } from "~/types/global"
 import { formatNumberToSICompact } from "~/utils/formattingUtils"
@@ -86,7 +85,6 @@ const Sparkline = ({
           dataKey={yAxisDataKey}
           includeHidden={true}
           minTickGap={0}
-          // padding={{ top: 40 }}
           tick={{ fill: theme.colors.gray[6] }}
           tickFormatter={(val) => (val === 0 ? val : `${formatNumberToSICompact(val)}`)}
           tickLine={false}

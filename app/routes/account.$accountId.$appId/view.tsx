@@ -1,5 +1,4 @@
-import { Divider } from "@mantine/core"
-import { Container, Stack, ScrollArea } from "@pokt-foundation/pocket-blocks"
+import { Container, Stack } from "@pokt-foundation/pocket-blocks"
 import { useEffect, useState } from "react"
 import ApplicationHeader from "./components/ApplicationHeader"
 import LinkTabs from "~/components/LinkTabs"
@@ -26,17 +25,13 @@ export default function AppIdLayoutView({
 }: AppIdLayoutViewProps) {
   const [routes, setRoutes] = useState<Route[]>([
     {
-      to: "insights",
-      label: "Insights",
-    },
-    {
       to: "",
       label: "Endpoints",
       end: true,
     },
     {
-      to: "logs",
-      label: "Logs",
+      to: "insights",
+      label: "Insights",
     },
     {
       to: "security",

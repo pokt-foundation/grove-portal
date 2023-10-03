@@ -1,6 +1,6 @@
 import dayjs from "dayjs"
 import { Configuration, UserApi } from "./sdk"
-import { AnalyticsRelaysAggregated, ResponseDataInnerFromJSON } from "~/models/dwh/sdk"
+import { AnalyticsRelaysAggregated } from "~/models/dwh/sdk"
 import { getRequiredServerEnvVar } from "~/utils/environment"
 
 function initDwhClient(): UserApi {

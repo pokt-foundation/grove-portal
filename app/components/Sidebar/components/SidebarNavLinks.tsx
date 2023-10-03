@@ -1,4 +1,4 @@
-import { CSSObject, Grid } from "@mantine/core"
+import { CSSObject } from "@mantine/core"
 import {
   Anchor,
   Box,
@@ -87,14 +87,14 @@ const LinkLabel = ({ icon, label, iconOnly, imgSrc }: LinkLabelProps) => {
         offset={35}
         position="right"
       >
-        <Box style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: "16px" }}>
+        <Group>
           <LabelIcon icon={icon} imgSrc={imgSrc} label={label} />
           {!iconOnly && (
-            <Text lineClamp={1} style={{ flexGrow: 1 }}>
+            <Text truncate w={220}>
               {label}
             </Text>
           )}
-        </Box>
+        </Group>
       </Tooltip>
     </Flex>
   )

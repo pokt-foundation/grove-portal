@@ -19,7 +19,7 @@ const WhitelistOrigins = ({
   const { openFullScreenModal } = useModals()
 
   return (
-    <Box px={40} py={32}>
+    <Box py={32}>
       <Stack align="flex-start">
         <Text fw={600}>Whitelist Origins</Text>
         <Text>Limits requests to only the HTTP Origins specified.</Text>

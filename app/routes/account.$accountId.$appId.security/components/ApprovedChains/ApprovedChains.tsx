@@ -23,7 +23,7 @@ const ApprovedChains = ({
   const { openFullScreenModal } = useModals()
 
   return (
-    <Box px={40} py={32}>
+    <Box py={32}>
       <Stack align="flex-start">
         <Text fw={600}>Approved Chains</Text>
         <Text>Limit the chains that can be used for this application.</Text>

@@ -70,14 +70,14 @@ export default function AppNotificationsAlert({
 
   return (
     <Stack>
-      <Text pb={16} pt={36} px={20}>
+      <Text pb={16} pt={36}>
         Set up usage alerts to be warned when you are approaching your relay limits. We
         will send an email when your usage crosses the thresholds specified below.
       </Text>
       <Stack my={16} spacing={32}>
         {NOTIFICATIONS_ALERT_LEVELS.map((level) => (
           <Group key={level} position="apart">
-            <Text px={20}>
+            <Text>
               {getUsagePercentage(level)} of{" "}
               {formatNumberToSICompact(FREE_TIER_MAX_RELAYS)} relays per day
             </Text>

@@ -12,7 +12,7 @@ const PrivateSecretKey = ({ secretKeyRequired, readOnly }: PrivateSecretKeyProps
   const { appId } = useParams()
 
   return (
-    <Stack px={40} py={32}>
+    <Stack py={32}>
       <Text fw={600}>Secret Key Required</Text>
       <Text>
         To maximize the security of your application, you should activate the private

@@ -39,7 +39,7 @@ export const AccountInsightsView = ({ data }: AccountInsightsViewProps) => {
       <TitledCard
         header={() => (
           <Group position="apart">
-            <Text weight={600}>Organization Overview</Text>
+            <Text weight={600}>Account Overview</Text>
             <ChartPeriodSelector />
           </Group>
         )}

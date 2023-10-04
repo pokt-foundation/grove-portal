@@ -2,22 +2,30 @@ import { SimpleGrid, Stack, Text, Title } from "@pokt-foundation/pocket-blocks"
 import { useNavigate } from "@remix-run/react"
 import React from "react"
 import { AccountPlan } from "~/components/AccountPlan"
-import { PayPlanTypeV2, PortalApp } from "~/models/portal/sdk"
+import { PayPlanTypeV2, PortalApp, RoleNameV2 } from "~/models/portal/sdk"
+import { PlanLimitOverviewCard } from "~/routes/account.$accountId.$appId.plan/components/PlanLimitOverviewCard"
 import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
+import { getPlanName } from "~/utils/planUtils"
 
 type FreeAppPlanProps = {
   app: PortalApp
+  userRole: RoleNameV2
 }
 
-const FreeAppPlan = ({ app }: FreeAppPlanProps) => {
+const FreeAppPlan = ({ app, userRole }: FreeAppPlanProps) => {
   const navigate = useNavigate()
 
-  return (
+  return userRole === "MEMBER" ? (
+    <Stack mt={"xl"}>
+      <PlanLimitOverviewCard app={app} />
+    </Stack>
+  ) : (
     <Stack align="center" mt={"xl"}>
       <Stack spacing="xs" ta="center">
         <Title order={3}>Upgrade your plan</Title>
         <Text>
-          Your current plan is Free. <br /> Upgrade now to Auto-Scale and pay as you go.
+          Your current plan is {getPlanName(app.legacyFields.planType)}. <br /> Upgrade
+          now to Auto-Scale and pay as you go.
         </Text>
       </Stack>
       <SimpleGrid breakpoints={[{ maxWidth: "lg", cols: 1 }]} cols={3}>

@@ -1,12 +1,15 @@
-import { Button, Container, Select } from "@pokt-foundation/pocket-blocks"
-import { LinksFunction, MetaFunction } from "@remix-run/node"
+import {
+  Button,
+  Card,
+  Container,
+  Select,
+  TextInput,
+} from "@pokt-foundation/pocket-blocks"
+import { MetaFunction } from "@remix-run/node"
 import { useFetcher } from "@remix-run/react"
 import { useState } from "react"
-import Card, { links as CardLinks } from "~/components/Card"
-import TextInput from "~/components/TextInput"
+import useActionNotification from "~/hooks/useActionNotification"
 import { PayPlanType } from "~/models/portal/sdk"
-
-export const links: LinksFunction = () => [...CardLinks()]
 
 export const meta: MetaFunction = () => {
   return {
@@ -19,6 +22,8 @@ export default function CustomPayPlan() {
   const { Form, ...updatePlanFetcher } = useFetcher()
 
   const plans = Object.values(PayPlanType)
+
+  useActionNotification(updatePlanFetcher.data)
 
   return (
     <Container size="lg">

@@ -13,28 +13,42 @@ describe("getRequiredClientEnvVar", () => {
     expect(() => getRequiredClientEnvVar("RANDOM_KEY")).toThrowError("RANDOM_KEY")
   })
   test("throws error if environment variable value is not set", () => {
-    expect(() => getRequiredClientEnvVar("AMPLITUDE_API_KEY")).toThrowError(
-      "AMPLITUDE_API_KEY",
-    )
-    expect(() => getRequiredClientEnvVar("BACKEND_URL")).toThrowError("BACKEND_URL")
     expect(() => getRequiredClientEnvVar("BUILD_ID")).toThrowError("BUILD_ID")
-    expect(() => getRequiredClientEnvVar("MAINNET_RPC_URL")).toThrowError(
-      "MAINNET_RPC_URL",
-    )
-    expect(() => getRequiredClientEnvVar("SENTRY_DSN")).toThrowError("SENTRY_DSN")
+    expect(() => getRequiredClientEnvVar("DOCS_STATUS")).toThrowError("DOCS_STATUS")
   })
   test("returns value if it exists", () => {
-    ENV.AMPLITUDE_API_KEY = "AMPLITUDE_API_KEY"
-    ENV.BACKEND_URL = "BACKEND_URL"
     ENV.BUILD_ID = "BUILD_ID"
-    ENV.MAINNET_RPC_URL = "MAINNET_RPC_URL"
-    ENV.SENTRY_DSN = "SENTRY_DSN"
-    expect(getRequiredClientEnvVar("NODE_ENV")).toBe("test")
-    expect(getRequiredClientEnvVar("AMPLITUDE_API_KEY")).toBe("AMPLITUDE_API_KEY")
-    expect(getRequiredClientEnvVar("BACKEND_URL")).toBe("BACKEND_URL")
+    ENV.DOCS_STATUS = "DOCS_STATUS"
+    ENV.FLAG_ENTERPRISE = "FLAG_ENTERPRISE"
+    ENV.FLAG_INFLUX_RELAY_ERROR = "FLAG_INFLUX_RELAY_ERROR"
+    ENV.FLAG_LEGACY_MESSAGING = "FLAG_LEGACY_MESSAGING"
+    ENV.FLAG_MAINTENANCE_MODE = "FLAG_MAINTENANCE_MODE"
+    ENV.FLAG_MAINTENANCE_MODE_DASHBOARD = "FLAG_MAINTENANCE_MODE_DASHBOARD"
+    ENV.FLAG_MULTI_LANGUAGE = "FLAG_MULTI_LANGUAGE"
+    ENV.FLAG_STRIPE_PAYMENT = "FLAG_STRIPE_PAYMENT"
+    ENV.GODMODE_ACCOUNTS = "GODMODE_ACCOUNTS"
+    ENV.GOOGLE_ANALYTICS_ID = "GOOGLE_ANALYTICS_ID"
+    ENV.NODE_ENV = "test"
+    ENV.PORTAL_API_URL = "PORTAL_API_URL"
+    ENV.RELAY_METER_API_URL = "RELAY_METER_API_URL"
+
     expect(getRequiredClientEnvVar("BUILD_ID")).toBe("BUILD_ID")
-    expect(getRequiredClientEnvVar("MAINNET_RPC_URL")).toBe("MAINNET_RPC_URL")
-    expect(getRequiredClientEnvVar("SENTRY_DSN")).toBe("SENTRY_DSN")
+    expect(getRequiredClientEnvVar("DOCS_STATUS")).toBe("DOCS_STATUS")
+    expect(getRequiredClientEnvVar("FLAG_ENTERPRISE")).toBe("FLAG_ENTERPRISE")
+    expect(getRequiredClientEnvVar("FLAG_INFLUX_RELAY_ERROR")).toBe(
+      "FLAG_INFLUX_RELAY_ERROR",
+    )
+    expect(getRequiredClientEnvVar("FLAG_LEGACY_MESSAGING")).toBe("FLAG_LEGACY_MESSAGING")
+    expect(getRequiredClientEnvVar("FLAG_MAINTENANCE_MODE")).toBe("FLAG_MAINTENANCE_MODE")
+    expect(getRequiredClientEnvVar("FLAG_MAINTENANCE_MODE_DASHBOARD")).toBe(
+      "FLAG_MAINTENANCE_MODE_DASHBOARD",
+    )
+    expect(getRequiredClientEnvVar("FLAG_MULTI_LANGUAGE")).toBe("FLAG_MULTI_LANGUAGE")
+    expect(getRequiredClientEnvVar("FLAG_STRIPE_PAYMENT")).toBe("FLAG_STRIPE_PAYMENT")
+    expect(getRequiredClientEnvVar("GODMODE_ACCOUNTS")).toBe("GODMODE_ACCOUNTS")
+    expect(getRequiredClientEnvVar("GOOGLE_ANALYTICS_ID")).toBe("GOOGLE_ANALYTICS_ID")
+    expect(getRequiredClientEnvVar("PORTAL_API_URL")).toBe("PORTAL_API_URL")
+    expect(getRequiredClientEnvVar("RELAY_METER_API_URL")).toBe("RELAY_METER_API_URL")
   })
 })
 

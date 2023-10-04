@@ -1,4 +1,5 @@
 import { ActionFunction, json } from "@remix-run/node"
+import { PayPlanType } from "~/models/portal/sdk"
 import { Stripe, stripe } from "~/models/stripe/stripe.server"
 import { getErrorMessage } from "~/utils/catchError"
 import { getRequiredServerEnvVar } from "~/utils/environment"
@@ -13,6 +14,7 @@ function arrayBufferToBufferCycle(ab: ArrayBuffer) {
 }
 
 export const action: ActionFunction = async ({ request }) => {
+  const url = new URL(request.url)
   // This is your Stripe CLI webhook secret for testing your endpoint locally.
   const endpointSecret = getRequiredServerEnvVar("STRIPE_WEBHOOK_SECRET")
 
@@ -60,34 +62,43 @@ export const action: ActionFunction = async ({ request }) => {
           await stripe.subscriptionItems.update(subscription.items.data[0].id, {
             metadata: sessionCompleted.metadata,
           })
+
+          if (sessionCompleted.metadata?.endpoint_id) {
+            const formData = new FormData()
+            formData.set("id", sessionCompleted.metadata.endpoint_id)
+            formData.set("type", PayPlanType.PayAsYouGoV0)
+            formData.set("subscription", sessionCompleted.subscription)
+
+            // update application plan and store subscription id
+            await fetch(`${url.origin}/api/admin/update-plan`, {
+              method: "post",
+              body: formData,
+            })
+          }
         }
 
-        break
-      case "customer.subscription.created":
-        const subscriptionCreated = event.data.object as Stripe.Subscription
-        console.log(`Customer subscription create for ${subscriptionCreated.id}!`)
-
-        // TODO
-        // - get pocket user id from stripe customer metadata
-        // - get endpoint id from subscription metadata
-        // - hit portal ui api
-        // --- need global accessToken to modify any user data
-        // --- update user's endpoint plan_type field to be "paid_stripe"
         break
       case "customer.subscription.deleted":
         const subscriptionDeleted = event.data.object as Stripe.Subscription
         console.log(`Customer subscription deleted for ${subscriptionDeleted.id}!`)
 
-        // TODO
-        // - get pocket user id from stripe customer metadata
-        // - get endpoint id from subscription metadata
-        // - hit portal ui api
-        // --- need global accessToken to modify any user data
-        // --- update user's endpoint plan_type field to be "free"
+        const appIdDeleted = subscriptionDeleted.metadata.endpoint_id
+
+        const formData = new FormData()
+        formData.set("id", appIdDeleted)
+        formData.set("type", PayPlanType.FreetierV0)
+        formData.set("subscription", "")
+
+        await fetch("/api/admin/update-plan", {
+          method: "post",
+          body: formData,
+        })
+
         break
       default:
         // Unexpected event type
         console.log(`Unhandled event type ${event.type}.`)
+        return json({ message: "Unhandled event type" }, 404)
     }
   }
 

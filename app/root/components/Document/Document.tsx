@@ -1,5 +1,4 @@
 import { StylesPlaceholder } from "@mantine/remix"
-import { Global } from "@pokt-foundation/pocket-blocks"
 import {
   Links,
   LiveReload,
@@ -9,10 +8,9 @@ import {
   useSearchParams,
 } from "@remix-run/react"
 import React, { useEffect } from "react"
-import { useTranslate } from "~/context/TranslateContext"
+import RootProviders from "../RootProviders"
 
 const Document = ({ children, title }: { children: React.ReactNode; title?: string }) => {
-  const { language } = useTranslate()
   const [params] = useSearchParams()
 
   useEffect(() => {
@@ -23,31 +21,31 @@ const Document = ({ children, title }: { children: React.ReactNode; title?: stri
   }, [params])
 
   return (
-    <html lang={language}>
+    <html>
       <head>
         {title && <title>{title}</title>}
         <StylesPlaceholder />
-        <Global
-          styles={(theme) => ({
-            body: {
-              ...theme.fn.fontStyles(),
-              backgroundColor:
-                theme.colorScheme === "dark"
-                  ? theme.colors.navy[7]
-                  : theme.colors.gray[2],
-              color:
-                theme.colorScheme === "dark"
-                  ? theme.colors.gray[0]
-                  : theme.colors.navy[9],
-              lineHeight: theme.lineHeight,
-            },
-          })}
+        {/* Google tag (gtag.js) */}
+        <script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-9764LFJST6"
+        ></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-9764LFJST6');
+        `,
+          }}
         />
         <Meta />
         <Links />
       </head>
       <body>
-        {children}
+        <RootProviders>{children}</RootProviders>
         <ScrollRestoration />
         <Scripts />
         <LiveReload />

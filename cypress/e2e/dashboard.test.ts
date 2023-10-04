@@ -10,6 +10,7 @@ describe.skip("dashboard page tests", () => {
     })
 
     // should have network summary heading
-    cy.findByRole("tab", { name: /my applications/i }).should("be.visible")
+
+    cy.get("nav").contains("Overview")
   })
 })

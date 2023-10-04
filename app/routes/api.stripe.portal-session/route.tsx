@@ -1,20 +1,20 @@
 import { ActionFunction, redirect, json } from "@remix-run/node"
 import invariant from "tiny-invariant"
 import { getCustomer, stripe } from "~/models/stripe/stripe.server"
-import { getPoktId, requireUser } from "~/utils/session.server"
+import { getPoktId, requireUser } from "~/utils/user.server"
 
 export const action: ActionFunction = async ({ request }) => {
   const user = await requireUser(request)
-  invariant(user.profile.id && user.profile.emails, "user not found")
-  const userId = getPoktId(user.profile.id)
+  invariant(user.user.auth0ID && user.user.email, "user not found")
+  const userId = getPoktId(user.user.auth0ID)
   const url = new URL(request.url)
-  const defaultReturnPath = "/dashboard"
+  const defaultReturnPath = "/account"
   const formData = await request.formData()
   const returnPathParam = formData.get("return-path") as string | null
   const returnPath = returnPathParam ?? defaultReturnPath
   const returnUrl = `${url.origin}${returnPath}`
 
-  const uEmail = user?.profile?._json?.email ?? ""
+  const uEmail = user.user.email ?? ""
   const customer = await getCustomer(uEmail, userId)
 
   if (customer) {

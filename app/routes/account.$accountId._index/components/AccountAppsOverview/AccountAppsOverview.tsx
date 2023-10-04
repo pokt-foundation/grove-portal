@@ -13,7 +13,7 @@ const labels: Record<keyof AnalyticsRelaysAggregated, string> = {
   countTotal: "Total Relays",
   rateSuccess: "Success Rate",
   rateError: "Error Rate",
-  categoryValue: "Organization",
+  categoryValue: "Account",
   date: "Date",
 }
 

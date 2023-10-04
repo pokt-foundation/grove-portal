@@ -5,11 +5,11 @@ import { TitledCard } from "~/components/TitledCard"
 import { PortalApp } from "~/models/portal/sdk"
 import { getPlanName } from "~/utils/planUtils"
 
-interface AppEnterpriseOverviewCardProps {
+type PlanLimitOverviewCardProps = {
   app: PortalApp
 }
 
-export const PlanLimitOverviewCard = ({ app }: AppEnterpriseOverviewCardProps) => {
+export const PlanLimitOverviewCard = ({ app }: PlanLimitOverviewCardProps) => {
   const cardItems = [
     {
       label: "Plan Type",

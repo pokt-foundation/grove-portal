@@ -58,7 +58,7 @@ export const PlanView = ({
               </Button>
             </Alert>
           )}
-          <FreeAppPlan app={app} />
+          <FreeAppPlan app={app} userRole={userRole} />
         </>
       )}
 

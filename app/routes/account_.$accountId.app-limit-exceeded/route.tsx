@@ -1,7 +1,8 @@
-import { Button, CloseButton, Image, Stack, Text } from "@pokt-foundation/pocket-blocks"
+import { Button, CloseButton, Stack } from "@pokt-foundation/pocket-blocks"
 import { LoaderFunction, MetaFunction, redirect } from "@remix-run/node"
 import { Link, NavLink, useParams } from "@remix-run/react"
 import invariant from "tiny-invariant"
+import { EmptyState } from "~/components/EmptyState"
 import { initPortalClient } from "~/models/portal/portal.server"
 import useCommonStyles from "~/styles/commonStyles"
 import { MAX_USER_APPS } from "~/utils/planUtils"
@@ -54,35 +55,35 @@ export default function AppLimitExceeded() {
         size="lg"
         to="/account"
       />
-      <Image
-        withPlaceholder
-        alt="Empty overview placeholder"
-        height={216}
-        mt={40}
-        src="/app-limit-exceeded.svg"
-        width={270}
+      <EmptyState
+        alt="App limit exceeded"
+        callToAction={
+          <Button
+            className={commonClasses.grayOutlinedButton}
+            color="gray"
+            component={Link}
+            mt="xs"
+            prefetch="intent"
+            size="lg"
+            to={`/account/${params.accountId}`}
+            variant="outline"
+            w={156}
+          >
+            Discard
+          </Button>
+        }
+        imgHeight={216}
+        imgSrc="/app-limit-exceeded.svg"
+        imgWidth={270}
+        subtitle={
+          <>
+            At the moment, we're limiting users to two applications as we're gearing up
+            for a major release <br />
+            that will bring exciting new features and improvements.
+          </>
+        }
+        title="Currently you are only able to create two applications."
       />
-      <Text fw={600} fz="xl">
-        Currently you are only able to create two applications.
-      </Text>
-      <Text fw={400} fz="sm" ta="center">
-        At the moment, we're limiting users to two applications as we're gearing up for a
-        major release <br />
-        that will bring exciting new features and improvements.
-      </Text>
-      <Button
-        className={commonClasses.grayOutlinedButton}
-        color="gray"
-        component={Link}
-        mt="xs"
-        prefetch="intent"
-        size="lg"
-        to={`/account/${params.accountId}`}
-        variant="outline"
-        w={156}
-      >
-        Discard
-      </Button>
     </Stack>
   )
 }

@@ -27,12 +27,12 @@ const getFormattedValue = (
 
   switch (key) {
     case "avgLatency":
-      return `${aggregate[key]}ms`
+      return aggregate[key] ? `${aggregate[key]}ms` : "-"
     case "rateSuccess":
-      return `${aggregate[key]}%`
+      return aggregate[key] ? `${aggregate[key]}%` : "-"
     case "rateError":
       const errorsTotal = getTotalErrors(aggregate)
-      return String(errorsTotal ? commify(errorsTotal) : "-")
+      return errorsTotal ? commify(errorsTotal) : "-"
     default:
       return commify(String(aggregate[key]))
   }
@@ -68,11 +68,7 @@ export const AccountAppsOverview = ({
   const { classes } = useStyles()
 
   if (!aggregate) {
-    return (
-      <>
-        <div>-</div>
-      </>
-    )
+    return <>-</>
   }
 
   return (

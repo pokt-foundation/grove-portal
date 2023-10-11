@@ -1,4 +1,4 @@
-import { json, LoaderFunction, MetaFunction } from "@remix-run/node"
+import { json, LoaderFunction, MetaFunction, redirect } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
 import invariant from "tiny-invariant"
 import ErrorView from "~/components/ErrorView"
@@ -26,6 +26,12 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   await requireUser(request)
   const url = new URL(request.url)
   const daysParam = Number(url.searchParams.get("days") ?? "7")
+  const { accountId, appId } = params
+
+  // Prevent manually entering daysParam
+  if (daysParam !== 7 && daysParam !== 30 && daysParam !== 60) {
+    return redirect(`/account/${accountId}/${appId}/insights`)
+  }
 
   try {
     const { appId } = params

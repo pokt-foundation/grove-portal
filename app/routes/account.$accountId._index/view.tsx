@@ -28,10 +28,10 @@ export const AccountInsightsView = ({ data }: AccountInsightsViewProps) => {
   const { total, aggregate } = data
 
   const {
-    aggregateSuccessData,
-    aggregateTotalData,
-    aggregateLatencyData,
-    aggregateErrorData,
+    aggregatedSuccessData,
+    aggregatedTotalData,
+    aggregatedLatencyData,
+    aggregatedErrorData,
   } = useAggregateChartData(aggregate)
 
   return (
@@ -67,7 +67,7 @@ export const AccountInsightsView = ({ data }: AccountInsightsViewProps) => {
             <OverviewSparkline
               isLoading={isLoading}
               label=" relays"
-              sparklineData={aggregateTotalData}
+              sparklineData={aggregatedTotalData}
             />
           </Card.Section>
         </TitledCard>
@@ -90,7 +90,7 @@ export const AccountInsightsView = ({ data }: AccountInsightsViewProps) => {
               <OverviewSparkline
                 isLoading={isLoading}
                 label="ms"
-                sparklineData={aggregateLatencyData}
+                sparklineData={aggregatedLatencyData}
               />
             </Card.Section>
           </TitledCard>
@@ -111,7 +111,7 @@ export const AccountInsightsView = ({ data }: AccountInsightsViewProps) => {
               <OverviewSparkline
                 isLoading={isLoading}
                 label="%"
-                sparklineData={aggregateSuccessData}
+                sparklineData={aggregatedSuccessData}
               />
             </Card.Section>
           </TitledCard>
@@ -132,8 +132,7 @@ export const AccountInsightsView = ({ data }: AccountInsightsViewProps) => {
           <Card.Section p="md">
             <OverviewSparkline
               isLoading={isLoading}
-              label="%"
-              sparklineData={aggregateErrorData}
+              sparklineData={aggregatedErrorData}
             />
           </Card.Section>
         </TitledCard>

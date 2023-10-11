@@ -27,10 +27,10 @@ export default function ApplicationInsightsView({ data }: ApplicationInsightsVie
   const { total, aggregate } = data
 
   const {
-    aggregateSuccessData,
-    aggregateTotalData,
-    aggregateLatencyData,
-    aggregateErrorData,
+    aggregatedSuccessData,
+    aggregatedTotalData,
+    aggregatedLatencyData,
+    aggregatedErrorData,
   } = useAggregateChartData(aggregate)
   return (
     <Stack mb="xl" pt={22} spacing="xl">
@@ -65,7 +65,7 @@ export default function ApplicationInsightsView({ data }: ApplicationInsightsVie
             <OverviewSparkline
               isLoading={isLoading}
               label=" relays"
-              sparklineData={aggregateTotalData}
+              sparklineData={aggregatedTotalData}
             />
           </Card.Section>
         </TitledCard>
@@ -88,7 +88,7 @@ export default function ApplicationInsightsView({ data }: ApplicationInsightsVie
               <OverviewSparkline
                 isLoading={isLoading}
                 label="ms"
-                sparklineData={aggregateLatencyData}
+                sparklineData={aggregatedLatencyData}
               />
             </Card.Section>
           </TitledCard>
@@ -109,7 +109,7 @@ export default function ApplicationInsightsView({ data }: ApplicationInsightsVie
               <OverviewSparkline
                 isLoading={isLoading}
                 label="%"
-                sparklineData={aggregateSuccessData}
+                sparklineData={aggregatedSuccessData}
               />
             </Card.Section>
           </TitledCard>
@@ -130,8 +130,7 @@ export default function ApplicationInsightsView({ data }: ApplicationInsightsVie
           <Card.Section p="md">
             <OverviewSparkline
               isLoading={isLoading}
-              label="%"
-              sparklineData={aggregateErrorData}
+              sparklineData={aggregatedErrorData}
             />
           </Card.Section>
         </TitledCard>

@@ -49,7 +49,7 @@ export const AccountAppsOverview = ({
   if (!aggregate) {
     return (
       <>
-        <div>undefined</div>
+        <div>-</div>
       </>
     )
   }

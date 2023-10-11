@@ -1,8 +1,9 @@
+import { Button } from "@pokt-foundation/pocket-blocks"
 import { json, LoaderFunction, MetaFunction, redirect } from "@remix-run/node"
-import { useLoaderData } from "@remix-run/react"
+import { Link, useLoaderData, useParams } from "@remix-run/react"
 import React from "react"
 import invariant from "tiny-invariant"
-import { EmptyState } from "./components/EmptyState"
+import { EmptyState } from "~/components/EmptyState"
 import ErrorView from "~/components/ErrorView"
 import { getAggregateRelays, getTotalRelays } from "~/models/dwh/dwh.server"
 import { AnalyticsRelaysAggregated } from "~/models/dwh/sdk/models/AnalyticsRelaysAggregated"
@@ -80,6 +81,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
 export default function AccountInsights() {
   const { data, error, message } = useLoaderData() as DataStruct<AccountInsightsData>
+  const { accountId } = useParams()
 
   if (error) {
     return <ErrorView message={message} />
@@ -87,7 +89,32 @@ export default function AccountInsights() {
 
   const apps = data?.account?.portalApps as PortalApp[]
 
-  if (apps.length === 0) return <EmptyState />
+  if (apps.length === 0)
+    return (
+      <EmptyState
+        alt="Empty overview placeholder"
+        callToAction={
+          <Button
+            component={Link}
+            mt="xs"
+            prefetch="intent"
+            to={`/account/${accountId}/create`}
+          >
+            New Application
+          </Button>
+        }
+        imgHeight={205}
+        imgSrc="/overview-empty-state.svg"
+        imgWidth={122}
+        subtitle={
+          <>
+            Applications connect your project to the blockchain. <br />
+            Set up your first one now.
+          </>
+        }
+        title="Create your first application"
+      />
+    )
 
   return <AccountInsightsView data={data} />
 }

@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import { DataTable } from "~/components/DataTable"
 import { Logs } from "~/models/dwh/sdk"
+import LogsSideDrawer from "~/routes/account.$accountId.$appId.logs/components/LogsSideDrawer"
 import { dayjs } from "~/utils/dayjs"
 
 type LogsTableProps = {
@@ -13,6 +14,10 @@ const LogsTable = ({ logs, searchTerm }: LogsTableProps) => {
 
   return (
     <>
+      <LogsSideDrawer
+        logsItem={selectedLogsItem}
+        onSideDrawerClose={() => setSelectedLogsItem(undefined)}
+      />
       <DataTable
         columns={["Timestamp", "Method", "Chain ID", "Error type", "Error name"]}
         data={logs.map((log) => {

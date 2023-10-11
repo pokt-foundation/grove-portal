@@ -54,5 +54,7 @@ export default function AccountInsights() {
     return <ErrorView message={message} />
   }
 
-  return <AppLogs logs={data?.logs} />
+  const { logs } = data
+
+  return <AppLogs logs={logs} />
 }

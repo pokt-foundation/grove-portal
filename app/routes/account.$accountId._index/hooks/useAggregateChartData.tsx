@@ -1,6 +1,7 @@
 import dayjs from "dayjs"
 import { useMemo } from "react"
 import { AnalyticsRelaysAggregated } from "~/models/dwh/sdk"
+import { getTotalErrors } from "~/utils/chartUtils"
 
 const useAggregateChartData = (data: AnalyticsRelaysAggregated[]) => {
   const aggregatedTotalData = useMemo(() => {
@@ -27,7 +28,7 @@ const useAggregateChartData = (data: AnalyticsRelaysAggregated[]) => {
   const aggregatedErrorData = useMemo(() => {
     return data.map((day) => ({
       date: dayjs(day.date).format("MMM DD"),
-      val: day.rateError ?? null,
+      val: getTotalErrors(day),
     }))
   }, [data])
 

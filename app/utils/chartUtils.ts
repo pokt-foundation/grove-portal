@@ -1,23 +1,14 @@
-import dayjs from "dayjs"
-import { AnalyticsRelaysAggregated } from "~/models/dwh/sdk"
+import { AnalyticsRelaysAggregated, AnalyticsRelaysTotal } from "~/models/dwh/sdk"
 
-export const getChartData = (data: AnalyticsRelaysAggregated[]) => {
-  const totalChartData = data.map((day) => ({
-    date: dayjs(day.date).format("MMM DD"),
-    val: day.countTotal ?? null,
-  }))
-  const latencyChartData = data.map((day) => ({
-    date: dayjs(day.date).format("MMM DD"),
-    val: day.avgLatency ?? null,
-  }))
-  const successChartData = data.map((day) => ({
-    date: dayjs(day.date).format("MMM DD"),
-    val: day.rateSuccess ?? null,
-  }))
-  const errorChartData = data.map((day) => ({
-    date: dayjs(day.date).format("MMM DD"),
-    val: day.rateError ?? null,
-  }))
+export const getTotalErrors = (
+  aggregatedData: AnalyticsRelaysAggregated | AnalyticsRelaysTotal,
+) => {
+  if (!aggregatedData || !aggregatedData.rateSuccess || !aggregatedData.countTotal) {
+    return null
+  }
 
-  return { totalChartData, latencyChartData, successChartData, errorChartData }
+  const { rateSuccess, countTotal: countTotalSuccess } = aggregatedData
+
+  const totalCount = Number(countTotalSuccess) / Number(rateSuccess / 100)
+  return Math.round(totalCount - Number(countTotalSuccess))
 }

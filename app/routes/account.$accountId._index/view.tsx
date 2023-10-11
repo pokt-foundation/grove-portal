@@ -14,6 +14,7 @@ import { ChartPeriodSelector } from "~/routes/account.$accountId._index/componen
 import { OverviewSparkline } from "~/routes/account.$accountId._index/components/OverviewSparkline"
 import useAggregateChartData from "~/routes/account.$accountId._index/hooks/useAggregateChartData"
 import { AccountInsightsData } from "~/routes/account.$accountId._index/route"
+import { getTotalErrors } from "~/utils/chartUtils"
 import { commify } from "~/utils/formattingUtils"
 
 type AccountInsightsViewProps = {
@@ -26,6 +27,7 @@ export const AccountInsightsView = ({ data }: AccountInsightsViewProps) => {
   const isLoading = !!(navigation.state === "loading" && navigation.formAction)
 
   const { total, aggregate } = data
+  const totalErrors = getTotalErrors(total)
 
   const {
     aggregatedSuccessData,
@@ -120,9 +122,9 @@ export const AccountInsightsView = ({ data }: AccountInsightsViewProps) => {
           header={() => (
             <Group position="apart">
               <Text weight={600}>
-                Error Rate{" "}
+                Total Errors{" "}
                 <Badge ml="sm" px={6} radius="sm">
-                  {commify(total?.rateError ?? 0)}%
+                  {totalErrors ? commify(totalErrors) : 0}
                 </Badge>
               </Text>
               <ChartPeriodSelector />

@@ -43,7 +43,8 @@ const ChainWhitelistTable = ({
   )
 
   return (
-    data && (
+    data &&
+    data.length > 0 && (
       <DataTable
         data={data?.map((chain) => {
           return {

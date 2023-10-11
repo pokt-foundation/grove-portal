@@ -42,62 +42,59 @@ const ChainWhitelistTable = ({
     [blockchainWhitelist, blockchains],
   )
 
-  return (
-    data &&
-    data.length > 0 && (
-      <DataTable
-        data={data?.map((chain) => {
-          return {
-            chain: {
-              element: <Chain chain={chain as Blockchain} />,
-              value: `${chain?.description} ${chain?.blockchain}`,
-              cellProps: {
-                style: { minWidth: "250px" },
-                width: "30%",
-              },
+  return data && data.length > 0 ? (
+    <DataTable
+      data={data?.map((chain) => {
+        return {
+          chain: {
+            element: <Chain chain={chain as Blockchain} />,
+            value: `${chain?.description} ${chain?.blockchain}`,
+            cellProps: {
+              style: { minWidth: "250px" },
+              width: "30%",
             },
-            endpointUrl: {
-              element: (
-                <TextInput
-                  readOnly
-                  bg={theme.colors.gray[9]}
-                  miw={300}
-                  value={chain.whitelistValue}
-                />
-              ),
+          },
+          endpointUrl: {
+            element: (
+              <TextInput
+                readOnly
+                bg={theme.colors.gray[9]}
+                miw={300}
+                value={chain.whitelistValue}
+              />
+            ),
+          },
+          action: {
+            element: (
+              <Flex gap="lg" justify="flex-end">
+                <CopyTextButton value={chain.whitelistValue} />
+                {!readOnly && (
+                  <ActionIcon
+                    className={commonClasses.grayOutlinedButton}
+                    radius="xl"
+                    size={40}
+                    variant="outline"
+                    onClick={() =>
+                      onDelete({
+                        blockchainID: chain.id as string,
+                        whitelistValue: chain.whitelistValue,
+                      })
+                    }
+                  >
+                    <LuTrash2 size={18} />
+                  </ActionIcon>
+                )}
+              </Flex>
+            ),
+            cellProps: {
+              style: { minWidth: "130px" },
+              width: "130px",
             },
-            action: {
-              element: (
-                <Flex gap="lg" justify="flex-end">
-                  <CopyTextButton value={chain.whitelistValue} />
-                  {!readOnly && (
-                    <ActionIcon
-                      className={commonClasses.grayOutlinedButton}
-                      radius="xl"
-                      size={40}
-                      variant="outline"
-                      onClick={() =>
-                        onDelete({
-                          blockchainID: chain.id as string,
-                          whitelistValue: chain.whitelistValue,
-                        })
-                      }
-                    >
-                      <LuTrash2 size={18} />
-                    </ActionIcon>
-                  )}
-                </Flex>
-              ),
-              cellProps: {
-                style: { minWidth: "130px" },
-                width: "130px",
-              },
-            },
-          }
-        })}
-        paginate={false}
-      />
-    )
-  )
+          },
+        }
+      })}
+      paginate={false}
+    />
+  ) : null
 }
 export default ChainWhitelistTable

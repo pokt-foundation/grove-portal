@@ -2,12 +2,13 @@ import { Box, Text, useMantineTheme } from "@pokt-foundation/pocket-blocks"
 import React, { useMemo } from "react"
 import {
   CartesianGrid,
-  LineChart,
-  Line,
+  Area,
+  ComposedChart,
   ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
+  Line,
 } from "recharts"
 import { ChartData } from "~/types/global"
 import { formatNumberToSICompact } from "~/utils/formattingUtils"
@@ -41,8 +42,7 @@ const Sparkline = ({
         >
           <Text className="label">Date: {label}</Text>
           <Text className="desc">
-            {payload[0].value}
-            {valueLabel}
+            {payload[0].value ? `${payload[0].value} ${valueLabel}` : "No Data"}
           </Text>
         </Box>
       )
@@ -63,7 +63,13 @@ const Sparkline = ({
 
   return (
     <ResponsiveContainer height="100%" width="100%">
-      <LineChart data={data} height={height}>
+      <ComposedChart data={data} height={height}>
+        <defs>
+          <linearGradient id="colorUv" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="5%" stopColor="#389F58" stopOpacity={0.1} />
+            <stop offset="95%" stopColor="#27292F" stopOpacity={0.1} />
+          </linearGradient>
+        </defs>
         <CartesianGrid
           strokeDasharray="3 3"
           strokeWidth={0.2}
@@ -74,7 +80,7 @@ const Sparkline = ({
           dataKey={xAxisDataKey}
           height={60}
           minTickGap={15}
-          padding={{ left: 30, right: 30 }}
+          padding={{ left: 10, right: 10 }}
           stroke={theme.colors.gray[8]}
           tick={{ fill: theme.colors.gray[6] }}
           tickLine={false}
@@ -90,19 +96,29 @@ const Sparkline = ({
           tickLine={false}
           width={maxCharactersWidth}
         />
-        <Tooltip content={<CustomTooltip valueLabel={label} />} />
-        <Line
+        <Tooltip content={<CustomTooltip valueLabel={label} />} filterNull={false} />
+        <Area
           connectNulls
-          activeDot={{ stroke: theme.colors.blue[5], strokeWidth: 1 }}
+          activeDot={{ stroke: theme.colors.green[5], strokeWidth: 1 }}
           dataKey="val"
-          dot={{
-            fill: theme.colors.dark[9],
-            stroke: theme.colors.blue[7],
-          }}
-          stroke={theme.colors.blue[7]}
+          dot={false}
+          fill="url(#colorUv)"
+          fillOpacity={1}
+          stroke={theme.colors.green[7]}
+          strokeDasharray="4 4"
+          strokeWidth={2}
           type="bumpX"
         />
-      </LineChart>
+        <Line
+          activeDot={{ stroke: theme.colors.green[5], strokeWidth: 1 }}
+          connectNulls={false}
+          dataKey="val"
+          dot={false}
+          stroke={theme.colors.green[7]}
+          strokeWidth={2}
+          type="bumpX"
+        />
+      </ComposedChart>
     </ResponsiveContainer>
   )
 }

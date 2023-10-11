@@ -56,17 +56,6 @@ export const ChartPeriodSelector = () => {
           >
             60d
           </Button>
-          {/*<Button*/}
-          {/*  bg={daysParam === "90" ? theme.colors.dark[7] : theme.colors.dark[9]}*/}
-          {/*  name="days"*/}
-          {/*  radius="sm"*/}
-          {/*  size="xs"*/}
-          {/*  type="submit"*/}
-          {/*  value={90}*/}
-          {/*  variant="default"*/}
-          {/*>*/}
-          {/*  90d*/}
-          {/*</Button>*/}
         </Button.Group>
       </Group>
     </Form>

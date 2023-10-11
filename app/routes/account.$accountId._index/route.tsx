@@ -32,11 +32,10 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   const portal = initPortalClient({ token: user.accessToken })
   const url = new URL(request.url)
   const daysParam: number = Number(url.searchParams.get("days") ?? "7")
-  const { accountId } = params
 
   // Prevent manually entering daysParam
   if (daysParam !== 7 && daysParam !== 30 && daysParam !== 60) {
-    return redirect(`/account/${accountId}`)
+    return redirect(url.pathname)
   }
 
   try {

@@ -26,11 +26,10 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   await requireUser(request)
   const url = new URL(request.url)
   const daysParam = Number(url.searchParams.get("days") ?? "7")
-  const { accountId, appId } = params
 
   // Prevent manually entering daysParam
   if (daysParam !== 7 && daysParam !== 30 && daysParam !== 60) {
-    return redirect(`/account/${accountId}/${appId}/insights`)
+    return redirect(url.pathname)
   }
 
   try {

@@ -34,10 +34,6 @@ export default function AppIdLayoutView({
       label: "Insights",
     },
     {
-      to: "logs",
-      label: "Logs",
-    },
-    {
       to: "security",
       label: "Security",
     },

@@ -48,30 +48,44 @@ export default function AppNotificationsAlert({
 }: NotificationsAlertFormProps) {
   const { notifications } = app
   const fetcher = useFetcher()
+  useActionNotification(fetcher.data)
+
+  const notificationEvents = notifications[0]?.appNotification?.events
 
   const getNotificationCheckedState = useCallback(
     (level: NotificationLevel) => {
-      // @ts-ignore
-      return Object.keys(notifications).length > 0 && notifications[level]
-        ? // @ts-ignore
-          (notifications[level] as boolean)
+      console.log(notificationEvents[level])
+      return Object.keys(notificationEvents).length > 0 &&
+        notificationEvents.hasOwnProperty(level)
+        ? (notificationEvents[level] as boolean)
         : DEFAULT_ALERT_PERCENTAGES[level]
     },
-    [notifications],
+    [notificationEvents],
   )
 
   const updateNotification = (level: string, value: string) => {
+    const otherNotificationEventsValues = NOTIFICATIONS_ALERT_LEVELS.filter(
+      (notificationLevel) => notificationLevel !== level,
+    ).reduce(
+      (result, notificationLevel) => ({
+        ...result,
+        [notificationLevel]: getNotificationCheckedState(notificationLevel)
+          ? "on"
+          : "off",
+      }),
+      {},
+    )
+
     fetcher.submit(
       {
         [level]: value,
+        ...otherNotificationEventsValues,
       },
       {
-        method: "PUT",
+        method: "POST",
       },
     )
   }
-
-  useActionNotification(fetcher.data)
 
   return (
     <Stack pt={36}>
@@ -89,10 +103,10 @@ export default function AppNotificationsAlert({
               </Text>
               <Switch
                 defaultChecked={getNotificationCheckedState(level)}
-                disabled={userRole === "MEMBER"}
+                disabled={userRole === "MEMBER" || fetcher.state !== "idle"}
                 name={level}
                 onChange={(event) => {
-                  updateNotification(level, event.currentTarget.value)
+                  updateNotification(level, event.currentTarget.checked ? "on" : "off")
                   trackEvent({
                     category: AnalyticCategories.app,
                     action: AnalyticActions.app_notifications,

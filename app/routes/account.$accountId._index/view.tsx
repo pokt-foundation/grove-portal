@@ -111,7 +111,7 @@ export const AccountInsightsView = ({ data }: AccountInsightsViewProps) => {
           >
             <Card.Section p="md">
               <OverviewSparkline
-                customYAxisDomain={["dataMin - 10", "auto"]}
+                customYAxisDomain={["dataMin - 10", 100]}
                 isLoading={isLoading}
                 label="%"
                 sparklineData={aggregatedSuccessData}

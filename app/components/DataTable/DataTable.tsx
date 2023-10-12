@@ -2,8 +2,8 @@ import { createStyles } from "@mantine/core"
 import { Table, Box } from "@pokt-foundation/pocket-blocks"
 import { DataTableBody } from "./DataTableBody"
 import { DataTablePagination } from "./DataTablePagination"
-import { DataTableProps, IdObj } from "~/components/DataTable/dataTable.d"
 import { usePagination } from "~/hooks/usePagination"
+import { DataTableProps, IdObj } from "~/types/table"
 
 const useTableStyles = createStyles((theme) => ({
   table: {
@@ -12,6 +12,12 @@ const useTableStyles = createStyles((theme) => ({
     },
     "& thead tr th": {
       borderColor: "rgba(55,58,64, 0.5)",
+    },
+    "& tbody tr:hover": {
+      backgroundColor:
+        theme.colorScheme === "dark"
+          ? "rgba(37,38,43,0.50) !important"
+          : "rgba(250,250,250,0.50) !important",
     },
   },
 }))
@@ -22,6 +28,7 @@ export const DataTable = <T extends IdObj>({
   paginate,
   rowAsLink = false,
   searchTerm,
+  onRowClick,
 }: DataTableProps<T>) => {
   const { paginatedData, totalPages, page, handlePageChange } = usePagination({
     data,
@@ -33,7 +40,11 @@ export const DataTable = <T extends IdObj>({
 
   return (
     <Box>
-      <Table className={classes.table} verticalSpacing="xl">
+      <Table
+        className={classes.table}
+        highlightOnHover={!!onRowClick}
+        verticalSpacing="xl"
+      >
         {columns && (
           <thead>
             <tr>
@@ -44,7 +55,12 @@ export const DataTable = <T extends IdObj>({
           </thead>
         )}
 
-        <DataTableBody data={data} paginatedData={paginatedData} rowAsLink={rowAsLink} />
+        <DataTableBody
+          data={data}
+          paginatedData={paginatedData}
+          rowAsLink={rowAsLink}
+          onRowClick={onRowClick}
+        />
       </Table>
 
       {paginate && (

@@ -89,7 +89,7 @@ export const action: ActionFunction = async ({ request }) => {
         formData.set("type", PayPlanType.FreetierV0)
         formData.set("subscription", "")
 
-        await fetch("/api/admin/update-plan", {
+        await fetch(`${url.origin}/api/admin/update-plan`, {
           method: "post",
           body: formData,
         })

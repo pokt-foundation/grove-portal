@@ -2,13 +2,19 @@ import { Text } from "@pokt-foundation/pocket-blocks"
 import { Link } from "@remix-run/react"
 import { TableBodyProps, TableDataArray } from "~/types/table"
 
-const renderTableCell = ([key, value]: TableDataArray) => (
-  <td key={key} {...value.cellProps}>
-    {typeof value === "object" ? value.element : <Text>{value}</Text>}
-  </td>
-)
+const renderTableCell = ([key, value]: TableDataArray) =>
+  key !== "rowSelectData" ? (
+    <td key={key} {...value.cellProps}>
+      {typeof value === "object" ? value.element : <Text>{value}</Text>}
+    </td>
+  ) : null
 
-export const DataTableBody = ({ paginatedData, rowAsLink, data }: TableBodyProps) => {
+export const DataTableBody = ({
+  paginatedData,
+  rowAsLink,
+  data,
+  onRowClick,
+}: TableBodyProps) => {
   return (
     <tbody>
       {paginatedData.length > 0 ? (
@@ -17,7 +23,11 @@ export const DataTableBody = ({ paginatedData, rowAsLink, data }: TableBodyProps
           const tableData = Object.entries(itemData)
 
           return (
-            <tr key={`${id}-${index}`}>
+            <tr
+              key={`${id}-${index}`}
+              style={{ ...(!!onRowClick && { cursor: "pointer" }) }}
+              onClick={() => onRowClick(item.rowSelectData)}
+            >
               {rowAsLink ? (
                 <Link
                   style={{

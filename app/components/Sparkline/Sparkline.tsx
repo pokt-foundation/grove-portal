@@ -10,8 +10,9 @@ import {
   YAxis,
   Line,
 } from "recharts"
+import { type AxisDomain } from "recharts/types/util/types"
 import { ChartData } from "~/types/global"
-import { formatNumberToSICompact } from "~/utils/formattingUtils"
+import { commify, formatNumberToSICompact } from "~/utils/formattingUtils"
 
 type SparkLineProps = {
   data: ChartData[]
@@ -19,6 +20,8 @@ type SparkLineProps = {
   height: number
   xAxisDataKey: string
   yAxisDataKey: string
+  customYAxisDomain?: AxisDomain
+  commifyLabelValue?: boolean
 }
 
 const Sparkline = ({
@@ -27,10 +30,12 @@ const Sparkline = ({
   height,
   xAxisDataKey,
   yAxisDataKey,
+  customYAxisDomain,
+  commifyLabelValue,
 }: SparkLineProps) => {
   const theme = useMantineTheme()
 
-  const CustomTooltip = ({ active, payload, label, valueLabel }: any) => {
+  const CustomTooltip = ({ active, payload, label, valueLabel, commifyValue }: any) => {
     if (active && payload && payload.length) {
       return (
         <Box
@@ -42,7 +47,11 @@ const Sparkline = ({
         >
           <Text className="label">Date: {label}</Text>
           <Text className="desc">
-            {payload[0].value ? `${payload[0].value} ${valueLabel}` : "No Data"}
+            {payload[0].value
+              ? `${
+                  commifyValue ? commify(payload[0].value) : payload[0].value
+                } ${valueLabel}`
+              : "No Data"}
           </Text>
         </Box>
       )
@@ -89,6 +98,7 @@ const Sparkline = ({
         <YAxis
           axisLine={false}
           dataKey={yAxisDataKey}
+          domain={customYAxisDomain}
           includeHidden={true}
           minTickGap={0}
           tick={{ fill: theme.colors.gray[6] }}
@@ -96,7 +106,10 @@ const Sparkline = ({
           tickLine={false}
           width={maxCharactersWidth}
         />
-        <Tooltip content={<CustomTooltip valueLabel={label} />} filterNull={false} />
+        <Tooltip
+          content={<CustomTooltip commifyValue={commifyLabelValue} valueLabel={label} />}
+          filterNull={false}
+        />
         <Area
           connectNulls
           activeDot={{ stroke: theme.colors.green[5], strokeWidth: 1 }}

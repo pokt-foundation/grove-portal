@@ -67,8 +67,8 @@ export const AccountInsightsView = ({ data }: AccountInsightsViewProps) => {
         >
           <Card.Section p="md">
             <OverviewSparkline
+              commifyLabelValue={true}
               isLoading={isLoading}
-              label=" relays"
               sparklineData={aggregatedTotalData}
             />
           </Card.Section>
@@ -111,6 +111,7 @@ export const AccountInsightsView = ({ data }: AccountInsightsViewProps) => {
           >
             <Card.Section p="md">
               <OverviewSparkline
+                customYAxisDomain={["dataMin - 10", "auto"]}
                 isLoading={isLoading}
                 label="%"
                 sparklineData={aggregatedSuccessData}
@@ -133,6 +134,7 @@ export const AccountInsightsView = ({ data }: AccountInsightsViewProps) => {
         >
           <Card.Section p="md">
             <OverviewSparkline
+              commifyLabelValue={true}
               isLoading={isLoading}
               sparklineData={aggregatedErrorData}
             />

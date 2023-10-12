@@ -1,5 +1,6 @@
 import { Box, LoadingOverlay, Space, Text } from "@pokt-foundation/pocket-blocks"
 import React from "react"
+import { type AxisDomain } from "recharts/types/util/types"
 import Sparkline from "~/components/Sparkline"
 import { ChartData } from "~/types/global"
 
@@ -8,13 +9,17 @@ type OverviewSparklineProps = {
   title?: string
   sparklineData: ChartData[]
   isLoading?: boolean
+  customYAxisDomain?: AxisDomain
+  commifyLabelValue?: boolean
 }
 
 export const OverviewSparkline = ({
   label = "relays",
+  commifyLabelValue,
   title,
   sparklineData,
   isLoading,
+  customYAxisDomain,
 }: OverviewSparklineProps) => {
   const height = 350
   return (
@@ -28,6 +33,8 @@ export const OverviewSparkline = ({
       )}
       <LoadingOverlay overlayBlur={1} visible={!!isLoading} />
       <Sparkline
+        commifyLabelValue={commifyLabelValue}
+        customYAxisDomain={customYAxisDomain}
         data={sparklineData}
         height={height}
         label={label}

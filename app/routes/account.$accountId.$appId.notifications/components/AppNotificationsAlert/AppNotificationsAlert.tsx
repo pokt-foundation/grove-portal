@@ -53,13 +53,11 @@ export default function AppNotificationsAlert({
   const notificationEvents = notifications[0]?.appNotification?.events
 
   const getNotificationCheckedState = useCallback(
-    (level: NotificationLevel) => {
-      console.log(notificationEvents[level])
-      return Object.keys(notificationEvents).length > 0 &&
-        notificationEvents.hasOwnProperty(level)
+    (level: NotificationLevel) =>
+      Object.keys(notificationEvents).length > 0 &&
+      notificationEvents.hasOwnProperty(level)
         ? (notificationEvents[level] as boolean)
-        : DEFAULT_ALERT_PERCENTAGES[level]
-    },
+        : DEFAULT_ALERT_PERCENTAGES[level],
     [notificationEvents],
   )
 

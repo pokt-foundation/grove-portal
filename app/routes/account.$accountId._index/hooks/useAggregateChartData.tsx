@@ -1,41 +1,42 @@
 import dayjs from "dayjs"
 import { useMemo } from "react"
 import { AnalyticsRelaysAggregated } from "~/models/dwh/sdk"
+import { getTotalErrors } from "~/utils/chartUtils"
 
 const useAggregateChartData = (data: AnalyticsRelaysAggregated[]) => {
-  const aggregateTotalData = useMemo(() => {
+  const aggregatedTotalData = useMemo(() => {
     return data.map((day) => ({
       date: dayjs(day.date).format("MMM DD"),
       val: day.countTotal ?? null,
     }))
   }, [data])
 
-  const aggregateLatencyData = useMemo(() => {
+  const aggregatedLatencyData = useMemo(() => {
     return data.map((day) => ({
       date: dayjs(day.date).format("MMM DD"),
       val: day.avgLatency ?? null,
     }))
   }, [data])
 
-  const aggregateSuccessData = useMemo(() => {
+  const aggregatedSuccessData = useMemo(() => {
     return data.map((day) => ({
       date: dayjs(day.date).format("MMM DD"),
       val: day.rateSuccess ?? null,
     }))
   }, [data])
 
-  const aggregateErrorData = useMemo(() => {
+  const aggregatedErrorData = useMemo(() => {
     return data.map((day) => ({
       date: dayjs(day.date).format("MMM DD"),
-      val: day.rateError ?? null,
+      val: getTotalErrors(day),
     }))
   }, [data])
 
   return {
-    aggregateTotalData,
-    aggregateLatencyData,
-    aggregateSuccessData,
-    aggregateErrorData,
+    aggregatedTotalData,
+    aggregatedLatencyData,
+    aggregatedSuccessData,
+    aggregatedErrorData,
   }
 }
 

@@ -73,8 +73,6 @@ export const getAggregateRelays = async ({
     to: dayjs().toDate(),
   })
 
-  console.log(aggregateResponse)
-
   // const aggregateJsonData = (await aggregateResponse.raw.json()) as {
   //   Data: AnalyticsRelaysAggregated[]
   // }

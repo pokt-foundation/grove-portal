@@ -42,8 +42,6 @@ export const action: ActionFunction = async ({ request, params }) => {
     const secretKeyRequired = formData.get("secretKeyRequired")
     const whitelistJson = formData.get("whitelist")
 
-    console.log(secretKeyRequired)
-
     if (secretKeyRequired) {
       invariant(typeof secretKeyRequired === "string", "secretKeyRequired not found")
 

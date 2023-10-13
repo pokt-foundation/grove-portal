@@ -14,6 +14,7 @@ import { ChartPeriodSelector } from "~/routes/account.$accountId._index/componen
 import { OverviewSparkline } from "~/routes/account.$accountId._index/components/OverviewSparkline"
 import useAggregateChartData from "~/routes/account.$accountId._index/hooks/useAggregateChartData"
 import { AccountInsightsData } from "~/routes/account.$accountId._index/route"
+import { getTotalErrors } from "~/utils/chartUtils"
 import { commify } from "~/utils/formattingUtils"
 
 type AccountInsightsViewProps = {
@@ -26,12 +27,13 @@ export const AccountInsightsView = ({ data }: AccountInsightsViewProps) => {
   const isLoading = !!(navigation.state === "loading" && navigation.formAction)
 
   const { total, aggregate } = data
+  const totalErrors = getTotalErrors(total)
 
   const {
-    aggregateSuccessData,
-    aggregateTotalData,
-    aggregateLatencyData,
-    aggregateErrorData,
+    aggregatedSuccessData,
+    aggregatedTotalData,
+    aggregatedLatencyData,
+    aggregatedErrorData,
   } = useAggregateChartData(aggregate)
 
   return (
@@ -65,9 +67,9 @@ export const AccountInsightsView = ({ data }: AccountInsightsViewProps) => {
         >
           <Card.Section p="md">
             <OverviewSparkline
+              commifyLabelValue={true}
               isLoading={isLoading}
-              label=" relays"
-              sparklineData={aggregateTotalData}
+              sparklineData={aggregatedTotalData}
             />
           </Card.Section>
         </TitledCard>
@@ -90,7 +92,7 @@ export const AccountInsightsView = ({ data }: AccountInsightsViewProps) => {
               <OverviewSparkline
                 isLoading={isLoading}
                 label="ms"
-                sparklineData={aggregateLatencyData}
+                sparklineData={aggregatedLatencyData}
               />
             </Card.Section>
           </TitledCard>
@@ -109,9 +111,10 @@ export const AccountInsightsView = ({ data }: AccountInsightsViewProps) => {
           >
             <Card.Section p="md">
               <OverviewSparkline
+                customYAxisDomain={["dataMin - 10", 100]}
                 isLoading={isLoading}
                 label="%"
-                sparklineData={aggregateSuccessData}
+                sparklineData={aggregatedSuccessData}
               />
             </Card.Section>
           </TitledCard>
@@ -120,9 +123,9 @@ export const AccountInsightsView = ({ data }: AccountInsightsViewProps) => {
           header={() => (
             <Group position="apart">
               <Text weight={600}>
-                Error Rate{" "}
+                Total Errors{" "}
                 <Badge ml="sm" px={6} radius="sm">
-                  {commify(total?.rateError ?? 0)}%
+                  {totalErrors ? commify(totalErrors) : 0}
                 </Badge>
               </Text>
               <ChartPeriodSelector />
@@ -131,9 +134,9 @@ export const AccountInsightsView = ({ data }: AccountInsightsViewProps) => {
         >
           <Card.Section p="md">
             <OverviewSparkline
+              commifyLabelValue={true}
               isLoading={isLoading}
-              label="%"
-              sparklineData={aggregateErrorData}
+              sparklineData={aggregatedErrorData}
             />
           </Card.Section>
         </TitledCard>

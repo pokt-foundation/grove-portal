@@ -1,5 +1,6 @@
 import { Stack, Switch, Text } from "@pokt-foundation/pocket-blocks"
 import { Form, useParams, useSubmit } from "@remix-run/react"
+import { useState } from "react"
 import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
 
 type PrivateSecretKeyProps = {
@@ -10,6 +11,7 @@ type PrivateSecretKeyProps = {
 const PrivateSecretKey = ({ secretKeyRequired, readOnly }: PrivateSecretKeyProps) => {
   const submit = useSubmit()
   const { appId } = useParams()
+  const [checked, setChecked] = useState(Boolean(secretKeyRequired))
 
   return (
     <Stack py={32}>
@@ -20,13 +22,14 @@ const PrivateSecretKey = ({ secretKeyRequired, readOnly }: PrivateSecretKeyProps
         origins.
       </Text>
       <Form method="post" onChange={(event) => submit(event.currentTarget)}>
+        <input hidden readOnly name="secretKeyRequired" value={checked ? "off" : "on"} />
         <Switch
           aria-label="Private Secret Key Required"
-          defaultChecked={Boolean(secretKeyRequired)}
+          checked={checked}
           disabled={readOnly}
           id="secretRequired"
-          name="secretKeyRequired"
-          onChange={() => {
+          onChange={(event) => {
+            setChecked(event.currentTarget.checked)
             trackEvent({
               category: AnalyticCategories.app,
               action: AnalyticActions.app_settings_update,

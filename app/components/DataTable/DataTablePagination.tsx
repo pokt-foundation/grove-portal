@@ -7,7 +7,7 @@ export const DataTablePagination = ({
   onPageChange,
 }: TablePaginationProps) => {
   return (
-    <Group align="center" className="pokt-table-paginate" position="apart">
+    <Group align="center" position="center">
       <Pagination
         initialPage={page}
         mt={30}

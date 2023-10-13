@@ -82,17 +82,6 @@ export const getAggregateRelays = async ({
     to: startOfDay.toDate(),
   })
 
-<<<<<<< HEAD
-=======
-  // const aggregateJsonData = (await aggregateResponse.raw.json()) as {
-  //   Data: AnalyticsRelaysAggregated[]
-  // }
-
-  // const aggregateData = aggregateJsonData.Data.map(
-  //   ResponseDataInnerFromJSON,
-  // ) as AnalyticsRelaysAggregated[]
-
->>>>>>> stage
   if (!aggregateResponse.data) {
     console.log("empty aggregate data")
     // empty state data

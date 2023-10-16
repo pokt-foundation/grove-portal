@@ -1,6 +1,6 @@
-import dayjs from "dayjs"
 import { Configuration, UserApi } from "./sdk"
 import { AnalyticsRelaysAggregated } from "~/models/dwh/sdk"
+import { dayjs } from "~/utils/dayjs"
 import { getRequiredServerEnvVar } from "~/utils/environment"
 
 function initDwhClient(): UserApi {
@@ -20,6 +20,15 @@ function initDwhClient(): UserApi {
 
 export { initDwhClient }
 
+// we dont get data for today, so dont show an empty value
+const startOfDay = dayjs()
+  .utc()
+  .millisecond(0)
+  .second(0)
+  .minute(0)
+  .hour(0)
+  .subtract(1, "day")
+
 type GetRelaysProps = {
   category: "account_id" | "application_id"
   categoryValue: string[]
@@ -37,15 +46,15 @@ export const getTotalRelays = async ({
   const totalReponse = await dwh.analyticsRelaysTotalCategoryGet({
     category,
     categoryValue,
-    from: dayjs().subtract(days, "day").toDate(),
-    to: dayjs().toDate(),
+    from: startOfDay.subtract(days, "day").toDate(),
+    to: startOfDay.toDate(),
   })
 
   if (!totalReponse.data || totalReponse.data.length < 1) {
     // empty state data
     total = {
-      from: dayjs().subtract(days, "day").toDate(),
-      to: dayjs().toDate(),
+      from: startOfDay.subtract(days, "day").toDate(),
+      to: startOfDay.toDate(),
       countTotal: 0,
       avgLatency: 0,
       rateSuccess: 0,
@@ -69,24 +78,16 @@ export const getAggregateRelays = async ({
   const aggregateResponse = await dwh.analyticsRelaysAggregatedCategoryGet({
     category,
     categoryValue,
-    from: dayjs().subtract(days, "day").toDate(),
-    to: dayjs().toDate(),
+    from: startOfDay.subtract(days, "day").toDate(),
+    to: startOfDay.toDate(),
   })
-
-  // const aggregateJsonData = (await aggregateResponse.raw.json()) as {
-  //   Data: AnalyticsRelaysAggregated[]
-  // }
-
-  // const aggregateData = aggregateJsonData.Data.map(
-  //   ResponseDataInnerFromJSON,
-  // ) as AnalyticsRelaysAggregated[]
 
   if (!aggregateResponse.data) {
     console.log("empty aggregate data")
     // empty state data
     aggregate = Array.from(Array(days).keys())
       .map((num) => ({
-        date: dayjs().subtract(num, "day").toDate(),
+        date: startOfDay.subtract(num, "day").toDate(),
         countTotal: Math.ceil(Math.random() * 1000000),
         avgLatency: Number((Math.random() * 250.32).toFixed(2)),
         rateSuccess: Number((Math.random() * 99.32).toFixed(2)),
@@ -95,7 +96,7 @@ export const getAggregateRelays = async ({
       .reverse()
   } else {
     aggregate = (aggregateResponse.data as AnalyticsRelaysAggregated[]).sort((a, b) =>
-      dayjs(a.date).isBefore(b.date) ? -1 : 1,
+      dayjs(a.date).utc().isBefore(b.date) ? -1 : 1,
     )
 
     // handle days with no data
@@ -103,10 +104,10 @@ export const getAggregateRelays = async ({
       aggregate = Array.from(Array(days).keys())
         .reverse()
         .map((index) => {
-          let day = dayjs().subtract(index, "day").toDate()
+          let day = startOfDay.subtract(index, "day").toDate()
           const dateExists = (
             aggregateResponse.data as AnalyticsRelaysAggregated[]
-          )?.find((data) => dayjs(data.date).isSame(day, "day"))
+          )?.find((data) => dayjs(data.date).utc().isSame(day, "day"))
           if (dateExists) {
             return dateExists
           } else {

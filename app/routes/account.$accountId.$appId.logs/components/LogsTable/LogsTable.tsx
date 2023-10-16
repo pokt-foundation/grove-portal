@@ -13,7 +13,7 @@ type LogsTableProps = {
   logs: Logs[]
 }
 
-const LogsTable = ({ logs, searchTerm }: LogsTableProps) => {
+const LogsTable = ({ logs }: LogsTableProps) => {
   const [selectedLogsItem, setSelectedLogsItem] = useState<Logs | undefined>()
   const navigation = useNavigation()
   const [searchParams, setSearchParams] = useSearchParams()

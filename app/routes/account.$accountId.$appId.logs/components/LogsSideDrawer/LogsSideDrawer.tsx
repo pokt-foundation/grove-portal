@@ -11,7 +11,6 @@ type LogsSideDrawerProps = {
 }
 
 const LogsSideDrawer = ({ logsItem, onSideDrawerClose }: LogsSideDrawerProps) => {
-  console.log({ logsItem })
   const cardItems = [
     {
       label: "Date",
@@ -19,7 +18,7 @@ const LogsSideDrawer = ({ logsItem, onSideDrawerClose }: LogsSideDrawerProps) =>
     },
     {
       label: "Time",
-      value: dayjs(logsItem?.ts).format("h:mm A"),
+      value: dayjs(logsItem?.ts).format("h:mm:ss A"),
     },
     {
       label: "Application ID",

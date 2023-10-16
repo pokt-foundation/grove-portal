@@ -1,5 +1,6 @@
 import { createStyles } from "@mantine/core"
-import { Table, Box } from "@pokt-foundation/pocket-blocks"
+import { Table, Box, LoadingOverlay } from "@pokt-foundation/pocket-blocks"
+import React from "react"
 import { DataTableBody } from "./DataTableBody"
 import { DataTablePagination } from "./DataTablePagination"
 import { usePagination } from "~/hooks/usePagination"
@@ -13,12 +14,6 @@ const useTableStyles = createStyles((theme) => ({
     "& thead tr th": {
       borderColor: "rgba(55,58,64, 0.5)",
     },
-    "& tbody tr:hover": {
-      backgroundColor:
-        theme.colorScheme === "dark"
-          ? "rgba(37,38,43,0.50) !important"
-          : "rgba(250,250,250,0.50) !important",
-    },
   },
 }))
 
@@ -29,6 +24,7 @@ export const DataTable = <T extends IdObj>({
   rowAsLink = false,
   searchTerm,
   onRowClick,
+  isLoading = false,
 }: DataTableProps<T>) => {
   const { paginatedData, totalPages, page, handlePageChange } = usePagination({
     data,
@@ -36,12 +32,13 @@ export const DataTable = <T extends IdObj>({
     searchTerm,
   })
 
-  const { classes } = useTableStyles()
+  const { classes, cx } = useTableStyles()
 
   return (
-    <Box>
+    <Box pos="relative">
+      <LoadingOverlay overlayBlur={1} visible={isLoading} />
       <Table
-        className={classes.table}
+        className={cx(classes.table, { "clickable-table": !!onRowClick })}
         highlightOnHover={!!onRowClick}
         verticalSpacing="xl"
       >

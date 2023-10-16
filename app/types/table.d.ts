@@ -28,4 +28,5 @@ export interface DataTableProps<T extends IdObj> {
   rowAsLink?: boolean
   searchTerm?: string
   onRowClick?: (item: T) => void
+  isLoading?: boolean
 }

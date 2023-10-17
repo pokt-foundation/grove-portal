@@ -44,6 +44,7 @@ export const CHAIN_DOCS_URL: { [key: string]: string } = {
   "goerli-archival": "ethereum",
   rinkeby: "ethereum",
   "polygon-mumbai": "polygon",
-  "scroll-testnet-alpha": "scroll",
+  "scroll-mainnet": "scroll",
+  "scroll-testnet": "scroll",
   "starknet-testnet": "starknet",
 }

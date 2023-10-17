@@ -117,3 +117,7 @@ button.pokt-button-with__icon:hover {
   align-items: center;
   margin-bottom: 16px;
 }
+
+.clickable-table tbody tr:hover {
+  background-color: rgba(37, 38, 43, 0.50) !important
+}

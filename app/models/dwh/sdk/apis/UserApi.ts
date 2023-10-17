@@ -48,6 +48,8 @@ export interface AnalyticsRelaysTotalCategoryGetRequest {
 
 export interface LogsGetRequest {
     portalApplicationId: Array<string>;
+    page?: number;
+    pageSize?: number;
 }
 
 /**
@@ -253,6 +255,14 @@ export class UserApi extends runtime.BaseAPI {
 
         if (requestParameters.portalApplicationId) {
             queryParameters['portal_application_id'] = requestParameters.portalApplicationId;
+        }
+
+        if (requestParameters.page !== undefined) {
+            queryParameters['page'] = requestParameters.page;
+        }
+
+        if (requestParameters.pageSize !== undefined) {
+            queryParameters['page_size'] = requestParameters.pageSize;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};

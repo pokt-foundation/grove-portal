@@ -1,8 +1,7 @@
 import { Divider } from "@mantine/core"
-import { useDebouncedValue } from "@mantine/hooks"
-import { Box, Flex, Input, Text } from "@pokt-foundation/pocket-blocks"
-import React, { useState } from "react"
-import { LuSearch } from "react-icons/lu"
+import { Box, Flex, Text } from "@pokt-foundation/pocket-blocks"
+import { useSearchParams } from "@remix-run/react"
+import React from "react"
 import { EmptyState } from "~/components/EmptyState"
 import { Logs } from "~/models/dwh/sdk"
 import LogsTable from "~/routes/account.$accountId.$appId.logs/components/LogsTable"
@@ -12,8 +11,8 @@ type AppLogsProps = {
 }
 
 const AppLogs = ({ logs }: AppLogsProps) => {
-  const [searchTerm, setSearchTerm] = useState("")
-  const [debouncedSearchTerm] = useDebouncedValue(searchTerm, 200)
+  const [searchParams] = useSearchParams()
+  const hasActivePage = Boolean(searchParams.get("page"))
 
   if (logs.length === 0) {
     return (
@@ -28,7 +27,7 @@ const AppLogs = ({ logs }: AppLogsProps) => {
             Check back later for updates on any errors.
           </>
         }
-        title="No logs available yet."
+        title={hasActivePage ? "No more logs available." : "No logs available yet."}
       />
     )
   }
@@ -40,15 +39,9 @@ const AppLogs = ({ logs }: AppLogsProps) => {
           Logs update hourly and are retained for a 3-hour window, ensuring you have the
           most relevant data at your disposal.
         </Text>
-        <Input
-          icon={<LuSearch />}
-          placeholder="Search logs"
-          value={searchTerm}
-          onChange={(event: any) => setSearchTerm(event.currentTarget.value)}
-        />
       </Flex>
       <Divider />
-      <LogsTable logs={logs} searchTerm={debouncedSearchTerm} />
+      <LogsTable logs={logs} />
     </Box>
   )
 }

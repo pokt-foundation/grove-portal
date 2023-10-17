@@ -26,7 +26,7 @@ export const DataTableBody = ({
             <tr
               key={`${id}-${index}`}
               style={{ ...(!!onRowClick && { cursor: "pointer" }) }}
-              onClick={() => onRowClick(item.rowSelectData)}
+              onClick={() => onRowClick && onRowClick(item.rowSelectData)}
             >
               {rowAsLink ? (
                 <Link

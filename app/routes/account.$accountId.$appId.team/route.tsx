@@ -1,4 +1,3 @@
-import { showNotification } from "@mantine/notifications"
 import { ActionFunction, json, LoaderFunction, MetaFunction } from "@remix-run/node"
 import {
   useActionData,
@@ -6,7 +5,6 @@ import {
   useOutletContext,
   useRouteLoaderData,
 } from "@remix-run/react"
-import { useEffect } from "react"
 import invariant from "tiny-invariant"
 import { AppIdOutletContext } from "../account.$accountId.$appId/route"
 import TeamView from "./view"

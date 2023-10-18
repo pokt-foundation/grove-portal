@@ -3,7 +3,11 @@ import { AnalyticsRelaysAggregated, AnalyticsRelaysTotal } from "~/models/dwh/sd
 export const getTotalErrors = (
   aggregatedData: AnalyticsRelaysAggregated | AnalyticsRelaysTotal,
 ) => {
-  if (!aggregatedData || !aggregatedData.rateError || !aggregatedData.countTotal) {
+  if (
+    !aggregatedData ||
+    !aggregatedData.countTotal ||
+    (!aggregatedData.rateError && aggregatedData?.rateError !== 0)
+  ) {
     return null
   }
 

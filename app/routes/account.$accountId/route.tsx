@@ -9,7 +9,6 @@ import {
   GetUserAccountQuery,
   GetUserAccountsQuery,
   PortalApp,
-  PortalAppRole,
   User,
 } from "~/models/portal/sdk"
 import { DataStruct } from "~/types/global"
@@ -21,7 +20,6 @@ export type AccountIdLoaderData = {
   accounts: GetUserAccountsQuery["getUserAccounts"]
   user: User
   hasPendingInvites: boolean
-  userRoles: PortalAppRole[]
 }
 
 export const loader: LoaderFunction = async ({ request, params }) => {
@@ -53,9 +51,6 @@ export const loader: LoaderFunction = async ({ request, params }) => {
         accounts: userAccounts.getUserAccounts,
         user: user.user,
         hasPendingInvites: userPendingApps.getUserPortalApps.length > 0,
-        userRoles: account.getUserAccount.users.filter(
-          (u) => u.userID === user.user.portalUserID,
-        )[0].portalAppRoles,
       },
       error: false,
     })
@@ -67,7 +62,8 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
     let ownerAccount = userAccounts?.getUserAccounts?.find(
       (account) =>
-        account?.users?.find((u) => u.userID === user.user.portalUserID)?.owner,
+        account?.accountUsers?.find((u) => u.accountUserID === user.user.portalUserID)
+          ?.owner,
     )
 
     if (accountId !== ownerAccount?.id) {
@@ -89,7 +85,7 @@ export default function AccountId() {
     return <ErrorView message={message} />
   }
 
-  const { account, accounts, user, userRoles, hasPendingInvites } = data
+  const { account, accounts, user, hasPendingInvites } = data
 
   return (
     <RootAppShell
@@ -98,7 +94,7 @@ export default function AccountId() {
       hasPendingInvites={hasPendingInvites}
       user={user}
     >
-      <Outlet context={{ account, accounts, user, userRoles }} />
+      <Outlet context={{ account, accounts, user }} />
     </RootAppShell>
   )
 }

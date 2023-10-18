@@ -48,16 +48,13 @@ query getUserAccount(
     id
     name
     planType
-    users {
-      userID
-      owner
+    accountUsers {
+      accountUserID
       email
-      portalAppRoles {
+      owner
+      portalApps {
         portalAppID
         roleName
-      }
-      portalAppsAccepted {
-        portalAppID
         accepted
       }
     }
@@ -158,8 +155,8 @@ query getUserAccounts(
       id
       name
     }
-    users {
-      userID
+    accountUsers {
+      accountUserID
       owner
     }
   }

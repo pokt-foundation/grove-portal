@@ -119,5 +119,5 @@ button.pokt-button-with__icon:hover {
 }
 
 .clickable-table tbody tr:hover {
-  background-color: rgba(37, 38, 43, 0.50) !important
+  background-color: rgba(37, 38, 43, 0.5) !important;
 }

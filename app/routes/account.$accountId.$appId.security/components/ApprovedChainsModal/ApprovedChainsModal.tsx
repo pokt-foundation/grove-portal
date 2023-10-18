@@ -39,7 +39,6 @@ const ApprovedChainsModal = ({
   )
 
   const deleteSelectedChain = (chainId: string) => {
-    console.log(chainId)
     setSelectedBlockchainsIds((ids) => ids.filter((id) => chainId !== id))
   }
 

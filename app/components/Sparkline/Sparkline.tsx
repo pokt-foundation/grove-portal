@@ -47,7 +47,7 @@ const Sparkline = ({
         >
           <Text className="label">Date: {label}</Text>
           <Text className="desc">
-            {payload[0].value
+            {payload[0].value || payload[0].value === 0
               ? `${
                   commifyValue ? commify(payload[0].value) : payload[0].value
                 } ${valueLabel}`

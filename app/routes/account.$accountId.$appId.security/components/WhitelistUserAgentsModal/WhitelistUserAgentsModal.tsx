@@ -29,7 +29,6 @@ const WhitelistUserAgentsModal = ({ dispatch }: WhitelistUserAgentsModalProps) =
   const [selectedUserAgents, setSelectedUserAgents] = useState<string[]>([])
   const [inputUserAgent, setInputUserAgent] = useState("")
   const deletedAgent = (deletedAgent: string) => {
-    console.log(deletedAgent)
     setSelectedUserAgents((agents) => agents.filter((agent) => agent !== deletedAgent))
   }
 

@@ -38,7 +38,7 @@ const AppForm = ({ app, onSubmit }: AppFormProps) => {
 
   const [name, setName] = useState(app?.name ?? "")
   const [referral, setReferral] = useState("")
-  const [appmoji, setAppmoji] = useState(DEFAULT_APPMOJI)
+  const [appmoji, setAppmoji] = useState(app?.appEmoji ?? DEFAULT_APPMOJI)
 
   useEffect(() => {
     const rid = window.localStorage.getItem("rid")

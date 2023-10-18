@@ -172,18 +172,11 @@ query getUserPortalApp($portalAppID: ID!) {
     accountID
     appEmoji
     description
-    users {
-      userID
-      owner
+    portalAppUsers {
+      portalAppUserID
       email
-      portalAppRoles {
-        portalAppID
-        roleName
-      }
-      portalAppsAccepted {
-        portalAppID
-        accepted
-      }
+      roleName
+      accepted
     }
     settings {
       appID
@@ -264,18 +257,11 @@ query getUserPortalApps(
     accountID
     appEmoji
     description
-    users {
-      userID
-      owner
+    portalAppUsers {
+      portalAppUserID
       email
-      portalAppRoles {
-        portalAppID
-        roleName
-      }
-      portalAppsAccepted {
-        portalAppID
-        accepted
-      }
+      roleName
+      accepted
     }
   }
 }

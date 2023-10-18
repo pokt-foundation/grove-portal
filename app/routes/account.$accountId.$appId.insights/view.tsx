@@ -54,12 +54,12 @@ export default function ApplicationInsightsView({ data }: ApplicationInsightsVie
         <TitledCard
           header={() => (
             <Group position="apart">
-              <Text weight={600}>
-                Total Relays
-                <Badge ml="sm" px={6} radius="sm">
+              <Group>
+                <Text weight={600}>Total Relays</Text>
+                <Badge px={6} radius="sm">
                   {commify(total?.countTotal ?? 0)}
                 </Badge>
-              </Text>
+              </Group>
               <ChartPeriodSelector />
             </Group>
           )}
@@ -77,12 +77,12 @@ export default function ApplicationInsightsView({ data }: ApplicationInsightsVie
           <TitledCard
             header={() => (
               <Group position="apart">
-                <Text weight={600}>
-                  Average Latency{" "}
-                  <Badge ml="sm" px={6} radius="sm">
+                <Group>
+                  <Text weight={600}>Average Latency </Text>
+                  <Badge px={6} radius="sm">
                     {commify(total?.avgLatency ?? 0)}ms
                   </Badge>
-                </Text>
+                </Group>
                 <ChartPeriodSelector />
               </Group>
             )}
@@ -98,12 +98,12 @@ export default function ApplicationInsightsView({ data }: ApplicationInsightsVie
           <TitledCard
             header={() => (
               <Group position="apart">
-                <Text weight={600}>
-                  Success Rate{" "}
-                  <Badge ml="sm" px={6} radius="sm">
+                <Group>
+                  <Text weight={600}>Success Rate </Text>
+                  <Badge px={6} radius="sm">
                     {commify(total?.rateSuccess ?? 0)}%
                   </Badge>
-                </Text>
+                </Group>
                 <ChartPeriodSelector />
               </Group>
             )}
@@ -120,12 +120,12 @@ export default function ApplicationInsightsView({ data }: ApplicationInsightsVie
         <TitledCard
           header={() => (
             <Group position="apart">
-              <Text weight={600}>
-                Total Errors{" "}
-                <Badge ml="sm" px={6} radius="sm">
+              <Group>
+                <Text weight={600}>Total Errors </Text>
+                <Badge px={6} radius="sm">
                   {totalErrors ? commify(totalErrors) : 0}
                 </Badge>
-              </Text>
+              </Group>
               <ChartPeriodSelector />
             </Group>
           )}

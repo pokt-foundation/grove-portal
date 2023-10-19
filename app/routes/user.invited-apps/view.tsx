@@ -20,8 +20,8 @@ export const UserInvitedApps = ({ apps, user }: UserInvitedAppsProps) => {
     return apps
       .map((app) => ({
         ...app,
-        accepted: getAppAcceptedValue(app, user.portalUserID),
-        role: getUserRole(app, user.portalUserID),
+        accepted: getAppAcceptedValue(app.portalAppUsers, user.portalUserID),
+        role: getUserRole(app.portalAppUsers, user.portalUserID),
       }))
       .sort((a, b) => Number(a.accepted) - Number(b.accepted))
       .filter((app) => app.role !== RoleNameV2.Owner)

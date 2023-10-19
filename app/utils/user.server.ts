@@ -103,7 +103,9 @@ export const redirectToUserAccount = async (user: AuthUser) => {
   let account = accounts.getUserAccounts[0] as Partial<Account>
 
   let owner = accounts.getUserAccounts.find(
-    (account) => account?.users.find((u) => u.userID === user.user.portalUserID)?.owner,
+    (account) =>
+      account?.accountUsers.find((u) => u.accountUserID === user.user.portalUserID)
+        ?.owner,
   )
 
   if (owner) {

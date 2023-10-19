@@ -16,7 +16,7 @@ const AccountsTable = ({ accounts, user }: AccountsTableProps) => {
 
   const sortedAccounts = useMemo(() => {
     const ownedAccount = accounts.find((account) =>
-      account.users.find((u) => u.userID === user.portalUserID && u.owner),
+      account?.accountUsers.find((u) => u.accountUserID === user.portalUserID && u.owner),
     )
     const filteredAccounts = accounts.filter(({ id }) => id !== ownedAccount?.id)
     return [
@@ -56,8 +56,8 @@ const AccountsTable = ({ accounts, user }: AccountsTableProps) => {
           members: {
             element: (
               <Text>
-                {account?.users?.length} Member
-                {account?.users?.length > 1 ? "s" : ""}
+                {account?.accountUsers?.length} Member
+                {account?.accountUsers?.length > 1 ? "s" : ""}
               </Text>
             ),
           },

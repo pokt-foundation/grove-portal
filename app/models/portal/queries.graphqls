@@ -48,16 +48,13 @@ query getUserAccount(
     id
     name
     planType
-    users {
-      userID
-      owner
+    accountUsers {
+      accountUserID
       email
-      portalAppRoles {
+      owner
+      portalApps {
         portalAppID
         roleName
-      }
-      portalAppsAccepted {
-        portalAppID
         accepted
       }
     }
@@ -158,8 +155,8 @@ query getUserAccounts(
       id
       name
     }
-    users {
-      userID
+    accountUsers {
+      accountUserID
       owner
     }
   }
@@ -172,18 +169,11 @@ query getUserPortalApp($portalAppID: ID!) {
     accountID
     appEmoji
     description
-    users {
-      userID
-      owner
+    portalAppUsers {
+      portalAppUserID
       email
-      portalAppRoles {
-        portalAppID
-        roleName
-      }
-      portalAppsAccepted {
-        portalAppID
-        accepted
-      }
+      roleName
+      accepted
     }
     settings {
       appID
@@ -264,18 +254,11 @@ query getUserPortalApps(
     accountID
     appEmoji
     description
-    users {
-      userID
-      owner
+    portalAppUsers {
+      portalAppUserID
       email
-      portalAppRoles {
-        portalAppID
-        roleName
-      }
-      portalAppsAccepted {
-        portalAppID
-        accepted
-      }
+      roleName
+      accepted
     }
   }
 }

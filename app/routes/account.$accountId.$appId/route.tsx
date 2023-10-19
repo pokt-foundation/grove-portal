@@ -21,6 +21,7 @@ import useActionNotification from "~/hooks/useActionNotification"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { Blockchain, PortalApp, RoleNameV2 } from "~/models/portal/sdk"
 import { DataStruct } from "~/types/global"
+import { getUserRole } from "~/utils/applicationUtils"
 import { getErrorMessage } from "~/utils/catchError"
 import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
@@ -126,7 +127,7 @@ export type AppIdOutletContext = AppIdLoaderData & {
 
 export default function AppIdLayout() {
   const { data, error, message } = useLoaderData() as DataStruct<AppIdLoaderData>
-  const { userRoles } = useOutletContext<AccountIdLoaderData>()
+  const { user } = useOutletContext<AccountIdLoaderData>()
   const actionData = useActionData() as DataStruct<AppIdActionData>
 
   // handle all notifications at the layout level
@@ -137,7 +138,7 @@ export default function AppIdLayout() {
   }
 
   const { app, blockchains } = data
-  const userRole = userRoles.find((r) => r.portalAppID === app.id)?.roleName as RoleNameV2
+  const userRole = getUserRole(app.portalAppUsers, user.portalUserID) as RoleNameV2
 
   return (
     <AppIdLayoutView app={app} userRole={userRole}>

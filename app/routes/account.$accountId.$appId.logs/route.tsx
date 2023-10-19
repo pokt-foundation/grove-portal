@@ -45,6 +45,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       error: false,
     })
   } catch (error) {
+    console.error(error)
     return json<DataStruct<AppLogsData>>({
       data: null,
       error: true,

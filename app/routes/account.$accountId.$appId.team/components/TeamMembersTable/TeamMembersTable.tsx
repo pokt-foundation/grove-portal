@@ -11,7 +11,6 @@ import Identicon from "~/components/Identicon"
 import { PortalApp, RoleName, RoleNameV2, User } from "~/models/portal/sdk"
 import TeamMemberAction from "~/routes/account.$accountId.$appId.team/components/TeamMemberAction"
 import useTeamModals from "~/routes/account.$accountId.$appId.team/hooks/useTeamModals"
-import { getAppAcceptedValue, getUserRole } from "~/utils/applicationUtils"
 
 type TeamMembersTableProps = {
   app: PortalApp
@@ -22,26 +21,22 @@ type TeamMembersTableProps = {
 const TeamMembersTable = ({ app, userRole, user }: TeamMembersTableProps) => {
   const { openChangeRoleModal } = useTeamModals({ app })
 
-  const teamData = app.users
-    .map((user) => ({
-      ...user,
-      roleName: getUserRole(app, user.userID),
-      accepted: getAppAcceptedValue(app, user.userID),
-    }))
-    .sort((a, b) => Number(b.owner) - Number(a.owner))
+  const teamData = app.portalAppUsers.sort(
+    (a, b) => Number(b.roleName === "OWNER") - Number(a.roleName === "OWNER"),
+  )
 
   return (
     <DataTable
       columns={["Member", "Roles", "Status", ""]}
-      data={teamData.map(({ email, roleName, accepted, userID }, index) => {
+      data={teamData.map(({ email, roleName, accepted, portalAppUserID }, index) => {
         return {
           member: {
             element: (
               <Group>
                 <Avatar radius="xl">
                   <Identicon
-                    alt={`${userID} profile picture`}
-                    seed={userID}
+                    alt={`${portalAppUserID} profile picture`}
+                    seed={portalAppUserID}
                     size="md"
                     type="user"
                   />
@@ -71,7 +66,7 @@ const TeamMembersTable = ({ app, userRole, user }: TeamMembersTableProps) => {
                     disabled={!accepted}
                     onChange={(value) =>
                       value !== roleName &&
-                      openChangeRoleModal(email, userID, value as RoleName)
+                      openChangeRoleModal(email, portalAppUserID, value as RoleName)
                     }
                   />
                 </Flex>

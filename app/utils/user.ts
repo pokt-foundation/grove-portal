@@ -11,6 +11,8 @@ const isUserAccountOwner = ({
 }) =>
   accounts
     .find(({ id }) => accountId === id)
-    ?.users.some((u) => u.userID === user.portalUserID && u.owner) as boolean
+    ?.accountUsers.some(
+      (u) => u.accountUserID === user.portalUserID && u.owner,
+    ) as boolean
 
 export default isUserAccountOwner

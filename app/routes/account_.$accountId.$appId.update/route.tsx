@@ -55,7 +55,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
     const isUserMember =
       getUserRole(
-        getUserPortalAppResponse.getUserPortalApp as PortalApp,
+        getUserPortalAppResponse.getUserPortalApp.portalAppUsers,
         user.user.portalUserID,
       ) === "MEMBER"
 

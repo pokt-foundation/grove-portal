@@ -13,8 +13,8 @@ import { type Blockchain, type RoleName } from "~/models/portal/sdk"
 import {
   BlockchainsQuery,
   PortalApp,
-  WhitelistContractsV2,
-  WhitelistMethodsV2,
+  WhitelistContracts,
+  WhitelistMethods,
 } from "~/models/portal/sdk"
 import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
 
@@ -87,7 +87,7 @@ export const SecurityView = ({ app, blockchains, userRole }: SecurityViewProps) 
         dispatch={dispatch}
         readOnly={isReadOnly}
         type="contracts"
-        whitelists={state.contracts as WhitelistContractsV2[]}
+        whitelists={state.contracts as WhitelistContracts[]}
       />
       <Divider />
       <ChainWhitelist
@@ -95,7 +95,7 @@ export const SecurityView = ({ app, blockchains, userRole }: SecurityViewProps) 
         dispatch={dispatch}
         readOnly={isReadOnly}
         type="methods"
-        whitelists={state.methods as WhitelistMethodsV2[]}
+        whitelists={state.methods as WhitelistMethods[]}
       />
     </Box>
   )

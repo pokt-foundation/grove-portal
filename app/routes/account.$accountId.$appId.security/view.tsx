@@ -9,7 +9,7 @@ import WhitelistOrigins from "./components/WhitelistOrigins"
 import WhitelistUserAgents from "./components/WhitelistUserAgents"
 import { DEFAULT_WHITELISTS, securityReducer } from "./utils/stateReducer"
 import useActionNotification from "~/hooks/useActionNotification"
-import { type Blockchain, type RoleNameV2 } from "~/models/portal/sdk"
+import { type Blockchain, type RoleName } from "~/models/portal/sdk"
 import {
   BlockchainsQuery,
   PortalApp,
@@ -21,7 +21,7 @@ import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analyti
 type SecurityViewProps = {
   app: PortalApp
   blockchains: BlockchainsQuery["blockchains"]
-  userRole: RoleNameV2
+  userRole: RoleName
 }
 
 export const SecurityView = ({ app, blockchains, userRole }: SecurityViewProps) => {

@@ -4,7 +4,7 @@ import { useFetcher } from "@remix-run/react"
 import React from "react"
 import { useCallback } from "react"
 import useActionNotification from "~/hooks/useActionNotification"
-import { PortalApp, RoleNameV2 } from "~/models/portal/sdk"
+import { PortalApp, RoleName } from "~/models/portal/sdk"
 import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
 import { formatNumberToSICompact } from "~/utils/formattingUtils"
 import { FREE_TIER_MAX_RELAYS } from "~/utils/planUtils"
@@ -39,7 +39,7 @@ function getUsagePercentage(usageLevel: string): string {
 
 type NotificationsAlertFormProps = {
   app: PortalApp
-  userRole: RoleNameV2
+  userRole: RoleName
 }
 
 export default function AppNotificationsAlert({

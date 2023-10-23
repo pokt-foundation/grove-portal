@@ -1,13 +1,13 @@
 import { ActionIcon, Flex, Menu, Text } from "@pokt-foundation/pocket-blocks"
 import React, { useMemo } from "react"
 import { LuMinusCircle, LuMoreHorizontal, LuSend } from "react-icons/lu"
-import { PortalApp, PortalAppUser, RoleNameV2, User } from "~/models/portal/sdk"
+import { PortalApp, PortalAppUser, RoleName, User } from "~/models/portal/sdk"
 import useTeamModals from "~/routes/account.$accountId.$appId.team/hooks/useTeamModals"
 import useCommonStyles from "~/styles/commonStyles"
 
 type TeamMemberActionProps = {
   app: PortalApp
-  userRole: RoleNameV2 | null
+  userRole: RoleName | null
   user?: User
   teamMember: PortalAppUser
   status: Boolean
@@ -29,7 +29,7 @@ const TeamMemberAction = ({
     let items = []
 
     switch (userRole) {
-      case RoleNameV2.Owner:
+      case RoleName.Owner:
         if (teamMember.portalAppUserID === user?.portalUserID) {
           // OWNER --CANNOT-- LEAVE THEIR OWN APP
         } else {
@@ -50,7 +50,7 @@ const TeamMemberAction = ({
           }
         }
         break
-      case RoleNameV2.Admin:
+      case RoleName.Admin:
         if (teamMember.portalAppUserID === user?.portalUserID) {
           // ADMIN --CAN--REMOVE THEMSELVES
           items.push({
@@ -77,7 +77,7 @@ const TeamMemberAction = ({
           }
         }
         break
-      case RoleNameV2.Member:
+      case RoleName.Member:
       default:
         if (teamMember.portalAppUserID === user?.portalUserID) {
           // MEMEBER --CAN-- LEAVE APP THEMSELVES

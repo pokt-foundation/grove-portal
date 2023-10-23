@@ -2,11 +2,11 @@ import { Group, MantineTheme, Text } from "@pokt-foundation/pocket-blocks"
 import { Emoji } from "emoji-picker-react"
 import { DataTable } from "~/components/DataTable"
 import Identicon from "~/components/Identicon"
-import { PortalApp, RoleNameV2, User } from "~/models/portal/sdk"
+import { PortalApp, RoleName, User } from "~/models/portal/sdk"
 import { DEFAULT_APPMOJI } from "~/routes/account_.$accountId.create/components/AppmojiPicker"
 import InvitedAppAction from "~/routes/user.invited-apps/components/InvitedAppAction"
 
-type InvitedApp = PortalApp & { accepted: boolean; role: RoleNameV2 | null }
+type InvitedApp = PortalApp & { accepted: boolean; role: RoleName | null }
 
 type InvitedAppsTableProps = { apps: InvitedApp[]; user: User }
 

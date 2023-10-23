@@ -9,12 +9,12 @@ import {
   TextInput,
 } from "@pokt-foundation/pocket-blocks"
 import CopyTextButton from "~/components/CopyTextButton"
-import { PortalApp, RoleNameV2 } from "~/models/portal/sdk"
+import { PortalApp, RoleName } from "~/models/portal/sdk"
 import { trackEvent, AnalyticCategories, AnalyticActions } from "~/utils/analytics"
 
 type AppKeysProps = {
   app: PortalApp
-  userRole: RoleNameV2
+  userRole: RoleName
 }
 
 const AppKeys = ({ app, userRole }: AppKeysProps) => {
@@ -56,7 +56,7 @@ const AppKeys = ({ app, userRole }: AppKeysProps) => {
 
       <Divider mt={28} />
 
-      {secretKey && userRole !== RoleNameV2.Member && (
+      {secretKey && userRole !== RoleName.Member && (
         <>
           <Box py={20}>
             <Text fw={600}>Secret Key</Text>

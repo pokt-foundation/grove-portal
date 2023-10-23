@@ -1,6 +1,6 @@
 import { ActionFunction, json } from "@remix-run/node"
 import invariant from "tiny-invariant"
-import { PayPlanType, PayPlanType } from "~/models/portal/sdk"
+import { PayPlanType } from "~/models/portal/sdk"
 import { getSubscription, stripe } from "~/models/stripe/stripe.server"
 import { updatePlan } from "~/routes/api.admin.update-plan/route"
 import { getErrorMessage } from "~/utils/catchError"

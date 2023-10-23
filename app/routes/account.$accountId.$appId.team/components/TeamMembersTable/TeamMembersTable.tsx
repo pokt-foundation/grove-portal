@@ -8,7 +8,7 @@ import {
 } from "@pokt-foundation/pocket-blocks"
 import { DataTable } from "~/components/DataTable"
 import Identicon from "~/components/Identicon"
-import { PortalApp, RoleName, RoleName, User } from "~/models/portal/sdk"
+import { PortalApp, RoleName, User } from "~/models/portal/sdk"
 import TeamMemberAction from "~/routes/account.$accountId.$appId.team/components/TeamMemberAction"
 import useTeamModals from "~/routes/account.$accountId.$appId.team/hooks/useTeamModals"
 

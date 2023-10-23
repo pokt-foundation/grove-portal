@@ -2,14 +2,14 @@ import { SimpleGrid, Stack, Text, Title } from "@pokt-foundation/pocket-blocks"
 import { useNavigate } from "@remix-run/react"
 import React from "react"
 import { AccountPlan } from "~/components/AccountPlan"
-import { PayPlanTypeV2, PortalApp, RoleNameV2 } from "~/models/portal/sdk"
+import { PayPlanType, PortalApp, RoleName } from "~/models/portal/sdk"
 import { PlanLimitOverviewCard } from "~/routes/account.$accountId.$appId.plan/components/PlanLimitOverviewCard"
 import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
 import { getPlanName } from "~/utils/planUtils"
 
 type FreeAppPlanProps = {
   app: PortalApp
-  userRole: RoleNameV2
+  userRole: RoleName
 }
 
 const FreeAppPlan = ({ app, userRole }: FreeAppPlanProps) => {
@@ -29,9 +29,9 @@ const FreeAppPlan = ({ app, userRole }: FreeAppPlanProps) => {
         </Text>
       </Stack>
       <SimpleGrid breakpoints={[{ maxWidth: "lg", cols: 1 }]} cols={3}>
-        <AccountPlan disableFree type={PayPlanTypeV2.FreetierV0} />
+        <AccountPlan disableFree type={PayPlanType.FreetierV0} />
         <AccountPlan
-          type={PayPlanTypeV2.PayAsYouGoV0}
+          type={PayPlanType.PayAsYouGoV0}
           onContinue={() => {
             trackEvent({
               category: AnalyticCategories.app,
@@ -44,7 +44,7 @@ const FreeAppPlan = ({ app, userRole }: FreeAppPlanProps) => {
           }}
         />
         <AccountPlan
-          type={PayPlanTypeV2.Enterprise}
+          type={PayPlanType.Enterprise}
           onContinue={() => {
             trackEvent({
               category: AnalyticCategories.app,

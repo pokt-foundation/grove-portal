@@ -37,7 +37,7 @@ query getUserAccount(
   $accountID: ID!
   $accepted: Boolean!
   $sortOrder: SortOrder
-  $roleNameFilters: [RoleNameV2!]
+  $roleNameFilters: [RoleName!]
 ) {
   getUserAccount(
     accountID: $accountID
@@ -140,7 +140,7 @@ query getUserAccount(
 }
 query getUserAccounts(
   $sortOrder: SortOrder
-  $roleNameFilters: [RoleNameV2!]
+  $roleNameFilters: [RoleName!]
   $accepted: Boolean!
 ) {
   getUserAccounts(
@@ -241,7 +241,7 @@ query getUserPortalApp($portalAppID: ID!) {
 
 query getUserPortalApps(
   $sortOrder: SortOrder
-  $roleNameFilters: [RoleNameV2!]
+  $roleNameFilters: [RoleName!]
   $accepted: Boolean!
 ) {
   getUserPortalApps(

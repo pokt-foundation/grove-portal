@@ -3,14 +3,14 @@ import React, { Dispatch, useMemo } from "react"
 import { SecurityReducerActions } from "../../utils/stateReducer"
 import { BlockchainWhitelist } from "../../utils/utils"
 import useModals from "~/hooks/useModals"
-import { Blockchain, WhitelistContractsV2, WhitelistMethodsV2 } from "~/models/portal/sdk"
+import { Blockchain, WhitelistContracts, WhitelistMethods } from "~/models/portal/sdk"
 import AddSettingsButton from "~/routes/account.$accountId.$appId.security/components/AddSettingsButton"
 import ChainWhitelistModal from "~/routes/account.$accountId.$appId.security/components/ChainWhitelistModal"
 import ChainWhitelistTable from "~/routes/account.$accountId.$appId.security/components/ChainWhitelistTable"
 
 type ChainWhitelistProps = {
   dispatch: Dispatch<SecurityReducerActions>
-  whitelists: WhitelistContractsV2[] | WhitelistMethodsV2[]
+  whitelists: WhitelistContracts[] | WhitelistMethods[]
   blockchains: Blockchain[]
   type: "contracts" | "methods"
   readOnly: boolean

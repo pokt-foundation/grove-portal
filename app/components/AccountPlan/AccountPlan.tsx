@@ -10,11 +10,11 @@ import {
   MantineTheme,
 } from "@pokt-foundation/pocket-blocks"
 import { LuCheck } from "react-icons/lu"
-import { PayPlanTypeV2 } from "~/models/portal/sdk"
+import { PayPlanType } from "~/models/portal/sdk"
 import useCommonStyles from "~/styles/commonStyles"
 
 type AccountPlanProps = {
-  type: PayPlanTypeV2.PayAsYouGoV0 | PayPlanTypeV2.FreetierV0 | PayPlanTypeV2.Enterprise
+  type: PayPlanType.PayAsYouGoV0 | PayPlanType.FreetierV0 | PayPlanType.Enterprise
   onContinue?: () => void
   disableFree?: boolean
 }
@@ -70,9 +70,9 @@ export const AccountPlan = ({
   onContinue,
   disableFree = false,
 }: AccountPlanProps) => {
-  const isFree = type === PayPlanTypeV2.FreetierV0
-  const isPay = type === PayPlanTypeV2.PayAsYouGoV0
-  const isEnterprise = type === PayPlanTypeV2.Enterprise
+  const isFree = type === PayPlanType.FreetierV0
+  const isPay = type === PayPlanType.PayAsYouGoV0
+  const isEnterprise = type === PayPlanType.Enterprise
   const { classes: commonClasses } = useCommonStyles()
 
   return (

@@ -10,7 +10,7 @@ import { AppIdOutletContext } from "../account.$accountId.$appId/route"
 import TeamView from "./view"
 import ErrorView from "~/components/ErrorView"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { RoleNameV2, User } from "~/models/portal/sdk"
+import { RoleName, User } from "~/models/portal/sdk"
 import { AccountIdLoaderData } from "~/routes/account.$accountId/route"
 import { DataStruct } from "~/types/global"
 import { getErrorMessage } from "~/utils/catchError"
@@ -81,7 +81,7 @@ export const action: ActionFunction = async ({ request, params }) => {
           accountID: accountId,
           portalAppID: appId,
           email: user_email,
-          roleName: user_role as RoleNameV2,
+          roleName: user_role as RoleName,
         },
       })
       res = Boolean(createAccountUserResponse.createAccountUser)
@@ -136,7 +136,7 @@ export const action: ActionFunction = async ({ request, params }) => {
           accountID: accountId,
           portalAppID: appId,
           userID: user_id,
-          roleName: user_role as RoleNameV2,
+          roleName: user_role as RoleName,
         },
       })
 

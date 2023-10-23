@@ -15,7 +15,7 @@ import { DEFAULT_APPMOJI } from "./components/AppmojiPicker"
 import PortalLoader from "~/components/PortalLoader"
 import useActionNotification from "~/hooks/useActionNotification"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { Account, PayPlanTypeV2 } from "~/models/portal/sdk"
+import { Account, PayPlanType } from "~/models/portal/sdk"
 import { getErrorMessage } from "~/utils/catchError"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 import { MAX_USER_APPS } from "~/utils/planUtils"
@@ -126,7 +126,7 @@ export const action: ActionFunction = async ({ request, params }) => {
         input: {
           name,
           accountID: accountId,
-          planType: subscription as PayPlanTypeV2,
+          planType: subscription as PayPlanType,
           description: typeof description === "string" ? description : undefined,
           appEmoji: typeof appmoji === "string" ? appmoji : DEFAULT_APPMOJI,
         },
@@ -142,7 +142,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 
     const newApp = createUserPortalAppResponse.createUserPortalApp
 
-    if (subscription === PayPlanTypeV2.PayAsYouGoV0) {
+    if (subscription === PayPlanType.PayAsYouGoV0) {
       formData.append("app-id", newApp.id)
       formData.append("app-accountId", accountId)
 
@@ -170,7 +170,7 @@ export default function CreateApp() {
     <Box maw={860} mx="auto">
       {appFromData ? (
         <AccountPlansContainer
-          onPlanSelected={(plan: PayPlanTypeV2) => {
+          onPlanSelected={(plan: PayPlanType) => {
             appFromData?.append("app-subscription", plan)
             fetcher.submit(appFromData, {
               method: "POST",

@@ -1,6 +1,6 @@
 import { ActionFunction, json } from "@remix-run/node"
 import invariant from "tiny-invariant"
-import { PayPlanType, PayPlanTypeV2 } from "~/models/portal/sdk"
+import { PayPlanType } from "~/models/portal/sdk"
 import { getSubscription, stripe } from "~/models/stripe/stripe.server"
 import { updatePlan } from "~/routes/api.admin.update-plan/route"
 import { getErrorMessage } from "~/utils/catchError"
@@ -28,8 +28,8 @@ export const action: ActionFunction = async ({ request }) => {
         await updatePlan({
           id: appId as string,
           type: action
-            ? (PayPlanType.FreetierV0 as unknown as PayPlanTypeV2.FreetierV0)
-            : (PayPlanType.PayAsYouGoV0 as unknown as PayPlanTypeV2.PayAsYouGoV0),
+            ? (PayPlanType.FreetierV0 as unknown as PayPlanType.FreetierV0)
+            : (PayPlanType.PayAsYouGoV0 as unknown as PayPlanType.PayAsYouGoV0),
         })
 
         return json({

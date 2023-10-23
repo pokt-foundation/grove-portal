@@ -19,7 +19,7 @@ import AppIdLayoutView from "./view"
 import ErrorView from "~/components/ErrorView"
 import useActionNotification from "~/hooks/useActionNotification"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { Blockchain, PortalApp, RoleNameV2 } from "~/models/portal/sdk"
+import { Blockchain, PortalApp, RoleName } from "~/models/portal/sdk"
 import { DataStruct } from "~/types/global"
 import { getUserRole } from "~/utils/applicationUtils"
 import { getErrorMessage } from "~/utils/catchError"
@@ -122,7 +122,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 }
 
 export type AppIdOutletContext = AppIdLoaderData & {
-  userRole: RoleNameV2
+  userRole: RoleName
 }
 
 export default function AppIdLayout() {
@@ -138,7 +138,7 @@ export default function AppIdLayout() {
   }
 
   const { app, blockchains } = data
-  const userRole = getUserRole(app.portalAppUsers, user.portalUserID) as RoleNameV2
+  const userRole = getUserRole(app.portalAppUsers, user.portalUserID) as RoleName
 
   return (
     <AppIdLayoutView app={app} userRole={userRole}>

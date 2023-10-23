@@ -12,9 +12,9 @@ import AppPlanLatestInvoiceCard from "./components/AppPlanLatestInvoiceCard"
 import AppPlanOverviewCard from "./components/AppPlanOverviewCard"
 import FreeAppPlan from "./components/FreeAppPlan"
 import { AppPlanLoaderData } from "./route"
-import { PayPlanType, RoleNameV2 } from "~/models/portal/sdk"
+import { PayPlanType, RoleName } from "~/models/portal/sdk"
 
-type PlanViewProps = AppPlanLoaderData & { userRole: RoleNameV2 }
+type PlanViewProps = AppPlanLoaderData & { userRole: RoleName }
 
 export const PlanView = ({
   app,

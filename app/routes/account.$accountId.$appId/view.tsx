@@ -35,7 +35,7 @@ export default function AppIdLayoutView({
     },
     {
       to: "logs",
-      label: "Logs",
+      label: "Error Logs",
     },
     {
       to: "security",

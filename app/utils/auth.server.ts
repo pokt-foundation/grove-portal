@@ -70,7 +70,12 @@ let auth0Strategy = new Auth0Strategy(
       email_verified: profile._json?.email_verified,
     }
 
-    return { accessToken, refreshToken, extraParams, user: portalUser }
+    return {
+      accessToken,
+      refreshToken: refreshToken as string,
+      extraParams,
+      user: portalUser,
+    }
   },
 )
 

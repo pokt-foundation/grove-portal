@@ -52,8 +52,8 @@
     "react-dom": "^18.2.0",
     "react-icons": "^4.11.0",
     "recharts": "^2.7.2",
-    "remix-auth": "^3.5.1",
-    "remix-auth-auth0": "^1.7.0",
+    "remix-auth": "^3.6.0",
+    "remix-auth-auth0": "^1.9.0",
     "stripe": "^9.9.0",
     "tiny-invariant": "^1.2.0"
   },

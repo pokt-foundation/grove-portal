@@ -24,11 +24,11 @@ jobs:
       - name: ⎔ Setup node
         uses: actions/setup-node@v3
         with:
-          node-version: 18.18.2
+          node-version: 16.15.0
 
       - uses: pnpm/action-setup@v2.0.1
         with:
-          version: 8.9.2
+          version: 7.0.0
 
       - name: 👀 Env
         run: |

@@ -126,7 +126,11 @@ const Sparkline = ({
           activeDot={{ stroke: theme.colors.green[5], strokeWidth: 1 }}
           connectNulls={false}
           dataKey="val"
-          dot={false}
+          dot={{
+            stroke: theme.colors.green[7],
+            fill: theme.colors.green[7],
+            strokeWidth: 1,
+          }}
           stroke={theme.colors.green[7]}
           strokeWidth={2}
           type="bumpX"

@@ -9,6 +9,7 @@ import { useOutletContext } from "@remix-run/react"
 import invariant from "tiny-invariant"
 import { AppIdOutletContext } from "../account.$accountId.$appId/route"
 import { initPortalClient } from "~/models/portal/portal.server"
+import { NotificationEventEnum, NotificationType } from "~/models/portal/sdk"
 import AppNotificationsAlert from "~/routes/account.$accountId.$appId.notifications/components/AppNotificationsAlert"
 import { DataStruct } from "~/types/global"
 import { getErrorMessage } from "~/utils/catchError"
@@ -49,22 +50,22 @@ export const action: ActionFunction = async ({ request, params }) => {
   const portal = initPortalClient({ token: user.accessToken })
 
   const formData = await request.formData()
-  const quarter = formData.get("quarter")
-  const half = formData.get("half")
-  const threeQuarters = formData.get("threeQuarters")
-  const full = formData.get("full")
+
+  const events = Array.from(formData.keys()).filter(
+    (key) => formData.get(key) === "on",
+  ) as NotificationEventEnum[]
 
   try {
-    await portal.updateEndpoint({
+    await portal.updateUserPortalApp({
       input: {
-        id: appId,
-        notificationSettings: {
-          signedUp: true,
-          quarter: quarter === "on",
-          half: half === "on",
-          threeQuarters: threeQuarters === "on",
-          full: full === "on",
-        },
+        appID: appId,
+        notificationSettings: [
+          {
+            active: true,
+            notificationType: NotificationType.Email,
+            events: events,
+          },
+        ],
       },
     })
 

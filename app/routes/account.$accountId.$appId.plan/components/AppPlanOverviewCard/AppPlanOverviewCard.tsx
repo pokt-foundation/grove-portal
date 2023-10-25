@@ -4,7 +4,7 @@ import { Form, useLocation } from "@remix-run/react"
 import React from "react"
 import { LuArrowUpRight, LuRepeat, LuStopCircle } from "react-icons/lu"
 import { TitledCard } from "~/components/TitledCard"
-import { PortalApp, RoleNameV2 } from "~/models/portal/sdk"
+import { PortalApp, RoleName } from "~/models/portal/sdk"
 import { Stripe } from "~/models/stripe/stripe.server"
 import useSubscriptionModals from "~/routes/account.$accountId.$appId/hooks/useSubscriptionModals"
 import useCommonStyles from "~/styles/commonStyles"
@@ -13,7 +13,7 @@ import { getPlanName } from "~/utils/planUtils"
 
 interface AppPlanOverviewCardProps {
   app: PortalApp
-  userRole: RoleNameV2
+  userRole: RoleName
   subscription: Stripe.Subscription
   usageRecords: Stripe.ApiList<Stripe.UsageRecordSummary>
 }

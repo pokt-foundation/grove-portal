@@ -8,13 +8,13 @@ import {
 } from "@pokt-foundation/pocket-blocks"
 import { DataTable } from "~/components/DataTable"
 import Identicon from "~/components/Identicon"
-import { PortalApp, RoleName, RoleNameV2, User } from "~/models/portal/sdk"
+import { PortalApp, RoleName, User } from "~/models/portal/sdk"
 import TeamMemberAction from "~/routes/account.$accountId.$appId.team/components/TeamMemberAction"
 import useTeamModals from "~/routes/account.$accountId.$appId.team/hooks/useTeamModals"
 
 type TeamMembersTableProps = {
   app: PortalApp
-  userRole: RoleNameV2 | null
+  userRole: RoleName | null
   user?: User
 }
 
@@ -47,9 +47,9 @@ const TeamMembersTable = ({ app, userRole, user }: TeamMembersTableProps) => {
           },
           role: {
             element:
-              roleName === RoleNameV2.Owner ? (
+              roleName === RoleName.Owner ? (
                 <Text> Owner </Text>
-              ) : userRole !== RoleNameV2.Member ? (
+              ) : userRole !== RoleName.Member ? (
                 <Flex>
                   <Select
                     data={[
@@ -78,17 +78,17 @@ const TeamMembersTable = ({ app, userRole, user }: TeamMembersTableProps) => {
             element: (
               <Text
                 sx={(theme: MantineTheme) => ({
-                  ...(roleName !== RoleNameV2.Owner && {
+                  ...(roleName !== RoleName.Owner && {
                     color: accepted ? theme.colors.green[6] : theme.colors.yellow[7],
                   }),
                 })}
               >
-                {roleName === RoleNameV2.Owner ? "-" : accepted ? "Accepted" : "Pending"}
+                {roleName === RoleName.Owner ? "-" : accepted ? "Accepted" : "Pending"}
               </Text>
             ),
           },
           action: {
-            element: roleName !== RoleNameV2.Owner && (
+            element: roleName !== RoleName.Owner && (
               <TeamMemberAction
                 app={app}
                 status={accepted}

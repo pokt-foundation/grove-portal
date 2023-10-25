@@ -12,7 +12,7 @@ import { Emoji } from "emoji-picker-react"
 import { LuPencil } from "react-icons/lu"
 import ApplicationSubscription from "../ApplicationSubscription"
 import ContextMenuTarget from "~/components/ContextMenuTarget"
-import { PayPlanType, PortalApp, RoleNameV2 } from "~/models/portal/sdk"
+import { PayPlanType, PortalApp, RoleName } from "~/models/portal/sdk"
 import DeleteApplication from "~/routes/account.$accountId.$appId/components/DeleteApplication"
 import { DEFAULT_APPMOJI } from "~/routes/account_.$accountId.create/components/AppmojiPicker"
 import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
@@ -20,7 +20,7 @@ import { getPlanName } from "~/utils/planUtils"
 
 type ApplicationHeaderProps = {
   app: PortalApp
-  userRole: RoleNameV2
+  userRole: RoleName
 }
 
 const ApplicationHeader = ({ app, userRole }: ApplicationHeaderProps) => {

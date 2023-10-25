@@ -1,7 +1,7 @@
 import { cleanNotifications } from "@mantine/notifications"
 import { Box, Text } from "@pokt-foundation/pocket-blocks"
 import { useEffect, useMemo } from "react"
-import { PortalApp, RoleNameV2, User } from "~/models/portal/sdk"
+import { PortalApp, RoleName, User } from "~/models/portal/sdk"
 import InvitedAppsTable from "~/routes/user.invited-apps/components/InvitedAppsTable"
 import { getAppAcceptedValue, getUserRole } from "~/utils/applicationUtils"
 
@@ -24,7 +24,7 @@ export const UserInvitedApps = ({ apps, user }: UserInvitedAppsProps) => {
         role: getUserRole(app.portalAppUsers, user.portalUserID),
       }))
       .sort((a, b) => Number(a.accepted) - Number(b.accepted))
-      .filter((app) => app.role !== RoleNameV2.Owner)
+      .filter((app) => app.role !== RoleName.Owner)
   }, [apps, user])
 
   return (

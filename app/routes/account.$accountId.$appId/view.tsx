@@ -2,11 +2,11 @@ import { Container, Stack } from "@pokt-foundation/pocket-blocks"
 import { useEffect, useState } from "react"
 import ApplicationHeader from "./components/ApplicationHeader"
 import LinkTabs from "~/components/LinkTabs"
-import { PayPlanType, PortalApp, RoleNameV2 } from "~/models/portal/sdk"
+import { PayPlanType, PortalApp, RoleName } from "~/models/portal/sdk"
 
 type AppIdLayoutViewProps = {
   app: PortalApp
-  userRole: RoleNameV2
+  userRole: RoleName
   children: React.ReactNode
 }
 
@@ -35,7 +35,7 @@ export default function AppIdLayoutView({
     },
     {
       to: "logs",
-      label: "Logs",
+      label: "Error Logs",
     },
     {
       to: "security",

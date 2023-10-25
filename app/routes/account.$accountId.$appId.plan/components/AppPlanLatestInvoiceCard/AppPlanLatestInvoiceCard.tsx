@@ -4,7 +4,7 @@ import React from "react"
 import { LuArrowUpRight, LuDownload } from "react-icons/lu"
 import { TitledCard } from "~/components/TitledCard"
 import { app } from "~/models/portal/portal.data"
-import { type RoleNameV2 } from "~/models/portal/sdk"
+import { type RoleName } from "~/models/portal/sdk"
 import { RelayMetric } from "~/models/relaymeter/relaymeter.server"
 import { Stripe } from "~/models/stripe/stripe.server"
 import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
@@ -14,7 +14,7 @@ interface PlanLatestInvoiceCardProps {
   invoice: Stripe.Invoice
   usageRecords: Stripe.ApiList<Stripe.UsageRecordSummary>
   relaysLatestInvoice: RelayMetric
-  userRole: RoleNameV2
+  userRole: RoleName
 }
 
 export default function AppPlanLatestInvoiceCard({

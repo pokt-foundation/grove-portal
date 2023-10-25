@@ -1,6 +1,6 @@
 import { Maybe } from "graphql/jsutils/Maybe"
 import { BlockchainWhitelist } from "./utils"
-import { Whitelists, WhitelistContractsV2, WhitelistMethodsV2 } from "~/models/portal/sdk"
+import { Whitelists, WhitelistContracts, WhitelistMethods } from "~/models/portal/sdk"
 
 export type SecurityReducerActions =
   | { type: "origins-add"; payload: string[] }
@@ -59,13 +59,13 @@ export function securityReducer(state: Whitelists, action: SecurityReducerAction
         action.payload,
         "whitelistValue",
         "contracts",
-      ) as WhitelistContractsV2[]
+      ) as WhitelistContracts[]
 
       let combinedContracts = combineToType(
         [...state.contracts, ...payloadContracts],
         "contracts",
         "contracts",
-      ) as WhitelistContractsV2[]
+      ) as WhitelistContracts[]
 
       return {
         ...state,
@@ -86,7 +86,7 @@ export function securityReducer(state: Whitelists, action: SecurityReducerAction
         if (contract?.blockchainID === changedContract?.blockchainID) {
           return changedContract
         } else return contract
-      }) as WhitelistContractsV2[]
+      }) as WhitelistContracts[]
 
       return {
         ...state,
@@ -97,13 +97,13 @@ export function securityReducer(state: Whitelists, action: SecurityReducerAction
         action.payload,
         "whitelistValue",
         "methods",
-      ) as WhitelistMethodsV2[]
+      ) as WhitelistMethods[]
 
       let combinedMethods = combineToType(
         [...state.methods, ...payloadMethods],
         "methods",
         "methods",
-      ) as WhitelistMethodsV2[]
+      ) as WhitelistMethods[]
 
       return {
         ...state,
@@ -124,7 +124,7 @@ export function securityReducer(state: Whitelists, action: SecurityReducerAction
         if (contract?.blockchainID === changedMethod?.blockchainID) {
           return changedMethod
         } else return contract
-      }) as WhitelistMethodsV2[]
+      }) as WhitelistMethods[]
 
       return {
         ...state,
@@ -136,10 +136,7 @@ export function securityReducer(state: Whitelists, action: SecurityReducerAction
 }
 
 const combineToType = (
-  array:
-    | BlockchainWhitelist[]
-    | Maybe<WhitelistContractsV2>[]
-    | Maybe<WhitelistMethodsV2>[],
+  array: BlockchainWhitelist[] | Maybe<WhitelistContracts>[] | Maybe<WhitelistMethods>[],
   fromType: string,
   toType: string,
 ) => {

@@ -1,7 +1,7 @@
 import { ActionFunction, json } from "@remix-run/node"
 import invariant from "tiny-invariant"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { AdminUpdatePortalAppMutationVariables, PayPlanTypeV2 } from "~/models/portal/sdk"
+import { AdminUpdatePortalAppMutationVariables, PayPlanType } from "~/models/portal/sdk"
 import { initAdminPortal } from "~/utils/adminPortal"
 import { getErrorMessage } from "~/utils/catchError"
 
@@ -12,7 +12,7 @@ export type UpdatePlanActionData = {
 
 export type UpdatePlanArgs = {
   id: string | null
-  type: PayPlanTypeV2 | null
+  type: PayPlanType | null
   limit?: number | null
   subscription?: string | null
 }

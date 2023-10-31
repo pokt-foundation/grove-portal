@@ -1,18 +1,18 @@
 import { Divider } from "@mantine/core"
-import { MediaQuery, Navbar, ScrollArea } from "@pokt-foundation/pocket-blocks"
-import { useParams } from "@remix-run/react"
+import { Box, MediaQuery, Navbar, ScrollArea } from "@pokt-foundation/pocket-blocks"
+import { Link, useParams } from "@remix-run/react"
 import React, { useMemo, useState } from "react"
 import {
   LuBarChart4,
   LuBook,
-  LuChevronsLeft,
-  LuChevronsRight,
   LuDiamond,
   LuLifeBuoy,
+  LuPanelLeft,
   LuPlus,
   LuSettings,
 } from "react-icons/lu"
 import AccountSelect from "~/components/AccountSelect"
+import GroveLogo from "~/components/GroveLogo"
 import {
   InternalLink,
   ExternalLink,
@@ -125,13 +125,19 @@ export const Sidebar = ({ apps, hidden, canCreateApps, accounts }: SidebarProps)
         <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
           <Navbar.Section>
             <NavButton
-              icon={collapsed ? LuChevronsRight : LuChevronsLeft}
+              icon={LuPanelLeft}
               iconOnly={collapsed}
               label={`${collapsed ? "Expand" : "Collapse"} sidebar`}
               onClick={() => setCollapsed(!collapsed)}
             />
           </Navbar.Section>
         </MediaQuery>
+
+        <Box ml="md" mt={30}>
+          <Link to={`/account/${accountId}`}>
+            <GroveLogo icon={collapsed} />
+          </Link>
+        </Box>
       </>
     </Navbar>
   )

@@ -1,5 +1,5 @@
 import { showNotification } from "@mantine/notifications"
-import { AppShell, Container, Header } from "@pokt-foundation/pocket-blocks"
+import { AppShell, Container } from "@pokt-foundation/pocket-blocks"
 import { Link, useLocation, useParams } from "@remix-run/react"
 import React, { ReactNode, useEffect, useMemo, useState } from "react"
 import { LuShapes } from "react-icons/lu"
@@ -7,7 +7,6 @@ import { AppHeader } from "~/components/AppHeader"
 import { Sidebar } from "~/components/Sidebar"
 import { Account, PortalApp, User } from "~/models/portal/sdk"
 import { useRoot } from "~/root/hooks/useRoot"
-import useCommonStyles from "~/styles/commonStyles"
 import isUserAccountOwner from "~/utils/user"
 
 type RootAppShellProps = {
@@ -26,7 +25,6 @@ export const RootAppShell = ({
   hasPendingInvites,
 }: RootAppShellProps) => {
   const [opened, setOpened] = useState(false)
-  const { classes: commonClasses } = useCommonStyles()
   const { hideSidebar } = useRoot({ user })
   const { pathname } = useLocation()
   const { accountId } = useParams()
@@ -40,10 +38,17 @@ export const RootAppShell = ({
     () => ({
       ...(!hideSidebar &&
         apps && {
-          navbar: <Sidebar apps={apps} canCreateApps={isUserOwner} hidden={!opened} />,
+          navbar: (
+            <Sidebar
+              accounts={accounts}
+              apps={apps}
+              canCreateApps={isUserOwner}
+              hidden={!opened}
+            />
+          ),
         }),
     }),
-    [hideSidebar, apps, opened, isUserOwner],
+    [hideSidebar, apps, accounts, isUserOwner, opened],
   )
 
   useEffect(() => {
@@ -63,20 +68,15 @@ export const RootAppShell = ({
   return (
     <AppShell
       header={
-        <Header
-          className={commonClasses.mainBackgroundColor}
-          height={{ base: 50, md: 70 }}
-          p="md"
-        >
-          <AppHeader
-            accounts={accounts}
-            hasPendingInvites={hasPendingInvites}
-            opened={opened}
-            user={user}
-            onOpen={(o) => setOpened(o)}
-          />
-        </Header>
+        <AppHeader
+          accounts={accounts}
+          hasPendingInvites={hasPendingInvites}
+          opened={opened}
+          user={user}
+          onOpen={(o) => setOpened(o)}
+        />
       }
+      layout="alt"
       {...navProp}
       navbarOffsetBreakpoint="sm"
       padding="xs"

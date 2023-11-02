@@ -1,8 +1,23 @@
-import { LoaderFunction } from "@remix-run/node"
-import { redirectToUserAccount, requireUser } from "~/utils/user.server"
+import { LoaderFunction, MetaFunction, redirect } from "@remix-run/node"
+import LandingView from "~/routes/_index/view"
+import { getUserProfile } from "~/utils/user.server"
+
+export const meta: MetaFunction = () => {
+  return {
+    title: `Grove Portal`,
+  }
+}
 
 export const loader: LoaderFunction = async ({ request }) => {
-  const user = await requireUser(request)
+  const user = await getUserProfile(request)
 
-  return redirectToUserAccount(user)
+  if (user) {
+    return redirect("/account")
+  }
+
+  return null
+}
+
+export default function Landing() {
+  return <LandingView />
 }

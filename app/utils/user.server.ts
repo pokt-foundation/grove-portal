@@ -10,11 +10,10 @@ export enum Permissions {
 }
 
 export const requireUser = async (request: Request, defaultRedirect = "/") => {
-  const url = new URL(request.url)
   const user = await authenticator.isAuthenticated(request)
 
   if (!user) {
-    throw redirect("/api/auth/auth0")
+    throw redirect("/")
   }
 
   if (!user.user) {

@@ -1,20 +1,24 @@
-import { createStyles, Stack, Text } from "@pokt-foundation/pocket-blocks"
-import Rive from "@rive-app/react-canvas"
+import { Stack, Text } from "@pokt-foundation/pocket-blocks"
+import Lottie from "lottie-react"
 
-const useStyles = createStyles((theme) => ({
-  rive: {
-    width: "180px",
-    height: "180px",
-  },
-}))
+import groveTreeAnimation from "./grove-tree.json"
 
-type PortalLoaderProps = { message?: string }
+type PortalLoaderProps = { message?: string; size?: "md" | "lg" }
 
-const PortalLoader = ({ message }: PortalLoaderProps) => {
-  const { classes } = useStyles()
+const LOADER_SIZE = {
+  md: 180,
+  lg: 380,
+}
+
+const PortalLoader = ({ message, size = "md" }: PortalLoaderProps) => {
   return (
     <Stack align="center" justify="center">
-      <Rive className={classes.rive} src="/rive/portal-loader.riv" />
+      <Lottie
+        animationData={groveTreeAnimation}
+        // eslint-disable-next-line jsx-a11y/aria-props
+        aria-aria-labelledby="Grove loading animation"
+        style={{ height: LOADER_SIZE[size] }}
+      />
       {message && <Text> {message} </Text>}
     </Stack>
   )

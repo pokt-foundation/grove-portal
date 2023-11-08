@@ -48,22 +48,37 @@ query getUserAccount(
     id
     name
     planType
-    accountUsers {
-      accountUserID
-      email
-      owner
-      portalApps {
-        portalAppID
-        roleName
-        accepted
+    enterpriseLimit
+    notifications {
+      notificationType
+      notificationSettings {
+        accountID
+        type
+        active
+        destination
+        trigger
+        events {
+          full
+          half
+          quarter
+          signedUp
+          threeQuarters
+        }
       }
+    }
+    users {
+      id
+      email
+      roleName
+      accepted
     }
     partnerChainIDs
     partnerThroughputLimit
     partnerAppLimit
     integrations {
+      stripeSubscriptionID
       covalentAPIKeyFree
-      CovalentAPIKeyPaid
+      covalentAPIKeyPaid
     }
     createdAt
     updatedAt
@@ -80,7 +95,6 @@ query getUserAccount(
         secretKey
         secretKeyRequired
         favoritedChainIDs
-        monthlyRelayLimit
       }
       whitelists {
         origins
@@ -107,23 +121,6 @@ query getUserAccount(
           version
         }
       }
-      notifications {
-        notificationType
-        appNotification {
-          appID
-          type
-          active
-          destination
-          trigger
-          events {
-            full
-            half
-            quarter
-            signedUp
-            threeQuarters
-          }
-        }
-      }
       createdAt
       updatedAt
       deleted
@@ -133,8 +130,9 @@ query getUserAccount(
       type
       chainIDs
       monthlyRelayLimit
-      ThroughputLimit
+      throughputLimit
       appLimit
+      dailyLimit
     }
   }
 }
@@ -155,33 +153,28 @@ query getUserAccounts(
       id
       name
     }
-    accountUsers {
-      accountUserID
-      owner
+    users {
+      id
+      email
+      roleName
+      accepted
     }
   }
 }
 
-query getUserPortalApp($portalAppID: ID!) {
-  getUserPortalApp(portalAppID: $portalAppID) {
+query getUserPortalApp($portalAppID: ID!, $accountID: ID!) {
+  getUserPortalApp(portalAppID: $portalAppID, accountID: $accountID) {
     id
     name
     accountID
     appEmoji
     description
-    portalAppUsers {
-      portalAppUserID
-      email
-      roleName
-      accepted
-    }
     settings {
       appID
       environment
       secretKey
       secretKeyRequired
       favoritedChainIDs
-      monthlyRelayLimit
     }
     whitelists {
       origins
@@ -208,57 +201,22 @@ query getUserPortalApp($portalAppID: ID!) {
         version
       }
     }
-    notifications {
-      notificationType
-      appNotification {
-        appID
-        type
-        active
-        destination
-        trigger
-        events {
-          full
-          half
-          quarter
-          signedUp
-          threeQuarters
-        }
-      }
-    }
     createdAt
     updatedAt
     deleted
-    firstDateSurpassed
-    legacyFields {
-      planType
-      dailyLimit
-      customLimit
-      requestTimeout
-      stripeSubscriptionID
-    }
   }
 }
 
 query getUserPortalApps(
   $sortOrder: SortOrder
-  $roleNameFilters: [RoleName!]
-  $accepted: Boolean!
 ) {
   getUserPortalApps(
     sortOrder: $sortOrder
-    roleNameFilters: $roleNameFilters
-    accepted: $accepted
   ) {
     id
     name
     accountID
     appEmoji
     description
-    portalAppUsers {
-      portalAppUserID
-      email
-      roleName
-      accepted
-    }
   }
 }

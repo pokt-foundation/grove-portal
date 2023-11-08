@@ -27,7 +27,6 @@ mutation createUserPortalApp($input: CreateUserPortalApp!) {
       secretKey
       secretKeyRequired
       favoritedChainIDs
-      monthlyRelayLimit
     }
     whitelists {
       origins
@@ -54,33 +53,33 @@ mutation createUserPortalApp($input: CreateUserPortalApp!) {
         version
       }
     }
-    notifications {
-      notificationType
-      appNotification {
-        appID
-        type
-        active
-        destination
-        trigger
-        events {
-          full
-          half
-          quarter
-          signedUp
-          threeQuarters
-        }
-      }
-    }
+#    notifications {
+#      notificationType
+#      appNotification {
+#        appID
+#        type
+#        active
+#        destination
+#        trigger
+#        events {
+#          full
+#          half
+#          quarter
+#          signedUp
+#          threeQuarters
+#        }
+#      }
+#    }
     createdAt
     updatedAt
     deleted
-    firstDateSurpassed
-    legacyFields {
-      planType
-      dailyLimit
-      customLimit
-      requestTimeout
-    }
+#    firstDateSurpassed
+#    legacyFields {
+#      planType
+#      dailyLimit
+#      customLimit
+#      requestTimeout
+#    }
   }
 }
 
@@ -95,7 +94,6 @@ mutation updateUserPortalApp($input: UpdatePortalApp!) {
       secretKey
       secretKeyRequired
       favoritedChainIDs
-      monthlyRelayLimit
     }
     whitelists {
       origins
@@ -122,33 +120,9 @@ mutation updateUserPortalApp($input: UpdatePortalApp!) {
         version
       }
     }
-    notifications {
-      notificationType
-      appNotification {
-        appID
-        type
-        active
-        destination
-        trigger
-        events {
-          full
-          half
-          quarter
-          signedUp
-          threeQuarters
-        }
-      }
-    }
     createdAt
     updatedAt
     deleted
-    firstDateSurpassed
-    legacyFields {
-      planType
-      dailyLimit
-      customLimit
-      requestTimeout
-    }
   }
 }
 
@@ -158,15 +132,15 @@ mutation adminUpdatePortalApp($input: AdminUpdatePortalApp!) {
   }
 }
 
-mutation updateUserAcceptAccount($portalAppID: String!, $accepted: Boolean!) {
-  updateUserAcceptAccount(portalAppID: $portalAppID, accepted: $accepted)
+mutation updateUserAcceptAccount($accountID: ID!, $accepted: Boolean!) {
+  updateUserAcceptAccount(accountID: $accountID, accepted: $accepted)
 }
 
 mutation updateUserAccountRole($input: UpdateAccountUserRole!) {
   updateUserAccountRole(input: $input)
 }
 
-mutation createAccountUser($input: CreateAccountUserAccess!) {
+mutation createAccountUser($input: CreateAccountUser!) {
   createAccountUser(input: $input)
 }
 
@@ -174,8 +148,8 @@ mutation removeAccountUser($input: UpdateRemoveAccountUser!) {
   removeAccountUser(input: $input)
 }
 
-mutation deleteUserPortalApp($portalAppID: String!) {
-  deleteUserPortalApp(portalAppID: $portalAppID)
+mutation deleteUserPortalApp($portalAppID: ID!, $accountID: ID!) {
+  deleteUserPortalApp(portalAppID: $portalAppID, accountID: $accountID)
 }
 
 mutation updateUserAccount($input: UpdateAccount!) {

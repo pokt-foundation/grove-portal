@@ -12,10 +12,10 @@ import ErrorView from "~/components/ErrorView"
 import PortalLoader from "~/components/PortalLoader"
 import useActionNotification from "~/hooks/useActionNotification"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { PortalApp, UpdatePortalApp } from "~/models/portal/sdk"
+import { PortalApp, RoleName, UpdatePortalApp } from "~/models/portal/sdk"
 import AppForm from "~/routes/account_.$accountId.create/components/AppForm"
 import { DataStruct } from "~/types/global"
-import { getUserRole } from "~/utils/applicationUtils"
+import { getUserAccountRole } from "~/utils/accountUtils"
 import { getErrorMessage } from "~/utils/catchError"
 import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
@@ -36,10 +36,11 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   const { accountId, appId } = params
 
   invariant(appId, "AppId must be set")
+  invariant(accountId, "AccountId must be set")
 
   try {
     const getUserPortalAppResponse = await portal
-      .getUserPortalApp({ portalAppID: appId })
+      .getUserPortalApp({ portalAppID: appId, accountID: accountId })
       .catch((e) => {
         console.log(e)
       })
@@ -53,13 +54,16 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       return redirect(`/account/${params.accountId}`)
     }
 
-    const isUserMember =
-      getUserRole(
-        getUserPortalAppResponse.getUserPortalApp.portalAppUsers,
-        user.user.portalUserID,
-      ) === "MEMBER"
+    const currentAccount = getUserAccountsResponse?.getUserAccounts?.find(
+      (acc) => acc?.id === accountId,
+    )
 
-    if (isUserMember) {
+    const canUserUpdate = currentAccount
+      ? getUserAccountRole(currentAccount.users, user.user.portalUserID) !==
+        RoleName.Member
+      : false
+
+    if (!canUserUpdate) {
       return redirect(`/account/${params.accountId}/${appId}`)
     }
 
@@ -89,11 +93,12 @@ export const action: ActionFunction = async ({ request, params }) => {
 
   try {
     invariant(name && typeof name === "string", "app name not found")
-    invariant(accountId && typeof accountId === "string", "accountId not found")
-    invariant(appId && typeof appId === "string", "appId not found")
+    invariant(typeof accountId === "string", "accountId not found")
+    invariant(typeof appId === "string", "appId not found")
 
-    let input: Partial<UpdatePortalApp> = {
+    let input: UpdatePortalApp = {
       appID: appId,
+      accountID: accountId,
       name,
     }
 

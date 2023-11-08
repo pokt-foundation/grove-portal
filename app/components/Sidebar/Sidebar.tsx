@@ -3,10 +3,10 @@ import { Box, MediaQuery, Navbar, ScrollArea } from "@pokt-foundation/pocket-blo
 import { Link, useParams } from "@remix-run/react"
 import React, { useMemo, useState } from "react"
 import {
-  LuBarChart4,
-  LuBook,
-  LuDiamond,
+  LuArrowUpCircle,
+  LuBookOpen,
   LuLifeBuoy,
+  LuLineChart,
   LuPanelLeft,
   LuPlus,
   LuSettings,
@@ -37,10 +37,9 @@ const getStaticRoutes = (activeAccount: Account | undefined): SidebarNavRoute[] 
     ...(isStarterAccount
       ? [
           {
-            // to: `/account/${activeAccount?.id}/plan`,
-            to: `/user/accounts`,
+            to: `/account/${activeAccount?.id}/settings/plan`,
             label: "Upgrade to Auto-Scale",
-            icon: LuDiamond,
+            icon: LuArrowUpCircle,
             end: true,
           },
         ]
@@ -49,18 +48,18 @@ const getStaticRoutes = (activeAccount: Account | undefined): SidebarNavRoute[] 
       {
         to: `/account/${activeAccount?.id}`,
         label: "Insights",
-        icon: LuBarChart4,
+        icon: LuLineChart,
         end: true,
       },
       {
-        to: `/user/accounts`,
+        to: `/account/${activeAccount?.id}/settings`,
         label: "Settings and members",
         icon: LuSettings,
         end: true,
       },
       {
         to: DOCS_PATH,
-        icon: LuBook,
+        icon: LuBookOpen,
         label: "Docs",
         external: true,
       },

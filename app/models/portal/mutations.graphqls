@@ -53,33 +53,9 @@ mutation createUserPortalApp($input: CreateUserPortalApp!) {
         version
       }
     }
-#    notifications {
-#      notificationType
-#      appNotification {
-#        appID
-#        type
-#        active
-#        destination
-#        trigger
-#        events {
-#          full
-#          half
-#          quarter
-#          signedUp
-#          threeQuarters
-#        }
-#      }
-#    }
     createdAt
     updatedAt
     deleted
-#    firstDateSurpassed
-#    legacyFields {
-#      planType
-#      dailyLimit
-#      customLimit
-#      requestTimeout
-#    }
   }
 }
 

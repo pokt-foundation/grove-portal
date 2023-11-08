@@ -1,8 +1,4 @@
-import {
-  Outlet,
-  useActionData,
-  useRouteLoaderData,
-} from "@remix-run/react"
+import { Outlet, useActionData, useRouteLoaderData } from "@remix-run/react"
 import React from "react"
 import ErrorView from "~/components/ErrorView"
 import useActionNotification from "~/hooks/useActionNotification"

@@ -4,7 +4,7 @@ import { useFetcher } from "@remix-run/react"
 import React from "react"
 import { useCallback } from "react"
 import useActionNotification from "~/hooks/useActionNotification"
-import { PortalApp, RoleName } from "~/models/portal/sdk"
+import { Account, RoleName } from "~/models/portal/sdk"
 import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
 import { formatNumberToSICompact } from "~/utils/formattingUtils"
 import { FREE_TIER_MAX_RELAYS } from "~/utils/planUtils"
@@ -38,19 +38,19 @@ function getUsagePercentage(usageLevel: string): string {
 }
 
 type NotificationsAlertFormProps = {
-  app: PortalApp
+  account: Account
   userRole: RoleName
 }
 
-export default function AppNotificationsAlert({
-  app,
+export default function AccountNotificationsView({
+  account,
   userRole,
 }: NotificationsAlertFormProps) {
-  const { notifications } = app
+  const { notifications } = account
   const fetcher = useFetcher()
   useActionNotification(fetcher.data)
 
-  const notificationEvents = notifications[0]?.appNotification?.events
+  const notificationEvents = notifications[0]?.notificationSettings?.events
 
   const getNotificationCheckedState = useCallback(
     (level: NotificationLevel) =>
@@ -106,8 +106,8 @@ export default function AppNotificationsAlert({
                 onChange={(event) => {
                   updateNotification(level, event.currentTarget.checked ? "on" : "off")
                   trackEvent({
-                    category: AnalyticCategories.app,
-                    action: AnalyticActions.app_notifications,
+                    category: AnalyticCategories.account,
+                    action: AnalyticActions.account_notifications,
                     label: level,
                   })
                 }}

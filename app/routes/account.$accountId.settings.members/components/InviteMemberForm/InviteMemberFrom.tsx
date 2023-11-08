@@ -13,14 +13,18 @@ import {
 import { Form, useNavigation, useParams } from "@remix-run/react"
 import ModalHeader from "~/components/ModalHeader"
 import PortalLoader from "~/components/PortalLoader"
-import { RoleName } from "~/models/portal/sdk"
+import { Maybe, RoleName } from "~/models/portal/sdk"
 import useCommonStyles from "~/styles/commonStyles"
 import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
 
-const InviteMemberFrom = () => {
+type InviteMemberFromProps = {
+  accountName: Maybe<string> | undefined
+}
+
+const InviteMemberFrom = ({ accountName }: InviteMemberFromProps) => {
   const { state } = useNavigation()
   const { classes: commonClasses } = useCommonStyles()
-  const { appId, accountId } = useParams()
+  const { accountId } = useParams()
 
   return (
     <>
@@ -31,7 +35,7 @@ const InviteMemberFrom = () => {
             title="Invite member"
             onDiscard={closeAllModals}
           />
-          <Form action={`/account/${accountId}/${appId}/team`} method="post">
+          <Form action={`/account/${accountId}/settings/members`} method="post">
             <Stack spacing="md">
               <TextInput
                 required
@@ -42,6 +46,7 @@ const InviteMemberFrom = () => {
                 type="email"
                 w="300px"
               />
+              <input hidden readOnly name="account_name" value={accountName as string} />
               <Flex>
                 <Select
                   required
@@ -85,9 +90,9 @@ const InviteMemberFrom = () => {
                 w="156px"
                 onClick={() => {
                   trackEvent({
-                    category: AnalyticCategories.app,
-                    action: AnalyticActions.app_team_invite,
-                    label: appId,
+                    category: AnalyticCategories.account,
+                    action: AnalyticActions.account_team_invite,
+                    label: accountId,
                   })
                 }}
               >

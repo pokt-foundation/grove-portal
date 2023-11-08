@@ -1,14 +1,7 @@
 import { ActionFunction, json, LoaderFunction, MetaFunction } from "@remix-run/node"
-import {
-  useActionData,
-  useCatch,
-  useOutletContext,
-  useRouteLoaderData,
-} from "@remix-run/react"
+import { useActionData, useCatch, useOutletContext } from "@remix-run/react"
 import invariant from "tiny-invariant"
-import { AppIdOutletContext } from "../account.$accountId.$appId/route"
-import TeamView from "./view"
-import ErrorView from "~/components/ErrorView"
+import MembersView from "./view"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { RoleName, User } from "~/models/portal/sdk"
 import { AccountIdLoaderData } from "~/routes/account.$accountId/route"
@@ -20,7 +13,7 @@ import { requireUser } from "~/utils/user.server"
 
 export const meta: MetaFunction = () => {
   return {
-    title: `Application Team ${seo_title_append}`,
+    title: `Account Members ${seo_title_append}`,
   }
 }
 
@@ -37,12 +30,6 @@ export const loader: LoaderFunction = async ({ request }) => {
   })
 }
 
-export type ActionData = {
-  email: string
-  type: "delete" | "invite" | "updateRole" | "resend"
-  error: boolean
-}
-
 export type TeamActionData = {
   success: Boolean
   type: TeamActionType
@@ -55,15 +42,16 @@ export const action: ActionFunction = async ({ request, params }) => {
   const portal = initPortalClient({ token: user.accessToken })
   const formData = await request.formData()
 
-  const { appId, accountId } = params
+  const { accountId } = params
   invariant(accountId, "account id not found")
-  invariant(appId, "app id not found")
 
   try {
     const user_invite = formData.get("user_invite")
     const user_delete = formData.get("user_delete")
     const user_update = formData.get("user_update")
     const user_resend = formData.get("user_resend")
+    const account_name = formData.get("account_name") as string
+    const invitedAccountName = account_name ? account_name : accountId
 
     let message = ""
     let type: TeamActionType = "invite"
@@ -79,7 +67,6 @@ export const action: ActionFunction = async ({ request, params }) => {
       const createAccountUserResponse = await portal.createAccountUser({
         input: {
           accountID: accountId,
-          portalAppID: appId,
           email: user_email,
           roleName: user_role as RoleName,
         },
@@ -87,11 +74,13 @@ export const action: ActionFunction = async ({ request, params }) => {
       res = Boolean(createAccountUserResponse.createAccountUser)
       message = `User invite successfully sent to ${user_email}`
       if (!res) {
-        throw new Error(`Error inviting user ${user_email} on app ${appId}`)
+        throw new Error(
+          `Error inviting user ${user_email} on account ${invitedAccountName}`,
+        )
       }
 
-      // todo: send user email with app name?
-      await sendTeamInviteEmail(user_email, appId).catch((error) => {
+      // todo: send user email with account name?
+      await sendTeamInviteEmail(user_email, invitedAccountName).catch((error) => {
         console.log(error)
         message = message + ", however email notification failed."
       })
@@ -106,19 +95,19 @@ export const action: ActionFunction = async ({ request, params }) => {
       const removeAccountUserResponse = await portal.removeAccountUser({
         input: {
           accountID: accountId,
-          portalAppID: appId,
           userID: user_id,
         },
       })
 
       res = removeAccountUserResponse.removeAccountUser
-      message = `User ${user_id} was removed from app ${appId}`
+      message = `User ${user_id} was removed from account ${invitedAccountName}`
       if (!res) {
-        throw new Error(`Error removing user ${user_id} from app ${appId}`)
+        throw new Error(
+          `Error removing user ${user_id} from account ${invitedAccountName}`,
+        )
       }
 
-      // todo: send remove email with app name?
-      await sendTeamUserRemovedEmail(user_email, appId).catch((error) => {
+      await sendTeamUserRemovedEmail(user_email, invitedAccountName).catch((error) => {
         console.log(error)
         message = message + ", however email notification failed."
       })
@@ -134,7 +123,6 @@ export const action: ActionFunction = async ({ request, params }) => {
       const updateUserAccountRoleResponse = await portal.updateUserAccountRole({
         input: {
           accountID: accountId,
-          portalAppID: appId,
           userID: user_id,
           roleName: user_role as RoleName,
         },
@@ -152,8 +140,8 @@ export const action: ActionFunction = async ({ request, params }) => {
       const user_email = formData.get("user_email")
       invariant(typeof user_email === "string", "user_email must be set")
 
-      // todo: send user email with app name?
-      await sendTeamInviteEmail(user_email, appId).catch((error) => {
+      // todo: send user email with account name?
+      await sendTeamInviteEmail(user_email, invitedAccountName).catch((error) => {
         console.log(error)
         throw new Error(`Invite email failed to send to user ${user_email}`)
       })
@@ -179,20 +167,17 @@ export const action: ActionFunction = async ({ request, params }) => {
   }
 }
 
-export default function Team() {
-  const { app, userRole } = useOutletContext<AppIdOutletContext>()
-  const { data, error, message } = useRouteLoaderData(
-    "routes/account.$accountId",
-  ) as DataStruct<AccountIdLoaderData>
+export default function AccountMembers() {
+  const { userRole, account, user } = useOutletContext<AccountIdLoaderData>()
   const actionData = useActionData() as DataStruct<TeamActionData>
-
-  if (error) {
-    return <ErrorView message={message} />
-  }
-
-  const { user } = data
-
-  return <TeamView actionData={actionData} app={app} user={user} userRole={userRole} />
+  return (
+    <MembersView
+      account={account}
+      actionData={actionData}
+      user={user}
+      userRole={userRole}
+    />
+  )
 }
 
 export const CatchBoundary = () => {

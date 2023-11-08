@@ -1,46 +1,47 @@
-import { Text } from "@pokt-foundation/pocket-blocks"
+import { Box, Group, Text } from "@pokt-foundation/pocket-blocks"
 import { useFetcher } from "@remix-run/react"
 import React from "react"
 import useActionNotification from "~/hooks/useActionNotification"
 import useModals from "~/hooks/useModals"
-import { PortalApp, RoleName } from "~/models/portal/sdk"
+import { Account, RoleName } from "~/models/portal/sdk"
 import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
 
 type useTeamModalsProps = {
-  app: PortalApp
+  account: Account
 }
 
-const useTeamModals = ({ app }: useTeamModalsProps) => {
+const useTeamModals = ({ account }: useTeamModalsProps) => {
   const fetcher = useFetcher()
   const { openConfirmationModal } = useModals()
-  const { accountID: accountId, id: appId } = app
+  const { id: accountId } = account
 
   useActionNotification(fetcher.data)
 
   const removeTeamMember = (userId: string, email: string) => {
     trackEvent({
-      category: AnalyticCategories.app,
-      action: AnalyticActions.app_team_remove,
-      label: appId,
+      category: AnalyticCategories.account,
+      action: AnalyticActions.account_team_remove,
+      label: accountId,
     })
     fetcher.submit(
       {
         user_delete: "true",
         user_id: userId,
         user_email: email,
+        account_name: account.name as string,
       },
       {
         method: "POST",
-        action: `/account/${accountId}/${appId}/team`,
+        action: `/account/${accountId}/settings/members`,
       },
     )
   }
 
   const changeMemberRole = (userId: string, role: RoleName, email: string) => {
     trackEvent({
-      category: AnalyticCategories.app,
-      action: AnalyticActions.app_team_change_role,
-      label: appId,
+      category: AnalyticCategories.account,
+      action: AnalyticActions.account_team_change_role,
+      label: accountId,
     })
     fetcher.submit(
       {
@@ -48,28 +49,30 @@ const useTeamModals = ({ app }: useTeamModalsProps) => {
         user_id: userId,
         user_role: role,
         user_email: email,
+        account_name: account.name as string,
       },
       {
         method: "POST",
-        action: `/account/${accountId}/${appId}/team`,
+        action: `/account/${accountId}/settings/members`,
       },
     )
   }
 
   const resendEmail = (email: string) => {
     trackEvent({
-      category: AnalyticCategories.app,
-      action: AnalyticActions.app_team_resend,
-      label: appId,
+      category: AnalyticCategories.account,
+      action: AnalyticActions.account_team_resend,
+      label: accountId,
     })
     fetcher.submit(
       {
         user_resend: "true",
         user_email: email,
+        account_name: account.name as string,
       },
       {
         method: "POST",
-        action: `/account/${accountId}/${appId}/team`,
+        action: `/account/${accountId}/settings/members`,
       },
     )
   }
@@ -97,11 +100,8 @@ const useTeamModals = ({ app }: useTeamModalsProps) => {
       title: <Text fw={600}>Change user role?</Text>,
       children: (
         <Text>
-          Are you sure you want to change {email}'s role to{" "}
-          <Text display="inline" tt="capitalize">
-            {role.toLowerCase()}
-          </Text>
-          ?
+          Are you sure you want to change {email}'s role to {role.charAt(0)}
+          {role.slice(1).toLowerCase()}
         </Text>
       ),
       labels: { cancel: "Cancel", confirm: "Change" },

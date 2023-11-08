@@ -8,35 +8,35 @@ import {
 } from "@pokt-foundation/pocket-blocks"
 import { DataTable } from "~/components/DataTable"
 import Identicon from "~/components/Identicon"
-import { PortalApp, RoleName, User } from "~/models/portal/sdk"
-import TeamMemberAction from "~/routes/account.$accountId.$appId.team/components/TeamMemberAction"
-import useTeamModals from "~/routes/account.$accountId.$appId.team/hooks/useTeamModals"
+import { Account, RoleName, User } from "~/models/portal/sdk"
+import TeamMemberAction from "~/routes/account.$accountId.settings.members/components/TeamMemberAction"
+import useTeamModals from "~/routes/account.$accountId.settings.members/hooks/useTeamModals"
 
 type TeamMembersTableProps = {
-  app: PortalApp
+  account: Account
   userRole: RoleName | null
   user?: User
 }
 
-const TeamMembersTable = ({ app, userRole, user }: TeamMembersTableProps) => {
-  const { openChangeRoleModal } = useTeamModals({ app })
+const TeamMembersTable = ({ account, userRole, user }: TeamMembersTableProps) => {
+  const { openChangeRoleModal } = useTeamModals({ account })
 
-  const teamData = app.portalAppUsers.sort(
+  const teamData = account.users.sort(
     (a, b) => Number(b.roleName === "OWNER") - Number(a.roleName === "OWNER"),
   )
 
   return (
     <DataTable
       columns={["Member", "Roles", "Status", ""]}
-      data={teamData.map(({ email, roleName, accepted, portalAppUserID }, index) => {
+      data={teamData.map(({ email, roleName, accepted, id }, index) => {
         return {
           member: {
             element: (
               <Group>
                 <Avatar radius="xl">
                   <Identicon
-                    alt={`${portalAppUserID} profile picture`}
-                    seed={portalAppUserID}
+                    alt={`${id} profile picture`}
+                    seed={id}
                     size="md"
                     type="user"
                   />
@@ -66,7 +66,7 @@ const TeamMembersTable = ({ app, userRole, user }: TeamMembersTableProps) => {
                     disabled={!accepted}
                     onChange={(value) =>
                       value !== roleName &&
-                      openChangeRoleModal(email, portalAppUserID, value as RoleName)
+                      openChangeRoleModal(email, id, value as RoleName)
                     }
                   />
                 </Flex>
@@ -90,7 +90,7 @@ const TeamMembersTable = ({ app, userRole, user }: TeamMembersTableProps) => {
           action: {
             element: roleName !== RoleName.Owner && (
               <TeamMemberAction
-                app={app}
+                account={account}
                 status={accepted}
                 teamMember={teamData[index]}
                 user={user}

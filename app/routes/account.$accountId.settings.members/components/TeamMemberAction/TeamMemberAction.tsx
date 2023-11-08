@@ -1,28 +1,28 @@
 import { ActionIcon, Flex, Menu, Text } from "@pokt-foundation/pocket-blocks"
 import React, { useMemo } from "react"
 import { LuMinusCircle, LuMoreHorizontal, LuSend } from "react-icons/lu"
-import { PortalApp, PortalAppUser, RoleName, User } from "~/models/portal/sdk"
-import useTeamModals from "~/routes/account.$accountId.$appId.team/hooks/useTeamModals"
+import { Account, RoleName, User, AccountUser } from "~/models/portal/sdk"
+import useTeamModals from "~/routes/account.$accountId.settings.members/hooks/useTeamModals"
 import useCommonStyles from "~/styles/commonStyles"
 
 type TeamMemberActionProps = {
-  app: PortalApp
+  account: Account
   userRole: RoleName | null
   user?: User
-  teamMember: PortalAppUser
+  teamMember: AccountUser
   status: Boolean
 }
 
 const TeamMemberAction = ({
   user,
-  app,
+  account,
   userRole,
   teamMember,
   status,
 }: TeamMemberActionProps) => {
   const { classes: commonClasses } = useCommonStyles()
   const { openRemoveUserModal, openLeaveTeamModal, openResendEmailModal } = useTeamModals(
-    { app },
+    { account },
   )
 
   const menuItems = useMemo(() => {
@@ -30,14 +30,13 @@ const TeamMemberAction = ({
 
     switch (userRole) {
       case RoleName.Owner:
-        if (teamMember.portalAppUserID === user?.portalUserID) {
-          // OWNER --CANNOT-- LEAVE THEIR OWN APP
+        if (teamMember.id === user?.portalUserID) {
+          // OWNER --CANNOT-- LEAVE THEIR OWN ACCOUNT
         } else {
           // OWNER --CAN--REMOVE OTHER USERS
           items.push({
             icon: <LuMinusCircle size={18} />,
-            onClick: () =>
-              openRemoveUserModal(teamMember.email, teamMember.portalAppUserID),
+            onClick: () => openRemoveUserModal(teamMember.email, teamMember.id),
             label: "Remove",
           })
           if (!status) {
@@ -51,20 +50,18 @@ const TeamMemberAction = ({
         }
         break
       case RoleName.Admin:
-        if (teamMember.portalAppUserID === user?.portalUserID) {
+        if (teamMember.id === user?.portalUserID) {
           // ADMIN --CAN--REMOVE THEMSELVES
           items.push({
             icon: <LuMinusCircle size={18} />,
-            onClick: () =>
-              openRemoveUserModal(teamMember.email, teamMember.portalAppUserID),
-            label: "Remove",
+            onClick: () => openRemoveUserModal(teamMember.email, teamMember.id),
+            label: "Leave",
           })
         } else {
           // ADMIN --CAN--REMOVE OTHER USERS
           items.push({
             icon: <LuMinusCircle size={18} />,
-            onClick: () =>
-              openRemoveUserModal(teamMember.email, teamMember.portalAppUserID),
+            onClick: () => openRemoveUserModal(teamMember.email, teamMember.id),
             label: "Remove",
           })
           if (!status) {
@@ -79,12 +76,11 @@ const TeamMemberAction = ({
         break
       case RoleName.Member:
       default:
-        if (teamMember.portalAppUserID === user?.portalUserID) {
-          // MEMEBER --CAN-- LEAVE APP THEMSELVES
+        if (teamMember.id === user?.portalUserID) {
+          // MEMEBER --CAN-- LEAVE ACCOUNT THEMSELVES
           items.push({
             icon: <LuMinusCircle size={18} />,
-            onClick: () =>
-              openLeaveTeamModal(teamMember.email, teamMember.portalAppUserID),
+            onClick: () => openLeaveTeamModal(teamMember.email, teamMember.id),
             label: "Leave",
           })
         } else {
@@ -96,7 +92,7 @@ const TeamMemberAction = ({
     return items
   }, [
     userRole,
-    teamMember.portalAppUserID,
+    teamMember.id,
     teamMember.email,
     user?.portalUserID,
     status,

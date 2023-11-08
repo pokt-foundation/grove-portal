@@ -29,10 +29,6 @@ export const meta: MetaFunction = () => {
   }
 }
 
-// type LoaderData = {
-//   price: Stripe.Price | void
-// }
-
 export const loader: LoaderFunction = async ({ request, params }) => {
   const user = await requireUser(request)
   const portal = initPortalClient({ token: user.accessToken })
@@ -126,7 +122,6 @@ export const action: ActionFunction = async ({ request, params }) => {
         input: {
           name,
           accountID: accountId,
-          planType: subscription as PayPlanType,
           description: typeof description === "string" ? description : undefined,
           appEmoji: typeof appmoji === "string" ? appmoji : DEFAULT_APPMOJI,
         },

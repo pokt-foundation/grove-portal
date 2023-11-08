@@ -39,18 +39,18 @@ export const sendEmail = async (
   })
 }
 
-export const sendTeamInviteEmail = async (email: string, app: string) => {
+export const sendTeamInviteEmail = async (email: string, account: string) => {
   return await sendEmail(
     email,
     "You're invited to Grove Portal",
     EmailTemplateID.TeamInvite,
     {
-      app: app,
+      app: account,
     },
   )
 }
-export const sendTeamUserRemovedEmail = async (email: string, app: string) => {
+export const sendTeamUserRemovedEmail = async (email: string, account: string) => {
   return await sendEmail(email, "Team access removed", EmailTemplateID.TeamUserRemoved, {
-    app: app,
+    app: account,
   })
 }

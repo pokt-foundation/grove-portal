@@ -1,4 +1,4 @@
-import { Account, User } from "~/models/portal/sdk"
+import { Account, RoleName, User } from "~/models/portal/sdk"
 
 const isUserAccountOwner = ({
   accounts,
@@ -11,8 +11,8 @@ const isUserAccountOwner = ({
 }) =>
   accounts
     .find(({ id }) => accountId === id)
-    ?.accountUsers.some(
-      (u) => u.accountUserID === user.portalUserID && u.owner,
+    ?.users.some(
+      (u) => u.id === user.portalUserID && u.roleName === RoleName.Owner,
     ) as boolean
 
 export default isUserAccountOwner

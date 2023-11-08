@@ -17,6 +17,8 @@ type RootAppShellProps = {
   accounts: Account[]
 }
 
+export const PENDING_INVITES_NOTIFICATION_ID = "pending-account-invites"
+
 export const RootAppShell = ({
   user,
   apps,
@@ -52,13 +54,12 @@ export const RootAppShell = ({
   )
 
   useEffect(() => {
-    if (hasPendingInvites && pathname !== "/user/invited-apps") {
+    if (hasPendingInvites && pathname !== "/user/accounts") {
       showNotification({
+        id: PENDING_INVITES_NOTIFICATION_ID,
         icon: <LuShapes size={18} />,
         autoClose: 8000,
-        message: (
-          <Link to="/user/invited-apps">You have pending application invitations.</Link>
-        ),
+        message: <Link to="/user/accounts">You have pending account invitations.</Link>,
       })
     }
     // We want the notification to be shown only once

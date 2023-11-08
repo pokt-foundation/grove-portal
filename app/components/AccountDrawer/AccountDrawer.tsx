@@ -12,7 +12,6 @@ import { Link, LinkProps, useFetcher } from "@remix-run/react"
 import React, { useState } from "react"
 import {
   LuBook,
-  LuDiamond,
   LuLeaf,
   LuLifeBuoy,
   LuSmile,
@@ -138,12 +137,6 @@ const AccountDrawer = ({ user, hasPendingInvites }: AccountDrawerProps) => {
             setIsDrawerOpen={setIsDrawerOpen}
             to="/user/profile"
           />
-          <DrawerLink
-            icon={<LuTowerControl size={18} />}
-            label="My Accounts"
-            setIsDrawerOpen={setIsDrawerOpen}
-            to={`/user/accounts`}
-          />
           <Indicator
             inline
             disabled={!hasPendingInvites}
@@ -154,10 +147,10 @@ const AccountDrawer = ({ user, hasPendingInvites }: AccountDrawerProps) => {
             size={16}
           >
             <DrawerLink
-              icon={<LuDiamond size={18} />}
-              label="Invited Apps"
+              icon={<LuTowerControl size={18} />}
+              label="My Accounts"
               setIsDrawerOpen={setIsDrawerOpen}
-              to={`/user/invited-apps`}
+              to={`/user/accounts`}
             />
           </Indicator>
           <Divider my={8} />

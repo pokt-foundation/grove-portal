@@ -1,18 +1,17 @@
 import { Text } from "@pokt-foundation/pocket-blocks"
 import { useFetcher } from "@remix-run/react"
 import useModals from "~/hooks/useModals"
-import { PortalApp } from "~/models/portal/sdk"
+import { Account } from "~/models/portal/sdk"
 import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
 
 const useSubscriptionModals = () => {
   const fetcher = useFetcher()
   const { openConfirmationModal } = useModals()
 
-  const stopSubscription = (app: PortalApp) => {
+  const stopSubscription = (account: Account) => {
     fetcher.submit(
       {
-        "app-id": app.id,
-        "app-accountId": app.accountID,
+        "account-id": account.id,
       },
       {
         method: "POST",
@@ -21,11 +20,10 @@ const useSubscriptionModals = () => {
     )
   }
 
-  const renewSubscription = (app: PortalApp) => {
+  const renewSubscription = (account: Account) => {
     fetcher.submit(
       {
-        "app-id": app.id,
-        "app-accountId": app.accountID,
+        "account-id": account.id,
         "subscription-renew": "true",
       },
       {
@@ -35,7 +33,7 @@ const useSubscriptionModals = () => {
     )
   }
 
-  const openStopSubscriptionModal = (app: PortalApp) =>
+  const openStopSubscriptionModal = (account: Account) =>
     openConfirmationModal({
       title: <Text fw={600}>Stop Subscription</Text>,
       children: (
@@ -48,16 +46,16 @@ const useSubscriptionModals = () => {
       labels: { cancel: "Cancel", confirm: "Stop subscription" },
       confirmProps: { color: "red" },
       onConfirm: () => {
-        stopSubscription(app)
+        stopSubscription(account)
         trackEvent({
-          category: AnalyticCategories.app,
-          action: AnalyticActions.app_subscription_stop,
-          label: app.id,
+          category: AnalyticCategories.account,
+          action: AnalyticActions.account_subscription_stop,
+          label: account.id,
         })
       },
     })
 
-  const openRenewSubscriptionModal = (app: PortalApp) =>
+  const openRenewSubscriptionModal = (account: Account) =>
     openConfirmationModal({
       title: <Text fw={600}>Renew Subscription</Text>,
       children: (
@@ -69,11 +67,11 @@ const useSubscriptionModals = () => {
       ),
       labels: { cancel: "Cancel", confirm: "Renew subscription" },
       onConfirm: () => {
-        renewSubscription(app)
+        renewSubscription(account)
         trackEvent({
-          category: AnalyticCategories.app,
-          action: AnalyticActions.app_subscription_renew,
-          label: app.id,
+          category: AnalyticCategories.account,
+          action: AnalyticActions.account_subscription_renew,
+          label: account.id,
         })
       },
     })

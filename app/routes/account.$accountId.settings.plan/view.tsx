@@ -6,31 +6,31 @@ import {
   SimpleGrid,
 } from "@pokt-foundation/pocket-blocks"
 import { LuAlertCircle, LuRepeat } from "react-icons/lu"
-import useSubscriptionModals from "../account.$accountId.$appId/hooks/useSubscriptionModals"
-import AppEnterpriseOverviewCard from "./components/AppEnterpriseOverviewCard"
-import AppPlanLatestInvoiceCard from "./components/AppPlanLatestInvoiceCard"
-import AppPlanOverviewCard from "./components/AppPlanOverviewCard"
-import FreeAppPlan from "./components/FreeAppPlan"
-import { AppPlanLoaderData } from "./route"
+import AutoScalePlanLatestInvoiceCard from "./components/AutoScalePlanLatestInvoiceCard"
+import AutoScalePlanOverviewCard from "./components/AutoScalePlanOverviewCard"
+import EnterpriseAccountOverviewCard from "./components/EnterpriseAccountOverviewCard"
+import StarterAccountPlan from "./components/StarterAccountPlan"
+import { AccountPlanLoaderData } from "./route"
 import { PayPlanType, RoleName } from "~/models/portal/sdk"
+import useSubscriptionModals from "~/routes/account.$accountId.settings.plan/hooks/useSubscriptionModals"
 
-type PlanViewProps = AppPlanLoaderData & { userRole: RoleName }
+export type AccountPlanViewProps = AccountPlanLoaderData & { userRole: RoleName }
 
-export const PlanView = ({
-  app,
+export const AccountPlanView = ({
+  account,
   latestInvoice,
-  latestInvoiceRelays,
+  accountAppsRelays,
   subscription,
   usageRecords,
   userRole,
-}: PlanViewProps) => {
+}: AccountPlanViewProps) => {
   const { openRenewSubscriptionModal } = useSubscriptionModals()
 
   return (
     <Box py={20}>
-      {app.legacyFields.planType === PayPlanType.FreetierV0 && (
+      {account.planType === PayPlanType.FreetierV0 && (
         <>
-          {app.legacyFields.stripeSubscriptionID && (
+          {account.integrations?.stripeSubscriptionID && (
             <Alert
               color="yellow"
               icon={<LuAlertCircle size={18} />}
@@ -52,30 +52,30 @@ export const PlanView = ({
                 rightIcon={<LuRepeat size={18} />}
                 size="xs"
                 variant="outline"
-                onClick={() => openRenewSubscriptionModal(app)}
+                onClick={() => openRenewSubscriptionModal(account)}
               >
                 Renew subscription
               </Button>
             </Alert>
           )}
-          <FreeAppPlan app={app} userRole={userRole} />
+          <StarterAccountPlan account={account} userRole={userRole} />
         </>
       )}
 
-      {app.legacyFields.planType === PayPlanType.PayAsYouGoV0 && (
+      {account.planType === PayPlanType.PayAsYouGoV0 && (
         <SimpleGrid breakpoints={[{ maxWidth: "md", cols: 1 }]} cols={2}>
           {subscription && usageRecords && (
-            <AppPlanOverviewCard
-              app={app}
+            <AutoScalePlanOverviewCard
+              account={account}
               subscription={subscription}
               usageRecords={usageRecords}
               userRole={userRole}
             />
           )}
-          {latestInvoice && latestInvoiceRelays && usageRecords && (
-            <AppPlanLatestInvoiceCard
+          {latestInvoice && usageRecords && (
+            <AutoScalePlanLatestInvoiceCard
+              accountAppsRelays={accountAppsRelays}
               invoice={latestInvoice}
-              relaysLatestInvoice={latestInvoiceRelays}
               usageRecords={usageRecords}
               userRole={userRole}
             />
@@ -83,11 +83,11 @@ export const PlanView = ({
         </SimpleGrid>
       )}
 
-      {app.legacyFields.planType === PayPlanType.Enterprise && (
-        <AppEnterpriseOverviewCard app={app} />
+      {account.planType === PayPlanType.Enterprise && (
+        <EnterpriseAccountOverviewCard account={account} />
       )}
     </Box>
   )
 }
 
-export default PlanView
+export default AccountPlanView

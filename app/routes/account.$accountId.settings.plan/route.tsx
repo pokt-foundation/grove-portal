@@ -1,10 +1,10 @@
 import { json, LoaderFunction, MetaFunction, redirect } from "@remix-run/node"
 import { useLoaderData, useOutletContext } from "@remix-run/react"
 import invariant from "tiny-invariant"
-import PlanView from "./view"
+import { AccountPlanView } from "./view"
 import ErrorView from "~/components/ErrorView"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { PortalApp, User } from "~/models/portal/sdk"
+import { Account, PortalApp, User } from "~/models/portal/sdk"
 import { getRelays, RelayMetric } from "~/models/relaymeter/relaymeter.server"
 import { Stripe, stripe } from "~/models/stripe/stripe.server"
 import { AppIdOutletContext } from "~/routes/account.$accountId.$appId/route"
@@ -17,53 +17,53 @@ import { requireUser } from "~/utils/user.server"
 
 export const meta: MetaFunction = () => {
   return {
-    title: `Application Plan ${seo_title_append}`,
+    title: `Account Plan ${seo_title_append}`,
   }
 }
 
-export type AppPlanLoaderData = {
-  app: PortalApp
+export type AccountAppRelays = RelayMetric & Pick<PortalApp, "name" | "appEmoji">
+
+export type AccountPlanLoaderData = {
+  account: Account
   subscription?: Stripe.Subscription
   usageRecords?: Stripe.ApiList<Stripe.UsageRecordSummary>
   latestInvoice?: Stripe.Invoice
-  latestInvoiceRelays?: RelayMetric
+  accountAppsRelays: AccountAppRelays[]
   user: User
 }
 
 export const loader: LoaderFunction = async ({ request, params }) => {
-  const { appId, accountId } = params
-  invariant(appId, "app id not found")
+  const { accountId } = params
+
+  invariant(accountId, "account id not found")
 
   if (getRequiredServerEnvVar("FLAG_STRIPE_PAYMENT") === "false") {
-    return redirect(`/account/${accountId}/${params.appId}`)
+    return redirect(`/account/settings/${accountId}`)
   }
 
   const user = await requireUser(request)
   const portal = initPortalClient({ token: user.accessToken })
+  const account = await portal.getUserAccount({ accountID: accountId, accepted: true })
+
+  if (!account.getUserAccount) {
+    throw new Error(
+      `Account ${params.accountId} not found for user ${user.user.portalUserID}`,
+    )
+  }
 
   try {
-    const getUserPortalAppResponse = await portal.getUserPortalApp({
-      portalAppID: appId,
-    })
-    if (!getUserPortalAppResponse.getUserPortalApp) {
-      throw new Error(
-        `Account ${params.appId} not found for user ${user.user.portalUserID}`,
-      )
-    }
-    const app = getUserPortalAppResponse.getUserPortalApp
-
     let subscription
     let usageRecords
     let latestInvoice
-    let latestInvoiceRelays
+    const accountAppsRelays = []
 
-    if (app.legacyFields.stripeSubscriptionID) {
+    if (account.getUserAccount.integrations?.stripeSubscriptionID) {
       subscription = await stripe.subscriptions.retrieve(
-        app.legacyFields.stripeSubscriptionID,
+        account.getUserAccount.integrations.stripeSubscriptionID,
       )
 
       if (!subscription) {
-        throw new Error(`Subscription not found for app ${app.id}`)
+        throw new Error(`Subscription not found for account`)
       }
 
       usageRecords = await stripe.subscriptionItems.listUsageRecordSummaries(
@@ -86,32 +86,46 @@ export const loader: LoaderFunction = async ({ request, params }) => {
         const invoicePeriodEnd = dayjs
           .unix(Number(latestInvoice.period_start))
           .toISOString()
-        latestInvoiceRelays = await getRelays(
-          "endpoints",
-          invoicePeriodStart,
-          invoicePeriodEnd,
-          getUserPortalAppResponse.getUserPortalApp.id,
-        )
 
-        if (!latestInvoiceRelays) {
-          throw new Error(`Relays not found for lastest invoice period on app ${app.id}`)
+        const accountApps = account.getUserAccount.portalApps
+        if (accountApps && accountApps.length > 0) {
+          for (const app of accountApps) {
+            const latestInvoiceRelays = await getRelays(
+              "apps",
+              invoicePeriodStart,
+              invoicePeriodEnd,
+              app?.id,
+            )
+
+            if (!latestInvoiceRelays) {
+              throw new Error(
+                `Relays not found for latest invoice period on account for app ${app?.id}`,
+              )
+            }
+
+            accountAppsRelays.push({
+              ...latestInvoiceRelays,
+              name: app?.name,
+              appEmoji: app?.appEmoji,
+            } as AccountAppRelays)
+          }
         }
       }
     }
 
-    return json<DataStruct<AppPlanLoaderData>>({
+    return json<DataStruct<AccountPlanLoaderData>>({
       data: {
-        app: app as PortalApp,
+        account: account.getUserAccount as Account,
         subscription,
         usageRecords,
         latestInvoice,
-        latestInvoiceRelays,
+        accountAppsRelays,
         user: user.user,
       },
       error: false,
     })
   } catch (error) {
-    return json<DataStruct<AppPlanLoaderData>>({
+    return json<DataStruct<AccountPlanLoaderData>>({
       data: null,
       error: true,
       message: getErrorMessage(error),
@@ -119,15 +133,15 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   }
 }
 
-export const AppPlanDetails = () => {
-  const { data, error, message } = useLoaderData() as DataStruct<AppPlanLoaderData>
+export const AccountPlanDetails = () => {
+  const { data, error, message } = useLoaderData() as DataStruct<AccountPlanLoaderData>
   const { userRole } = useOutletContext<AppIdOutletContext>()
 
   if (error) {
     return <ErrorView message={message} />
   }
 
-  return <PlanView {...data} userRole={userRole} />
+  return <AccountPlanView {...data} userRole={userRole} />
 }
 
-export default AppPlanDetails
+export default AccountPlanDetails

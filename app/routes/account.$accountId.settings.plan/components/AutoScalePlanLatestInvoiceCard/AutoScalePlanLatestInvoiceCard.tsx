@@ -1,28 +1,28 @@
 import { Divider } from "@mantine/core"
 import { Button, Group, Text, Stack } from "@pokt-foundation/pocket-blocks"
+import { useParams } from "@remix-run/react"
 import React from "react"
 import { LuArrowUpRight, LuDownload } from "react-icons/lu"
 import { TitledCard } from "~/components/TitledCard"
-import { app } from "~/models/portal/portal.data"
-import { type RoleName } from "~/models/portal/sdk"
-import { RelayMetric } from "~/models/relaymeter/relaymeter.server"
 import { Stripe } from "~/models/stripe/stripe.server"
+import { AccountPlanViewProps } from "~/routes/account.$accountId.settings.plan/view"
 import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
 import { dayjs } from "~/utils/dayjs"
 
-interface PlanLatestInvoiceCardProps {
+type AutoScalePlanLatestInvoiceCardProps = Required<
+  Pick<AccountPlanViewProps, "accountAppsRelays" | "usageRecords" | "userRole">
+> & {
   invoice: Stripe.Invoice
-  usageRecords: Stripe.ApiList<Stripe.UsageRecordSummary>
-  relaysLatestInvoice: RelayMetric
-  userRole: RoleName
 }
 
-export default function AppPlanLatestInvoiceCard({
+export default function AutoScalePlanLatestInvoiceCard({
   invoice,
   usageRecords,
-  relaysLatestInvoice,
+  accountAppsRelays,
   userRole,
-}: PlanLatestInvoiceCardProps) {
+}: AutoScalePlanLatestInvoiceCardProps) {
+  const { accountId } = useParams()
+
   const cardItems = [
     {
       label: "Invoice",
@@ -36,10 +36,10 @@ export default function AppPlanLatestInvoiceCard({
       label: "Relays Billed",
       value: usageRecords.data[0].total_usage,
     },
-    {
-      label: "Relays Used",
-      value: relaysLatestInvoice.Count.Total,
-    },
+    // {
+    //   label: "Relays Used",
+    //   value: relaysLatestInvoice.Count.Total,
+    // },
     {
       label: "Start period",
       value: dayjs.unix(Number(invoice.period_start)).format("DD MMMM YYYY"),
@@ -69,9 +69,9 @@ export default function AppPlanLatestInvoiceCard({
               rightIcon={<LuDownload size={18} />}
               onClick={() => {
                 trackEvent({
-                  category: AnalyticCategories.app,
-                  action: AnalyticActions.app_plan_invoice_download,
-                  label: app.id,
+                  category: AnalyticCategories.account,
+                  action: AnalyticActions.account_plan_invoice_download,
+                  label: accountId,
                 })
               }}
             >
@@ -85,9 +85,9 @@ export default function AppPlanLatestInvoiceCard({
               target="_blank"
               onClick={() => {
                 trackEvent({
-                  category: AnalyticCategories.app,
-                  action: AnalyticActions.app_plan_invoice_view,
-                  label: app.id,
+                  category: AnalyticCategories.account,
+                  action: AnalyticActions.account_plan_invoice_view,
+                  label: accountId,
                 })
               }}
             >

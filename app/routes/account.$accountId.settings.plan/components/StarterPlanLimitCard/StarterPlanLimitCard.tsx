@@ -2,23 +2,23 @@ import { Divider } from "@mantine/core"
 import { Group, Text, Stack } from "@pokt-foundation/pocket-blocks"
 import React from "react"
 import { TitledCard } from "~/components/TitledCard"
-import { PortalApp } from "~/models/portal/sdk"
+import { Account } from "~/models/portal/sdk"
 import { getPlanName } from "~/utils/planUtils"
 
-type PlanLimitOverviewCardProps = {
-  app: PortalApp
+type StarterPlanLimitCardProps = {
+  account: Account
 }
 
-export const PlanLimitOverviewCard = ({ app }: PlanLimitOverviewCardProps) => {
+export const StarterPlanLimitCard = ({ account }: StarterPlanLimitCardProps) => {
   const cardItems = [
     {
       label: "Plan Type",
-      value: getPlanName(app.legacyFields.planType),
+      value: getPlanName(account.planType),
     },
-    {
-      label: "Daily Limit",
-      value: app.legacyFields.dailyLimit,
-    },
+    // {
+    //   label: "Daily Limit",
+    //   value: account.integrations.dailyLimit,
+    // },
   ]
 
   return (
@@ -37,4 +37,4 @@ export const PlanLimitOverviewCard = ({ app }: PlanLimitOverviewCardProps) => {
   )
 }
 
-export default PlanLimitOverviewCard
+export default StarterPlanLimitCard

@@ -4,25 +4,25 @@ import { Link } from "@remix-run/react"
 import React from "react"
 import { LuArrowUpRight } from "react-icons/lu"
 import { TitledCard } from "~/components/TitledCard"
-import { PortalApp } from "~/models/portal/sdk"
+import { Account } from "~/models/portal/sdk"
 import { getPlanName } from "~/utils/planUtils"
 import { DISCORD_PATH } from "~/utils/utils"
 
-interface AppEnterpriseOverviewCardProps {
-  app: PortalApp
+interface EnterpriseAccountOverviewCardProps {
+  account: Account
 }
 
-export default function AppEnterpriseOverviewCard({
-  app,
-}: AppEnterpriseOverviewCardProps) {
+export default function EnterpriseAccountOverviewCard({
+  account,
+}: EnterpriseAccountOverviewCardProps) {
   const cardItems = [
     {
       label: "Plan Type",
-      value: getPlanName(app.legacyFields.planType),
+      value: getPlanName(account.planType),
     },
     {
       label: "Custom Limit",
-      value: app.legacyFields.customLimit,
+      value: account.enterpriseLimit,
     },
   ]
 

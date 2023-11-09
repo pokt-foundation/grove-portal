@@ -2,30 +2,30 @@ import { SimpleGrid, Stack, Text, Title } from "@pokt-foundation/pocket-blocks"
 import { useNavigate } from "@remix-run/react"
 import React from "react"
 import { AccountPlan } from "~/components/AccountPlan"
-import { PayPlanType, PortalApp, RoleName } from "~/models/portal/sdk"
-import { PlanLimitOverviewCard } from "~/routes/account.$accountId.$appId.plan/components/PlanLimitOverviewCard"
+import { Account, PayPlanType, RoleName } from "~/models/portal/sdk"
+import StarterPlanLimitCard from "~/routes/account.$accountId.settings.plan/components/StarterPlanLimitCard"
 import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
 import { getPlanName } from "~/utils/planUtils"
 
-type FreeAppPlanProps = {
-  app: PortalApp
+type StarterAccountPlanProps = {
+  account: Account
   userRole: RoleName
 }
 
-const FreeAppPlan = ({ app, userRole }: FreeAppPlanProps) => {
+const StarterAccountPlan = ({ account, userRole }: StarterAccountPlanProps) => {
   const navigate = useNavigate()
 
   return userRole === "MEMBER" ? (
     <Stack mt={"xl"}>
-      <PlanLimitOverviewCard app={app} />
+      <StarterPlanLimitCard account={account} />
     </Stack>
   ) : (
     <Stack align="center" mt={"xl"}>
       <Stack spacing="xs" ta="center">
         <Title order={3}>Upgrade your plan</Title>
         <Text>
-          Your current plan is {getPlanName(app.legacyFields.planType)}. <br /> Upgrade
-          now to Auto-Scale and pay as you go.
+          Your current plan is {getPlanName(account.planType)}. <br /> Upgrade now to
+          Auto-Scale and pay as you go.
         </Text>
       </Stack>
       <SimpleGrid breakpoints={[{ maxWidth: "lg", cols: 1 }]} cols={3}>
@@ -34,12 +34,12 @@ const FreeAppPlan = ({ app, userRole }: FreeAppPlanProps) => {
           type={PayPlanType.PayAsYouGoV0}
           onContinue={() => {
             trackEvent({
-              category: AnalyticCategories.app,
-              action: AnalyticActions.app_plan_upgrade,
-              label: app.id,
+              category: AnalyticCategories.account,
+              action: AnalyticActions.account_plan_upgrade,
+              label: account.id,
             })
             navigate(
-              `/api/stripe/checkout-session?app-id=${app.id}&app-accountId=${app.accountID}&app-name=${app.name}`,
+              `/api/stripe/checkout-session?account-id=${account.id}&account-accountId=${account.id}&account-name=${account.name}`,
             )
           }}
         />
@@ -47,9 +47,9 @@ const FreeAppPlan = ({ app, userRole }: FreeAppPlanProps) => {
           type={PayPlanType.Enterprise}
           onContinue={() => {
             trackEvent({
-              category: AnalyticCategories.app,
-              action: AnalyticActions.app_plan_enterprise,
-              label: app.id,
+              category: AnalyticCategories.account,
+              action: AnalyticActions.account_plan_enterprise,
+              label: account.id,
             })
             window.open("https://www.grove.city/enterprise", "_blank", "noreferrer")
           }}
@@ -59,4 +59,4 @@ const FreeAppPlan = ({ app, userRole }: FreeAppPlanProps) => {
   )
 }
 
-export default FreeAppPlan
+export default StarterAccountPlan

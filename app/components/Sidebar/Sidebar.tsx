@@ -37,7 +37,7 @@ const getStaticRoutes = (activeAccount: Account | undefined): SidebarNavRoute[] 
     ...(isStarterAccount
       ? [
           {
-            to: `/account/${activeAccount?.id}/settings/plan`,
+            to: `/api/stripe/checkout-session?account-id=${activeAccount.id}`,
             label: "Upgrade to Auto-Scale",
             icon: LuArrowUpCircle,
             end: true,
@@ -55,7 +55,6 @@ const getStaticRoutes = (activeAccount: Account | undefined): SidebarNavRoute[] 
         to: `/account/${activeAccount?.id}/settings`,
         label: "Settings and members",
         icon: LuSettings,
-        end: true,
       },
       {
         to: DOCS_PATH,

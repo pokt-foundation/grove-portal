@@ -102,8 +102,8 @@ mutation updateUserPortalApp($input: UpdatePortalApp!) {
   }
 }
 
-mutation adminUpdatePortalApp($input: AdminUpdatePortalApp!) {
-  adminUpdatePortalApp(input: $input) {
+mutation adminUpdateAccount($input: AdminUpdateAccount!) {
+  adminUpdateAccount(input: $input) {
     id
   }
 }

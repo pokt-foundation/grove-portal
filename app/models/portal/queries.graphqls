@@ -207,12 +207,8 @@ query getUserPortalApp($portalAppID: ID!, $accountID: ID!) {
   }
 }
 
-query getUserPortalApps(
-  $sortOrder: SortOrder
-) {
-  getUserPortalApps(
-    sortOrder: $sortOrder
-  ) {
+query getUserPortalApps($sortOrder: SortOrder) {
+  getUserPortalApps(sortOrder: $sortOrder) {
     id
     name
     accountID

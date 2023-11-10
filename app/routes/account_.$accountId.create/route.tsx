@@ -7,7 +7,7 @@ import {
   redirect,
 } from "@remix-run/node"
 import { useFetcher } from "@remix-run/react"
-import { useState } from "react"
+import React, { useState } from "react"
 import invariant from "tiny-invariant"
 import AccountPlansContainer from "./components/AccountPlansContainer"
 import AppForm from "./components/AppForm"
@@ -103,15 +103,16 @@ export const action: ActionFunction = async ({ request, params }) => {
   const user = await requireUser(request)
   const portal = initPortalClient({ token: user.accessToken })
   const formData = await request.formData()
-  const subscription = formData.get("app-subscription")
+  const subscription = formData.get("account-subscription")
   const name = formData.get("app-name")
+  const referral = formData.get("referral-id")
   const description = formData.get("app-description")
   const appmoji = formData.get("app-emoji")
   const { accountId } = params
 
   invariant(
     subscription && typeof subscription === "string",
-    "app subscription not found",
+    "account subscription not found",
   )
   invariant(name && typeof name === "string", "app name not found")
   invariant(accountId && typeof accountId === "string", "accountId not found")
@@ -138,12 +139,9 @@ export const action: ActionFunction = async ({ request, params }) => {
     const newApp = createUserPortalAppResponse.createUserPortalApp
 
     if (subscription === PayPlanType.PayAsYouGoV0) {
-      formData.append("app-id", newApp.id)
-      formData.append("app-accountId", accountId)
-
-      // setting to any because of a TS known error: https://github.com/microsoft/TypeScript/issues/19806
-      const params = new URLSearchParams(formData as any).toString()
-      return redirect(`/api/stripe/checkout-session?${params}`)
+      return redirect(
+        `/api/stripe/checkout-session?account-id=${accountId}&app-id=${newApp.id}&referral-id=${referral}`,
+      )
     }
 
     return redirect(`/account/${accountId}/${newApp.id}`)
@@ -166,7 +164,7 @@ export default function CreateApp() {
       {appFromData ? (
         <AccountPlansContainer
           onPlanSelected={(plan: PayPlanType) => {
-            appFromData?.append("app-subscription", plan)
+            appFromData?.append("account-subscription", plan)
             fetcher.submit(appFromData, {
               method: "POST",
             })

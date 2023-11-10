@@ -38,9 +38,7 @@ const StarterAccountPlan = ({ account, userRole }: StarterAccountPlanProps) => {
               action: AnalyticActions.account_plan_upgrade,
               label: account.id,
             })
-            navigate(
-              `/api/stripe/checkout-session?account-id=${account.id}&account-accountId=${account.id}&account-name=${account.name}`,
-            )
+            navigate(`/api/stripe/checkout-session?account-id=${account.id}`)
           }}
         />
         <AccountPlan

@@ -1,11 +1,14 @@
-import { Divider } from "@mantine/core"
-import { Button, Group, Text, Stack } from "@pokt-foundation/pocket-blocks"
+import { Accordion, Divider } from "@mantine/core"
+import { Button, Grid, Group, Stack, Text } from "@pokt-foundation/pocket-blocks"
 import { useParams } from "@remix-run/react"
+import { Emoji } from "emoji-picker-react"
 import React from "react"
 import { LuArrowUpRight, LuDownload } from "react-icons/lu"
 import { TitledCard } from "~/components/TitledCard"
+import { RoleName } from "~/models/portal/sdk"
 import { Stripe } from "~/models/stripe/stripe.server"
 import { AccountPlanViewProps } from "~/routes/account.$accountId.settings.plan/view"
+import useCommonStyles from "~/styles/commonStyles"
 import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
 import { dayjs } from "~/utils/dayjs"
 
@@ -22,78 +25,119 @@ export default function AutoScalePlanLatestInvoiceCard({
   userRole,
 }: AutoScalePlanLatestInvoiceCardProps) {
   const { accountId } = useParams()
+  const { classes: commonClasses } = useCommonStyles()
 
-  const cardItems = [
-    {
-      label: "Invoice",
-      value: invoice.id,
-    },
-    {
-      label: "Status",
-      value: invoice.paid ? "Paid" : "Open",
-    },
-    {
-      label: "Relays Billed",
-      value: usageRecords.data[0].total_usage,
-    },
-    // {
-    //   label: "Relays Used",
-    //   value: relaysLatestInvoice.Count.Total,
-    // },
-    {
-      label: "Start period",
-      value: dayjs.unix(Number(invoice.period_start)).format("DD MMMM YYYY"),
-    },
-    {
-      label: "End Period",
-      value: dayjs.unix(Number(invoice.period_end)).format("DD MMMM YYYY"),
-    },
-  ]
+  const totalAccountRelays = accountAppsRelays.reduce(
+    (acc, item) => acc + item.Count.Total,
+    0,
+  )
 
   return (
     <TitledCard header={() => <Text weight={600}>Latest Invoice</Text>}>
-      <Stack px={20} py={10}>
-        {cardItems.map(({ label, value }, index) => (
-          <React.Fragment key={`${label}-${index}`}>
-            <Group p={12} position="apart">
-              <Text>{label}</Text> <Text>{value}</Text>
-            </Group>
+      <Stack pt={22} px={20} spacing={12}>
+        <Group position="apart">
+          <Text>Invoice ID</Text> <Text>{invoice.id}</Text>
+        </Group>
+        <Divider />
+        <Group position="apart">
+          <Text>Status</Text> <Text>{invoice.paid ? "Paid" : "Open"}</Text>
+        </Group>
+        <Divider />
+
+        <Accordion
+          defaultValue="item-1"
+          styles={{
+            item: { borderBottom: "none" },
+            content: { padding: 0 },
+            control: {
+              padding: 0,
+              paddingBottom: 12,
+              "&:hover": {
+                backgroundColor: "transparent",
+              },
+            },
+          }}
+        >
+          <Accordion.Item value="item-1">
+            <Accordion.Control>
+              <Group position="apart">
+                <Text>Total Relays Used</Text> <Text>{totalAccountRelays}</Text>
+              </Group>
+            </Accordion.Control>
             <Divider />
-          </React.Fragment>
-        ))}
-        {userRole !== "MEMBER" && (
-          <Group grow spacing="md">
-            <Button
-              component="a"
-              href={invoice.invoice_pdf ?? ""}
-              rightIcon={<LuDownload size={18} />}
-              onClick={() => {
-                trackEvent({
-                  category: AnalyticCategories.account,
-                  action: AnalyticActions.account_plan_invoice_download,
-                  label: accountId,
-                })
-              }}
-            >
-              Download
-            </Button>
-            <Button
-              component="a"
-              href={invoice.hosted_invoice_url ?? ""}
-              rel="noreferrer"
-              rightIcon={<LuArrowUpRight size={18} />}
-              target="_blank"
-              onClick={() => {
-                trackEvent({
-                  category: AnalyticCategories.account,
-                  action: AnalyticActions.account_plan_invoice_view,
-                  label: accountId,
-                })
-              }}
-            >
-              View in Stripe
-            </Button>
-          </Group>
+            <Accordion.Panel>
+              {accountAppsRelays.map(({ name, appEmoji, Count }, index) => (
+                <React.Fragment key={`${name}-${index}`}>
+                  <Group pl={20} position="apart" py={12}>
+                    <Group spacing={6}>
+                      <Emoji size={14} unified={appEmoji} />
+                      <Text>{name}</Text>
+                    </Group>
+                    <Text>{Count.Total}</Text>
+                  </Group>
+                  <Divider />
+                </React.Fragment>
+              ))}
+            </Accordion.Panel>
+          </Accordion.Item>
+        </Accordion>
+        <Group position="apart">
+          <Text>Relays Billed</Text> <Text>{usageRecords.data[0].total_usage}</Text>
+        </Group>
+        <Divider />
+        <Group position="apart">
+          <Text>Start period</Text>
+          <Text>{dayjs.unix(Number(invoice.period_start)).format("DD MMMM YYYY")}</Text>
+        </Group>
+        <Divider />
+        <Group position="apart">
+          <Text>End period</Text>
+          <Text>{dayjs.unix(Number(invoice.period_end)).format("DD MMMM YYYY")}</Text>
+        </Group>
+        <Divider />
+
+        {userRole !== RoleName.Member && (
+          <Grid gutter="sm" justify="flex-end">
+            <Grid.Col lg={4} md={4} sm={6}>
+              <Button
+                fullWidth
+                className={commonClasses.grayOutlinedButton}
+                color="gray"
+                component="a"
+                href={invoice.hosted_invoice_url ?? ""}
+                rel="noreferrer"
+                rightIcon={<LuArrowUpRight size={18} />}
+                target="_blank"
+                variant="outline"
+                onClick={() => {
+                  trackEvent({
+                    category: AnalyticCategories.account,
+                    action: AnalyticActions.account_plan_invoice_view,
+                    label: accountId,
+                  })
+                }}
+              >
+                View in Stripe
+              </Button>
+            </Grid.Col>
+            <Grid.Col lg={4} md={4} sm={6}>
+              <Button
+                fullWidth
+                component="a"
+                href={invoice.invoice_pdf ?? ""}
+                rightIcon={<LuDownload size={18} />}
+                onClick={() => {
+                  trackEvent({
+                    category: AnalyticCategories.account,
+                    action: AnalyticActions.account_plan_invoice_download,
+                    label: accountId,
+                  })
+                }}
+              >
+                Download
+              </Button>
+            </Grid.Col>
+          </Grid>
         )}
       </Stack>
     </TitledCard>

@@ -3,7 +3,7 @@ import {
   Box,
   Button,
   MantineTheme,
-  SimpleGrid,
+  Stack,
 } from "@pokt-foundation/pocket-blocks"
 import { LuAlertCircle, LuRepeat } from "react-icons/lu"
 import AutoScalePlanLatestInvoiceCard from "./components/AutoScalePlanLatestInvoiceCard"
@@ -63,7 +63,7 @@ export const AccountPlanView = ({
       )}
 
       {account.planType === PayPlanType.PayAsYouGoV0 && (
-        <SimpleGrid breakpoints={[{ maxWidth: "md", cols: 1 }]} cols={2}>
+        <Stack>
           {subscription && usageRecords && (
             <AutoScalePlanOverviewCard
               account={account}
@@ -80,7 +80,7 @@ export const AccountPlanView = ({
               userRole={userRole}
             />
           )}
-        </SimpleGrid>
+        </Stack>
       )}
 
       {account.planType === PayPlanType.Enterprise && (

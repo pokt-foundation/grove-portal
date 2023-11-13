@@ -1,5 +1,13 @@
 import { Divider } from "@mantine/core"
-import { Button, Group, Text, Stack, Box } from "@pokt-foundation/pocket-blocks"
+import {
+  Button,
+  Group,
+  Text,
+  Stack,
+  Box,
+  Grid,
+  SimpleGrid,
+} from "@pokt-foundation/pocket-blocks"
 import { Form, useLocation } from "@remix-run/react"
 import React from "react"
 import { LuArrowUpRight, LuRepeat, LuStopCircle } from "react-icons/lu"
@@ -33,85 +41,92 @@ export default function AutoScalePlanOverviewCard({
 
   const accountPlanType = account.planType
 
-  const cardItems = [
-    {
-      label: "Plan Type",
-      value: getPlanName(accountPlanType),
-    },
-    {
-      label: "Subscription",
-      value: subscription.id,
-    },
-    {
-      label: "Status",
-      value: subscription.status.replace(/^\w/, (char) => char.toUpperCase()),
-    },
-    // {
-    //   label: "Free Daily Relays",
-    //   value: account.integrations.dailyLimit,
-    // },
-    {
-      label: "Total Relays on this Billing Period",
-      value: usageRecords.data[0].total_usage,
-    },
-    {
-      label: "Start date",
-      value: dayjs.unix(Number(subscription.start_date)).format("DD MMMM YYYY"),
-    },
-  ]
-
   return (
     <TitledCard header={() => <Text weight={600}>Current plan</Text>}>
-      <Stack px={20} py={10}>
-        {cardItems.map(({ label, value }, index) => (
-          <React.Fragment key={`${label}-${index}`}>
-            <Group p={12} position="apart">
-              <Text>{label}</Text> <Text>{value}</Text>
+      <Stack pt={22} px={20}>
+        <SimpleGrid breakpoints={[{ maxWidth: "md", cols: 1 }]} cols={2} spacing={40}>
+          <Stack spacing={12}>
+            <Group position="apart">
+              <Text>Plan Type</Text> <Text>{getPlanName(accountPlanType)}</Text>
             </Group>
             <Divider />
-          </React.Fragment>
-        ))}
+            <Group position="apart">
+              <Text>Subscription</Text> <Text>{subscription.id}</Text>
+            </Group>
+            <Divider />
+            <Group position="apart">
+              <Text>Free Daily Relays</Text> <Text>{account.plan.dailyLimit}</Text>
+            </Group>
+            <Divider />
+          </Stack>
+
+          <Stack spacing={12}>
+            <Group position="apart">
+              <Text>Total Relays on this Billing Period</Text>{" "}
+              <Text>{usageRecords.data[0].total_usage}</Text>
+            </Group>
+            <Divider />
+            <Group position="apart">
+              <Text>Subscription</Text> <Text>{subscription.id}</Text>
+            </Group>
+            <Divider />
+            <Group position="apart">
+              <Text>Start date</Text>{" "}
+              <Text>
+                {dayjs.unix(Number(subscription.start_date)).format("DD MMMM YYYY")}
+              </Text>
+            </Group>
+            <Divider />
+          </Stack>
+        </SimpleGrid>
+
         {userRole !== "MEMBER" && (
           <Box mt="auto">
             <Form action="/api/stripe/portal-session" method="post">
               <input hidden defaultValue={location.pathname} name="return-path" />
-              <Group grow spacing="md">
-                {accountPlanType === "PAY_AS_YOU_GO_V0" ? (
+              <Grid gutter="sm" justify="flex-end">
+                <Grid.Col lg={4} md={4} sm={6}>
+                  {accountPlanType === "PAY_AS_YOU_GO_V0" ? (
+                    <Button
+                      fullWidth
+                      className={commonClasses.grayOutlinedButton}
+                      color="gray"
+                      rightIcon={<LuStopCircle size={18} />}
+                      type="button"
+                      variant="outline"
+                      onClick={() => openStopSubscriptionModal(account)}
+                    >
+                      Stop subscription
+                    </Button>
+                  ) : (
+                    <Button
+                      fullWidth
+                      rightIcon={<LuRepeat size={18} />}
+                      type="button"
+                      variant="outline"
+                      onClick={() => openRenewSubscriptionModal(account)}
+                    >
+                      Renew subscription
+                    </Button>
+                  )}
+                </Grid.Col>
+                <Grid.Col lg={4} md={4} sm={6}>
                   <Button
-                    className={commonClasses.grayOutlinedButton}
-                    color="gray"
-                    rightIcon={<LuStopCircle size={18} />}
-                    type="button"
-                    variant="outline"
-                    onClick={() => openStopSubscriptionModal(account)}
+                    fullWidth
+                    rightIcon={<LuArrowUpRight size={18} />}
+                    type="submit"
+                    onClick={() => {
+                      trackEvent({
+                        category: AnalyticCategories.account,
+                        action: AnalyticActions.account_plan_manage,
+                        label: account.id,
+                      })
+                    }}
                   >
-                    Stop subscription
+                    Manage in Stripe
                   </Button>
-                ) : (
-                  <Button
-                    rightIcon={<LuRepeat size={18} />}
-                    type="button"
-                    variant="outline"
-                    onClick={() => openRenewSubscriptionModal(account)}
-                  >
-                    Renew subscription
-                  </Button>
-                )}
-
-                <Button
-                  rightIcon={<LuArrowUpRight size={18} />}
-                  type="submit"
-                  onClick={() => {
-                    trackEvent({
-                      category: AnalyticCategories.account,
-                      action: AnalyticActions.account_plan_manage,
-                      label: account.id,
-                    })
-                  }}
-                >
-                  Manage in Stripe
-                </Button>
-              </Group>
+                </Grid.Col>
+              </Grid>
             </Form>
           </Box>
         )}

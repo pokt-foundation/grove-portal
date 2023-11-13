@@ -15,6 +15,7 @@ export type UpdatePlanArgs = {
   type: PayPlanType | null
   limit?: number | null
   subscription?: string | null
+  subscription_delete?: string | null
 }
 
 export const action: ActionFunction = async ({ request }) => {
@@ -23,11 +24,26 @@ export const action: ActionFunction = async ({ request }) => {
   const type = formData.get("type") as UpdatePlanArgs["type"]
   const limit = formData.get("limit") as UpdatePlanArgs["limit"]
   const subscription = formData.get("subscription") as UpdatePlanArgs["subscription"]
+  const subscription_delete = formData.get(
+    "subscription_delete",
+  ) as UpdatePlanArgs["subscription_delete"]
 
-  return await updatePlan({ id, type, limit, subscription })
+  return await updatePlan({
+    id,
+    type,
+    limit,
+    subscription,
+    subscription_delete,
+  })
 }
 
-export const updatePlan = async ({ id, type, limit, subscription }: UpdatePlanArgs) => {
+export const updatePlan = async ({
+  id,
+  type,
+  limit,
+  subscription,
+  subscription_delete,
+}: UpdatePlanArgs) => {
   const portal = initPortalClient()
 
   try {
@@ -45,6 +61,9 @@ export const updatePlan = async ({ id, type, limit, subscription }: UpdatePlanAr
     }
     if (subscription) {
       options.input.stripeSubscriptionID = subscription
+    }
+    if (subscription_delete) {
+      options.input.stripeSubscriptionID = ""
     }
 
     await portalAdmin.adminUpdateAccount(options)

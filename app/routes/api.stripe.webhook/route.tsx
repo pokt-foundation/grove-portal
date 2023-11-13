@@ -81,12 +81,12 @@ export const action: ActionFunction = async ({ request }) => {
         const subscriptionDeleted = event.data.object as Stripe.Subscription
         console.log(`Customer subscription deleted for ${subscriptionDeleted.id}!`)
 
-        const accountIdDeleted = subscriptionDeleted.metadata.accoount_id
+        const accountIdDeleted = subscriptionDeleted.metadata.account_id
 
         const formData = new FormData()
         formData.set("id", accountIdDeleted)
         formData.set("type", PayPlanType.FreetierV0)
-        formData.set("subscription", "")
+        formData.set("subscription_delete", "true")
 
         await fetch(`${url.origin}/api/admin/update-plan`, {
           method: "post",

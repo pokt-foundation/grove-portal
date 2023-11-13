@@ -83,7 +83,7 @@ export const Sidebar = ({ account, hidden, userRole, accounts }: SidebarProps) =
     return getStaticRoutes(account, userRole)
   }, [account, userRole])
 
-  const canCreateApps = userRole === RoleName.Owner
+  const canCreateApps = userRole !== RoleName.Member
   const { portalApps: apps } = account
 
   return (

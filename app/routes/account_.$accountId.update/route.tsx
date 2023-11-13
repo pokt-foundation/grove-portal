@@ -25,7 +25,7 @@ import { Account } from "~/models/portal/sdk"
 import { DataStruct } from "~/types/global"
 import { getErrorMessage } from "~/utils/catchError"
 import { seo_title_append } from "~/utils/seo"
-import isUserAccountOwner from "~/utils/user"
+import isUserMember from "~/utils/user"
 import { requireUser } from "~/utils/user.server"
 
 export const meta: MetaFunction = () => {
@@ -64,13 +64,13 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       return redirect(`/account/${params.accountId}`)
     }
 
-    const isUserOwner = isUserAccountOwner({
+    const isMember = isUserMember({
       accounts: getUserAccountsResponse.getUserAccounts as Account[],
       accountId: accountId as string,
       user: user.user,
     })
 
-    if (!isUserOwner) {
+    if (isMember) {
       return redirect(`/account/${params.accountId}`)
     }
 
@@ -164,7 +164,7 @@ export default function UpdateAccount() {
       }
     />
   ) : (
-    <Box maw={860} mx="auto">
+    <Box maw={860} mt={90} mx="auto">
       <AccountForm account={account} redirectTo={redirectTo} />
     </Box>
   )

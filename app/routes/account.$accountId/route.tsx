@@ -87,14 +87,15 @@ export default function AccountId() {
     return <ErrorView message={message} />
   }
 
-  const { account, accounts, user, hasPendingInvites } = data
+  const { account, accounts, user, hasPendingInvites, userRole } = data
 
   return (
     <RootAppShell
+      account={account}
       accounts={accounts}
-      apps={account.portalApps as PortalApp[]}
       hasPendingInvites={hasPendingInvites}
       user={user}
+      userRole={userRole}
     >
       <Outlet context={data} />
     </RootAppShell>

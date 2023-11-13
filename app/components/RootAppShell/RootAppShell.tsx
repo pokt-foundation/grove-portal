@@ -1,56 +1,52 @@
 import { showNotification } from "@mantine/notifications"
 import { AppShell, Container } from "@pokt-foundation/pocket-blocks"
-import { Link, useLocation, useParams } from "@remix-run/react"
+import { Link, useLocation } from "@remix-run/react"
 import React, { ReactNode, useEffect, useMemo, useState } from "react"
 import { LuShapes } from "react-icons/lu"
 import { AppHeader } from "~/components/AppHeader"
 import { Sidebar } from "~/components/Sidebar"
-import { Account, PortalApp, User } from "~/models/portal/sdk"
+import { Account, RoleName, User } from "~/models/portal/sdk"
 import { useRoot } from "~/root/hooks/useRoot"
-import isUserAccountOwner from "~/utils/user"
 
 type RootAppShellProps = {
-  user: User
-  apps?: PortalApp[]
-  hasPendingInvites: boolean
-  children: ReactNode
+  account?: Account
   accounts: Account[]
+  children: ReactNode
+  hasPendingInvites: boolean
+  user: User
+  userRole?: RoleName
 }
 
 export const PENDING_INVITES_NOTIFICATION_ID = "pending-account-invites"
 
 export const RootAppShell = ({
   user,
-  apps,
+  account,
   children,
   accounts,
+  userRole,
   hasPendingInvites,
 }: RootAppShellProps) => {
   const [opened, setOpened] = useState(false)
   const { hideSidebar } = useRoot({ user })
   const { pathname } = useLocation()
-  const { accountId } = useParams()
-
-  const isUserOwner = useMemo(
-    () => isUserAccountOwner({ accounts, accountId: accountId as string, user }),
-    [accountId, accounts, user],
-  )
 
   const navProp = useMemo(
     () => ({
-      ...(!hideSidebar &&
-        apps && {
+      ...(account &&
+        userRole &&
+        !hideSidebar && {
           navbar: (
             <Sidebar
+              account={account}
               accounts={accounts}
-              apps={apps}
-              canCreateApps={isUserOwner}
               hidden={!opened}
+              userRole={userRole}
             />
           ),
         }),
     }),
-    [hideSidebar, apps, accounts, isUserOwner, opened],
+    [hideSidebar, userRole, account, accounts, opened],
   )
 
   useEffect(() => {

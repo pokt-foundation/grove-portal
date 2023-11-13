@@ -11,7 +11,7 @@ export const meta: MetaFunction = () => {
 }
 
 export default function AccountSettings() {
-  const { account } = useOutletContext<AccountIdLoaderData>()
+  const { account, userRole } = useOutletContext<AccountIdLoaderData>()
 
-  return <AccountSettingsView account={account} />
+  return <AccountSettingsView account={account} userRole={userRole} />
 }

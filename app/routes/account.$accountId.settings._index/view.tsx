@@ -10,15 +10,16 @@ import {
 } from "@pokt-foundation/pocket-blocks"
 import { Link } from "@remix-run/react"
 import { Identicon } from "~/components/Identicon"
-import { Account } from "~/models/portal/sdk"
+import { Account, RoleName } from "~/models/portal/sdk"
 import useCommonStyles from "~/styles/commonStyles"
 import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
 
 type AccountSettingsViewProps = {
   account: Account
+  userRole: RoleName
 }
 
-export const AccountSettingsView = ({ account }: AccountSettingsViewProps) => {
+export const AccountSettingsView = ({ account, userRole }: AccountSettingsViewProps) => {
   const { classes: commonClasses } = useCommonStyles()
   return (
     <Stack spacing="xs">
@@ -35,28 +36,33 @@ export const AccountSettingsView = ({ account }: AccountSettingsViewProps) => {
         <Text pt={5}>A unique image representing your account. </Text>
       </Box>
       <Divider />
-      <Stack align="flex-start" py={20}>
-        <Box>
-          <Text fw={600}>Account Name</Text>
-          <Text pt={5}>Modify your account name here. </Text>
-        </Box>
-        <Button
-          className={commonClasses.grayOutlinedButton}
-          color="gray"
-          component={Link}
-          to={`/account/${account.id}/update`}
-          variant="outline"
-          onClick={() => {
-            trackEvent({
-              category: AnalyticCategories.account,
-              action: AnalyticActions.account_update_change_name,
-            })
-          }}
-        >
-          Change name
-        </Button>
-      </Stack>
-      <Divider />
+      {userRole !== RoleName.Member && (
+        <>
+          <Stack align="flex-start" py={20}>
+            <Box>
+              <Text fw={600}>Account Name</Text>
+              <Text pt={5}>Modify your account name here. </Text>
+            </Box>
+            <Button
+              className={commonClasses.grayOutlinedButton}
+              color="gray"
+              component={Link}
+              to={`/account/${account.id}/update`}
+              variant="outline"
+              onClick={() => {
+                trackEvent({
+                  category: AnalyticCategories.account,
+                  action: AnalyticActions.account_update_change_name,
+                })
+              }}
+            >
+              Change name
+            </Button>
+          </Stack>
+          <Divider />
+        </>
+      )}
+
       <Stack py={20}>
         <Box>
           <Text fw={600}>Account ID</Text>

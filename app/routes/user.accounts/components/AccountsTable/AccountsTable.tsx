@@ -7,7 +7,7 @@ import Identicon from "~/components/Identicon"
 import { Account, RoleName, User } from "~/models/portal/sdk"
 import InvitedAccountAction from "~/routes/user.accounts/components/InvitedAccountAction"
 import { getAccountAcceptedValue, getUserAccountRole } from "~/utils/accountUtils"
-import isUserAccountOwner from "~/utils/user"
+import { getPlanName } from "~/utils/planUtils"
 
 type AccountsTableProps = {
   accounts: Account[]
@@ -41,19 +41,23 @@ const AccountsTable = ({ accounts, pendingAccounts, user }: AccountsTableProps) 
 
   return userAccounts.length > 0 ? (
     <DataTable
-      columns={["Account", "No. Members", "No. Applications", "Role", "Status", ""]}
+      columns={[
+        "Account",
+        "Plan",
+        "No. Members",
+        "No. Applications",
+        "Role",
+        "Status",
+        "",
+      ]}
       data={userAccounts.map((account) => {
-        const isAccountOwner = isUserAccountOwner({
-          accounts,
-          accountId: account.id,
-          user,
-        })
+        const isUserAccountOwner = account.role === RoleName.Owner
         return {
           account: {
             element: (
               <Group>
-                <Tooltip disabled={!isAccountOwner} label="You are the account owner">
-                  <Indicator disabled={!isAccountOwner} label={<LuCrown />} size={16}>
+                <Tooltip disabled={!isUserAccountOwner} label="You are the account owner">
+                  <Indicator disabled={!isUserAccountOwner} label={<LuCrown />} size={16}>
                     <Identicon
                       alt={`${account.id} profile picture`}
                       seed={account.id}
@@ -66,6 +70,9 @@ const AccountsTable = ({ accounts, pendingAccounts, user }: AccountsTableProps) 
                 </Text>
               </Group>
             ),
+          },
+          plan: {
+            element: <Text>{getPlanName(account?.planType)}</Text>,
           },
           members: {
             element: (

@@ -11,7 +11,7 @@ type ModalHeaderProps = {
 const ModalHeader = ({ title, subtitle, onDiscard }: ModalHeaderProps) => {
   return (
     <Box>
-      <Flex align="center" justify="space-between" mb={12} mt={32}>
+      <Flex align="center" justify="space-between" mb={12}>
         <Text fw={600} fz="21px">
           {title}
         </Text>

@@ -146,7 +146,7 @@ export default function UpdateApp() {
   const { app } = data
 
   return fetcher.state === "idle" ? (
-    <Box maw={860} mx="auto">
+    <Box maw={860} mt={90} mx="auto">
       <AppForm
         app={app}
         onSubmit={(formData) =>

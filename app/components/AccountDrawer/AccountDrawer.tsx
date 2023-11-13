@@ -11,7 +11,7 @@ import {
 import { Link, LinkProps, useFetcher } from "@remix-run/react"
 import React, { useState } from "react"
 import {
-  LuBook,
+  LuBookOpen,
   LuLeaf,
   LuLifeBuoy,
   LuSmile,
@@ -68,7 +68,7 @@ const drawerExternalLinks = [
   {
     label: "Documentation",
     to: DOCS_PATH,
-    icon: <LuBook size={18} />,
+    icon: <LuBookOpen size={18} />,
   },
   {
     label: "Support",

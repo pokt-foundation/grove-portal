@@ -1,10 +1,4 @@
-import {
-  Alert,
-  Box,
-  Button,
-  MantineTheme,
-  Stack,
-} from "@pokt-foundation/pocket-blocks"
+import { Alert, Box, Button, MantineTheme, Stack } from "@pokt-foundation/pocket-blocks"
 import { LuAlertCircle, LuRepeat } from "react-icons/lu"
 import AutoScalePlanLatestInvoiceCard from "./components/AutoScalePlanLatestInvoiceCard"
 import AutoScalePlanOverviewCard from "./components/AutoScalePlanOverviewCard"

@@ -77,7 +77,7 @@ export default function UserAccount() {
       hasPendingInvites={pendingAccounts.length > 0}
       user={user}
     >
-      <Container fluid pt={16} px={0}>
+      <Container fluid px={0}>
         <Button
           compact
           color="gray"

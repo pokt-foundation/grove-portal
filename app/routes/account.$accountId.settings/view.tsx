@@ -41,7 +41,7 @@ export default function AccountSettingsLayoutView({
   }, [account])
 
   return (
-    <Container fluid pt={16} px={0}>
+    <Container fluid px={0}>
       <Stack spacing={32}>
         <Stack spacing="xs">
           <Title order={3}>Settings & members</Title>

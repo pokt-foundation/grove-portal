@@ -1,22 +1,28 @@
 import { Indicator } from "@mantine/core"
-import { ActionIcon, Group, Menu, Text, Tooltip } from "@pokt-foundation/pocket-blocks"
-import { Link } from "@remix-run/react"
+import { Group, MantineTheme, Text, Tooltip } from "@pokt-foundation/pocket-blocks"
 import { useMemo } from "react"
-import { LuMoreHorizontal, LuArrowUpRight, LuPencil, LuCrown } from "react-icons/lu"
+import { LuCrown } from "react-icons/lu"
 import { DataTable } from "~/components/DataTable"
 import Identicon from "~/components/Identicon"
-import { Account, User } from "~/models/portal/sdk"
-import useCommonStyles from "~/styles/commonStyles"
-import isUserAccountOwner from "~/utils/user"
+import { Account, RoleName, User } from "~/models/portal/sdk"
+import InvitedAccountAction from "~/routes/user.accounts/components/InvitedAccountAction"
+import { getAccountAcceptedValue, getUserAccountRole } from "~/utils/accountUtils"
+import { getPlanName } from "~/utils/planUtils"
 
-type AccountsTableProps = { accounts: Account[]; user: User }
+type AccountsTableProps = {
+  accounts: Account[]
+  pendingAccounts: Account[]
+  user: User
+}
 
-const AccountsTable = ({ accounts, user }: AccountsTableProps) => {
-  const { classes: commonClasses } = useCommonStyles()
+export type TableUserAccount = Account & { accepted: boolean; role: RoleName }
 
-  const sortedAccounts = useMemo(() => {
+const AccountsTable = ({ accounts, pendingAccounts, user }: AccountsTableProps) => {
+  const sortedAcceptedAccounts = useMemo(() => {
     const ownedAccount = accounts.find((account) =>
-      account?.accountUsers.find((u) => u.accountUserID === user.portalUserID && u.owner),
+      account?.users.find(
+        (u) => u.id === user.portalUserID && u.roleName === RoleName.Owner,
+      ),
     )
     const filteredAccounts = accounts.filter(({ id }) => id !== ownedAccount?.id)
     return [
@@ -25,21 +31,33 @@ const AccountsTable = ({ accounts, user }: AccountsTableProps) => {
     ] as Account[]
   }, [accounts, user.portalUserID])
 
-  return sortedAccounts.length > 0 ? (
+  const userAccounts = useMemo(() => {
+    return [...pendingAccounts, ...sortedAcceptedAccounts].map((account) => ({
+      ...account,
+      accepted: getAccountAcceptedValue(account.users, user.portalUserID),
+      role: getUserAccountRole(account.users, user.portalUserID),
+    })) as TableUserAccount[]
+  }, [pendingAccounts, sortedAcceptedAccounts, user.portalUserID])
+
+  return userAccounts.length > 0 ? (
     <DataTable
-      columns={["Account", "No. Members", "No. Applications", ""]}
-      data={sortedAccounts.map((account) => {
-        const isAccountOwner = isUserAccountOwner({
-          accounts,
-          accountId: account.id,
-          user,
-        })
+      columns={[
+        "Account",
+        "Plan",
+        "No. Members",
+        "No. Applications",
+        "Role",
+        "Status",
+        "",
+      ]}
+      data={userAccounts.map((account) => {
+        const isUserAccountOwner = account.role === RoleName.Owner
         return {
           account: {
             element: (
               <Group>
-                <Tooltip disabled={!isAccountOwner} label="You are the account owner">
-                  <Indicator disabled={!isAccountOwner} label={<LuCrown />} size={16}>
+                <Tooltip disabled={!isUserAccountOwner} label="You are the account owner">
+                  <Indicator disabled={!isUserAccountOwner} label={<LuCrown />} size={16}>
                     <Identicon
                       alt={`${account.id} profile picture`}
                       seed={account.id}
@@ -53,11 +71,14 @@ const AccountsTable = ({ accounts, user }: AccountsTableProps) => {
               </Group>
             ),
           },
+          plan: {
+            element: <Text>{getPlanName(account?.planType)}</Text>,
+          },
           members: {
             element: (
               <Text>
-                {account?.accountUsers?.length} Member
-                {account?.accountUsers?.length > 1 ? "s" : ""}
+                {account?.users?.length} Member
+                {account?.users?.length > 1 ? "s" : ""}
               </Text>
             ),
           },
@@ -69,37 +90,24 @@ const AccountsTable = ({ accounts, user }: AccountsTableProps) => {
               </Text>
             ),
           },
-          action: {
+          role: {
+            element: <Text tt="capitalize">{account.role?.toLowerCase()}</Text>,
+          },
+          status: {
             element: (
-              <Group position="right" spacing="md">
-                <Menu>
-                  <Menu.Target>
-                    <ActionIcon
-                      className={commonClasses.grayOutlinedButton}
-                      radius="xl"
-                      size={40}
-                      variant="outline"
-                    >
-                      <LuMoreHorizontal />
-                    </ActionIcon>
-                  </Menu.Target>
-                  <Menu.Dropdown>
-                    {isAccountOwner && (
-                      <Menu.Item icon={<LuPencil size={18} />}>
-                        <Link to={`/account/${account.id}/update`}>
-                          <Text tt="capitalize">Change name</Text>
-                        </Link>
-                      </Menu.Item>
-                    )}
-                    <Menu.Item icon={<LuArrowUpRight size={18} />}>
-                      <Link to={`/account/${account.id}`}>
-                        <Text tt="capitalize">Go to account</Text>
-                      </Link>
-                    </Menu.Item>
-                  </Menu.Dropdown>
-                </Menu>
-              </Group>
+              <Text
+                sx={(theme: MantineTheme) => ({
+                  color: account.accepted
+                    ? theme.colors.green[6]
+                    : theme.colors.yellow[7],
+                })}
+              >
+                {account.accepted ? "Accepted" : "Pending"}
+              </Text>
             ),
+          },
+          action: {
+            element: <InvitedAccountAction account={account} user={user} />,
           },
         }
       })}

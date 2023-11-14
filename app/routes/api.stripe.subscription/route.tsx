@@ -11,14 +11,14 @@ export const action: ActionFunction = async ({ request }) => {
   invariant(user.user.auth0ID && user.user.email, "user not found")
   const userId = getPoktId(user.user.auth0ID)
   const formData = await request.formData()
-  const appId = formData.get("app-id")
+  const accountId = formData.get("account-id")
   const renew = formData.get("subscription-renew")
   const action = renew !== "true"
 
   try {
-    invariant(appId, "app id not found")
+    invariant(accountId, "account id not found")
     const uEmail = user.user.email ?? ""
-    const subscription = await getSubscription(uEmail, appId as string, userId)
+    const subscription = await getSubscription(uEmail, accountId as string, userId)
 
     if (subscription) {
       const updatedSubscription = await stripe.subscriptions.update(subscription.id, {
@@ -26,7 +26,7 @@ export const action: ActionFunction = async ({ request }) => {
       })
       if (updatedSubscription) {
         await updatePlan({
-          id: appId as string,
+          id: accountId as string,
           type: action
             ? (PayPlanType.FreetierV0 as unknown as PayPlanType.FreetierV0)
             : (PayPlanType.PayAsYouGoV0 as unknown as PayPlanType.PayAsYouGoV0),

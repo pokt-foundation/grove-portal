@@ -6,17 +6,16 @@ import {
   Group,
   Menu,
   Text,
+  Tooltip,
 } from "@pokt-foundation/pocket-blocks"
 import { Link } from "@remix-run/react"
 import { Emoji } from "emoji-picker-react"
 import { LuPencil } from "react-icons/lu"
-import ApplicationSubscription from "../ApplicationSubscription"
 import ContextMenuTarget from "~/components/ContextMenuTarget"
-import { PayPlanType, PortalApp, RoleName } from "~/models/portal/sdk"
+import { PortalApp, RoleName } from "~/models/portal/sdk"
 import DeleteApplication from "~/routes/account.$accountId.$appId/components/DeleteApplication"
 import { DEFAULT_APPMOJI } from "~/routes/account_.$accountId.create/components/AppmojiPicker"
 import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
-import { getPlanName } from "~/utils/planUtils"
 
 type ApplicationHeaderProps = {
   app: PortalApp
@@ -38,27 +37,28 @@ const ApplicationHeader = ({ app, userRole }: ApplicationHeaderProps) => {
             {app.name}
           </Text>
           <Group spacing={4}>
-            <Text mr="xl">{getPlanName(app.legacyFields.planType)}</Text>
             <Text>App ID</Text>
             <CopyButton value={app.id}>
               {({ copied, copy }) => (
-                <Badge
-                  color={copied ? "green" : "gray"}
-                  px={6}
-                  radius="sm"
-                  style={{ cursor: "pointer", textTransform: "lowercase" }}
-                  variant={copied ? "outline" : "light"}
-                  onClick={() => {
-                    copy()
-                    trackEvent({
-                      category: AnalyticCategories.app,
-                      action: AnalyticActions.app_copy_id,
-                      label: app.id,
-                    })
-                  }}
-                >
-                  {app.id}
-                </Badge>
+                <Tooltip withArrow label={copied ? "Copied" : "Copy"}>
+                  <Badge
+                    color={copied ? "green" : "gray"}
+                    px={6}
+                    radius="sm"
+                    style={{ cursor: "pointer", textTransform: "lowercase" }}
+                    variant={copied ? "outline" : "light"}
+                    onClick={() => {
+                      copy()
+                      trackEvent({
+                        category: AnalyticCategories.app,
+                        action: AnalyticActions.app_copy_id,
+                        label: app.id,
+                      })
+                    }}
+                  >
+                    {app.id}
+                  </Badge>
+                </Tooltip>
               )}
             </CopyButton>
           </Group>
@@ -69,13 +69,10 @@ const ApplicationHeader = ({ app, userRole }: ApplicationHeaderProps) => {
         <Menu>
           <ContextMenuTarget />
           <Menu.Dropdown>
-            {app && <ApplicationSubscription app={app} />}
             <Menu.Item component={Link} icon={<LuPencil size={18} />} to={`update`}>
               Edit information
             </Menu.Item>
-            {app && app.legacyFields.planType !== PayPlanType.PayAsYouGoV0 && (
-              <DeleteApplication app={app} />
-            )}
+            <DeleteApplication app={app} />
           </Menu.Dropdown>
         </Menu>
       )}

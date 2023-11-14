@@ -54,6 +54,7 @@ export const action: ActionFunction = async ({ request, params }) => {
       .updateUserPortalApp({
         input: {
           appID: appId,
+          accountID: accountId,
           appSettings: {
             favoritedChainIDs: newFavs,
             environment: PortalAppEnvironment.Production,

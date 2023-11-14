@@ -25,7 +25,7 @@ const LinkTabs = ({ routes }: LinkTabsProps) => {
             content: '""',
             display: "block",
             width: "100%",
-            borderBottom: `2px solid ${theme.colors.gray[8]}`,
+            borderBottom: `1px solid ${theme.colors.gray[8]}`,
             position: "absolute",
             bottom: 11,
             opacity: "50%",

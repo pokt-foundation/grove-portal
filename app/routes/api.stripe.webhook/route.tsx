@@ -27,7 +27,7 @@ export const action: ActionFunction = async ({ request }) => {
 
   let event: Stripe.Event | null = null
   // Only verify the event if you have an endpoint secret defined.
-  // Otherwise use the basic event deserialized with JSON.parse
+  // Otherwise, use the basic event deserialized with JSON.parse
   if (endpointSecret) {
     // Get the signature sent by Stripe
     try {
@@ -54,7 +54,6 @@ export const action: ActionFunction = async ({ request }) => {
           const subscription = await stripe.subscriptions.update(
             sessionCompleted.subscription,
             {
-              description: `${sessionCompleted.metadata?.endpoint_name}: ${sessionCompleted.metadata?.endpoint_id}`,
               metadata: sessionCompleted.metadata,
             },
           )
@@ -63,13 +62,13 @@ export const action: ActionFunction = async ({ request }) => {
             metadata: sessionCompleted.metadata,
           })
 
-          if (sessionCompleted.metadata?.endpoint_id) {
+          if (sessionCompleted.metadata?.account_id) {
             const formData = new FormData()
-            formData.set("id", sessionCompleted.metadata.endpoint_id)
+            formData.set("id", sessionCompleted.metadata.account_id)
             formData.set("type", PayPlanType.PayAsYouGoV0)
             formData.set("subscription", sessionCompleted.subscription)
 
-            // update application plan and store subscription id
+            // update account plan and store subscription id
             await fetch(`${url.origin}/api/admin/update-plan`, {
               method: "post",
               body: formData,
@@ -82,12 +81,12 @@ export const action: ActionFunction = async ({ request }) => {
         const subscriptionDeleted = event.data.object as Stripe.Subscription
         console.log(`Customer subscription deleted for ${subscriptionDeleted.id}!`)
 
-        const appIdDeleted = subscriptionDeleted.metadata.endpoint_id
+        const accountIdDeleted = subscriptionDeleted.metadata.account_id
 
         const formData = new FormData()
-        formData.set("id", appIdDeleted)
+        formData.set("id", accountIdDeleted)
         formData.set("type", PayPlanType.FreetierV0)
-        formData.set("subscription", "")
+        formData.set("subscription_delete", "true")
 
         await fetch(`${url.origin}/api/admin/update-plan`, {
           method: "post",

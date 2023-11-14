@@ -1,43 +1,58 @@
-import {
-  Group,
-  MantineTheme,
-  Menu,
-  Text,
-  UnstyledButton,
-} from "@pokt-foundation/pocket-blocks"
+import { Group, Menu, Stack, Text, UnstyledButton } from "@pokt-foundation/pocket-blocks"
 import { NavLink, useParams } from "@remix-run/react"
 import React, { useMemo } from "react"
-import { LuChevronsUpDown } from "react-icons/lu"
+import { LuCheckCircle2, LuChevronsUpDown } from "react-icons/lu"
 import Identicon from "~/components/Identicon"
 import { Account } from "~/models/portal/sdk"
+import { getPlanName } from "~/utils/planUtils"
 
 type UserItemProps = {
   account: Account
-  withIcon?: boolean
+  hasMultipleAccounts?: boolean
+  iconOnly?: boolean
+  selected?: boolean
 }
 
 type AccountSelectProps = {
   accounts: Account[]
+  collapsed?: boolean
 }
 
-const AccountItem = ({ account, withIcon }: UserItemProps) => (
+const AccountItem = ({
+  account,
+  hasMultipleAccounts,
+  iconOnly,
+  selected,
+}: UserItemProps) => (
   <Group>
     <Identicon
       alt={`${account.id} profile picture`}
       seed={account.id}
-      size="xs"
+      size={28}
       type="account"
     />
-    <Text size="sm" weight={500}>
-      {account.name ? account.name : account.id}
-    </Text>
-    {withIcon && (
-      <LuChevronsUpDown size={18} style={{ marginLeft: "auto", marginRight: 7 }} />
+    {!iconOnly && (
+      <>
+        <Stack spacing={0}>
+          <Text lh="17px" size={15} weight={500}>
+            {account.name ? account.name : account.id}
+          </Text>
+          <Text size={11}>{`${getPlanName(account.planType)} · ${
+            account?.users?.length ?? 1
+          } member${account?.users?.length > 1 ? "s" : ""}`}</Text>
+        </Stack>
+        {hasMultipleAccounts && (
+          <LuChevronsUpDown size={18} style={{ marginLeft: "auto", marginRight: 0 }} />
+        )}
+        {selected && (
+          <LuCheckCircle2 size={18} style={{ marginLeft: "auto", marginRight: 0 }} />
+        )}
+      </>
     )}
   </Group>
 )
 
-const AccountSelect = ({ accounts }: AccountSelectProps) => {
+const AccountSelect = ({ accounts, collapsed }: AccountSelectProps) => {
   const { accountId } = useParams()
   const hasMultipleAccounts = accounts.length > 1
 
@@ -46,51 +61,35 @@ const AccountSelect = ({ accounts }: AccountSelectProps) => {
     [accountId, accounts],
   )
 
-  const menuAccounts = useMemo(() => {
-    if (activeAccount) {
-      const filteredAccounts = accounts.filter(({ id }) => id !== accountId)
-      return [
-        activeAccount,
-        ...filteredAccounts.sort((a, b) => (a.id > b.id ? 1 : -1)),
-      ] as Account[]
-    }
-    return accounts
-  }, [accountId, accounts, activeAccount])
-
   return (
-    <Menu styles={{ dropdown: { minWidth: 165 } }}>
+    <Menu styles={{ dropdown: { minWidth: 300, marginLeft: 8 } }}>
       {activeAccount && (
         <Menu.Target>
-          <UnstyledButton
-            mr="md"
-            px={8}
-            py={4}
-            sx={(theme: MantineTheme) => ({
-              borderRadius: 4,
-              ...(hasMultipleAccounts && {
-                border: `1px solid ${
-                  theme.colorScheme === "dark"
-                    ? theme.colors.gray[8]
-                    : theme.colors.gray[3]
-                }`,
-              }),
-            })}
-          >
-            <AccountItem account={activeAccount} withIcon={hasMultipleAccounts} />
+          <UnstyledButton px={8} py={4} style={{ borderRadius: 4 }}>
+            <AccountItem
+              account={activeAccount}
+              hasMultipleAccounts={hasMultipleAccounts}
+              iconOnly={collapsed}
+            />
           </UnstyledButton>
         </Menu.Target>
       )}
-      {menuAccounts.length > 1 && (
-        <Menu.Dropdown>
-          <Menu.Label>My Accounts</Menu.Label>
-          <Menu.Divider />
-          {menuAccounts.map((account) => (
-            <Menu.Item key={account.id} disabled={account.id === accountId} p={2}>
-              <NavLink to={`/account/${account.id}`}>
-                <AccountItem account={account} />
-              </NavLink>
-            </Menu.Item>
-          ))}
+      {accounts && accounts?.length > 0 && (
+        <Menu.Dropdown px={8} py="md">
+          {accounts
+            .sort((a, b) => (a.id > b.id ? 1 : -1))
+            .map((account, index) => (
+              <Menu.Item
+                key={account.id}
+                disabled={account.id === accountId}
+                mb={index === accounts.length - 1 ? 0 : 8}
+                p={2}
+              >
+                <NavLink to={`/account/${account.id}`}>
+                  <AccountItem account={account} selected={account.id === accountId} />
+                </NavLink>
+              </Menu.Item>
+            ))}
         </Menu.Dropdown>
       )}
     </Menu>

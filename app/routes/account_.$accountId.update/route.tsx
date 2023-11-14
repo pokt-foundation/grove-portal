@@ -6,7 +6,15 @@ import {
   MetaFunction,
   redirect,
 } from "@remix-run/node"
-import { useActionData, useLoaderData, useNavigation } from "@remix-run/react"
+import {
+  useActionData,
+  useLoaderData,
+  useNavigate,
+  useNavigation,
+  useParams,
+  useSearchParams,
+} from "@remix-run/react"
+import { useEffect } from "react"
 import invariant from "tiny-invariant"
 import AccountForm from "./components/AccountForm"
 import ErrorView from "~/components/ErrorView"
@@ -17,7 +25,7 @@ import { Account } from "~/models/portal/sdk"
 import { DataStruct } from "~/types/global"
 import { getErrorMessage } from "~/utils/catchError"
 import { seo_title_append } from "~/utils/seo"
-import isUserAccountOwner from "~/utils/user"
+import isUserMember from "~/utils/user"
 import { requireUser } from "~/utils/user.server"
 
 export const meta: MetaFunction = () => {
@@ -28,6 +36,10 @@ export const meta: MetaFunction = () => {
 
 type AccountUpdateData = {
   account: Account
+}
+
+type AccountUpdateActionData = {
+  success: boolean
 }
 
 export const loader: LoaderFunction = async ({ request, params }) => {
@@ -52,13 +64,13 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       return redirect(`/account/${params.accountId}`)
     }
 
-    const isUserOwner = isUserAccountOwner({
+    const isMember = isUserMember({
       accounts: getUserAccountsResponse.getUserAccounts as Account[],
       accountId: accountId as string,
       user: user.user,
     })
 
-    if (!isUserOwner) {
+    if (isMember) {
       return redirect(`/account/${params.accountId}`)
     }
 
@@ -84,7 +96,7 @@ export const action: ActionFunction = async ({ request, params }) => {
   const name = formData.get("account_name")
   const { accountId } = params
 
-  invariant(name && typeof name === "string", "app name not found")
+  invariant(name && typeof name === "string", "account name not found")
   invariant(accountId && typeof accountId === "string", "accountId not found")
 
   try {
@@ -104,9 +116,13 @@ export const action: ActionFunction = async ({ request, params }) => {
       throw new Error("Unable to update account")
     }
 
-    return redirect(`/account/${accountId}`)
+    return json<DataStruct<AccountUpdateActionData>>({
+      data: { success: true },
+      error: false,
+      message: `Account name updated to ${name} successfully`,
+    })
   } catch (error) {
-    return json<DataStruct<AccountUpdateData>>({
+    return json<DataStruct<AccountUpdateActionData>>({
       data: null,
       error: true,
       message: getErrorMessage(error),
@@ -117,9 +133,20 @@ export const action: ActionFunction = async ({ request, params }) => {
 export default function UpdateAccount() {
   const { data, error, message } = useLoaderData() as DataStruct<AccountUpdateData>
   const actionData = useActionData() as DataStruct<AccountUpdateData>
+  const { accountId } = useParams()
+
   const { state } = useNavigation()
+  const navigate = useNavigate()
+  const [params] = useSearchParams()
+  const redirectTo = params.get("redirectTo")
 
   useActionNotification(actionData)
+
+  useEffect(() => {
+    if (actionData) {
+      navigate(redirectTo ?? `/account/${accountId}/settings`)
+    }
+  }, [accountId, actionData, navigate, redirectTo])
 
   if (error) {
     return <ErrorView message={message} />
@@ -127,14 +154,18 @@ export default function UpdateAccount() {
 
   const { account } = data
 
-  return state === "idle" ? (
-    <Box maw={860} mx="auto">
-      <AccountForm account={account} />
-    </Box>
-  ) : (
+  return state !== "idle" ? (
     <LoadingOverlay
       visible
-      loader={<PortalLoader message="Updating your account..." />}
+      loader={
+        <PortalLoader
+          message={state === "submitting" ? "Updating your account..." : "Redirecting..."}
+        />
+      }
     />
+  ) : (
+    <Box maw={860} mt={90} mx="auto">
+      <AccountForm account={account} redirectTo={redirectTo} />
+    </Box>
   )
 }

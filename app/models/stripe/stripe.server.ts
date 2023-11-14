@@ -24,7 +24,7 @@ export const getCustomer = async (
 
 export const getSubscription = async (
   email: string,
-  endpointId: string,
+  accountId: string,
   userId: string,
 ): Promise<Stripe.Subscription | undefined> => {
   const customer = await getCustomer(email, userId)
@@ -38,6 +38,6 @@ export const getSubscription = async (
   })
 
   return subscriptions.data.find(
-    (sub) => sub.metadata.endpoint_id && sub.metadata.endpoint_id === endpointId,
+    (sub) => sub.metadata.account_id && sub.metadata.account_id === accountId,
   )
 }

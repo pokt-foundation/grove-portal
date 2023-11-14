@@ -31,11 +31,13 @@ export const action: ActionFunction = async ({ request, params }) => {
   const portal = initPortalClient({ token: user.accessToken })
   const formData = await request.formData()
 
-  const { appId } = params
+  const { appId, accountId } = params
   invariant(typeof appId === "string", "appId must be set")
+  invariant(typeof accountId === "string", "accountId must be set")
 
-  let input: Partial<UpdatePortalApp> = {
+  let input: UpdatePortalApp = {
     appID: appId,
+    accountID: accountId as string,
   }
 
   try {

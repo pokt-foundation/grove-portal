@@ -1,4 +1,13 @@
-import { Blockchain, PortalApp, User } from "./sdk"
+import {
+  Account,
+  Blockchain,
+  NotificationType,
+  PayPlanType,
+  PortalApp,
+  PortalAppEnvironment,
+  RoleName,
+  User,
+} from "./sdk"
 
 const testEmail = "test@test.test"
 export const testPortalUserId = "userId_test"
@@ -520,4 +529,152 @@ export const profileMockData: User & { auth0ID: string } = {
   updatesProduct: false,
   updatesMarketing: false,
   betaTester: false,
+}
+
+export const accountMockData: Account = {
+  id: "08cbd8b8",
+  name: "Staging",
+  planType: PayPlanType.FreetierV0,
+  enterpriseLimit: 0,
+  notifications: [
+    {
+      notificationType: NotificationType.Email,
+      notificationSettings: {
+        accountID: "",
+        type: NotificationType.Email,
+        active: true,
+        destination: "",
+        trigger: "",
+        events: {
+          full: true,
+          half: false,
+          quarter: false,
+          signedUp: false,
+          threeQuarters: true,
+        },
+      },
+    },
+  ],
+  users: [
+    {
+      id: "667ba247",
+      email: "rabee+3@grove.city",
+      roleName: RoleName.Admin,
+      accepted: true,
+    },
+    {
+      id: "200bb0c2",
+      email: "rabee+1@grove.city",
+      roleName: RoleName.Member,
+      accepted: false,
+    },
+    {
+      id: "3c003c04",
+      email: "rabee@grove.city",
+      roleName: RoleName.Owner,
+      accepted: true,
+    },
+  ],
+  partnerChainIDs: [],
+  partnerThroughputLimit: 0,
+  partnerAppLimit: 0,
+  integrations: {
+    stripeSubscriptionID: "",
+    covalentAPIKeyFree: "",
+    covalentAPIKeyPaid: "",
+  },
+  createdAt: "2023-10-03 23:25:34.375933 +0000 UTC",
+  updatedAt: "2023-11-07 15:28:49.225929 +0000 UTC",
+  deleted: false,
+  portalApps: [
+    {
+      id: "4118f1ae",
+      name: "Prod",
+      accountID: "08cbd8b8",
+      appEmoji: "1f30d",
+      description: "",
+      settings: {
+        appID: "",
+        environment: PortalAppEnvironment.Production,
+        secretKey: "3e917fa4dfa108d5c2ccc6e16df7fdc3",
+        secretKeyRequired: false,
+        favoritedChainIDs: [],
+      },
+      whitelists: {
+        origins: [],
+        userAgents: [],
+        blockchains: [],
+        contracts: [],
+        methods: [],
+      },
+      aats: [
+        {
+          protocolAppID: "39fa1bea",
+          aat: {
+            id: "39fa1bea",
+            appID: "",
+            publicKey: "639b63fadbf4f77d796e74f4e599548c310f056abc7dee80f4624e60c8c4bbf9",
+            address: "34d33b5b6fdcb173806a82c95de989424c15c65d",
+            clientPublicKey:
+              "5ad3c2acb46626b1c5e1283e26a966177b7c6f1e04a63e0350567529b42187c5",
+            signature:
+              "62636b7a9d91c80e27fe3b93825ffb88fd172fe813463ea5a3975749076d8b7f0c10c1b8dda4ca24475378e0b096baaa53f891a2109ec1f01010eab41f888302",
+            version: "0.0.1",
+          },
+        },
+      ],
+      createdAt: "2023-10-03 23:30:34.163453 +0000 UTC",
+      updatedAt: "2023-10-03 23:30:34.163453 +0000 UTC",
+      deleted: false,
+    },
+    {
+      id: "7329bb69",
+      name: "Staging",
+      accountID: "08cbd8b8",
+      appEmoji: "1f31f",
+      description: "",
+      settings: {
+        appID: "",
+        environment: PortalAppEnvironment.Production,
+        secretKey: "54d0e42cb88dfc0b653e62b0afb7f15d",
+        secretKeyRequired: false,
+        favoritedChainIDs: [],
+      },
+      whitelists: {
+        origins: [],
+        userAgents: [],
+        blockchains: [],
+        contracts: [],
+        methods: [],
+      },
+      aats: [
+        {
+          protocolAppID: "144876aa",
+          aat: {
+            id: "144876aa",
+            appID: "",
+            publicKey: "3acc92f18434c01f7c4dc6e4ff27e9217b0eacbbb5f5ebcb31b4877ab19bf0c4",
+            address: "531015144295e4751cdd45d3b1119befc5cfdaf9",
+            clientPublicKey:
+              "5ad3c2acb46626b1c5e1283e26a966177b7c6f1e04a63e0350567529b42187c5",
+            signature:
+              "0fbca69e3a230dfcf323200a147b3dd1a32fcae0be20b3ac5b6496bd3e4d7d31f90b2abf3d14257077230d8ffdfe29963a4ac27b634d710c42baa9b48f51f603",
+            version: "0.0.1",
+          },
+        },
+      ],
+      createdAt: "2023-10-03 23:29:01.849386 +0000 UTC",
+      updatedAt: "2023-10-03 23:29:01.849386 +0000 UTC",
+      deleted: false,
+    },
+  ],
+  plan: {
+    id: "",
+    type: PayPlanType.FreetierV0,
+    monthlyRelayLimit: 0,
+    chainIDs: [],
+    throughputLimit: 30,
+    appLimit: 0,
+    dailyLimit: 100000,
+  },
 }

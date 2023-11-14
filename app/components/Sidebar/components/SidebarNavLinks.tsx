@@ -21,7 +21,7 @@ export type SidebarNavRoute = {
   icon?: IconType | string
   imgSrc?: string
   end?: boolean
-  badge?: string
+  external?: boolean
 }
 
 export type LinkLabelProps = Pick<SidebarNavRoute, "icon" | "label" | "imgSrc"> & {

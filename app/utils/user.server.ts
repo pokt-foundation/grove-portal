@@ -2,7 +2,7 @@ import { redirect } from "@remix-run/node"
 import jwt_decode from "jwt-decode"
 import { authenticator, AuthUser } from "./auth.server"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { User, Account } from "~/models/portal/sdk"
+import { User, Account, RoleName } from "~/models/portal/sdk"
 
 export enum Permissions {
   PayPlanTypes = "write:pay_plan_types",
@@ -104,8 +104,8 @@ export const redirectToUserAccount = async (user: AuthUser) => {
 
   let owner = accounts.getUserAccounts.find(
     (account) =>
-      account?.accountUsers.find((u) => u.accountUserID === user.user.portalUserID)
-        ?.owner,
+      account?.users.find((u) => u.id === user.user.portalUserID)?.roleName ===
+      RoleName.Owner,
   )
 
   if (owner) {

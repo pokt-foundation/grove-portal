@@ -10,7 +10,7 @@ import { Stripe } from "~/models/stripe/stripe.server"
 import { AccountPlanViewProps } from "~/routes/account.$accountId.settings.plan/view"
 import useCommonStyles from "~/styles/commonStyles"
 import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
-import { dayjs } from "~/utils/dayjs"
+import { formatTimestampShort } from "~/utils/dayjs"
 
 type AutoScalePlanLatestInvoiceCardProps = Required<
   Pick<AccountPlanViewProps, "accountAppsRelays" | "usageRecords" | "userRole">
@@ -87,12 +87,14 @@ export default function AutoScalePlanLatestInvoiceCard({
         <Divider />
         <Group position="apart">
           <Text>Start period</Text>
-          <Text>{dayjs.unix(Number(invoice.period_start)).format("DD MMMM YYYY")}</Text>
+          <Text>{formatTimestampShort(invoice.period_start)}</Text>
         </Group>
         <Divider />
         <Group position="apart">
           <Text>End period</Text>
-          <Text>{dayjs.unix(Number(invoice.period_end)).format("DD MMMM YYYY")}</Text>
+          <Text>
+            <Text>{formatTimestampShort(invoice.period_end)}</Text>
+          </Text>
         </Group>
         <Divider />
 

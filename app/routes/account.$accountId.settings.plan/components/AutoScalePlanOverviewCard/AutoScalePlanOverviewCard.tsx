@@ -17,7 +17,7 @@ import { Stripe } from "~/models/stripe/stripe.server"
 import useSubscriptionModals from "~/routes/account.$accountId.settings.plan/hooks/useSubscriptionModals"
 import useCommonStyles from "~/styles/commonStyles"
 import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
-import { dayjs } from "~/utils/dayjs"
+import { formatTimestampShort } from "~/utils/dayjs"
 import { getPlanName } from "~/utils/planUtils"
 
 interface AutoScalePlanOverviewCardProps {
@@ -71,10 +71,8 @@ export default function AutoScalePlanOverviewCard({
             </Group>
             <Divider />
             <Group position="apart">
-              <Text>Start date</Text>{" "}
-              <Text>
-                {dayjs.unix(Number(subscription.start_date)).format("DD MMMM YYYY")}
-              </Text>
+              <Text>Start date</Text>
+              <Text>{formatTimestampShort(subscription.start_date)}</Text>
             </Group>
             <Divider />
           </Stack>

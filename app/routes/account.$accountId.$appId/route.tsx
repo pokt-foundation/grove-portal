@@ -21,7 +21,6 @@ import useActionNotification from "~/hooks/useActionNotification"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { Blockchain, PortalApp, RoleName } from "~/models/portal/sdk"
 import { DataStruct } from "~/types/global"
-import { getUserRole } from "~/utils/applicationUtils"
 import { getErrorMessage } from "~/utils/catchError"
 import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
@@ -49,7 +48,10 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   invariant(appId, "app id not found")
 
   try {
-    const getUserPortalAppResponse = await portal.getUserPortalApp({ portalAppID: appId })
+    const getUserPortalAppResponse = await portal.getUserPortalApp({
+      portalAppID: appId,
+      accountID: accountId,
+    })
     if (!getUserPortalAppResponse.getUserPortalApp) {
       throw new Error(
         `Account ${params.appId} not found for user ${user.user.portalUserID}`,
@@ -71,7 +73,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   } catch (error) {
     /**
      * Handle when an invalid app is manually entered & the case when the
-     * an application is deleted
+     * application is deleted
      */
     if (getErrorMessage(error).includes("portal app not found")) {
       return redirect(`/account/${accountId}`)
@@ -103,7 +105,10 @@ export const action: ActionFunction = async ({ request, params }) => {
     if (delete_application === "true") {
       // delete application via api
       //
-      const deleteAppResponse = await portal.deleteUserPortalApp({ portalAppID: appId })
+      const deleteAppResponse = await portal.deleteUserPortalApp({
+        portalAppID: appId,
+        accountID: accountId,
+      })
 
       if (!deleteAppResponse.deleteUserPortalApp) {
         throw new Error(`Error deleting application: ${appId}`)
@@ -127,7 +132,7 @@ export type AppIdOutletContext = AppIdLoaderData & {
 
 export default function AppIdLayout() {
   const { data, error, message } = useLoaderData() as DataStruct<AppIdLoaderData>
-  const { user } = useOutletContext<AccountIdLoaderData>()
+  const { userRole } = useOutletContext<AccountIdLoaderData>()
   const actionData = useActionData() as DataStruct<AppIdActionData>
 
   // handle all notifications at the layout level
@@ -138,8 +143,6 @@ export default function AppIdLayout() {
   }
 
   const { app, blockchains } = data
-  const userRole = getUserRole(app.portalAppUsers, user.portalUserID) as RoleName
-
   return (
     <AppIdLayoutView app={app} userRole={userRole}>
       <Outlet

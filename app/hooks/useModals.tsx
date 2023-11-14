@@ -18,6 +18,7 @@ const useModals = () => {
     overlayOpacity: 0.8,
     overlayBlur: 3,
     padding: "md",
+    styles: { body: { marginTop: "90px" } },
   }
 
   const openConfirmationModal = (modalProps: OpenConfirmModal) =>

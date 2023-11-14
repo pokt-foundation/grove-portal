@@ -61,7 +61,7 @@ const AppForm = ({ app, onSubmit }: AppFormProps) => {
   return (
     <Stack>
       <Box>
-        <Flex align="center" justify="space-between" my="32px">
+        <Flex align="center" justify="space-between">
           <Text fw={600} fz="21px">
             {label} your application
           </Text>

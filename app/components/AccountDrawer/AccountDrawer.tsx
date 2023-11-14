@@ -11,8 +11,7 @@ import {
 import { Link, LinkProps, useFetcher } from "@remix-run/react"
 import React, { useState } from "react"
 import {
-  LuBook,
-  LuDiamond,
+  LuBookOpen,
   LuLeaf,
   LuLifeBuoy,
   LuSmile,
@@ -69,7 +68,7 @@ const drawerExternalLinks = [
   {
     label: "Documentation",
     to: DOCS_PATH,
-    icon: <LuBook size={18} />,
+    icon: <LuBookOpen size={18} />,
   },
   {
     label: "Support",
@@ -138,12 +137,6 @@ const AccountDrawer = ({ user, hasPendingInvites }: AccountDrawerProps) => {
             setIsDrawerOpen={setIsDrawerOpen}
             to="/user/profile"
           />
-          <DrawerLink
-            icon={<LuTowerControl size={18} />}
-            label="My Accounts"
-            setIsDrawerOpen={setIsDrawerOpen}
-            to={`/user/accounts`}
-          />
           <Indicator
             inline
             disabled={!hasPendingInvites}
@@ -154,10 +147,10 @@ const AccountDrawer = ({ user, hasPendingInvites }: AccountDrawerProps) => {
             size={16}
           >
             <DrawerLink
-              icon={<LuDiamond size={18} />}
-              label="Invited Apps"
+              icon={<LuTowerControl size={18} />}
+              label="My Accounts"
               setIsDrawerOpen={setIsDrawerOpen}
-              to={`/user/invited-apps`}
+              to={`/user/accounts`}
             />
           </Indicator>
           <Divider my={8} />

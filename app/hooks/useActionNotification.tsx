@@ -3,7 +3,7 @@ import React, { useEffect } from "react"
 import { LuCheck, LuX } from "react-icons/lu"
 import { DataStruct } from "~/types/global"
 
-type ActionNotificationData = Pick<DataStruct<DataStruct<any>>, "message" | "error">
+type ActionNotificationData = Pick<DataStruct<any>, "message" | "error">
 
 const useActionNotification = (data: ActionNotificationData) => {
   useEffect(() => {

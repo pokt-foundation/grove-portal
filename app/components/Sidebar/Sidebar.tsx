@@ -3,10 +3,10 @@ import { Box, MediaQuery, Navbar, ScrollArea } from "@pokt-foundation/pocket-blo
 import { Link, useParams } from "@remix-run/react"
 import React, { useMemo, useState } from "react"
 import {
-  LuBarChart4,
-  LuBook,
-  LuDiamond,
+  LuArrowUpCircle,
+  LuBookOpen,
   LuLifeBuoy,
+  LuLineChart,
   LuPanelLeft,
   LuPlus,
   LuSettings,
@@ -14,33 +14,35 @@ import {
 import AccountSelect from "~/components/AccountSelect"
 import GroveLogo from "~/components/GroveLogo"
 import {
-  InternalLink,
   ExternalLink,
+  InternalLink,
   NavButton,
-  SidebarNavRoute,
   SidebarApps,
+  SidebarNavRoute,
 } from "~/components/Sidebar/components"
-import { Account, PayPlanType, PortalApp } from "~/models/portal/sdk"
+import { Account, PayPlanType, PortalApp, RoleName } from "~/models/portal/sdk"
 import useCommonStyles from "~/styles/commonStyles"
 import { DISCORD_PATH, DOCS_PATH } from "~/utils/utils"
 
 type SidebarProps = {
-  apps: PortalApp[] | null
+  account: Account
   hidden: boolean
-  canCreateApps: boolean
   accounts: Account[]
+  userRole: RoleName
 }
 
-const getStaticRoutes = (activeAccount: Account | undefined): SidebarNavRoute[] => {
+const getStaticRoutes = (
+  activeAccount: Account,
+  userRole: RoleName,
+): SidebarNavRoute[] => {
   const isStarterAccount = activeAccount?.planType === PayPlanType.FreetierV0
   return [
-    ...(isStarterAccount
+    ...(isStarterAccount && userRole !== RoleName.Member
       ? [
           {
-            // to: `/account/${activeAccount?.id}/plan`,
-            to: `/user/accounts`,
+            to: `/api/stripe/checkout-session?account-id=${activeAccount.id}`,
             label: "Upgrade to Auto-Scale",
-            icon: LuDiamond,
+            icon: LuArrowUpCircle,
             end: true,
           },
         ]
@@ -49,19 +51,18 @@ const getStaticRoutes = (activeAccount: Account | undefined): SidebarNavRoute[] 
       {
         to: `/account/${activeAccount?.id}`,
         label: "Insights",
-        icon: LuBarChart4,
+        icon: LuLineChart,
         end: true,
       },
       {
-        to: `/user/accounts`,
-        label: "Settings and members",
+        to: `/account/${activeAccount?.id}/settings`,
+        label: "Settings",
         icon: LuSettings,
-        end: true,
       },
       {
         to: DOCS_PATH,
-        icon: LuBook,
-        label: "Docs",
+        icon: LuBookOpen,
+        label: "Documentation",
         external: true,
       },
       {
@@ -74,14 +75,16 @@ const getStaticRoutes = (activeAccount: Account | undefined): SidebarNavRoute[] 
   ]
 }
 
-export const Sidebar = ({ apps, hidden, canCreateApps, accounts }: SidebarProps) => {
+export const Sidebar = ({ account, hidden, userRole, accounts }: SidebarProps) => {
   const { classes: commonClasses } = useCommonStyles()
   const { accountId } = useParams()
   const [collapsed, setCollapsed] = useState(false)
   const staticRoutes = useMemo(() => {
-    const activeAccount = accounts.find(({ id }) => id === accountId)
-    return getStaticRoutes(activeAccount)
-  }, [accountId, accounts])
+    return getStaticRoutes(account, userRole)
+  }, [account, userRole])
+
+  const canCreateApps = userRole !== RoleName.Member
+  const { portalApps: apps } = account
 
   return (
     <Navbar
@@ -93,6 +96,12 @@ export const Sidebar = ({ apps, hidden, canCreateApps, accounts }: SidebarProps)
       width={{ base: collapsed ? 60 : 300 }}
     >
       <>
+        <Box ml={10}>
+          <Link to={`/account/${accountId}`}>
+            <GroveLogo icon={collapsed} />
+          </Link>
+        </Box>
+        <Divider mb="md" ml={-8} mr={-8} mt="sm" />
         <AccountSelect accounts={accounts} collapsed={collapsed} />
         <ScrollArea h="100%" mt="lg" mx="-xs" px="xs">
           {staticRoutes.map((route, index) =>
@@ -108,7 +117,7 @@ export const Sidebar = ({ apps, hidden, canCreateApps, accounts }: SidebarProps)
           )}
           <Divider my="lg" />
           <Navbar.Section>
-            {apps && <SidebarApps apps={apps} iconOnly={collapsed} />}
+            {apps && <SidebarApps apps={apps as PortalApp[]} iconOnly={collapsed} />}
             {canCreateApps && (
               <InternalLink
                 iconOnly={collapsed}
@@ -132,12 +141,6 @@ export const Sidebar = ({ apps, hidden, canCreateApps, accounts }: SidebarProps)
             />
           </Navbar.Section>
         </MediaQuery>
-
-        <Box ml="md" mt={30}>
-          <Link to={`/account/${accountId}`}>
-            <GroveLogo icon={collapsed} />
-          </Link>
-        </Box>
       </>
     </Navbar>
   )

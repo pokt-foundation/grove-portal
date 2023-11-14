@@ -38,8 +38,8 @@ const AccountItem = ({
             {account.name ? account.name : account.id}
           </Text>
           <Text size={11}>{`${getPlanName(account.planType)} · ${
-            account?.accountUsers?.length ?? 1
-          } member${account?.accountUsers?.length > 1 ? "s" : ""}`}</Text>
+            account?.users?.length ?? 1
+          } member${account?.users?.length > 1 ? "s" : ""}`}</Text>
         </Stack>
         {hasMultipleAccounts && (
           <LuChevronsUpDown size={18} style={{ marginLeft: "auto", marginRight: 0 }} />

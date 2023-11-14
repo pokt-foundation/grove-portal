@@ -1,6 +1,7 @@
 import { RelayMetric } from "./relaymeter.server"
+import { AccountAppRelays } from "~/routes/account.$accountId.settings.plan/route"
 
-export const relayMetric: RelayMetric = {
+export const relayMetric: AccountAppRelays = {
   Count: {
     Success: 0,
     Failure: 0,
@@ -8,6 +9,8 @@ export const relayMetric: RelayMetric = {
   },
   From: "2022-08-22T00:00:00Z",
   To: "2022-08-23T00:00:00Z",
+  name: "account",
+  appEmoji: "emoji",
 }
 
 export const today: RelayMetric = {

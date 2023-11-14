@@ -79,7 +79,6 @@ export const action: ActionFunction = async ({ request, params }) => {
         )
       }
 
-      // todo: send user email with account name?
       await sendTeamInviteEmail(user_email, invitedAccountName).catch((error) => {
         console.log(error)
         message = message + ", however email notification failed."
@@ -140,7 +139,6 @@ export const action: ActionFunction = async ({ request, params }) => {
       const user_email = formData.get("user_email")
       invariant(typeof user_email === "string", "user_email must be set")
 
-      // todo: send user email with account name?
       await sendTeamInviteEmail(user_email, invitedAccountName).catch((error) => {
         console.log(error)
         throw new Error(`Invite email failed to send to user ${user_email}`)

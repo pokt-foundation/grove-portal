@@ -38,7 +38,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   invariant(accountId, "account id not found")
 
   if (getRequiredServerEnvVar("FLAG_STRIPE_PAYMENT") === "false") {
-    return redirect(`/account/settings/${accountId}`)
+    return redirect(`/account/${accountId}/settings`)
   }
 
   const user = await requireUser(request)

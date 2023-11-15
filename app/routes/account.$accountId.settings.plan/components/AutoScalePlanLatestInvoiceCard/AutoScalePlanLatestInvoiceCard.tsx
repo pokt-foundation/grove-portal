@@ -92,9 +92,7 @@ export default function AutoScalePlanLatestInvoiceCard({
         <Divider />
         <Group position="apart">
           <Text>End period</Text>
-          <Text>
-            <Text>{formatTimestampShort(invoice.period_end)}</Text>
-          </Text>
+          <Text>{formatTimestampShort(invoice.period_end)}</Text>
         </Group>
         <Divider />
 

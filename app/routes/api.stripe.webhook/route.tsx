@@ -77,23 +77,6 @@ export const action: ActionFunction = async ({ request }) => {
         }
 
         break
-      case "customer.subscription.deleted":
-        const subscriptionDeleted = event.data.object as Stripe.Subscription
-        console.log(`Customer subscription deleted for ${subscriptionDeleted.id}!`)
-
-        const accountIdDeleted = subscriptionDeleted.metadata.account_id
-
-        const formData = new FormData()
-        formData.set("id", accountIdDeleted)
-        formData.set("type", PayPlanType.FreetierV0)
-        formData.set("subscription_delete", "true")
-
-        await fetch(`${url.origin}/api/admin/update-plan`, {
-          method: "post",
-          body: formData,
-        })
-
-        break
       default:
         // Unexpected event type
         console.log(`Unhandled event type ${event.type}.`)

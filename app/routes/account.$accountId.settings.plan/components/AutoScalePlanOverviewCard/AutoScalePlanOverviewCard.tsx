@@ -36,8 +36,7 @@ export default function AutoScalePlanOverviewCard({
   const location = useLocation()
   const { classes: commonClasses } = useCommonStyles()
 
-  const { openStopSubscriptionModal, openRenewSubscriptionModal } =
-    useSubscriptionModals()
+  const { openStopSubscriptionModal } = useSubscriptionModals()
 
   const accountPlanType = account.planType
 
@@ -84,29 +83,17 @@ export default function AutoScalePlanOverviewCard({
               <input hidden defaultValue={location.pathname} name="return-path" />
               <Grid gutter="sm" justify="flex-end">
                 <Grid.Col lg={4} md={4} sm={6}>
-                  {accountPlanType === "PAY_AS_YOU_GO_V0" ? (
-                    <Button
-                      fullWidth
-                      className={commonClasses.grayOutlinedButton}
-                      color="gray"
-                      rightIcon={<LuStopCircle size={18} />}
-                      type="button"
-                      variant="outline"
-                      onClick={() => openStopSubscriptionModal(account)}
-                    >
-                      Stop subscription
-                    </Button>
-                  ) : (
-                    <Button
-                      fullWidth
-                      rightIcon={<LuRepeat size={18} />}
-                      type="button"
-                      variant="outline"
-                      onClick={() => openRenewSubscriptionModal(account)}
-                    >
-                      Renew subscription
-                    </Button>
-                  )}
+                  <Button
+                    fullWidth
+                    className={commonClasses.grayOutlinedButton}
+                    color="gray"
+                    rightIcon={<LuStopCircle size={18} />}
+                    type="button"
+                    variant="outline"
+                    onClick={() => openStopSubscriptionModal(account)}
+                  >
+                    Stop subscription
+                  </Button>
                 </Grid.Col>
                 <Grid.Col lg={4} md={4} sm={6}>
                   <Button

@@ -12,8 +12,6 @@ export const action: ActionFunction = async ({ request }) => {
   const userId = getPoktId(user.user.auth0ID)
   const formData = await request.formData()
   const accountId = formData.get("account-id")
-  const renew = formData.get("subscription-renew")
-  const action = renew !== "true"
 
   try {
     invariant(accountId, "account id not found")
@@ -21,15 +19,12 @@ export const action: ActionFunction = async ({ request }) => {
     const subscription = await getSubscription(uEmail, accountId as string, userId)
 
     if (subscription) {
-      const updatedSubscription = await stripe.subscriptions.update(subscription.id, {
-        cancel_at_period_end: action,
-      })
+      const updatedSubscription = await stripe.subscriptions.del(subscription.id)
       if (updatedSubscription) {
         await updatePlan({
           id: accountId as string,
-          type: action
-            ? (PayPlanType.FreetierV0 as unknown as PayPlanType.FreetierV0)
-            : (PayPlanType.PayAsYouGoV0 as unknown as PayPlanType.PayAsYouGoV0),
+          type: PayPlanType.FreetierV0 as unknown as PayPlanType.FreetierV0,
+          subscription_delete: "true",
         })
 
         return json({

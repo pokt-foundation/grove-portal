@@ -40,7 +40,7 @@ const getStaticRoutes = (
     ...(isStarterAccount && userRole !== RoleName.Member
       ? [
           {
-            to: `/api/stripe/checkout-session?account-id=${activeAccount.id}`,
+            to: `/account/${activeAccount?.id}/upgrade`,
             label: "Upgrade to Auto-Scale",
             icon: LuArrowUpCircle,
             end: true,

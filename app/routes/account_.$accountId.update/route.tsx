@@ -21,11 +21,11 @@ import ErrorView from "~/components/ErrorView"
 import PortalLoader from "~/components/PortalLoader"
 import useActionNotification from "~/hooks/useActionNotification"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { Account } from "~/models/portal/sdk"
+import { Account, RoleName } from "~/models/portal/sdk"
 import { DataStruct } from "~/types/global"
+import { getUserAccountRole } from "~/utils/accountUtils"
 import { getErrorMessage } from "~/utils/catchError"
 import { seo_title_append } from "~/utils/seo"
-import isUserMember from "~/utils/user"
 import { requireUser } from "~/utils/user.server"
 
 export const meta: MetaFunction = () => {
@@ -59,18 +59,12 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       return redirect(`/account/${params.accountId}`)
     }
 
-    const getUserAccountsResponse = await portal.getUserAccounts({ accepted: true })
-    if (!getUserAccountsResponse.getUserAccounts) {
-      return redirect(`/account/${params.accountId}`)
-    }
+    const userRole = getUserAccountRole(
+      getUserAccountResponse.getUserAccount.users,
+      user.user.portalUserID,
+    )
 
-    const isMember = isUserMember({
-      accounts: getUserAccountsResponse.getUserAccounts as Account[],
-      accountId: accountId as string,
-      user: user.user,
-    })
-
-    if (isMember) {
+    if (!userRole || userRole === RoleName.Member) {
       return redirect(`/account/${params.accountId}`)
     }
 

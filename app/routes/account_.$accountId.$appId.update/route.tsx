@@ -49,21 +49,22 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       return redirect(`/account/${accountId}`)
     }
 
-    const getUserAccountsResponse = await portal.getUserAccounts({ accepted: true })
-    if (!getUserAccountsResponse.getUserAccounts) {
+    const getUserAccountResponse = await portal
+      .getUserAccount({ accountID: accountId, accepted: true })
+      .catch((e) => {
+        console.log(e)
+      })
+
+    if (!getUserAccountResponse) {
       return redirect(`/account/${params.accountId}`)
     }
 
-    const currentAccount = getUserAccountsResponse?.getUserAccounts?.find(
-      (acc) => acc?.id === accountId,
+    const userRole = getUserAccountRole(
+      getUserAccountResponse.getUserAccount.users,
+      user.user.portalUserID,
     )
 
-    const canUserUpdate = currentAccount
-      ? getUserAccountRole(currentAccount.users, user.user.portalUserID) !==
-        RoleName.Member
-      : false
-
-    if (!canUserUpdate) {
+    if (!userRole || userRole === RoleName.Member) {
       return redirect(`/account/${params.accountId}/${appId}`)
     }
 

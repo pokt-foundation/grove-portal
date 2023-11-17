@@ -23,8 +23,7 @@ export const action: ActionFunction = async ({ request }) => {
       if (updatedSubscription) {
         await updatePlan({
           id: accountId as string,
-          type: PayPlanType.FreetierV0 as unknown as PayPlanType.FreetierV0,
-          subscription_delete: "true",
+          type: PayPlanType.FreetierV0,
         })
 
         return json({

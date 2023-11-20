@@ -1,4 +1,4 @@
-import { Text } from "@pokt-foundation/pocket-blocks"
+import { Text } from "@mantine/core"
 import { useFetcher } from "@remix-run/react"
 import useModals from "~/hooks/useModals"
 import { Account } from "~/models/portal/sdk"

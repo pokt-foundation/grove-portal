@@ -8,7 +8,7 @@ import {
   Text,
   UnstyledButton,
   Tooltip,
-} from "@pokt-foundation/pocket-blocks"
+} from "@mantine/core"
 import { NavLink } from "@remix-run/react"
 import { Emoji } from "emoji-picker-react"
 import React from "react"

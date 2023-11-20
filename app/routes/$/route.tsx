@@ -8,10 +8,10 @@ type LoaderData = {
 }
 
 export const meta: MetaFunction = () => {
-  return {
-    title: `${seo_404_title} ${seo_title_append}`,
-    description: `${seo_404_description} ${seo_title_append}`,
-  }
+  return [
+    { title: `${seo_404_title} ${seo_title_append}` },
+    { description: `${seo_404_description} ${seo_title_append}` },
+  ]
 }
 
 export const loader: LoaderFunction = ({ params }) => {

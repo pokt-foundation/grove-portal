@@ -1,11 +1,4 @@
-import {
-  Box,
-  Center,
-  CloseButton,
-  Flex,
-  Text,
-  Tooltip,
-} from "@pokt-foundation/pocket-blocks"
+import { Box, Center, CloseButton, Flex, Text, Tooltip } from "@mantine/core"
 import { NavLink, useParams } from "@remix-run/react"
 import { AccountPlan } from "~/components/AccountPlan"
 import { PayPlanType } from "~/models/portal/sdk"

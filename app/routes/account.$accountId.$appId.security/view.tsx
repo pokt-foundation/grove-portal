@@ -1,5 +1,4 @@
-import { Divider } from "@mantine/core"
-import { Box } from "@pokt-foundation/pocket-blocks"
+import { Divider, Box } from "@mantine/core"
 import { useFetcher } from "@remix-run/react"
 import React, { useReducer, useEffect, useRef } from "react"
 import ApprovedChains from "./components/ApprovedChains"

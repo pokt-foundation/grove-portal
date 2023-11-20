@@ -1,5 +1,5 @@
-import { Divider } from "@mantine/core"
 import {
+  Divider,
   Box,
   CloseButton,
   Group,
@@ -7,8 +7,8 @@ import {
   Stack,
   Text,
   Tooltip,
-} from "@pokt-foundation/pocket-blocks"
-import { LoaderFunction, MetaFunction, redirect } from "@remix-run/node"
+} from "@mantine/core"
+import { LoaderFunction, redirect } from "@remix-run/node"
 import { NavLink, useNavigate, useParams } from "@remix-run/react"
 import React from "react"
 import invariant from "tiny-invariant"
@@ -22,9 +22,11 @@ import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
 
 export const meta: MetaFunction = () => {
-  return {
-    title: `Upgrade to Auto-Scale ${seo_title_append}`,
-  }
+  return [
+    {
+      title: `Upgrade to Auto-Scale ${seo_title_append}`,
+    },
+  ]
 }
 
 export const loader: LoaderFunction = async ({ request, params }) => {

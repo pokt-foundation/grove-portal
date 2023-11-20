@@ -1,4 +1,4 @@
-import { Box, Stack, Text } from "@pokt-foundation/pocket-blocks"
+import { Box, Stack, Text } from "@mantine/core"
 import React, { Dispatch, useMemo } from "react"
 import { SecurityReducerActions } from "../../utils/stateReducer"
 import { BlockchainWhitelist } from "../../utils/utils"

@@ -1,4 +1,4 @@
-import { Space, Container } from "@pokt-foundation/pocket-blocks"
+import { Space, Container } from "@mantine/core"
 import { LoaderFunction, json, LinksFunction } from "@remix-run/node"
 import { Outlet } from "@remix-run/react"
 import styles from "./styles.css"

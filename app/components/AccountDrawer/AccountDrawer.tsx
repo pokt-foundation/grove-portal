@@ -1,4 +1,3 @@
-import { Divider, Indicator, NavLinkProps } from "@mantine/core"
 import {
   Drawer,
   Stack,
@@ -7,7 +6,10 @@ import {
   NavLink,
   Group,
   MantineTheme,
-} from "@pokt-foundation/pocket-blocks"
+  Divider,
+  Indicator,
+  NavLinkProps,
+} from "@mantine/core"
 import { Link, LinkProps, useFetcher } from "@remix-run/react"
 import React, { useState } from "react"
 import {
@@ -17,8 +19,8 @@ import {
   LuSmile,
   LuTowerControl,
   LuUser2,
-} from "react-icons/lu"
-import { RiDiscordLine } from "react-icons/ri"
+} from "react-icons/lu/index.js"
+import { RiDiscordLine } from "react-icons/ri/index.js"
 import Identicon from "~/components/Identicon"
 import { User } from "~/models/portal/sdk"
 import { DISCORD_PATH, DOCS_PATH } from "~/utils/utils"

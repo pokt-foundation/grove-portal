@@ -1,11 +1,4 @@
-import {
-  Badge,
-  Card,
-  Group,
-  SimpleGrid,
-  Stack,
-  Text,
-} from "@pokt-foundation/pocket-blocks"
+import { Badge, Card, Group, SimpleGrid, Stack, Text } from "@mantine/core"
 import { useNavigation } from "@remix-run/react"
 import React from "react"
 import TitledCard from "~/components/TitledCard"

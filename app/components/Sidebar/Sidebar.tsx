@@ -1,5 +1,4 @@
-import { Divider } from "@mantine/core"
-import { Box, MediaQuery, Navbar, ScrollArea } from "@pokt-foundation/pocket-blocks"
+import { Divider, Box, MediaQuery, Navbar, ScrollArea } from "@mantine/core"
 import { Link, useParams } from "@remix-run/react"
 import React, { useMemo, useState } from "react"
 import {
@@ -10,7 +9,7 @@ import {
   LuPanelLeft,
   LuPlus,
   LuSettings,
-} from "react-icons/lu"
+} from "react-icons/lu/index.js"
 import AccountSelect from "~/components/AccountSelect"
 import GroveLogo from "~/components/GroveLogo"
 import {

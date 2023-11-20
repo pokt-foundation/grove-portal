@@ -1,5 +1,5 @@
-import { Divider } from "@mantine/core"
 import {
+  Divider,
   Box,
   Group,
   MantineTheme,
@@ -7,7 +7,7 @@ import {
   Stack,
   Text,
   TextInput,
-} from "@pokt-foundation/pocket-blocks"
+} from "@mantine/core"
 import CopyTextButton from "~/components/CopyTextButton"
 import { PortalApp, RoleName } from "~/models/portal/sdk"
 import { trackEvent, AnalyticCategories, AnalyticActions } from "~/utils/analytics"

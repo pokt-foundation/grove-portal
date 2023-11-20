@@ -1,14 +1,8 @@
-import {
-  Flex,
-  Menu,
-  TextInput,
-  useMantineTheme,
-  UnstyledButton,
-} from "@pokt-foundation/pocket-blocks"
+import { Flex, Menu, TextInput, useMantineTheme, UnstyledButton } from "@mantine/core"
 import { useFetcher, useParams } from "@remix-run/react"
 import React, { useMemo } from "react"
-import { LuBook } from "react-icons/lu"
-import { RiStarLine, RiStarFill } from "react-icons/ri"
+import { LuBook } from "react-icons/lu/index.js"
+import { RiStarLine, RiStarFill } from "react-icons/ri/index.js"
 import FavoriteChain from "../FavoriteChain"
 import Chain from "~/components/Chain"
 import ContextMenuTarget from "~/components/ContextMenuTarget"

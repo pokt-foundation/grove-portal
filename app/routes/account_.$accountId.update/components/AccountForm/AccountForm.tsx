@@ -1,5 +1,5 @@
-import { Divider } from "@mantine/core"
 import {
+  Divider,
   Box,
   Button,
   CloseButton,
@@ -10,7 +10,7 @@ import {
   Text,
   TextInput,
   Tooltip,
-} from "@pokt-foundation/pocket-blocks"
+} from "@mantine/core"
 import { Form, NavLink, useParams } from "@remix-run/react"
 import { useState } from "react"
 import { Account } from "~/models/portal/sdk"

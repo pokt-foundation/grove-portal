@@ -1,5 +1,5 @@
 import { createStyles } from "@mantine/core"
-import { Table, Box, LoadingOverlay } from "@pokt-foundation/pocket-blocks"
+import { Table, Box, LoadingOverlay } from "@mantine/core"
 import React from "react"
 import { DataTableBody } from "./DataTableBody"
 import { DataTablePagination } from "./DataTablePagination"

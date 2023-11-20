@@ -1,4 +1,4 @@
-import { Box, Text, useMantineTheme } from "@pokt-foundation/pocket-blocks"
+import { Box, Text, useMantineTheme } from "@mantine/core"
 import React, { useState } from "react"
 import {
   CartesianGrid,

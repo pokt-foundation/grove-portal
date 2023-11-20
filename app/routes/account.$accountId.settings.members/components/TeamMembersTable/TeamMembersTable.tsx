@@ -1,11 +1,4 @@
-import {
-  Avatar,
-  Flex,
-  Group,
-  MantineTheme,
-  Select,
-  Text,
-} from "@pokt-foundation/pocket-blocks"
+import { Avatar, Flex, Group, MantineTheme, Select, Text } from "@mantine/core"
 import { DataTable } from "~/components/DataTable"
 import Identicon from "~/components/Identicon"
 import { Account, RoleName, User } from "~/models/portal/sdk"

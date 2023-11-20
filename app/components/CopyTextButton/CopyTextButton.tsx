@@ -1,5 +1,5 @@
-import { Tooltip, ActionIcon, CopyButton } from "@pokt-foundation/pocket-blocks"
-import { LuCopy, LuCopyCheck } from "react-icons/lu"
+import { ActionIcon, Tooltip, CopyButton } from "@mantine/core"
+import { LuCopy, LuCopyCheck } from "react-icons/lu/index.js"
 import useCommonStyles from "~/styles/commonStyles"
 
 type CopyTextButtonProps = { value: string }

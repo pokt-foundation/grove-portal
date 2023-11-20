@@ -1,5 +1,4 @@
-import { Divider } from "@mantine/core"
-import { Box, CloseButton, Flex, Text, Tooltip } from "@pokt-foundation/pocket-blocks"
+import { Divider, Box, CloseButton, Flex, Text, Tooltip } from "@mantine/core"
 import React from "react"
 
 type ModalHeaderProps = {

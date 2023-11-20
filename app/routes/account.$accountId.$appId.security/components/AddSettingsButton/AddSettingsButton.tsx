@@ -1,6 +1,6 @@
-import { Button } from "@pokt-foundation/pocket-blocks"
+import { Button } from "@mantine/core"
 import React, { ButtonHTMLAttributes, forwardRef } from "react"
-import { LuPlus } from "react-icons/lu"
+import { LuPlus } from "react-icons/lu/index.js"
 import useCommonStyles from "~/styles/commonStyles"
 
 const AddSettingsButton = forwardRef<

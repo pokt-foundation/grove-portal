@@ -1,4 +1,4 @@
-import { Text } from "@pokt-foundation/pocket-blocks"
+import { Text } from "@mantine/core"
 import { useFetcher } from "@remix-run/react"
 import React from "react"
 import useActionNotification from "~/hooks/useActionNotification"

@@ -1,11 +1,4 @@
-import {
-  Box,
-  createStyles,
-  Loader,
-  SimpleGrid,
-  Stack,
-  Text,
-} from "@pokt-foundation/pocket-blocks"
+import { Box, createStyles, Loader, SimpleGrid, Stack, Text } from "@mantine/core"
 import { AnalyticsRelaysAggregated } from "~/models/dwh/sdk/models/AnalyticsRelaysAggregated"
 import { getTotalErrors } from "~/utils/chartUtils"
 import { commify } from "~/utils/formattingUtils"

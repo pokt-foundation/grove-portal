@@ -1,4 +1,4 @@
-import { Box, LoadingOverlay } from "@pokt-foundation/pocket-blocks"
+import { Box, LoadingOverlay } from "@mantine/core"
 import {
   ActionFunction,
   json,
@@ -24,9 +24,11 @@ import { seo_title_append } from "~/utils/seo"
 import { getUserPermissions, requireUser, Permissions } from "~/utils/user.server"
 
 export const meta: MetaFunction = () => {
-  return {
-    title: `Create Application ${seo_title_append}`,
-  }
+  return [
+    {
+      title: `Create Application ${seo_title_append}`,
+    },
+  ]
 }
 
 export const loader: LoaderFunction = async ({ request, params }) => {

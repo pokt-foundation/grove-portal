@@ -1,4 +1,4 @@
-import { Container, Stack, Text, Title } from "@pokt-foundation/pocket-blocks"
+import { Container, Stack, Text, Title } from "@mantine/core"
 import React, { useMemo } from "react"
 import LinkTabs from "~/components/LinkTabs"
 import { Account, PayPlanType } from "~/models/portal/sdk"

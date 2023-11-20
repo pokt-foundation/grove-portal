@@ -1,4 +1,4 @@
-import { Button } from "@pokt-foundation/pocket-blocks"
+import { Button } from "@mantine/core"
 import { json, LoaderFunction, MetaFunction, redirect } from "@remix-run/node"
 import { Link, useLoaderData, useOutletContext, useParams } from "@remix-run/react"
 import React from "react"
@@ -18,9 +18,11 @@ import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
 
 export const meta: MetaFunction = () => {
-  return {
-    title: `Account Insights ${seo_title_append}`,
-  }
+  return [
+    {
+      title: `Account Insights ${seo_title_append}`,
+    },
+  ]
 }
 
 export type AccountInsightsData = {

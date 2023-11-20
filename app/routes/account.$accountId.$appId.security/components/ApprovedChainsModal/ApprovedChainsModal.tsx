@@ -1,6 +1,5 @@
-import { Divider } from "@mantine/core"
+import { Divider, Button, Container, Group, LoadingOverlay } from "@mantine/core"
 import { closeAllModals } from "@mantine/modals"
-import { Button, Container, Group, LoadingOverlay } from "@pokt-foundation/pocket-blocks"
 import { useNavigation } from "@remix-run/react"
 import React, { Dispatch, useMemo, useState } from "react"
 import { SecurityReducerActions } from "../../utils/stateReducer"

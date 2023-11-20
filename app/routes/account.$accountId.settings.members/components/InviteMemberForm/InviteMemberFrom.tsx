@@ -1,6 +1,5 @@
-import { Divider } from "@mantine/core"
-import { closeAllModals } from "@mantine/modals"
 import {
+  Divider,
   TextInput,
   Button,
   Container,
@@ -9,7 +8,8 @@ import {
   Flex,
   Group,
   LoadingOverlay,
-} from "@pokt-foundation/pocket-blocks"
+} from "@mantine/core"
+import { closeAllModals } from "@mantine/modals"
 import { Form, useNavigation, useParams } from "@remix-run/react"
 import ModalHeader from "~/components/ModalHeader"
 import PortalLoader from "~/components/PortalLoader"

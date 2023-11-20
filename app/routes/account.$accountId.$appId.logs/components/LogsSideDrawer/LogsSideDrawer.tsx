@@ -1,5 +1,4 @@
-import { Divider } from "@mantine/core"
-import { Card, Drawer, Group, Stack, Text } from "@pokt-foundation/pocket-blocks"
+import { Divider, Card, Drawer, Group, Stack, Text } from "@mantine/core"
 import React from "react"
 import { TitledCard } from "~/components/TitledCard"
 import { Logs } from "~/models/dwh/sdk"

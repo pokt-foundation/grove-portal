@@ -4,6 +4,8 @@
 //
 //
 
+import MersenneTwister from "mersenne-twister"
+
 // 9 different colors only for easy distinction (also a sweet spot for collisions)
 const COLORS_NB = 9
 const DEFAULT_SATURATION = 95
@@ -93,8 +95,6 @@ export const minidenticonSvg =
 //
 
 // see https://github.com/danfinlay/jazzicon
-
-const MersenneTwister = require("mersenne-twister")
 
 const defaultColors = [
   "rgb(244, 67, 54)",

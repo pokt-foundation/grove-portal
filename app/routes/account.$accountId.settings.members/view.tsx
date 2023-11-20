@@ -1,6 +1,5 @@
-import { Divider } from "@mantine/core"
+import { Divider, Box, Button, Flex } from "@mantine/core"
 import { closeAllModals } from "@mantine/modals"
-import { Box, Button, Flex } from "@pokt-foundation/pocket-blocks"
 import { useEffect } from "react"
 import useModals from "~/hooks/useModals"
 import { Account, RoleName, User } from "~/models/portal/sdk"

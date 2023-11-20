@@ -1,5 +1,5 @@
+import { Box, Stack, Text } from "@mantine/core"
 import { hideNotification } from "@mantine/notifications"
-import { Box, Stack, Text } from "@pokt-foundation/pocket-blocks"
 import { useEffect } from "react"
 import AccountsTable from "./components/AccountsTable"
 import { PENDING_INVITES_NOTIFICATION_ID } from "~/components/RootAppShell/RootAppShell"

@@ -1,13 +1,14 @@
-import { Card, Title, Text, Box, Grid } from "@pokt-foundation/pocket-blocks"
-import { ActionFunction, LoaderFunction, MetaFunction, redirect } from "@remix-run/node"
+import { Card, Title, Text, Box, Grid } from "@mantine/core"
+import { ActionFunction, LoaderFunction, redirect } from "@remix-run/node"
 import Rive from "@rive-app/react-canvas"
 import { authenticator } from "~/utils/auth.server"
-import { seo_title_append } from "~/utils/seo"
 
 export const meta: MetaFunction = () => {
-  return {
-    title: `Email Verification ${seo_title_append}`,
-  }
+  return [
+    {
+      title: `Email Verification ${seo_title_append}`,
+    },
+  ]
 }
 
 export const loader: LoaderFunction = async ({ request }) => {

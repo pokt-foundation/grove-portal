@@ -1,5 +1,4 @@
-import { Divider } from "@mantine/core"
-import { Box, Button, Stack, Switch, Text } from "@pokt-foundation/pocket-blocks"
+import { Divider, Box, Button, Stack, Switch, Text } from "@mantine/core"
 import { Form, useSubmit } from "@remix-run/react"
 import { Identicon } from "~/components/Identicon"
 import { User } from "~/models/portal/sdk"

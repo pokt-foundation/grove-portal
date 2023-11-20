@@ -1,4 +1,4 @@
-import { Group, Pagination } from "@pokt-foundation/pocket-blocks"
+import { Group, Pagination } from "@mantine/core"
 import { TablePaginationProps } from "~/types/table"
 
 export const DataTablePagination = ({

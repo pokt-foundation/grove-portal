@@ -1,7 +1,7 @@
+import { ActionIcon } from "@mantine/core"
 import { useClickOutside } from "@mantine/hooks"
-import { ActionIcon, Box, createStyles } from "@pokt-foundation/pocket-blocks"
-import EmojiPicker, { Emoji } from "emoji-picker-react"
-import { Theme } from "emoji-picker-react/src/types/exposedTypes"
+import { Box, createStyles } from "@mantine/core"
+import EmojiPicker, { Emoji, Theme } from "emoji-picker-react"
 import { useState } from "react"
 
 export const DEFAULT_APPMOJI = "1f333"

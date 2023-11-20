@@ -4,7 +4,7 @@ import {
   useModals as MantineUseModals,
 } from "@mantine/modals"
 import { ModalSettings, OpenConfirmModal } from "@mantine/modals/lib/context"
-import { useMantineTheme } from "@pokt-foundation/pocket-blocks"
+import { useMantineTheme } from "@mantine/core"
 
 const useModals = () => {
   const theme = useMantineTheme()

@@ -1,20 +1,15 @@
-import {
-  Button,
-  Card,
-  Container,
-  Select,
-  TextInput,
-} from "@pokt-foundation/pocket-blocks"
-import { MetaFunction } from "@remix-run/node"
+import { Button, Card, Container, Select, TextInput } from "@mantine/core"
 import { useFetcher } from "@remix-run/react"
 import { useState } from "react"
 import useActionNotification from "~/hooks/useActionNotification"
 import { PayPlanType } from "~/models/portal/sdk"
 
 export const meta: MetaFunction = () => {
-  return {
-    title: "Custom Pay Plan | Admin",
-  }
+  return [
+    {
+      title: "Custom Pay Plan | Admin",
+    },
+  ]
 }
 
 export default function CustomPayPlan() {

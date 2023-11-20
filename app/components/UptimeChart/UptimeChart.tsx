@@ -1,4 +1,4 @@
-import { MantineTheme, useMantineTheme } from "@pokt-foundation/pocket-blocks"
+import { MantineTheme, useMantineTheme } from "@mantine/core"
 import React from "react"
 import { ResponsiveContainer, BarChart, Bar, Cell } from "recharts"
 

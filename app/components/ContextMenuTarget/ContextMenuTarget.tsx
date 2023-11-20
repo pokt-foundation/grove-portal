@@ -1,6 +1,6 @@
-import { Menu, ActionIcon } from "@pokt-foundation/pocket-blocks"
+import { ActionIcon, Menu } from "@mantine/core"
 import React from "react"
-import { LuMoreHorizontal } from "react-icons/lu"
+import { LuMoreHorizontal } from "react-icons/lu/index.js"
 import useCommonStyles from "~/styles/commonStyles"
 
 const ContextMenuTarget = () => {

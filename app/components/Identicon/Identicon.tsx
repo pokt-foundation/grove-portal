@@ -1,5 +1,5 @@
 import { MantineNumberSize } from "@mantine/core"
-import { Avatar, MantineTheme } from "@pokt-foundation/pocket-blocks"
+import { Avatar, MantineTheme } from "@mantine/core"
 import React, { useMemo } from "react"
 import { minidenticon, picasso } from "~/utils/identicons"
 

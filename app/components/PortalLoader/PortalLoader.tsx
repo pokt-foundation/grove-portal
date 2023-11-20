@@ -1,4 +1,4 @@
-import { createStyles, Stack, Text } from "@pokt-foundation/pocket-blocks"
+import { createStyles, Stack, Text } from "@mantine/core"
 import Rive from "@rive-app/react-canvas"
 
 const useStyles = createStyles((theme) => ({

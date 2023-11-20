@@ -5,9 +5,11 @@ import AccountSettingsView from "~/routes/account.$accountId.settings._index/vie
 import { seo_title_append } from "~/utils/seo"
 
 export const meta: MetaFunction = () => {
-  return {
-    title: `Account Settings ${seo_title_append}`,
-  }
+  return [
+    {
+      title: `Account Settings ${seo_title_append}`,
+    },
+  ]
 }
 
 export default function AccountSettings() {

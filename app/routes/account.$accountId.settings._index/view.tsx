@@ -1,5 +1,5 @@
-import { Divider } from "@mantine/core"
 import {
+  Divider,
   Badge,
   Box,
   Button,
@@ -7,7 +7,7 @@ import {
   Stack,
   Text,
   Tooltip,
-} from "@pokt-foundation/pocket-blocks"
+} from "@mantine/core"
 import { Link } from "@remix-run/react"
 import { Identicon } from "~/components/Identicon"
 import { Account, RoleName } from "~/models/portal/sdk"

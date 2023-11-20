@@ -1,10 +1,5 @@
-import {
-  ActionIcon,
-  Flex,
-  TextInput,
-  useMantineTheme,
-} from "@pokt-foundation/pocket-blocks"
-import { LuTrash2 } from "react-icons/lu"
+import { ActionIcon, Flex, TextInput, useMantineTheme } from "@mantine/core"
+import { LuTrash2 } from "react-icons/lu/index.js"
 import CopyTextButton from "~/components/CopyTextButton"
 import { DataTable } from "~/components/DataTable"
 import useCommonStyles from "~/styles/commonStyles"

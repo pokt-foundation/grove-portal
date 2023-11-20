@@ -1,4 +1,4 @@
-import { Box, LoadingOverlay, Space, Text } from "@pokt-foundation/pocket-blocks"
+import { Box, LoadingOverlay, Space, Text } from "@mantine/core"
 import React from "react"
 import { type AxisDomain } from "recharts/types/util/types"
 import Sparkline from "~/components/Sparkline"

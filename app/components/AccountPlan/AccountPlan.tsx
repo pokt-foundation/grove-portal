@@ -8,8 +8,8 @@ import {
   Title,
   Box,
   MantineTheme,
-} from "@pokt-foundation/pocket-blocks"
-import { LuCheck } from "react-icons/lu"
+} from "@mantine/core"
+import { LuCheck } from "react-icons/lu/index.js"
 import { PayPlanType } from "~/models/portal/sdk"
 import useCommonStyles from "~/styles/commonStyles"
 
@@ -115,7 +115,7 @@ export const AccountPlan = ({
           fullWidth
           classNames={{ root: commonClasses.grayOutlinedButton }}
           color="gray"
-          disabled={disableFree}
+          disabled={!!disableFree}
           radius="xl"
           variant="outline"
           onClick={onContinue}

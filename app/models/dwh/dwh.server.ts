@@ -1,5 +1,4 @@
-import { Configuration, UserApi } from "./sdk"
-import { AnalyticsRelaysAggregated } from "~/models/dwh/sdk"
+import { Configuration, UserApi, AnalyticsRelaysAggregated } from "./sdk"
 import { dayjs } from "~/utils/dayjs"
 import { getRequiredServerEnvVar } from "~/utils/environment"
 

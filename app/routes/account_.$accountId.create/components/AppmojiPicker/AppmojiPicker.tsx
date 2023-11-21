@@ -1,6 +1,5 @@
-import { ActionIcon } from "@mantine/core"
+import { ActionIcon, Box, createStyles } from "@mantine/core"
 import { useClickOutside } from "@mantine/hooks"
-import { Box, createStyles } from "@mantine/core"
 import EmojiPicker, { Emoji, Theme } from "emoji-picker-react"
 import { useState } from "react"
 

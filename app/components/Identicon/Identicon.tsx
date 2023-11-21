@@ -1,5 +1,4 @@
-import { MantineNumberSize } from "@mantine/core"
-import { Avatar, MantineTheme } from "@mantine/core"
+import { MantineNumberSize, Avatar, MantineTheme } from "@mantine/core"
 import React, { useMemo } from "react"
 import { minidenticon, picasso } from "~/utils/identicons"
 

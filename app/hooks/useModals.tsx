@@ -1,10 +1,10 @@
+import { useMantineTheme } from "@mantine/core"
 import {
   openConfirmModal,
   openModal,
   useModals as MantineUseModals,
 } from "@mantine/modals"
 import { ModalSettings, OpenConfirmModal } from "@mantine/modals/lib/context"
-import { useMantineTheme } from "@mantine/core"
 
 const useModals = () => {
   const theme = useMantineTheme()

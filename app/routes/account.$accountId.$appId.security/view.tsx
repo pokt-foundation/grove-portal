@@ -7,7 +7,9 @@ import PrivateSecretKey from "./components/PrivateSecretKey"
 import WhitelistOrigins from "./components/WhitelistOrigins"
 import WhitelistUserAgents from "./components/WhitelistUserAgents"
 import { DEFAULT_WHITELISTS, securityReducer } from "./utils/stateReducer"
-import useActionNotification from "~/hooks/useActionNotification"
+import useActionNotification, {
+  ActionNotificationData,
+} from "~/hooks/useActionNotification"
 import { type Blockchain, type RoleName } from "~/models/portal/sdk"
 import {
   BlockchainsQuery,
@@ -29,10 +31,11 @@ export const SecurityView = ({ app, blockchains, userRole }: SecurityViewProps) 
     app.whitelists ?? DEFAULT_WHITELISTS,
   )
   const fetcher = useFetcher()
+  const fetcherData = fetcher.data as ActionNotificationData
   const isInitialRender = useRef(true)
   const isReadOnly = userRole === "MEMBER"
 
-  useActionNotification(fetcher.data)
+  useActionNotification(fetcherData)
 
   // ٍRun effect only when state changes excluding the first render
   useEffect(() => {
@@ -53,6 +56,7 @@ export const SecurityView = ({ app, blockchains, userRole }: SecurityViewProps) 
         },
       )
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state, app.id])
 
   return (

@@ -39,7 +39,9 @@ type DrawerLinkProps = NavLinkProps &
 const DrawerLink = ({ setIsDrawerOpen, external, ...props }: DrawerLinkProps) => {
   const externalProps = external ? { rel: "noreferrer", target: "_blank" } : {}
   return (
+    // eslint-disable-next-line jsx-a11y/anchor-has-content
     <NavLink
+      aria-label={props.label as string}
       component={Link}
       label={props.label}
       p={8}

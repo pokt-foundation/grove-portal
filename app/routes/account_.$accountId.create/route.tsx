@@ -13,7 +13,9 @@ import AccountPlansContainer from "./components/AccountPlansContainer"
 import AppForm from "./components/AppForm"
 import { DEFAULT_APPMOJI } from "./components/AppmojiPicker"
 import PortalLoader from "~/components/PortalLoader"
-import useActionNotification from "~/hooks/useActionNotification"
+import useActionNotification, {
+  ActionNotificationData,
+} from "~/hooks/useActionNotification"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { PayPlanType, RoleName } from "~/models/portal/sdk"
 import { getUserAccountRole } from "~/utils/accountUtils"
@@ -152,8 +154,9 @@ export const action: ActionFunction = async ({ request, params }) => {
 export default function CreateApp() {
   const fetcher = useFetcher()
   const [appFromData, setAppFromData] = useState<FormData>()
+  const fetcherData = fetcher.data as ActionNotificationData
 
-  useActionNotification(fetcher.data)
+  useActionNotification(fetcherData)
 
   return fetcher.state === "idle" ? (
     <Box maw={860} mt={90} mx="auto">

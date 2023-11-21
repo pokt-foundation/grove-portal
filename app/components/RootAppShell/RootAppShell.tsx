@@ -1,5 +1,5 @@
-import { showNotification } from "@mantine/notifications"
 import { AppShell, Container } from "@mantine/core"
+import { showNotification } from "@mantine/notifications"
 import { Link, useLocation } from "@remix-run/react"
 import React, { ReactNode, useEffect, useMemo, useState } from "react"
 import { LuShapes } from "react-icons/lu/index.js"

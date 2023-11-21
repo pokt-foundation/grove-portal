@@ -10,7 +10,7 @@ export default function AccountSettings() {
   const { data, error, message } = useRouteLoaderData(
     "routes/account.$accountId",
   ) as DataStruct<AccountIdLoaderData>
-  const actionData = useActionData()
+  const actionData = useActionData() as DataStruct<{ success: boolean }>
 
   // handle all notifications at the layout level
   useActionNotification(actionData)

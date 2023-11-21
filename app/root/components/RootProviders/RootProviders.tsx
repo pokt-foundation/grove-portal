@@ -1,6 +1,6 @@
+import { MantineProvider } from "@mantine/core"
 import { ModalsProvider } from "@mantine/modals"
 import { NotificationsProvider } from "@mantine/notifications"
-import { MantineProvider } from "@mantine/core"
 import React from "react"
 import { portalTheme } from "~/root/portalTheme"
 

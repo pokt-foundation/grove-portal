@@ -96,7 +96,7 @@ const BarChart = ({ data, xAxisDataKey, yAxisDataKey }: BarChartProps) => {
             <Cell
               key={`${entry.val}-${index}`}
               fill={focusedBar === index ? theme.colors.blue[7] : "none"}
-              // fillOpacity={focusedBar === index || mouseLeave ? 1 : 0.2}
+              fillOpacity={focusedBar === index || mouseLeave ? 1 : 0.2}
             />
           ))}
         </Bar>

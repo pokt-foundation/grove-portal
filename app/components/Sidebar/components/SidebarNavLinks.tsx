@@ -1,5 +1,5 @@
-import { CSSObject } from "@mantine/core"
 import {
+  CSSObject,
   Anchor,
   Box,
   Flex,

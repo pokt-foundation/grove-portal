@@ -1,6 +1,6 @@
 import { Affix, Divider, Transition, Box, Flex, Input, Button } from "@mantine/core"
 import { useDebouncedValue, useWindowScroll } from "@mantine/hooks"
-import { ActionFunction, json } from "@remix-run/node"
+import { ActionFunction, json, MetaFunction } from "@remix-run/node"
 import { useOutletContext } from "@remix-run/react"
 import { useState } from "react"
 import { LuArrowUp, LuSearch } from "react-icons/lu/index.js"

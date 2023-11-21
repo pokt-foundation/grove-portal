@@ -11,7 +11,7 @@ import { initAdminPortal } from "~/utils/adminPortal"
 // strategies will return and will be stored in the session
 export const authenticator = new Authenticator<{
   accessToken: string
-  refreshToken: string
+  refreshToken: string | undefined
   extraParams: Auth0ExtraParams
   user: PortalUser & {
     auth0ID: string
@@ -21,7 +21,7 @@ export const authenticator = new Authenticator<{
 
 export type AuthUser = {
   accessToken: string
-  refreshToken: string
+  refreshToken: string | undefined
   extraParams: Auth0ExtraParams
   user: PortalUser & {
     auth0ID: string

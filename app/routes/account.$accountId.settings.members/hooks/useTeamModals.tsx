@@ -1,7 +1,9 @@
 import { Text } from "@mantine/core"
 import { useFetcher } from "@remix-run/react"
 import React from "react"
-import useActionNotification from "~/hooks/useActionNotification"
+import useActionNotification, {
+  ActionNotificationData,
+} from "~/hooks/useActionNotification"
 import useModals from "~/hooks/useModals"
 import { Account, RoleName } from "~/models/portal/sdk"
 import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
@@ -14,8 +16,9 @@ const useTeamModals = ({ account }: useTeamModalsProps) => {
   const fetcher = useFetcher()
   const { openConfirmationModal } = useModals()
   const { id: accountId } = account
+  const fetcherData = fetcher.data as ActionNotificationData
 
-  useActionNotification(fetcher.data)
+  useActionNotification(fetcherData)
 
   const removeTeamMember = (userId: string, email: string) => {
     trackEvent({

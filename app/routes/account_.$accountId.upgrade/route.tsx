@@ -8,7 +8,7 @@ import {
   Text,
   Tooltip,
 } from "@mantine/core"
-import { LoaderFunction, redirect } from "@remix-run/node"
+import { LoaderFunction, MetaFunction, redirect } from "@remix-run/node"
 import { NavLink, useNavigate, useParams } from "@remix-run/react"
 import React from "react"
 import invariant from "tiny-invariant"

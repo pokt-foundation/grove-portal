@@ -15,8 +15,8 @@ const getBarColor = ({
   theme: MantineTheme
   uptime: number | string
 }) => {
-  if (uptime >= 0.9) return theme.colors.green[5]
-  if (uptime >= 0.8) return theme.colors.yellow[7]
+  if (Number(uptime) >= 0.9) return theme.colors.green[5]
+  if (Number(uptime) >= 0.8) return theme.colors.yellow[7]
   return theme.colors.red[9]
 }
 

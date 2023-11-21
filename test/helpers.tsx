@@ -17,7 +17,6 @@ export function render(ui: React.ReactElement, options?: RenderOptions) {
     routes: {
       root: {
         hasAction: false,
-        hasCatchBoundary: false,
         hasErrorBoundary: false,
         hasLoader: false,
         id: "root",
@@ -32,19 +31,14 @@ export function render(ui: React.ReactElement, options?: RenderOptions) {
   }
   window.__remixRouteModules = { root: { default: RootComponent } }
   window.__remixContext = {
+    url: "",
     state: {
       loaderData: undefined,
       actionData: null,
       errors: null,
     },
     future: {
-      unstable_dev: false,
-      unstable_postcss: false,
-      unstable_tailwind: false,
-      v2_errorBoundary: false,
-      v2_meta: false,
-      v2_routeConvention: true,
-      v2_normalizeFormMethod: false,
+      v3_fetcherPersist: false,
     },
   }
 

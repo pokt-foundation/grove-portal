@@ -8,7 +8,9 @@ import Chain from "~/components/Chain"
 import ContextMenuTarget from "~/components/ContextMenuTarget"
 import CopyTextButton from "~/components/CopyTextButton"
 import { DataTable } from "~/components/DataTable"
-import useActionNotification from "~/hooks/useActionNotification"
+import useActionNotification, {
+  ActionNotificationData,
+} from "~/hooks/useActionNotification"
 import { Blockchain, Maybe } from "~/models/portal/sdk"
 import { trackEvent, AnalyticCategories, AnalyticActions } from "~/utils/analytics"
 import { CHAIN_DOCS_URL } from "~/utils/chainUtils"
@@ -33,9 +35,9 @@ const AppEndpointsTable = ({
   const theme = useMantineTheme()
   const { appId } = useParams()
   const fetcher = useFetcher()
-
+  const fetcherData = fetcher.data as ActionNotificationData
   // handle notification for menu fetcher action
-  useActionNotification(fetcher.data)
+  useActionNotification(fetcherData)
 
   const chains = useMemo(() => {
     const fav = blockchains

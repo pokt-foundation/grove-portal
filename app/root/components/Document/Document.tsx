@@ -47,8 +47,8 @@ const Document = ({ children, title }: { children: React.ReactNode; title?: stri
       <body>
         <RootProviders>{children}</RootProviders>
         <ScrollRestoration />
-        <Scripts />
         <LiveReload />
+        <Scripts />
       </body>
     </html>
   )

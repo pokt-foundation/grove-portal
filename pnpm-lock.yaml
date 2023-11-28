@@ -29,7 +29,6 @@ specifiers:
   '@remix-run/react': ^1.16.0
   '@remix-run/serve': ^1.16.0
   '@remix-run/vercel': ^1.16.0
-  '@rive-app/react-canvas': ^4.1.6
   '@sentry/types': ^7.37.1
   '@testing-library/cypress': ^8.0.2
   '@testing-library/dom': ^8.14.0
@@ -64,6 +63,7 @@ specifiers:
   jest-axe: ^6.0.0
   jsdom: ^20.0.0
   jwt-decode: ^3.1.2
+  lottie-react: ^2.4.0
   mdx-bundler: ^9.2.1
   mersenne-twister: ^1.1.0
   node-mailjet: ^6.0.4
@@ -99,7 +99,6 @@ dependencies:
   '@remix-run/node': 1.16.0
   '@remix-run/react': 1.16.0_biqbaboplfbrettd7655fr4n2y
   '@remix-run/vercel': 1.16.0_@vercel+node@2.9.12
-  '@rive-app/react-canvas': 4.1.6_react@18.2.0
   '@vercel/node': 2.9.12
   clsx: 1.2.1
   d3-format: 3.1.0
@@ -110,6 +109,7 @@ dependencies:
   graphql-request: 5.1.0_graphql@16.8.1
   graphql-tag: 2.12.6_graphql@16.8.1
   jwt-decode: 3.1.2
+  lottie-react: 2.4.0_biqbaboplfbrettd7655fr4n2y
   mdx-bundler: 9.2.1_esbuild@0.17.18
   mersenne-twister: 1.1.0
   node-mailjet: 6.0.4
@@ -4383,19 +4383,6 @@ packages:
   /@repeaterjs/repeater/3.0.4:
     resolution: {integrity: sha512-AW8PKd6iX3vAZ0vA43nOUOnbq/X5ihgU+mSXXqunMkeQADGiqw/PY0JNeYtD5sr0PAy51YPgAPbDoeapv9r8WA==}
     dev: true
-
-  /@rive-app/canvas/2.2.2:
-    resolution: {integrity: sha512-F1J4tDfFPUehvznveMdInMIWKvY1HjGZcOenMztWfJBCMZDammfqVz695Y2jaku+XFE2f0g6R8X2EcqozaFwwg==}
-    dev: false
-
-  /@rive-app/react-canvas/4.1.6_react@18.2.0:
-    resolution: {integrity: sha512-y7jrXU7RYQbpl0mWVX05zbAwNoik8tL5Lon7N+MMqgAedsLPF1rqpSPkZSK7M9q1aLgbhoCsAygMUiPenw4aBw==}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0
-    dependencies:
-      '@rive-app/canvas': 2.2.2
-      react: 18.2.0
-    dev: false
 
   /@rollup/pluginutils/4.2.1:
     resolution: {integrity: sha512-iKnFXr7NkdZAIHiIWE+BX5ULi/ucVFYWD6TbAV+rZctiRTY2PL6tsIKhoIOaoskiWAkgu+VsbXgUVDNLHf+InQ==}
@@ -10590,6 +10577,21 @@ packages:
     hasBin: true
     dependencies:
       js-tokens: 4.0.0
+
+  /lottie-react/2.4.0_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-pDJGj+AQlnlyHvOHFK7vLdsDcvbuqvwPZdMlJ360wrzGFurXeKPr8SiRCjLf3LrNYKANQtSsh5dz9UYQHuqx4w==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      lottie-web: 5.12.2
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    dev: false
+
+  /lottie-web/5.12.2:
+    resolution: {integrity: sha512-uvhvYPC8kGPjXT3MyKMrL3JitEAmDMp30lVkuq/590Mw9ok6pWcFCwXJveo0t5uqYw1UREQHofD+jVpdjBv8wg==}
+    dev: false
 
   /loupe/2.3.6:
     resolution: {integrity: sha512-RaPMZKiMy8/JruncMU5Bt6na1eftNoo++R4Y+N2FrxkDVTrGvcyzFTsaGif4QTeKESheMGegbhw6iUAq+5A8zA==}

@@ -1,5 +1,5 @@
 import { Container, Stack, Button } from "@pokt-foundation/pocket-blocks"
-import { json, LoaderFunction } from "@remix-run/node"
+import { json, LoaderFunction, redirect } from "@remix-run/node"
 import { NavLink, Outlet, useLoaderData } from "@remix-run/react"
 import { LuArrowLeft } from "react-icons/lu"
 import ErrorView from "~/components/ErrorView"
@@ -62,8 +62,9 @@ export default function UserAccount() {
 
   const routes = [
     {
-      to: "profile",
+      to: "",
       label: "Profile",
+      end: true,
     },
     {
       to: "accounts",

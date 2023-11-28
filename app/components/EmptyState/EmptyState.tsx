@@ -29,10 +29,10 @@ export const EmptyState = ({
         src={imgSrc}
         width={imgWidth}
       />
-      <Text fw={600} fz="xl">
+      <Text fw={600} fz="xl" ta="center">
         {title}
       </Text>
-      <Text fw={400} fz="sm" ta="center">
+      <Text fw={400} fz="sm" maw={510} ta="center">
         {subtitle}
       </Text>
       {callToAction ? callToAction : null}

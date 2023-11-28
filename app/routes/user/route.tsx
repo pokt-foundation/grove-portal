@@ -9,7 +9,6 @@ import { initPortalClient } from "~/models/portal/portal.server"
 import { Account, SortOrder, User } from "~/models/portal/sdk"
 import { DataStruct } from "~/types/global"
 import { getErrorMessage } from "~/utils/catchError"
-import { getRequiredServerEnvVar } from "~/utils/environment"
 import { requireUser } from "~/utils/user.server"
 
 export type UserAccountLoaderData = {
@@ -19,11 +18,6 @@ export type UserAccountLoaderData = {
 }
 
 export const loader: LoaderFunction = async ({ request, params }) => {
-  const MAINTENANCE_MODE = getRequiredServerEnvVar("FLAG_MAINTENANCE_MODE")
-  if (MAINTENANCE_MODE === "true") {
-    return redirect("/maintenance")
-  }
-
   const user = await requireUser(request)
   const portal = initPortalClient({ token: user.accessToken })
 

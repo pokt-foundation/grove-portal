@@ -1,18 +1,12 @@
-import { json, LoaderFunction, redirect } from "@remix-run/node"
+import { json, LoaderFunction } from "@remix-run/node"
 import { Outlet, useCatch, useLoaderData } from "@remix-run/react"
 import { User } from "~/models/portal/sdk"
-import { getRequiredServerEnvVar } from "~/utils/environment"
 import { requireUser } from "~/utils/user.server"
 export type AccountOutletContext = {
   user: User
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
-  const MAINTENANCE_MODE = getRequiredServerEnvVar("FLAG_MAINTENANCE_MODE")
-  if (MAINTENANCE_MODE === "true") {
-    return redirect("/maintenance")
-  }
-
   const user = await requireUser(request)
 
   return json<AccountOutletContext>({

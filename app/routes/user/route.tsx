@@ -1,5 +1,5 @@
 import { Container, Stack, Button } from "@pokt-foundation/pocket-blocks"
-import { json, LoaderFunction } from "@remix-run/node"
+import { json, LoaderFunction, redirect } from "@remix-run/node"
 import { NavLink, Outlet, useLoaderData } from "@remix-run/react"
 import { LuArrowLeft } from "react-icons/lu"
 import ErrorView from "~/components/ErrorView"
@@ -9,6 +9,7 @@ import { initPortalClient } from "~/models/portal/portal.server"
 import { Account, SortOrder, User } from "~/models/portal/sdk"
 import { DataStruct } from "~/types/global"
 import { getErrorMessage } from "~/utils/catchError"
+import { getRequiredServerEnvVar } from "~/utils/environment"
 import { requireUser } from "~/utils/user.server"
 
 export type UserAccountLoaderData = {
@@ -18,6 +19,11 @@ export type UserAccountLoaderData = {
 }
 
 export const loader: LoaderFunction = async ({ request, params }) => {
+  const MAINTENANCE_MODE = getRequiredServerEnvVar("FLAG_MAINTENANCE_MODE")
+  if (MAINTENANCE_MODE === "true") {
+    return redirect("/maintenance")
+  }
+
   const user = await requireUser(request)
   const portal = initPortalClient({ token: user.accessToken })
 
@@ -62,8 +68,9 @@ export default function UserAccount() {
 
   const routes = [
     {
-      to: "profile",
+      to: "",
       label: "Profile",
+      end: true,
     },
     {
       to: "accounts",

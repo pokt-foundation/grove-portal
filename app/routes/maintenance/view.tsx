@@ -11,9 +11,8 @@ export function PortalMaintenanceView() {
         </Text>
         <Text fw={400} fz="sm" maw={510} ta="center">
           Our platform is currently undergoing scheduled maintenance today. During this
-          time, the Portal UI is temporarily unavailable, and users are unable to create
-          or edit applications, adjust security settings, or pay plans. However, rest
-          assured that all relay requests are being processed as usual.
+          time, the Portal UI is temporarily unavailable. However, rest assured that all
+          relay requests are being processed as usual.
         </Text>
       </Stack>
     </Container>

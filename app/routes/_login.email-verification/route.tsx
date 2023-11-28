@@ -1,6 +1,6 @@
 import { Card, Title, Text, Box, Grid } from "@mantine/core"
 import { ActionFunction, LoaderFunction, MetaFunction, redirect } from "@remix-run/node"
-import Rive from "@rive-app/react-canvas"
+import PortalLoader from "~/components/PortalLoader"
 import { authenticator } from "~/utils/auth.server"
 import { seo_title_append } from "~/utils/seo"
 
@@ -68,10 +68,7 @@ export default function EmailVerification() {
               margin: "0 auto",
             }}
           ></img>
-          <Rive
-            src="/rive/portal-loader.riv"
-            style={{ width: "180px", height: "180px", margin: "0 auto" }}
-          />
+          <PortalLoader />
           <Title mb="md" order={3}>
             Verify Your Email
           </Title>

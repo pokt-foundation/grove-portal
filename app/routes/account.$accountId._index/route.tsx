@@ -11,11 +11,15 @@ import { AnalyticsRelaysTotal } from "~/models/dwh/sdk/models/AnalyticsRelaysTot
 import { initPortalClient } from "~/models/portal/portal.server"
 import { Account, PortalApp, RoleName } from "~/models/portal/sdk"
 import { AccountIdLoaderData } from "~/routes/account.$accountId/route"
+import { AnnouncementAlert } from "~/routes/account.$accountId._index/components/AnnouncementAlert"
 import AccountInsightsView from "~/routes/account.$accountId._index/view"
 import type { DataStruct } from "~/types/global"
 import { getErrorMessage } from "~/utils/catchError"
+import { getRequiredClientEnvVar } from "~/utils/environment"
 import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
+
+const ANNOUNCEMENT_ALERT = getRequiredClientEnvVar("FLAG_ANNOUNCEMENT_ALERT")
 
 export const meta: MetaFunction = () => {
   return [
@@ -94,34 +98,38 @@ export default function AccountInsights() {
 
   const apps = data?.account?.portalApps as PortalApp[]
 
-  if (apps.length === 0)
-    return (
-      <EmptyState
-        alt="Empty overview placeholder"
-        callToAction={
-          userRole !== RoleName.Member ? (
-            <Button
-              component={Link}
-              mt="xs"
-              prefetch="intent"
-              to={`/account/${accountId}/create`}
-            >
-              New Application
-            </Button>
-          ) : null
-        }
-        imgHeight={205}
-        imgSrc="/overview-empty-state.svg"
-        imgWidth={122}
-        subtitle={
-          <>
-            Applications connect your project to the blockchain. <br />
-            Set up your first one now.
-          </>
-        }
-        title="Create your first application"
-      />
-    )
-
-  return <AccountInsightsView data={data} />
+  return (
+    <>
+      {ANNOUNCEMENT_ALERT === "true" && <AnnouncementAlert />}
+      {apps.length === 0 ? (
+        <EmptyState
+          alt="Empty overview placeholder"
+          callToAction={
+            userRole !== RoleName.Member ? (
+              <Button
+                component={Link}
+                mt="xs"
+                prefetch="intent"
+                to={`/account/${accountId}/create`}
+              >
+                New Application
+              </Button>
+            ) : null
+          }
+          imgHeight={205}
+          imgSrc="/overview-empty-state.svg"
+          imgWidth={122}
+          subtitle={
+            <>
+              Applications connect your project to the blockchain. <br />
+              Set up your first one now.
+            </>
+          }
+          title="Create your first application"
+        />
+      ) : (
+        <AccountInsightsView data={data} />
+      )}
+    </>
+  )
 }

@@ -77,13 +77,7 @@ export default function AppLimitExceeded() {
         imgHeight={216}
         imgSrc="/app-limit-exceeded.svg"
         imgWidth={270}
-        subtitle={
-          <>
-            At the moment, we're limiting users to two applications as we're gearing up
-            for a major release <br />
-            that will bring exciting new features and improvements.
-          </>
-        }
+        subtitle="At the moment, we're limiting users to two applications as we're gearing up for a major release that will bring exciting new features and improvements."
         title="Currently you are only able to create two applications."
       />
     </Stack>

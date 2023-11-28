@@ -62,8 +62,9 @@ export default function UserAccount() {
 
   const routes = [
     {
-      to: "profile",
+      to: "",
       label: "Profile",
+      end: true,
     },
     {
       to: "accounts",

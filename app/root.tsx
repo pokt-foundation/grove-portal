@@ -4,6 +4,7 @@ import { Outlet, useLoaderData } from "@remix-run/react"
 import Document from "~/root/components/Document"
 import normalizeStyles from "~/styles/normalize.css"
 import rootStyles from "~/styles/root.css"
+import { getRequiredServerEnvVar } from "~/utils/environment"
 import { getClientEnv } from "~/utils/environment.server"
 
 export const links: LinksFunction = () => {
@@ -31,7 +32,13 @@ export interface RootLoaderData {
   ENV: ReturnType<typeof getClientEnv>
 }
 
-export const loader: LoaderFunction = async ({ request }) => {
+export const loader: LoaderFunction = async ({ request, params }) => {
+  const { url } = request
+  const MAINTENANCE_MODE = getRequiredServerEnvVar("FLAG_MAINTENANCE_MODE")
+  if (MAINTENANCE_MODE === "true" && !url.endsWith("/maintenance")) {
+    return redirect("/maintenance")
+  }
+
   return json<RootLoaderData>({
     ENV: getClientEnv(),
   })

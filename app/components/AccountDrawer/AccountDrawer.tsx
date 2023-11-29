@@ -135,7 +135,7 @@ const AccountDrawer = ({ user, hasPendingInvites }: AccountDrawerProps) => {
             icon={<LuUser2 size={18} />}
             label="My Profile"
             setIsDrawerOpen={setIsDrawerOpen}
-            to="/user/profile"
+            to="/user"
           />
           <Indicator
             inline

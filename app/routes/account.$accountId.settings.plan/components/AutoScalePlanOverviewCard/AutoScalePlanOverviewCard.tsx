@@ -10,7 +10,7 @@ import {
 } from "@pokt-foundation/pocket-blocks"
 import { Form, useLocation } from "@remix-run/react"
 import React from "react"
-import { LuArrowUpRight, LuRepeat, LuStopCircle } from "react-icons/lu"
+import { LuArrowUpRight, LuStopCircle } from "react-icons/lu"
 import { TitledCard } from "~/components/TitledCard"
 import { Account, RoleName } from "~/models/portal/sdk"
 import { Stripe } from "~/models/stripe/stripe.server"
@@ -19,6 +19,7 @@ import useCommonStyles from "~/styles/commonStyles"
 import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
 import { formatTimestampShort } from "~/utils/dayjs"
 import { getPlanName } from "~/utils/planUtils"
+import { capitalizeFirstLetter } from "~/utils/utils"
 
 interface AutoScalePlanOverviewCardProps {
   account: Account
@@ -39,6 +40,7 @@ export default function AutoScalePlanOverviewCard({
   const { openStopSubscriptionModal } = useSubscriptionModals()
 
   const accountPlanType = account.planType
+  const currentPeriodUsageRecords = usageRecords.data.find(({ invoice }) => !invoice)
 
   return (
     <TitledCard header={() => <Text weight={600}>Current plan</Text>}>
@@ -54,24 +56,26 @@ export default function AutoScalePlanOverviewCard({
             </Group>
             <Divider />
             <Group position="apart">
-              <Text>Free Daily Relays</Text> <Text>{account.plan.dailyLimit}</Text>
+              <Text>Start date</Text>
+              <Text>{formatTimestampShort(subscription.start_date)}</Text>
             </Group>
             <Divider />
           </Stack>
 
           <Stack spacing={12}>
             <Group position="apart">
-              <Text>Total Relays on this Billing Period</Text>{" "}
-              <Text>{usageRecords.data[0].total_usage}</Text>
+              <Text>Your role</Text> <Text>{capitalizeFirstLetter(userRole)}</Text>
             </Group>
             <Divider />
             <Group position="apart">
-              <Text>Subscription</Text> <Text>{subscription.id}</Text>
+              <Text>Free Daily Relays</Text> <Text>100,000</Text>
             </Group>
             <Divider />
             <Group position="apart">
-              <Text>Start date</Text>
-              <Text>{formatTimestampShort(subscription.start_date)}</Text>
+              <Text>Total Relays on this Billing Period</Text>
+              <Text>
+                {currentPeriodUsageRecords ? currentPeriodUsageRecords.total_usage : "-"}
+              </Text>
             </Group>
             <Divider />
           </Stack>

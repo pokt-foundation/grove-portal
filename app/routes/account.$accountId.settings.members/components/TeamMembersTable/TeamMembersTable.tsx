@@ -63,12 +63,13 @@ const TeamMembersTable = ({ account, userRole, user }: TeamMembersTableProps) =>
                         label: "Admin",
                       },
                     ]}
-                    defaultValue={roleName}
                     disabled={!accepted}
-                    onChange={(value) =>
-                      value !== roleName &&
-                      openChangeRoleModal(email, id, value as RoleName)
-                    }
+                    value={roleName}
+                    onChange={(value) => {
+                      if (value !== roleName) {
+                        openChangeRoleModal(email, id, value as RoleName)
+                      }
+                    }}
                   />
                 </Flex>
               ) : (

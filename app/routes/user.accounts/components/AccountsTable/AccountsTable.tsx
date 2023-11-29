@@ -8,6 +8,7 @@ import { Account, RoleName, User } from "~/models/portal/sdk"
 import InvitedAccountAction from "~/routes/user.accounts/components/InvitedAccountAction"
 import { getAccountAcceptedValue, getUserAccountRole } from "~/utils/accountUtils"
 import { getPlanName } from "~/utils/planUtils"
+import { capitalizeFirstLetter } from "~/utils/utils"
 
 type AccountsTableProps = {
   accounts: Account[]
@@ -91,7 +92,7 @@ const AccountsTable = ({ accounts, pendingAccounts, user }: AccountsTableProps) 
             ),
           },
           role: {
-            element: <Text tt="capitalize">{account.role?.toLowerCase()}</Text>,
+            element: <Text> {capitalizeFirstLetter(account.role)} </Text>,
           },
           status: {
             element: (

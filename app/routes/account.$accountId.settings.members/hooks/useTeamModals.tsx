@@ -5,6 +5,7 @@ import useActionNotification from "~/hooks/useActionNotification"
 import useModals from "~/hooks/useModals"
 import { Account, RoleName } from "~/models/portal/sdk"
 import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
+import { capitalizeFirstLetter } from "~/utils/utils"
 
 type useTeamModalsProps = {
   account: Account
@@ -100,8 +101,7 @@ const useTeamModals = ({ account }: useTeamModalsProps) => {
       title: <Text fw={600}>Change user role?</Text>,
       children: (
         <Text>
-          Are you sure you want to change {email}'s role to {role.charAt(0)}
-          {role.slice(1).toLowerCase()}
+          Are you sure you want to change {email}'s role to {capitalizeFirstLetter(role)}?
         </Text>
       ),
       labels: { cancel: "Cancel", confirm: "Change" },

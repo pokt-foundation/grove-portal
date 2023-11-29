@@ -5,6 +5,7 @@ import React from "react"
 import { LuArrowUpRight } from "react-icons/lu"
 import { TitledCard } from "~/components/TitledCard"
 import { Account } from "~/models/portal/sdk"
+import { commify } from "~/utils/formattingUtils"
 import { getPlanName } from "~/utils/planUtils"
 import { DISCORD_PATH } from "~/utils/utils"
 
@@ -22,7 +23,7 @@ export default function EnterpriseAccountOverviewCard({
     },
     {
       label: "Custom Limit",
-      value: account.enterpriseLimit,
+      value: commify(account.enterpriseLimit),
     },
   ]
 

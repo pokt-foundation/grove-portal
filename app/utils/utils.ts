@@ -27,6 +27,13 @@ export function shorten(string: string, characters = 4): string {
   return string.slice(0, characters) + "…"
 }
 
+export function capitalizeFirstLetter(string: string): string {
+  if (!string) {
+    return ""
+  }
+  return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase()
+}
+
 // Accepts the array and key
 export const groupBy = (array: any[], key: string) => {
   // Return the end result

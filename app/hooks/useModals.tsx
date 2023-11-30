@@ -38,6 +38,7 @@ const useModals = () => {
     openModal({
       fullScreen: true,
       withCloseButton: false,
+      styles: { body: { marginTop: "90px" } },
       ...commonModalProps,
       ...modalProps,
     })

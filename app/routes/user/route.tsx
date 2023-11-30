@@ -1,19 +1,19 @@
 import { Container, Stack, Button } from "@pokt-foundation/pocket-blocks"
-import { json, LoaderFunction } from "@remix-run/node"
+import { json, LoaderFunction, redirect } from "@remix-run/node"
 import { NavLink, Outlet, useLoaderData } from "@remix-run/react"
 import { LuArrowLeft } from "react-icons/lu"
 import ErrorView from "~/components/ErrorView"
 import LinkTabs from "~/components/LinkTabs"
 import RootAppShell from "~/components/RootAppShell/RootAppShell"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { Account, User } from "~/models/portal/sdk"
+import { Account, SortOrder, User } from "~/models/portal/sdk"
 import { DataStruct } from "~/types/global"
 import { getErrorMessage } from "~/utils/catchError"
 import { requireUser } from "~/utils/user.server"
 
 export type UserAccountLoaderData = {
   accounts: Account[]
-  hasPendingInvites: boolean
+  pendingAccounts: Account[]
   user: User
 }
 
@@ -22,17 +22,22 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   const portal = initPortalClient({ token: user.accessToken })
 
   try {
-    const accounts = await portal.getUserAccounts({ accepted: true })
+    const accounts = await portal.getUserAccounts({
+      accepted: true,
+      sortOrder: SortOrder.Asc,
+    })
     if (!accounts.getUserAccounts) {
       throw new Error(`Accounts not found for user ${user.user.portalUserID}`)
     }
 
-    const userPendingApps = await portal.getUserPortalApps({ accepted: false })
-
+    const userPendingAccounts = await portal.getUserAccounts({
+      accepted: false,
+      sortOrder: SortOrder.Asc,
+    })
     return json<DataStruct<UserAccountLoaderData>>({
       data: {
         accounts: accounts.getUserAccounts as Account[],
-        hasPendingInvites: userPendingApps.getUserPortalApps.length > 0,
+        pendingAccounts: userPendingAccounts.getUserAccounts as Account[],
         user: user.user,
       },
       error: false,
@@ -53,30 +58,27 @@ export default function UserAccount() {
     return <ErrorView message={message} />
   }
 
-  const { accounts, user, hasPendingInvites } = data
+  const { accounts, user, pendingAccounts } = data
 
   const routes = [
     {
-      to: "profile",
+      to: "",
       label: "Profile",
+      end: true,
     },
     {
       to: "accounts",
       label: "Accounts",
-    },
-    {
-      to: "invited-apps",
-      label: "Invited Apps",
     },
   ]
 
   return (
     <RootAppShell
       accounts={accounts as Account[]}
-      hasPendingInvites={hasPendingInvites}
+      hasPendingInvites={pendingAccounts.length > 0}
       user={user}
     >
-      <Container fluid pt={16} px={0}>
+      <Container fluid px={0}>
         <Button
           compact
           color="gray"

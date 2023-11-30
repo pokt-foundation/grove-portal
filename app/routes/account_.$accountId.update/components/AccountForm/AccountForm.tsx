@@ -25,13 +25,14 @@ const useStyles = createStyles((theme) => ({
 
 type AccountFormProps = {
   account: Account
+  redirectTo: string | null
 }
 
-const AccountForm = ({ account }: AccountFormProps) => {
+const AccountForm = ({ account, redirectTo }: AccountFormProps) => {
   const { classes } = useStyles()
   const { classes: commonClasses } = useCommonStyles()
   const { accountId } = useParams()
-
+  const closeButtonRedirect = redirectTo ?? `/account/${accountId}/settings`
   const [name, setName] = useState(account?.name ?? "")
 
   return (
@@ -46,7 +47,7 @@ const AccountForm = ({ account }: AccountFormProps) => {
               aria-label="Discard"
               component={NavLink}
               size="lg"
-              to={`/account/${accountId}`}
+              to={closeButtonRedirect}
             />
           </Tooltip>
         </Flex>
@@ -78,7 +79,7 @@ const AccountForm = ({ account }: AccountFormProps) => {
             component={NavLink}
             fw={400}
             fz="sm"
-            to={`/account/${accountId}`}
+            to={closeButtonRedirect}
             type="button"
             variant="outline"
             w="156px"

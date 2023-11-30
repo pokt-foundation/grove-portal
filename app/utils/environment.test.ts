@@ -31,6 +31,9 @@ describe("getRequiredClientEnvVar", () => {
     ENV.NODE_ENV = "test"
     ENV.PORTAL_API_URL = "PORTAL_API_URL"
     ENV.RELAY_METER_API_URL = "RELAY_METER_API_URL"
+    ENV.FLAG_ANNOUNCEMENT_ALERT = "FLAG_ANNOUNCEMENT_ALERT"
+    ENV.ANNOUNCEMENT_ALERT_TITLE = "ANNOUNCEMENT_ALERT_TITLE"
+    ENV.ANNOUNCEMENT_ALERT_BODY = "ANNOUNCEMENT_ALERT_BODY"
 
     expect(getRequiredClientEnvVar("BUILD_ID")).toBe("BUILD_ID")
     expect(getRequiredClientEnvVar("DOCS_STATUS")).toBe("DOCS_STATUS")
@@ -49,6 +52,15 @@ describe("getRequiredClientEnvVar", () => {
     expect(getRequiredClientEnvVar("GOOGLE_ANALYTICS_ID")).toBe("GOOGLE_ANALYTICS_ID")
     expect(getRequiredClientEnvVar("PORTAL_API_URL")).toBe("PORTAL_API_URL")
     expect(getRequiredClientEnvVar("RELAY_METER_API_URL")).toBe("RELAY_METER_API_URL")
+    expect(getRequiredClientEnvVar("FLAG_ANNOUNCEMENT_ALERT")).toBe(
+      "FLAG_ANNOUNCEMENT_ALERT",
+    )
+    expect(getRequiredClientEnvVar("ANNOUNCEMENT_ALERT_TITLE")).toBe(
+      "ANNOUNCEMENT_ALERT_TITLE",
+    )
+    expect(getRequiredClientEnvVar("ANNOUNCEMENT_ALERT_BODY")).toBe(
+      "ANNOUNCEMENT_ALERT_BODY",
+    )
   })
 })
 

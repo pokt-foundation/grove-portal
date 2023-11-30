@@ -12,13 +12,12 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   const userId = getPoktId(user.user.auth0ID)
 
   const url = new URL(request.url)
-  const id = url.searchParams.get("app-id")
-  const accountId = url.searchParams.get("app-accountId")
-  const name = url.searchParams.get("app-name")
+  const id = url.searchParams.get("account-id")
+  const appId = url.searchParams.get("app-id")
   const referral = url.searchParams.get("referral-id")
 
   if (getRequiredServerEnvVar("FLAG_STRIPE_PAYMENT") === "false") {
-    return redirect(`/account/${accountId}/${id}`)
+    return redirect(`/account/${id}`)
   }
 
   try {
@@ -47,20 +46,13 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
     // handle metadata that gets tied to the subscription
     let metadata: {} = {
-      endpoint_id: id,
-      endpoint_name: name,
-    }
-
-    if (referral) {
-      metadata = {
-        ...metadata,
-        referral_id: referral,
-      }
+      account_id: id,
+      ...(referral ? { referral_id: referral } : {}),
     }
 
     // create stripe checkout session and redirect to stripe hosted checkout page
     // TODO: metadata doesnt seem to be sending here: https://stripe.com/docs/api/checkout/sessions/object
-    const returnUrl = `${url.origin}/account/${accountId}/${id}`
+    const returnUrl = `${url.origin}/account/${id}${appId ? `/${appId}` : ""}`
     const session = await stripe.checkout.sessions.create({
       customer: customer.id,
       billing_address_collection: "auto",
@@ -84,7 +76,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       error: "true",
       message: getErrorMessage(error),
     })
-    return redirect(`/account/${accountId}/${id}?${params}`)
+    return redirect(`/account/${id}?${params}`)
   }
 }
 

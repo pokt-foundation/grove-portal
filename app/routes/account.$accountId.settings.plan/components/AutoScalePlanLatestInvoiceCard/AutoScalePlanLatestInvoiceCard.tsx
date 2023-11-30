@@ -31,6 +31,10 @@ export default function AutoScalePlanLatestInvoiceCard({
     0,
   )
 
+  const invoiceUsageRecords = usageRecords.data.find(
+    (record) => record.invoice === invoice.id,
+  )
+
   return (
     <TitledCard header={() => <Text weight={600}>Latest Invoice</Text>}>
       <Stack pt={22} px={20} spacing={12}>
@@ -39,7 +43,10 @@ export default function AutoScalePlanLatestInvoiceCard({
         </Group>
         <Divider />
         <Group position="apart">
-          <Text>Status</Text> <Text>{invoice.paid ? "Paid" : "Open"}</Text>
+          <Text>Status</Text>
+          <Text color={invoice.paid ? "green" : "gray"}>
+            {invoice.paid ? "Paid" : "Open"}
+          </Text>
         </Group>
         <Divider />
 
@@ -60,7 +67,8 @@ export default function AutoScalePlanLatestInvoiceCard({
           <Accordion.Item value="item-1">
             <Accordion.Control>
               <Group position="apart">
-                <Text>Total Relays Used</Text> <Text>{totalAccountRelays}</Text>
+                <Text fz="sm">Total Relays Used</Text>
+                <Text fz="sm">{totalAccountRelays}</Text>
               </Group>
             </Accordion.Control>
             <Divider />
@@ -81,7 +89,8 @@ export default function AutoScalePlanLatestInvoiceCard({
           </Accordion.Item>
         </Accordion>
         <Group position="apart">
-          <Text>Relays Billed</Text> <Text>{usageRecords.data[0].total_usage}</Text>
+          <Text>Relays Billed</Text>
+          <Text>{invoiceUsageRecords ? invoiceUsageRecords?.total_usage : "-"}</Text>
         </Group>
         <Divider />
         <Group position="apart">

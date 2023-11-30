@@ -14,7 +14,7 @@ export const useRoot = ({ user }: useRootProps) => {
     () =>
       pathname === `/account/${accountId}/create` ||
       pathname === `/account/${accountId}/app-limit-exceeded` ||
-      pathname === `/user/profile` ||
+      pathname === `/user` ||
       pathname === `/user/accounts` ||
       pathname === `/user/invites`,
     [accountId, pathname],

@@ -86,14 +86,14 @@ export const loader: LoaderFunction = async ({ request, params }) => {
           .unix(Number(latestInvoice.period_start))
           .toISOString()
         const invoicePeriodEnd = dayjs
-          .unix(Number(latestInvoice.period_start))
+          .unix(Number(latestInvoice.period_end))
           .toISOString()
 
         const accountApps = account.getUserAccount.portalApps
         if (accountApps && accountApps.length > 0) {
           for (const app of accountApps) {
             const latestInvoiceRelays = await getRelays(
-              "apps",
+              "endpoints",
               invoicePeriodStart,
               invoicePeriodEnd,
               app?.id,

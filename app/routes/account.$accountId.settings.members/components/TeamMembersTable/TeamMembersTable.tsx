@@ -4,6 +4,7 @@ import Identicon from "~/components/Identicon"
 import { Account, RoleName, User } from "~/models/portal/sdk"
 import TeamMemberAction from "~/routes/account.$accountId.settings.members/components/TeamMemberAction"
 import useTeamModals from "~/routes/account.$accountId.settings.members/hooks/useTeamModals"
+import { capitalizeFirstLetter } from "~/utils/utils"
 
 type TeamMembersTableProps = {
   account: Account
@@ -55,16 +56,17 @@ const TeamMembersTable = ({ account, userRole, user }: TeamMembersTableProps) =>
                         label: "Admin",
                       },
                     ]}
-                    defaultValue={roleName}
                     disabled={!accepted}
-                    onChange={(value) =>
-                      value !== roleName &&
-                      openChangeRoleModal(email, id, value as RoleName)
-                    }
+                    value={roleName}
+                    onChange={(value) => {
+                      if (value !== roleName) {
+                        openChangeRoleModal(email, id, value as RoleName)
+                      }
+                    }}
                   />
                 </Flex>
               ) : (
-                <Text tt="capitalize"> {roleName?.toLowerCase()} </Text>
+                <Text> {capitalizeFirstLetter(roleName)} </Text>
               ),
           },
           status: {

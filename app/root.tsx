@@ -1,5 +1,11 @@
 import { createEmotionCache } from "@mantine/core"
-import { LinksFunction, LoaderFunction, json, MetaFunction } from "@remix-run/node"
+import {
+  LinksFunction,
+  LoaderFunction,
+  json,
+  MetaFunction,
+  redirect,
+} from "@remix-run/node"
 import { Outlet, useLoaderData } from "@remix-run/react"
 import Document from "~/root/components/Document"
 import normalizeStyles from "~/styles/normalize.css"

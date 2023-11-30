@@ -1,7 +1,7 @@
+import { Alert } from "@mantine/core"
 import { useSessionStorage } from "@mantine/hooks"
-import { Alert } from "@pokt-foundation/pocket-blocks"
 import React, { useEffect, useState } from "react"
-import { LuAlertCircle } from "react-icons/lu"
+import { LuAlertCircle } from "react-icons/lu/index.js"
 import useCommonStyles from "~/styles/commonStyles"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 

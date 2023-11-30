@@ -45,9 +45,6 @@ dependencies:
   '@remix-run/vercel':
     specifier: ^1.19.3
     version: 1.19.3(@vercel/node@2.15.10)
-  '@rive-app/react-canvas':
-    specifier: ^4.1.6
-    version: 4.1.6(react@18.2.0)
   '@vercel/node':
     specifier: ^2.8.4
     version: 2.15.10
@@ -78,6 +75,9 @@ dependencies:
   jwt-decode:
     specifier: ^3.1.2
     version: 3.1.2
+  lottie-react:
+    specifier: ^2.4.0
+    version: 2.4.0(react-dom@18.2.0)(react@18.2.0)
   mdx-bundler:
     specifier: ^9.2.1
     version: 9.2.1(esbuild@0.17.18)
@@ -3725,19 +3725,6 @@ packages:
   /@repeaterjs/repeater@3.0.4:
     resolution: {integrity: sha512-AW8PKd6iX3vAZ0vA43nOUOnbq/X5ihgU+mSXXqunMkeQADGiqw/PY0JNeYtD5sr0PAy51YPgAPbDoeapv9r8WA==}
     dev: true
-
-  /@rive-app/canvas@2.2.2:
-    resolution: {integrity: sha512-F1J4tDfFPUehvznveMdInMIWKvY1HjGZcOenMztWfJBCMZDammfqVz695Y2jaku+XFE2f0g6R8X2EcqozaFwwg==}
-    dev: false
-
-  /@rive-app/react-canvas@4.1.6(react@18.2.0):
-    resolution: {integrity: sha512-y7jrXU7RYQbpl0mWVX05zbAwNoik8tL5Lon7N+MMqgAedsLPF1rqpSPkZSK7M9q1aLgbhoCsAygMUiPenw4aBw==}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0
-    dependencies:
-      '@rive-app/canvas': 2.2.2
-      react: 18.2.0
-    dev: false
 
   /@rollup/rollup-android-arm-eabi@4.4.1:
     resolution: {integrity: sha512-Ss4suS/sd+6xLRu+MLCkED2mUrAyqHmmvZB+zpzZ9Znn9S8wCkTQCJaQ8P8aHofnvG5L16u9MVnJjCqioPErwQ==}
@@ -9203,6 +9190,21 @@ packages:
     hasBin: true
     dependencies:
       js-tokens: 4.0.0
+
+  /lottie-react@2.4.0(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-pDJGj+AQlnlyHvOHFK7vLdsDcvbuqvwPZdMlJ360wrzGFurXeKPr8SiRCjLf3LrNYKANQtSsh5dz9UYQHuqx4w==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      lottie-web: 5.12.2
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
+  /lottie-web@5.12.2:
+    resolution: {integrity: sha512-uvhvYPC8kGPjXT3MyKMrL3JitEAmDMp30lVkuq/590Mw9ok6pWcFCwXJveo0t5uqYw1UREQHofD+jVpdjBv8wg==}
+    dev: false
 
   /loupe@2.3.6:
     resolution: {integrity: sha512-RaPMZKiMy8/JruncMU5Bt6na1eftNoo++R4Y+N2FrxkDVTrGvcyzFTsaGif4QTeKESheMGegbhw6iUAq+5A8zA==}

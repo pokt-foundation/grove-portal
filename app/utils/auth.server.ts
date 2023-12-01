@@ -12,7 +12,7 @@ import { initAdminPortal } from "~/utils/adminPortal"
 export const authenticator = new Authenticator<{
   accessToken: string
   refreshToken: string
-  extraParams: Auth0ExtraParams
+  // extraParams: Auth0ExtraParams
   user: PortalUser & {
     auth0ID: string
     email_verified?: boolean
@@ -22,7 +22,7 @@ export const authenticator = new Authenticator<{
 export type AuthUser = {
   accessToken: string
   refreshToken: string
-  extraParams: Auth0ExtraParams
+  // extraParams: Auth0ExtraParams
   user: PortalUser & {
     auth0ID: string
     email_verified?: boolean
@@ -70,7 +70,12 @@ let auth0Strategy = new Auth0Strategy(
       email_verified: profile._json?.email_verified,
     }
 
-    return { accessToken, refreshToken, extraParams, user: portalUser }
+    return {
+      accessToken,
+      refreshToken,
+      // extraParams,
+      user: portalUser,
+    }
   },
 )
 

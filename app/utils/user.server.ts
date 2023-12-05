@@ -11,7 +11,7 @@ export enum Permissions {
 
 export const requireUser = async (request: Request, defaultRedirect = "/") => {
   const url = new URL(request.url)
-  const user = await authenticator.isAuthenticated(request)
+  let user = await authenticator.isAuthenticated(request)
 
   if (!user) {
     throw redirect("/api/auth/auth0")
@@ -23,6 +23,10 @@ export const requireUser = async (request: Request, defaultRedirect = "/") => {
 
   if (!user.user.email_verified) {
     throw await authenticator.logout(request, { redirectTo: "/email-verification" })
+  }
+
+  if (!user.user.portalUserID) {
+    user = await authenticator.authenticate("auth0", request)
   }
 
   const decode = jwt_decode<{

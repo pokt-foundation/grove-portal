@@ -26,7 +26,7 @@ export default function NotFound404({ message }: NotFound404Props) {
         </Text>
       </Stack>
       <Button
-        className={commonClasses.grayOutlinedButton}
+        className={commonClasses.grayOutline}
         color="gray"
         component={Link}
         mt="xl"

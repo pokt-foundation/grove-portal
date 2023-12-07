@@ -110,7 +110,7 @@ export default function AutoScalePlanLatestInvoiceCard({
             <Grid.Col lg={4} md={4} sm={6}>
               <Button
                 fullWidth
-                className={commonClasses.grayOutlinedButton}
+                className={commonClasses.grayOutline}
                 color="gray"
                 component="a"
                 href={invoice.hosted_invoice_url ?? ""}

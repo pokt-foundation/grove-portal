@@ -76,7 +76,7 @@ const WhitelistUserAgentsModal = ({ dispatch }: WhitelistUserAgentsModalProps) =
           <Divider my={32} />
           <Group position="right">
             <Button
-              classNames={{ root: commonClasses.grayOutlinedButton }}
+              classNames={{ root: commonClasses.grayOutline }}
               color="gray"
               fw={400}
               fz="sm"

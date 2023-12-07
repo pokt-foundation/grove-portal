@@ -70,7 +70,7 @@ const ChainWhitelistTable = ({
                 <CopyTextButton value={chain.whitelistValue} />
                 {!readOnly && (
                   <ActionIcon
-                    className={commonClasses.grayOutlinedButton}
+                    className={commonClasses.grayOutline}
                     radius="xl"
                     size={40}
                     variant="outline"

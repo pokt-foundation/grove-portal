@@ -40,7 +40,6 @@ export const ProfileView = ({ user }: ProfileViewProps) => {
           </Text>
         </Box>
         <Form method="post">
-          <input hidden name="type" value="password" />
           <Button
             className={commonClasses.grayOutline}
             color="gray"
@@ -58,69 +57,6 @@ export const ProfileView = ({ user }: ProfileViewProps) => {
             Change password
           </Button>
         </Form>
-      </Stack>
-      <Divider />
-      <Stack py={20} spacing={24}>
-        <Box>
-          <Text fw={600}>Product updates</Text>
-          <Text pt={5}>Send me Product updates.</Text>
-          <Form method="post" onChange={(event) => submit(event.currentTarget)}>
-            <input hidden name="type" value="check-product" />
-            <Switch
-              defaultChecked={Boolean(user.updatesProduct)}
-              mt={8}
-              name="checkbox"
-              onChange={() => {
-                trackEvent({
-                  category: AnalyticCategories.user,
-                  action: AnalyticActions.user_profile_product_updates,
-                  label: user.updatesProduct ? "No" : "Yes",
-                })
-              }}
-            />
-          </Form>
-        </Box>
-        <Box>
-          <Text fw={600}>Community updates</Text>
-          <Text pt={5}>Send me Community updates.</Text>
-          <Form method="post" onChange={(event) => submit(event.currentTarget)}>
-            <input hidden name="type" value="check-marketing" />
-            <Switch
-              defaultChecked={Boolean(user.updatesMarketing)}
-              mt={8}
-              name="checkbox"
-              onChange={() => {
-                trackEvent({
-                  category: AnalyticCategories.user,
-                  action: AnalyticActions.user_profile_marketing_updates,
-                  label: user.updatesMarketing ? "No" : "Yes",
-                })
-              }}
-            />
-          </Form>
-        </Box>
-        <Box>
-          <Text fw={600}>Beta test</Text>
-          <Text pt={5}>
-            Join beta test program. Users who sign up will be invited to test new features
-            before anyone else.
-          </Text>
-          <Form method="post" onChange={(event) => submit(event.currentTarget)}>
-            <input hidden name="type" value="check-beta" />
-            <Switch
-              defaultChecked={Boolean(user.betaTester)}
-              mt={8}
-              name="checkbox"
-              onChange={() => {
-                trackEvent({
-                  category: AnalyticCategories.user,
-                  action: AnalyticActions.user_profile_beta_testing,
-                  label: user.betaTester ? "No" : "Yes",
-                })
-              }}
-            />
-          </Form>
-        </Box>
       </Stack>
     </Stack>
   )

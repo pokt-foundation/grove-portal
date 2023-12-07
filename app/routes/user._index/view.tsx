@@ -41,7 +41,7 @@ export const ProfileView = ({ user }: ProfileViewProps) => {
         </Box>
         <Form method="post">
           <Button
-            className={commonClasses.grayOutlinedButton}
+            className={commonClasses.grayOutline}
             color="gray"
             name="email"
             type="submit"

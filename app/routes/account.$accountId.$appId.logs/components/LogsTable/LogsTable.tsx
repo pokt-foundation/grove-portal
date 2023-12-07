@@ -62,7 +62,7 @@ const LogsTable = ({ logs }: LogsTableProps) => {
       />
       <Group mt="lg" position="center" spacing="md">
         <Button
-          classNames={{ root: commonClasses.grayOutlinedButton }}
+          classNames={{ root: commonClasses.grayOutline }}
           color="gray"
           disabled={activePage === 1 || isLoadingLogs}
           radius="md"
@@ -77,7 +77,7 @@ const LogsTable = ({ logs }: LogsTableProps) => {
           <LuChevronLeft size={18} />
         </Button>
         <Button
-          classNames={{ root: commonClasses.grayOutlinedButton }}
+          classNames={{ root: commonClasses.grayOutline }}
           color="gray"
           disabled={logs.length < LOGS_PAGE_SIZE || isLoadingLogs}
           radius="md"

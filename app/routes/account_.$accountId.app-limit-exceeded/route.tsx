@@ -59,7 +59,7 @@ export default function AppLimitExceeded() {
         alt="App limit exceeded"
         callToAction={
           <Button
-            className={commonClasses.grayOutlinedButton}
+            className={commonClasses.grayOutline}
             color="gray"
             component={Link}
             mt="xs"

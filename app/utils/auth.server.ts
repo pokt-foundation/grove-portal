@@ -48,26 +48,36 @@ let auth0Strategy = new Auth0Strategy(
     let portalUser: AuthUser["user"]
 
     const portal = initPortalClient({ token: accessToken })
-    const getPortalUserResponse = await portal.getPortalUser().catch(async (error) => {
-      // handle edge case where user could have signed up via auth0 and yet not have an internal portalUserId
-      const portalAdmin = await initAdminPortal(portal)
 
-      const user = await portalAdmin.adminCreatePortalUser({
-        email,
-        providerUserID,
-      })
+    try {
+      // First try and get the portal user using the JWT
+      const getPortalUserResponse = await portal.getPortalUser()
 
+      // If portal user found, set it as the user
       portalUser = {
-        ...(user.adminCreatePortalUser as PortalUser),
+        ...(getPortalUserResponse?.getPortalUser as PortalUser),
         auth0ID: providerUserID,
         email_verified: profile._json?.email_verified,
       }
-    })
+    } catch (error) {
+      const err = error as Error
 
-    portalUser = {
-      ...(getPortalUserResponse?.getPortalUser as PortalUser),
-      auth0ID: providerUserID,
-      email_verified: profile._json?.email_verified,
+      // If portal user not found, create it or return the existing user
+      if (err.message.includes("Response not OK. 404 Not Found")) {
+        const portalAdmin = await initAdminPortal(portal)
+        const user = await portalAdmin.adminCreatePortalUser({
+          email,
+          providerUserID,
+        })
+
+        portalUser = {
+          ...(user.adminCreatePortalUser as PortalUser),
+          auth0ID: providerUserID,
+          email_verified: profile._json?.email_verified,
+        }
+      } else {
+        throw error
+      }
     }
 
     return {

@@ -107,7 +107,7 @@ const TeamMemberAction = ({
         <Menu>
           <Menu.Target>
             <ActionIcon
-              className={commonClasses.grayOutlinedButton}
+              className={commonClasses.grayOutline}
               radius="xl"
               size={40}
               variant="outline"

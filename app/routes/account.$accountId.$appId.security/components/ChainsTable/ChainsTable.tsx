@@ -74,7 +74,7 @@ const ChainsTable = ({
                     <CopyTextButton value={getAppEndpointUrl(chain, appId)} />
                     {!readOnly && (
                       <ActionIcon
-                        className={commonClasses.grayOutlinedButton}
+                        className={commonClasses.grayOutline}
                         radius="xl"
                         size={40}
                         variant="outline"

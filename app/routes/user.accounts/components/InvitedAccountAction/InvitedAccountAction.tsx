@@ -26,7 +26,7 @@ const InvitedAccountAction = ({ account, user }: InvitedAccountActionProps) => {
         <Menu>
           <Menu.Target>
             <ActionIcon
-              className={commonClasses.grayOutlinedButton}
+              className={commonClasses.grayOutline}
               radius="xl"
               size={40}
               variant="outline"
@@ -61,7 +61,7 @@ const InvitedAccountAction = ({ account, user }: InvitedAccountActionProps) => {
           <input hidden name="accountId" value={account.id} />
           <Group position="right">
             <Button
-              className={commonClasses.grayOutlinedButton}
+              className={commonClasses.grayOutline}
               color="gray"
               disabled={navigation.state === "loading"}
               name="invite_response"

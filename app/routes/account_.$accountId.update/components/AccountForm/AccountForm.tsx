@@ -74,7 +74,7 @@ const AccountForm = ({ account, redirectTo }: AccountFormProps) => {
         <Divider my={32} />
         <Group position="right">
           <Button
-            classNames={{ root: commonClasses.grayOutlinedButton }}
+            classNames={{ root: commonClasses.grayOutline }}
             color="gray"
             component={NavLink}
             fw={400}

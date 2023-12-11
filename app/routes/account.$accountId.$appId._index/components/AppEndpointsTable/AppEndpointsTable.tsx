@@ -28,7 +28,7 @@ type AppEndpointsProps = {
 }
 
 const getAppEndpointUrl = (chain: Blockchain, appId: string | undefined) =>
-  `https://${chain?.blockchain}.gateway.pokt.network/v1/lb/${appId}`
+  `https://${chain?.blockchain}.rpc.grove.city/v1/${appId}`
 
 const AppEndpointsTable = ({
   blockchains,

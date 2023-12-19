@@ -61,6 +61,8 @@ const InvitedAccountAction = ({ account, user }: InvitedAccountActionProps) => {
       ) : (
         <Form method="post">
           <input hidden name="accountId" value={account.id} />
+          <input hidden name="accountName" value={account.name ?? ""} />
+          <input hidden name="role" value={role} />
           <Group position="right">
             <Button
               className={commonClasses.grayOutline}

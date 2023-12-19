@@ -269,3 +269,38 @@ export const triggerTeamActionNotification = async ({
       })
   }
 }
+
+export const triggerAcceptInvitationNotification = async ({
+  actor,
+  accountName,
+  accountId,
+  userRole,
+}: TriggerNotificationBaseProps & {
+  userRole: RoleName
+}) => {
+  return await novu.bulkTrigger([
+    {
+      name: NOTIFICATIONS.IN_APP_NOTIFICATION,
+      to: {
+        subscriberId: actor.portalUserID,
+      },
+      payload: {
+        message: `You have joined ${accountName ?? accountId} as ${
+          userRole === RoleName.Admin ? "an" : "a"
+        } ${capitalizeFirstLetter(userRole)}`,
+        redirectTo: `/account/${accountId}`,
+      },
+    },
+    {
+      name: NOTIFICATIONS.IN_APP_NOTIFICATION,
+      to: [{ type: TriggerRecipientsTypeEnum.TOPIC, topicKey: accountId }],
+      actor: { subscriberId: actor.portalUserID },
+      payload: {
+        message: `${actor.email} has joined ${accountName ?? accountId} as ${
+          userRole === RoleName.Admin ? "an" : "a"
+        } ${capitalizeFirstLetter(userRole)}`,
+        redirectTo: `/account/${accountId}/settings/members`,
+      },
+    },
+  ])
+}

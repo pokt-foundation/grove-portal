@@ -4,9 +4,11 @@ import invariant from "tiny-invariant"
 import UserAccounts from "./view"
 import ErrorView from "~/components/ErrorView"
 import { initPortalClient } from "~/models/portal/portal.server"
+import { RoleName } from "~/models/portal/sdk"
 import { UserAccountLoaderData } from "~/routes/user/route"
 import { DataStruct } from "~/types/global"
 import { getErrorMessage } from "~/utils/catchError"
+import { triggerAcceptInvitationNotification } from "~/utils/notifications.server"
 import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
 
@@ -23,7 +25,7 @@ export type UserInvitedAccountsActionData = {
 export const action: ActionFunction = async ({ request }) => {
   const user = await requireUser(request)
   const portal = initPortalClient({ token: user.accessToken })
-
+  let message = ""
   const formData = await request.formData()
 
   try {
@@ -32,13 +34,32 @@ export const action: ActionFunction = async ({ request }) => {
     let res = false
     if (invite_response) {
       const accountId = formData.get("accountId")
+      const invitedAccountName = formData.get("accountName")
+      const invitedUserRole = formData.get("role")
       invariant(typeof accountId === "string", "accountId must be set")
+      invariant(typeof invitedAccountName === "string", "invitedAccountName must be set")
+      invariant(typeof invitedUserRole === "string", "invitedUserRole must be set")
 
       const updateUserResponse = await portal.updateUserAcceptAccount({
         accountID: accountId,
         accepted: invite_response === "accept",
       })
       res = updateUserResponse.updateUserAcceptAccount
+
+      if (res) {
+        message = "Invite response saved"
+
+        await triggerAcceptInvitationNotification({
+          accountId,
+          actor: user.user,
+          accountName: invitedAccountName,
+          userRole: invitedUserRole as RoleName,
+        }).catch((error) => {
+          console.log(error)
+          message =
+            message + ", however something went wrong while sending the notification."
+        })
+      }
     }
 
     return json<DataStruct<UserInvitedAccountsActionData>>({
@@ -46,7 +67,7 @@ export const action: ActionFunction = async ({ request }) => {
         success: res,
       },
       error: false,
-      message: "Invite response saved",
+      message,
     })
   } catch (error) {
     return json<DataStruct<UserInvitedAccountsActionData>>({

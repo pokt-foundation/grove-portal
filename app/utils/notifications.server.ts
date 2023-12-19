@@ -367,3 +367,44 @@ export const triggerSubscriptionActionNotification = async ({
       })
   }
 }
+
+export const triggerAppActionNotification = async ({
+  actor,
+  accountName,
+  accountId,
+  appId,
+  appName,
+  appEmoji,
+  type,
+}: TriggerNotificationBaseProps & {
+  appName: string
+  appId: string
+  appEmoji: string
+  type: "create" | "delete"
+}) => {
+  return await novu.bulkTrigger([
+    {
+      name: NOTIFICATIONS.IN_APP_NOTIFICATION,
+      to: {
+        subscriberId: actor.portalUserID,
+      },
+      payload: {
+        message: `${String.fromCodePoint(parseInt(appEmoji, 16))} ${appName} has been ${
+          type === "create" ? "created" : "deleted"
+        }.`,
+        redirectTo: type === "create" ? `/account/${accountId}/${appId}` : "",
+      },
+    },
+    {
+      name: NOTIFICATIONS.IN_APP_NOTIFICATION,
+      to: [{ type: TriggerRecipientsTypeEnum.TOPIC, topicKey: accountId }],
+      actor: { subscriberId: actor.portalUserID },
+      payload: {
+        message: `${actor.email} has ${
+          type === "create" ? "created" : "deleted"
+        } ${String.fromCodePoint(parseInt(appEmoji, 16))} ${appName}`,
+        redirectTo: type === "create" ? `/account/${accountId}/${appId}` : "",
+      },
+    },
+  ])
+}

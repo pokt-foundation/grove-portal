@@ -27,6 +27,7 @@ const TeamMemberAction = ({
 
   const menuItems = useMemo(() => {
     let items = []
+    const { id, email, roleName } = teamMember
 
     switch (userRole) {
       case RoleName.Owner:
@@ -36,14 +37,14 @@ const TeamMemberAction = ({
           // OWNER --CAN--REMOVE OTHER USERS
           items.push({
             icon: <LuMinusCircle size={18} />,
-            onClick: () => openRemoveUserModal(teamMember.email, teamMember.id),
+            onClick: () => openRemoveUserModal({ email, id }),
             label: "Remove",
           })
           if (!status) {
             // OWNER --CAN-- RESEND EMAIL TO OTHER USERS
             items.push({
               icon: <LuSend size={18} />,
-              onClick: () => openResendEmailModal(teamMember.email),
+              onClick: () => openResendEmailModal({ email, id, roleName }),
               label: "Resend Email",
             })
           }
@@ -54,21 +55,21 @@ const TeamMemberAction = ({
           // ADMIN --CAN--REMOVE THEMSELVES
           items.push({
             icon: <LuMinusCircle size={18} />,
-            onClick: () => openRemoveUserModal(teamMember.email, teamMember.id),
+            onClick: () => openRemoveUserModal({ email, id }),
             label: "Leave",
           })
         } else {
           // ADMIN --CAN--REMOVE OTHER USERS
           items.push({
             icon: <LuMinusCircle size={18} />,
-            onClick: () => openRemoveUserModal(teamMember.email, teamMember.id),
+            onClick: () => openRemoveUserModal({ email, id }),
             label: "Remove",
           })
           if (!status) {
             // ADMIN --CAN-- RESEND EMAIL TO OTHER USERS
             items.push({
               icon: <LuSend size={18} />,
-              onClick: () => openResendEmailModal(teamMember.email),
+              onClick: () => openResendEmailModal({ email, id, roleName }),
               label: "Resend Email",
             })
           }
@@ -80,7 +81,7 @@ const TeamMemberAction = ({
           // MEMEBER --CAN-- LEAVE ACCOUNT THEMSELVES
           items.push({
             icon: <LuMinusCircle size={18} />,
-            onClick: () => openLeaveTeamModal(teamMember.email, teamMember.id),
+            onClick: () => openLeaveTeamModal({ email, id }),
             label: "Leave",
           })
         } else {

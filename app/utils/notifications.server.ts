@@ -293,34 +293,49 @@ export const triggerAcceptInvitationNotification = async ({
   accountName,
   accountId,
   userRole,
+  accepted,
 }: TriggerNotificationBaseProps & {
   userRole: RoleName
+  accepted: boolean
 }) => {
-  return await novu.bulkTrigger([
-    {
-      name: NOTIFICATIONS.IN_APP_NOTIFICATION,
-      to: {
-        subscriberId: actor.portalUserID,
-      },
-      payload: {
-        message: `You have joined ${accountName ?? accountId} as ${
-          userRole === RoleName.Admin ? "an" : "a"
-        } ${capitalizeFirstLetter(userRole)}`,
-        redirectTo: `/account/${accountId}`,
-      },
-    },
-    {
-      name: NOTIFICATIONS.IN_APP_NOTIFICATION,
-      to: [{ type: TriggerRecipientsTypeEnum.TOPIC, topicKey: accountId }],
-      actor: { subscriberId: actor.portalUserID },
-      payload: {
-        message: `${actor.email} has joined ${accountName ?? accountId} as ${
-          userRole === RoleName.Admin ? "an" : "a"
-        } ${capitalizeFirstLetter(userRole)}`,
-        redirectTo: `/account/${accountId}/settings/members`,
-      },
-    },
-  ])
+  return accepted
+    ? await novu.bulkTrigger([
+        {
+          name: NOTIFICATIONS.IN_APP_NOTIFICATION,
+          to: {
+            subscriberId: actor.portalUserID,
+          },
+          payload: {
+            message: `You have joined ${accountName ?? accountId} as ${
+              userRole === RoleName.Admin ? "an" : "a"
+            } ${capitalizeFirstLetter(userRole)}`,
+            redirectTo: `/account/${accountId}`,
+          },
+        },
+        {
+          name: NOTIFICATIONS.IN_APP_NOTIFICATION,
+          to: [{ type: TriggerRecipientsTypeEnum.TOPIC, topicKey: accountId }],
+          actor: { subscriberId: actor.portalUserID },
+          payload: {
+            message: `${actor.email} has joined ${accountName ?? accountId} as ${
+              userRole === RoleName.Admin ? "an" : "a"
+            } ${capitalizeFirstLetter(userRole)}`,
+            redirectTo: `/account/${accountId}/settings/members`,
+          },
+        },
+      ])
+    : await novu.trigger(NOTIFICATIONS.IN_APP_NOTIFICATION, {
+        to: {
+          subscriberId: actor.portalUserID,
+        },
+        payload: {
+          message: `You have declined the invitation to join ${
+            accountName ?? accountId
+          } as ${userRole === RoleName.Admin ? "an" : "a"} ${capitalizeFirstLetter(
+            userRole,
+          )}`,
+        },
+      })
 }
 
 export const triggerSubscriptionActionNotification = async ({

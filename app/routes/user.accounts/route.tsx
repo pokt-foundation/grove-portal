@@ -44,22 +44,20 @@ export const action: ActionFunction = async ({ request }) => {
         accountID: accountId,
         accepted: invite_response === "accept",
       })
-      res = updateUserResponse.updateUserAcceptAccount
+      const accepted = updateUserResponse.updateUserAcceptAccount
 
-      if (res) {
-        message = "Invite response saved"
-
-        await triggerAcceptInvitationNotification({
-          accountId,
-          actor: user.user,
-          accountName: invitedAccountName,
-          userRole: invitedUserRole as RoleName,
-        }).catch((error) => {
-          console.log(error)
-          message =
-            message + ", however something went wrong while sending the notification."
-        })
-      }
+      message = `Invite has been ${accepted ? "accepted" : "declined"}.`
+      await triggerAcceptInvitationNotification({
+        accountId,
+        accepted,
+        actor: user.user,
+        accountName: invitedAccountName,
+        userRole: invitedUserRole as RoleName,
+      }).catch((error) => {
+        console.log(error)
+        message =
+          message + " however something went wrong while sending the notification."
+      })
     }
 
     return json<DataStruct<UserInvitedAccountsActionData>>({

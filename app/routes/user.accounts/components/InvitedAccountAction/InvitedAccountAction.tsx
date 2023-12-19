@@ -49,7 +49,9 @@ const InvitedAccountAction = ({ account, user }: InvitedAccountActionProps) => {
             ) : (
               <Menu.Item
                 icon={<LuMinusCircle size={18} />}
-                onClick={() => openLeaveTeamModal(user.email, user.portalUserID)}
+                onClick={() =>
+                  openLeaveTeamModal({ email: user.email, id: user.portalUserID })
+                }
               >
                 <Text>Leave</Text>
               </Menu.Item>

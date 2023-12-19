@@ -4,6 +4,8 @@ import { initPortalClient } from "~/models/portal/portal.server"
 import { AdminUpdateAccountMutationVariables, PayPlanType } from "~/models/portal/sdk"
 import { initAdminPortal } from "~/utils/adminPortal"
 import { getErrorMessage } from "~/utils/catchError"
+import { triggerSubscriptionActionNotification } from "~/utils/notifications.server"
+import { getPlanName } from "~/utils/planUtils"
 
 export type UpdatePlanActionData = {
   error: boolean
@@ -32,17 +34,22 @@ export const action: ActionFunction = async ({ request }) => {
   })
 }
 
-export const updatePlan = async ({ id, type, limit, subscription }: UpdatePlanArgs) => {
+export const updatePlan = async ({
+  id,
+  type: planType,
+  limit,
+  subscription,
+}: UpdatePlanArgs) => {
   const portal = initPortalClient()
 
   try {
     invariant(id, "account id not found")
-    invariant(type, "plan type not found")
+    invariant(planType, "plan type not found")
 
     const portalAdmin = await initAdminPortal(portal)
 
     const options: AdminUpdateAccountMutationVariables = {
-      input: { accountID: id, payPlanType: type },
+      input: { accountID: id, payPlanType: planType },
     }
 
     if (limit) {
@@ -54,9 +61,17 @@ export const updatePlan = async ({ id, type, limit, subscription }: UpdatePlanAr
 
     await portalAdmin.adminUpdateAccount(options)
 
+    if (planType !== PayPlanType.FreetierV0) {
+      await triggerSubscriptionActionNotification({
+        planType,
+        accountId: id,
+        type: "upgrade",
+      })
+    }
+
     return json<UpdatePlanActionData>({
       error: false,
-      message: `Account ${id} has successfully been updated to ${type}`,
+      message: `Account ${id} has successfully been updated to ${getPlanName(planType)}`,
     })
   } catch (error) {
     return json<UpdatePlanActionData>({

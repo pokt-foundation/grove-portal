@@ -1,7 +1,8 @@
 import { Novu, TriggerRecipientsTypeEnum } from "@novu/node"
-import { RoleName, User } from "~/models/portal/sdk"
+import { PayPlanType, RoleName, User } from "~/models/portal/sdk"
 import { TeamActionType } from "~/routes/account.$accountId.settings.members/route"
 import { getRequiredServerEnvVar } from "~/utils/environment"
+import { getPlanName } from "~/utils/planUtils"
 import { capitalizeFirstLetter } from "~/utils/utils"
 
 export const novu = new Novu(getRequiredServerEnvVar("NOVU_API_KEY"))
@@ -40,6 +41,23 @@ type TriggerTeamActionNotificationProps = TriggerTeamActionNotificationBaseProps
     | {
         type: "delete"
         userRole?: RoleName
+      }
+  )
+
+type TriggerSubscriptionActionNotificationProps = Omit<
+  TriggerNotificationBaseProps,
+  "actor"
+> &
+  (
+    | {
+        type: "cancel"
+        actor: User
+        planType?: PayPlanType
+      }
+    | {
+        type: "upgrade"
+        actor?: User
+        planType: PayPlanType
       }
   )
 
@@ -303,4 +321,49 @@ export const triggerAcceptInvitationNotification = async ({
       },
     },
   ])
+}
+
+export const triggerSubscriptionActionNotification = async ({
+  type,
+  accountName,
+  accountId,
+  actor,
+  planType,
+}: TriggerSubscriptionActionNotificationProps) => {
+  switch (type) {
+    case "cancel":
+      return await novu.bulkTrigger([
+        {
+          name: NOTIFICATIONS.IN_APP_NOTIFICATION,
+          to: {
+            subscriberId: actor.portalUserID,
+          },
+          payload: {
+            message: `You have cancelled  ${
+              accountName ?? accountId
+            } "Auto-Scale" subscription.`,
+            redirectTo: `/account/${accountId}`,
+          },
+        },
+        {
+          name: NOTIFICATIONS.IN_APP_NOTIFICATION,
+          to: [{ type: TriggerRecipientsTypeEnum.TOPIC, topicKey: accountId }],
+          actor: { subscriberId: actor.portalUserID },
+          payload: {
+            message: `${actor.email} has cancelled ${
+              accountName ?? accountId
+            } "Auto-Scale" subscription.`,
+            redirectTo: `/account/${accountId}/settings/members`,
+          },
+        },
+      ])
+    case "upgrade":
+      return await novu.trigger(NOTIFICATIONS.IN_APP_NOTIFICATION, {
+        to: [{ type: TriggerRecipientsTypeEnum.TOPIC, topicKey: accountId }],
+        payload: {
+          message: `${accountId} has been upgraded to ${getPlanName(planType)}`,
+          redirectTo: `/account/${accountId}`,
+        },
+      })
+  }
 }

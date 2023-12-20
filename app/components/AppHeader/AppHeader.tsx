@@ -8,11 +8,10 @@ type HeaderProps = {
   user?: User
   accounts: Account[]
   opened: boolean
-  hasPendingInvites: boolean
   onOpen: (o: boolean) => void
 }
 
-export const AppHeader = ({ user, opened, onOpen, hasPendingInvites }: HeaderProps) => {
+export const AppHeader = ({ user, opened, onOpen }: HeaderProps) => {
   return (
     <>
       <Flex align="center" gap="sm" h="100%" justify="flex-end" p="md">
@@ -32,7 +31,7 @@ export const AppHeader = ({ user, opened, onOpen, hasPendingInvites }: HeaderPro
           />
         </MediaQuery>
         {user && <NovuNotificationPopover subscriberId={user.portalUserID} />}
-        <AccountDrawer hasPendingInvites={hasPendingInvites} user={user} />
+        <AccountDrawer user={user} />
       </Flex>
     </>
   )

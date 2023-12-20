@@ -4,7 +4,7 @@ import invariant from "tiny-invariant"
 import ErrorView from "~/components/ErrorView"
 import RootAppShell from "~/components/RootAppShell/RootAppShell"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { Account, PortalApp, RoleName, User } from "~/models/portal/sdk"
+import { Account, RoleName, User } from "~/models/portal/sdk"
 import { DataStruct } from "~/types/global"
 import { getUserAccountRole } from "~/utils/accountUtils"
 import { getErrorMessage } from "~/utils/catchError"
@@ -14,7 +14,6 @@ export type AccountIdLoaderData = {
   account: Account
   accounts: Account[]
   user: User
-  hasPendingInvites: boolean
   userRole: RoleName
 }
 
@@ -40,7 +39,6 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       throw new Error(`Accounts not found for user ${user.user.portalUserID}`)
     }
 
-    const userPendingAccounts = await portal.getUserAccounts({ accepted: false })
     const userRole = getUserAccountRole(
       account.getUserAccount.users,
       user.user.portalUserID,
@@ -51,7 +49,6 @@ export const loader: LoaderFunction = async ({ request, params }) => {
         account: account.getUserAccount as Account,
         accounts: userAccounts.getUserAccounts as Account[],
         user: user.user,
-        hasPendingInvites: userPendingAccounts.getUserAccounts.length > 0,
         userRole,
       },
       error: false,
@@ -87,16 +84,10 @@ export default function AccountId() {
     return <ErrorView message={message} />
   }
 
-  const { account, accounts, user, hasPendingInvites, userRole } = data
+  const { account, accounts, user, userRole } = data
 
   return (
-    <RootAppShell
-      account={account}
-      accounts={accounts}
-      hasPendingInvites={hasPendingInvites}
-      user={user}
-      userRole={userRole}
-    >
+    <RootAppShell account={account} accounts={accounts} user={user} userRole={userRole}>
       <Outlet context={data} />
     </RootAppShell>
   )

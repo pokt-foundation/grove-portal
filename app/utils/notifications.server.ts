@@ -35,11 +35,11 @@ type TriggerTeamActionNotificationBaseProps = TriggerNotificationBaseProps & {
 type TriggerTeamActionNotificationProps = TriggerTeamActionNotificationBaseProps &
   (
     | {
-        type: Exclude<TeamActionType, "delete">
+        type: Exclude<TeamActionType, "delete" | "leave">
         userRole: RoleName
       }
     | {
-        type: "delete"
+        type: "delete" | "leave"
         userRole?: RoleName
       }
   )
@@ -173,6 +173,10 @@ const getAccountNotificationPayload = ({
         ctaText: "Accept Invitation",
         ctaLink: "https://portal.grove.city/user/accounts",
       }
+    case "leave":
+      return {
+        message: `You have left account ${accountName ?? accountId}`,
+      }
   }
 
   return { message: "" }
@@ -274,6 +278,21 @@ export const triggerTeamActionNotification = async ({
         to: {
           subscriberId: targetedUserId,
           email: targetedUserEmail,
+        },
+        payload: getAccountNotificationPayload({
+          target: "user",
+          actor,
+          type,
+          userRole,
+          accountId,
+          accountName,
+          targetedUserEmail,
+        }) as NovuNotificationPayload,
+      })
+    case "leave":
+      return await novu.trigger(NOTIFICATIONS.IN_APP_NOTIFICATION, {
+        to: {
+          subscriberId: targetedUserId,
         },
         payload: getAccountNotificationPayload({
           target: "user",

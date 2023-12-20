@@ -39,6 +39,26 @@ const useTeamModals = ({ account }: useTeamModalsProps) => {
     )
   }
 
+  const leaveTeam = ({ id, email }: Omit<TeamActionProps, "roleName">) => {
+    trackEvent({
+      category: AnalyticCategories.account,
+      action: AnalyticActions.account_team_leave,
+      label: accountId,
+    })
+    fetcher.submit(
+      {
+        user_leave: "true",
+        user_id: id,
+        user_email: email,
+        account_name: account.name as string,
+      },
+      {
+        method: "POST",
+        action: `/account/${accountId}/settings/members`,
+      },
+    )
+  }
+
   const changeMemberRole = ({ email, id, roleName }: TeamActionProps) => {
     trackEvent({
       category: AnalyticCategories.account,
@@ -96,7 +116,7 @@ const useTeamModals = ({ account }: useTeamModalsProps) => {
       children: <Text>Are you sure you want to leave the team?</Text>,
       labels: { cancel: "Cancel", confirm: "Leave" },
       confirmProps: { color: "red" },
-      onConfirm: () => removeTeamMember({ id, email }),
+      onConfirm: () => leaveTeam({ id, email }),
     })
 
   const openChangeRoleModal = ({ email, id, roleName }: TeamActionProps) =>

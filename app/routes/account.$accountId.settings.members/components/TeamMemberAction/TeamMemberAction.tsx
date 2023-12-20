@@ -55,7 +55,7 @@ const TeamMemberAction = ({
           // ADMIN --CAN--REMOVE THEMSELVES
           items.push({
             icon: <LuMinusCircle size={18} />,
-            onClick: () => openRemoveUserModal({ email, id }),
+            onClick: () => openLeaveTeamModal({ email, id }),
             label: "Leave",
           })
         } else {

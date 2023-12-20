@@ -35,7 +35,7 @@ export type TeamActionData = {
   type: TeamActionType
 }
 
-export type TeamActionType = "delete" | "invite" | "updateRole" | "resend"
+export type TeamActionType = "delete" | "invite" | "updateRole" | "resend" | "leave"
 
 export const action: ActionFunction = async ({ request, params }) => {
   const user = await requireUser(request)
@@ -48,6 +48,7 @@ export const action: ActionFunction = async ({ request, params }) => {
   try {
     const user_invite = formData.get("user_invite")
     const user_delete = formData.get("user_delete")
+    const user_leave = formData.get("user_leave")
     const user_update = formData.get("user_update")
     const user_resend = formData.get("user_resend")
     const account_name = formData.get("account_name") as string
@@ -191,6 +192,38 @@ export const action: ActionFunction = async ({ request, params }) => {
 
       res = true
       message = `Invite email resent to user ${user_email}`
+    }
+    if (user_leave) {
+      const user_id = formData.get("user_id")
+      const user_email = formData.get("user_email")
+      invariant(typeof user_id === "string", "user_id must be set")
+      invariant(typeof user_email === "string", "user_email must be set")
+
+      const removeAccountUserResponse = await portal.removeAccountUser({
+        input: {
+          accountID: accountId,
+          userID: user_id,
+        },
+      })
+
+      res = removeAccountUserResponse.removeAccountUser
+      message = `You have left account ${invitedAccountName}`
+      if (!res) {
+        throw new Error(`Error leaving account ${invitedAccountName}`)
+      }
+
+      await triggerTeamActionNotification({
+        accountId,
+        type: "leave",
+        actor: user.user,
+        accountName: invitedAccountName,
+        targetedUserId: user_id,
+        targetedUserEmail: user_email,
+      }).catch((error) => {
+        console.log(error)
+        message =
+          message + ", however something went wrong while sending the notification."
+      })
     }
 
     return json<DataStruct<TeamActionData>>({

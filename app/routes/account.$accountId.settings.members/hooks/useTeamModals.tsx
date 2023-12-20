@@ -134,7 +134,7 @@ const useTeamModals = ({ account }: useTeamModalsProps) => {
 
   const openResendEmailModal = ({ email, id, roleName }: TeamActionProps) =>
     openConfirmationModal({
-      title: <Text fw={600}>Remove user</Text>,
+      title: <Text fw={600}>Resend Invitation</Text>,
       children: <Text>Are you sure you want to resend an email to {email}?</Text>,
       labels: { cancel: "Cancel", confirm: "Resend" },
       onConfirm: () => resendEmail({ email, id, roleName }),

@@ -45,7 +45,7 @@ const TeamMemberAction = ({
             items.push({
               icon: <LuSend size={18} />,
               onClick: () => openResendEmailModal({ email, id, roleName }),
-              label: "Resend Email",
+              label: "Resend Invitation",
             })
           }
         }
@@ -70,7 +70,7 @@ const TeamMemberAction = ({
             items.push({
               icon: <LuSend size={18} />,
               onClick: () => openResendEmailModal({ email, id, roleName }),
-              label: "Resend Email",
+              label: "Resend Invitation",
             })
           }
         }

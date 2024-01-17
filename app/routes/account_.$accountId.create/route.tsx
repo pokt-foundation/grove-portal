@@ -18,10 +18,8 @@ import { initPortalClient } from "~/models/portal/portal.server"
 import { PayPlanType, RoleName } from "~/models/portal/sdk"
 import { getUserAccountRole } from "~/utils/accountUtils"
 import { getErrorMessage } from "~/utils/catchError"
-import { getRequiredClientEnvVar } from "~/utils/environment"
-import { MAX_USER_APPS } from "~/utils/planUtils"
 import { seo_title_append } from "~/utils/seo"
-import { getUserPermissions, requireUser, Permissions } from "~/utils/user.server"
+import { requireUser } from "~/utils/user.server"
 
 export const meta: MetaFunction = () => {
   return {
@@ -33,7 +31,6 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   const user = await requireUser(request)
   const portal = initPortalClient({ token: user.accessToken })
   const { accountId } = params
-  const permissions = getUserPermissions(user.accessToken)
   invariant(accountId, "AccountId must be set")
 
   const getUserAccountResponse = await portal
@@ -46,24 +43,18 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     return redirect(`/account/${params.accountId}`)
   }
 
-  const userRole = getUserAccountRole(
-    getUserAccountResponse.getUserAccount.users,
-    user.user.portalUserID,
-  )
+  const userAccount = getUserAccountResponse.getUserAccount
+  const userRole = getUserAccountRole(userAccount.users, user.user.portalUserID)
 
   if (!userRole || userRole === RoleName.Member) {
     return redirect(`/account/${params.accountId}`)
   }
-  const portalApps = getUserAccountResponse.getUserAccount.portalApps
+  const portalApps = userAccount.portalApps
   const underMaxApps = () => {
-    return !portalApps || portalApps.length < MAX_USER_APPS
+    return !portalApps || portalApps.length < userAccount.plan.appLimit
   }
 
-  const userCanCreateApp =
-    permissions.includes(Permissions.AppsUnlimited) ||
-    (user.user.auth0ID &&
-      getRequiredClientEnvVar("GODMODE_ACCOUNTS")?.includes(user.user.auth0ID)) ||
-    underMaxApps()
+  const userCanCreateApp = userAccount.plan.appLimit === 0 || underMaxApps()
 
   // ensure only users who can create new apps are allowed on this page
   if (!userCanCreateApp) {

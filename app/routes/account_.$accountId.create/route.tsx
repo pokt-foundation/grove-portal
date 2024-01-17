@@ -16,7 +16,7 @@ import PortalLoader from "~/components/PortalLoader"
 import useActionNotification from "~/hooks/useActionNotification"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { PayPlanType, RoleName } from "~/models/portal/sdk"
-import { getUserAccountRole } from "~/utils/accountUtils"
+import { getUserAccountRole, isAccountWithinAppLimit } from "~/utils/accountUtils"
 import { getErrorMessage } from "~/utils/catchError"
 import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
@@ -49,15 +49,10 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   if (!userRole || userRole === RoleName.Member) {
     return redirect(`/account/${params.accountId}`)
   }
-  const portalApps = userAccount.portalApps
-  const underMaxApps = () => {
-    return !portalApps || portalApps.length < userAccount.plan.appLimit
-  }
-
-  const userCanCreateApp = userAccount.plan.appLimit === 0 || underMaxApps()
+  const canCreateApp = isAccountWithinAppLimit(userAccount)
 
   // ensure only users who can create new apps are allowed on this page
-  if (!userCanCreateApp) {
+  if (!canCreateApp) {
     return redirect(`/account/${params.accountId}/app-limit-exceeded`)
   }
 

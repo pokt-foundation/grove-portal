@@ -18,6 +18,7 @@ import { initPortalClient } from "~/models/portal/portal.server"
 import { PayPlanType, RoleName } from "~/models/portal/sdk"
 import { getUserAccountRole, isAccountWithinAppLimit } from "~/utils/accountUtils"
 import { getErrorMessage } from "~/utils/catchError"
+import { triggerAppActionNotification } from "~/utils/notifications.server"
 import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
 
@@ -118,6 +119,15 @@ export const action: ActionFunction = async ({ request, params }) => {
 
     const newApp = createUserPortalAppResponse.createUserPortalApp
 
+    await triggerAppActionNotification({
+      actor: user.user,
+      type: "create",
+      appId: newApp.id,
+      appName: newApp.name,
+      appEmoji: newApp.appEmoji,
+      accountId: accountId,
+    })
+
     if (subscription === PayPlanType.PayAsYouGoV0) {
       return redirect(
         `/api/stripe/checkout-session?account-id=${accountId}&app-id=${newApp.id}&referral-id=${referral}`,
@@ -126,6 +136,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 
     return redirect(`/account/${accountId}/${newApp.id}`)
   } catch (error) {
+    console.log(error)
     return json({
       error: true,
       message: getErrorMessage(error),

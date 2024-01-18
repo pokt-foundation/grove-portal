@@ -4,6 +4,7 @@ import { PayPlanType } from "~/models/portal/sdk"
 import { getSubscription, stripe } from "~/models/stripe/stripe.server"
 import { updatePlan } from "~/routes/api.admin.update-plan/route"
 import { getErrorMessage } from "~/utils/catchError"
+import { triggerSubscriptionActionNotification } from "~/utils/notifications.server"
 import { getPoktId, requireUser } from "~/utils/user.server"
 
 export const action: ActionFunction = async ({ request }) => {
@@ -12,6 +13,7 @@ export const action: ActionFunction = async ({ request }) => {
   const userId = getPoktId(user.user.auth0ID)
   const formData = await request.formData()
   const accountId = formData.get("account-id")
+  const accountName = formData.get("account-name")
 
   try {
     invariant(accountId, "account id not found")
@@ -24,6 +26,13 @@ export const action: ActionFunction = async ({ request }) => {
         await updatePlan({
           id: accountId as string,
           type: PayPlanType.FreetierV0,
+        })
+
+        await triggerSubscriptionActionNotification({
+          actor: user.user,
+          type: "cancel",
+          accountName: (accountName as string) ?? accountId,
+          accountId: accountId as string,
         })
 
         return json({

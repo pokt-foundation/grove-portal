@@ -49,7 +49,9 @@ const InvitedAccountAction = ({ account, user }: InvitedAccountActionProps) => {
             ) : (
               <Menu.Item
                 icon={<LuMinusCircle size={18} />}
-                onClick={() => openLeaveTeamModal(user.email, user.portalUserID)}
+                onClick={() =>
+                  openLeaveTeamModal({ email: user.email, id: user.portalUserID })
+                }
               >
                 <Text>Leave</Text>
               </Menu.Item>
@@ -59,6 +61,8 @@ const InvitedAccountAction = ({ account, user }: InvitedAccountActionProps) => {
       ) : (
         <Form method="post">
           <input hidden name="accountId" value={account.id} />
+          <input hidden name="accountName" value={account.name ?? ""} />
+          <input hidden name="role" value={role} />
           <Group position="right">
             <Button
               className={commonClasses.grayOutline}

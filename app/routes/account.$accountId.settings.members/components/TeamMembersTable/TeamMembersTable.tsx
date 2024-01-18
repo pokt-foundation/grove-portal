@@ -67,7 +67,7 @@ const TeamMembersTable = ({ account, userRole, user }: TeamMembersTableProps) =>
                     value={roleName}
                     onChange={(value) => {
                       if (value !== roleName) {
-                        openChangeRoleModal(email, id, value as RoleName)
+                        openChangeRoleModal({ email, id, roleName: value as RoleName })
                       }
                     }}
                   />

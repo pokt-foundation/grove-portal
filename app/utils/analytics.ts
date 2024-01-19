@@ -27,6 +27,7 @@ export const AnalyticActions = {
   account_plan_invoice_view: "account_plan_invoice_view",
   account_team_invite: "account_team_invite",
   account_team_remove: "account_team_remove",
+  account_team_leave: "account_team_leave",
   account_team_change_role: "account_team_change_role",
   account_team_resend: "account_team_resend",
   account_update: "Update Account",

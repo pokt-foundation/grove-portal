@@ -1,8 +1,5 @@
-import { hideNotification } from "@mantine/notifications"
 import { Box, Stack, Text } from "@pokt-foundation/pocket-blocks"
-import { useEffect } from "react"
 import AccountsTable from "./components/AccountsTable"
-import { PENDING_INVITES_NOTIFICATION_ID } from "~/components/RootAppShell/RootAppShell"
 import { Account, User } from "~/models/portal/sdk"
 
 type UserAccountsProps = {
@@ -12,11 +9,6 @@ type UserAccountsProps = {
 }
 
 export const UserAccounts = ({ accounts, pendingAccounts, user }: UserAccountsProps) => {
-  useEffect(() => {
-    // Close the notification if it's still open
-    hideNotification(PENDING_INVITES_NOTIFICATION_ID)
-  }, [])
-
   return (
     <Box pt="xl">
       <Text>

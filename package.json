@@ -29,6 +29,8 @@
     "@mantine/modals": "^5.10.5",
     "@mantine/notifications": "^5.10.5",
     "@mantine/remix": "^5.10.5",
+    "@novu/node": "^0.22.0",
+    "@novu/notification-center": "^0.22.0",
     "@pokt-foundation/pocket-blocks": "^2.0.4",
     "@pokt-foundation/pocketjs-isomorphic-provider": "^1.0.0",
     "@remix-run/node": "^1.16.0",

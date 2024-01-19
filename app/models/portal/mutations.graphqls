@@ -20,42 +20,7 @@ mutation createUserPortalApp($input: CreateUserPortalApp!) {
   createUserPortalApp(input: $input) {
     id
     name
-    accountID
-    settings {
-      appID
-      environment
-      secretKey
-      secretKeyRequired
-      favoritedChainIDs
-    }
-    whitelists {
-      origins
-      userAgents
-      blockchains
-      contracts {
-        blockchainID
-        contracts
-      }
-      methods {
-        blockchainID
-        methods
-      }
-    }
-    aats {
-      protocolAppID
-      aat {
-        id
-        appID
-        publicKey
-        address
-        clientPublicKey
-        signature
-        version
-      }
-    }
-    createdAt
-    updatedAt
-    deleted
+    appEmoji
   }
 }
 

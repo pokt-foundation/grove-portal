@@ -1,3 +1,5 @@
+import { Blockchain } from "~/models/portal/sdk"
+
 export const CHAIN_DOCS_URL: { [key: string]: string } = {
   "arbitrum-one": "arbitrum-one",
   "avax-mainnet": "avax",
@@ -48,3 +50,8 @@ export const CHAIN_DOCS_URL: { [key: string]: string } = {
   "scroll-testnet": "scroll",
   "starknet-testnet": "starknet",
 }
+
+export const getAppEndpointUrl = (
+  chain: Blockchain | undefined | null,
+  appId: string | undefined,
+) => `https://${chain?.blockchain}.rpc.grove.city/v1/${appId}`

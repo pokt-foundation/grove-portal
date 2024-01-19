@@ -12,6 +12,7 @@ import CopyTextButton from "~/components/CopyTextButton"
 import { DataTable } from "~/components/DataTable"
 import { Blockchain } from "~/models/portal/sdk"
 import useCommonStyles from "~/styles/commonStyles"
+import { getAppEndpointUrl } from "~/utils/chainUtils"
 
 type ChainsTableProps = {
   blockchains: Blockchain[]
@@ -19,11 +20,6 @@ type ChainsTableProps = {
   onDeleteChain: (chainId: string) => void
   readOnly?: boolean
 }
-
-const getAppEndpointUrl = (
-  chain: Blockchain | undefined | null,
-  appId: string | undefined,
-) => `https://${chain?.blockchain}.gateway.pokt.network/v1/lb/${appId}`
 
 const ChainsTable = ({
   blockchains,

@@ -17,7 +17,7 @@ import { DataTable } from "~/components/DataTable"
 import useActionNotification from "~/hooks/useActionNotification"
 import { Blockchain, Maybe } from "~/models/portal/sdk"
 import { trackEvent, AnalyticCategories, AnalyticActions } from "~/utils/analytics"
-import { CHAIN_DOCS_URL } from "~/utils/chainUtils"
+import { CHAIN_DOCS_URL, getAppEndpointUrl } from "~/utils/chainUtils"
 import { DOCS_PATH } from "~/utils/utils"
 
 type AppEndpointsProps = {
@@ -26,9 +26,6 @@ type AppEndpointsProps = {
   searchTerm: string
   readOnly: boolean
 }
-
-const getAppEndpointUrl = (chain: Blockchain, appId: string | undefined) =>
-  `https://${chain?.blockchain}.rpc.grove.city/v1/${appId}`
 
 const AppEndpointsTable = ({
   blockchains,

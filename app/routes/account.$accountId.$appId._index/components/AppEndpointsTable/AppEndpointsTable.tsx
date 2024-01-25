@@ -104,9 +104,7 @@ const AppEndpointsTable = ({
                           <UnstyledButton
                             component="a"
                             fz="sm"
-                            href={`${DOCS_PATH}/supported-methods/supported-methods/${
-                              CHAIN_DOCS_URL[chain.blockchain]
-                            }`}
+                            href={`${DOCS_PATH}/${CHAIN_DOCS_URL[chain.blockchain]}`}
                             rel="noreferrer"
                             target="_blank"
                             onClick={() => {

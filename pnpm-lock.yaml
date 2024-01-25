@@ -17,6 +17,7 @@ specifiers:
   '@mantine/hooks': ^5.10.5
   '@mantine/modals': ^5.10.5
   '@mantine/notifications': ^5.10.5
+  '@mantine/prism': ^5.10.5
   '@mantine/remix': ^5.10.5
   '@novu/node': ^0.22.0
   '@novu/notification-center': ^0.22.0
@@ -95,6 +96,7 @@ dependencies:
   '@mantine/hooks': 5.10.5_react@18.2.0
   '@mantine/modals': 5.10.5_7l7cohgiq6l4ncfy2pvlz3brzy
   '@mantine/notifications': 5.10.5_7l7cohgiq6l4ncfy2pvlz3brzy
+  '@mantine/prism': 5.10.5_7l7cohgiq6l4ncfy2pvlz3brzy
   '@mantine/remix': 5.10.5_awjq7nnjaockokutkm4uxomyfe
   '@novu/node': 0.22.0
   '@novu/notification-center': 0.22.0_a3d2pvmxn5phwvyattvo7alx6u
@@ -3703,6 +3705,22 @@ packages:
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-transition-group: 4.4.2_biqbaboplfbrettd7655fr4n2y
+    dev: false
+
+  /@mantine/prism/5.10.5_7l7cohgiq6l4ncfy2pvlz3brzy:
+    resolution: {integrity: sha512-xwe3RE6wg0/KuCBH/MTTQIOltBLTELSfUzHa5/66q4aPdgRPnbzOVxiH/ytndDuqJd8MKpyo25M+3nPAtq2O4A==}
+    peerDependencies:
+      '@mantine/core': 5.10.5
+      '@mantine/hooks': 5.10.5
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
+      '@mantine/core': 5.10.5_zrh3qbywp4klzxzvocxisz6a5a
+      '@mantine/hooks': 5.10.5_react@18.2.0
+      '@mantine/utils': 5.10.5_react@18.2.0
+      prism-react-renderer: 1.3.5_react@18.2.0
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
     dev: false
 
   /@mantine/remix/5.10.5_awjq7nnjaockokutkm4uxomyfe:
@@ -12624,6 +12642,14 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       parse-ms: 2.1.0
+
+  /prism-react-renderer/1.3.5_react@18.2.0:
+    resolution: {integrity: sha512-IJ+MSwBWKG+SM3b2SUfdrhC+gu01QkV2KmRQgREThBfSQRoufqRfxfHUxpG1WcaFjP+kojcFyO9Qqtpgt3qLCg==}
+    peerDependencies:
+      react: '>=0.14.9'
+    dependencies:
+      react: 18.2.0
+    dev: false
 
   /process-nextick-args/2.0.1:
     resolution: {integrity: sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==}

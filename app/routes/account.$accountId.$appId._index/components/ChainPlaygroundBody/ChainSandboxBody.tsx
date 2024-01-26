@@ -1,4 +1,4 @@
-import { Button, Card, Group, Loader, Select, Stack, Text } from "@mantine/core"
+import { Button, Card, Group, Select, Stack, Text } from "@mantine/core"
 import { Prism } from "@mantine/prism"
 import { FetcherWithComponents, useParams } from "@remix-run/react"
 import React, { useEffect, useState } from "react"
@@ -6,10 +6,11 @@ import JsonEditor from "~/components/JsonEditor"
 import { TitledCard } from "~/components/TitledCard"
 import { Blockchain } from "~/models/portal/sdk"
 import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
-import { getAppEndpointUrl, isEvmChain } from "~/utils/chainUtils"
+import { isEvmChain } from "~/utils/chainUtils"
 
 type ChainSandboxBodyProps = {
   blockchain: Blockchain
+  chainUrl: string
   selectedMethod?: string | null
   secretKey?: string
   requestHeaders: { [key: string]: string }
@@ -50,6 +51,7 @@ const getInitialRequestPayload = ({
 
 const ChainSandboxBody = ({
   blockchain,
+  chainUrl,
   selectedMethod,
   secretKey,
   requestHeaders,
@@ -99,17 +101,14 @@ const ChainSandboxBody = ({
             />
           ) : (
             <Prism withLineNumbers language="bash">
-              {getCurlCommand(
-                getAppEndpointUrl(blockchain, appId),
-                requestHeaders,
-                JSON.stringify(requestPayload),
-              )}
+              {getCurlCommand(chainUrl, requestHeaders, JSON.stringify(requestPayload))}
             </Prism>
           )}
           <Group>
             {blockchain && (
               <Button
                 disabled={isEvmChain(blockchain) && !selectedMethod}
+                loading={chainFetcher.state === "submitting"}
                 size="sm"
                 onClick={() => {
                   trackEvent({
@@ -121,7 +120,7 @@ const ChainSandboxBody = ({
                   chainFetcher.submit(
                     {
                       payload: JSON.stringify(requestPayload),
-                      chainUrl: getAppEndpointUrl(blockchain, appId),
+                      chainUrl: chainUrl,
                       ...(secretKey && { secretKey }),
                     },
                     {
@@ -134,8 +133,6 @@ const ChainSandboxBody = ({
                 Send Request
               </Button>
             )}
-
-            {chainFetcher.state === "submitting" ? <Loader size="sm" /> : null}
           </Group>
         </Stack>
       </Card.Section>

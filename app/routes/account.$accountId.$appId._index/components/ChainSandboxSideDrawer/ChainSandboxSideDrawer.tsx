@@ -48,12 +48,21 @@ const ChainSandboxSideDrawer = ({
   const [includeSecretKey, setIncludeSecretKey] = useState<boolean>(false)
   const [selectedChain, setSelectedChain] = useState<Blockchain | null>(null)
   const [responseData, setResponseData] = useState()
+  const [restChainPath, setRestChainPath] = useState<string>("")
+  const isRpc = selectedChain?.enforceResult === "JSON"
 
-  const chainMethods = useMemo(() => {
-    return isEvmChain(selectedChain)
-      ? evmMethods.map((method) => ({ value: method, label: method }))
-      : []
-  }, [selectedChain])
+  const chainMethods = useMemo(
+    () =>
+      isEvmChain(selectedChain)
+        ? evmMethods.map((method) => ({ value: method, label: method }))
+        : [],
+    [selectedChain],
+  )
+
+  const chainUrl = useMemo(
+    () => `${getAppEndpointUrl(selectedChain, appId)}${restChainPath || ""}`.trim(),
+    [selectedChain, appId, restChainPath],
+  )
 
   const requestHeaders = {
     "Content-Type": "application/json",
@@ -82,7 +91,19 @@ const ChainSandboxSideDrawer = ({
     setResponseData(undefined)
     setSelectedMethod(null)
     setIncludeSecretKey(false)
+    setRestChainPath("")
     onSideDrawerClose()
+  }
+
+  const handleChainSelect = (chain: Blockchain) => {
+    trackEvent({
+      category: AnalyticCategories.app,
+      action: AnalyticActions.app_chain_sandbox_change_chain,
+      label: `Blockchain: ${chain.blockchain}`,
+    })
+    setSelectedMethod(null)
+    setSelectedChain(chain)
+    setRestChainPath("")
   }
 
   return (
@@ -101,15 +122,7 @@ const ChainSandboxSideDrawer = ({
           <ChainSelect
             chains={chains}
             selectedChain={selectedChain}
-            onChainSelect={(chain) => {
-              trackEvent({
-                category: AnalyticCategories.app,
-                action: AnalyticActions.app_chain_sandbox_change_chain,
-                label: `Blockchain: ${chain.blockchain}`,
-              })
-              setSelectedMethod(null)
-              setSelectedChain(chain)
-            }}
+            onChainSelect={handleChainSelect}
           />
         )}
 
@@ -119,31 +132,43 @@ const ChainSandboxSideDrawer = ({
               readOnly
               bg={theme.colors.gray[9]}
               miw={300}
-              style={{ flexGrow: 1 }}
+              style={{ flexGrow: 1.5 }}
               value={getAppEndpointUrl(selectedChain, appId)}
             />
           )}
-          <Tooltip
-            disabled={chainMethods.length > 0}
-            label="Currently, methods select is only available for EVM chains."
-          >
-            <Select
-              searchable
-              data={chainMethods}
-              disabled={chainMethods.length === 0}
-              miw={325}
-              placeholder="Mehod"
-              value={selectedMethod}
-              onChange={(method) => {
-                setSelectedMethod(method)
-                trackEvent({
-                  category: AnalyticCategories.app,
-                  action: AnalyticActions.app_chain_sandbox_select_method,
-                  label: `Method: ${method}`,
-                })
+          {isRpc ? (
+            <Tooltip
+              disabled={chainMethods.length > 0}
+              label="Currently, methods select is only available for EVM chains."
+            >
+              <Select
+                searchable
+                data={chainMethods}
+                disabled={chainMethods.length === 0}
+                miw={325}
+                placeholder="Mehod"
+                value={selectedMethod}
+                onChange={(method) => {
+                  setSelectedMethod(method)
+                  trackEvent({
+                    category: AnalyticCategories.app,
+                    action: AnalyticActions.app_chain_sandbox_select_method,
+                    label: `Method: ${method}`,
+                  })
+                }}
+              />
+            </Tooltip>
+          ) : (
+            <TextInput
+              placeholder="Path"
+              style={{ flexGrow: 1 }}
+              value={restChainPath}
+              onChange={(e) => setRestChainPath(e.currentTarget.value)}
+              onFocus={() => {
+                if (!restChainPath) setRestChainPath("/")
               }}
             />
-          </Tooltip>
+          )}
         </Flex>
         <TitledCard header={() => <Text weight={600}>Headers</Text>}>
           <Card.Section p="md">
@@ -174,6 +199,7 @@ const ChainSandboxSideDrawer = ({
           <ChainSandboxBody
             blockchain={selectedChain}
             chainFetcher={chainFetcher}
+            chainUrl={chainUrl}
             requestHeaders={requestHeaders}
             secretKey={includeSecretKey ? secretKey : ""}
             selectedMethod={selectedMethod}

@@ -1,4 +1,4 @@
-import { Group, Input, Menu, UnstyledButton } from "@mantine/core"
+import { Group, Input, Menu, UnstyledButton, Text } from "@mantine/core"
 import React, { useState } from "react"
 import { LuCheckCircle2, LuChevronsUpDown } from "react-icons/lu"
 import Chain from "~/components/Chain"
@@ -13,8 +13,10 @@ type ChainSelectProps = {
 
 const ChainSelect = ({ chains, selectedChain, onChainSelect }: ChainSelectProps) => {
   const [searchTerm, setSearchTerm] = useState("")
-  const filteredChains = chains.filter((chain) =>
-    chain.blockchain.toLowerCase().includes(searchTerm.toLowerCase().trim()),
+  const filteredChains = chains.filter(
+    (chain) =>
+      chain.blockchain.toLowerCase().includes(searchTerm.toLowerCase().trim()) ||
+      chain.description?.toLowerCase().includes(searchTerm.toLowerCase().trim()),
   )
 
   return (
@@ -27,15 +29,14 @@ const ChainSelect = ({ chains, selectedChain, onChainSelect }: ChainSelectProps)
           </Group>
         </UnstyledButton>
       </Menu.Target>
-
-      {filteredChains && filteredChains?.length > 0 && (
-        <Menu.Dropdown px={8} py="md">
-          <Input
-            mb={8}
-            placeholder="Search..."
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          {filteredChains.map((item, index) => (
+      <Menu.Dropdown px={8} py="md">
+        <Input
+          mb={8}
+          placeholder="Search..."
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        {filteredChains.length > 0 ? (
+          filteredChains.map((item, index) => (
             <Menu.Item
               key={item.id}
               disabled={item.id === selectedChain.id}
@@ -53,9 +54,11 @@ const ChainSelect = ({ chains, selectedChain, onChainSelect }: ChainSelectProps)
                 )}
               </Group>
             </Menu.Item>
-          ))}
-        </Menu.Dropdown>
-      )}
+          ))
+        ) : (
+          <Text pt="sm">No results found</Text>
+        )}
+      </Menu.Dropdown>
     </Menu>
   )
 }

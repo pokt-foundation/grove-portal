@@ -12,9 +12,10 @@ import { Prism } from "@mantine/prism"
 import { FetcherWithComponents, useFetcher, useParams } from "@remix-run/react"
 import React, { useEffect, useMemo, useState } from "react"
 import ChainSandboxBody from "app/routes/account.$accountId.$appId._index/components/ChainSandboxBody"
+import ChainSandboxInputs from "app/routes/account.$accountId.$appId._index/components/ChainSandboxInputs"
+import ChainSelect from "~/components/ChainSelect"
 import { TitledCard } from "~/components/TitledCard"
 import { Blockchain } from "~/models/portal/sdk"
-import ChainSandboxInteractionPanel from "~/routes/account.$accountId.$appId._index/components/ChainSandboxInteractionPanel"
 import { SandboxRequestData } from "~/routes/api.sandbox/route"
 import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
 import { getAppEndpointUrl } from "~/utils/chainUtils"
@@ -95,11 +96,20 @@ const ChainSandboxSideDrawer = ({
       padding="sm"
       position="right"
       size={800}
+      title={
+        selectedChain ? (
+          <ChainSelect
+            chains={chains}
+            selectedChain={selectedChain}
+            onChainSelect={handleChainSelect}
+          />
+        ) : null
+      }
       onClose={handleSideDrawerClose}
     >
       {selectedChain ? (
-        <Stack mt="-md">
-          <ChainSandboxInteractionPanel
+        <Stack>
+          <ChainSandboxInputs
             chainRestPath={chainRestPath}
             chains={chains}
             selectedChain={selectedChain}

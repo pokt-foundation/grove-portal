@@ -1,5 +1,5 @@
-import { Group, Menu, UnstyledButton } from "@pokt-foundation/pocket-blocks"
-import React from "react"
+import { Group, Input, Menu, UnstyledButton } from "@mantine/core"
+import React, { useState } from "react"
 import { LuCheckCircle2, LuChevronsUpDown } from "react-icons/lu"
 import Chain from "~/components/Chain"
 import { Blockchain } from "~/models/portal/sdk"
@@ -12,6 +12,11 @@ type ChainSelectProps = {
 }
 
 const ChainSelect = ({ chains, selectedChain, onChainSelect }: ChainSelectProps) => {
+  const [searchTerm, setSearchTerm] = useState("")
+  const filteredChains = chains.filter((chain) =>
+    chain.blockchain.toLowerCase().includes(searchTerm.toLowerCase().trim()),
+  )
+
   return (
     <Menu styles={{ dropdown: { minWidth: 300, marginLeft: 8 } }}>
       <Menu.Target>
@@ -23,9 +28,14 @@ const ChainSelect = ({ chains, selectedChain, onChainSelect }: ChainSelectProps)
         </UnstyledButton>
       </Menu.Target>
 
-      {chains && chains?.length > 0 && (
+      {filteredChains && filteredChains?.length > 0 && (
         <Menu.Dropdown px={8} py="md">
-          {chains.map((item, index) => (
+          <Input
+            mb={8}
+            placeholder="Search..."
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          {filteredChains.map((item, index) => (
             <Menu.Item
               key={item.id}
               disabled={item.id === selectedChain.id}

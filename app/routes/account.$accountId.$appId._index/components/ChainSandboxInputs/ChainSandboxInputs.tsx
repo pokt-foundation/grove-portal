@@ -1,29 +1,26 @@
 import { Select, TextInput, Flex, Tooltip, useMantineTheme } from "@mantine/core"
 import { useParams } from "@remix-run/react"
 import React, { useMemo } from "react"
-import ChainSelect from "~/components/ChainSelect"
 import { Blockchain } from "~/models/portal/sdk"
 import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
 import { evmMethods, getAppEndpointUrl, isEvmChain } from "~/utils/chainUtils"
 
-type ChainSandboxInteractionPanelProps = {
+type ChainSandboxInputsProps = {
   chains: Blockchain[]
-  selectedChain: Blockchain
+  selectedChain: Blockchain | null
   onChainSelect: (chain: Blockchain) => void
   selectedMethod: string | null | undefined
   onMethodSelect: (method: string | null) => void
   chainRestPath: string
   onChainRestPathSet: (path: string) => void
 }
-const ChainSandboxInteractionPanel = ({
-  chains,
+const ChainSandboxInputs = ({
   selectedChain,
-  onChainSelect,
   selectedMethod,
   onMethodSelect,
   chainRestPath,
   onChainRestPathSet,
-}: ChainSandboxInteractionPanelProps) => {
+}: ChainSandboxInputsProps) => {
   const { appId } = useParams()
   const theme = useMantineTheme()
   const isRpc = selectedChain?.enforceResult === "JSON"
@@ -36,13 +33,8 @@ const ChainSandboxInteractionPanel = ({
     [selectedChain],
   )
 
-  return (
+  return selectedChain ? (
     <>
-      <ChainSelect
-        chains={chains}
-        selectedChain={selectedChain}
-        onChainSelect={onChainSelect}
-      />
       <Flex direction="row" gap="sm">
         <TextInput
           readOnly
@@ -88,7 +80,7 @@ const ChainSandboxInteractionPanel = ({
         )}
       </Flex>
     </>
-  )
+  ) : null
 }
 
-export default ChainSandboxInteractionPanel
+export default ChainSandboxInputs

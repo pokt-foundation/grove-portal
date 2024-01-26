@@ -26,8 +26,6 @@ type ChainSandboxSideDrawerProps = {
   secretKey: string
 }
 
-// type ChainMethods = Pick<typeof schema, "methods">
-
 const ChainSandboxSideDrawer = ({
   blockchain,
   chains,

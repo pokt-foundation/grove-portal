@@ -53,7 +53,7 @@ const ChainSandboxInputs = ({
               data={chainMethods}
               disabled={chainMethods.length === 0}
               miw={325}
-              placeholder="Mehod"
+              placeholder="Method"
               value={selectedMethod}
               onChange={(method) => {
                 onMethodSelect(method)

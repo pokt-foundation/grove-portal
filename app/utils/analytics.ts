@@ -16,6 +16,11 @@ export const AnalyticActions = {
   app_keys_app_id: "app_keys_app_id",
   app_keys_secret: "app_keys_secret",
   app_settings_update: "app_settings_update",
+  app_chain_sandbox_try: "app_chain_sandbox_try",
+  app_chain_sandbox_change_chain: "app_chain_sandbox_change_chain",
+  app_chain_sandbox_select_method: "app_chain_sandbox_select_method",
+  app_chain_sandbox_edit_body: "app_chain_sandbox_edit_body",
+  app_chain_sandbox_send_request: "app_chain_sandbox_send_request",
   account_subscription_stop: "account_subscription_stop",
   account_subscription_new: "account_subscription_new",
   account_subscription_renew: "account_subscription_renew",
@@ -46,7 +51,7 @@ type TrackEventProps = {
   category: string
   action: string
   label?: string
-  value?: number
+  value?: number | string
 }
 
 export function trackEvent({ category, action, label, value }: TrackEventProps) {

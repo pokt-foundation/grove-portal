@@ -3,28 +3,21 @@ import {
   Checkbox,
   Drawer,
   Group,
-  Select,
-  Stack,
-  Text,
-  TextInput,
-} from "@mantine/core"
-import { Prism } from "@mantine/prism"
-import {
-  Flex,
   MantineTheme,
   PasswordInput,
-  Tooltip,
-  useMantineTheme,
-} from "@pokt-foundation/pocket-blocks"
+  Stack,
+  Text,
+} from "@mantine/core"
+import { Prism } from "@mantine/prism"
 import { FetcherWithComponents, useFetcher, useParams } from "@remix-run/react"
 import React, { useEffect, useMemo, useState } from "react"
-import ChainSelect from "~/components/ChainSelect"
+import ChainSandboxBody from "app/routes/account.$accountId.$appId._index/components/ChainSandboxBody"
 import { TitledCard } from "~/components/TitledCard"
 import { Blockchain } from "~/models/portal/sdk"
-import ChainSandboxBody from "~/routes/account.$accountId.$appId._index/components/ChainPlaygroundBody"
+import ChainSandboxInteractionPanel from "~/routes/account.$accountId.$appId._index/components/ChainSandboxInteractionPanel"
 import { SandboxRequestData } from "~/routes/api.sandbox/route"
 import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
-import { evmMethods, getAppEndpointUrl, isEvmChain } from "~/utils/chainUtils"
+import { getAppEndpointUrl } from "~/utils/chainUtils"
 
 type ChainSandboxSideDrawerProps = {
   blockchain?: Blockchain
@@ -42,26 +35,16 @@ const ChainSandboxSideDrawer = ({
   secretKey,
 }: ChainSandboxSideDrawerProps) => {
   const { appId } = useParams()
-  const theme = useMantineTheme()
   const chainFetcher: FetcherWithComponents<SandboxRequestData> = useFetcher()
   const [selectedMethod, setSelectedMethod] = useState<string | null>()
   const [includeSecretKey, setIncludeSecretKey] = useState<boolean>(false)
   const [selectedChain, setSelectedChain] = useState<Blockchain | null>(null)
   const [responseData, setResponseData] = useState()
-  const [restChainPath, setRestChainPath] = useState<string>("")
-  const isRpc = selectedChain?.enforceResult === "JSON"
-
-  const chainMethods = useMemo(
-    () =>
-      isEvmChain(selectedChain)
-        ? evmMethods.map((method) => ({ value: method, label: method }))
-        : [],
-    [selectedChain],
-  )
+  const [chainRestPath, setChainRestPath] = useState<string>("")
 
   const chainUrl = useMemo(
-    () => `${getAppEndpointUrl(selectedChain, appId)}${restChainPath || ""}`.trim(),
-    [selectedChain, appId, restChainPath],
+    () => `${getAppEndpointUrl(selectedChain, appId)}${chainRestPath || ""}`.trim(),
+    [selectedChain, appId, chainRestPath],
   )
 
   const requestHeaders = {
@@ -91,7 +74,7 @@ const ChainSandboxSideDrawer = ({
     setResponseData(undefined)
     setSelectedMethod(null)
     setIncludeSecretKey(false)
-    setRestChainPath("")
+    setChainRestPath("")
     onSideDrawerClose()
   }
 
@@ -103,7 +86,7 @@ const ChainSandboxSideDrawer = ({
     })
     setSelectedMethod(null)
     setSelectedChain(chain)
-    setRestChainPath("")
+    setChainRestPath("")
   }
 
   return (
@@ -114,88 +97,45 @@ const ChainSandboxSideDrawer = ({
       padding="sm"
       position="right"
       size={800}
-      withinPortal={false}
       onClose={handleSideDrawerClose}
     >
-      <Stack mt="-md">
-        {selectedChain && (
-          <ChainSelect
+      {selectedChain ? (
+        <Stack mt="-md">
+          <ChainSandboxInteractionPanel
+            chainRestPath={chainRestPath}
             chains={chains}
             selectedChain={selectedChain}
+            selectedMethod={selectedMethod}
+            onChainRestPathSet={setChainRestPath}
             onChainSelect={handleChainSelect}
+            onMethodSelect={setSelectedMethod}
           />
-        )}
+          <TitledCard header={() => <Text weight={600}>Headers</Text>}>
+            <Card.Section p="md">
+              <Stack spacing={12}>
+                <Group>
+                  <Checkbox
+                    checked={includeSecretKey}
+                    label="Include secret key"
+                    onChange={(event) => setIncludeSecretKey(event.currentTarget.checked)}
+                  />
+                  <PasswordInput
+                    readOnly
+                    aria-label="Secret Key"
+                    sx={(theme: MantineTheme) => ({
+                      flex: 1,
+                    })}
+                    value={secretKey}
+                  />
+                </Group>
 
-        <Flex direction="row" gap="sm">
-          {selectedChain && (
-            <TextInput
-              readOnly
-              bg={theme.colors.gray[9]}
-              miw={300}
-              style={{ flexGrow: 1.5 }}
-              value={getAppEndpointUrl(selectedChain, appId)}
-            />
-          )}
-          {isRpc ? (
-            <Tooltip
-              disabled={chainMethods.length > 0}
-              label="Currently, methods select is only available for EVM chains."
-            >
-              <Select
-                searchable
-                data={chainMethods}
-                disabled={chainMethods.length === 0}
-                miw={325}
-                placeholder="Mehod"
-                value={selectedMethod}
-                onChange={(method) => {
-                  setSelectedMethod(method)
-                  trackEvent({
-                    category: AnalyticCategories.app,
-                    action: AnalyticActions.app_chain_sandbox_select_method,
-                    label: `Method: ${method}`,
-                  })
-                }}
-              />
-            </Tooltip>
-          ) : (
-            <TextInput
-              placeholder="Path"
-              style={{ flexGrow: 1 }}
-              value={restChainPath}
-              onChange={(e) => setRestChainPath(e.currentTarget.value)}
-              onFocus={() => {
-                if (!restChainPath) setRestChainPath("/")
-              }}
-            />
-          )}
-        </Flex>
-        <TitledCard header={() => <Text weight={600}>Headers</Text>}>
-          <Card.Section p="md">
-            <Stack spacing={12}>
-              <Group>
-                <Checkbox
-                  checked={includeSecretKey}
-                  label="Include secret key"
-                  onChange={(event) => setIncludeSecretKey(event.currentTarget.checked)}
-                />
-                <PasswordInput
-                  readOnly
-                  aria-label="Secret Key"
-                  sx={(theme: MantineTheme) => ({
-                    flex: 1,
-                  })}
-                  value={secretKey}
-                />
-              </Group>
+                <Prism withLineNumbers language="json">
+                  {JSON.stringify(requestHeaders, null, " ")}
+                </Prism>
+              </Stack>
+            </Card.Section>
+          </TitledCard>
 
-              <Prism withLineNumbers language="json">
-                {JSON.stringify(requestHeaders, null, " ")}
-              </Prism>
-            </Stack>
-          </Card.Section>
-        </TitledCard>
-        {selectedChain && (
           <ChainSandboxBody
             blockchain={selectedChain}
             chainFetcher={chainFetcher}
@@ -204,18 +144,18 @@ const ChainSandboxSideDrawer = ({
             secretKey={includeSecretKey ? secretKey : ""}
             selectedMethod={selectedMethod}
           />
-        )}
 
-        {responseData ? (
-          <TitledCard header={() => <Text weight={600}>Response</Text>}>
-            <Card.Section p="md">
-              <Prism withLineNumbers language="json">
-                {JSON.stringify(responseData, null, " ")}
-              </Prism>
-            </Card.Section>
-          </TitledCard>
-        ) : null}
-      </Stack>
+          {responseData ? (
+            <TitledCard header={() => <Text weight={600}>Response</Text>}>
+              <Card.Section p="md">
+                <Prism withLineNumbers language="json">
+                  {JSON.stringify(responseData, null, " ")}
+                </Prism>
+              </Card.Section>
+            </TitledCard>
+          ) : null}
+        </Stack>
+      ) : null}
     </Drawer>
   )
 }

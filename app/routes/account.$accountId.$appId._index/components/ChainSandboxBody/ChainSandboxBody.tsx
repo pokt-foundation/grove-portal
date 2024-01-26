@@ -2,6 +2,7 @@ import { Button, Card, Group, Select, Stack, Text } from "@mantine/core"
 import { Prism } from "@mantine/prism"
 import { FetcherWithComponents, useParams } from "@remix-run/react"
 import React, { useEffect, useState } from "react"
+import { LuSend } from "react-icons/lu"
 import JsonEditor from "~/components/JsonEditor"
 import { TitledCard } from "~/components/TitledCard"
 import { Blockchain } from "~/models/portal/sdk"
@@ -104,36 +105,36 @@ const ChainSandboxBody = ({
               {getCurlCommand(chainUrl, requestHeaders, JSON.stringify(requestPayload))}
             </Prism>
           )}
-          <Group>
-            {blockchain && (
-              <Button
-                disabled={isEvmChain(blockchain) && !selectedMethod}
-                loading={chainFetcher.state === "submitting"}
-                size="sm"
-                onClick={() => {
-                  trackEvent({
-                    category: AnalyticCategories.app,
-                    action: AnalyticActions.app_chain_sandbox_edit_body,
-                    label: `App ID: ${appId}, Blockchain: ${blockchain.blockchain}`,
-                    value: JSON.stringify(requestPayload),
-                  })
-                  chainFetcher.submit(
-                    {
-                      payload: JSON.stringify(requestPayload),
-                      chainUrl: chainUrl,
-                      ...(secretKey && { secretKey }),
-                    },
-                    {
-                      method: "POST",
-                      action: "/api/sandbox",
-                    },
-                  )
-                }}
-              >
-                Send Request
-              </Button>
-            )}
-          </Group>
+          {blockchain && (
+            <Button
+              disabled={isEvmChain(blockchain) && !selectedMethod}
+              leftIcon={<LuSend size={18} />}
+              loading={chainFetcher.state === "submitting"}
+              size="sm"
+              w={200}
+              onClick={() => {
+                trackEvent({
+                  category: AnalyticCategories.app,
+                  action: AnalyticActions.app_chain_sandbox_edit_body,
+                  label: `App ID: ${appId}, Blockchain: ${blockchain.blockchain}`,
+                  value: JSON.stringify(requestPayload),
+                })
+                chainFetcher.submit(
+                  {
+                    payload: JSON.stringify(requestPayload),
+                    chainUrl: chainUrl,
+                    ...(secretKey && { secretKey }),
+                  },
+                  {
+                    method: "POST",
+                    action: "/api/sandbox",
+                  },
+                )
+              }}
+            >
+              Send Request
+            </Button>
+          )}
         </Stack>
       </Card.Section>
     </TitledCard>

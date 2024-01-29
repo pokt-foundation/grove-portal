@@ -35,9 +35,6 @@ export const meta: MetaFunction = () => {
 export type AppIdLoaderData = {
   app: PortalApp
   blockchains: Blockchain[]
-  // relaysToday: RelayMetric
-  // relaysYesterday: RelayMetric
-  // dailyNetworkRelaysPerWeek: RelayMetric[]
 }
 
 export const loader: LoaderFunction = async ({ request, params }) => {

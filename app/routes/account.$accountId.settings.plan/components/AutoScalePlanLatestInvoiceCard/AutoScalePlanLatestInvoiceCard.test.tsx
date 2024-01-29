@@ -2,14 +2,20 @@ import { expect } from "vitest"
 import AutoScalePlanLatestInvoiceCard from "./AutoScalePlanLatestInvoiceCard"
 import { render, screen } from "test/helpers"
 import { RoleName } from "~/models/portal/sdk"
-import { relayMetric } from "~/models/relaymeter/relaymeter.data"
 import { invoice, useageRecord } from "~/models/stripe/stripe.data"
+import { AccountAppRelays } from "~/routes/account.$accountId.settings.plan/route"
+
+const accountAppsRelaysData: AccountAppRelays = {
+  countTotal: 10000,
+  name: "account",
+  appEmoji: "emoji",
+}
 
 describe.skip("<AutoScalePlanLatestInvoiceCard />", () => {
   it("renders", () => {
     render(
       <AutoScalePlanLatestInvoiceCard
-        accountAppsRelays={[relayMetric]}
+        accountAppsRelays={[accountAppsRelaysData]}
         invoice={invoice}
         usageRecords={useageRecord}
         userRole={RoleName.Admin}

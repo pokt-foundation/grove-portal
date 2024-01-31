@@ -12,6 +12,7 @@ const useSubscriptionModals = () => {
     fetcher.submit(
       {
         "account-id": account.id,
+        "account-name": account.name ?? account.id,
       },
       {
         method: "POST",

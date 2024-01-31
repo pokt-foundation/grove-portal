@@ -113,7 +113,7 @@ export const AccountPlan = ({
       {isFree && (
         <Button
           fullWidth
-          classNames={{ root: commonClasses.grayOutlinedButton }}
+          classNames={{ root: commonClasses.grayOutline }}
           color="gray"
           disabled={!!disableFree}
           radius="xl"
@@ -131,7 +131,7 @@ export const AccountPlan = ({
       {isEnterprise && (
         <Button
           fullWidth
-          classNames={{ root: commonClasses.grayOutlinedButton }}
+          classNames={{ root: commonClasses.grayOutline }}
           color="gray"
           radius="xl"
           onClick={onContinue}

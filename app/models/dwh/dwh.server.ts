@@ -34,26 +34,41 @@ type GetRelaysProps = {
   days: number
 }
 
+type GetTotalRelaysProps =
+  | (GetRelaysProps & {
+      from?: null
+      to?: null
+    })
+  | (Omit<GetRelaysProps, "days"> & {
+      days?: null
+      from: Date
+      to: Date
+    })
+
 export const getTotalRelays = async ({
   category,
   categoryValue,
   days,
-}: GetRelaysProps) => {
+  from,
+  to,
+}: GetTotalRelaysProps) => {
   const dwh = initDwhClient()
 
   let total
+  const dataFrom = from ? from : startOfDay.subtract(days as number, "day").toDate()
+  const dateTo = to ? to : startOfDay.toDate()
   const totalReponse = await dwh.analyticsRelaysTotalCategoryGet({
     category,
     categoryValue,
-    from: startOfDay.subtract(days, "day").toDate(),
-    to: startOfDay.toDate(),
+    from: dataFrom,
+    to: dateTo,
   })
 
   if (!totalReponse.data || totalReponse.data.length < 1) {
     // empty state data
     total = {
-      from: startOfDay.subtract(days, "day").toDate(),
-      to: startOfDay.toDate(),
+      from: dataFrom,
+      to: dateTo,
       countTotal: 0,
       avgLatency: 0,
       rateSuccess: 0,

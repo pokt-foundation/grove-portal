@@ -16,6 +16,7 @@ import { initPortalClient } from "~/models/portal/portal.server"
 import { Blockchain, PortalApp, RoleName } from "~/models/portal/sdk"
 import { DataStruct } from "~/types/global"
 import { getErrorMessage } from "~/utils/catchError"
+import { triggerAppActionNotification } from "~/utils/notifications.server"
 import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
 
@@ -30,9 +31,6 @@ export const meta: MetaFunction = () => {
 export type AppIdLoaderData = {
   app: PortalApp
   blockchains: Blockchain[]
-  // relaysToday: RelayMetric
-  // relaysYesterday: RelayMetric
-  // dailyNetworkRelaysPerWeek: RelayMetric[]
 }
 
 export const loader: LoaderFunction = async ({ request, params }) => {
@@ -96,11 +94,15 @@ export const action: ActionFunction = async ({ request, params }) => {
   invariant(typeof appId === "string", "appId must be set")
 
   try {
-    const delete_application = formData.get("delete_application")
+    const deleteApplication = formData.get("delete_application")
+    const appName = formData.get("app_name")
+    const appEmoji = formData.get("app_emoji")
 
-    if (delete_application === "true") {
+    invariant(typeof appName === "string", "appName must be set")
+    invariant(typeof appEmoji === "string", "appEmoji must be set")
+
+    if (deleteApplication === "true") {
       // delete application via api
-      //
       const deleteAppResponse = await portal.deleteUserPortalApp({
         portalAppID: appId,
         accountID: accountId,
@@ -110,6 +112,15 @@ export const action: ActionFunction = async ({ request, params }) => {
         throw new Error(`Error deleting application: ${appId}`)
       }
     }
+
+    await triggerAppActionNotification({
+      actor: user.user,
+      type: "delete",
+      appId: appId,
+      appName: appName,
+      appEmoji: appEmoji,
+      accountId: accountId,
+    })
 
     // app no longer exists to redirect back to account
     return redirect(`/account/${accountId}`)

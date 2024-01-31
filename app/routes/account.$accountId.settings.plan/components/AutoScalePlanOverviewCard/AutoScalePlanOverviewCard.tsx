@@ -80,7 +80,7 @@ export default function AutoScalePlanOverviewCard({
                 <Grid.Col lg={4} md={4} sm={6}>
                   <Button
                     fullWidth
-                    className={commonClasses.grayOutlinedButton}
+                    className={commonClasses.grayOutline}
                     color="gray"
                     rightIcon={<LuStopCircle size={18} />}
                     type="button"

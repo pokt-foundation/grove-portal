@@ -116,6 +116,7 @@ button.pokt-button-with__icon:hover {
   display: flex;
   align-items: center;
   margin-bottom: 16px;
+  justify-content: space-between;
 }
 
 .clickable-table tbody tr:hover {

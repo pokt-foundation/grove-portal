@@ -33,7 +33,7 @@ const SimpleStringTable = ({ data, readOnly, onDelete }: SimpleStringTableProps)
                   <CopyTextButton value={value} />
                   {!readOnly && (
                     <ActionIcon
-                      className={commonClasses.grayOutlinedButton}
+                      className={commonClasses.grayOutline}
                       radius="xl"
                       size={40}
                       variant="outline"

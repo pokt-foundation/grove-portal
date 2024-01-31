@@ -14,7 +14,7 @@ const AccountPlansContainer = ({ onPlanSelected }: AccountPlansContainerProps) =
     <Box>
       <Flex align="center" justify="space-between" my="32px">
         <Text fw={600} fz="21px">
-          Choose an application plan
+          Choose an account plan
         </Text>
         <Tooltip withArrow label="Discard" position="bottom">
           <CloseButton

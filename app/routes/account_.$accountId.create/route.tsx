@@ -6,24 +6,25 @@ import {
   MetaFunction,
   redirect,
 } from "@remix-run/node"
-import { useFetcher } from "@remix-run/react"
+import { useFetcher, useLoaderData } from "@remix-run/react"
 import React, { useState } from "react"
 import invariant from "tiny-invariant"
 import AccountPlansContainer from "./components/AccountPlansContainer"
 import AppForm from "./components/AppForm"
 import { DEFAULT_APPMOJI } from "./components/AppmojiPicker"
+import ErrorView from "~/components/ErrorView"
 import PortalLoader from "~/components/PortalLoader"
 import useActionNotification, {
   ActionNotificationData,
 } from "~/hooks/useActionNotification"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { PayPlanType, RoleName } from "~/models/portal/sdk"
-import { getUserAccountRole } from "~/utils/accountUtils"
+import { Account, PayPlanType, RoleName } from "~/models/portal/sdk"
+import { DataStruct } from "~/types/global"
+import { getUserAccountRole, isAccountWithinAppLimit } from "~/utils/accountUtils"
 import { getErrorMessage } from "~/utils/catchError"
-import { getRequiredClientEnvVar } from "~/utils/environment"
-import { MAX_USER_APPS } from "~/utils/planUtils"
+import { triggerAppActionNotification } from "~/utils/notifications.server"
 import { seo_title_append } from "~/utils/seo"
-import { getUserPermissions, requireUser, Permissions } from "~/utils/user.server"
+import { requireUser } from "~/utils/user.server"
 
 export const meta: MetaFunction = () => {
   return [
@@ -33,68 +34,73 @@ export const meta: MetaFunction = () => {
   ]
 }
 
+type CreateAppLoaderData = {
+  account: Account
+}
+
 export const loader: LoaderFunction = async ({ request, params }) => {
   const user = await requireUser(request)
   const portal = initPortalClient({ token: user.accessToken })
   const { accountId } = params
-  const permissions = getUserPermissions(user.accessToken)
   invariant(accountId, "AccountId must be set")
 
-  const getUserAccountResponse = await portal
-    .getUserAccount({ accountID: accountId, accepted: true })
-    .catch((e) => {
-      console.log(e)
+  try {
+    const getUserAccountResponse = await portal
+      .getUserAccount({ accountID: accountId, accepted: true })
+      .catch((e) => {
+        console.log(e)
+      })
+
+    if (!getUserAccountResponse) {
+      return redirect(`/account/${params.accountId}`)
+    }
+
+    const userAccount = getUserAccountResponse.getUserAccount
+    const userRole = getUserAccountRole(userAccount.users, user.user.portalUserID)
+
+    if (!userRole || userRole === RoleName.Member) {
+      return redirect(`/account/${params.accountId}`)
+    }
+    const canCreateApp = isAccountWithinAppLimit(userAccount)
+
+    // ensure only users who can create new apps are allowed on this page
+    if (!canCreateApp) {
+      return redirect(`/account/${params.accountId}/app-limit-exceeded`)
+    }
+
+    // TODO: Dynamically get the price
+    //
+    // const priceID = getRequiredServerEnvVar("STRIPE_PRICE_ID")
+    // const price = await stripe.prices.retrieve(priceID).catch((error) => {
+    //   console.log(error)
+    // })
+
+    // return json<LoaderData>(
+    //   {
+    //     price: price,
+    //   },
+    //   {
+    //     headers: {
+    //       "Cache-Control": `private, max-age=${
+    //         process.env.NODE_ENV === "production" ? "3600" : "60"
+    //       }`,
+    //     },
+    //   },
+    // )
+
+    return json<DataStruct<CreateAppLoaderData>>({
+      data: {
+        account: userAccount,
+      },
+      error: false,
     })
-
-  if (!getUserAccountResponse) {
-    return redirect(`/account/${params.accountId}`)
+  } catch (error) {
+    return json<DataStruct<CreateAppLoaderData>>({
+      data: null,
+      error: true,
+      message: getErrorMessage(error),
+    })
   }
-
-  const userRole = getUserAccountRole(
-    getUserAccountResponse.getUserAccount.users,
-    user.user.portalUserID,
-  )
-
-  if (!userRole || userRole === RoleName.Member) {
-    return redirect(`/account/${params.accountId}`)
-  }
-  const portalApps = getUserAccountResponse.getUserAccount.portalApps
-  const underMaxApps = () => {
-    return !portalApps || portalApps.length < MAX_USER_APPS
-  }
-
-  const userCanCreateApp =
-    permissions.includes(Permissions.AppsUnlimited) ||
-    (user.user.auth0ID &&
-      getRequiredClientEnvVar("GODMODE_ACCOUNTS")?.includes(user.user.auth0ID)) ||
-    underMaxApps()
-
-  // ensure only users who can create new apps are allowed on this page
-  if (!userCanCreateApp) {
-    return redirect(`/account/${params.accountId}/app-limit-exceeded`)
-  }
-
-  // TODO: Dynamically get the price
-  //
-  // const priceID = getRequiredServerEnvVar("STRIPE_PRICE_ID")
-  // const price = await stripe.prices.retrieve(priceID).catch((error) => {
-  //   console.log(error)
-  // })
-
-  // return json<LoaderData>(
-  //   {
-  //     price: price,
-  //   },
-  //   {
-  //     headers: {
-  //       "Cache-Control": `private, max-age=${
-  //         process.env.NODE_ENV === "production" ? "3600" : "60"
-  //       }`,
-  //     },
-  //   },
-  // )
-
-  return null
 }
 
 export const action: ActionFunction = async ({ request, params }) => {
@@ -108,10 +114,6 @@ export const action: ActionFunction = async ({ request, params }) => {
   const appmoji = formData.get("app-emoji")
   const { accountId } = params
 
-  invariant(
-    subscription && typeof subscription === "string",
-    "account subscription not found",
-  )
   invariant(name && typeof name === "string", "app name not found")
   invariant(accountId && typeof accountId === "string", "accountId not found")
 
@@ -136,14 +138,30 @@ export const action: ActionFunction = async ({ request, params }) => {
 
     const newApp = createUserPortalAppResponse.createUserPortalApp
 
-    if (subscription === PayPlanType.PayAsYouGoV0) {
-      return redirect(
-        `/api/stripe/checkout-session?account-id=${accountId}&app-id=${newApp.id}&referral-id=${referral}`,
+    await triggerAppActionNotification({
+      actor: user.user,
+      type: "create",
+      appId: newApp.id,
+      appName: newApp.name,
+      appEmoji: newApp.appEmoji,
+      accountId: accountId,
+    })
+
+    if (subscription) {
+      invariant(
+        subscription && typeof subscription === "string",
+        "account subscription not found",
       )
+      if (subscription === PayPlanType.PayAsYouGoV0) {
+        return redirect(
+          `/api/stripe/checkout-session?account-id=${accountId}&app-id=${newApp.id}&referral-id=${referral}`,
+        )
+      }
     }
 
     return redirect(`/account/${accountId}/${newApp.id}`)
   } catch (error) {
+    console.log(error)
     return json({
       error: true,
       message: getErrorMessage(error),
@@ -152,11 +170,28 @@ export const action: ActionFunction = async ({ request, params }) => {
 }
 
 export default function CreateApp() {
+  const { data, error, message } = useLoaderData() as DataStruct<CreateAppLoaderData>
   const fetcher = useFetcher()
   const [appFromData, setAppFromData] = useState<FormData>()
   const fetcherData = fetcher.data as ActionNotificationData
 
+  const handleFormSubmit = (formData: FormData) => {
+    if (account.planType === PayPlanType.FreetierV0) {
+      setAppFromData(formData)
+    } else {
+      fetcher.submit(formData, {
+        method: "POST",
+      })
+    }
+  }
+
   useActionNotification(fetcherData)
+
+  if (error) {
+    return <ErrorView message={message} />
+  }
+
+  const { account } = data
 
   return fetcher.state === "idle" ? (
     <Box maw={860} mt={90} mx="auto">
@@ -170,7 +205,7 @@ export default function CreateApp() {
           }}
         />
       ) : (
-        <AppForm onSubmit={(formData) => setAppFromData(formData)} />
+        <AppForm onSubmit={handleFormSubmit} />
       )}
     </Box>
   ) : (

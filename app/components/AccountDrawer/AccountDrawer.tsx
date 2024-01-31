@@ -27,7 +27,6 @@ import { DISCORD_PATH, DOCS_PATH } from "~/utils/utils"
 
 type AccountDrawerProps = {
   user?: User
-  hasPendingInvites: boolean
 }
 
 type DrawerLinkProps = NavLinkProps &
@@ -94,7 +93,7 @@ const drawerExternalLinks = [
   },
 ]
 
-const AccountDrawer = ({ user, hasPendingInvites }: AccountDrawerProps) => {
+const AccountDrawer = ({ user }: AccountDrawerProps) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const logoutFetcher = useFetcher()
 
@@ -141,22 +140,12 @@ const AccountDrawer = ({ user, hasPendingInvites }: AccountDrawerProps) => {
             setIsDrawerOpen={setIsDrawerOpen}
             to="/user"
           />
-          <Indicator
-            inline
-            disabled={!hasPendingInvites}
-            label="New"
-            offset={25}
-            position="middle-end"
-            processing={true}
-            size={16}
-          >
-            <DrawerLink
-              icon={<LuTowerControl size={18} />}
-              label="My Accounts"
-              setIsDrawerOpen={setIsDrawerOpen}
-              to={`/user/accounts`}
-            />
-          </Indicator>
+          <DrawerLink
+            icon={<LuTowerControl size={18} />}
+            label="My Accounts"
+            setIsDrawerOpen={setIsDrawerOpen}
+            to={`/user/accounts`}
+          />
           <Divider my={8} />
           {drawerExternalLinks.map(({ label, to, icon, withDivider }, index) => (
             <React.Fragment key={`${label}-${index}`}>
@@ -175,22 +164,12 @@ const AccountDrawer = ({ user, hasPendingInvites }: AccountDrawerProps) => {
         </Stack>
       </Drawer>
       <UnstyledButton onClick={() => setIsDrawerOpen(true)}>
-        <Indicator
-          dot
-          inline
-          processing
-          color="red"
-          disabled={!hasPendingInvites}
-          offset={6}
-          size={8}
-        >
-          <Identicon
-            avatar
-            alt={`${user.portalUserID ?? "user"} profile picture`}
-            seed={user.portalUserID ?? "user default"}
-            type="user"
-          />
-        </Indicator>
+        <Identicon
+          avatar
+          alt={`${user.portalUserID ?? "user"} profile picture`}
+          seed={user.portalUserID ?? "user default"}
+          type="user"
+        />
       </UnstyledButton>
     </>
   ) : null

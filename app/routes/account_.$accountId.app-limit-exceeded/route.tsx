@@ -5,7 +5,7 @@ import invariant from "tiny-invariant"
 import { EmptyState } from "~/components/EmptyState"
 import { initPortalClient } from "~/models/portal/portal.server"
 import useCommonStyles from "~/styles/commonStyles"
-import { MAX_USER_APPS } from "~/utils/planUtils"
+import { isAccountWithinAppLimit } from "~/utils/accountUtils"
 import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
 
@@ -33,12 +33,9 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     return redirect(`/account/${params.accountId}`)
   }
 
-  const portalApps = getUserAccountResponse.getUserAccount.portalApps
-  const underMaxApps = () => {
-    return !portalApps || portalApps.length < MAX_USER_APPS
-  }
-
-  if (underMaxApps()) {
+  const userAccount = getUserAccountResponse.getUserAccount
+  const canCreateApp = isAccountWithinAppLimit(userAccount)
+  if (canCreateApp) {
     return redirect(`/account/${params.accountId}`)
   }
 
@@ -61,7 +58,7 @@ export default function AppLimitExceeded() {
         alt="App limit exceeded"
         callToAction={
           <Button
-            className={commonClasses.grayOutlinedButton}
+            className={commonClasses.grayOutline}
             color="gray"
             component={Link}
             mt="xs"

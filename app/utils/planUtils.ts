@@ -1,6 +1,4 @@
 import { PayPlanType } from "~/models/portal/sdk"
-
-export const MAX_USER_APPS = 2
 export const FREE_TIER_MAX_RELAYS = 100_000
 
 export function isFreePlan(planType: PayPlanType) {

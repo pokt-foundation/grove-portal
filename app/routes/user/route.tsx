@@ -58,7 +58,7 @@ export default function UserAccount() {
     return <ErrorView message={message} />
   }
 
-  const { accounts, user, pendingAccounts } = data
+  const { accounts, user } = data
 
   const routes = [
     {
@@ -73,11 +73,7 @@ export default function UserAccount() {
   ]
 
   return (
-    <RootAppShell
-      accounts={accounts as Account[]}
-      hasPendingInvites={pendingAccounts.length > 0}
-      user={user}
-    >
+    <RootAppShell accounts={accounts as Account[]} user={user}>
       <Container fluid px={0}>
         <Button
           compact

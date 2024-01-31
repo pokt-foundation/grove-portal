@@ -11,7 +11,7 @@ const CopyTextButton = ({ value }: CopyTextButtonProps) => {
       {({ copied, copy }) => (
         <Tooltip withArrow label={copied ? "Copied" : "Copy"}>
           <ActionIcon
-            className={commonClasses.grayOutlinedButton}
+            className={commonClasses.grayOutline}
             color={copied ? "teal" : "gray"}
             radius="xl"
             size={40}

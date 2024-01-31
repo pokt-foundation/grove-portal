@@ -3,9 +3,10 @@ import { useLoaderData, useOutletContext } from "@remix-run/react"
 import invariant from "tiny-invariant"
 import { AccountPlanView } from "./view"
 import ErrorView from "~/components/ErrorView"
+import { getTotalRelays } from "~/models/dwh/dwh.server"
+import { AnalyticsRelaysTotal } from "~/models/dwh/sdk/models/AnalyticsRelaysTotal"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { Account, PortalApp, User } from "~/models/portal/sdk"
-import { getRelays, RelayMetric } from "~/models/relaymeter/relaymeter.server"
 import { Stripe, stripe } from "~/models/stripe/stripe.server"
 import { AppIdOutletContext } from "~/routes/account.$accountId.$appId/route"
 import { DataStruct } from "~/types/global"
@@ -23,7 +24,8 @@ export const meta: MetaFunction = () => {
   ]
 }
 
-export type AccountAppRelays = RelayMetric & Pick<PortalApp, "name" | "appEmoji">
+export type AccountAppRelays = Pick<AnalyticsRelaysTotal, "countTotal"> &
+  Pick<PortalApp, "name" | "appEmoji">
 
 export type AccountPlanLoaderData = {
   account: Account
@@ -57,7 +59,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     let subscription
     let usageRecords
     let latestInvoice
-    const accountAppsRelays = []
+    const accountAppsRelays: AccountAppRelays[] = []
 
     if (account.getUserAccount.integrations?.stripeSubscriptionID) {
       subscription = await stripe.subscriptions.retrieve(
@@ -82,31 +84,29 @@ export const loader: LoaderFunction = async ({ request, params }) => {
           throw new Error(`Latest invoice not found for subscription ${subscription.id}`)
         }
 
-        const invoicePeriodStart = dayjs
-          .unix(Number(latestInvoice.period_start))
-          .toISOString()
-        const invoicePeriodEnd = dayjs
-          .unix(Number(latestInvoice.period_end))
-          .toISOString()
+        const invoicePeriodStart = dayjs.unix(Number(latestInvoice.period_start)).toDate()
+        const invoicePeriodEnd = dayjs.unix(Number(latestInvoice.period_end)).toDate()
 
-        const accountApps = account.getUserAccount.portalApps
-        if (accountApps && accountApps.length > 0) {
+        const accountApps = account.getUserAccount.portalApps as PortalApp[]
+        const sortedAccountApps = accountApps.sort((a, b) => (a.name > b.name ? 1 : -1))
+
+        if (sortedAccountApps && sortedAccountApps.length > 0) {
           for (const app of accountApps) {
-            const latestInvoiceRelays = await getRelays(
-              "endpoints",
-              invoicePeriodStart,
-              invoicePeriodEnd,
-              app?.id,
-            )
+            const total = (await getTotalRelays({
+              category: "application_id",
+              categoryValue: [app.id],
+              from: invoicePeriodStart,
+              to: invoicePeriodEnd,
+            })) as AnalyticsRelaysTotal
 
-            if (!latestInvoiceRelays) {
+            if (!total) {
               throw new Error(
                 `Relays not found for latest invoice period on account for app ${app?.id}`,
               )
             }
 
             accountAppsRelays.push({
-              ...latestInvoiceRelays,
+              ...total,
               name: app?.name,
               appEmoji: app?.appEmoji,
             } as AccountAppRelays)

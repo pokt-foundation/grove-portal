@@ -7,7 +7,7 @@ import { RoleName, User } from "~/models/portal/sdk"
 import { AccountIdLoaderData } from "~/routes/account.$accountId/route"
 import { DataStruct } from "~/types/global"
 import { getErrorMessage } from "~/utils/catchError"
-import { sendTeamInviteEmail, sendTeamUserRemovedEmail } from "~/utils/mail.server"
+import { triggerTeamActionNotification } from "~/utils/notifications.server"
 import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
 
@@ -37,7 +37,7 @@ export type TeamActionData = {
   type: TeamActionType
 }
 
-type TeamActionType = "delete" | "invite" | "updateRole" | "resend"
+export type TeamActionType = "delete" | "invite" | "updateRole" | "resend" | "leave"
 
 export const action: ActionFunction = async ({ request, params }) => {
   const user = await requireUser(request)
@@ -50,6 +50,7 @@ export const action: ActionFunction = async ({ request, params }) => {
   try {
     const user_invite = formData.get("user_invite")
     const user_delete = formData.get("user_delete")
+    const user_leave = formData.get("user_leave")
     const user_update = formData.get("user_update")
     const user_resend = formData.get("user_resend")
     const account_name = formData.get("account_name") as string
@@ -81,9 +82,20 @@ export const action: ActionFunction = async ({ request, params }) => {
         )
       }
 
-      await sendTeamInviteEmail(user_email, invitedAccountName).catch((error) => {
+      const invitedUserId = createAccountUserResponse.createAccountUser
+
+      await triggerTeamActionNotification({
+        accountId,
+        type: "invite",
+        actor: user.user,
+        userRole: user_role as RoleName,
+        accountName: invitedAccountName,
+        targetedUserId: invitedUserId,
+        targetedUserEmail: user_email,
+      }).catch((error) => {
         console.log(error)
-        message = message + ", however email notification failed."
+        message =
+          message + ", however something went wrong while sending the notification."
       })
     }
 
@@ -108,9 +120,17 @@ export const action: ActionFunction = async ({ request, params }) => {
         )
       }
 
-      await sendTeamUserRemovedEmail(user_email, invitedAccountName).catch((error) => {
+      await triggerTeamActionNotification({
+        accountId,
+        type: "delete",
+        actor: user.user,
+        accountName: invitedAccountName,
+        targetedUserId: user_id,
+        targetedUserEmail: user_email,
+      }).catch((error) => {
         console.log(error)
-        message = message + ", however email notification failed."
+        message =
+          message + ", however something went wrong while sending the notification."
       })
     }
     if (user_update) {
@@ -135,19 +155,77 @@ export const action: ActionFunction = async ({ request, params }) => {
         throw new Error(`Error updating role ${user_role} for user ${user_id}`)
       }
 
+      await triggerTeamActionNotification({
+        accountId,
+        type: "updateRole",
+        actor: user.user,
+        accountName: invitedAccountName,
+        targetedUserId: user_id,
+        targetedUserEmail: user_email,
+        userRole: user_role as RoleName,
+      }).catch((error) => {
+        console.log(error)
+        message =
+          message + ", however something went wrong while sending the notification."
+      })
       // send update email?
     }
     if (user_resend) {
+      const user_id = formData.get("user_id")
+      const user_role = formData.get("user_role")
       const user_email = formData.get("user_email")
       invariant(typeof user_email === "string", "user_email must be set")
+      invariant(typeof user_id === "string", "user_id must be set")
+      invariant(typeof user_role === "string", "user_email must be set")
 
-      await sendTeamInviteEmail(user_email, invitedAccountName).catch((error) => {
+      await triggerTeamActionNotification({
+        accountId,
+        type: "resend",
+        actor: user.user,
+        accountName: invitedAccountName,
+        targetedUserId: user_id,
+        targetedUserEmail: user_email,
+        userRole: user_role as RoleName,
+      }).catch((error) => {
         console.log(error)
-        throw new Error(`Invite email failed to send to user ${user_email}`)
+        message =
+          message + ", however something went wrong while sending the notification."
       })
 
       res = true
       message = `Invite email resent to user ${user_email}`
+    }
+    if (user_leave) {
+      const user_id = formData.get("user_id")
+      const user_email = formData.get("user_email")
+      invariant(typeof user_id === "string", "user_id must be set")
+      invariant(typeof user_email === "string", "user_email must be set")
+
+      const removeAccountUserResponse = await portal.removeAccountUser({
+        input: {
+          accountID: accountId,
+          userID: user_id,
+        },
+      })
+
+      res = removeAccountUserResponse.removeAccountUser
+      message = `You have left account ${invitedAccountName}`
+      if (!res) {
+        throw new Error(`Error leaving account ${invitedAccountName}`)
+      }
+
+      await triggerTeamActionNotification({
+        accountId,
+        type: "leave",
+        actor: user.user,
+        accountName: invitedAccountName,
+        targetedUserId: user_id,
+        targetedUserEmail: user_email,
+      }).catch((error) => {
+        console.log(error)
+        message =
+          message + ", however something went wrong while sending the notification."
+      })
     }
 
     return json<DataStruct<TeamActionData>>({

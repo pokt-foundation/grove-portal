@@ -40,7 +40,7 @@ export default function CustomPayPlan() {
             placeholder="Plan Type"
             onChange={(e) => setSelectedPlanType(e)}
           />
-          <TextInput label="Endpoint ID" mb={16} name="id" placeholder="Endpoint ID" />
+          <TextInput label="Account ID" mb={16} name="id" placeholder="Account ID" />
           {selectedPlanType === PayPlanType.Enterprise && (
             <TextInput
               label="Rate Limit"

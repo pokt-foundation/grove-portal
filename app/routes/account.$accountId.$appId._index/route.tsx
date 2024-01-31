@@ -113,6 +113,7 @@ export const Application = () => {
         favoriteChains={app.settings.favoritedChainIDs}
         readOnly={userRole === "MEMBER"}
         searchTerm={debouncedSearchTerm}
+        secretKey={app.settings.secretKey as string}
       />
       <Affix position={{ bottom: 20, right: 20 }}>
         <Transition mounted={scroll.y > 20} transition="slide-up">

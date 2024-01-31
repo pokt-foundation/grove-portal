@@ -11,7 +11,7 @@ const AddSettingsButton = forwardRef<
   return (
     <Button
       ref={ref}
-      className={commonClasses.grayOutlinedButton}
+      className={commonClasses.grayOutline}
       color="gray"
       rightIcon={<LuPlus size={18} />}
       variant="outline"

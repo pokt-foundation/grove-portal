@@ -44,7 +44,7 @@ export const AccountSettingsView = ({ account, userRole }: AccountSettingsViewPr
               <Text pt={5}>Modify your account name here. </Text>
             </Box>
             <Button
-              className={commonClasses.grayOutlinedButton}
+              className={commonClasses.grayOutline}
               color="gray"
               component={Link}
               to={`/account/${account.id}/update`}

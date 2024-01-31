@@ -1,14 +1,13 @@
 import {
+  Divider,
   Drawer,
+  Group,
+  MantineTheme,
+  NavLink,
+  NavLinkProps,
   Stack,
   Text,
   UnstyledButton,
-  NavLink,
-  Group,
-  MantineTheme,
-  Divider,
-  Indicator,
-  NavLinkProps,
 } from "@mantine/core"
 import { Link, LinkProps, useFetcher } from "@remix-run/react"
 import React, { useState } from "react"

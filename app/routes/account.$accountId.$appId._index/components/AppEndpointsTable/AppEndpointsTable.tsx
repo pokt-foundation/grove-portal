@@ -1,4 +1,12 @@
-import { Flex, Menu, TextInput, useMantineTheme, UnstyledButton,  } from "@mantine/core"
+import {
+  Flex,
+  Menu,
+  TextInput,
+  useMantineTheme,
+  UnstyledButton,
+  Tooltip,
+  ActionIcon,
+} from "@mantine/core"
 import { useFetcher, useParams } from "@remix-run/react"
 import React, { useMemo, useState } from "react"
 import { LuBook, LuPlay } from "react-icons/lu/index.js"

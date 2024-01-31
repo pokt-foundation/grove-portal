@@ -1,6 +1,6 @@
 import { Group, Input, Menu, UnstyledButton, Text } from "@mantine/core"
 import React, { useState } from "react"
-import { LuCheckCircle2, LuChevronsUpDown } from "react-icons/lu"
+import { LuCheckCircle2, LuChevronsUpDown } from "react-icons/lu/index.js"
 import Chain from "~/components/Chain"
 import { Blockchain } from "~/models/portal/sdk"
 

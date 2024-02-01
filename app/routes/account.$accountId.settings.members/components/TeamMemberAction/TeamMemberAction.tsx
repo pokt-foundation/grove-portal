@@ -1,6 +1,6 @@
 import { Flex, Menu, Text, ActionIcon } from "@mantine/core"
 import React, { useMemo } from "react"
-import { LuMinusCircle, LuMoreHorizontal, LuSend } from "react-icons/lu/index.js"
+import { LuMinusCircle, LuMoreHorizontal, LuSend } from "react-icons/lu"
 import { Account, RoleName, User, AccountUser } from "~/models/portal/sdk"
 import useTeamModals from "~/routes/account.$accountId.settings.members/hooks/useTeamModals"
 import useCommonStyles from "~/styles/commonStyles"
@@ -92,9 +92,8 @@ const TeamMemberAction = ({
 
     return items
   }, [
+    teamMember,
     userRole,
-    teamMember.id,
-    teamMember.email,
     user?.portalUserID,
     status,
     openRemoveUserModal,

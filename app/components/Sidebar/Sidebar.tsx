@@ -9,7 +9,7 @@ import {
   LuPanelLeft,
   LuPlus,
   LuSettings,
-} from "react-icons/lu/index.js"
+} from "react-icons/lu"
 import AccountSelect from "~/components/AccountSelect"
 import GroveLogo from "~/components/GroveLogo"
 import {

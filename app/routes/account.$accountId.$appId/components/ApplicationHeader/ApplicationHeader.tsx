@@ -1,7 +1,7 @@
 import { Avatar, Badge, Box, CopyButton, Group, Menu, Text, Tooltip } from "@mantine/core"
 import { Link } from "@remix-run/react"
 import { Emoji } from "emoji-picker-react"
-import { LuPencil } from "react-icons/lu/index.js"
+import { LuPencil } from "react-icons/lu"
 import ContextMenuTarget from "~/components/ContextMenuTarget"
 import { PortalApp, RoleName } from "~/models/portal/sdk"
 import DeleteApplication from "~/routes/account.$accountId.$appId/components/DeleteApplication"

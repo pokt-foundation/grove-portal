@@ -1,6 +1,6 @@
 import { Indicator, Group, MantineTheme, Text, Tooltip } from "@mantine/core"
 import { useMemo } from "react"
-import { LuCrown } from "react-icons/lu/index.js"
+import { LuCrown } from "react-icons/lu"
 import { DataTable } from "~/components/DataTable"
 import Identicon from "~/components/Identicon"
 import { Account, RoleName, User } from "~/models/portal/sdk"

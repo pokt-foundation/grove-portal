@@ -1,6 +1,6 @@
 import { showNotification } from "@mantine/notifications"
 import React, { useEffect } from "react"
-import { LuCheck, LuX } from "react-icons/lu/index.js"
+import { LuCheck, LuX } from "react-icons/lu"
 import { DataStruct } from "~/types/global"
 
 export type ActionNotificationData = Pick<DataStruct<any>, "message" | "error">

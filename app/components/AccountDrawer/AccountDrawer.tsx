@@ -18,8 +18,8 @@ import {
   LuSmile,
   LuTowerControl,
   LuUser2,
-} from "react-icons/lu/index.js"
-import { RiDiscordLine } from "react-icons/ri/index.js"
+} from "react-icons/lu"
+import { RiDiscordLine } from "react-icons/ri"
 import Identicon from "~/components/Identicon"
 import { User } from "~/models/portal/sdk"
 import { DISCORD_PATH, DOCS_PATH } from "~/utils/utils"

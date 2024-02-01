@@ -1,7 +1,7 @@
 import { Container, Stack, Button } from "@mantine/core"
 import { json, LoaderFunction } from "@remix-run/node"
 import { NavLink, Outlet, useLoaderData } from "@remix-run/react"
-import { LuArrowLeft } from "react-icons/lu/index.js"
+import { LuArrowLeft } from "react-icons/lu"
 import ErrorView from "~/components/ErrorView"
 import LinkTabs from "~/components/LinkTabs"
 import RootAppShell from "~/components/RootAppShell/RootAppShell"

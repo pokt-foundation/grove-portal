@@ -1,6 +1,6 @@
 import { Group, Select, Text } from "@mantine/core"
 import { forwardRef, useMemo, useRef } from "react"
-import { LuSearch } from "react-icons/lu/index.js"
+import { LuSearch } from "react-icons/lu"
 import { BlockchainsQuery } from "~/models/portal/sdk"
 
 const SelectItem = forwardRef<HTMLDivElement, { label: string; value: string }>(

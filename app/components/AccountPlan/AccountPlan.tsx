@@ -9,7 +9,7 @@ import {
   Box,
   MantineTheme,
 } from "@mantine/core"
-import { LuCheck } from "react-icons/lu/index.js"
+import { LuCheck } from "react-icons/lu"
 import { PayPlanType } from "~/models/portal/sdk"
 import useCommonStyles from "~/styles/commonStyles"
 

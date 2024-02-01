@@ -1,7 +1,7 @@
 import { ActionIcon, JsonInput } from "@mantine/core"
 import { Prism } from "@mantine/prism"
 import React, { useState } from "react"
-import { LuPencil, LuSave } from "react-icons/lu/index.js"
+import { LuPencil, LuSave } from "react-icons/lu"
 
 type JsonEditorProps = {
   payload: { [key: string]: any }

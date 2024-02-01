@@ -1,5 +1,5 @@
 import { ActionIcon, Tooltip, CopyButton } from "@mantine/core"
-import { LuCopy, LuCopyCheck } from "react-icons/lu/index.js"
+import { LuCopy, LuCopyCheck } from "react-icons/lu"
 import useCommonStyles from "~/styles/commonStyles"
 
 type CopyTextButtonProps = { value: string }

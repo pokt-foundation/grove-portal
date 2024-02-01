@@ -2,7 +2,7 @@ import { Accordion, Divider, Button, Grid, Group, Stack, Text } from "@mantine/c
 import { useParams } from "@remix-run/react"
 import { Emoji } from "emoji-picker-react"
 import React from "react"
-import { LuArrowUpRight, LuDownload } from "react-icons/lu/index.js"
+import { LuArrowUpRight, LuDownload } from "react-icons/lu"
 import { TitledCard } from "~/components/TitledCard"
 import { RoleName } from "~/models/portal/sdk"
 import { Stripe } from "~/models/stripe/stripe.server"

@@ -1,7 +1,7 @@
 import { ActionIcon, type MantineTheme } from "@mantine/core"
 import { Form } from "@remix-run/react"
 import { useEffect, useState } from "react"
-import { RiStarFill, RiStarLine } from "react-icons/ri/index.js"
+import { RiStarFill, RiStarLine } from "react-icons/ri"
 import { Blockchain, Maybe } from "~/models/portal/sdk"
 import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
 

@@ -12,7 +12,7 @@ import {
 import { NavLink } from "@remix-run/react"
 import { Emoji } from "emoji-picker-react"
 import React from "react"
-import { IconType } from "react-icons/lib/cjs/iconBase"
+import { IconType } from "react-icons"
 import { DEFAULT_APPMOJI } from "~/routes/account_.$accountId.create/components/AppmojiPicker"
 
 export type SidebarNavRoute = {

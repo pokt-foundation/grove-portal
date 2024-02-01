@@ -1,6 +1,6 @@
 import { ActionIcon, Menu } from "@mantine/core"
 import React from "react"
-import { LuMoreHorizontal } from "react-icons/lu/index.js"
+import { LuMoreHorizontal } from "react-icons/lu"
 import useCommonStyles from "~/styles/commonStyles"
 
 const ContextMenuTarget = () => {

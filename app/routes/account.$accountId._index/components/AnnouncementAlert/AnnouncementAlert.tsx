@@ -1,7 +1,7 @@
 import { Alert } from "@mantine/core"
 import { useSessionStorage } from "@mantine/hooks"
 import React, { useEffect, useState } from "react"
-import { LuAlertCircle } from "react-icons/lu/index.js"
+import { LuAlertCircle } from "react-icons/lu"
 import useCommonStyles from "~/styles/commonStyles"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 

@@ -1,7 +1,7 @@
 import { Group, Menu, Stack, Text, UnstyledButton } from "@mantine/core"
 import { NavLink, useParams } from "@remix-run/react"
 import React, { useMemo } from "react"
-import { LuCheckCircle2, LuChevronsUpDown } from "react-icons/lu/index.js"
+import { LuCheckCircle2, LuChevronsUpDown } from "react-icons/lu"
 import Identicon from "~/components/Identicon"
 import { Account } from "~/models/portal/sdk"
 import { getPlanName } from "~/utils/planUtils"

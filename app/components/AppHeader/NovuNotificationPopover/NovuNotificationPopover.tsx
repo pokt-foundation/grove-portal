@@ -5,7 +5,7 @@ import {
   PopoverNotificationCenter,
 } from "@novu/notification-center"
 import { useNavigate } from "@remix-run/react"
-import { LuBell } from "react-icons/lu/index.js"
+import { LuBell } from "react-icons/lu"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 
 const NOVU_APP_IDENTIFIER = getRequiredClientEnvVar("NOVU_APP_IDENTIFIER")

@@ -1,6 +1,6 @@
-import { Stack, Text } from "@mantine/core"
-import Lottie from "lottie-react"
+import { Box, Stack, Text } from "@mantine/core"
 
+import { useLottie } from "lottie-react"
 import groveTreeAnimation from "./grove-tree.json"
 
 type PortalLoaderProps = { message?: string; size?: "md" | "lg" }
@@ -10,14 +10,18 @@ const LOADER_SIZE = {
   lg: 380,
 }
 
+const options = {
+  animationData: groveTreeAnimation,
+  loop: true,
+  autoplay: true,
+}
+
 const PortalLoader = ({ message, size = "md" }: PortalLoaderProps) => {
+  const { View } = useLottie(options, { height: LOADER_SIZE[size] })
+
   return (
     <Stack align="center" justify="center">
-      <Lottie
-        animationData={groveTreeAnimation}
-        aria-labelledby="Grove loading animation"
-        style={{ height: LOADER_SIZE[size] }}
-      />
+      <Box aria-labelledby="Grove loading animation">{View}</Box>
       {message && <Text> {message} </Text>}
     </Stack>
   )

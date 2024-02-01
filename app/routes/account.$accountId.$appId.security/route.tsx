@@ -1,8 +1,9 @@
 import { ActionFunction, json, MetaFunction } from "@remix-run/node"
-import { useOutletContext } from "@remix-run/react"
+import { useActionData, useOutletContext } from "@remix-run/react"
 import invariant from "tiny-invariant"
 import { AppIdOutletContext } from "../account.$accountId.$appId/route"
 import SecurityView from "./view"
+import useActionNotification from "~/hooks/useActionNotification"
 import { initPortalClient } from "~/models/portal/portal.server"
 import {
   PortalApp,
@@ -112,7 +113,8 @@ export const action: ActionFunction = async ({ request, params }) => {
 
 export const AppSecurity = () => {
   const { app, blockchains, userRole } = useOutletContext<AppIdOutletContext>()
-
+  const actionData = useActionData() as DataStruct<SecurityActionData>
+  useActionNotification(actionData)
   return <SecurityView app={app} blockchains={blockchains} userRole={userRole} />
 }
 

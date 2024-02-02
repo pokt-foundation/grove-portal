@@ -1,5 +1,5 @@
 import { Divider, Box, Button, Flex } from "@mantine/core"
-import { closeAllModals } from "@mantine/modals"
+import { modals } from "@mantine/modals"
 import { useEffect } from "react"
 import useModals from "~/hooks/useModals"
 import { Account, RoleName, User } from "~/models/portal/sdk"
@@ -16,17 +16,17 @@ type TeamViewProps = {
 }
 
 function MembersView({ actionData, account, userRole, user }: TeamViewProps) {
-  const { openFullScreenModal, modals } = useModals()
+  const { openFullScreenModal, openModals } = useModals()
   const openInviteMemberModal = () =>
     openFullScreenModal({
       children: <InviteMemberFrom accountName={account.name} />,
     })
 
   useEffect(() => {
-    if (actionData && modals.length > 0) {
-      closeAllModals()
+    if (actionData && openModals.length > 0) {
+      modals.closeAll()
     }
-  }, [actionData, modals])
+  }, [actionData, openModals.length])
 
   return (
     <Box>

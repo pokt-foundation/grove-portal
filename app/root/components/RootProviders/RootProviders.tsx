@@ -1,6 +1,6 @@
 import { MantineProvider } from "@mantine/core"
 import { ModalsProvider } from "@mantine/modals"
-import { NotificationsProvider } from "@mantine/notifications"
+import { Notifications } from "@mantine/notifications"
 import React from "react"
 import { portalTheme } from "~/root/portalTheme"
 
@@ -12,9 +12,8 @@ const RootProviders = ({ children }: { children: React.ReactNode }) => {
       withNormalizeCSS
       theme={portalTheme}
     >
-      <NotificationsProvider position="bottom-center">
-        <ModalsProvider>{children}</ModalsProvider>
-      </NotificationsProvider>
+      <Notifications position="bottom-center" />
+      <ModalsProvider>{children}</ModalsProvider>
     </MantineProvider>
   )
 }

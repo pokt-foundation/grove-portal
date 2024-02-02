@@ -1,4 +1,4 @@
-import { showNotification } from "@mantine/notifications"
+import { notifications } from "@mantine/notifications"
 import React, { useEffect } from "react"
 import { LuCheck, LuX } from "react-icons/lu"
 import { DataStruct } from "~/types/global"
@@ -10,7 +10,7 @@ const useActionNotification = (data: ActionNotificationData) => {
     if (!data) return
 
     if (data.message) {
-      showNotification({
+      notifications.show({
         icon: data.error ? <LuX size={18} /> : <LuCheck size={18} />,
         color: data.error ? "red" : "green",
         message: data.message,

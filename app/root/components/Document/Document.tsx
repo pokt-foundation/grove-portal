@@ -1,3 +1,4 @@
+import { createEmotionCache } from "@mantine/core"
 import { StylesPlaceholder } from "@mantine/remix"
 import {
   Links,
@@ -8,10 +9,12 @@ import {
   useSearchParams,
 } from "@remix-run/react"
 import React, { useEffect } from "react"
-import RootProviders from "../RootProviders"
+import RootProviders from "~/root/components/RootProviders"
 
 const Document = ({ children, title }: { children: React.ReactNode; title?: string }) => {
   const [params] = useSearchParams()
+
+  createEmotionCache({ key: "mantine" })
 
   useEffect(() => {
     const referral = params.get("rid")

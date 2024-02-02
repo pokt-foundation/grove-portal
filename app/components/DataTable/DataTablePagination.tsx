@@ -9,13 +9,13 @@ export const DataTablePagination = ({
   return (
     <Group align="center" position="center">
       <Pagination
-        initialPage={page}
+        defaultValue={page}
         mt={30}
-        page={page}
         position="right"
         radius="md"
         size="sm"
         total={totalPages}
+        value={page}
         withControls={false}
         onChange={onPageChange}
       />

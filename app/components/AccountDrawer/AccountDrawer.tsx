@@ -113,8 +113,7 @@ const AccountDrawer = ({ user }: AccountDrawerProps) => {
     <>
       <Drawer
         opened={isDrawerOpen}
-        overlayColor="#000000"
-        overlayOpacity={0.5}
+        overlayProps={{ opacity: 0.5, color: "#000000" }}
         padding="sm"
         position="right"
         title={

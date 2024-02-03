@@ -3,10 +3,11 @@ import type { EntryContext } from "@remix-run/node"
 import { RemixServer } from "@remix-run/react"
 import { renderToString } from "react-dom/server"
 import { getClientEnv } from "~/utils/environment.server"
+import { emotionCache } from "~/utils/mantineCache"
 
 global.ENV = getClientEnv()
 
-const server = createStylesServer()
+const server = createStylesServer(emotionCache)
 
 export default function handleRequest(
   request: Request,

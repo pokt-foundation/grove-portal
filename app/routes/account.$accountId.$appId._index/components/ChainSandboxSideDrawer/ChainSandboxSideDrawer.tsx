@@ -129,9 +129,9 @@ const ChainSandboxSideDrawer = ({
                   <PasswordInput
                     readOnly
                     aria-label="Secret Key"
-                    sx={(theme: MantineTheme) => ({
+                    style={{
                       flex: 1,
-                    })}
+                    }}
                     value={secretKey}
                   />
                 </Group>

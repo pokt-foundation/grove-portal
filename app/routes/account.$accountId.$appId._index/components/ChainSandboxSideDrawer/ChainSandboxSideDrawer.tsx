@@ -1,13 +1,4 @@
-import {
-  Card,
-  Checkbox,
-  Drawer,
-  Group,
-  MantineTheme,
-  PasswordInput,
-  Stack,
-  Text,
-} from "@mantine/core"
+import { Card, Checkbox, Drawer, Group, PasswordInput, Stack, Text } from "@mantine/core"
 import { Prism } from "@mantine/prism"
 import { FetcherWithComponents, useFetcher, useParams } from "@remix-run/react"
 import React, { useEffect, useMemo, useState } from "react"

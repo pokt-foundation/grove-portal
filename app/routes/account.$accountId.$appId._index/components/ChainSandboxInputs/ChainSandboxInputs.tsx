@@ -1,4 +1,4 @@
-import { Select, TextInput, Flex, Tooltip, useMantineTheme } from "@mantine/core"
+import { Select, TextInput, Flex, Tooltip, useMantineTheme, Box } from "@mantine/core"
 import { useParams } from "@remix-run/react"
 import React, { useMemo } from "react"
 import { Blockchain } from "~/models/portal/sdk"
@@ -48,22 +48,24 @@ const ChainSandboxInputs = ({
             disabled={chainMethods.length > 0}
             label="Currently, methods select is only available for EVM chains."
           >
-            <Select
-              searchable
-              data={chainMethods}
-              disabled={chainMethods.length === 0}
-              miw={325}
-              placeholder="Method"
-              value={selectedMethod}
-              onChange={(method) => {
-                onMethodSelect(method)
-                trackEvent({
-                  category: AnalyticCategories.app,
-                  action: AnalyticActions.app_chain_sandbox_select_method,
-                  label: `Method: ${method}`,
-                })
-              }}
-            />
+            <Box>
+              <Select
+                searchable
+                data={chainMethods}
+                disabled={chainMethods.length === 0}
+                miw={325}
+                placeholder="Method"
+                value={selectedMethod}
+                onChange={(method) => {
+                  onMethodSelect(method)
+                  trackEvent({
+                    category: AnalyticCategories.app,
+                    action: AnalyticActions.app_chain_sandbox_select_method,
+                    label: `Method: ${method}`,
+                  })
+                }}
+              />
+            </Box>
           </Tooltip>
         ) : (
           <TextInput

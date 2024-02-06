@@ -212,6 +212,7 @@ export const portalTheme: MantineThemeOverride = {
           overflowY: "auto",
         },
         header: {
+          zIndex: 100,
           backgroundColor:
             theme.colorScheme === "dark" ? theme.colors.dark[9] : theme.colors.gray[1],
         },

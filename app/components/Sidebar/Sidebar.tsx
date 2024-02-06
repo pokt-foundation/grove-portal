@@ -1,22 +1,12 @@
 import { Divider } from "@mantine/core"
-import { Box, MediaQuery, Navbar, ScrollArea } from "@pokt-foundation/pocket-blocks"
-import { Link, useParams } from "@remix-run/react"
+import { Navbar, ScrollArea } from "@pokt-foundation/pocket-blocks"
+import { useParams } from "@remix-run/react"
 import React, { useMemo, useState } from "react"
-import {
-  LuArrowUpCircle,
-  LuBookOpen,
-  LuLifeBuoy,
-  LuLineChart,
-  LuPanelLeft,
-  LuPlus,
-  LuSettings,
-} from "react-icons/lu"
+import { LuPlus } from "react-icons/lu"
 import AccountSelect from "~/components/AccountSelect"
-import GroveLogo from "~/components/GroveLogo"
 import {
   ExternalLink,
   InternalLink,
-  NavButton,
   SidebarApps,
   SidebarNavRoute,
 } from "~/components/Sidebar/components"

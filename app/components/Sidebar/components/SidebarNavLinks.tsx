@@ -2,12 +2,10 @@ import { CSSObject } from "@mantine/core"
 import {
   Anchor,
   Box,
-  Flex,
   Group,
   MantineTheme,
   Text,
   UnstyledButton,
-  Tooltip,
 } from "@pokt-foundation/pocket-blocks"
 import { NavLink } from "@remix-run/react"
 import { Emoji } from "emoji-picker-react"
@@ -46,7 +44,7 @@ const commonLinkStyles = (theme: MantineTheme): CSSObject => ({
 
   "&.active": {
     backgroundColor:
-      theme.colorScheme === "dark" ? "rgba(39, 41, 47, 0.50)" : theme.colors.gray[0],
+      theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.colors.gray[0],
   },
 })
 

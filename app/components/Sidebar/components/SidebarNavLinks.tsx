@@ -35,7 +35,7 @@ type SidebarButtonProps = LinkLabelProps & { onClick?: () => void }
 const commonLinkStyles = (theme: MantineTheme): CSSObject => ({
   display: "block",
   width: "100%",
-  padding: theme.spacing.xs,
+  padding: 8,
   borderRadius: theme.radius.sm,
   color: theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
   "&:hover": {
@@ -46,7 +46,7 @@ const commonLinkStyles = (theme: MantineTheme): CSSObject => ({
 
   "&.active": {
     backgroundColor:
-      theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.colors.gray[0],
+      theme.colorScheme === "dark" ? "rgba(39, 41, 47, 0.50)" : theme.colors.gray[0],
   },
 })
 
@@ -75,29 +75,39 @@ const LabelIcon = ({ icon: Icon, imgSrc, label }: LabelIconProps) => {
   return Icon ? <Icon size={18} /> : null
 }
 
-const LinkLabel = ({ icon, label, iconOnly, imgSrc }: LinkLabelProps) => {
-  return (
-    <Flex sx={{ justifyContent: iconOnly ? "center" : "flex-start" }}>
-      <Tooltip
-        withArrow
-        withinPortal
-        disabled={!iconOnly}
-        label={label}
-        offset={35}
-        position="right"
-      >
-        <Group>
-          <LabelIcon icon={icon} imgSrc={imgSrc} label={label} />
-          {!iconOnly && (
-            <Text truncate w={220}>
-              {label}
-            </Text>
-          )}
-        </Group>
-      </Tooltip>
-    </Flex>
-  )
-}
+const LinkLabel = ({ icon, label, iconOnly, imgSrc }: LinkLabelProps) => (
+  <Group>
+    <LabelIcon icon={icon} imgSrc={imgSrc} label={label} />
+    {!iconOnly && (
+      <Text truncate w={190}>
+        {label}
+      </Text>
+    )}
+  </Group>
+)
+
+// return (
+//   <Flex sx={{ justifyContent: iconOnly ? "center" : "flex-start" }}>
+//     {/*<Tooltip*/}
+//     {/*  withArrow*/}
+//     {/*  withinPortal*/}
+//     {/*  disabled={!iconOnly}*/}
+//     {/*  label={label}*/}
+//     {/*  offset={35}*/}
+//     {/*  position="right"*/}
+//     {/*>*/}
+//     <Group>
+//       <LabelIcon icon={icon} imgSrc={imgSrc} label={label} />
+//       {!iconOnly && (
+//         <Text truncate w={190}>
+//           {label}
+//         </Text>
+//       )}
+//     </Group>
+//     {/*</Tooltip>*/}
+//   </Flex>
+// )
+// }
 
 export const ExternalLink = ({
   route,

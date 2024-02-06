@@ -42,7 +42,7 @@ const getStaticRoutes = (
           {
             to: `/account/${activeAccount?.id}/upgrade`,
             label: "Upgrade to Auto-Scale",
-            icon: LuArrowUpCircle,
+            // icon: LuArrowUpCircle,
             end: true,
           },
         ]
@@ -51,23 +51,23 @@ const getStaticRoutes = (
       {
         to: `/account/${activeAccount?.id}`,
         label: "Insights",
-        icon: LuLineChart,
+        // icon: LuLineChart,
         end: true,
       },
       {
         to: `/account/${activeAccount?.id}/settings`,
         label: "Settings",
-        icon: LuSettings,
+        // icon: LuSettings,
       },
       {
         to: DOCS_PATH,
-        icon: LuBookOpen,
+        // icon: LuBookOpen,
         label: "Documentation",
         external: true,
       },
       {
         to: DISCORD_PATH,
-        icon: LuLifeBuoy,
+        // icon: LuLifeBuoy,
         label: "Support",
         external: true,
       },
@@ -93,17 +93,17 @@ export const Sidebar = ({ account, hidden, userRole, accounts }: SidebarProps) =
       hiddenBreakpoint="sm"
       p={8}
       pt={18}
-      width={{ base: collapsed ? 60 : 300 }}
+      width={{ base: collapsed ? 60 : 260 }}
     >
       <>
-        <Box ml={10}>
-          <Link to={`/account/${accountId}`}>
-            <GroveLogo icon={collapsed} />
-          </Link>
-        </Box>
-        <Divider mb="md" ml={-8} mr={-8} mt="sm" />
+        {/*<Box ml={10}>*/}
+        {/*  <Link to={`/account/${accountId}`}>*/}
+        {/*    <GroveLogo icon={collapsed} />*/}
+        {/*  </Link>*/}
+        {/*</Box>*/}
+        {/*<Divider mb="md" ml={-8} mr={-8} mt="sm" />*/}
         <AccountSelect accounts={accounts} collapsed={collapsed} />
-        <ScrollArea h="100%" mt="lg" mx="-xs" px="xs">
+        <ScrollArea h="100%" mt="lg">
           {staticRoutes.map((route, index) =>
             route.external ? (
               <Navbar.Section key={`${route.label}-${index}`}>
@@ -131,16 +131,16 @@ export const Sidebar = ({ account, hidden, userRole, accounts }: SidebarProps) =
             )}
           </Navbar.Section>
         </ScrollArea>
-        <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
-          <Navbar.Section>
-            <NavButton
-              icon={LuPanelLeft}
-              iconOnly={collapsed}
-              label={`${collapsed ? "Expand" : "Collapse"} sidebar`}
-              onClick={() => setCollapsed(!collapsed)}
-            />
-          </Navbar.Section>
-        </MediaQuery>
+        {/*<MediaQuery smallerThan="sm" styles={{ display: "none" }}>*/}
+        {/*  <Navbar.Section>*/}
+        {/*    <NavButton*/}
+        {/*      icon={LuPanelLeft}*/}
+        {/*      iconOnly={collapsed}*/}
+        {/*      label={`${collapsed ? "Expand" : "Collapse"} sidebar`}*/}
+        {/*      onClick={() => setCollapsed(!collapsed)}*/}
+        {/*    />*/}
+        {/*  </Navbar.Section>*/}
+        {/*</MediaQuery>*/}
       </>
     </Navbar>
   )

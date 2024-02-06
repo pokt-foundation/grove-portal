@@ -1,4 +1,3 @@
-import { createEmotionCache } from "@mantine/core"
 import {
   LinksFunction,
   LoaderFunction,
@@ -49,8 +48,6 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     ENV: getClientEnv(),
   })
 }
-
-createEmotionCache({ key: "pni" })
 
 export default function App() {
   const { ENV } = useLoaderData<RootLoaderData>()

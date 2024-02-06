@@ -1,3 +1,4 @@
+import { CacheProvider } from "@emotion/react"
 import { createStylesServer, injectStyles } from "@mantine/remix"
 import type { EntryContext } from "@remix-run/node"
 import { RemixServer } from "@remix-run/react"
@@ -15,19 +16,18 @@ export default function handleRequest(
   responseHeaders: Headers,
   remixContext: EntryContext,
 ) {
-  const markup = renderToString(<RemixServer context={remixContext} url={request.url} />)
-
-  const html = `<!DOCTYPE html>${injectStyles(markup, server)}`
-
-  responseHeaders.set("Content-Type", "text/html")
-
+  // Wrap the server in the cache provider and set the cache
+  let markup = renderToString(
+    <CacheProvider value={emotionCache}>
+      <RemixServer context={remixContext} url={request.url} />
+    </CacheProvider>,
+  )
   if (process.env.NODE_ENV !== "production") {
     responseHeaders.set("Cache-Control", "no-store")
   }
+  responseHeaders.set("Content-Type", "text/html")
 
-  responseHeaders.set("Content-Length", String(Buffer.byteLength(html)))
-
-  return new Response(html, {
+  return new Response(`<!DOCTYPE html>${injectStyles(markup, server)}`, {
     status: responseStatusCode,
     headers: responseHeaders,
   })

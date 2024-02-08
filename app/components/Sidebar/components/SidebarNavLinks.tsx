@@ -22,9 +22,7 @@ export type SidebarNavRoute = {
   external?: boolean
 }
 
-export type LinkLabelProps = Pick<SidebarNavRoute, "icon" | "label" | "imgSrc"> & {
-  iconOnly?: boolean
-}
+export type LinkLabelProps = Pick<SidebarNavRoute, "icon" | "label" | "imgSrc">
 
 type LabelIconProps = Pick<LinkLabelProps, "icon" | "imgSrc" | "label">
 
@@ -73,47 +71,16 @@ const LabelIcon = ({ icon: Icon, imgSrc, label }: LabelIconProps) => {
   return Icon ? <Icon size={18} /> : null
 }
 
-const LinkLabel = ({ icon, label, iconOnly, imgSrc }: LinkLabelProps) => (
+const LinkLabel = ({ icon, label, imgSrc }: LinkLabelProps) => (
   <Group>
     <LabelIcon icon={icon} imgSrc={imgSrc} label={label} />
-    {!iconOnly && (
-      <Text truncate w={190}>
-        {label}
-      </Text>
-    )}
+    <Text truncate w={190}>
+      {label}
+    </Text>
   </Group>
 )
 
-// return (
-//   <Flex sx={{ justifyContent: iconOnly ? "center" : "flex-start" }}>
-//     {/*<Tooltip*/}
-//     {/*  withArrow*/}
-//     {/*  withinPortal*/}
-//     {/*  disabled={!iconOnly}*/}
-//     {/*  label={label}*/}
-//     {/*  offset={35}*/}
-//     {/*  position="right"*/}
-//     {/*>*/}
-//     <Group>
-//       <LabelIcon icon={icon} imgSrc={imgSrc} label={label} />
-//       {!iconOnly && (
-//         <Text truncate w={190}>
-//           {label}
-//         </Text>
-//       )}
-//     </Group>
-//     {/*</Tooltip>*/}
-//   </Flex>
-// )
-// }
-
-export const ExternalLink = ({
-  route,
-  iconOnly,
-}: {
-  route: SidebarNavRoute
-  iconOnly?: boolean
-}) => (
+export const ExternalLink = ({ route }: { route: SidebarNavRoute }) => (
   <Anchor
     href={route.to}
     rel="noreferrer"
@@ -121,22 +88,11 @@ export const ExternalLink = ({
     target="_blank"
     variant="text"
   >
-    <LinkLabel
-      icon={route.icon}
-      iconOnly={iconOnly}
-      imgSrc={route.imgSrc}
-      label={route.label}
-    />
+    <LinkLabel icon={route.icon} imgSrc={route.imgSrc} label={route.label} />
   </Anchor>
 )
 
-export const InternalLink = ({
-  route,
-  iconOnly,
-}: {
-  route: SidebarNavRoute
-  iconOnly?: boolean
-}) => (
+export const InternalLink = ({ route }: { route: SidebarNavRoute }) => (
   <Anchor
     component={NavLink}
     end={route.end}
@@ -144,17 +100,12 @@ export const InternalLink = ({
     sx={commonLinkStyles}
     to={route.to}
   >
-    <LinkLabel
-      icon={route.icon}
-      iconOnly={iconOnly}
-      imgSrc={route.imgSrc}
-      label={route.label}
-    />
+    <LinkLabel icon={route.icon} imgSrc={route.imgSrc} label={route.label} />
   </Anchor>
 )
 
-export const NavButton = ({ icon, label, iconOnly, ...rest }: SidebarButtonProps) => (
+export const NavButton = ({ icon, label, ...rest }: SidebarButtonProps) => (
   <UnstyledButton fz="sm" sx={commonLinkStyles} {...rest}>
-    <LinkLabel icon={icon} iconOnly={iconOnly} label={label} />
+    <LinkLabel icon={icon} label={label} />
   </UnstyledButton>
 )

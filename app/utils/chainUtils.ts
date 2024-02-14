@@ -1,6 +1,7 @@
 import { Blockchain } from "~/models/portal/sdk"
+import { KeyValuePair } from "~/types/global"
 
-export const CHAIN_DOCS_URL: { [key: string]: string } = {
+export const CHAIN_DOCS_URL: KeyValuePair<string> = {
   "arbitrum-one": "arbitrum-one-api/intro",
   "avax-mainnet": "avalanche-api/intro",
   "avax-archival": "avalanche-api/intro",

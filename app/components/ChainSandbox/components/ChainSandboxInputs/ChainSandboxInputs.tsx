@@ -87,19 +87,14 @@ const ChainSandboxInputs = ({
         >
           {appsSelectItems.length > 0 ? (
             <>
+              <FluidSelect
+                withSearch
+                items={appsSelectItems}
+                placeholder="Select App"
+                value={appId}
+                onSelect={handleAppSelect}
+              />
               <Divider orientation="vertical" />
-              <Tooltip
-                disabled={chainMethods.length > 0}
-                label="Currently, methods are only available for EVM chains. Enter a method in the body instead."
-              >
-                <FluidSelect
-                  withSearch
-                  items={appsSelectItems}
-                  placeholder="Select App"
-                  value={appId}
-                  onSelect={handleAppSelect}
-                />
-              </Tooltip>
             </>
           ) : null}
           <FluidSelect

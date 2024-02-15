@@ -38,8 +38,7 @@ const SandboxView = ({ portalApps, blockchains, userRole }: SandboxViewProps) =>
       imgHeight={131}
       imgSrc="/sandbox-empty-state.svg"
       imgWidth={186}
-      subtitle="The playground is designed for making RPC calls and exploring responses,
-          requiring an active application to proceed."
+      subtitle="Use the sandbox to test RPC calls and responses. Create an application to get started."
       title="Grove Sandbox"
     />
   ) : (

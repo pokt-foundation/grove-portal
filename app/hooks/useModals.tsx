@@ -4,7 +4,7 @@ import { ModalSettings, OpenConfirmModal } from "@mantine/modals/lib/context"
 
 const useModals = () => {
   const theme = useMantineTheme()
-  const { modals: openModals } = useMantineModals()
+  const { modals: modalsOpen } = useMantineModals()
 
   const commonModalProps: ModalSettings = {
     centered: true,
@@ -44,7 +44,8 @@ const useModals = () => {
     openConfirmationModal,
     openContentModal,
     openFullScreenModal,
-    openModals,
+    modalsOpen,
+    closeAll: () => modals.closeAll(),
   }
 }
 

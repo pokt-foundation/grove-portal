@@ -1,5 +1,5 @@
-query blockchains($active: Boolean) {
-  blockchains(active: $active) {
+query blockchains($active: Boolean, $sortOrder: SortOrder) {
+  blockchains(active: $active, sortOrder: $sortOrder) {
     id
     ticker
     blockchain

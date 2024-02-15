@@ -12,39 +12,38 @@ import React, { useMemo, useState } from "react"
 import { LuBook, LuPlay } from "react-icons/lu"
 import { RiStarLine, RiStarFill } from "react-icons/ri"
 import FavoriteChain from "../FavoriteChain"
-import ChainSandboxSideDrawer from "app/routes/account.$accountId.$appId._index/components/ChainSandboxSideDrawer"
 import Chain from "~/components/Chain"
+import { ChainSandboxProvider } from "~/components/ChainSandbox/state"
 import ContextMenuTarget from "~/components/ContextMenuTarget"
 import CopyTextButton from "~/components/CopyTextButton"
 import { DataTable } from "~/components/DataTable"
 import useActionNotification from "~/hooks/useActionNotification"
-import { Blockchain, Maybe } from "~/models/portal/sdk"
+import { Blockchain, PortalApp } from "~/models/portal/sdk"
+import ChainSandboxSideDrawer from "~/routes/account.$accountId.$appId._index/components/ChainSandboxSideDrawer"
 import useCommonStyles from "~/styles/commonStyles"
 import { trackEvent, AnalyticCategories, AnalyticActions } from "~/utils/analytics"
 import { CHAIN_DOCS_URL, getAppEndpointUrl } from "~/utils/chainUtils"
 import { DOCS_PATH } from "~/utils/utils"
 
 type AppEndpointsProps = {
+  app: PortalApp
   blockchains: Blockchain[]
-  secretKey: string
-  favoriteChains?: Maybe<string[]>
   searchTerm: string
   readOnly: boolean
 }
 
 const AppEndpointsTable = ({
+  app,
   blockchains,
-  secretKey,
-  favoriteChains,
   searchTerm,
   readOnly,
 }: AppEndpointsProps) => {
   const theme = useMantineTheme()
   const { appId } = useParams()
   const fetcher = useFetcher()
-
   const { classes: commonClasses } = useCommonStyles()
   const [selectedBlockchain, setSelectedBlockchain] = useState<Blockchain>()
+  const favoriteChains = app.settings.favoritedChainIDs
 
   // handle notification for menu fetcher action
   useActionNotification(fetcher.data)
@@ -56,7 +55,6 @@ const AppEndpointsTable = ({
         ...c,
         favorite: true,
       }))
-      .sort((a, b) => (a.blockchain > b.blockchain ? 1 : -1))
 
     const other = blockchains
       .filter((chain) => !favoriteChains?.includes(chain.id))
@@ -64,19 +62,19 @@ const AppEndpointsTable = ({
         ...c,
         favorite: false,
       }))
-      .sort((a, b) => (a.blockchain > b.blockchain ? 1 : -1))
 
     return [...fav, ...other]
   }, [favoriteChains, blockchains])
 
   return (
     <>
-      <ChainSandboxSideDrawer
-        blockchain={selectedBlockchain}
-        chains={chains}
-        secretKey={secretKey}
-        onSideDrawerClose={() => setSelectedBlockchain(undefined)}
-      />
+      <ChainSandboxProvider initialStateValue={{ selectedApp: app }}>
+        <ChainSandboxSideDrawer
+          blockchain={selectedBlockchain}
+          chains={chains}
+          onSideDrawerClose={() => setSelectedBlockchain(undefined)}
+        />
+      </ChainSandboxProvider>
       {blockchains && (
         <DataTable
           data={chains.map((chain) => {
@@ -111,6 +109,7 @@ const AppEndpointsTable = ({
               action: {
                 element: (
                   <Flex gap="lg" justify="flex-end">
+                    <CopyTextButton value={getAppEndpointUrl(chain, appId)} />
                     <Tooltip withArrow label="Try in Sandbox">
                       <ActionIcon
                         className={commonClasses.grayOutline}
@@ -130,7 +129,6 @@ const AppEndpointsTable = ({
                         <LuPlay size={18} style={{ position: "relative", left: 2 }} />
                       </ActionIcon>
                     </Tooltip>
-                    <CopyTextButton value={getAppEndpointUrl(chain, appId)} />
                     <Menu>
                       <ContextMenuTarget />
                       <Menu.Dropdown>

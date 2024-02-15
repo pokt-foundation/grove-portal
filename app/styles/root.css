@@ -122,3 +122,7 @@ button.pokt-button-with__icon:hover {
 .clickable-table tbody tr:hover {
   background-color: rgba(37, 38, 43, 0.5) !important;
 }
+
+.prism-code {
+  background-color: rgba(39, 41, 47, 0.5) !important;
+}

@@ -28,7 +28,7 @@ const AccountItem = ({
     <Identicon
       alt={`${account.id} profile picture`}
       seed={account.id}
-      size={28}
+      size={32}
       type="account"
     />
     {!iconOnly && (

@@ -2,12 +2,10 @@ import {
   CSSObject,
   Anchor,
   Box,
-  Flex,
   Group,
   MantineTheme,
   Text,
   UnstyledButton,
-  Tooltip,
 } from "@mantine/core"
 import { NavLink } from "@remix-run/react"
 import { Emoji } from "emoji-picker-react"
@@ -24,9 +22,7 @@ export type SidebarNavRoute = {
   external?: boolean
 }
 
-export type LinkLabelProps = Pick<SidebarNavRoute, "icon" | "label" | "imgSrc"> & {
-  iconOnly?: boolean
-}
+export type LinkLabelProps = Pick<SidebarNavRoute, "icon" | "label" | "imgSrc">
 
 type LabelIconProps = Pick<LinkLabelProps, "icon" | "imgSrc" | "label">
 
@@ -35,7 +31,7 @@ type SidebarButtonProps = LinkLabelProps & { onClick?: () => void }
 const commonLinkStyles = (theme: MantineTheme): CSSObject => ({
   display: "block",
   width: "100%",
-  padding: theme.spacing.xs,
+  padding: 8,
   borderRadius: theme.radius.sm,
   color: theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
   "&:hover": {
@@ -75,37 +71,16 @@ const LabelIcon = ({ icon: Icon, imgSrc, label }: LabelIconProps) => {
   return Icon ? <Icon size={18} /> : null
 }
 
-const LinkLabel = ({ icon, label, iconOnly, imgSrc }: LinkLabelProps) => {
-  return (
-    <Flex sx={{ justifyContent: iconOnly ? "center" : "flex-start" }}>
-      <Tooltip
-        withArrow
-        withinPortal
-        disabled={!iconOnly}
-        label={label}
-        offset={35}
-        position="right"
-      >
-        <Group>
-          <LabelIcon icon={icon} imgSrc={imgSrc} label={label} />
-          {!iconOnly && (
-            <Text truncate w={220}>
-              {label}
-            </Text>
-          )}
-        </Group>
-      </Tooltip>
-    </Flex>
-  )
-}
+const LinkLabel = ({ icon, label, imgSrc }: LinkLabelProps) => (
+  <Group>
+    <LabelIcon icon={icon} imgSrc={imgSrc} label={label} />
+    <Text truncate w={190}>
+      {label}
+    </Text>
+  </Group>
+)
 
-export const ExternalLink = ({
-  route,
-  iconOnly,
-}: {
-  route: SidebarNavRoute
-  iconOnly?: boolean
-}) => (
+export const ExternalLink = ({ route }: { route: SidebarNavRoute }) => (
   <Anchor
     href={route.to}
     rel="noreferrer"
@@ -113,22 +88,11 @@ export const ExternalLink = ({
     target="_blank"
     variant="text"
   >
-    <LinkLabel
-      icon={route.icon}
-      iconOnly={iconOnly}
-      imgSrc={route.imgSrc}
-      label={route.label}
-    />
+    <LinkLabel icon={route.icon} imgSrc={route.imgSrc} label={route.label} />
   </Anchor>
 )
 
-export const InternalLink = ({
-  route,
-  iconOnly,
-}: {
-  route: SidebarNavRoute
-  iconOnly?: boolean
-}) => (
+export const InternalLink = ({ route }: { route: SidebarNavRoute }) => (
   <Anchor
     component={NavLink}
     end={route.end}
@@ -136,17 +100,12 @@ export const InternalLink = ({
     sx={commonLinkStyles}
     to={route.to}
   >
-    <LinkLabel
-      icon={route.icon}
-      iconOnly={iconOnly}
-      imgSrc={route.imgSrc}
-      label={route.label}
-    />
+    <LinkLabel icon={route.icon} imgSrc={route.imgSrc} label={route.label} />
   </Anchor>
 )
 
-export const NavButton = ({ icon, label, iconOnly, ...rest }: SidebarButtonProps) => (
+export const NavButton = ({ icon, label, ...rest }: SidebarButtonProps) => (
   <UnstyledButton fz="sm" sx={commonLinkStyles} {...rest}>
-    <LinkLabel icon={icon} iconOnly={iconOnly} label={label} />
+    <LinkLabel icon={icon} label={label} />
   </UnstyledButton>
 )

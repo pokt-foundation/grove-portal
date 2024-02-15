@@ -13,3 +13,5 @@ export type DataStruct<T> =
       error: true
       message: string
     }
+
+export type KeyValuePair<TValue> = { [key: string]: TValue }

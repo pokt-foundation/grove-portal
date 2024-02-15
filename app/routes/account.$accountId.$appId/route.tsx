@@ -1,8 +1,8 @@
 import {
+  ActionFunction,
+  json,
   LoaderFunction,
   MetaFunction,
-  json,
-  ActionFunction,
   redirect,
 } from "@remix-run/node"
 import { Outlet, useActionData, useLoaderData, useOutletContext } from "@remix-run/react"
@@ -13,7 +13,7 @@ import AppIdLayoutView from "./view"
 import ErrorView from "~/components/ErrorView"
 import useActionNotification from "~/hooks/useActionNotification"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { Blockchain, PortalApp, RoleName } from "~/models/portal/sdk"
+import { Blockchain, PortalApp, RoleName, SortOrder } from "~/models/portal/sdk"
 import { DataStruct } from "~/types/global"
 import { getErrorMessage } from "~/utils/catchError"
 import { triggerAppActionNotification } from "~/utils/notifications.server"
@@ -52,7 +52,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       )
     }
 
-    const getBlockchainsResponse = await portal.blockchains()
+    const getBlockchainsResponse = await portal.blockchains({ sortOrder: SortOrder.Asc })
     if (!getBlockchainsResponse.blockchains) {
       throw new Error("Blockchains not found")
     }

@@ -22,11 +22,7 @@ export const SidebarApps = ({ apps, iconOnly }: SidebarAppsProps) => {
   return (
     <Navbar.Section>
       {appsRoutes.map((SidebarNavRoute) => (
-        <InternalLink
-          key={SidebarNavRoute.to}
-          iconOnly={iconOnly}
-          route={SidebarNavRoute}
-        />
+        <InternalLink key={SidebarNavRoute.to} route={SidebarNavRoute} />
       ))}
     </Navbar.Section>
   )

@@ -1,4 +1,5 @@
 import Mailjet from "node-mailjet"
+import { KeyValuePair } from "~/types/global"
 import { getRequiredServerEnvVar } from "~/utils/environment"
 
 const mailjet = Mailjet.apiConnect(
@@ -15,7 +16,7 @@ export const sendEmail = async (
   to: string,
   subject: string,
   template: EmailTemplateID,
-  variables: { [key: string]: string },
+  variables: KeyValuePair<string>,
 ) => {
   return await mailjet.post("send", { version: "v3.1" }).request({
     Messages: [

@@ -1,5 +1,4 @@
-import { Title, Stack } from "@mantine/core"
-import { Button } from "@pokt-foundation/pocket-blocks"
+import { Title, Stack, Button } from "@mantine/core"
 import { Link, useParams } from "@remix-run/react"
 import React, { useMemo } from "react"
 import ChainSandbox from "app/components/ChainSandbox"

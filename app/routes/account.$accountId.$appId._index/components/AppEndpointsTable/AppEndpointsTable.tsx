@@ -55,7 +55,6 @@ const AppEndpointsTable = ({
         ...c,
         favorite: true,
       }))
-      .sort((a, b) => (a.blockchain > b.blockchain ? 1 : -1))
 
     const other = blockchains
       .filter((chain) => !favoriteChains?.includes(chain.id))
@@ -63,7 +62,6 @@ const AppEndpointsTable = ({
         ...c,
         favorite: false,
       }))
-      .sort((a, b) => (a.blockchain > b.blockchain ? 1 : -1))
 
     return [...fav, ...other]
   }, [favoriteChains, blockchains])

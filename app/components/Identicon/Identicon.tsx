@@ -23,7 +23,7 @@ export const Identicon = ({ seed, type, alt, size = "md", avatar }: IdenticonPro
   return (
     <Avatar
       alt={alt}
-      radius={avatar ? "xl" : "sm"}
+      radius={avatar ? "xl" : 2}
       size={size}
       src={svgURI}
       sx={(theme: MantineTheme) => ({

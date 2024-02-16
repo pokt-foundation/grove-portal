@@ -1,21 +1,12 @@
-import { Divider, Box, MediaQuery, Navbar, ScrollArea } from "@mantine/core"
+import { Divider, Box, Navbar, ScrollArea } from "@mantine/core"
 import { Link, useParams } from "@remix-run/react"
-import React, { useMemo, useState } from "react"
-import {
-  LuArrowUpCircle,
-  LuBookOpen,
-  LuLifeBuoy,
-  LuLineChart,
-  LuPanelLeft,
-  LuPlus,
-  LuSettings,
-} from "react-icons/lu"
+import React, { useMemo } from "react"
+import { LuPlus } from "react-icons/lu"
 import AccountSelect from "~/components/AccountSelect"
 import GroveLogo from "~/components/GroveLogo"
 import {
   ExternalLink,
   InternalLink,
-  NavButton,
   SidebarApps,
   SidebarNavRoute,
 } from "~/components/Sidebar/components"
@@ -41,7 +32,6 @@ const getStaticRoutes = (
           {
             to: `/account/${activeAccount?.id}/upgrade`,
             label: "Upgrade to Auto-Scale",
-            icon: LuArrowUpCircle,
             end: true,
           },
         ]
@@ -50,23 +40,24 @@ const getStaticRoutes = (
       {
         to: `/account/${activeAccount?.id}`,
         label: "Insights",
-        icon: LuLineChart,
+        end: true,
+      },
+      {
+        to: `/account/${activeAccount?.id}/sandbox`,
+        label: "Sandbox",
         end: true,
       },
       {
         to: `/account/${activeAccount?.id}/settings`,
         label: "Settings",
-        icon: LuSettings,
       },
       {
         to: DOCS_PATH,
-        icon: LuBookOpen,
         label: "Documentation",
         external: true,
       },
       {
         to: DISCORD_PATH,
-        icon: LuLifeBuoy,
         label: "Support",
         external: true,
       },
@@ -77,7 +68,6 @@ const getStaticRoutes = (
 export const Sidebar = ({ account, hidden, userRole, accounts }: SidebarProps) => {
   const { classes: commonClasses } = useCommonStyles()
   const { accountId } = useParams()
-  const [collapsed, setCollapsed] = useState(false)
   const staticRoutes = useMemo(() => {
     return getStaticRoutes(account, userRole)
   }, [account, userRole])
@@ -92,34 +82,27 @@ export const Sidebar = ({ account, hidden, userRole, accounts }: SidebarProps) =
       hiddenBreakpoint="sm"
       p={8}
       pt={18}
-      width={{ base: collapsed ? 60 : 300 }}
+      width={{ base: 260 }}
     >
       <>
-        <Box ml={10}>
-          <Link to={`/account/${accountId}`}>
-            <GroveLogo icon={collapsed} />
-          </Link>
-        </Box>
-        <Divider mb="md" ml={-8} mr={-8} mt="sm" />
-        <AccountSelect accounts={accounts} collapsed={collapsed} />
-        <ScrollArea h="100%" mt="lg" mx="-xs" px="xs">
+        <AccountSelect accounts={accounts} />
+        <ScrollArea h="100%" mt="lg">
           {staticRoutes.map((route, index) =>
             route.external ? (
               <Navbar.Section key={`${route.label}-${index}`}>
-                <ExternalLink iconOnly={collapsed} route={route} />
+                <ExternalLink route={route} />
               </Navbar.Section>
             ) : (
               <Navbar.Section key={`${route.label}-${index}`}>
-                <InternalLink iconOnly={collapsed} route={route} />
+                <InternalLink route={route} />
               </Navbar.Section>
             ),
           )}
           <Divider my="lg" />
           <Navbar.Section>
-            {apps && <SidebarApps apps={apps as PortalApp[]} iconOnly={collapsed} />}
+            {apps && <SidebarApps apps={apps as PortalApp[]} />}
             {canCreateApps && (
               <InternalLink
-                iconOnly={collapsed}
                 route={{
                   to: `/account/${accountId}/create`,
                   label: "New Application",
@@ -130,16 +113,11 @@ export const Sidebar = ({ account, hidden, userRole, accounts }: SidebarProps) =
             )}
           </Navbar.Section>
         </ScrollArea>
-        <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
-          <Navbar.Section>
-            <NavButton
-              icon={LuPanelLeft}
-              iconOnly={collapsed}
-              label={`${collapsed ? "Expand" : "Collapse"} sidebar`}
-              onClick={() => setCollapsed(!collapsed)}
-            />
-          </Navbar.Section>
-        </MediaQuery>
+        <Box ml={10}>
+          <Link to={`/account/${accountId}`}>
+            <GroveLogo />
+          </Link>
+        </Box>
       </>
     </Navbar>
   )

@@ -103,7 +103,6 @@ export const NovuNotificationPopover = ({
       >
         {({ unseenCount }) => (
           <Indicator
-            dot
             inline
             processing
             color="red"

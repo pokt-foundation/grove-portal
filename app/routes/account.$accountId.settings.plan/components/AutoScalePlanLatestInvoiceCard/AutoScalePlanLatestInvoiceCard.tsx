@@ -55,6 +55,7 @@ export default function AutoScalePlanLatestInvoiceCard({
           styles={{
             item: { borderBottom: "none" },
             content: { padding: 0 },
+            label: { padding: 0 },
             control: {
               padding: 0,
               paddingBottom: 12,

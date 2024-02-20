@@ -1,4 +1,4 @@
-import { json, LoaderFunction } from "@remix-run/node"
+import { json, LoaderFunction, MetaFunction } from "@remix-run/node"
 import { useLoaderData, useOutletContext } from "@remix-run/react"
 import ErrorView from "~/components/ErrorView"
 import { initPortalClient } from "~/models/portal/portal.server"
@@ -8,10 +8,17 @@ import { AppIdLoaderData } from "~/routes/account.$accountId.$appId/route"
 import SandboxView from "~/routes/account.$accountId.sandbox/view"
 import { DataStruct } from "~/types/global"
 import { getErrorMessage } from "~/utils/catchError"
+import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
 
 export type SandboxLoaderData = {
   blockchains: Blockchain[]
+}
+
+export const meta: MetaFunction = () => {
+  return {
+    title: `Sandbox ${seo_title_append}`,
+  }
 }
 
 export const loader: LoaderFunction = async ({ request, params }) => {

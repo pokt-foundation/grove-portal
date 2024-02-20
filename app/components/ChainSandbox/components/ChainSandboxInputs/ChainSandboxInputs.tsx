@@ -88,7 +88,6 @@ const ChainSandboxInputs = ({
           {appsSelectItems.length > 0 ? (
             <>
               <FluidSelect
-                withSearch
                 items={appsSelectItems}
                 placeholder="Select App"
                 value={appId}

@@ -16,9 +16,11 @@ export type SandboxLoaderData = {
 }
 
 export const meta: MetaFunction = () => {
-  return {
-    title: `Sandbox ${seo_title_append}`,
-  }
+  return [
+    {
+      title: `Sandbox ${seo_title_append}`,
+    },
+  ]
 }
 
 export const loader: LoaderFunction = async ({ request, params }) => {

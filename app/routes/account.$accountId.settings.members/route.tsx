@@ -1,5 +1,5 @@
 import { ActionFunction, json, LoaderFunction, MetaFunction } from "@remix-run/node"
-import { useActionData, useOutletContext } from "@remix-run/react"
+import { useOutletContext } from "@remix-run/react"
 import invariant from "tiny-invariant"
 import MembersView from "./view"
 import { initPortalClient } from "~/models/portal/portal.server"
@@ -247,15 +247,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 
 export default function AccountMembers() {
   const { userRole, account, user } = useOutletContext<AccountIdLoaderData>()
-  const actionData = useActionData() as DataStruct<TeamActionData>
-  return (
-    <MembersView
-      account={account}
-      actionData={actionData}
-      user={user}
-      userRole={userRole}
-    />
-  )
+  return <MembersView account={account} user={user} userRole={userRole} />
 }
 
 // export const CatchBoundary = () => {

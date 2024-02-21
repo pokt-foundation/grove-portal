@@ -14,8 +14,8 @@ const ModalHeader = ({ title, subtitle, onDiscard }: ModalHeaderProps) => {
         <Text fw={600} fz="21px">
           {title}
         </Text>
-        <Tooltip withArrow label="Discard" position="bottom">
-          <CloseButton aria-label="Discard" size="lg" onClick={onDiscard} />
+        <Tooltip withArrow label="Discard">
+          <CloseButton aria-label="Discard button" onClick={onDiscard} />
         </Tooltip>
       </Flex>
       <Text>{subtitle}</Text>

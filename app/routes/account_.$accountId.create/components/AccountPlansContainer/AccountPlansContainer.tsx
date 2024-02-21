@@ -16,11 +16,10 @@ const AccountPlansContainer = ({ onPlanSelected }: AccountPlansContainerProps) =
         <Text fw={600} fz="21px">
           Choose an account plan
         </Text>
-        <Tooltip withArrow label="Discard" position="bottom">
+        <Tooltip withArrow label="Discard">
           <CloseButton
             aria-label="Discard"
             component={NavLink}
-            size="lg"
             to={`/account/${accountId}`}
           />
         </Tooltip>

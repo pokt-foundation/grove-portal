@@ -46,14 +46,8 @@ export default function AppLimitExceeded() {
   const { classes: commonClasses } = useCommonStyles()
   const params = useParams()
   return (
-    <Stack align="center" justify="center" mt={42}>
-      <CloseButton
-        aria-label="Discard"
-        component={NavLink}
-        ml="auto"
-        size="lg"
-        to="/account"
-      />
+    <Stack align="center" justify="center" m={42}>
+      <CloseButton aria-label="Discard" component={NavLink} ml="auto" to="/account" />
       <EmptyState
         alt="App limit exceeded"
         callToAction={

@@ -1,11 +1,11 @@
 import { Divider, Button, Container, Group, LoadingOverlay } from "@mantine/core"
-import { closeAllModals } from "@mantine/modals"
 import { useNavigation } from "@remix-run/react"
 import React, { Dispatch, useMemo, useState } from "react"
 import { SecurityReducerActions } from "../../utils/stateReducer"
 import ChainsDropdown from "~/components/ChainsDropdown/ChainsDropdown"
 import ModalHeader from "~/components/ModalHeader"
 import PortalLoader from "~/components/PortalLoader"
+import useModals from "~/hooks/useModals"
 import { Blockchain } from "~/models/portal/sdk"
 import ChainsTable from "~/routes/account.$accountId.$appId.security/components/ChainsTable"
 import useCommonStyles from "~/styles/commonStyles"
@@ -23,8 +23,8 @@ const ApprovedChainsModal = ({
 }: ApprovedChainsModalProps) => {
   const { state } = useNavigation()
   const { classes: commonClasses } = useCommonStyles()
-  // const { appId, accountId } = useParams()
-  // const fetcher = useFetcher()
+  const { closeAllModals } = useModals()
+
   const [selectedBlockchainsIds, setSelectedBlockchainsIds] = useState<string[]>([])
 
   const dropdownChains = useMemo(

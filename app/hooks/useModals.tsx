@@ -47,7 +47,7 @@ const useModals = () => {
     openContentModal,
     openFullScreenModal,
     modalsOpen,
-    closeAll: () => closeAllRef.current(),
+    closeAllModals: closeAllRef.current,
   }
 }
 

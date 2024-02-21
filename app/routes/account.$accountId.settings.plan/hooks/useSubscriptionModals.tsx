@@ -23,7 +23,11 @@ const useSubscriptionModals = () => {
 
   const openStopSubscriptionModal = (account: Account) =>
     openConfirmationModal({
-      title: <Text fw={600}>Stop Subscription</Text>,
+      title: (
+        <Text fw={600} fz={14}>
+          Stop Subscription
+        </Text>
+      ),
       children: (
         <Text>
           Your plan will be changed to 'Free' effective immediately, and you will be

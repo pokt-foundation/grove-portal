@@ -7,12 +7,12 @@ import {
   LoadingOverlay,
   TextInput,
 } from "@mantine/core"
-import { closeAllModals } from "@mantine/modals"
 import { useNavigation } from "@remix-run/react"
 import React, { Dispatch, useState } from "react"
 import { SecurityReducerActions } from "../../utils/stateReducer"
 import ModalHeader from "~/components/ModalHeader"
 import PortalLoader from "~/components/PortalLoader"
+import useModals from "~/hooks/useModals"
 import AddSettingsButton from "~/routes/account.$accountId.$appId.security/components/AddSettingsButton"
 import SimpleStringTable from "~/routes/account.$accountId.$appId.security/components/SimpleStringTable"
 import useCommonStyles from "~/styles/commonStyles"
@@ -24,8 +24,8 @@ type WhitelistOriginsModalProps = {
 const WhitelistOriginsModal = ({ dispatch }: WhitelistOriginsModalProps) => {
   const { state } = useNavigation()
   const { classes: commonClasses } = useCommonStyles()
-  // const { appId, accountId } = useParams()
-  // const fetcher = useFetcher()
+  const { closeAllModals } = useModals()
+
   const [selectedWhitelistOrigins, setSelectedWhitelistOrigins] = useState<string[]>([])
   const [inputWhitelistOrigin, setInputWhitelistOrigin] = useState("")
   const deletedWhitelistOrigin = (deletedOrigin: string) => {

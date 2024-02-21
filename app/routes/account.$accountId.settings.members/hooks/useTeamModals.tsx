@@ -106,7 +106,11 @@ const useTeamModals = ({ account }: useTeamModalsProps) => {
 
   const openRemoveUserModal = ({ id, email }: Omit<TeamActionProps, "roleName">) =>
     openConfirmationModal({
-      title: <Text fw={600}>Remove user</Text>,
+      title: (
+        <Text fw={600} fz={14}>
+          Remove user
+        </Text>
+      ),
       children: <Text>Are you sure you want to remove {email} from your team?</Text>,
       labels: { cancel: "Cancel", confirm: "Remove" },
       confirmProps: { color: "red" },
@@ -115,7 +119,11 @@ const useTeamModals = ({ account }: useTeamModalsProps) => {
 
   const openLeaveTeamModal = ({ id, email }: Omit<TeamActionProps, "roleName">) =>
     openConfirmationModal({
-      title: <Text fw={600}>Leave team</Text>,
+      title: (
+        <Text fw={600} fz={14}>
+          Leave team
+        </Text>
+      ),
       children: <Text>Are you sure you want to leave the team?</Text>,
       labels: { cancel: "Cancel", confirm: "Leave" },
       confirmProps: { color: "red" },
@@ -124,7 +132,11 @@ const useTeamModals = ({ account }: useTeamModalsProps) => {
 
   const openChangeRoleModal = ({ email, id, roleName }: TeamActionProps) =>
     openConfirmationModal({
-      title: <Text fw={600}>Change user role?</Text>,
+      title: (
+        <Text fw={600} fz={14}>
+          Change user role?
+        </Text>
+      ),
       children: (
         <Text>
           Are you sure you want to change {email}'s role to{" "}
@@ -137,7 +149,11 @@ const useTeamModals = ({ account }: useTeamModalsProps) => {
 
   const openResendEmailModal = ({ email, id, roleName }: TeamActionProps) =>
     openConfirmationModal({
-      title: <Text fw={600}>Resend Invitation</Text>,
+      title: (
+        <Text fw={600} fz={14}>
+          Resend Invitation
+        </Text>
+      ),
       children: <Text>Are you sure you want to resend an email to {email}?</Text>,
       labels: { cancel: "Cancel", confirm: "Resend" },
       onConfirm: () => resendEmail({ email, id, roleName }),

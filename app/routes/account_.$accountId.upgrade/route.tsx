@@ -73,11 +73,10 @@ export default function UpgradePlan() {
             <Text fw={600} fz="21px">
               Upgrade to Auto-Scale
             </Text>
-            <Tooltip withArrow label="Discard" position="bottom">
+            <Tooltip withArrow label="Discard">
               <CloseButton
                 aria-label="Discard"
                 component={NavLink}
-                size="lg"
                 to={`/account/${accountId}`}
               />
             </Tooltip>

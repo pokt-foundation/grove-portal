@@ -39,7 +39,7 @@ const DrawerLink = ({ setIsDrawerOpen, external, ...props }: DrawerLinkProps) =>
   return (
     // eslint-disable-next-line jsx-a11y/anchor-has-content
     <NavLink
-      aria-label={props.label as string}
+      aria-label={String(props.label)}
       component={Link}
       label={props.label}
       p={8}

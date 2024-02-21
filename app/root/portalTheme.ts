@@ -187,10 +187,10 @@ export const portalTheme: MantineThemeOverride = {
         },
       },
     },
-    CloseButton:{
+    CloseButton: {
       defaultProps: {
-        size: "md"
-      }
+        size: "md",
+      },
     },
     Card: {
       styles: (theme) => ({

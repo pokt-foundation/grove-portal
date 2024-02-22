@@ -3734,7 +3734,7 @@ packages:
       tar-fs: 2.1.1
       tsconfig-paths: 4.1.2
       typescript: 5.2.2
-      undici: 5.27.2
+      undici: 5.28.3
       vite: 5.0.0(@types/node@18.15.0)
       ws: 7.5.9
     transitivePeerDependencies:
@@ -12904,8 +12904,8 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: true
 
-  /undici@5.27.2:
-    resolution: {integrity: sha512-iS857PdOEy/y3wlM3yRp+6SNQQ6xU0mmZcwRSriqk+et/cwWAtwmIGf6WkoDN2EK/AMdCO/dfXzIwi+rFMrjjQ==}
+  /undici@5.28.3:
+    resolution: {integrity: sha512-3ItfzbrhDlINjaP0duwnNsKpDQk3acHI3gVJ1z4fmwMK31k5G9OVIAMLSIaP6w4FaGkaAkN6zaQO9LUvZ1t7VA==}
     engines: {node: '>=14.0'}
     dependencies:
       '@fastify/busboy': 2.1.0

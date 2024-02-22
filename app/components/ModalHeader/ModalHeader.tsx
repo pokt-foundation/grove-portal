@@ -1,5 +1,4 @@
-import { Divider } from "@mantine/core"
-import { Box, CloseButton, Flex, Text, Tooltip } from "@pokt-foundation/pocket-blocks"
+import { Divider, Box, CloseButton, Flex, Text, Tooltip } from "@mantine/core"
 import React from "react"
 
 type ModalHeaderProps = {
@@ -15,8 +14,8 @@ const ModalHeader = ({ title, subtitle, onDiscard }: ModalHeaderProps) => {
         <Text fw={600} fz="21px">
           {title}
         </Text>
-        <Tooltip withArrow label="Discard" position="bottom">
-          <CloseButton aria-label="Discard" size="lg" onClick={onDiscard} />
+        <Tooltip withArrow label="Discard">
+          <CloseButton aria-label="Discard button" onClick={onDiscard} />
         </Tooltip>
       </Flex>
       <Text>{subtitle}</Text>

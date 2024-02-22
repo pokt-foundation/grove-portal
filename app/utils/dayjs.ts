@@ -1,5 +1,5 @@
 import dayjs from "dayjs"
-import dayJsutcPlugin from "dayjs/plugin/utc"
+import dayJsutcPlugin from "dayjs/plugin/utc.js"
 dayjs.extend(dayJsutcPlugin)
 
 const formatTimestampShort = (ts: number) =>

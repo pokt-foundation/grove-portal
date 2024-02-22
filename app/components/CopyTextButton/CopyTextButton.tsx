@@ -1,4 +1,4 @@
-import { Tooltip, ActionIcon, CopyButton, ActionIconVariant, Box } from "@mantine/core"
+import { Tooltip, ActionIcon, CopyButton, Box, ActionIconProps } from "@mantine/core"
 import cx from "clsx"
 import { forwardRef, HTMLAttributes } from "react"
 import { LuCopy, LuCopyCheck } from "react-icons/lu"
@@ -6,7 +6,7 @@ import useCommonStyles from "~/styles/commonStyles"
 
 type CopyTextButtonProps = {
   value: string
-  variant?: ActionIconVariant
+  variant?: ActionIconProps["variant"]
   size?: number
   width?: number
 } & HTMLAttributes<HTMLDivElement>

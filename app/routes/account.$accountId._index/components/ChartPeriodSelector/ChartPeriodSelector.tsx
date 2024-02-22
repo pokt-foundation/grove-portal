@@ -1,10 +1,4 @@
-import {
-  Button,
-  Group,
-  Text,
-  Tooltip,
-  useMantineTheme,
-} from "@pokt-foundation/pocket-blocks"
+import { Button, Group, Text, Tooltip, useMantineTheme } from "@mantine/core"
 import { Form, useSearchParams } from "@remix-run/react"
 import React from "react"
 import { LuInfo } from "react-icons/lu"

@@ -1,6 +1,5 @@
-import { Box, JsonInput, Tooltip } from "@mantine/core"
+import { Box, JsonInput, Tooltip, ActionIcon, Group } from "@mantine/core"
 import { Prism } from "@mantine/prism"
-import { ActionIcon, Group } from "@pokt-foundation/pocket-blocks"
 import React, { useState } from "react"
 import { LuPencil, LuSave } from "react-icons/lu"
 import CopyTextButton from "~/components/CopyTextButton"

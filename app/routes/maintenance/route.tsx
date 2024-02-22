@@ -12,9 +12,11 @@ export const loader: LoaderFunction = async () => {
 }
 
 export const meta: MetaFunction = () => {
-  return {
-    title: `Scheduled Maintenance ${seo_title_append}`,
-  }
+  return [
+    {
+      title: `Scheduled Maintenance ${seo_title_append}`,
+    },
+  ]
 }
 export default function PortalMaintenance() {
   return <PortalMaintenanceView />

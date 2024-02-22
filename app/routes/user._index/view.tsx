@@ -1,6 +1,5 @@
-import { Divider } from "@mantine/core"
-import { Box, Button, Stack, Switch, Text } from "@pokt-foundation/pocket-blocks"
-import { Form, useSubmit } from "@remix-run/react"
+import { Box, Button, Divider, Stack, Text } from "@mantine/core"
+import { Form } from "@remix-run/react"
 import { Identicon } from "~/components/Identicon"
 import { User } from "~/models/portal/sdk"
 import useCommonStyles from "~/styles/commonStyles"
@@ -12,7 +11,6 @@ type ProfileViewProps = {
 
 export const ProfileView = ({ user }: ProfileViewProps) => {
   const { classes: commonClasses } = useCommonStyles()
-  const submit = useSubmit()
 
   return (
     <Stack spacing="xs">

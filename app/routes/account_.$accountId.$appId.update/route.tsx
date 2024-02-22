@@ -1,4 +1,4 @@
-import { Box, LoadingOverlay } from "@pokt-foundation/pocket-blocks"
+import { Box, LoadingOverlay } from "@mantine/core"
 import {
   ActionFunction,
   json,
@@ -10,7 +10,9 @@ import { useFetcher, useLoaderData } from "@remix-run/react"
 import invariant from "tiny-invariant"
 import ErrorView from "~/components/ErrorView"
 import PortalLoader from "~/components/PortalLoader"
-import useActionNotification from "~/hooks/useActionNotification"
+import useActionNotification, {
+  ActionNotificationData,
+} from "~/hooks/useActionNotification"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { PortalApp, RoleName, UpdatePortalApp } from "~/models/portal/sdk"
 import AppForm from "~/routes/account_.$accountId.create/components/AppForm"
@@ -21,9 +23,11 @@ import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
 
 export const meta: MetaFunction = () => {
-  return {
-    title: `Update Application ${seo_title_append}`,
-  }
+  return [
+    {
+      title: `Update Application ${seo_title_append}`,
+    },
+  ]
 }
 
 type UpdateAppLoaderData = {
@@ -137,8 +141,9 @@ export const action: ActionFunction = async ({ request, params }) => {
 export default function UpdateApp() {
   const fetcher = useFetcher()
   const { data, error, message } = useLoaderData() as DataStruct<UpdateAppLoaderData>
+  const fetcherData = fetcher.data as ActionNotificationData
 
-  useActionNotification(fetcher.data)
+  useActionNotification(fetcherData)
 
   if (error) {
     return <ErrorView message={message} />

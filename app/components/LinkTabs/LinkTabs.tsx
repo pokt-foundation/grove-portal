@@ -1,4 +1,4 @@
-import { Flex, Button, MantineTheme, ScrollArea } from "@pokt-foundation/pocket-blocks"
+import { Flex, Button, MantineTheme, ScrollArea } from "@mantine/core"
 import { NavLink } from "@remix-run/react"
 import React from "react"
 

@@ -9,7 +9,7 @@ import {
   User,
 } from "./sdk"
 
-const testEmail = "test@test.test"
+// const testEmail = "test@test.test"
 export const testPortalUserId = "userId_test"
 
 // @ts-ignore

@@ -1,4 +1,4 @@
-import { Stack, Switch, Text } from "@pokt-foundation/pocket-blocks"
+import { Stack, Switch, Text } from "@mantine/core"
 import { Form, useParams, useSubmit } from "@remix-run/react"
 import { useState } from "react"
 import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"

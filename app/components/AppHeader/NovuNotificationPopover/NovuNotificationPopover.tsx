@@ -1,10 +1,9 @@
-import { Indicator } from "@mantine/core"
+import { ActionIcon, Indicator, useMantineTheme } from "@mantine/core"
 import {
   IMessage,
   NovuProvider,
   PopoverNotificationCenter,
 } from "@novu/notification-center"
-import { ActionIcon, useMantineTheme } from "@pokt-foundation/pocket-blocks"
 import { useNavigate } from "@remix-run/react"
 import { LuBell } from "react-icons/lu"
 import { getRequiredClientEnvVar } from "~/utils/environment"
@@ -104,7 +103,6 @@ export const NovuNotificationPopover = ({
       >
         {({ unseenCount }) => (
           <Indicator
-            dot
             inline
             processing
             color="red"

@@ -1,5 +1,5 @@
 import { ActionFunction, json, LoaderFunction, MetaFunction } from "@remix-run/node"
-import { useActionData, useCatch, useOutletContext } from "@remix-run/react"
+import { useOutletContext } from "@remix-run/react"
 import invariant from "tiny-invariant"
 import MembersView from "./view"
 import { initPortalClient } from "~/models/portal/portal.server"
@@ -12,9 +12,11 @@ import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
 
 export const meta: MetaFunction = () => {
-  return {
-    title: `Account Members ${seo_title_append}`,
-  }
+  return [
+    {
+      title: `Account Members ${seo_title_append}`,
+    },
+  ]
 }
 
 export type TeamLoaderData = {
@@ -245,36 +247,28 @@ export const action: ActionFunction = async ({ request, params }) => {
 
 export default function AccountMembers() {
   const { userRole, account, user } = useOutletContext<AccountIdLoaderData>()
-  const actionData = useActionData() as DataStruct<TeamActionData>
-  return (
-    <MembersView
-      account={account}
-      actionData={actionData}
-      user={user}
-      userRole={userRole}
-    />
-  )
+  return <MembersView account={account} user={user} userRole={userRole} />
 }
 
-export const CatchBoundary = () => {
-  const caught = useCatch()
-  if (caught.status === 404) {
-    return (
-      <div className="error-container">
-        <h1>Team Catch Error</h1>
-        <p>{caught.statusText}</p>
-      </div>
-    )
-  }
-
-  throw new Error(`Unexpected caught response with status: ${caught.status}`)
-}
-
-export const ErrorBoundary = ({ error }: { error: Error }) => {
-  return (
-    <div className="error-container">
-      <h1>Team Error</h1>
-      <p>{error.message}</p>
-    </div>
-  )
-}
+// export const CatchBoundary = () => {
+//   const caught = useCatch()
+//   if (caught.status === 404) {
+//     return (
+//       <div className="error-container">
+//         <h1>Team Catch Error</h1>
+//         <p>{caught.statusText}</p>
+//       </div>
+//     )
+//   }
+//
+//   throw new Error(`Unexpected caught response with status: ${caught.status}`)
+// }
+//
+// export const ErrorBoundary = ({ error }: { error: Error }) => {
+//   return (
+//     <div className="error-container">
+//       <h1>Team Error</h1>
+//       <p>{error.message}</p>
+//     </div>
+//   )
+// }

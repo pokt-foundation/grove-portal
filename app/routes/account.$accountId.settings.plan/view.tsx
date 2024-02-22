@@ -1,4 +1,4 @@
-import { Box, Stack } from "@pokt-foundation/pocket-blocks"
+import { Box, Stack } from "@mantine/core"
 import AutoScalePlanLatestInvoiceCard from "./components/AutoScalePlanLatestInvoiceCard"
 import AutoScalePlanOverviewCard from "./components/AutoScalePlanOverviewCard"
 import EnterpriseAccountOverviewCard from "./components/EnterpriseAccountOverviewCard"

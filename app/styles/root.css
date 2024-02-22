@@ -108,7 +108,7 @@ button.pokt-button-with__icon:hover {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 16px;
-  margin-right: -9px;
+  background-color: transparent !important;
 }
 
 /* Drawer header */

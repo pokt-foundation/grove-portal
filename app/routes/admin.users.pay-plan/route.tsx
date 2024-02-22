@@ -1,20 +1,18 @@
-import {
-  Button,
-  Card,
-  Container,
-  Select,
-  TextInput,
-} from "@pokt-foundation/pocket-blocks"
+import { Button, Card, Container, Select, TextInput } from "@mantine/core"
 import { MetaFunction } from "@remix-run/node"
 import { useFetcher } from "@remix-run/react"
 import { useState } from "react"
-import useActionNotification from "~/hooks/useActionNotification"
+import useActionNotification, {
+  ActionNotificationData,
+} from "~/hooks/useActionNotification"
 import { PayPlanType } from "~/models/portal/sdk"
 
 export const meta: MetaFunction = () => {
-  return {
-    title: "Custom Pay Plan | Admin",
-  }
+  return [
+    {
+      title: "Custom Pay Plan | Admin",
+    },
+  ]
 }
 
 export default function CustomPayPlan() {
@@ -23,7 +21,8 @@ export default function CustomPayPlan() {
 
   const plans = Object.values(PayPlanType)
 
-  useActionNotification(updatePlanFetcher.data)
+  const fetcherData = updatePlanFetcher.data as ActionNotificationData
+  useActionNotification(fetcherData)
 
   return (
     <Container size="lg">
@@ -55,7 +54,7 @@ export default function CustomPayPlan() {
             Submit
           </Button>
         </Form>
-        {updatePlanFetcher.data && updatePlanFetcher.data.error && (
+        {fetcherData && fetcherData.error && (
           <div>{JSON.stringify(updatePlanFetcher.data)}</div>
         )}
       </Card>

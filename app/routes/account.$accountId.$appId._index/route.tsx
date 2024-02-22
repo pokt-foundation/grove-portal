@@ -1,12 +1,12 @@
-import { Affix, Divider, Transition } from "@mantine/core"
+import { Affix, Divider, Transition, Box, Flex, Input, Button } from "@mantine/core"
 import { useDebouncedValue, useWindowScroll } from "@mantine/hooks"
-import { Box, Flex, Input, Button } from "@pokt-foundation/pocket-blocks"
 import { ActionFunction, json, MetaFunction } from "@remix-run/node"
-import { useOutletContext } from "@remix-run/react"
+import { useActionData, useOutletContext } from "@remix-run/react"
 import { useState } from "react"
 import { LuArrowUp, LuSearch } from "react-icons/lu"
 import invariant from "tiny-invariant"
 import { AppIdOutletContext } from "../account.$accountId.$appId/route"
+import useActionNotification from "~/hooks/useActionNotification"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { PortalApp, PortalAppEnvironment } from "~/models/portal/sdk"
 import AppEndpointsTable from "~/routes/account.$accountId.$appId._index/components/AppEndpointsTable"
@@ -16,9 +16,11 @@ import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
 
 export const meta: MetaFunction = () => {
-  return {
-    title: `Application Endpoints ${seo_title_append}`,
-  }
+  return [
+    {
+      title: `Application Endpoints ${seo_title_append}`,
+    },
+  ]
 }
 
 export type AppIdActionData = {
@@ -95,6 +97,8 @@ export const Application = () => {
   const [searchTerm, setSearchTerm] = useState("")
   const [debouncedSearchTerm] = useDebouncedValue(searchTerm, 200)
   const [scroll, scrollTo] = useWindowScroll()
+  const actionData = useActionData() as DataStruct<AppIdActionData>
+  useActionNotification(actionData)
 
   return (
     <Box mb={70}>

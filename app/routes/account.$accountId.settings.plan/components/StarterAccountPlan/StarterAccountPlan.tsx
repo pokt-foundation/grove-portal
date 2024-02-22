@@ -1,4 +1,4 @@
-import { SimpleGrid, Stack, Text, Title } from "@pokt-foundation/pocket-blocks"
+import { SimpleGrid, Stack, Text, Title } from "@mantine/core"
 import { useNavigate } from "@remix-run/react"
 import React from "react"
 import { AccountPlan } from "~/components/AccountPlan"

@@ -4,7 +4,7 @@ require("dotenv").config()
 
 export default defineConfig({
   e2e: {
-    baseUrl: "http://localhost:3001",
+    baseUrl: "http://localhost:3000",
     specPattern: "cypress/e2e/**/*.ts",
     supportFile: "cypress/support/index.ts",
   },

@@ -1,4 +1,4 @@
-import { ActionIcon, Flex, Menu, Text } from "@pokt-foundation/pocket-blocks"
+import { Flex, Menu, Text, ActionIcon } from "@mantine/core"
 import React, { useMemo } from "react"
 import { LuMinusCircle, LuMoreHorizontal, LuSend } from "react-icons/lu"
 import { Account, RoleName, User, AccountUser } from "~/models/portal/sdk"
@@ -92,9 +92,8 @@ const TeamMemberAction = ({
 
     return items
   }, [
+    teamMember,
     userRole,
-    teamMember.id,
-    teamMember.email,
     user?.portalUserID,
     status,
     openRemoveUserModal,

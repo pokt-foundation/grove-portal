@@ -1,13 +1,4 @@
-import {
-  Avatar,
-  Badge,
-  Box,
-  CopyButton,
-  Group,
-  Menu,
-  Text,
-  Tooltip,
-} from "@pokt-foundation/pocket-blocks"
+import { Avatar, Badge, Box, CopyButton, Group, Menu, Text, Tooltip } from "@mantine/core"
 import { Link } from "@remix-run/react"
 import { Emoji } from "emoji-picker-react"
 import { LuPencil } from "react-icons/lu"

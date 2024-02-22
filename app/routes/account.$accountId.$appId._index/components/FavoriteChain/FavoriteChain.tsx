@@ -1,5 +1,4 @@
-import { ActionIcon } from "@mantine/core"
-import { type MantineTheme } from "@pokt-foundation/pocket-blocks"
+import { ActionIcon, type MantineTheme } from "@mantine/core"
 import { Form } from "@remix-run/react"
 import { useEffect, useState } from "react"
 import { RiStarFill, RiStarLine } from "react-icons/ri"

@@ -1,13 +1,14 @@
-import { Divider, NavLinkProps } from "@mantine/core"
 import {
+  Divider,
   Drawer,
+  Group,
+  MantineTheme,
+  NavLink,
+  NavLinkProps,
   Stack,
   Text,
   UnstyledButton,
-  NavLink,
-  Group,
-  MantineTheme,
-} from "@pokt-foundation/pocket-blocks"
+} from "@mantine/core"
 import { Link, LinkProps, useFetcher } from "@remix-run/react"
 import React, { useState } from "react"
 import {
@@ -36,7 +37,9 @@ type DrawerLinkProps = NavLinkProps &
 const DrawerLink = ({ setIsDrawerOpen, external, ...props }: DrawerLinkProps) => {
   const externalProps = external ? { rel: "noreferrer", target: "_blank" } : {}
   return (
+    // eslint-disable-next-line jsx-a11y/anchor-has-content
     <NavLink
+      aria-label={String(props.label)}
       component={Link}
       label={props.label}
       p={8}
@@ -110,8 +113,7 @@ const AccountDrawer = ({ user }: AccountDrawerProps) => {
     <>
       <Drawer
         opened={isDrawerOpen}
-        overlayColor="#000000"
-        overlayOpacity={0.5}
+        overlayProps={{ opacity: 0.5, color: "#000000" }}
         padding="sm"
         position="right"
         title={
@@ -155,7 +157,8 @@ const AccountDrawer = ({ user }: AccountDrawerProps) => {
               {withDivider && <Divider my={8} />}
             </React.Fragment>
           ))}
-          <NavLink label="Sign out" p={8} onClick={logout} />
+          {/* eslint-disable-next-line jsx-a11y/anchor-has-content */}
+          <NavLink aria-label="Sign out" label="Sign out" p={8} onClick={logout} />
         </Stack>
       </Drawer>
       <UnstyledButton onClick={() => setIsDrawerOpen(true)}>

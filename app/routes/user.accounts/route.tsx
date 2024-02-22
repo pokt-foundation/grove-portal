@@ -13,9 +13,11 @@ import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
 
 export const meta: MetaFunction = () => {
-  return {
-    title: `User Accounts ${seo_title_append}`,
-  }
+  return [
+    {
+      title: `User Accounts ${seo_title_append}`,
+    },
+  ]
 }
 
 export type UserInvitedAccountsActionData = {

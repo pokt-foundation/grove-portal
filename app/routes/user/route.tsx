@@ -1,4 +1,4 @@
-import { Container, Stack, Button } from "@pokt-foundation/pocket-blocks"
+import { Container, Stack, Button } from "@mantine/core"
 import { json, LoaderFunction } from "@remix-run/node"
 import { NavLink, Outlet, useLoaderData } from "@remix-run/react"
 import { LuArrowLeft } from "react-icons/lu"

@@ -1,6 +1,5 @@
-import { Divider } from "@mantine/core"
-import { closeAllModals } from "@mantine/modals"
 import {
+  Divider,
   TextInput,
   Button,
   Container,
@@ -9,10 +8,12 @@ import {
   Flex,
   Group,
   LoadingOverlay,
-} from "@pokt-foundation/pocket-blocks"
+} from "@mantine/core"
 import { Form, useNavigation, useParams } from "@remix-run/react"
+import { useEffect, useState } from "react"
 import ModalHeader from "~/components/ModalHeader"
 import PortalLoader from "~/components/PortalLoader"
+import useModals from "~/hooks/useModals"
 import { Maybe, RoleName } from "~/models/portal/sdk"
 import useCommonStyles from "~/styles/commonStyles"
 import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
@@ -25,6 +26,14 @@ const InviteMemberFrom = ({ accountName }: InviteMemberFromProps) => {
   const { state } = useNavigation()
   const { classes: commonClasses } = useCommonStyles()
   const { accountId } = useParams()
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false)
+  const { closeAllModals } = useModals()
+
+  useEffect(() => {
+    if (isFormSubmitted && state === "idle") {
+      closeAllModals()
+    }
+  }, [isFormSubmitted, closeAllModals, state])
 
   return (
     <>
@@ -89,6 +98,7 @@ const InviteMemberFrom = ({ accountName }: InviteMemberFromProps) => {
                 value="true"
                 w="156px"
                 onClick={() => {
+                  setIsFormSubmitted(true)
                   trackEvent({
                     category: AnalyticCategories.account,
                     action: AnalyticActions.account_team_invite,

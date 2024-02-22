@@ -5,13 +5,7 @@ import {
   MetaFunction,
   redirect,
 } from "@remix-run/node"
-import {
-  Outlet,
-  useActionData,
-  useCatch,
-  useLoaderData,
-  useOutletContext,
-} from "@remix-run/react"
+import { Outlet, useActionData, useLoaderData, useOutletContext } from "@remix-run/react"
 import React from "react"
 import invariant from "tiny-invariant"
 import { AccountIdLoaderData } from "../account.$accountId/route"
@@ -27,9 +21,11 @@ import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
 
 export const meta: MetaFunction = () => {
-  return {
-    title: `Application Overview ${seo_title_append}`,
-  }
+  return [
+    {
+      title: `Application Overview ${seo_title_append}`,
+    },
+  ]
 }
 
 export type AppIdLoaderData = {
@@ -167,24 +163,24 @@ export default function AppIdLayout() {
   )
 }
 
-export const CatchBoundary = () => {
-  const caught = useCatch()
-  if (caught.status === 404) {
-    return (
-      <div className="error-container">
-        <h1>App Catch Error</h1>
-        <p>{caught.statusText}</p>
-      </div>
-    )
-  }
-  throw new Error(`Unexpected caught response with status: ${caught.status}`)
-}
-
-export const ErrorBoundary = ({ error }: { error: Error }) => {
-  return (
-    <div className="error-container">
-      <h1>App Error</h1>
-      <p>{error.message}</p>
-    </div>
-  )
-}
+// export const CatchBoundary = () => {
+//   const caught = useCatch()
+//   if (caught.status === 404) {
+//     return (
+//       <div className="error-container">
+//         <h1>App Catch Error</h1>
+//         <p>{caught.statusText}</p>
+//       </div>
+//     )
+//   }
+//   throw new Error(`Unexpected caught response with status: ${caught.status}`)
+// }
+//
+// export const ErrorBoundary = ({ error }: { error: Error }) => {
+//   return (
+//     <div className="error-container">
+//       <h1>App Error</h1>
+//       <p>{error.message}</p>
+//     </div>
+//   )
+// }

@@ -1,4 +1,4 @@
-import { Button, Image, Stack, Text, Title } from "@pokt-foundation/pocket-blocks"
+import { Button, Image, Stack, Text, Title } from "@mantine/core"
 import { Link } from "@remix-run/react"
 import React from "react"
 import useCommonStyles from "~/styles/commonStyles"

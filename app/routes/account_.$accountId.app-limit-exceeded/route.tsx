@@ -1,4 +1,4 @@
-import { Button, CloseButton, Stack } from "@pokt-foundation/pocket-blocks"
+import { Button, CloseButton, Stack } from "@mantine/core"
 import { LoaderFunction, MetaFunction, redirect } from "@remix-run/node"
 import { Link, NavLink, useParams } from "@remix-run/react"
 import invariant from "tiny-invariant"
@@ -10,9 +10,11 @@ import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
 
 export const meta: MetaFunction = () => {
-  return {
-    title: `App Creation Limit Exceeded ${seo_title_append}`,
-  }
+  return [
+    {
+      title: `App Creation Limit Exceeded ${seo_title_append}`,
+    },
+  ]
 }
 
 export const loader: LoaderFunction = async ({ request, params }) => {
@@ -44,14 +46,8 @@ export default function AppLimitExceeded() {
   const { classes: commonClasses } = useCommonStyles()
   const params = useParams()
   return (
-    <Stack align="center" justify="center" mt={42}>
-      <CloseButton
-        aria-label="Discard"
-        component={NavLink}
-        ml="auto"
-        size="lg"
-        to="/account"
-      />
+    <Stack align="center" justify="center" m={42}>
+      <CloseButton aria-label="Discard" component={NavLink} ml="auto" to="/account" />
       <EmptyState
         alt="App limit exceeded"
         callToAction={

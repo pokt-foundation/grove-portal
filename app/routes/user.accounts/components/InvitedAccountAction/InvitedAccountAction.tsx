@@ -1,4 +1,4 @@
-import { ActionIcon, Button, Group, Menu, Text } from "@pokt-foundation/pocket-blocks"
+import { ActionIcon, Button, Group, Menu, Text } from "@mantine/core"
 import { Form, Link, useNavigation } from "@remix-run/react"
 import React from "react"
 import { LuArrowUpRight, LuMinusCircle, LuMoreHorizontal, LuPencil } from "react-icons/lu"

@@ -1,5 +1,4 @@
-import { Divider } from "@mantine/core"
-import { Box, Flex, Text } from "@pokt-foundation/pocket-blocks"
+import { Divider, Box, Flex, Text } from "@mantine/core"
 import { useSearchParams } from "@remix-run/react"
 import React from "react"
 import { EmptyState } from "~/components/EmptyState"

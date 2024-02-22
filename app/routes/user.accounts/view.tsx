@@ -1,4 +1,4 @@
-import { Box, Stack, Text } from "@pokt-foundation/pocket-blocks"
+import { Box, Stack, Text } from "@mantine/core"
 import AccountsTable from "./components/AccountsTable"
 import { Account, User } from "~/models/portal/sdk"
 

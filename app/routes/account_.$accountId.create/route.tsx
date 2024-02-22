@@ -1,4 +1,4 @@
-import { Box, LoadingOverlay } from "@pokt-foundation/pocket-blocks"
+import { Box, LoadingOverlay } from "@mantine/core"
 import {
   ActionFunction,
   json,
@@ -14,7 +14,9 @@ import AppForm from "./components/AppForm"
 import { DEFAULT_APPMOJI } from "./components/AppmojiPicker"
 import ErrorView from "~/components/ErrorView"
 import PortalLoader from "~/components/PortalLoader"
-import useActionNotification from "~/hooks/useActionNotification"
+import useActionNotification, {
+  ActionNotificationData,
+} from "~/hooks/useActionNotification"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { Account, PayPlanType, RoleName } from "~/models/portal/sdk"
 import { DataStruct } from "~/types/global"
@@ -25,9 +27,11 @@ import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
 
 export const meta: MetaFunction = () => {
-  return {
-    title: `Create Application ${seo_title_append}`,
-  }
+  return [
+    {
+      title: `Create Application ${seo_title_append}`,
+    },
+  ]
 }
 
 type CreateAppLoaderData = {
@@ -169,6 +173,7 @@ export default function CreateApp() {
   const { data, error, message } = useLoaderData() as DataStruct<CreateAppLoaderData>
   const fetcher = useFetcher()
   const [appFromData, setAppFromData] = useState<FormData>()
+  const fetcherData = fetcher.data as ActionNotificationData
 
   const handleFormSubmit = (formData: FormData) => {
     if (account.planType === PayPlanType.FreetierV0) {
@@ -180,7 +185,7 @@ export default function CreateApp() {
     }
   }
 
-  useActionNotification(fetcher.data)
+  useActionNotification(fetcherData)
 
   if (error) {
     return <ErrorView message={message} />

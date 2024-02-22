@@ -1,4 +1,4 @@
-import { Text } from "@pokt-foundation/pocket-blocks"
+import { Text } from "@mantine/core"
 import { Link } from "@remix-run/react"
 import { TableBodyProps, TableDataArray } from "~/types/table"
 

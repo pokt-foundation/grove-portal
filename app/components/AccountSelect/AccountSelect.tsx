@@ -1,4 +1,4 @@
-import { Group, Menu, Stack, Text, UnstyledButton } from "@pokt-foundation/pocket-blocks"
+import { Group, Menu, Stack, Text, UnstyledButton } from "@mantine/core"
 import { NavLink, useParams } from "@remix-run/react"
 import React, { useMemo } from "react"
 import { LuCheckCircle2, LuChevronsUpDown } from "react-icons/lu"
@@ -69,7 +69,7 @@ const AccountSelect = ({ accounts, collapsed }: AccountSelectProps) => {
             <AccountItem
               account={activeAccount}
               hasMultipleAccounts={hasMultipleAccounts}
-              iconOnly={collapsed}
+              iconOnly={!!collapsed}
             />
           </UnstyledButton>
         </Menu.Target>

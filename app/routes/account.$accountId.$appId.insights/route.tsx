@@ -12,9 +12,11 @@ import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
 
 export const meta: MetaFunction = () => {
-  return {
-    title: `Application Insights ${seo_title_append}`,
-  }
+  return [
+    {
+      title: `Application Insights ${seo_title_append}`,
+    },
+  ]
 }
 
 type AppInsightsData = {

@@ -1,30 +1,31 @@
-type ErrorWithMessage = {
-  message: string
+export type ErrorWithMessage = {
+  response?: { errors: { message: string }[] }
 }
 
 function isErrorWithMessage(error: unknown): error is ErrorWithMessage {
+  const errorObject = error as ErrorWithMessage
+  const errors = errorObject?.response?.errors
   return (
     typeof error === "object" &&
     error !== null &&
-    "message" in error &&
-    typeof (error as Record<string, unknown>).message === "string"
+    Array.isArray(errors) &&
+    errors.length > 0 &&
+    typeof errors[0].message === "string"
   )
 }
 
-function toErrorWithMessage(maybeError: unknown): ErrorWithMessage {
-  if (isErrorWithMessage(maybeError)) return maybeError
+function toErrorMessage(maybeError: unknown): string {
+  if (isErrorWithMessage(maybeError)) {
+    return maybeError.response?.errors[0].message || ""
+  }
 
   try {
-    const message =
-      typeof maybeError === "string" ? maybeError : JSON.stringify(maybeError)
-    return new Error(message)
-  } catch {
-    // fallback in case there's an error stringifying the maybeError
-    // like with circular references for example.
-    return new Error(String(maybeError))
+    return typeof maybeError === "string" ? maybeError : JSON.stringify(maybeError)
+  } catch (error) {
+    return String(maybeError)
   }
 }
 
 export function getErrorMessage(error: unknown) {
-  return toErrorWithMessage(error).message
+  return toErrorMessage(error)
 }

@@ -1,6 +1,6 @@
-import { Divider, Box } from "@mantine/core"
+import { Box, Divider } from "@mantine/core"
 import { useFetcher } from "@remix-run/react"
-import React, { useReducer, useEffect, useRef } from "react"
+import React, { useEffect, useReducer, useRef } from "react"
 import ApprovedChains from "./components/ApprovedChains"
 import ChainWhitelist from "./components/ChainWhitelist"
 import PrivateSecretKey from "./components/PrivateSecretKey"
@@ -10,10 +10,11 @@ import { DEFAULT_WHITELISTS, securityReducer } from "./utils/stateReducer"
 import useActionNotification, {
   ActionNotificationData,
 } from "~/hooks/useActionNotification"
-import { type Blockchain, type RoleName } from "~/models/portal/sdk"
 import {
+  type Blockchain,
   BlockchainsQuery,
   PortalApp,
+  type RoleName,
   WhitelistContracts,
   WhitelistMethods,
 } from "~/models/portal/sdk"

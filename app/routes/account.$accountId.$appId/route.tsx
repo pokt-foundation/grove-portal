@@ -10,7 +10,7 @@ import React from "react"
 import invariant from "tiny-invariant"
 import { AccountIdLoaderData } from "../account.$accountId/route"
 import AppIdLayoutView from "./view"
-import ErrorView from "~/components/ErrorView"
+import ErrorBoundaryView from "app/components/ErrorBoundaryView"
 import useActionNotification from "~/hooks/useActionNotification"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { Blockchain, PortalApp, RoleName, SortOrder } from "~/models/portal/sdk"
@@ -46,23 +46,12 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       portalAppID: appId,
       accountID: accountId,
     })
-    if (!getUserPortalAppResponse.getUserPortalApp) {
-      throw new Error(
-        `Account ${params.appId} not found for user ${user.user.portalUserID}`,
-      )
-    }
 
     const getBlockchainsResponse = await portal.blockchains({ sortOrder: SortOrder.Asc })
-    if (!getBlockchainsResponse.blockchains) {
-      throw new Error("Blockchains not found")
-    }
 
-    return json<DataStruct<AppIdLoaderData>>({
-      data: {
-        app: getUserPortalAppResponse.getUserPortalApp as PortalApp,
-        blockchains: getBlockchainsResponse.blockchains as Blockchain[],
-      },
-      error: false,
+    return json<AppIdLoaderData>({
+      app: getUserPortalAppResponse.getUserPortalApp as PortalApp,
+      blockchains: getBlockchainsResponse.blockchains as Blockchain[],
     })
   } catch (error) {
     /**
@@ -71,13 +60,11 @@ export const loader: LoaderFunction = async ({ request, params }) => {
      */
     if (getErrorMessage(error).includes("portal app not found")) {
       return redirect(`/account/${accountId}`)
+    } else {
+      throw new Response(getErrorMessage(error), {
+        status: 500,
+      })
     }
-
-    return json<DataStruct<AppIdLoaderData>>({
-      data: null,
-      error: true,
-      message: getErrorMessage(error),
-    })
   }
 }
 
@@ -138,18 +125,13 @@ export type AppIdOutletContext = AppIdLoaderData & {
 }
 
 export default function AppIdLayout() {
-  const { data, error, message } = useLoaderData() as DataStruct<AppIdLoaderData>
+  const { app, blockchains } = useLoaderData<AppIdLoaderData>()
   const { userRole } = useOutletContext<AccountIdLoaderData>()
   const actionData = useActionData() as DataStruct<AppIdActionData>
 
   // handle all notifications at the layout level
   useActionNotification(actionData)
 
-  if (error) {
-    return <ErrorView message={message} />
-  }
-
-  const { app, blockchains } = data
   return (
     <AppIdLayoutView app={app} userRole={userRole}>
       <Outlet
@@ -163,24 +145,6 @@ export default function AppIdLayout() {
   )
 }
 
-// export const CatchBoundary = () => {
-//   const caught = useCatch()
-//   if (caught.status === 404) {
-//     return (
-//       <div className="error-container">
-//         <h1>App Catch Error</h1>
-//         <p>{caught.statusText}</p>
-//       </div>
-//     )
-//   }
-//   throw new Error(`Unexpected caught response with status: ${caught.status}`)
-// }
-//
-// export const ErrorBoundary = ({ error }: { error: Error }) => {
-//   return (
-//     <div className="error-container">
-//       <h1>App Error</h1>
-//       <p>{error.message}</p>
-//     </div>
-//   )
-// }
+export function ErrorBoundary() {
+  return <ErrorBoundaryView />
+}

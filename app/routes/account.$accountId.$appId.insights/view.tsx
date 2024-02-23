@@ -1,25 +1,17 @@
 import { Badge, Card, Group, SimpleGrid, Stack, Text } from "@mantine/core"
 import { useNavigation } from "@remix-run/react"
 import TitledCard from "~/components/TitledCard"
+import { AppInsightsData } from "~/routes/account.$accountId.$appId.insights/route"
 import { AccountAppsOverview } from "~/routes/account.$accountId._index/components/AccountAppsOverview"
 import { ChartPeriodSelector } from "~/routes/account.$accountId._index/components/ChartPeriodSelector"
 import { OverviewSparkline } from "~/routes/account.$accountId._index/components/OverviewSparkline"
 import useAggregateChartData from "~/routes/account.$accountId._index/hooks/useAggregateChartData"
-import { AccountInsightsData } from "~/routes/account.$accountId._index/route"
 import { getTotalErrors } from "~/utils/chartUtils"
 import { commify } from "~/utils/formattingUtils"
 
-type ApplicationInsightsViewProps = {
-  data: Pick<AccountInsightsData, "total" | "aggregate">
-}
-
-export default function ApplicationInsightsView({ data }: ApplicationInsightsViewProps) {
+export default function ApplicationInsightsView({ total, aggregate }: AppInsightsData) {
   const navigation = useNavigation()
-
   const isLoading = !!(navigation.state === "loading" && navigation.formAction)
-
-  const { total, aggregate } = data
-
   const totalErrors = getTotalErrors(total)
 
   const {

@@ -11,7 +11,7 @@ import {
   Whitelists,
   WhitelistType,
 } from "~/models/portal/sdk"
-import { ActionDataStruct, DataStruct } from "~/types/global"
+import { ActionDataStruct } from "~/types/global"
 import { getErrorMessage } from "~/utils/catchError"
 import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
@@ -118,7 +118,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 
 export const AppSecurity = () => {
   const { app, blockchains, userRole } = useOutletContext<AppIdOutletContext>()
-  const actionData = useActionData() as DataStruct<SecurityActionData>
+  const actionData = useActionData() as ActionDataStruct<SecurityActionData>
   useActionNotification(actionData)
   return <SecurityView app={app} blockchains={blockchains} userRole={userRole} />
 }

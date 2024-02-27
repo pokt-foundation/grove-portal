@@ -14,7 +14,7 @@ import ErrorBoundaryView from "app/components/ErrorBoundaryView"
 import useActionNotification from "~/hooks/useActionNotification"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { Blockchain, PortalApp, RoleName, SortOrder } from "~/models/portal/sdk"
-import { DataStruct } from "~/types/global"
+import { ActionDataStruct } from "~/types/global"
 import { getErrorMessage } from "~/utils/catchError"
 import { triggerAppActionNotification } from "~/utils/notifications.server"
 import { seo_title_append } from "~/utils/seo"
@@ -109,10 +109,10 @@ export const action: ActionFunction = async ({ request, params }) => {
       accountId: accountId,
     })
 
-    // app no longer exists to redirect back to account
+    // app no longer exists, so redirect back to account
     return redirect(`/account/${accountId}`)
   } catch (error) {
-    return json<DataStruct<AppIdActionData>>({
+    return json<ActionDataStruct<AppIdActionData>>({
       data: null,
       error: true,
       message: getErrorMessage(error),
@@ -127,7 +127,7 @@ export type AppIdOutletContext = AppIdLoaderData & {
 export default function AppIdLayout() {
   const { app, blockchains } = useLoaderData<AppIdLoaderData>()
   const { userRole } = useOutletContext<AccountIdLoaderData>()
-  const actionData = useActionData() as DataStruct<AppIdActionData>
+  const actionData = useActionData() as ActionDataStruct<AppIdActionData>
 
   // handle all notifications at the layout level
   useActionNotification(actionData)

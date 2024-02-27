@@ -12,14 +12,15 @@ import invariant from "tiny-invariant"
 import AccountPlansContainer from "./components/AccountPlansContainer"
 import AppForm from "./components/AppForm"
 import { DEFAULT_APPMOJI } from "./components/AppmojiPicker"
-import ErrorView from "~/components/ErrorView"
+import ErrorBoundaryView from "~/components/ErrorBoundaryView"
 import PortalLoader from "~/components/PortalLoader"
 import useActionNotification, {
   ActionNotificationData,
 } from "~/hooks/useActionNotification"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { Account, PayPlanType, RoleName } from "~/models/portal/sdk"
-import { DataStruct } from "~/types/global"
+import { TeamActionData } from "~/routes/account.$accountId.settings.members/route"
+import { ActionDataStruct } from "~/types/global"
 import { getUserAccountRole, isAccountWithinAppLimit } from "~/utils/accountUtils"
 import { getErrorMessage } from "~/utils/catchError"
 import { triggerAppActionNotification } from "~/utils/notifications.server"
@@ -45,11 +46,10 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   invariant(accountId, "AccountId must be set")
 
   try {
-    const getUserAccountResponse = await portal
-      .getUserAccount({ accountID: accountId, accepted: true })
-      .catch((e) => {
-        console.log(e)
-      })
+    const getUserAccountResponse = await portal.getUserAccount({
+      accountID: accountId,
+      accepted: true,
+    })
 
     if (!getUserAccountResponse) {
       return redirect(`/account/${params.accountId}`)
@@ -88,17 +88,12 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     //   },
     // )
 
-    return json<DataStruct<CreateAppLoaderData>>({
-      data: {
-        account: userAccount,
-      },
-      error: false,
+    return json<CreateAppLoaderData>({
+      account: userAccount,
     })
   } catch (error) {
-    return json<DataStruct<CreateAppLoaderData>>({
-      data: null,
-      error: true,
-      message: getErrorMessage(error),
+    throw new Response(getErrorMessage(error), {
+      status: 500,
     })
   }
 }
@@ -161,8 +156,9 @@ export const action: ActionFunction = async ({ request, params }) => {
 
     return redirect(`/account/${accountId}/${newApp.id}`)
   } catch (error) {
-    console.log(error)
-    return json({
+    console.error(error)
+    return json<ActionDataStruct<TeamActionData>>({
+      data: null,
       error: true,
       message: getErrorMessage(error),
     })
@@ -170,10 +166,11 @@ export const action: ActionFunction = async ({ request, params }) => {
 }
 
 export default function CreateApp() {
-  const { data, error, message } = useLoaderData() as DataStruct<CreateAppLoaderData>
+  const { account } = useLoaderData<CreateAppLoaderData>()
   const fetcher = useFetcher()
   const [appFromData, setAppFromData] = useState<FormData>()
   const fetcherData = fetcher.data as ActionNotificationData
+  useActionNotification(fetcherData)
 
   const handleFormSubmit = (formData: FormData) => {
     if (account.planType === PayPlanType.FreetierV0) {
@@ -184,14 +181,6 @@ export default function CreateApp() {
       })
     }
   }
-
-  useActionNotification(fetcherData)
-
-  if (error) {
-    return <ErrorView message={message} />
-  }
-
-  const { account } = data
 
   return fetcher.state === "idle" ? (
     <Box maw={860} mt={90} mx="auto">
@@ -214,4 +203,8 @@ export default function CreateApp() {
       loader={<PortalLoader message="Creating your application..." />}
     />
   )
+}
+
+export function ErrorBoundary() {
+  return <ErrorBoundaryView />
 }

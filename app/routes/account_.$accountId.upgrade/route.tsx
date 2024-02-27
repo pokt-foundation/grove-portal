@@ -38,7 +38,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   const getUserAccountResponse = await portal
     .getUserAccount({ accountID: accountId, accepted: true })
     .catch((e) => {
-      console.log(e)
+      console.error(e)
     })
 
   if (!getUserAccountResponse) {

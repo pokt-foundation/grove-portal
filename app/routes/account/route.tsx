@@ -1,5 +1,7 @@
 import { json, LoaderFunction } from "@remix-run/node"
 import { Outlet, useLoaderData } from "@remix-run/react"
+import React from "react"
+import { ErrorBoundaryView } from "~/components/ErrorBoundaryView"
 import { User } from "~/models/portal/sdk"
 import { requireUser } from "~/utils/user.server"
 export type AccountOutletContext = {
@@ -18,25 +20,7 @@ export default function Account() {
   const { user } = useLoaderData<AccountOutletContext>()
   return <Outlet context={user} />
 }
-//
-// export const CatchBoundary = () => {
-//   const caught = useCatch()
-//   if (caught.status === 404) {
-//     return (
-//       <div className="error-container">
-//         <h1>Dashboard Error</h1>
-//         <p>{caught.statusText}</p>
-//       </div>
-//     )
-//   }
-//   throw new Error(`Unexpected caught response with status: ${caught.status}`)
-// }
-//
-// export const ErrorBoundary = ({ error }: { error: Error }) => {
-//   return (
-//     <div className="error-container">
-//       <h1>Dashboard Error</h1>
-//       <p>{error.message}</p>
-//     </div>
-//   )
-// }
+
+export function ErrorBoundary() {
+  return <ErrorBoundaryView />
+}

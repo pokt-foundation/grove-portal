@@ -11,7 +11,7 @@ import {
   Whitelists,
   WhitelistType,
 } from "~/models/portal/sdk"
-import { DataStruct } from "~/types/global"
+import { ActionDataStruct } from "~/types/global"
 import { getErrorMessage } from "~/utils/catchError"
 import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
@@ -92,9 +92,14 @@ export const action: ActionFunction = async ({ request, params }) => {
       }
     }
 
-    const response = await portal.updateUserPortalApp({ input })
+    const response = await portal.updateUserPortalApp({ input }).catch((err) => {
+      console.error(err)
+      throw new Error(
+        `portal api could not update app ${appId} with new security settings`,
+      )
+    })
 
-    return json<DataStruct<SecurityActionData>>({
+    return json<ActionDataStruct<SecurityActionData>>({
       data: {
         app: response.updateUserPortalApp as PortalApp,
         length: JSON.stringify(response).length,
@@ -103,7 +108,7 @@ export const action: ActionFunction = async ({ request, params }) => {
       message: "Security setting successfully updated",
     })
   } catch (error) {
-    return json<DataStruct<SecurityActionData>>({
+    return json<ActionDataStruct<SecurityActionData>>({
       data: null,
       error: true,
       message: getErrorMessage(error),
@@ -113,7 +118,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 
 export const AppSecurity = () => {
   const { app, blockchains, userRole } = useOutletContext<AppIdOutletContext>()
-  const actionData = useActionData() as DataStruct<SecurityActionData>
+  const actionData = useActionData() as ActionDataStruct<SecurityActionData>
   useActionNotification(actionData)
   return <SecurityView app={app} blockchains={blockchains} userRole={userRole} />
 }

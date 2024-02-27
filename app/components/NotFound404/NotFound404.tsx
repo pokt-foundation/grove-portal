@@ -16,7 +16,7 @@ export default function NotFound404({ message }: NotFound404Props) {
 
   return (
     <Stack align="center" mt={120}>
-      <Image withPlaceholder alt="Page not found" src="/page-not-found.svg" width={250} />
+      <Image withPlaceholder alt="Page not found" src="/page-not-found.svg" width={240} />
       <Stack align="center" spacing="xs">
         <Title order={3}>{seo_404_title}</Title>
         <Text align="center">

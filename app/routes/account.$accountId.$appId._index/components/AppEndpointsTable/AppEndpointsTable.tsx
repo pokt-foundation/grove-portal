@@ -7,7 +7,7 @@ import {
   Tooltip,
   ActionIcon,
 } from "@mantine/core"
-import { useFetcher, useParams } from "@remix-run/react"
+import { useFetcher, useNavigation, useParams } from "@remix-run/react"
 import React, { useMemo, useState } from "react"
 import { LuBook, LuPlay } from "react-icons/lu"
 import { RiStarLine, RiStarFill } from "react-icons/ri"
@@ -44,7 +44,7 @@ const AppEndpointsTable = ({
   const { appId } = useParams()
   const fetcher = useFetcher()
   const fetcherData = fetcher.data as ActionNotificationData
-
+  const navigation = useNavigation()
   const { classes: commonClasses } = useCommonStyles()
   const [selectedBlockchain, setSelectedBlockchain] = useState<Blockchain>()
   const favoriteChains = app.settings.favoritedChainIDs
@@ -89,7 +89,7 @@ const AppEndpointsTable = ({
                     <FavoriteChain
                       blockchain={chain}
                       favoriteChains={favoriteChains}
-                      readOnly={false}
+                      readOnly={navigation.state !== "idle"}
                     />
                     <Chain chain={chain} />
                   </Flex>

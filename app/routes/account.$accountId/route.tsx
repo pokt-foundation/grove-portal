@@ -1,11 +1,11 @@
 import { json, LoaderFunction } from "@remix-run/node"
 import { Outlet, useLoaderData } from "@remix-run/react"
+import React from "react"
 import invariant from "tiny-invariant"
-import ErrorView from "~/components/ErrorView"
+import { ErrorBoundaryView } from "~/components/ErrorBoundaryView"
 import RootAppShell from "~/components/RootAppShell/RootAppShell"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { Account, RoleName, User } from "~/models/portal/sdk"
-import { DataStruct } from "~/types/global"
 import { getUserAccountRole } from "~/utils/accountUtils"
 import { getErrorMessage } from "~/utils/catchError"
 import { redirectToUserAccount, requireUser } from "~/utils/user.server"
@@ -27,31 +27,18 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
   try {
     const account = await portal.getUserAccount({ accountID: accountId, accepted: true })
-
-    if (!account.getUserAccount) {
-      throw new Error(
-        `Account ${params.accountId} not found for user ${user.user.portalUserID}`,
-      )
-    }
-
     userAccounts = await portal.getUserAccounts({ accepted: true })
-    if (!userAccounts.getUserAccounts) {
-      throw new Error(`Accounts not found for user ${user.user.portalUserID}`)
-    }
 
     const userRole = getUserAccountRole(
       account.getUserAccount.users,
       user.user.portalUserID,
     ) as RoleName
 
-    return json<DataStruct<AccountIdLoaderData>>({
-      data: {
-        account: account.getUserAccount as Account,
-        accounts: userAccounts.getUserAccounts as Account[],
-        user: user.user,
-        userRole,
-      },
-      error: false,
+    return json<AccountIdLoaderData>({
+      account: account.getUserAccount as Account,
+      accounts: userAccounts.getUserAccounts as Account[],
+      user: user.user,
+      userRole,
     })
   } catch (error) {
     /**
@@ -68,27 +55,23 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     if (accountId !== ownerAccount?.id) {
       return redirectToUserAccount(user)
     } else {
-      return json<DataStruct<AccountIdLoaderData>>({
-        data: null,
-        error: true,
-        message: getErrorMessage(error),
+      throw new Response(getErrorMessage(error), {
+        status: 500,
       })
     }
   }
 }
 
 export default function AccountId() {
-  const { data, error, message } = useLoaderData() as DataStruct<AccountIdLoaderData>
-
-  if (error) {
-    return <ErrorView message={message} />
-  }
-
-  const { account, accounts, user, userRole } = data
+  const { account, accounts, user, userRole } = useLoaderData<AccountIdLoaderData>()
 
   return (
     <RootAppShell account={account} accounts={accounts} user={user} userRole={userRole}>
-      <Outlet context={data} />
+      <Outlet context={{ account, accounts, user, userRole }} />
     </RootAppShell>
   )
+}
+
+export function ErrorBoundary() {
+  return <ErrorBoundaryView />
 }

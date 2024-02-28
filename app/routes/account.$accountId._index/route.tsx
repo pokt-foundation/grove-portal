@@ -4,7 +4,7 @@ import { Link, useLoaderData, useOutletContext, useParams } from "@remix-run/rea
 import React from "react"
 import invariant from "tiny-invariant"
 import { EmptyState } from "~/components/EmptyState"
-import ErrorView from "~/components/ErrorView"
+import { ErrorBoundaryView } from "~/components/ErrorBoundaryView"
 import { getAggregateRelays, getTotalRelays } from "~/models/dwh/dwh.server"
 import { AnalyticsRelaysAggregated } from "~/models/dwh/sdk/models/AnalyticsRelaysAggregated"
 import { AnalyticsRelaysTotal } from "~/models/dwh/sdk/models/AnalyticsRelaysTotal"
@@ -13,7 +13,6 @@ import { Account, PortalApp, RoleName } from "~/models/portal/sdk"
 import { AccountIdLoaderData } from "~/routes/account.$accountId/route"
 import { AnnouncementAlert } from "~/routes/account.$accountId._index/components/AnnouncementAlert"
 import AccountInsightsView from "~/routes/account.$accountId._index/view"
-import type { DataStruct } from "~/types/global"
 import { getErrorMessage } from "~/utils/catchError"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 import { seo_title_append } from "~/utils/seo"
@@ -52,12 +51,6 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
     const account = await portal.getUserAccount({ accountID: accountId, accepted: true })
 
-    if (!account.getUserAccount) {
-      throw new Error(
-        `Account ${params.accountId} not found for user ${user.user.portalUserID}`,
-      )
-    }
-
     const aggregate = await getAggregateRelays({
       category: "account_id",
       categoryValue: [accountId],
@@ -69,34 +62,24 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       days: daysParam,
     })
 
-    return json<DataStruct<AccountInsightsData>>({
-      data: {
-        account: account.getUserAccount as Account,
-        total: (total as AnalyticsRelaysTotal) ?? undefined,
-        aggregate: (aggregate as AnalyticsRelaysAggregated[]) ?? undefined, //dailyReponse.data as AnalyticsRelaysDaily[],
-      },
-      error: false,
+    return json<AccountInsightsData>({
+      account: account.getUserAccount as Account,
+      total: (total as AnalyticsRelaysTotal) ?? undefined,
+      aggregate: (aggregate as AnalyticsRelaysAggregated[]) ?? undefined, //dailyReponse.data as AnalyticsRelaysDaily[],
     })
   } catch (error) {
-    console.error(error)
-    return json<DataStruct<AccountInsightsData>>({
-      data: null,
-      error: true,
-      message: getErrorMessage(error),
+    throw new Response(getErrorMessage(error), {
+      status: 500,
     })
   }
 }
 
 export default function AccountInsights() {
-  const { data, error, message } = useLoaderData() as DataStruct<AccountInsightsData>
+  const { account, total, aggregate } = useLoaderData<typeof loader>()
   const { userRole } = useOutletContext<AccountIdLoaderData>()
   const { accountId } = useParams()
 
-  if (error) {
-    return <ErrorView message={message} />
-  }
-
-  const apps = data?.account?.portalApps as PortalApp[]
+  const apps = account?.portalApps as PortalApp[]
 
   return (
     <>
@@ -128,8 +111,12 @@ export default function AccountInsights() {
           title="Create your first application"
         />
       ) : (
-        <AccountInsightsView data={data} />
+        <AccountInsightsView aggregate={aggregate} total={total} />
       )}
     </>
   )
+}
+
+export function ErrorBoundary() {
+  return <ErrorBoundaryView />
 }

@@ -5,7 +5,7 @@ import { initPortalClient } from "~/models/portal/portal.server"
 import { NotificationEventEnum, NotificationType, RoleName } from "~/models/portal/sdk"
 import { AccountIdLoaderData } from "~/routes/account.$accountId/route"
 import AccountNotificationsView from "~/routes/account.$accountId.settings.notifications/view"
-import { DataStruct } from "~/types/global"
+import { ActionDataStruct } from "~/types/global"
 import { getErrorMessage } from "~/utils/catchError"
 import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
@@ -44,7 +44,7 @@ export const action: ActionFunction = async ({ request, params }) => {
       },
     })
 
-    return json<DataStruct<AccountNotificationsActionData>>({
+    return json<ActionDataStruct<AccountNotificationsActionData>>({
       data: {
         success: true,
       },
@@ -52,7 +52,8 @@ export const action: ActionFunction = async ({ request, params }) => {
       message: "Notification setting updated",
     })
   } catch (error) {
-    return json<DataStruct<AccountNotificationsActionData>>({
+    console.error(error)
+    return json<ActionDataStruct<AccountNotificationsActionData>>({
       data: null,
       error: true,
       message: getErrorMessage(error),

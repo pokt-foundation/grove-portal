@@ -30,6 +30,10 @@ const InviteMemberFrom = ({ accountName }: InviteMemberFromProps) => {
   const { closeAllModals } = useModals()
 
   useEffect(() => {
+    if (state === "submitting") {
+      setIsFormSubmitted(true)
+    }
+
     if (isFormSubmitted && state === "idle") {
       closeAllModals()
     }
@@ -98,7 +102,6 @@ const InviteMemberFrom = ({ accountName }: InviteMemberFromProps) => {
                 value="true"
                 w="156px"
                 onClick={() => {
-                  setIsFormSubmitted(true)
                   trackEvent({
                     category: AnalyticCategories.account,
                     action: AnalyticActions.account_team_invite,

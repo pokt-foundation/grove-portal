@@ -1,11 +1,13 @@
 import { ActionFunction, json, LoaderFunction, MetaFunction } from "@remix-run/node"
 import { useOutletContext } from "@remix-run/react"
+import React from "react"
 import invariant from "tiny-invariant"
 import MembersView from "./view"
+import { ErrorBoundaryView } from "~/components/ErrorBoundaryView"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { RoleName, User } from "~/models/portal/sdk"
 import { AccountIdLoaderData } from "~/routes/account.$accountId/route"
-import { DataStruct } from "~/types/global"
+import { ActionDataStruct } from "~/types/global"
 import { getErrorMessage } from "~/utils/catchError"
 import { triggerTeamActionNotification } from "~/utils/notifications.server"
 import { seo_title_append } from "~/utils/seo"
@@ -228,7 +230,7 @@ export const action: ActionFunction = async ({ request, params }) => {
       })
     }
 
-    return json<DataStruct<TeamActionData>>({
+    return json<ActionDataStruct<TeamActionData>>({
       data: {
         success: res,
         type,
@@ -237,7 +239,8 @@ export const action: ActionFunction = async ({ request, params }) => {
       message,
     })
   } catch (error) {
-    return json<DataStruct<TeamActionData>>({
+    console.error(error)
+    return json<ActionDataStruct<TeamActionData>>({
       data: null,
       error: true,
       message: getErrorMessage(error),
@@ -250,25 +253,6 @@ export default function AccountMembers() {
   return <MembersView account={account} user={user} userRole={userRole} />
 }
 
-// export const CatchBoundary = () => {
-//   const caught = useCatch()
-//   if (caught.status === 404) {
-//     return (
-//       <div className="error-container">
-//         <h1>Team Catch Error</h1>
-//         <p>{caught.statusText}</p>
-//       </div>
-//     )
-//   }
-//
-//   throw new Error(`Unexpected caught response with status: ${caught.status}`)
-// }
-//
-// export const ErrorBoundary = ({ error }: { error: Error }) => {
-//   return (
-//     <div className="error-container">
-//       <h1>Team Error</h1>
-//       <p>{error.message}</p>
-//     </div>
-//   )
-// }
+export function ErrorBoundary() {
+  return <ErrorBoundaryView />
+}

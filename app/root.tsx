@@ -1,3 +1,9 @@
+import "~/styles/normalize.css"
+import "@mantine/core/styles.css"
+import "@mantine/notifications/styles.css"
+import "~/styles/root.css"
+
+import { cssBundleHref } from "@remix-run/css-bundle"
 import {
   json,
   LinksFunction,
@@ -8,19 +14,16 @@ import {
 import { Outlet, useLoaderData } from "@remix-run/react"
 import { ErrorBoundaryView } from "~/components/ErrorBoundaryView"
 import Document from "~/root/components/Document"
-import normalizeStyles from "~/styles/normalize.css"
-import rootStyles from "~/styles/root.css"
 import { getRequiredServerEnvVar } from "~/utils/environment"
 import { getClientEnv } from "~/utils/environment.server"
 import { seo_title_append } from "~/utils/seo"
 
 export const links: LinksFunction = () => {
   return [
-    { rel: "stylesheet", href: normalizeStyles },
-    { rel: "stylesheet", href: rootStyles },
     { rel: "icon", href: "/favicon.ico" },
     { rel: "preconnect", href: "https://fonts.googleapis.com" },
     { rel: "preconnect", href: "https://fonts.gstatic.com" },
+    ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
   ]
 }
 

@@ -1,5 +1,5 @@
 import { AppShell, Container } from "@mantine/core"
-import React, { ReactNode, useMemo, useState } from "react"
+import React, { ReactNode, useState } from "react"
 import { AppHeader } from "~/components/AppHeader"
 import { Sidebar } from "~/components/Sidebar"
 import { Account, RoleName, User } from "~/models/portal/sdk"
@@ -11,6 +11,7 @@ type RootAppShellProps = {
   children: ReactNode
   user: User
   userRole?: RoleName
+  withSidebar?: boolean
 }
 export const RootAppShell = ({
   user,
@@ -18,43 +19,40 @@ export const RootAppShell = ({
   children,
   accounts,
   userRole,
+  withSidebar = true,
 }: RootAppShellProps) => {
   const [opened, setOpened] = useState(false)
   const { hideSidebar } = useRoot({ user })
-  const navProp = useMemo(
-    () => ({
-      ...(account &&
-        userRole &&
-        !hideSidebar && {
-          navbar: (
-            <Sidebar
-              account={account}
-              accounts={accounts}
-              hidden={!opened}
-              userRole={userRole}
-            />
-          ),
-        }),
-    }),
-    [hideSidebar, userRole, account, accounts, opened],
-  )
-
   return (
     <AppShell
-      header={
+      header={{ height: 60 }}
+      layout="alt"
+      navbar={{
+        width: withSidebar ? 260 : 0,
+        breakpoint: "sm",
+        collapsed: { mobile: hideSidebar || !opened },
+      }}
+      padding="xs"
+    >
+      <AppShell.Header withBorder={false}>
         <AppHeader
           accounts={accounts}
           opened={opened}
           user={user}
           onOpen={(o) => setOpened(o)}
         />
-      }
-      layout="alt"
-      {...navProp}
-      navbarOffsetBreakpoint="sm"
-      padding="xs"
-    >
-      <Container size="lg">{children}</Container>
+      </AppShell.Header>
+      {account && userRole && (
+        <Sidebar
+          account={account}
+          accounts={accounts}
+          hidden={!opened}
+          userRole={userRole}
+        />
+      )}
+      <AppShell.Main>
+        <Container size="lg">{children}</Container>
+      </AppShell.Main>
     </AppShell>
   )
 }

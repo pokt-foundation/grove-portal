@@ -1,16 +1,9 @@
-import {
-  CSSObject,
-  Anchor,
-  Box,
-  Group,
-  MantineTheme,
-  Text,
-  UnstyledButton,
-} from "@mantine/core"
+import { Anchor, Box, Group, Text, UnstyledButton } from "@mantine/core"
 import { NavLink } from "@remix-run/react"
 import { Emoji } from "emoji-picker-react"
 import React from "react"
 import { IconType } from "react-icons"
+import classes from "./SidebarNavLinks.module.css"
 import { DEFAULT_APPMOJI } from "~/routes/account_.$accountId.create/components/AppmojiPicker"
 
 export type SidebarNavRoute = {
@@ -27,24 +20,6 @@ export type LinkLabelProps = Pick<SidebarNavRoute, "icon" | "label" | "imgSrc">
 type LabelIconProps = Pick<LinkLabelProps, "icon" | "imgSrc" | "label">
 
 type SidebarButtonProps = LinkLabelProps & { onClick?: () => void }
-
-const commonLinkStyles = (theme: MantineTheme): CSSObject => ({
-  display: "block",
-  width: "100%",
-  padding: 8,
-  borderRadius: theme.radius.sm,
-  color: theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
-  "&:hover": {
-    backgroundColor:
-      theme.colorScheme === "dark" ? "rgba(37,38,43,0.50)" : "rgba(250,250,250,0.50)",
-    textDecoration: "none",
-  },
-
-  "&.active": {
-    backgroundColor:
-      theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.colors.gray[0],
-  },
-})
 
 const LabelIcon = ({ icon: Icon, imgSrc, label }: LabelIconProps) => {
   const isEmoji = typeof Icon === "string"
@@ -82,9 +57,9 @@ const LinkLabel = ({ icon, label, imgSrc }: LinkLabelProps) => (
 
 export const ExternalLink = ({ route }: { route: SidebarNavRoute }) => (
   <Anchor
+    className={classes.sidebarNavLink}
     href={route.to}
     rel="noreferrer"
-    sx={commonLinkStyles}
     target="_blank"
     variant="text"
   >
@@ -94,10 +69,10 @@ export const ExternalLink = ({ route }: { route: SidebarNavRoute }) => (
 
 export const InternalLink = ({ route }: { route: SidebarNavRoute }) => (
   <Anchor
+    className={classes.sidebarNavLink}
     component={NavLink}
     end={route.end}
     prefetch="intent"
-    sx={commonLinkStyles}
     to={route.to}
   >
     <LinkLabel icon={route.icon} imgSrc={route.imgSrc} label={route.label} />
@@ -105,7 +80,7 @@ export const InternalLink = ({ route }: { route: SidebarNavRoute }) => (
 )
 
 export const NavButton = ({ icon, label, ...rest }: SidebarButtonProps) => (
-  <UnstyledButton fz="sm" sx={commonLinkStyles} {...rest}>
+  <UnstyledButton className={classes.sidebarNavLink} {...rest}>
     <LinkLabel icon={icon} label={label} />
   </UnstyledButton>
 )

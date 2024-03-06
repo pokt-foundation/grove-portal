@@ -92,10 +92,10 @@ export default function AccountNotificationsView({
         Set up usage alerts to be warned when you are approaching your relay limits. We
         will send an email when your usage crosses the thresholds specified below.
       </Text>
-      <Stack my={16} spacing={32}>
+      <Stack gap={32} my={16}>
         {NOTIFICATIONS_ALERT_LEVELS.map((level, index) => (
           <React.Fragment key={level}>
-            <Group position="apart" px={20}>
+            <Group justify="space-between" px={20}>
               <Text>
                 {getUsagePercentage(level)} of{" "}
                 {formatNumberToSICompact(FREE_TIER_MAX_RELAYS)} relays per day

@@ -42,8 +42,8 @@ export default function AccountSettingsLayoutView({
 
   return (
     <Container fluid px={0}>
-      <Stack spacing={32}>
-        <Stack spacing="xs">
+      <Stack gap={32}>
+        <Stack gap="xs">
           <Title order={3}>Settings & members</Title>
           <Text>Change your organization name and manage your team and plan.</Text>
         </Stack>

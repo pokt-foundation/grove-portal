@@ -152,7 +152,7 @@ export default function UpdateApp() {
   ) : (
     <LoadingOverlay
       visible
-      loader={<PortalLoader message="Updating your application..." />}
+      loaderProps={{ children: <PortalLoader message="Updating your application..." /> }}
     />
   )
 }

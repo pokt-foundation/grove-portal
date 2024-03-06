@@ -24,7 +24,7 @@ const AppKeys = ({ app, userRole }: AppKeysProps) => {
 
   const secretKey = app.settings.secretKey
   return (
-    <Stack spacing={0}>
+    <Stack gap={0}>
       <Box py={20}>
         <Text fw={600}>App ID</Text>
         <Text fw={400} pt={8}>
@@ -44,7 +44,7 @@ const AppKeys = ({ app, userRole }: AppKeysProps) => {
           <TextInput
             readOnly
             aria-label="App ID"
-            sx={(theme: MantineTheme) => ({
+            style={(theme: MantineTheme) => ({
               flex: 1,
               backgroundColor: theme.colors.gray[9],
             })}
@@ -77,7 +77,7 @@ const AppKeys = ({ app, userRole }: AppKeysProps) => {
               <PasswordInput
                 readOnly
                 aria-label="Secret Key"
-                sx={(theme: MantineTheme) => ({
+                style={(theme: MantineTheme) => ({
                   flex: 1,
                   backgroundColor: theme.colors.gray[9],
                 })}

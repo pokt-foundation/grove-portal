@@ -22,7 +22,6 @@ import useActionNotification, {
 } from "~/hooks/useActionNotification"
 import { Blockchain, PortalApp } from "~/models/portal/sdk"
 import ChainSandboxSideDrawer from "~/routes/account.$accountId.$appId._index/components/ChainSandboxSideDrawer"
-import useCommonStyles from "~/styles/commonStyles"
 import { trackEvent, AnalyticCategories, AnalyticActions } from "~/utils/analytics"
 import { CHAIN_DOCS_URL, getAppEndpointUrl } from "~/utils/chainUtils"
 import { DOCS_PATH } from "~/utils/utils"
@@ -45,7 +44,6 @@ const AppEndpointsTable = ({
   const fetcher = useFetcher()
   const fetcherData = fetcher.data as ActionNotificationData
   const navigation = useNavigation()
-  const { classes: commonClasses } = useCommonStyles()
   const [selectedBlockchain, setSelectedBlockchain] = useState<Blockchain>()
   const favoriteChains = app.settings.favoritedChainIDs
 
@@ -116,7 +114,6 @@ const AppEndpointsTable = ({
                     <CopyTextButton value={getAppEndpointUrl(chain, appId)} />
                     <Tooltip withArrow label="Try in Sandbox">
                       <ActionIcon
-                        className={commonClasses.grayOutline}
                         color="gray"
                         radius="xl"
                         size={40}
@@ -137,7 +134,7 @@ const AppEndpointsTable = ({
                       <ContextMenuTarget />
                       <Menu.Dropdown>
                         {chain.blockchain && CHAIN_DOCS_URL[chain.blockchain] && (
-                          <Menu.Item icon={<LuBook size={18} />}>
+                          <Menu.Item leftSection={<LuBook size={18} />}>
                             <UnstyledButton
                               component="a"
                               fz="sm"
@@ -159,7 +156,7 @@ const AppEndpointsTable = ({
 
                         {!readOnly && (
                           <Menu.Item
-                            icon={
+                            leftSection={
                               chain.favorite ? (
                                 <RiStarFill size={18} />
                               ) : (

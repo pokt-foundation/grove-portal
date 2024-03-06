@@ -104,7 +104,7 @@ export const Application = () => {
     <Box mb={70}>
       <Flex align="center" justify="flex-end" my="xl">
         <Input
-          icon={<LuSearch />}
+          leftSection={<LuSearch />}
           placeholder="Search network"
           value={searchTerm}
           onChange={(event: any) => setSearchTerm(event.currentTarget.value)}
@@ -121,7 +121,7 @@ export const Application = () => {
         <Transition mounted={scroll.y > 20} transition="slide-up">
           {(transitionStyles) => (
             <Button
-              leftIcon={<LuArrowUp size={16} />}
+              leftSection={<LuArrowUp size={16} />}
               size="sm"
               style={transitionStyles}
               onClick={() => scrollTo({ y: 0 })}

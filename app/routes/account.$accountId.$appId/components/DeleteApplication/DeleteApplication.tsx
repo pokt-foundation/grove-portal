@@ -69,7 +69,7 @@ const DeleteApplication = ({ app }: DeleteApplicationProps) => {
   }
 
   return (
-    <Menu.Item icon={<LuTrash2 size={18} />} onClick={openDeleteModal}>
+    <Menu.Item leftSection={<LuTrash2 size={18} />} onClick={openDeleteModal}>
       Delete application
     </Menu.Item>
   )

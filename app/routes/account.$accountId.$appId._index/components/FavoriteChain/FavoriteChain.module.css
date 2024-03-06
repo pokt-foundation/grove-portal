@@ -1,0 +1,10 @@
+.favoriteChain {
+    &:hover {
+        background-color:  alpha(var(--mantine-color-gray-8), 0.2);
+    }
+    &:disabled,
+    &[data-disabled] {
+        border-color:transparent;
+        background-color: transparent;
+    }
+}

@@ -6,7 +6,6 @@ import invariant from "tiny-invariant"
 import { EmptyState } from "~/components/EmptyState"
 import { ErrorBoundaryView } from "~/components/ErrorBoundaryView"
 import { initPortalClient } from "~/models/portal/portal.server"
-import useCommonStyles from "~/styles/commonStyles"
 import { isAccountWithinAppLimit } from "~/utils/accountUtils"
 import { getErrorMessage } from "~/utils/catchError"
 import { seo_title_append } from "~/utils/seo"
@@ -50,7 +49,6 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 }
 
 export default function AppLimitExceeded() {
-  const { classes: commonClasses } = useCommonStyles()
   const params = useParams()
   return (
     <Stack align="center" justify="center" m={42}>
@@ -59,7 +57,6 @@ export default function AppLimitExceeded() {
         alt="App limit exceeded"
         callToAction={
           <Button
-            className={commonClasses.grayOutline}
             color="gray"
             component={Link}
             mt="xs"

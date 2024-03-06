@@ -3,7 +3,6 @@ import {
   Box,
   Button,
   CloseButton,
-  createStyles,
   Group,
   Flex,
   Stack,
@@ -14,14 +13,7 @@ import {
 import { Form, NavLink, useParams } from "@remix-run/react"
 import { useState } from "react"
 import { Account } from "~/models/portal/sdk"
-import useCommonStyles from "~/styles/commonStyles"
 import { trackEvent, AnalyticCategories, AnalyticActions } from "~/utils/analytics"
-
-const useStyles = createStyles((theme) => ({
-  inputLabel: {
-    fontWeight: 600,
-  },
-}))
 
 type AccountFormProps = {
   account: Account
@@ -29,8 +21,6 @@ type AccountFormProps = {
 }
 
 const AccountForm = ({ account, redirectTo }: AccountFormProps) => {
-  const { classes } = useStyles()
-  const { classes: commonClasses } = useCommonStyles()
   const { accountId } = useParams()
   const closeButtonRedirect = redirectTo ?? `/account/${accountId}/settings`
   const [name, setName] = useState(account?.name ?? "")
@@ -57,12 +47,12 @@ const AccountForm = ({ account, redirectTo }: AccountFormProps) => {
       </Box>
       <Divider mb="md" mt="xl" />
       <Form method="post">
-        <Stack spacing="md">
+        <Stack gap="md">
           <TextInput
             required
-            classNames={{ label: classes.inputLabel }}
             defaultValue={name}
             description="Required"
+            fw={600}
             label="Name"
             maxLength={20}
             name="account_name"
@@ -71,9 +61,8 @@ const AccountForm = ({ account, redirectTo }: AccountFormProps) => {
           />
         </Stack>
         <Divider my={32} />
-        <Group position="right">
+        <Group justify="right">
           <Button
-            classNames={{ root: commonClasses.grayOutline }}
             color="gray"
             component={NavLink}
             fw={400}

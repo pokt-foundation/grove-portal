@@ -141,11 +141,15 @@ export default function UpdateAccount() {
   return state !== "idle" ? (
     <LoadingOverlay
       visible
-      loader={
-        <PortalLoader
-          message={state === "submitting" ? "Updating your account..." : "Redirecting..."}
-        />
-      }
+      loaderProps={{
+        children: (
+          <PortalLoader
+            message={
+              state === "submitting" ? "Updating your account..." : "Redirecting..."
+            }
+          />
+        ),
+      }}
     />
   ) : (
     <Box maw={860} mt={90} mx="auto">

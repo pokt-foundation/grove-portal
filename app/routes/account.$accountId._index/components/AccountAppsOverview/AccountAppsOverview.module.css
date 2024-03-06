@@ -1,17 +1,19 @@
 .statGrid {
-    gap: 0 !important;
+  gap: 0 !important;
 }
 
 .stat {
-    padding: 24px 20px
+  padding: 24px 20px;
 }
 
 .stat:not(:last-child) {
-    border-right: 1px solid  light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-8))
+  border-right: 1px solid
+    light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-8));
 }
 
 .stat:not(:last-child) {
-    @mixin smaller-than 62em {
-        border-bottom: 1px solid  light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-8))
-    }
+  @mixin smaller-than 62em {
+    border-bottom: 1px solid
+      light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-8));
+  }
 }

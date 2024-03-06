@@ -1,17 +1,16 @@
 .sidebarNavLink {
-    display: block;
-    width: 100%;
-    padding: 8px;
-    border-radius: var(--mantine-radius-sm);
-    color: var(--mantine-color-dark-0);
+  display: block;
+  width: 100%;
+  padding: 8px;
+  border-radius: var(--mantine-radius-sm);
+  color: var(--mantine-color-dark-0);
 }
 
 .sidebarNavLink:global(.active) {
-    background-color: alpha(var(--mantine-color-dark-6), 0.5);
+  background-color: alpha(var(--mantine-color-dark-6), 0.5);
 }
 
 .sidebarNavLink:hover {
-    background-color: alpha(var(--mantine-color-dark-7), 0.5);
-    text-decoration: none;
+  background-color: alpha(var(--mantine-color-dark-7), 0.5);
+  text-decoration: none;
 }
-

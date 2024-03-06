@@ -1,8 +1,8 @@
 .drawerLink {
-    border-radius: var(--mantine-radius-sm);
+  border-radius: var(--mantine-radius-sm);
 }
 
 .drawerLink:hover {
-    background-color: alpha(var(--mantine-color-dark-7), 0.5);
-    text-decoration: none;
+  background-color: alpha(var(--mantine-color-dark-7), 0.5);
+  text-decoration: none;
 }

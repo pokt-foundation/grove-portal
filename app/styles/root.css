@@ -5,13 +5,12 @@
 
   @mixin dark-root {
     --mantine-color-body: var(--mantine-color-dark-9);
-    [data-variant='outline']:not([data-outline-exclude='true']) {
+    [data-variant="outline"]:not([data-outline-exclude="true"]) {
       border-color: var(--mantine-color-gray-8);
       color: inherit;
     }
   }
 }
-
 
 a {
   color: inherit;

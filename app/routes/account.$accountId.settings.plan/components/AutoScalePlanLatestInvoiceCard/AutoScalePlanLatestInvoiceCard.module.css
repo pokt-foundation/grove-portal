@@ -1,8 +1,8 @@
 .accordionControl {
-    padding: 0 0 12px 0;
-    gap: 14px;
+  padding: 0 0 12px 0;
+  gap: 14px;
 
-    &:hover {
-        background-color: transparent
-    }
+  &:hover {
+    background-color: transparent;
+  }
 }

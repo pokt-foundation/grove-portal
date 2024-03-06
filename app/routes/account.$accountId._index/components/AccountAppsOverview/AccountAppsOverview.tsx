@@ -1,4 +1,5 @@
-import { Box, createStyles, Loader, SimpleGrid, Stack, Text } from "@mantine/core"
+import { Box, Loader, SimpleGrid, Stack, Text } from "@mantine/core"
+import classes from "./AccountAppsOverview.module.css"
 import { AnalyticsRelaysAggregated } from "~/models/dwh/sdk/models/AnalyticsRelaysAggregated"
 import { getTotalErrors } from "~/utils/chartUtils"
 import { commify } from "~/utils/formattingUtils"
@@ -38,17 +39,6 @@ const order: (keyof AnalyticsRelaysAggregated)[] = [
   "rateError",
 ]
 
-const useStyles = createStyles((theme) => ({
-  stat: {
-    padding: "24px 20px",
-    "&:not(:last-child)": {
-      borderRight: `1px solid ${
-        theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.colors.gray[3]
-      }`,
-    },
-  },
-}))
-
 type AccountAppsOverviewProps = {
   aggregate: AnalyticsRelaysAggregated | undefined
   isLoading?: boolean
@@ -58,33 +48,23 @@ export const AccountAppsOverview = ({
   aggregate,
   isLoading,
 }: AccountAppsOverviewProps) => {
-  const { classes } = useStyles()
-
   if (!aggregate) {
     return <>-</>
   }
 
   return (
-    <>
-      <SimpleGrid
-        breakpoints={[
-          { maxWidth: "sm", cols: 1 },
-          { maxWidth: "md", cols: 2 },
-        ]}
-        cols={order.length}
-      >
-        {order.map((key) => (
-          <Box key={key} className={classes.stat}>
-            <Stack align="center" spacing={0}>
-              <Text fw={600} fz="md">
-                {isLoading ? <Loader size="sm" /> : getFormattedValue(aggregate, key)}
-              </Text>
-              <Text>{labels[key as keyof AnalyticsRelaysAggregated]}</Text>
-            </Stack>
-          </Box>
-        ))}
-      </SimpleGrid>
-    </>
+    <SimpleGrid className={classes.statGrid} cols={{ base: 1, sm: 2, md: 4 }}>
+      {order.map((key) => (
+        <Box key={key} className={classes.stat}>
+          <Stack align="center" gap={0}>
+            <Text fw={600} fz="md">
+              {isLoading ? <Loader size="sm" /> : getFormattedValue(aggregate, key)}
+            </Text>
+            <Text>{labels[key as keyof AnalyticsRelaysAggregated]}</Text>
+          </Stack>
+        </Box>
+      ))}
+    </SimpleGrid>
   )
 }
 

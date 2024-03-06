@@ -31,7 +31,7 @@ export const OverviewSparkline = ({
       ) : (
         <Space mb="lg" />
       )}
-      <LoadingOverlay overlayBlur={1} visible={!!isLoading} />
+      <LoadingOverlay overlayProps={{ blur: 1 }} visible={!!isLoading} />
       <Sparkline
         commifyLabelValue={commifyLabelValue}
         customYAxisDomain={customYAxisDomain}

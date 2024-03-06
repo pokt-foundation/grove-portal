@@ -1,8 +1,8 @@
 import { Box, Group, Select, Stack, Title } from "@mantine/core"
-import { Prism } from "@mantine/prism"
 import { useParams } from "@remix-run/react"
 import React, { useEffect, useState } from "react"
 import useChainSandboxContext from "~/components/ChainSandbox/state"
+import CodeSnippet from "~/components/CodeSnippet"
 import CopyTextButton from "~/components/CopyTextButton"
 import JsonViewer from "~/components/JsonViewer"
 import { KeyValuePair } from "~/types/global"
@@ -56,8 +56,8 @@ const ChainSandboxBody = ({ chainUrl, requestHeaders }: ChainSandboxBodyProps) =
   }, [selectedMethod, isRpc, dispatch])
 
   return (
-    <Stack pos="relative" spacing={12}>
-      <Group position="apart">
+    <Stack gap={12} pos="relative">
+      <Group justify="space-between">
         <Title order={6}>Body</Title>
         <Select
           data={[
@@ -65,7 +65,9 @@ const ChainSandboxBody = ({ chainUrl, requestHeaders }: ChainSandboxBodyProps) =
             { value: "curl", label: "cURL" },
           ]}
           value={requestFormat}
-          onChange={(e: RequestFormat) => setRequestFormat(e)}
+          onChange={(value: string | null) =>
+            value && setRequestFormat(value as RequestFormat)
+          }
         />
       </Group>
       {requestFormat === "json" ? (
@@ -96,9 +98,14 @@ const ChainSandboxBody = ({ chainUrl, requestHeaders }: ChainSandboxBodyProps) =
             variant="transparent"
             width={28}
           />
-          <Prism noCopy withLineNumbers language="bash">
-            {getCurlCommand(chainUrl, requestHeaders, JSON.stringify(requestPayload))}
-          </Prism>
+          <CodeSnippet
+            code={getCurlCommand(
+              chainUrl,
+              requestHeaders,
+              JSON.stringify(requestPayload),
+            )}
+            language="bash"
+          />
         </Box>
       )}
     </Stack>

@@ -19,7 +19,7 @@ const ChainSandboxHeaders = () => {
   }, [dispatch, includeSecretKey, secretKey])
 
   return (
-    <Stack spacing={12}>
+    <Stack gap={12}>
       <Title order={6}>Header</Title>
       <Group>
         <Checkbox
@@ -36,7 +36,8 @@ const ChainSandboxHeaders = () => {
           readOnly
           aria-label="Secret Key"
           bg="#27292F80"
-          sx={{
+          pl={12}
+          style={{
             flex: 1,
           }}
           value={secretKey}

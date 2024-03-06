@@ -75,11 +75,11 @@ const ChainSandboxInputs = ({
   )
 
   return selectedChain ? (
-    <Stack spacing="xl">
+    <Stack gap="xl">
       <Group>
         <Group
+          gap={0}
           pos="relative"
-          spacing={0}
           style={{
             border: `1px solid ${theme.colors.gray[8]}`,
             borderRadius: 4,

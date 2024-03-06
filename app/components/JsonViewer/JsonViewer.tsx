@@ -1,7 +1,7 @@
-import { Box, JsonInput, Tooltip, ActionIcon, Group } from "@mantine/core"
-import { Prism } from "@mantine/prism"
+import { ActionIcon, Box, Group, JsonInput, Tooltip } from "@mantine/core"
 import React, { useState } from "react"
 import { LuPencil, LuSave } from "react-icons/lu"
+import CodeSnippet from "~/components/CodeSnippet"
 import CopyTextButton from "~/components/CopyTextButton"
 import { KeyValuePair } from "~/types/global"
 
@@ -41,11 +41,12 @@ const JsonViewer = ({ value, editable, onEditSave }: JsonViewerProps) => {
 
   return (
     <Box pos="relative">
-      <Group pos="absolute" spacing={0} style={{ zIndex: 100, top: 8, right: 8 }}>
+      <Group gap={0} pos="absolute" style={{ zIndex: 100, top: 8, right: 8 }}>
         {editable ? (
           <Box>
             <Tooltip withArrow label={isEditing ? "Save" : "Edit"}>
               <ActionIcon
+                color="gray"
                 variant="transparent"
                 onClick={() => (isEditing ? handleSaveClick() : editJson())}
               >
@@ -73,9 +74,7 @@ const JsonViewer = ({ value, editable, onEditSave }: JsonViewerProps) => {
           onChange={setTempValue}
         ></JsonInput>
       ) : (
-        <Prism noCopy withLineNumbers language="json">
-          {JSON.stringify(value, null, " ")}
-        </Prism>
+        <CodeSnippet code={JSON.stringify(value, null, " ")} language="json" />
       )}
     </Box>
   )

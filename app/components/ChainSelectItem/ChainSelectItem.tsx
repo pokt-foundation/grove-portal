@@ -10,7 +10,7 @@ interface ChainSelectItemProps extends React.ComponentPropsWithoutRef<"div"> {
 const ChainSelectItem = forwardRef<HTMLDivElement, ChainSelectItemProps>(
   ({ chain, label, ...others }: ChainSelectItemProps, ref) => (
     <div ref={ref} {...others}>
-      <Group noWrap>
+      <Group wrap="nowrap">
         {chain ? (
           <Chain chain={chain} variant="compact" />
         ) : (

@@ -1,0 +1,6 @@
+.codeSnippetContainer {
+    & :global(.react-syntax-highlighter-line-number) {
+        color: var(--mantine-color-dark-4) !important;
+        font-style: normal !important;
+    }
+}

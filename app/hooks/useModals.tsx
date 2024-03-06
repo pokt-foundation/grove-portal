@@ -11,7 +11,7 @@ const useModals = () => {
   const commonModalProps: ModalSettings = {
     centered: true,
     overlayProps: {
-      color: theme.colorScheme === "dark" ? theme.colors.navy[9] : theme.colors.gray[2],
+      color: theme.colors.navy[9],
       opacity: 0.8,
       blur: 3,
     },

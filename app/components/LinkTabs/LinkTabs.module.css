@@ -1,0 +1,35 @@
+.linkTabsContainer {
+    gap: 2em;
+    padding-bottom: 11px;
+    position: relative;
+    color: var(--mantine-color-green-7);
+
+    &::after {
+        content: "";
+        display: block;
+        width: 100%;
+        border-bottom: 1px solid  alpha(var(--mantine-color-dark-4), 0.5);
+        position: absolute;
+        bottom: 11px;
+        opacity: 50%;
+    }
+}
+
+.linkTab {
+    transition: border-bottom 0.3s ease-in-out;
+    border-bottom: 2px solid transparent;
+    color: var(--mantine-color-dark-0);
+    z-index: 1;
+    font-size: 14px;
+}
+
+.linkTab:global(.active) {
+    border-bottom: 2px solid var(--mantine-color-gray-0);
+    border-radius: 1px/30%;
+    color: var(--mantine-color-gray-0)
+}
+
+.linkTab:hover {
+    background-color: transparent;
+    color: var(--mantine-color-gray-0);
+}

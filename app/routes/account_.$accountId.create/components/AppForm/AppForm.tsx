@@ -3,7 +3,6 @@ import {
   Box,
   Button,
   CloseButton,
-  createStyles,
   Group,
   Flex,
   Stack,
@@ -17,14 +16,7 @@ import { PortalApp } from "~/models/portal/sdk"
 import AppmojiPicker, {
   DEFAULT_APPMOJI,
 } from "~/routes/account_.$accountId.create/components/AppmojiPicker"
-import useCommonStyles from "~/styles/commonStyles"
 import { trackEvent, AnalyticCategories, AnalyticActions } from "~/utils/analytics"
-
-const useStyles = createStyles((theme) => ({
-  inputLabel: {
-    fontWeight: 600,
-  },
-}))
 
 type AppFormProps = {
   app?: PortalApp
@@ -32,8 +24,6 @@ type AppFormProps = {
 }
 
 const AppForm = ({ app, onSubmit }: AppFormProps) => {
-  const { classes } = useStyles()
-  const { classes: commonClasses } = useCommonStyles()
   const { accountId, appId } = useParams()
 
   const [name, setName] = useState(app?.name ?? "")
@@ -81,13 +71,13 @@ const AppForm = ({ app, onSubmit }: AppFormProps) => {
       </Box>
       <Divider mb="md" mt="xl" />
       <Form method="post" onSubmit={handleSubmit}>
-        <Stack spacing="md">
+        <Stack gap="md">
           <input hidden name="referral-id" type="text" value={referral} />
           <TextInput
             required
-            classNames={{ label: classes.inputLabel }}
             defaultValue={app?.name}
             description="Required"
+            fw={600}
             label="Name"
             maxLength={40}
             name="app-name"
@@ -95,9 +85,9 @@ const AppForm = ({ app, onSubmit }: AppFormProps) => {
             onChange={(e) => setName(e.target.value)}
           />
           <TextInput
-            classNames={{ label: classes.inputLabel }}
             defaultValue={app?.description}
             description="Optional, but it can be helpful to offer additional context about your application."
+            fw={600}
             label="Description"
             name="app-description"
           />
@@ -115,9 +105,8 @@ const AppForm = ({ app, onSubmit }: AppFormProps) => {
           </Box>
         </Stack>
         <Divider my={32} />
-        <Group position="right">
+        <Group justify="right">
           <Button
-            classNames={{ root: commonClasses.grayOutline }}
             color="gray"
             component={NavLink}
             fw={400}

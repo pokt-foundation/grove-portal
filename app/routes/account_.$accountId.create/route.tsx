@@ -200,7 +200,7 @@ export default function CreateApp() {
   ) : (
     <LoadingOverlay
       visible
-      loader={<PortalLoader message="Creating your application..." />}
+      loaderProps={{ children: <PortalLoader message="Creating your application..." /> }}
     />
   )
 }

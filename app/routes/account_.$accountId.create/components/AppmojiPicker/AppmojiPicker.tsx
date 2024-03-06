@@ -1,19 +1,9 @@
-import { ActionIcon, Box, createStyles } from "@mantine/core"
+import { ActionIcon, Box } from "@mantine/core"
 import { useClickOutside } from "@mantine/hooks"
 import EmojiPicker, { Emoji, Theme } from "emoji-picker-react"
 import { useState } from "react"
 
 export const DEFAULT_APPMOJI = "1f333"
-
-const useStyles = createStyles((theme) => ({
-  appmojiActionIcon: {
-    borderColor: theme.colors.dark[4],
-  },
-  appmojiPickerContainer: {
-    position: "absolute",
-    top: "40px",
-  },
-}))
 
 type AppmojiPickerProps = {
   defaultValue?: string
@@ -21,23 +11,24 @@ type AppmojiPickerProps = {
 }
 
 const AppmojiPicker = ({ defaultValue, onAppmojiSelect }: AppmojiPickerProps) => {
-  const { classes } = useStyles()
   const [showAppmojiPicker, setShowAppmojiPicker] = useState(false)
   const [selectedAppmoji, setSelectedAppmoji] = useState(defaultValue ?? DEFAULT_APPMOJI)
   const appmojiContainerRef = useClickOutside(() => setShowAppmojiPicker(false))
 
   return (
     <Box pos="relative">
-      <ActionIcon
-        className={classes.appmojiActionIcon}
-        size="lg"
-        variant="outline"
-        onClick={() => setShowAppmojiPicker(true)}
-      >
+      <ActionIcon size="lg" variant="outline" onClick={() => setShowAppmojiPicker(true)}>
         <Emoji size={14} unified={selectedAppmoji} />
       </ActionIcon>
       {showAppmojiPicker && (
-        <div ref={appmojiContainerRef} className={classes.appmojiPickerContainer}>
+        <Box
+          ref={appmojiContainerRef}
+          pos="absolute"
+          style={{
+            zIndex: "var(--mantine-z-index-popover)",
+          }}
+          top={40}
+        >
           <EmojiPicker
             theme={Theme.DARK}
             onEmojiClick={({ unified }) => {
@@ -46,7 +37,7 @@ const AppmojiPicker = ({ defaultValue, onAppmojiSelect }: AppmojiPickerProps) =>
               setShowAppmojiPicker(false)
             }}
           />
-        </div>
+        </Box>
       )}
     </Box>
   )

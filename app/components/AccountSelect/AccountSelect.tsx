@@ -33,11 +33,11 @@ const AccountItem = ({
     />
     {!iconOnly && (
       <>
-        <Stack spacing={0}>
-          <Text lh="17px" size={15} weight={500}>
+        <Stack gap={0}>
+          <Text fw={500} fz={15} lh="17px">
             {account.name ? account.name : account.id}
           </Text>
-          <Text size={11}>{`${getPlanName(account.planType)} · ${
+          <Text fz={11}>{`${getPlanName(account.planType)} · ${
             account?.users?.length ?? 1
           } member${account?.users?.length > 1 ? "s" : ""}`}</Text>
         </Stack>

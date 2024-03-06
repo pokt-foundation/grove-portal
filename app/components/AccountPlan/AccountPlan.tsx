@@ -11,7 +11,6 @@ import {
 } from "@mantine/core"
 import { LuCheck } from "react-icons/lu"
 import { PayPlanType } from "~/models/portal/sdk"
-import useCommonStyles from "~/styles/commonStyles"
 
 type AccountPlanProps = {
   type: PayPlanType.PayAsYouGoV0 | PayPlanType.FreetierV0 | PayPlanType.Enterprise
@@ -71,40 +70,34 @@ export const AccountPlan = ({
   disableFree = false,
 }: AccountPlanProps) => {
   const isFree = type === PayPlanType.FreetierV0
-  const isPay = type === PayPlanType.PayAsYouGoV0
+  const isPAYG = type === PayPlanType.PayAsYouGoV0
   const isEnterprise = type === PayPlanType.Enterprise
-  const { classes: commonClasses } = useCommonStyles()
 
   return (
     <Card
       withBorder
       radius="md"
       shadow="sm"
-      sx={(theme: MantineTheme) => ({
-        ...(theme.colorScheme === "dark" && {
-          borderColor: isPay ? theme.colors.green[7] : theme.colors.gray[8],
-        }),
-        ...(theme.colorScheme === "light" && {
-          borderColor: isPay ? theme.colors.green[7] : theme.colors.gray[3],
-        }),
+      style={(theme: MantineTheme) => ({
+        borderColor: isPAYG ? theme.colors.green[7] : theme.colors.gray[8],
       })}
     >
-      <Stack align="center" mb="xl" spacing="xl">
+      <Stack align="center" gap="xl" mb="xl">
         <Badge>
           {isFree && "Builder"}
-          {isPay && "Pay as you go"}
+          {isPAYG && "Pay as you go"}
           {isEnterprise && "Custom"}
         </Badge>
         <Title order={3}>
           {isFree && "Starter"}
-          {isPay && "Auto-Scale"}
+          {isPAYG && "Auto-Scale"}
           {isEnterprise && "Enterprise"}
         </Title>
       </Stack>
-      <Text align="center" py="lg">
+      <Text py="lg" ta="center">
         {isFree &&
           "For developers looking to get started reading and writing data from any integrated chains."}
-        {isPay &&
+        {isPAYG &&
           "For projects needing to scale, pay only for the RPC requests above the free threshold."}
         {isEnterprise &&
           "Drive innovation and partner with the top decentralized infrastructure in all web3."}
@@ -113,7 +106,6 @@ export const AccountPlan = ({
       {isFree && (
         <Button
           fullWidth
-          classNames={{ root: commonClasses.grayOutline }}
           color="gray"
           disabled={!!disableFree}
           radius="xl"
@@ -123,26 +115,20 @@ export const AccountPlan = ({
           {disableFree ? "Current plan" : "Continue with Starter"}
         </Button>
       )}
-      {isPay && (
+      {isPAYG && (
         <Button fullWidth radius="xl" onClick={onContinue}>
           Continue with Auto-Scale
         </Button>
       )}
       {isEnterprise && (
-        <Button
-          fullWidth
-          classNames={{ root: commonClasses.grayOutline }}
-          color="gray"
-          radius="xl"
-          onClick={onContinue}
-        >
+        <Button fullWidth color="gray" radius="xl" onClick={onContinue}>
           Talk to Sales
         </Button>
       )}
 
       <Box mt="md">
         {isFree && <FreeList />}
-        {isPay && <AutoScaleList />}
+        {isPAYG && <AutoScaleList />}
         {isEnterprise && <EnterpriseList />}
       </Box>
     </Card>

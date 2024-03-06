@@ -1,4 +1,4 @@
-import { Divider, Button, Container, Group, LoadingOverlay } from "@mantine/core"
+import { Divider, Button, Container, Group, LoadingOverlay, Box } from "@mantine/core"
 import { useNavigation } from "@remix-run/react"
 import React, { Dispatch, useMemo, useState } from "react"
 import { SecurityReducerActions } from "../../utils/stateReducer"
@@ -8,7 +8,6 @@ import PortalLoader from "~/components/PortalLoader"
 import useModals from "~/hooks/useModals"
 import { Blockchain } from "~/models/portal/sdk"
 import ChainsTable from "~/routes/account.$accountId.$appId.security/components/ChainsTable"
-import useCommonStyles from "~/styles/commonStyles"
 
 type ApprovedChainsModalProps = {
   blockchains: Blockchain[]
@@ -22,7 +21,6 @@ const ApprovedChainsModal = ({
   dispatch,
 }: ApprovedChainsModalProps) => {
   const { state } = useNavigation()
-  const { classes: commonClasses } = useCommonStyles()
   const { closeAllModals } = useModals()
 
   const [selectedBlockchainsIds, setSelectedBlockchainsIds] = useState<string[]>([])
@@ -55,13 +53,15 @@ const ApprovedChainsModal = ({
             title="Approved Chains"
             onDiscard={closeAllModals}
           />
-          <ChainsDropdown
-            chains={dropdownChains}
-            width={300}
-            onChange={(val: string) => {
-              setSelectedBlockchainsIds((ids) => [...ids, val])
-            }}
-          />
+          <Box px={8} py={24}>
+            <ChainsDropdown
+              chains={dropdownChains}
+              width={300}
+              onChange={(val) => {
+                val && setSelectedBlockchainsIds((ids) => [...ids, val])
+              }}
+            />
+          </Box>
           {selectedBlockchainsIds.length > 0 && (
             <ChainsTable
               blockchains={blockchains}
@@ -70,9 +70,8 @@ const ApprovedChainsModal = ({
             />
           )}
           <Divider my={32} />
-          <Group position="right">
+          <Group justify="right">
             <Button
-              classNames={{ root: commonClasses.grayOutline }}
               color="gray"
               fw={400}
               fz="sm"
@@ -99,7 +98,7 @@ const ApprovedChainsModal = ({
       ) : (
         <LoadingOverlay
           visible
-          loader={<PortalLoader message="Adding approved chains..." />}
+          loaderProps={{ children: <PortalLoader message="Adding approved chains..." /> }}
         />
       )}
     </>

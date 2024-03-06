@@ -15,7 +15,6 @@ import PortalLoader from "~/components/PortalLoader"
 import useModals from "~/hooks/useModals"
 import AddSettingsButton from "~/routes/account.$accountId.$appId.security/components/AddSettingsButton"
 import SimpleStringTable from "~/routes/account.$accountId.$appId.security/components/SimpleStringTable"
-import useCommonStyles from "~/styles/commonStyles"
 
 type WhitelistUserAgentsModalProps = {
   dispatch: Dispatch<SecurityReducerActions>
@@ -23,7 +22,6 @@ type WhitelistUserAgentsModalProps = {
 
 const WhitelistUserAgentsModal = ({ dispatch }: WhitelistUserAgentsModalProps) => {
   const { state } = useNavigation()
-  const { classes: commonClasses } = useCommonStyles()
   const { closeAllModals } = useModals()
 
   const [selectedUserAgents, setSelectedUserAgents] = useState<string[]>([])
@@ -51,7 +49,7 @@ const WhitelistUserAgentsModal = ({ dispatch }: WhitelistUserAgentsModalProps) =
             title="Whitelist User-Agents"
             onDiscard={closeAllModals}
           />
-          <Grid>
+          <Grid py={24}>
             <Grid.Col span="auto">
               <TextInput
                 miw={300}
@@ -74,9 +72,8 @@ const WhitelistUserAgentsModal = ({ dispatch }: WhitelistUserAgentsModalProps) =
             />
           )}
           <Divider my={32} />
-          <Group position="right">
+          <Group justify="right">
             <Button
-              classNames={{ root: commonClasses.grayOutline }}
               color="gray"
               fw={400}
               fz="sm"
@@ -103,7 +100,7 @@ const WhitelistUserAgentsModal = ({ dispatch }: WhitelistUserAgentsModalProps) =
       ) : (
         <LoadingOverlay
           visible
-          loader={<PortalLoader message="Adding approved chains..." />}
+          loaderProps={{ children: <PortalLoader message="Adding approved chains..." /> }}
         />
       )}
     </>

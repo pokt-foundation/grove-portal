@@ -6,7 +6,6 @@ import Chain from "~/components/Chain"
 import CopyTextButton from "~/components/CopyTextButton"
 import { DataTable } from "~/components/DataTable"
 import { Blockchain } from "~/models/portal/sdk"
-import useCommonStyles from "~/styles/commonStyles"
 import { getAppEndpointUrl } from "~/utils/chainUtils"
 
 type ChainsTableProps = {
@@ -24,7 +23,6 @@ const ChainsTable = ({
 }: ChainsTableProps) => {
   const theme = useMantineTheme()
   const { appId } = useParams()
-  const { classes: commonClasses } = useCommonStyles()
 
   const selectedBlockChains = useMemo(
     () =>
@@ -65,7 +63,6 @@ const ChainsTable = ({
                     <CopyTextButton value={getAppEndpointUrl(chain, appId)} />
                     {!readOnly && (
                       <ActionIcon
-                        className={commonClasses.grayOutline}
                         radius="xl"
                         size={40}
                         variant="outline"

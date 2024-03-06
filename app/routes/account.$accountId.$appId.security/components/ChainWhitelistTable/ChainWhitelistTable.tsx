@@ -6,7 +6,6 @@ import CopyTextButton from "~/components/CopyTextButton"
 import { DataTable } from "~/components/DataTable"
 import { Blockchain } from "~/models/portal/sdk"
 import { BlockchainWhitelist } from "~/routes/account.$accountId.$appId.security/utils/utils"
-import useCommonStyles from "~/styles/commonStyles"
 
 type ChainsTableProps = {
   blockchains: Blockchain[]
@@ -22,7 +21,6 @@ const ChainWhitelistTable = ({
   onDelete,
 }: ChainsTableProps) => {
   const theme = useMantineTheme()
-  const { classes: commonClasses } = useCommonStyles()
 
   const data = useMemo(
     () =>
@@ -65,7 +63,6 @@ const ChainWhitelistTable = ({
                 <CopyTextButton value={chain.whitelistValue} />
                 {!readOnly && (
                   <ActionIcon
-                    className={commonClasses.grayOutline}
                     radius="xl"
                     size={40}
                     variant="outline"

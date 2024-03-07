@@ -8,10 +8,10 @@ type HeaderProps = {
   user?: User
   accounts: Account[]
   opened: boolean
-  onOpen: (o: boolean) => void
+  toggle: () => void
 }
 
-export const AppHeader = ({ user, opened, onOpen }: HeaderProps) => {
+export const AppHeader = ({ user, opened, toggle }: HeaderProps) => {
   return (
     <Flex align="center" gap="sm" h="100%" justify="flex-end" p="md">
       <Burger
@@ -19,7 +19,7 @@ export const AppHeader = ({ user, opened, onOpen }: HeaderProps) => {
         opened={opened}
         size="sm"
         onClick={() => {
-          onOpen(!opened)
+          toggle()
           trackEvent({
             category: AnalyticCategories.user,
             action: AnalyticActions.user_header_menu,

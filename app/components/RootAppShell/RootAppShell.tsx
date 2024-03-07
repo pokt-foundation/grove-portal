@@ -1,5 +1,6 @@
 import { AppShell, Container } from "@mantine/core"
-import React, { ReactNode, useState } from "react"
+import { useDisclosure } from "@mantine/hooks"
+import React, { ReactNode } from "react"
 import { AppHeader } from "~/components/AppHeader"
 import { Sidebar } from "~/components/Sidebar"
 import { Account, RoleName, User } from "~/models/portal/sdk"
@@ -11,7 +12,6 @@ type RootAppShellProps = {
   children: ReactNode
   user: User
   userRole?: RoleName
-  withSidebar?: boolean
 }
 export const RootAppShell = ({
   user,
@@ -19,36 +19,25 @@ export const RootAppShell = ({
   children,
   accounts,
   userRole,
-  withSidebar = true,
 }: RootAppShellProps) => {
-  const [opened, setOpened] = useState(false)
+  const [opened, { toggle }] = useDisclosure()
   const { hideSidebar } = useRoot({ user })
   return (
     <AppShell
       header={{ height: 60 }}
       layout="alt"
       navbar={{
-        width: withSidebar ? 260 : 0,
+        width: 260,
         breakpoint: "sm",
-        collapsed: { mobile: hideSidebar || !opened },
+        collapsed: { mobile: hideSidebar || !opened, desktop: hideSidebar },
       }}
       padding="xs"
     >
       <AppShell.Header withBorder={false}>
-        <AppHeader
-          accounts={accounts}
-          opened={opened}
-          user={user}
-          onOpen={(o) => setOpened(o)}
-        />
+        <AppHeader accounts={accounts} opened={opened} toggle={toggle} user={user} />
       </AppShell.Header>
       {account && userRole && (
-        <Sidebar
-          account={account}
-          accounts={accounts}
-          hidden={!opened}
-          userRole={userRole}
-        />
+        <Sidebar account={account} accounts={accounts} userRole={userRole} />
       )}
       <AppShell.Main>
         <Container size="lg">{children}</Container>

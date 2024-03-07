@@ -15,7 +15,6 @@ import { DISCORD_PATH, DOCS_PATH } from "~/utils/utils"
 
 type SidebarProps = {
   account: Account
-  hidden: boolean
   accounts: Account[]
   userRole: RoleName
 }
@@ -64,7 +63,7 @@ const getStaticRoutes = (
   ]
 }
 
-export const Sidebar = ({ account, hidden, userRole, accounts }: SidebarProps) => {
+export const Sidebar = ({ account, userRole, accounts }: SidebarProps) => {
   const { accountId } = useParams()
   const staticRoutes = useMemo(() => {
     return getStaticRoutes(account, userRole)
@@ -74,7 +73,7 @@ export const Sidebar = ({ account, hidden, userRole, accounts }: SidebarProps) =
   const { portalApps: apps } = account
 
   return (
-    <AppShell.Navbar hidden={hidden} p={8} pt={18}>
+    <AppShell.Navbar p={8} pt={18}>
       <AccountSelect accounts={accounts} />
       <ScrollArea h="100%" mt="lg">
         {staticRoutes.map((route, index) =>

@@ -1,22 +1,12 @@
-import {
-  Divider,
-  Box,
-  Button,
-  CloseButton,
-  Group,
-  Flex,
-  Stack,
-  Text,
-  TextInput,
-  Tooltip,
-} from "@mantine/core"
+import { Box, Button, Divider, Group, Stack, Text, TextInput } from "@mantine/core"
 import { Form, NavLink, useParams } from "@remix-run/react"
 import { useEffect, useMemo, useState } from "react"
+import RouteModal from "~/components/RouteModal"
 import { PortalApp } from "~/models/portal/sdk"
 import AppmojiPicker, {
   DEFAULT_APPMOJI,
 } from "~/routes/account_.$accountId.create/components/AppmojiPicker"
-import { trackEvent, AnalyticCategories, AnalyticActions } from "~/utils/analytics"
+import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
 
 type AppFormProps = {
   app?: PortalApp
@@ -50,25 +40,13 @@ const AppForm = ({ app, onSubmit }: AppFormProps) => {
 
   return (
     <Stack>
-      <Box>
-        <Flex align="center" justify="space-between">
-          <Text fw={600} fz="21px">
-            {label} your application
-          </Text>
-          <Tooltip withArrow label="Discard">
-            <CloseButton
-              aria-label="Discard"
-              component={NavLink}
-              to={`/account/${accountId}`}
-            />
-          </Tooltip>
-        </Flex>
-        <Text>
-          An 'application' is a unique bridge connecting your project to the decentralized
+      <RouteModal.Header
+        closeButtonLink={`/account/${accountId}`}
+        description="An 'application' is a unique bridge connecting your project to the decentralized
           world. It represents the configuration set for accessing various blockchains,
-          tailoring to the specific needs of your project.
-        </Text>
-      </Box>
+          tailoring to the specific needs of your project."
+        title={`${label} your application`}
+      />
       <Divider mb="md" mt="xl" />
       <Form method="post" onSubmit={handleSubmit}>
         <Stack gap="md">

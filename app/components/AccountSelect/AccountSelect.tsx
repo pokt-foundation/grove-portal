@@ -16,6 +16,7 @@ type UserItemProps = {
 type AccountSelectProps = {
   accounts: Account[]
   collapsed?: boolean
+  style?: React.CSSProperties
 }
 
 const AccountItem = ({
@@ -52,7 +53,7 @@ const AccountItem = ({
   </Group>
 )
 
-const AccountSelect = ({ accounts, collapsed }: AccountSelectProps) => {
+const AccountSelect = ({ accounts, collapsed, style }: AccountSelectProps) => {
   const { accountId } = useParams()
   const hasMultipleAccounts = accounts.length > 1
 
@@ -62,10 +63,14 @@ const AccountSelect = ({ accounts, collapsed }: AccountSelectProps) => {
   )
 
   return (
-    <Menu styles={{ dropdown: { minWidth: 300, marginLeft: 8 } }}>
+    <Menu styles={{ dropdown: { minWidth: 260, marginLeft: 8 } }}>
       {activeAccount && (
         <Menu.Target>
-          <UnstyledButton px={8} py={4} style={{ borderRadius: 4 }}>
+          <UnstyledButton
+            px={8}
+            py={4}
+            style={{ borderRadius: 4, ...(style ? style : {}) }}
+          >
             <AccountItem
               account={activeAccount}
               hasMultipleAccounts={hasMultipleAccounts}

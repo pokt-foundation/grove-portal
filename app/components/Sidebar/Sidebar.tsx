@@ -1,4 +1,4 @@
-import { Box, ScrollArea, AppShell, Divider } from "@mantine/core"
+import { AppShell, Box, Burger, Divider, Group, ScrollArea } from "@mantine/core"
 import { Link, useParams } from "@remix-run/react"
 import React, { useMemo } from "react"
 import { LuPlus } from "react-icons/lu"
@@ -17,6 +17,7 @@ type SidebarProps = {
   account: Account
   accounts: Account[]
   userRole: RoleName
+  toggle: () => void
 }
 
 const getStaticRoutes = (
@@ -63,7 +64,7 @@ const getStaticRoutes = (
   ]
 }
 
-export const Sidebar = ({ account, userRole, accounts }: SidebarProps) => {
+export const Sidebar = ({ account, userRole, accounts, toggle }: SidebarProps) => {
   const { accountId } = useParams()
   const staticRoutes = useMemo(() => {
     return getStaticRoutes(account, userRole)
@@ -74,7 +75,17 @@ export const Sidebar = ({ account, userRole, accounts }: SidebarProps) => {
 
   return (
     <AppShell.Navbar p={8} pt={18}>
-      <AccountSelect accounts={accounts} />
+      <Group>
+        <Burger
+          opened
+          hiddenFrom="sm"
+          size="sm"
+          onClick={() => {
+            toggle()
+          }}
+        />
+        <AccountSelect accounts={accounts} style={{ flex: 1 }} />
+      </Group>
       <ScrollArea h="100%" mt="lg">
         {staticRoutes.map((route, index) =>
           route.external ? (

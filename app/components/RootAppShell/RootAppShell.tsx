@@ -37,7 +37,12 @@ export const RootAppShell = ({
         <AppHeader accounts={accounts} opened={opened} toggle={toggle} user={user} />
       </AppShell.Header>
       {account && userRole && (
-        <Sidebar account={account} accounts={accounts} userRole={userRole} />
+        <Sidebar
+          account={account}
+          accounts={accounts}
+          toggle={toggle}
+          userRole={userRole}
+        />
       )}
       <AppShell.Main>
         <Container size="lg">{children}</Container>

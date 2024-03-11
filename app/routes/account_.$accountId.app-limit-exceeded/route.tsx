@@ -49,10 +49,15 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 }
 
 export default function AppLimitExceeded() {
-  const params = useParams()
+  const { accountId } = useParams()
   return (
     <Stack align="center" justify="center" m={42}>
-      <CloseButton aria-label="Discard" component={NavLink} ml="auto" to="/account" />
+      <CloseButton
+        aria-label="Discard"
+        component={NavLink}
+        ml="auto"
+        to={`/account/${accountId}`}
+      />
       <EmptyState
         alt="App limit exceeded"
         callToAction={
@@ -62,7 +67,7 @@ export default function AppLimitExceeded() {
             mt="xs"
             prefetch="intent"
             size="lg"
-            to={`/account/${params.accountId}`}
+            to={`/account/${accountId}`}
             variant="outline"
             w={156}
           >

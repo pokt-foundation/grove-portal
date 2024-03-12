@@ -36,6 +36,7 @@ const ChainSandboxHeaders = () => {
           readOnly
           aria-label="Secret Key"
           bg="#27292F80"
+          classNames={{ input: "sandbox-input" }}
           pl={12}
           style={{
             flex: 1,

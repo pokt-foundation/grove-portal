@@ -3,10 +3,10 @@ import {
   FocusTrap,
   Group,
   Input,
+  MantineTheme,
   Menu,
   Text,
   UnstyledButton,
-  useMantineTheme,
 } from "@mantine/core"
 import { MenuProps } from "@mantine/core/lib/components/Menu/Menu"
 import React, { forwardRef, useMemo, useState } from "react"
@@ -93,7 +93,6 @@ const FluidSelect = forwardRef<HTMLDivElement, FluidSelectProps>(
     }: FluidSelectProps,
     ref,
   ) => {
-    const theme = useMantineTheme()
     const [searchTerm, setSearchTerm] = useState("")
     const initialSelectedItem = items.find((item) => item.value === value)
 
@@ -140,13 +139,13 @@ const FluidSelect = forwardRef<HTMLDivElement, FluidSelectProps>(
                     disabled={item.value === value}
                     mb={index === items.length - 1 ? 0 : 8}
                     p={5}
-                    style={{
+                    style={(theme: MantineTheme) => ({
                       ...(item.value === value && {
                         backgroundColor: theme.colors.dark[7],
                         color: theme.colors.dark[0],
                         opacity: 1,
                       }),
-                    }}
+                    })}
                     onClick={() => {
                       setSearchTerm("")
                       setSelectedItem(item)

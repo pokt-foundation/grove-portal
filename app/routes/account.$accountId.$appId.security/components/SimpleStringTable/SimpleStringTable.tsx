@@ -1,4 +1,4 @@
-import { ActionIcon, Flex, TextInput, useMantineTheme } from "@mantine/core"
+import { ActionIcon, Flex, TextInput } from "@mantine/core"
 import { LuTrash2 } from "react-icons/lu"
 import CopyTextButton from "~/components/CopyTextButton"
 import { DataTable } from "~/components/DataTable"
@@ -10,17 +10,13 @@ type SimpleStringTableProps = {
 }
 
 const SimpleStringTable = ({ data, readOnly, onDelete }: SimpleStringTableProps) => {
-  const theme = useMantineTheme()
-
   return (
     data && (
       <DataTable
         data={data?.map((value) => {
           return {
             userAgent: {
-              element: (
-                <TextInput readOnly bg={theme.colors.gray[9]} miw={300} value={value} />
-              ),
+              element: <TextInput readOnly miw={300} value={value} />,
               cellProps: {
                 style: { paddingLeft: 0, paddingRight: 0 },
               },

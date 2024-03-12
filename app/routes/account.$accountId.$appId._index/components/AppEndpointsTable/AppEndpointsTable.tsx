@@ -1,12 +1,4 @@
-import {
-  Flex,
-  Menu,
-  TextInput,
-  useMantineTheme,
-  UnstyledButton,
-  Tooltip,
-  ActionIcon,
-} from "@mantine/core"
+import { Flex, Menu, TextInput, UnstyledButton, Tooltip, ActionIcon } from "@mantine/core"
 import { useFetcher, useNavigation, useParams } from "@remix-run/react"
 import React, { useMemo, useState } from "react"
 import { LuBook, LuPlay } from "react-icons/lu"
@@ -39,7 +31,6 @@ const AppEndpointsTable = ({
   searchTerm,
   readOnly,
 }: AppEndpointsProps) => {
-  const theme = useMantineTheme()
   const { appId } = useParams()
   const fetcher = useFetcher()
   const fetcherData = fetcher.data as ActionNotificationData
@@ -100,12 +91,7 @@ const AppEndpointsTable = ({
               },
               endpointUrl: {
                 element: (
-                  <TextInput
-                    readOnly
-                    bg={theme.colors.gray[9]}
-                    miw={300}
-                    value={getAppEndpointUrl(chain, appId)}
-                  />
+                  <TextInput readOnly miw={300} value={getAppEndpointUrl(chain, appId)} />
                 ),
               },
               action: {

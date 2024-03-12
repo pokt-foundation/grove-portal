@@ -1,4 +1,4 @@
-import { ActionIcon, Flex, TextInput, useMantineTheme } from "@mantine/core"
+import { ActionIcon, Flex, TextInput } from "@mantine/core"
 import { useParams } from "@remix-run/react"
 import { useMemo } from "react"
 import { LuTrash2 } from "react-icons/lu"
@@ -21,7 +21,6 @@ const ChainsTable = ({
   onDeleteChain,
   readOnly,
 }: ChainsTableProps) => {
-  const theme = useMantineTheme()
   const { appId } = useParams()
 
   const selectedBlockChains = useMemo(
@@ -49,12 +48,7 @@ const ChainsTable = ({
               },
               endpointUrl: {
                 element: (
-                  <TextInput
-                    readOnly
-                    bg={theme.colors.gray[9]}
-                    miw={300}
-                    value={getAppEndpointUrl(chain, appId)}
-                  />
+                  <TextInput readOnly miw={300} value={getAppEndpointUrl(chain, appId)} />
                 ),
               },
               action: {

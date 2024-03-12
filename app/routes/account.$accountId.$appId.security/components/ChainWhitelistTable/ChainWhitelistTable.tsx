@@ -1,4 +1,4 @@
-import { ActionIcon, Flex, TextInput, useMantineTheme } from "@mantine/core"
+import { ActionIcon, Flex, TextInput } from "@mantine/core"
 import { useMemo } from "react"
 import { LuTrash2 } from "react-icons/lu"
 import Chain from "~/components/Chain"
@@ -20,8 +20,6 @@ const ChainWhitelistTable = ({
   readOnly,
   onDelete,
 }: ChainsTableProps) => {
-  const theme = useMantineTheme()
-
   const data = useMemo(
     () =>
       blockchainWhitelist.map(({ blockchainID, whitelistValue }) => {
@@ -48,14 +46,7 @@ const ChainWhitelistTable = ({
             },
           },
           endpointUrl: {
-            element: (
-              <TextInput
-                readOnly
-                bg={theme.colors.gray[9]}
-                miw={300}
-                value={chain.whitelistValue}
-              />
-            ),
+            element: <TextInput readOnly miw={300} value={chain.whitelistValue} />,
           },
           action: {
             element: (

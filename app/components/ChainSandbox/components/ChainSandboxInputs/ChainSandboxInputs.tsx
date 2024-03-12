@@ -2,11 +2,11 @@ import {
   Button,
   Divider,
   Group,
+  MantineTheme,
   Stack,
   TextInput,
   Title,
   Tooltip,
-  useMantineTheme,
 } from "@mantine/core"
 import React, { useMemo } from "react"
 import useChainSandboxContext from "~/components/ChainSandbox/state"
@@ -29,7 +29,6 @@ const ChainSandboxInputs = ({
   isLoading,
   onSendRequest,
 }: ChainSandboxInputsProps) => {
-  const theme = useMantineTheme()
   const { state, dispatch } = useChainSandboxContext()
   const { selectedChain, selectedApp, selectedMethod, chainRestPath } = state
   const appId = selectedApp?.id
@@ -80,10 +79,10 @@ const ChainSandboxInputs = ({
         <Group
           gap={0}
           pos="relative"
-          style={{
+          style={(theme: MantineTheme) => ({
             border: `1px solid ${theme.colors.gray[8]}`,
             borderRadius: 4,
-          }}
+          })}
         >
           {appsSelectItems.length > 0 ? (
             <>
@@ -134,6 +133,7 @@ const ChainSandboxInputs = ({
         <TextInput
           readOnly
           bg="#27292F80"
+          classNames={{ input: "sandbox-input" }}
           miw={300}
           pl={12}
           pr={3}

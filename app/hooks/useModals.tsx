@@ -8,12 +8,12 @@ import {
 
 type OpenModalProps = Parameters<typeof openModal>[0]
 type OpenConfirmationModalProps = Parameters<typeof openConfirmModal>[0]
-
+type CommonModalProps = Partial<Omit<ModalProps, "opened">>
 const useModals = () => {
   const theme = useMantineTheme()
   const { modals: modalsOpen } = useMantineModals()
 
-  const commonModalProps: Partial<Omit<ModalProps, "opened">> = {
+  const commonModalProps: CommonModalProps = {
     centered: true,
     overlayProps: {
       color: theme.colors.navy[9],

@@ -255,7 +255,7 @@ devDependencies:
     specifier: ^5.2.2
     version: 5.2.2
   vite:
-    specifier: ^5.0.0
+    specifier: ^5.1.5
     version: 5.1.6(@types/node@18.15.0)
   vite-tsconfig-paths:
     specifier: ^4.2.1

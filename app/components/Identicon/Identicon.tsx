@@ -1,5 +1,4 @@
-import { Avatar, MantineTheme } from "@mantine/core"
-import { AvatarProps } from "@mantine/core/lib/components/Avatar/Avatar"
+import { Avatar, AvatarProps, MantineTheme } from "@mantine/core"
 import React, { useMemo } from "react"
 import { minidenticon, picasso } from "~/utils/identicons"
 

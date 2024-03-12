@@ -1,14 +1,19 @@
-import { useMantineTheme } from "@mantine/core"
-import { modals, useModals as useMantineModals } from "@mantine/modals"
-import { ModalSettings, OpenConfirmModal } from "@mantine/modals/lib/context"
-import { useRef } from "react"
+import { ModalProps, useMantineTheme } from "@mantine/core"
+import {
+  useModals as useMantineModals,
+  openConfirmModal,
+  openModal,
+  closeAllModals,
+} from "@mantine/modals"
 
+type OpenModalProps = Parameters<typeof openModal>[0]
+type OpenConfirmationModalProps = Parameters<typeof openConfirmModal>[0]
+type CommonModalProps = Partial<Omit<ModalProps, "opened">>
 const useModals = () => {
   const theme = useMantineTheme()
   const { modals: modalsOpen } = useMantineModals()
-  const closeAllRef = useRef(() => modals.closeAll())
 
-  const commonModalProps: ModalSettings = {
+  const commonModalProps: CommonModalProps = {
     centered: true,
     overlayProps: {
       color: theme.colors.navy[9],
@@ -18,22 +23,22 @@ const useModals = () => {
     padding: "md",
   }
 
-  const openConfirmationModal = (modalProps: OpenConfirmModal) =>
-    modals.openConfirmModal({
+  const openConfirmationModal = (modalProps: OpenConfirmationModalProps) =>
+    openConfirmModal({
       ...commonModalProps,
       groupProps: { grow: true, mt: 32 },
       ...modalProps,
     })
 
-  const openContentModal = (modalProps: ModalSettings) => {
-    modals.open({
+  const openContentModal = (modalProps: OpenModalProps) => {
+    openModal({
       ...commonModalProps,
       ...modalProps,
     })
   }
 
-  const openFullScreenModal = (modalProps: ModalSettings) => {
-    modals.open({
+  const openFullScreenModal = (modalProps: OpenModalProps) => {
+    openModal({
       fullScreen: true,
       withCloseButton: false,
       styles: { body: { marginTop: "90px" } },
@@ -47,7 +52,7 @@ const useModals = () => {
     openContentModal,
     openFullScreenModal,
     modalsOpen,
-    closeAllModals: closeAllRef.current,
+    closeAllModals,
   }
 }
 

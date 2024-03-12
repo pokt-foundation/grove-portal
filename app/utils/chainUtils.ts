@@ -65,6 +65,7 @@ export const evmChains = [
   "bsc-mainnet",
   "celo-mainnet",
   "eth-archival",
+  "eth-beacon",
   "eth-goerli",
   "eth-mainnet",
   "eth-trace",

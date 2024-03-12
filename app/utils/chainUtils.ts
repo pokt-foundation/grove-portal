@@ -65,7 +65,6 @@ export const evmChains = [
   "bsc-mainnet",
   "celo-mainnet",
   "eth-archival",
-  "eth-beacon",
   "eth-goerli",
   "eth-mainnet",
   "eth-trace",
@@ -98,6 +97,7 @@ export const evmChains = [
   "scroll-testnet",
   "sepolia",
   "sepolia-archival",
+  "zksync-era",
 ]
 
 export const evmMethods = [

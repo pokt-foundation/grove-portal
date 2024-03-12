@@ -12,7 +12,7 @@
   }
 
   .mantine-TextInput-input[readonly]:not(.sandbox-input),
-  .mantine-PasswordInput-innerInput[readonly]:not(.sandbox-input){
+  .mantine-PasswordInput-innerInput[readonly]:not(.sandbox-input) {
     background-color: var(--mantine-color-gray-9) !important;
   }
 }

@@ -6,12 +6,10 @@ import { portalTheme } from "~/root/portalTheme"
 
 const RootProviders = ({ children }: { children: React.ReactNode }) => {
   return (
-    <>
-      <MantineProvider defaultColorScheme="dark" theme={portalTheme}>
-        <Notifications position="bottom-center" />
-        <ModalsProvider>{children}</ModalsProvider>
-      </MantineProvider>
-    </>
+    <MantineProvider defaultColorScheme="dark" theme={portalTheme}>
+      <Notifications position="bottom-center" />
+      <ModalsProvider>{children}</ModalsProvider>
+    </MantineProvider>
   )
 }
 

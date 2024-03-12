@@ -67,7 +67,7 @@
     "@babel/runtime": "^7.23.2",
     "@graphql-codegen/cli": "^5.0.0",
     "@graphql-codegen/introspection": "^4.0.0",
-    "@graphql-codegen/typescript-graphql-request": "^6.1.0",
+    "@graphql-codegen/typescript-graphql-request": "^6.2.0",
     "@graphql-codegen/typescript-operations": "^4.0.1",
     "@openapitools/openapi-generator-cli": "^2.9.0",
     "@pokt-foundation/pocketjs-types": "^1.0.1",

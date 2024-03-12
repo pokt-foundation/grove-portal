@@ -5,10 +5,10 @@ import {
   Input,
   MantineTheme,
   Menu,
+  MenuProps,
   Text,
   UnstyledButton,
 } from "@mantine/core"
-import { MenuProps } from "@mantine/core/lib/components/Menu/Menu"
 import React, { forwardRef, useMemo, useState } from "react"
 import { LuCheck, LuChevronDown } from "react-icons/lu"
 

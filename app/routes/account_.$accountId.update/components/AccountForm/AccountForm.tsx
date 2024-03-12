@@ -1,52 +1,37 @@
-import {
-  Divider,
-  Box,
-  Button,
-  CloseButton,
-  Group,
-  Flex,
-  Stack,
-  Text,
-  TextInput,
-  Tooltip,
-} from "@mantine/core"
+import { Button, Divider, Group, Stack, TextInput } from "@mantine/core"
 import { Form, NavLink, useParams } from "@remix-run/react"
 import { useState } from "react"
+import RouteModal from "~/components/RouteModal"
 import { Account } from "~/models/portal/sdk"
-import { trackEvent, AnalyticCategories, AnalyticActions } from "~/utils/analytics"
+import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
 
 type AccountFormProps = {
   account: Account
   redirectTo: string | null
+  onSubmit: (formData: FormData) => void
 }
 
-const AccountForm = ({ account, redirectTo }: AccountFormProps) => {
+const AccountForm = ({ account, redirectTo, onSubmit }: AccountFormProps) => {
   const { accountId } = useParams()
   const closeButtonRedirect = redirectTo ?? `/account/${accountId}/settings`
   const [name, setName] = useState(account?.name ?? "")
 
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = (event) => {
+    event.preventDefault()
+    const formData = new FormData(event.currentTarget)
+    onSubmit(formData)
+  }
+
   return (
     <Stack>
-      <Box>
-        <Flex align="center" justify="space-between" my="32px">
-          <Text fw={600} fz="21px">
-            Account Name
-          </Text>
-          <Tooltip withArrow label="Discard">
-            <CloseButton
-              aria-label="Discard"
-              component={NavLink}
-              to={closeButtonRedirect}
-            />
-          </Tooltip>
-        </Flex>
-        <Text>
-          An accurate account name helps team members identify their workspace. Ensure
-          it's current and relevant by updating it here.
-        </Text>
-      </Box>
+      <RouteModal.Header
+        closeButtonLink={closeButtonRedirect}
+        description="An accurate account name helps team members identify their workspace. Ensure
+          it's current and relevant by updating it here."
+        title="Account Name"
+      />
       <Divider mb="md" mt="xl" />
-      <Form method="post">
+      <Form method="post" onSubmit={handleSubmit}>
         <Stack gap="md">
           <TextInput
             required

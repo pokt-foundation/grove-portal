@@ -1,4 +1,3 @@
-import { Box, LoadingOverlay } from "@mantine/core"
 import {
   ActionFunction,
   json,
@@ -10,7 +9,7 @@ import { useFetcher, useLoaderData } from "@remix-run/react"
 import React from "react"
 import invariant from "tiny-invariant"
 import ErrorBoundaryView from "~/components/ErrorBoundaryView"
-import PortalLoader from "~/components/PortalLoader"
+import RouteModal from "~/components/RouteModal"
 import useActionNotification, {
   ActionNotificationData,
 } from "~/hooks/useActionNotification"
@@ -138,8 +137,8 @@ export default function UpdateApp() {
 
   useActionNotification(fetcherData)
 
-  return fetcher.state === "idle" ? (
-    <Box maw={860} mt={90} mx="auto">
+  return (
+    <RouteModal loaderMessage="Updating your application..." state={fetcher.state}>
       <AppForm
         app={app}
         onSubmit={(formData) =>
@@ -148,12 +147,7 @@ export default function UpdateApp() {
           })
         }
       />
-    </Box>
-  ) : (
-    <LoadingOverlay
-      visible
-      loaderProps={{ children: <PortalLoader message="Updating your application..." /> }}
-    />
+    </RouteModal>
   )
 }
 

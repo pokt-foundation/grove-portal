@@ -1,4 +1,3 @@
-import { Box, LoadingOverlay } from "@mantine/core"
 import {
   ActionFunction,
   json,
@@ -8,17 +7,15 @@ import {
 } from "@remix-run/node"
 import {
   useActionData,
+  useFetcher,
   useLoaderData,
-  useNavigate,
-  useNavigation,
-  useParams,
   useSearchParams,
 } from "@remix-run/react"
-import React, { useEffect } from "react"
+import React from "react"
 import invariant from "tiny-invariant"
 import AccountForm from "./components/AccountForm"
 import { ErrorBoundaryView } from "~/components/ErrorBoundaryView"
-import PortalLoader from "~/components/PortalLoader"
+import RouteModal from "~/components/RouteModal"
 import useActionNotification from "~/hooks/useActionNotification"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { Account, RoleName } from "~/models/portal/sdk"
@@ -81,10 +78,12 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
 export const action: ActionFunction = async ({ request, params }) => {
   const user = await requireUser(request)
+  const url = new URL(request.url)
   const portal = initPortalClient({ token: user.accessToken })
   const formData = await request.formData()
   const name = formData.get("account_name")
   const { accountId } = params
+  const redirectTo = url.searchParams.get("redirectTo")
 
   invariant(name && typeof name === "string", "account name not found")
   invariant(accountId && typeof accountId === "string", "accountId not found")
@@ -105,11 +104,7 @@ export const action: ActionFunction = async ({ request, params }) => {
       throw new Error("Unable to update account")
     }
 
-    return json<ActionDataStruct<AccountUpdateActionData>>({
-      data: { success: true },
-      error: false,
-      message: `Account name updated to ${name} successfully`,
-    })
+    return redirect(redirectTo ?? `/account/${accountId}/settings`)
   } catch (error) {
     console.error(error)
     return json<ActionDataStruct<AccountUpdateActionData>>({
@@ -123,38 +118,24 @@ export const action: ActionFunction = async ({ request, params }) => {
 export default function UpdateAccount() {
   const { account } = useLoaderData<AccountUpdateData>()
   const actionData = useActionData<typeof action>()
-  const { accountId } = useParams()
-
-  const { state } = useNavigation()
-  const navigate = useNavigate()
+  const fetcher = useFetcher()
   const [params] = useSearchParams()
   const redirectTo = params.get("redirectTo")
 
   useActionNotification(actionData)
 
-  useEffect(() => {
-    if (actionData) {
-      navigate(redirectTo ?? `/account/${accountId}/settings`)
-    }
-  }, [accountId, actionData, navigate, redirectTo])
-
-  return state !== "idle" ? (
-    <LoadingOverlay
-      visible
-      loaderProps={{
-        children: (
-          <PortalLoader
-            message={
-              state === "submitting" ? "Updating your account..." : "Redirecting..."
-            }
-          />
-        ),
-      }}
-    />
-  ) : (
-    <Box maw={860} mt={90} mx="auto">
-      <AccountForm account={account} redirectTo={redirectTo} />
-    </Box>
+  return (
+    <RouteModal loaderMessage="Updating your account..." state={fetcher.state}>
+      <AccountForm
+        account={account}
+        redirectTo={redirectTo}
+        onSubmit={(formData) =>
+          fetcher.submit(formData, {
+            method: "POST",
+          })
+        }
+      />
+    </RouteModal>
   )
 }
 

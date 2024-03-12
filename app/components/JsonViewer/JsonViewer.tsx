@@ -46,6 +46,7 @@ const JsonViewer = ({ value, editable, onEditSave }: JsonViewerProps) => {
           <Box>
             <Tooltip withArrow label={isEditing ? "Save" : "Edit"}>
               <ActionIcon
+                aria-label={isEditing ? "Save JSON" : "Edit JSON"}
                 color="gray"
                 variant="transparent"
                 onClick={() => (isEditing ? handleSaveClick() : editJson())}

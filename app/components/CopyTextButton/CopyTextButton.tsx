@@ -17,6 +17,7 @@ const CopyTextButton = forwardRef<HTMLDivElement, CopyTextButtonProps>(
           {({ copied, copy }) => (
             <Tooltip withArrow label={copied ? "Copied" : "Copy"}>
               <ActionIcon
+                aria-label="Copy value"
                 color={copied ? "teal" : color ?? "gray"}
                 data-outline-exclude={copied ? "true" : "false"}
                 radius="xl"

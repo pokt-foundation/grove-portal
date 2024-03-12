@@ -110,7 +110,14 @@ export const NovuNotificationPopover = ({
             offset={6}
             size={8}
           >
-            <ActionIcon color="dark" radius="xl" variant="subtle">
+            <ActionIcon
+              aria-label={`${
+                unseenCount ? unseenCount : "No"
+              } unseen notifications. Click to open notifications popover.`}
+              color="dark"
+              radius="xl"
+              variant="subtle"
+            >
               <LuBell color={theme.colors.dark[0]} size={20} />
             </ActionIcon>
           </Indicator>

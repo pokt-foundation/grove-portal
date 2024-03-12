@@ -54,6 +54,7 @@ const ChainWhitelistTable = ({
                 <CopyTextButton value={chain.whitelistValue} />
                 {!readOnly && (
                   <ActionIcon
+                    aria-label="Copy chain whitelist value"
                     radius="xl"
                     size={40}
                     variant="outline"

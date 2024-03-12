@@ -23,7 +23,12 @@ const InvitedAccountAction = ({ account, user }: InvitedAccountActionProps) => {
       {accepted ? (
         <Menu>
           <Menu.Target>
-            <ActionIcon radius="xl" size={40} variant="outline">
+            <ActionIcon
+              aria-label="Open account actions menu"
+              radius="xl"
+              size={40}
+              variant="outline"
+            >
               <LuMoreHorizontal />
             </ActionIcon>
           </Menu.Target>

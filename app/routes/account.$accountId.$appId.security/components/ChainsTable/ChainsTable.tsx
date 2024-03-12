@@ -57,6 +57,7 @@ const ChainsTable = ({
                     <CopyTextButton value={getAppEndpointUrl(chain, appId)} />
                     {!readOnly && (
                       <ActionIcon
+                        aria-label={`Delete ${chain.description}`}
                         radius="xl"
                         size={40}
                         variant="outline"

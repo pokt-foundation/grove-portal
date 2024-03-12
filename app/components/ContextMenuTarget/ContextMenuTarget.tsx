@@ -5,7 +5,13 @@ import { LuMoreHorizontal } from "react-icons/lu"
 const ContextMenuTarget = () => {
   return (
     <Menu.Target>
-      <ActionIcon color="gray" radius="xl" size={40} variant="outline">
+      <ActionIcon
+        aria-label="Open context menu"
+        color="gray"
+        radius="xl"
+        size={40}
+        variant="outline"
+      >
         <LuMoreHorizontal />
       </ActionIcon>
     </Menu.Target>

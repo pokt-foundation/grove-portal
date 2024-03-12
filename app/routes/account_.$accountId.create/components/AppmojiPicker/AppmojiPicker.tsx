@@ -17,7 +17,12 @@ const AppmojiPicker = ({ defaultValue, onAppmojiSelect }: AppmojiPickerProps) =>
 
   return (
     <Box pos="relative">
-      <ActionIcon size="lg" variant="outline" onClick={() => setShowAppmojiPicker(true)}>
+      <ActionIcon
+        aria-label="Open appmoji picker"
+        size="lg"
+        variant="outline"
+        onClick={() => setShowAppmojiPicker(true)}
+      >
         <Emoji size={14} unified={selectedAppmoji} />
       </ActionIcon>
       {showAppmojiPicker && (

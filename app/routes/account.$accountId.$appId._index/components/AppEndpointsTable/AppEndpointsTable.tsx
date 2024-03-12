@@ -100,6 +100,7 @@ const AppEndpointsTable = ({
                     <CopyTextButton value={getAppEndpointUrl(chain, appId)} />
                     <Tooltip withArrow label="Try in Sandbox">
                       <ActionIcon
+                        aria-label={`Open Chain Sandbox for ${chain.description}`}
                         color="gray"
                         radius="xl"
                         size={40}

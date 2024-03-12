@@ -27,6 +27,7 @@ const SimpleStringTable = ({ data, readOnly, onDelete }: SimpleStringTableProps)
                   <CopyTextButton value={value} />
                   {!readOnly && (
                     <ActionIcon
+                      aria-label="Delete value"
                       radius="xl"
                       size={40}
                       variant="outline"

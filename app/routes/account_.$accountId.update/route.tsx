@@ -1,4 +1,4 @@
-import { Box, LoadingOverlay } from "@pokt-foundation/pocket-blocks"
+import { Box, LoadingOverlay } from "@mantine/core"
 import {
   ActionFunction,
   json,
@@ -14,24 +14,26 @@ import {
   useParams,
   useSearchParams,
 } from "@remix-run/react"
-import { useEffect } from "react"
+import React, { useEffect } from "react"
 import invariant from "tiny-invariant"
 import AccountForm from "./components/AccountForm"
-import ErrorView from "~/components/ErrorView"
+import { ErrorBoundaryView } from "~/components/ErrorBoundaryView"
 import PortalLoader from "~/components/PortalLoader"
 import useActionNotification from "~/hooks/useActionNotification"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { Account, RoleName } from "~/models/portal/sdk"
-import { DataStruct } from "~/types/global"
+import { ActionDataStruct } from "~/types/global"
 import { getUserAccountRole } from "~/utils/accountUtils"
 import { getErrorMessage } from "~/utils/catchError"
 import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
 
 export const meta: MetaFunction = () => {
-  return {
-    title: `Update Account ${seo_title_append}`,
-  }
+  return [
+    {
+      title: `Update Account ${seo_title_append}`,
+    },
+  ]
 }
 
 type AccountUpdateData = {
@@ -49,11 +51,10 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   invariant(accountId, "AccountId must be set")
 
   try {
-    const getUserAccountResponse = await portal
-      .getUserAccount({ accountID: accountId, accepted: true })
-      .catch((e) => {
-        console.log(e)
-      })
+    const getUserAccountResponse = await portal.getUserAccount({
+      accountID: accountId,
+      accepted: true,
+    })
 
     if (!getUserAccountResponse) {
       return redirect(`/account/${params.accountId}`)
@@ -68,17 +69,12 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       return redirect(`/account/${params.accountId}`)
     }
 
-    return json<DataStruct<AccountUpdateData>>({
-      data: {
-        account: getUserAccountResponse.getUserAccount as Account,
-      },
-      error: false,
+    return json<AccountUpdateData>({
+      account: getUserAccountResponse.getUserAccount as Account,
     })
   } catch (error) {
-    return json<DataStruct<AccountUpdateData>>({
-      data: null,
-      error: true,
-      message: getErrorMessage(error),
+    throw new Response(getErrorMessage(error), {
+      status: 500,
     })
   }
 }
@@ -101,8 +97,7 @@ export const action: ActionFunction = async ({ request, params }) => {
           name,
         },
       })
-      .catch((err) => {
-        console.log(err)
+      .catch(() => {
         throw new Error("Unable to update account")
       })
 
@@ -110,13 +105,14 @@ export const action: ActionFunction = async ({ request, params }) => {
       throw new Error("Unable to update account")
     }
 
-    return json<DataStruct<AccountUpdateActionData>>({
+    return json<ActionDataStruct<AccountUpdateActionData>>({
       data: { success: true },
       error: false,
       message: `Account name updated to ${name} successfully`,
     })
   } catch (error) {
-    return json<DataStruct<AccountUpdateActionData>>({
+    console.error(error)
+    return json<ActionDataStruct<AccountUpdateActionData>>({
       data: null,
       error: true,
       message: getErrorMessage(error),
@@ -125,8 +121,8 @@ export const action: ActionFunction = async ({ request, params }) => {
 }
 
 export default function UpdateAccount() {
-  const { data, error, message } = useLoaderData() as DataStruct<AccountUpdateData>
-  const actionData = useActionData() as DataStruct<AccountUpdateData>
+  const { account } = useLoaderData<AccountUpdateData>()
+  const actionData = useActionData<typeof action>()
   const { accountId } = useParams()
 
   const { state } = useNavigation()
@@ -142,12 +138,6 @@ export default function UpdateAccount() {
     }
   }, [accountId, actionData, navigate, redirectTo])
 
-  if (error) {
-    return <ErrorView message={message} />
-  }
-
-  const { account } = data
-
   return state !== "idle" ? (
     <LoadingOverlay
       visible
@@ -162,4 +152,8 @@ export default function UpdateAccount() {
       <AccountForm account={account} redirectTo={redirectTo} />
     </Box>
   )
+}
+
+export function ErrorBoundary() {
+  return <ErrorBoundaryView />
 }

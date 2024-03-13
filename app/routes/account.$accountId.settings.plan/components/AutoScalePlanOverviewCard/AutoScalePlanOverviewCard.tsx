@@ -1,13 +1,4 @@
-import { Divider } from "@mantine/core"
-import {
-  Button,
-  Group,
-  Text,
-  Stack,
-  Box,
-  Grid,
-  SimpleGrid,
-} from "@pokt-foundation/pocket-blocks"
+import { Divider, Button, Group, Text, Stack, Box, Grid, SimpleGrid } from "@mantine/core"
 import { Form, useLocation } from "@remix-run/react"
 import React from "react"
 import { LuArrowUpRight, LuStopCircle } from "react-icons/lu"

@@ -1,6 +1,5 @@
-import { Divider } from "@mantine/core"
-import { closeAllModals } from "@mantine/modals"
 import {
+  Divider,
   Box,
   Button,
   Container,
@@ -9,7 +8,7 @@ import {
   LoadingOverlay,
   TextInput,
   CloseButton,
-} from "@pokt-foundation/pocket-blocks"
+} from "@mantine/core"
 import { useNavigation } from "@remix-run/react"
 import React, { Dispatch, useState } from "react"
 import { SecurityReducerActions } from "../../utils/stateReducer"
@@ -17,6 +16,7 @@ import Chain from "~/components/Chain"
 import ChainsDropdown from "~/components/ChainsDropdown/ChainsDropdown"
 import ModalHeader from "~/components/ModalHeader"
 import PortalLoader from "~/components/PortalLoader"
+import useModals from "~/hooks/useModals"
 import { Blockchain } from "~/models/portal/sdk"
 import AddSettingsButton from "~/routes/account.$accountId.$appId.security/components/AddSettingsButton"
 import { whitelistInfo } from "~/routes/account.$accountId.$appId.security/components/ChainWhitelist"
@@ -37,8 +37,8 @@ const ChainWhitelistModal = ({
 }: ChainWhitelistModalProps) => {
   const { state } = useNavigation()
   const { classes: commonClasses } = useCommonStyles()
-  // const { appId, accountId } = useParams()
-  // const fetcher = useFetcher()
+  const { closeAllModals } = useModals()
+
   const [selectedWhiteLists, setSelectedWhiteLists] = useState<BlockchainWhitelist[]>([])
   const [inputWhitelistValue, setInputWhitelistValue] = useState<string>("")
   const [dropdownSelectedChain, setDropdownSelectedChain] = useState<Blockchain>()

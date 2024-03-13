@@ -1,4 +1,4 @@
-import { Container, Stack } from "@pokt-foundation/pocket-blocks"
+import { Container, Stack } from "@mantine/core"
 import ApplicationHeader from "./components/ApplicationHeader"
 import LinkTabs from "~/components/LinkTabs"
 import { PortalApp, RoleName } from "~/models/portal/sdk"

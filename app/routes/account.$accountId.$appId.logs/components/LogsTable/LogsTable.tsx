@@ -1,4 +1,4 @@
-import { Box, Group, Button } from "@pokt-foundation/pocket-blocks"
+import { Box, Group, Button } from "@mantine/core"
 import { useNavigation, useSearchParams } from "@remix-run/react"
 import React, { useState } from "react"
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu"

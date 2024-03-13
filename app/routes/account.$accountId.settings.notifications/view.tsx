@@ -1,9 +1,9 @@
-import { Divider } from "@mantine/core"
-import { Text, Switch, Group, Stack } from "@pokt-foundation/pocket-blocks"
+import { Text, Switch, Group, Stack, Divider } from "@mantine/core"
 import { useFetcher } from "@remix-run/react"
-import React from "react"
-import { useCallback } from "react"
-import useActionNotification from "~/hooks/useActionNotification"
+import React, { useCallback } from "react"
+import useActionNotification, {
+  ActionNotificationData,
+} from "~/hooks/useActionNotification"
 import { Account, RoleName } from "~/models/portal/sdk"
 import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
 import { formatNumberToSICompact } from "~/utils/formattingUtils"
@@ -48,7 +48,8 @@ export default function AccountNotificationsView({
 }: NotificationsAlertFormProps) {
   const { notifications } = account
   const fetcher = useFetcher()
-  useActionNotification(fetcher.data)
+  const fetcherData = fetcher.data as ActionNotificationData
+  useActionNotification(fetcherData)
 
   const notificationEvents = notifications[0]?.notificationSettings?.events
 

@@ -5,9 +5,11 @@ import AppKeys from "~/routes/account.$accountId.$appId.keys/view"
 import { seo_title_append } from "~/utils/seo"
 
 export const meta: MetaFunction = () => {
-  return {
-    title: `Application Keys ${seo_title_append}`,
-  }
+  return [
+    {
+      title: `Application Keys ${seo_title_append}`,
+    },
+  ]
 }
 
 export default function ApplicationKeys() {

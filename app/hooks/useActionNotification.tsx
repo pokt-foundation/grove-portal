@@ -1,16 +1,16 @@
-import { showNotification } from "@mantine/notifications"
+import { notifications } from "@mantine/notifications"
 import React, { useEffect } from "react"
 import { LuCheck, LuX } from "react-icons/lu"
-import { DataStruct } from "~/types/global"
+import { ActionDataStruct } from "~/types/global"
 
-type ActionNotificationData = Pick<DataStruct<any>, "message" | "error">
+export type ActionNotificationData = Pick<ActionDataStruct<unknown>, "message" | "error">
 
 const useActionNotification = (data: ActionNotificationData) => {
   useEffect(() => {
     if (!data) return
 
     if (data.message) {
-      showNotification({
+      notifications.show({
         icon: data.error ? <LuX size={18} /> : <LuCheck size={18} />,
         color: data.error ? "red" : "green",
         message: data.message,

@@ -1,4 +1,4 @@
-import { Image, Text, Stack } from "@pokt-foundation/pocket-blocks"
+import { Image, Text, Stack } from "@mantine/core"
 import { type ReactNode } from "react"
 
 type EmptyStateProps = {

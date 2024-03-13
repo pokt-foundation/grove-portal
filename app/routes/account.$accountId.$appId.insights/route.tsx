@@ -1,23 +1,25 @@
 import { json, LoaderFunction, MetaFunction, redirect } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
+import React from "react"
 import invariant from "tiny-invariant"
-import ErrorView from "~/components/ErrorView"
+import ErrorBoundaryView from "~/components/ErrorBoundaryView"
 import { getAggregateRelays, getTotalRelays } from "~/models/dwh/dwh.server"
 import { AnalyticsRelaysAggregated } from "~/models/dwh/sdk/models/AnalyticsRelaysAggregated"
 import { AnalyticsRelaysTotal } from "~/models/dwh/sdk/models/AnalyticsRelaysTotal"
 import ApplicationInsightsView from "~/routes/account.$accountId.$appId.insights/view"
-import type { DataStruct } from "~/types/global"
 import { getErrorMessage } from "~/utils/catchError"
 import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
 
 export const meta: MetaFunction = () => {
-  return {
-    title: `Application Insights ${seo_title_append}`,
-  }
+  return [
+    {
+      title: `Application Insights ${seo_title_append}`,
+    },
+  ]
 }
 
-type AppInsightsData = {
+export type AppInsightsData = {
   total: AnalyticsRelaysTotal
   aggregate: AnalyticsRelaysAggregated[]
 }
@@ -47,28 +49,22 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       days: daysParam,
     })
 
-    return json<DataStruct<AppInsightsData>>({
-      data: {
-        total: (total as AnalyticsRelaysTotal) ?? undefined,
-        aggregate: (aggregate as AnalyticsRelaysAggregated[]) ?? undefined, //dailyReponse.data as AnalyticsRelaysDaily[],
-      },
-      error: false,
+    return json<AppInsightsData>({
+      total: (total as AnalyticsRelaysTotal) ?? undefined,
+      aggregate: (aggregate as AnalyticsRelaysAggregated[]) ?? undefined, //dailyReponse.data as AnalyticsRelaysDaily[],
     })
   } catch (error) {
-    return json<DataStruct<AppInsightsData>>({
-      data: null,
-      error: true,
-      message: getErrorMessage(error),
+    throw new Response(getErrorMessage(error), {
+      status: 500,
     })
   }
 }
 
 export default function ApplicationInsights() {
-  const { data, error, message } = useLoaderData() as DataStruct<AppInsightsData>
+  const { total, aggregate } = useLoaderData<typeof loader>()
+  return <ApplicationInsightsView aggregate={aggregate} total={total} />
+}
 
-  if (error) {
-    return <ErrorView message={message} />
-  }
-
-  return <ApplicationInsightsView data={data} />
+export function ErrorBoundary() {
+  return <ErrorBoundaryView />
 }

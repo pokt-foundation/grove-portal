@@ -1,18 +1,23 @@
-import { Button, CloseButton, Stack } from "@pokt-foundation/pocket-blocks"
+import { Button, CloseButton, Stack } from "@mantine/core"
 import { LoaderFunction, MetaFunction, redirect } from "@remix-run/node"
 import { Link, NavLink, useParams } from "@remix-run/react"
+import React from "react"
 import invariant from "tiny-invariant"
 import { EmptyState } from "~/components/EmptyState"
+import { ErrorBoundaryView } from "~/components/ErrorBoundaryView"
 import { initPortalClient } from "~/models/portal/portal.server"
 import useCommonStyles from "~/styles/commonStyles"
 import { isAccountWithinAppLimit } from "~/utils/accountUtils"
+import { getErrorMessage } from "~/utils/catchError"
 import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
 
 export const meta: MetaFunction = () => {
-  return {
-    title: `App Creation Limit Exceeded ${seo_title_append}`,
-  }
+  return [
+    {
+      title: `App Creation Limit Exceeded ${seo_title_append}`,
+    },
+  ]
 }
 
 export const loader: LoaderFunction = async ({ request, params }) => {
@@ -21,20 +26,24 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
   const portal = initPortalClient({ token: user.accessToken })
   invariant(accountId, "AccountId must be set")
-  const getUserAccountResponse = await portal
-    .getUserAccount({ accountID: accountId, accepted: true })
-    .catch((e) => {
-      console.log(e)
+  try {
+    const getUserAccountResponse = await portal.getUserAccount({
+      accountID: accountId,
+      accepted: true,
     })
 
-  if (!getUserAccountResponse) {
-    return redirect(`/account/${params.accountId}`)
-  }
-
-  const userAccount = getUserAccountResponse.getUserAccount
-  const canCreateApp = isAccountWithinAppLimit(userAccount)
-  if (canCreateApp) {
-    return redirect(`/account/${params.accountId}`)
+    if (!getUserAccountResponse) {
+      return redirect(`/account/${params.accountId}`)
+    }
+    const userAccount = getUserAccountResponse.getUserAccount
+    const canCreateApp = isAccountWithinAppLimit(userAccount)
+    if (canCreateApp) {
+      return redirect(`/account/${params.accountId}`)
+    }
+  } catch (error) {
+    throw new Response(getErrorMessage(error), {
+      status: 500,
+    })
   }
 
   return null
@@ -44,14 +53,8 @@ export default function AppLimitExceeded() {
   const { classes: commonClasses } = useCommonStyles()
   const params = useParams()
   return (
-    <Stack align="center" justify="center" mt={42}>
-      <CloseButton
-        aria-label="Discard"
-        component={NavLink}
-        ml="auto"
-        size="lg"
-        to="/account"
-      />
+    <Stack align="center" justify="center" m={42}>
+      <CloseButton aria-label="Discard" component={NavLink} ml="auto" to="/account" />
       <EmptyState
         alt="App limit exceeded"
         callToAction={
@@ -77,4 +80,8 @@ export default function AppLimitExceeded() {
       />
     </Stack>
   )
+}
+
+export function ErrorBoundary() {
+  return <ErrorBoundaryView />
 }

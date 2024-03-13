@@ -1,5 +1,5 @@
-import { Divider } from "@mantine/core"
 import {
+  Divider,
   Box,
   Button,
   CloseButton,
@@ -10,7 +10,7 @@ import {
   Text,
   TextInput,
   Tooltip,
-} from "@pokt-foundation/pocket-blocks"
+} from "@mantine/core"
 import { Form, NavLink, useParams } from "@remix-run/react"
 import { useEffect, useMemo, useState } from "react"
 import { PortalApp } from "~/models/portal/sdk"
@@ -65,11 +65,10 @@ const AppForm = ({ app, onSubmit }: AppFormProps) => {
           <Text fw={600} fz="21px">
             {label} your application
           </Text>
-          <Tooltip withArrow label="Discard" position="bottom">
+          <Tooltip withArrow label="Discard">
             <CloseButton
               aria-label="Discard"
               component={NavLink}
-              size="lg"
               to={`/account/${accountId}`}
             />
           </Tooltip>

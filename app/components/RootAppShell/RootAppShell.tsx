@@ -1,4 +1,4 @@
-import { AppShell, Container } from "@pokt-foundation/pocket-blocks"
+import { AppShell, Container } from "@mantine/core"
 import React, { ReactNode, useMemo, useState } from "react"
 import { AppHeader } from "~/components/AppHeader"
 import { Sidebar } from "~/components/Sidebar"

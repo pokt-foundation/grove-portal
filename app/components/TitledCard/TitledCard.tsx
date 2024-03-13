@@ -1,4 +1,4 @@
-import { Card, CardProps, createStyles } from "@pokt-foundation/pocket-blocks"
+import { Card, CardProps, createStyles } from "@mantine/core"
 import React, { ReactNode } from "react"
 
 export type TitledCardPropsType = {

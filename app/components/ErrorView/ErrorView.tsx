@@ -1,4 +1,4 @@
-import { Title, Text } from "@pokt-foundation/pocket-blocks"
+import { Title, Text } from "@mantine/core"
 
 type ErrorViewProps = {
   message?: string

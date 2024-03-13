@@ -1,4 +1,4 @@
-import { Group, Select, Text } from "@pokt-foundation/pocket-blocks"
+import { Group, Select, Text } from "@mantine/core"
 import { forwardRef, useMemo, useRef } from "react"
 import { LuSearch } from "react-icons/lu"
 import { BlockchainsQuery } from "~/models/portal/sdk"

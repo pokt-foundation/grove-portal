@@ -1,5 +1,4 @@
-import { Divider } from "@mantine/core"
-import { Card, Drawer, Group, Stack, Text } from "@pokt-foundation/pocket-blocks"
+import { Divider, Card, Drawer, Group, Stack, Text } from "@mantine/core"
 import React from "react"
 import { TitledCard } from "~/components/TitledCard"
 import { Logs } from "~/models/dwh/sdk"
@@ -45,8 +44,7 @@ const LogsSideDrawer = ({ logsItem, onSideDrawerClose }: LogsSideDrawerProps) =>
   return (
     <Drawer
       opened={!!logsItem}
-      overlayColor="#000000"
-      overlayOpacity={0.5}
+      overlayProps={{ opacity: 0.5, color: "#000000" }}
       padding="sm"
       position="right"
       size={800}

@@ -1,4 +1,4 @@
-import { Box, LoadingOverlay } from "@pokt-foundation/pocket-blocks"
+import { Box, LoadingOverlay } from "@mantine/core"
 import {
   ActionFunction,
   json,
@@ -7,23 +7,27 @@ import {
   redirect,
 } from "@remix-run/node"
 import { useFetcher, useLoaderData } from "@remix-run/react"
+import React from "react"
 import invariant from "tiny-invariant"
-import ErrorView from "~/components/ErrorView"
+import ErrorBoundaryView from "~/components/ErrorBoundaryView"
 import PortalLoader from "~/components/PortalLoader"
-import useActionNotification from "~/hooks/useActionNotification"
+import useActionNotification, {
+  ActionNotificationData,
+} from "~/hooks/useActionNotification"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { PortalApp, RoleName, UpdatePortalApp } from "~/models/portal/sdk"
 import AppForm from "~/routes/account_.$accountId.create/components/AppForm"
-import { DataStruct } from "~/types/global"
 import { getUserAccountRole } from "~/utils/accountUtils"
 import { getErrorMessage } from "~/utils/catchError"
 import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
 
 export const meta: MetaFunction = () => {
-  return {
-    title: `Update Application ${seo_title_append}`,
-  }
+  return [
+    {
+      title: `Update Application ${seo_title_append}`,
+    },
+  ]
 }
 
 type UpdateAppLoaderData = {
@@ -39,21 +43,19 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   invariant(accountId, "AccountId must be set")
 
   try {
-    const getUserPortalAppResponse = await portal
-      .getUserPortalApp({ portalAppID: appId, accountID: accountId })
-      .catch((e) => {
-        console.log(e)
-      })
+    const getUserPortalAppResponse = await portal.getUserPortalApp({
+      portalAppID: appId,
+      accountID: accountId,
+    })
 
     if (!getUserPortalAppResponse) {
       return redirect(`/account/${accountId}`)
     }
 
-    const getUserAccountResponse = await portal
-      .getUserAccount({ accountID: accountId, accepted: true })
-      .catch((e) => {
-        console.log(e)
-      })
+    const getUserAccountResponse = await portal.getUserAccount({
+      accountID: accountId,
+      accepted: true,
+    })
 
     if (!getUserAccountResponse) {
       return redirect(`/account/${params.accountId}`)
@@ -68,17 +70,12 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       return redirect(`/account/${params.accountId}/${appId}`)
     }
 
-    return json<DataStruct<UpdateAppLoaderData>>({
-      data: {
-        app: getUserPortalAppResponse.getUserPortalApp as PortalApp,
-      },
-      error: false,
+    return json<UpdateAppLoaderData>({
+      app: getUserPortalAppResponse.getUserPortalApp as PortalApp,
     })
   } catch (error) {
-    return json<DataStruct<UpdateAppLoaderData>>({
-      data: null,
-      error: true,
-      message: getErrorMessage(error),
+    throw new Response(getErrorMessage(error), {
+      status: 500,
     })
   }
 }
@@ -136,15 +133,10 @@ export const action: ActionFunction = async ({ request, params }) => {
 
 export default function UpdateApp() {
   const fetcher = useFetcher()
-  const { data, error, message } = useLoaderData() as DataStruct<UpdateAppLoaderData>
+  const { app } = useLoaderData<UpdateAppLoaderData>()
+  const fetcherData = fetcher.data as ActionNotificationData
 
-  useActionNotification(fetcher.data)
-
-  if (error) {
-    return <ErrorView message={message} />
-  }
-
-  const { app } = data
+  useActionNotification(fetcherData)
 
   return fetcher.state === "idle" ? (
     <Box maw={860} mt={90} mx="auto">
@@ -163,4 +155,8 @@ export default function UpdateApp() {
       loader={<PortalLoader message="Updating your application..." />}
     />
   )
+}
+
+export function ErrorBoundary() {
+  return <ErrorBoundaryView />
 }

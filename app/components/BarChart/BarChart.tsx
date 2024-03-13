@@ -1,4 +1,4 @@
-import { Box, Text, useMantineTheme } from "@pokt-foundation/pocket-blocks"
+import { Box, Text, useMantineTheme } from "@mantine/core"
 import React, { useState } from "react"
 import {
   CartesianGrid,
@@ -96,7 +96,7 @@ const BarChart = ({ data, xAxisDataKey, yAxisDataKey }: BarChartProps) => {
             <Cell
               key={`${entry.val}-${index}`}
               fill={focusedBar === index ? theme.colors.blue[7] : "none"}
-              // fillOpacity={focusedBar === index || mouseLeave ? 1 : 0.2}
+              fillOpacity={focusedBar === index || mouseLeave ? 1 : 0.2}
             />
           ))}
         </Bar>

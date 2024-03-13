@@ -97,6 +97,7 @@ export const evmChains = [
   "scroll-testnet",
   "sepolia",
   "sepolia-archival",
+  "zksync-era",
 ]
 
 export const evmMethods = [

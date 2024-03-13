@@ -1,5 +1,4 @@
-import { Divider } from "@mantine/core"
-import { Group, Text, Stack } from "@pokt-foundation/pocket-blocks"
+import { Divider, Group, Text, Stack } from "@mantine/core"
 import React from "react"
 import { TitledCard } from "~/components/TitledCard"
 import { Account } from "~/models/portal/sdk"

@@ -1,4 +1,4 @@
-import { Navbar } from "@pokt-foundation/pocket-blocks"
+import { Navbar } from "@mantine/core"
 import { useMemo } from "react"
 import { InternalLink, SidebarNavRoute } from "~/components/Sidebar/components"
 import { PortalApp } from "~/models/portal/sdk"

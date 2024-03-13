@@ -1,5 +1,4 @@
-import { Indicator } from "@mantine/core"
-import { Group, MantineTheme, Text, Tooltip } from "@pokt-foundation/pocket-blocks"
+import { Indicator, Group, MantineTheme, Text, Tooltip } from "@mantine/core"
 import { useMemo } from "react"
 import { LuCrown } from "react-icons/lu"
 import { DataTable } from "~/components/DataTable"

@@ -1,4 +1,4 @@
-import { Burger, Flex, MediaQuery } from "@pokt-foundation/pocket-blocks"
+import { Burger, Flex, MediaQuery } from "@mantine/core"
 import AccountDrawer from "~/components/AccountDrawer"
 import { NovuNotificationPopover } from "~/components/AppHeader/NovuNotificationPopover"
 import { Account, User } from "~/models/portal/sdk"

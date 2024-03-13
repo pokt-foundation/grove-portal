@@ -1,5 +1,4 @@
-import { Divider } from "@mantine/core"
-import { Box, Navbar, ScrollArea } from "@pokt-foundation/pocket-blocks"
+import { Divider, Box, Navbar, ScrollArea } from "@mantine/core"
 import { Link, useParams } from "@remix-run/react"
 import React, { useMemo } from "react"
 import { LuPlus } from "react-icons/lu"

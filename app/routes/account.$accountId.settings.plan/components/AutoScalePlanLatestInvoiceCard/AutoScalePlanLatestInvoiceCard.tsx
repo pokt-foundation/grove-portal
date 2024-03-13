@@ -1,5 +1,4 @@
-import { Accordion, Divider } from "@mantine/core"
-import { Button, Grid, Group, Stack, Text } from "@pokt-foundation/pocket-blocks"
+import { Accordion, Divider, Button, Grid, Group, Stack, Text } from "@mantine/core"
 import { useParams } from "@remix-run/react"
 import { Emoji } from "emoji-picker-react"
 import React from "react"
@@ -56,6 +55,7 @@ export default function AutoScalePlanLatestInvoiceCard({
           styles={{
             item: { borderBottom: "none" },
             content: { padding: 0 },
+            label: { padding: 0 },
             control: {
               padding: 0,
               paddingBottom: 12,

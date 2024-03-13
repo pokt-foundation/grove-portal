@@ -1,11 +1,4 @@
-import {
-  Box,
-  Center,
-  CloseButton,
-  Flex,
-  Text,
-  Tooltip,
-} from "@pokt-foundation/pocket-blocks"
+import { Box, Center, CloseButton, Flex, Text, Tooltip } from "@mantine/core"
 import { NavLink, useParams } from "@remix-run/react"
 import { AccountPlan } from "~/components/AccountPlan"
 import { PayPlanType } from "~/models/portal/sdk"
@@ -23,11 +16,10 @@ const AccountPlansContainer = ({ onPlanSelected }: AccountPlansContainerProps) =
         <Text fw={600} fz="21px">
           Choose an account plan
         </Text>
-        <Tooltip withArrow label="Discard" position="bottom">
+        <Tooltip withArrow label="Discard">
           <CloseButton
             aria-label="Discard"
             component={NavLink}
-            size="lg"
             to={`/account/${accountId}`}
           />
         </Tooltip>

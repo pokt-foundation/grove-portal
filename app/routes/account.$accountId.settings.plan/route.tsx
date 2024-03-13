@@ -2,14 +2,13 @@ import { json, LoaderFunction, MetaFunction, redirect } from "@remix-run/node"
 import { useLoaderData, useOutletContext } from "@remix-run/react"
 import invariant from "tiny-invariant"
 import { AccountPlanView } from "./view"
-import ErrorView from "~/components/ErrorView"
+import ErrorBoundaryView from "~/components/ErrorBoundaryView/ErrorBoundaryView"
 import { getTotalRelays } from "~/models/dwh/dwh.server"
 import { AnalyticsRelaysTotal } from "~/models/dwh/sdk/models/AnalyticsRelaysTotal"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { Account, PortalApp, User } from "~/models/portal/sdk"
 import { Stripe, stripe } from "~/models/stripe/stripe.server"
 import { AppIdOutletContext } from "~/routes/account.$accountId.$appId/route"
-import { DataStruct } from "~/types/global"
 import { getErrorMessage } from "~/utils/catchError"
 import { dayjs } from "~/utils/dayjs"
 import { getRequiredServerEnvVar } from "~/utils/environment"
@@ -17,9 +16,11 @@ import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
 
 export const meta: MetaFunction = () => {
-  return {
-    title: `Account Plan ${seo_title_append}`,
-  }
+  return [
+    {
+      title: `Account Plan ${seo_title_append}`,
+    },
+  ]
 }
 
 export type AccountAppRelays = Pick<AnalyticsRelaysTotal, "countTotal"> &
@@ -45,42 +46,27 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
   const user = await requireUser(request)
   const portal = initPortalClient({ token: user.accessToken })
-  const account = await portal.getUserAccount({ accountID: accountId, accepted: true })
-
-  if (!account.getUserAccount) {
-    throw new Error(
-      `Account ${params.accountId} not found for user ${user.user.portalUserID}`,
-    )
-  }
-
   try {
     let subscription
     let usageRecords
     let latestInvoice
+    let account
     const accountAppsRelays: AccountAppRelays[] = []
+
+    account = await portal.getUserAccount({ accountID: accountId, accepted: true })
 
     if (account.getUserAccount.integrations?.stripeSubscriptionID) {
       subscription = await stripe.subscriptions.retrieve(
         account.getUserAccount.integrations.stripeSubscriptionID,
       )
 
-      if (!subscription) {
-        throw new Error(`Subscription not found for account`)
-      }
-
       usageRecords = await stripe.subscriptionItems.listUsageRecordSummaries(
         subscription.items.data[0].id,
         { limit: 3 },
       )
-      if (!usageRecords) {
-        throw new Error(`Useage records not found for subscription ${subscription.id}`)
-      }
 
       if (subscription.latest_invoice) {
         latestInvoice = await stripe.invoices.retrieve(`${subscription.latest_invoice}`)
-        if (!latestInvoice) {
-          throw new Error(`Latest invoice not found for subscription ${subscription.id}`)
-        }
 
         const invoicePeriodStart = dayjs.unix(Number(latestInvoice.period_start)).toDate()
         const invoicePeriodEnd = dayjs.unix(Number(latestInvoice.period_end)).toDate()
@@ -97,12 +83,6 @@ export const loader: LoaderFunction = async ({ request, params }) => {
               to: invoicePeriodEnd,
             })) as AnalyticsRelaysTotal
 
-            if (!total) {
-              throw new Error(
-                `Relays not found for latest invoice period on account for app ${app?.id}`,
-              )
-            }
-
             accountAppsRelays.push({
               ...total,
               name: app?.name,
@@ -113,35 +93,28 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       }
     }
 
-    return json<DataStruct<AccountPlanLoaderData>>({
-      data: {
-        account: account.getUserAccount as Account,
-        subscription,
-        usageRecords,
-        latestInvoice,
-        accountAppsRelays,
-        user: user.user,
-      },
-      error: false,
+    return json<AccountPlanLoaderData>({
+      account: account.getUserAccount as Account,
+      subscription,
+      usageRecords,
+      latestInvoice,
+      accountAppsRelays,
+      user: user.user,
     })
   } catch (error) {
-    return json<DataStruct<AccountPlanLoaderData>>({
-      data: null,
-      error: true,
-      message: getErrorMessage(error),
+    throw new Response(getErrorMessage(error), {
+      status: 500,
     })
   }
 }
 
-export const AccountPlanDetails = () => {
-  const { data, error, message } = useLoaderData() as DataStruct<AccountPlanLoaderData>
+export default function AccountPlanDetails() {
+  const data = useLoaderData<AccountPlanLoaderData>()
   const { userRole } = useOutletContext<AppIdOutletContext>()
-
-  if (error) {
-    return <ErrorView message={message} />
-  }
 
   return <AccountPlanView {...data} userRole={userRole} />
 }
 
-export default AccountPlanDetails
+export function ErrorBoundary() {
+  return <ErrorBoundaryView />
+}

@@ -1,5 +1,4 @@
-import { Divider } from "@mantine/core"
-import { Button, Group, Text, Stack } from "@pokt-foundation/pocket-blocks"
+import { Divider, Button, Group, Text, Stack } from "@mantine/core"
 import { Link } from "@remix-run/react"
 import React from "react"
 import { LuArrowUpRight } from "react-icons/lu"

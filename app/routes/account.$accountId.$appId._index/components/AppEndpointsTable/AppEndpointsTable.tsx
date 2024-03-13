@@ -4,10 +4,10 @@ import {
   TextInput,
   useMantineTheme,
   UnstyledButton,
-  ActionIcon,
   Tooltip,
-} from "@pokt-foundation/pocket-blocks"
-import { useFetcher, useParams } from "@remix-run/react"
+  ActionIcon,
+} from "@mantine/core"
+import { useFetcher, useNavigation, useParams } from "@remix-run/react"
 import React, { useMemo, useState } from "react"
 import { LuBook, LuPlay } from "react-icons/lu"
 import { RiStarLine, RiStarFill } from "react-icons/ri"
@@ -17,7 +17,9 @@ import { ChainSandboxProvider } from "~/components/ChainSandbox/state"
 import ContextMenuTarget from "~/components/ContextMenuTarget"
 import CopyTextButton from "~/components/CopyTextButton"
 import { DataTable } from "~/components/DataTable"
-import useActionNotification from "~/hooks/useActionNotification"
+import useActionNotification, {
+  ActionNotificationData,
+} from "~/hooks/useActionNotification"
 import { Blockchain, PortalApp } from "~/models/portal/sdk"
 import ChainSandboxSideDrawer from "~/routes/account.$accountId.$appId._index/components/ChainSandboxSideDrawer"
 import useCommonStyles from "~/styles/commonStyles"
@@ -41,12 +43,14 @@ const AppEndpointsTable = ({
   const theme = useMantineTheme()
   const { appId } = useParams()
   const fetcher = useFetcher()
+  const fetcherData = fetcher.data as ActionNotificationData
+  const navigation = useNavigation()
   const { classes: commonClasses } = useCommonStyles()
   const [selectedBlockchain, setSelectedBlockchain] = useState<Blockchain>()
   const favoriteChains = app.settings.favoritedChainIDs
 
   // handle notification for menu fetcher action
-  useActionNotification(fetcher.data)
+  useActionNotification(fetcherData)
 
   const chains = useMemo(() => {
     const fav = blockchains
@@ -85,7 +89,7 @@ const AppEndpointsTable = ({
                     <FavoriteChain
                       blockchain={chain}
                       favoriteChains={favoriteChains}
-                      readOnly={false}
+                      readOnly={navigation.state !== "idle"}
                     />
                     <Chain chain={chain} />
                   </Flex>

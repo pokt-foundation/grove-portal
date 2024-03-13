@@ -1,32 +1,26 @@
-import {
-  Badge,
-  Card,
-  Group,
-  SimpleGrid,
-  Stack,
-  Text,
-} from "@pokt-foundation/pocket-blocks"
+import { Badge, Card, Group, SimpleGrid, Stack, Text } from "@mantine/core"
 import { useNavigation } from "@remix-run/react"
 import React from "react"
 import TitledCard from "~/components/TitledCard"
+import { AnalyticsRelaysAggregated } from "~/models/dwh/sdk/models/AnalyticsRelaysAggregated"
+import { AnalyticsRelaysTotal } from "~/models/dwh/sdk/models/AnalyticsRelaysTotal"
 import { AccountAppsOverview } from "~/routes/account.$accountId._index/components/AccountAppsOverview"
 import { ChartPeriodSelector } from "~/routes/account.$accountId._index/components/ChartPeriodSelector"
 import { OverviewSparkline } from "~/routes/account.$accountId._index/components/OverviewSparkline"
 import useAggregateChartData from "~/routes/account.$accountId._index/hooks/useAggregateChartData"
-import { AccountInsightsData } from "~/routes/account.$accountId._index/route"
 import { getTotalErrors } from "~/utils/chartUtils"
 import { commify } from "~/utils/formattingUtils"
 
 type AccountInsightsViewProps = {
-  data: Pick<AccountInsightsData, "total" | "aggregate">
+  total: AnalyticsRelaysTotal
+  aggregate: AnalyticsRelaysAggregated[]
 }
 
-export const AccountInsightsView = ({ data }: AccountInsightsViewProps) => {
+export const AccountInsightsView = ({ total, aggregate }: AccountInsightsViewProps) => {
   const navigation = useNavigation()
 
   const isLoading = !!(navigation.state === "loading" && navigation.formAction)
 
-  const { total, aggregate } = data
   const totalErrors = getTotalErrors(total)
 
   const {

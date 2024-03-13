@@ -1,4 +1,4 @@
-import { MantineThemeOverride } from "@pokt-foundation/pocket-blocks"
+import { MantineThemeOverride } from "@mantine/core"
 
 export const portalTheme: MantineThemeOverride = {
   primaryColor: "green",
@@ -187,6 +187,11 @@ export const portalTheme: MantineThemeOverride = {
         },
       },
     },
+    CloseButton: {
+      defaultProps: {
+        size: "md",
+      },
+    },
     Card: {
       styles: (theme) => ({
         root: {
@@ -198,7 +203,7 @@ export const portalTheme: MantineThemeOverride = {
     },
     Modal: {
       styles: (theme) => ({
-        modal: {
+        content: {
           backgroundColor:
             theme.colorScheme === "dark" ? theme.colors.dark[9] : theme.colors.gray[1],
         },
@@ -206,10 +211,15 @@ export const portalTheme: MantineThemeOverride = {
     },
     Drawer: {
       styles: (theme) => ({
-        drawer: {
+        content: {
           backgroundColor:
             theme.colorScheme === "dark" ? theme.colors.dark[9] : theme.colors.gray[1],
           overflowY: "auto",
+        },
+        header: {
+          zIndex: 100,
+          backgroundColor:
+            theme.colorScheme === "dark" ? theme.colors.dark[9] : theme.colors.gray[1],
         },
       }),
     },

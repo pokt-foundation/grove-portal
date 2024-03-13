@@ -1,5 +1,4 @@
-import { closeAllModals } from "@mantine/modals"
-import { Button, Group, Menu, Text, TextInput } from "@pokt-foundation/pocket-blocks"
+import { Button, Group, Menu, Text, TextInput } from "@mantine/core"
 import { Form } from "@remix-run/react"
 import { useState } from "react"
 import { LuTrash2 } from "react-icons/lu"
@@ -13,6 +12,7 @@ type DeleteApplicationProps = {
 
 const DeleteAppForm = ({ app }: { app: PortalApp }) => {
   const [deleteTextInputValue, setDeleteTextInputValue] = useState("")
+  const { closeAllModals } = useModals()
 
   return (
     <Form action={`/account/${app.accountID}/${app.id}`} method="post">

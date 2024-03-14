@@ -1,13 +1,13 @@
 import {
   Box,
+  FocusTrap,
   Group,
   Input,
+  MantineTheme,
   Menu,
-  MenuStylesNames,
-  Styles,
+  MenuProps,
   Text,
   UnstyledButton,
-  useMantineTheme,
 } from "@mantine/core"
 import React, { forwardRef, useMemo, useState } from "react"
 import { LuCheck, LuChevronDown } from "react-icons/lu"
@@ -23,7 +23,7 @@ type FluidSelectProps = {
   itemComponent?: React.FC<any>
   renderButton?: (value: string) => React.ReactNode
   placeholder?: string
-  styles?: Styles<MenuStylesNames>
+  styles?: MenuProps["styles"]
   withSearch?: boolean
   disabled?: boolean
 }
@@ -93,7 +93,6 @@ const FluidSelect = forwardRef<HTMLDivElement, FluidSelectProps>(
     }: FluidSelectProps,
     ref,
   ) => {
-    const theme = useMantineTheme()
     const [searchTerm, setSearchTerm] = useState("")
     const initialSelectedItem = items.find((item) => item.value === value)
 
@@ -123,53 +122,56 @@ const FluidSelect = forwardRef<HTMLDivElement, FluidSelectProps>(
               selectedItem={selectedItem}
             />
           </Menu.Target>
-          <Menu.Dropdown px={8} py="md">
-            {withSearch && (
-              <Input
-                mb={8}
-                placeholder="Search..."
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            )}
-            {filteredItems.length > 0 ? (
-              filteredItems.map((item, index) => (
-                <Menu.Item
-                  key={item.label}
-                  disabled={item.value === value}
-                  mb={index === items.length - 1 ? 0 : 8}
-                  p={5}
-                  style={{
-                    ...(item.value === value && {
-                      backgroundColor:
-                        theme.colorScheme === "dark"
-                          ? theme.colors.dark[7]
-                          : theme.colors.gray[0],
-                      color:
-                        theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
-                    }),
-                  }}
-                  onClick={() => {
-                    setSearchTerm("")
-                    setSelectedItem(item)
-                    onSelect(item.value)
-                  }}
-                >
-                  <Group>
-                    {ItemComponent ? (
-                      <ItemComponent {...item} />
-                    ) : (
-                      <Text>{item.label}</Text>
-                    )}
-                    {item.value === value && (
-                      <LuCheck size={18} style={{ marginLeft: "auto", marginRight: 0 }} />
-                    )}
-                  </Group>
-                </Menu.Item>
-              ))
-            ) : (
-              <Text pt="sm">No results found</Text>
-            )}
-          </Menu.Dropdown>
+          <FocusTrap active>
+            <Menu.Dropdown px={8} py="md">
+              {withSearch && (
+                <Input
+                  autoFocus
+                  mb={8}
+                  placeholder="Search..."
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              )}
+              {filteredItems.length > 0 ? (
+                filteredItems.map((item, index) => (
+                  <Menu.Item
+                    key={item.label}
+                    disabled={item.value === value}
+                    mb={index === items.length - 1 ? 0 : 8}
+                    p={5}
+                    style={(theme: MantineTheme) => ({
+                      ...(item.value === value && {
+                        backgroundColor: theme.colors.dark[7],
+                        color: theme.colors.dark[0],
+                        opacity: 1,
+                      }),
+                    })}
+                    onClick={() => {
+                      setSearchTerm("")
+                      setSelectedItem(item)
+                      onSelect(item.value)
+                    }}
+                  >
+                    <Group>
+                      {ItemComponent ? (
+                        <ItemComponent {...item} />
+                      ) : (
+                        <Text>{item.label}</Text>
+                      )}
+                      {item.value === value && (
+                        <LuCheck
+                          size={18}
+                          style={{ marginLeft: "auto", marginRight: 0 }}
+                        />
+                      )}
+                    </Group>
+                  </Menu.Item>
+                ))
+              ) : (
+                <Text pt="sm">No results found</Text>
+              )}
+            </Menu.Dropdown>
+          </FocusTrap>
         </Menu>
       </Box>
     )

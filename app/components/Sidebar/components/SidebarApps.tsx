@@ -1,4 +1,4 @@
-import { Navbar } from "@mantine/core"
+import { AppShell } from "@mantine/core"
 import { useMemo } from "react"
 import { InternalLink, SidebarNavRoute } from "~/components/Sidebar/components"
 import { PortalApp } from "~/models/portal/sdk"
@@ -20,11 +20,11 @@ export const SidebarApps = ({ apps, iconOnly }: SidebarAppsProps) => {
   }, [apps])
 
   return (
-    <Navbar.Section>
+    <AppShell.Section>
       {appsRoutes.map((SidebarNavRoute) => (
         <InternalLink key={SidebarNavRoute.to} route={SidebarNavRoute} />
       ))}
-    </Navbar.Section>
+    </AppShell.Section>
   )
 }
 

@@ -16,6 +16,7 @@ type UserItemProps = {
 type AccountSelectProps = {
   accounts: Account[]
   collapsed?: boolean
+  style?: React.CSSProperties
 }
 
 const AccountItem = ({
@@ -33,11 +34,11 @@ const AccountItem = ({
     />
     {!iconOnly && (
       <>
-        <Stack spacing={0}>
-          <Text lh="17px" size={15} weight={500}>
+        <Stack gap={0}>
+          <Text fw={500} fz={15} lh="17px">
             {account.name ? account.name : account.id}
           </Text>
-          <Text size={11}>{`${getPlanName(account.planType)} · ${
+          <Text fz={11}>{`${getPlanName(account.planType)} · ${
             account?.users?.length ?? 1
           } member${account?.users?.length > 1 ? "s" : ""}`}</Text>
         </Stack>
@@ -52,7 +53,7 @@ const AccountItem = ({
   </Group>
 )
 
-const AccountSelect = ({ accounts, collapsed }: AccountSelectProps) => {
+const AccountSelect = ({ accounts, collapsed, style }: AccountSelectProps) => {
   const { accountId } = useParams()
   const hasMultipleAccounts = accounts.length > 1
 
@@ -62,10 +63,14 @@ const AccountSelect = ({ accounts, collapsed }: AccountSelectProps) => {
   )
 
   return (
-    <Menu styles={{ dropdown: { minWidth: 300, marginLeft: 8 } }}>
+    <Menu styles={{ dropdown: { minWidth: 260, marginLeft: 8 } }}>
       {activeAccount && (
         <Menu.Target>
-          <UnstyledButton px={8} py={4} style={{ borderRadius: 4 }}>
+          <UnstyledButton
+            px={8}
+            py={4}
+            style={{ borderRadius: 4, ...(style ? style : {}) }}
+          >
             <AccountItem
               account={activeAccount}
               hasMultipleAccounts={hasMultipleAccounts}

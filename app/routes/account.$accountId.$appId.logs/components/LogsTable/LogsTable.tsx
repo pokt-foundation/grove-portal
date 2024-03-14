@@ -6,7 +6,6 @@ import { DataTable } from "~/components/DataTable"
 import { Logs } from "~/models/dwh/sdk"
 import LogsSideDrawer from "~/routes/account.$accountId.$appId.logs/components/LogsSideDrawer"
 import { LOGS_PAGE_SIZE } from "~/routes/account.$accountId.$appId.logs/route"
-import useCommonStyles from "~/styles/commonStyles"
 import { dayjs } from "~/utils/dayjs"
 
 type LogsTableProps = {
@@ -17,7 +16,6 @@ const LogsTable = ({ logs }: LogsTableProps) => {
   const [selectedLogsItem, setSelectedLogsItem] = useState<Logs | undefined>()
   const navigation = useNavigation()
   const [searchParams, setSearchParams] = useSearchParams()
-  const { classes: commonClasses } = useCommonStyles()
   const activePage = Number(searchParams.get("page") ?? 1)
 
   const isLoadingLogs =
@@ -60,9 +58,8 @@ const LogsTable = ({ logs }: LogsTableProps) => {
         paginate={false}
         onRowClick={(logsItem) => setSelectedLogsItem(logsItem as unknown as Logs)}
       />
-      <Group mt="lg" position="center" spacing="md">
+      <Group gap="md" justify="right" mt="lg">
         <Button
-          classNames={{ root: commonClasses.grayOutline }}
           color="gray"
           disabled={activePage === 1 || isLoadingLogs}
           radius="md"
@@ -77,7 +74,6 @@ const LogsTable = ({ logs }: LogsTableProps) => {
           <LuChevronLeft size={18} />
         </Button>
         <Button
-          classNames={{ root: commonClasses.grayOutline }}
           color="gray"
           disabled={logs.length < LOGS_PAGE_SIZE || isLoadingLogs}
           radius="md"

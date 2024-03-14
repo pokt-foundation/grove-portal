@@ -1,4 +1,4 @@
-import { ActionIcon, Flex, TextInput, useMantineTheme } from "@mantine/core"
+import { ActionIcon, Flex, TextInput } from "@mantine/core"
 import { useParams } from "@remix-run/react"
 import { useMemo } from "react"
 import { LuTrash2 } from "react-icons/lu"
@@ -6,7 +6,6 @@ import Chain from "~/components/Chain"
 import CopyTextButton from "~/components/CopyTextButton"
 import { DataTable } from "~/components/DataTable"
 import { Blockchain } from "~/models/portal/sdk"
-import useCommonStyles from "~/styles/commonStyles"
 import { getAppEndpointUrl } from "~/utils/chainUtils"
 
 type ChainsTableProps = {
@@ -22,9 +21,7 @@ const ChainsTable = ({
   onDeleteChain,
   readOnly,
 }: ChainsTableProps) => {
-  const theme = useMantineTheme()
   const { appId } = useParams()
-  const { classes: commonClasses } = useCommonStyles()
 
   const selectedBlockChains = useMemo(
     () =>
@@ -51,12 +48,7 @@ const ChainsTable = ({
               },
               endpointUrl: {
                 element: (
-                  <TextInput
-                    readOnly
-                    bg={theme.colors.gray[9]}
-                    miw={300}
-                    value={getAppEndpointUrl(chain, appId)}
-                  />
+                  <TextInput readOnly miw={300} value={getAppEndpointUrl(chain, appId)} />
                 ),
               },
               action: {
@@ -65,7 +57,7 @@ const ChainsTable = ({
                     <CopyTextButton value={getAppEndpointUrl(chain, appId)} />
                     {!readOnly && (
                       <ActionIcon
-                        className={commonClasses.grayOutline}
+                        aria-label={`Delete ${chain.description}`}
                         radius="xl"
                         size={40}
                         variant="outline"

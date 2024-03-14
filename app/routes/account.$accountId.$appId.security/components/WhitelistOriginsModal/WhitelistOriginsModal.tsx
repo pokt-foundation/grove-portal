@@ -15,7 +15,6 @@ import PortalLoader from "~/components/PortalLoader"
 import useModals from "~/hooks/useModals"
 import AddSettingsButton from "~/routes/account.$accountId.$appId.security/components/AddSettingsButton"
 import SimpleStringTable from "~/routes/account.$accountId.$appId.security/components/SimpleStringTable"
-import useCommonStyles from "~/styles/commonStyles"
 
 type WhitelistOriginsModalProps = {
   dispatch: Dispatch<SecurityReducerActions>
@@ -23,7 +22,6 @@ type WhitelistOriginsModalProps = {
 
 const WhitelistOriginsModal = ({ dispatch }: WhitelistOriginsModalProps) => {
   const { state } = useNavigation()
-  const { classes: commonClasses } = useCommonStyles()
   const { closeAllModals } = useModals()
 
   const [selectedWhitelistOrigins, setSelectedWhitelistOrigins] = useState<string[]>([])
@@ -53,7 +51,7 @@ const WhitelistOriginsModal = ({ dispatch }: WhitelistOriginsModalProps) => {
             title="Whitelist Origins"
             onDiscard={closeAllModals}
           />
-          <Grid>
+          <Grid py={24}>
             <Grid.Col span="auto">
               <TextInput
                 miw={300}
@@ -76,9 +74,8 @@ const WhitelistOriginsModal = ({ dispatch }: WhitelistOriginsModalProps) => {
             />
           )}
           <Divider my={32} />
-          <Group position="right">
+          <Group justify="right">
             <Button
-              classNames={{ root: commonClasses.grayOutline }}
               color="gray"
               fw={400}
               fz="sm"
@@ -105,7 +102,9 @@ const WhitelistOriginsModal = ({ dispatch }: WhitelistOriginsModalProps) => {
       ) : (
         <LoadingOverlay
           visible
-          loader={<PortalLoader message="Adding whitelist origins..." />}
+          loaderProps={{
+            children: <PortalLoader message="Adding whitelist origins..." />,
+          }}
         />
       )}
     </>

@@ -72,7 +72,7 @@ export default function EmailVerification() {
           <Title mb="md" order={3}>
             Verify Your Email
           </Title>
-          <Text align="left" size="sm">
+          <Text size="sm" ta="left">
             We've sent an email with a verification link to your inbox. Once verified,
             you'll be directed to the login page to access the portal. If you don't see
             the email, please check your spam or junk folder.

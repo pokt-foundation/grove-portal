@@ -1,6 +1,7 @@
-import { Box, Center, CloseButton, Flex, Text, Tooltip } from "@mantine/core"
-import { NavLink, useParams } from "@remix-run/react"
+import { Box, Center, Flex, Text } from "@mantine/core"
+import { useParams } from "@remix-run/react"
 import { AccountPlan } from "~/components/AccountPlan"
+import RouteModal from "~/components/RouteModal"
 import { PayPlanType } from "~/models/portal/sdk"
 
 type AccountPlansContainerProps = {
@@ -12,19 +13,10 @@ const AccountPlansContainer = ({ onPlanSelected }: AccountPlansContainerProps) =
 
   return (
     <Box>
-      <Flex align="center" justify="space-between" my="32px">
-        <Text fw={600} fz="21px">
-          Choose an account plan
-        </Text>
-        <Tooltip withArrow label="Discard">
-          <CloseButton
-            aria-label="Discard"
-            component={NavLink}
-            to={`/account/${accountId}`}
-          />
-        </Tooltip>
-      </Flex>
-
+      <RouteModal.Header
+        closeButtonLink={`/account/${accountId}`}
+        title="Choose an account plan"
+      />
       <Flex gap="xl" justify="space-evenly">
         <AccountPlan
           type={PayPlanType.FreetierV0}

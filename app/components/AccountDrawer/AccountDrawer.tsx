@@ -2,7 +2,6 @@ import {
   Divider,
   Drawer,
   Group,
-  MantineTheme,
   NavLink,
   NavLinkProps,
   Stack,
@@ -20,10 +19,10 @@ import {
   LuUser2,
 } from "react-icons/lu"
 import { RiDiscordLine } from "react-icons/ri"
+import classes from "./AccountDrawer.module.css"
 import Identicon from "~/components/Identicon"
 import { User } from "~/models/portal/sdk"
 import { DISCORD_PATH, DOCS_PATH } from "~/utils/utils"
-
 type AccountDrawerProps = {
   user?: User
 }
@@ -46,21 +45,7 @@ const DrawerLink = ({ setIsDrawerOpen, external, ...props }: DrawerLinkProps) =>
       prefetch="intent"
       {...props}
       {...externalProps}
-      sx={(theme: MantineTheme) => ({
-        borderRadius: theme.radius.sm,
-        "&:hover": {
-          backgroundColor:
-            theme.colorScheme === "dark"
-              ? "rgba(37,38,43,0.50)"
-              : "rgba(250,250,250,0.50)",
-          textDecoration: "none",
-        },
-
-        "&.active": {
-          backgroundColor:
-            theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.colors.gray[0],
-        },
-      })}
+      className={classes.drawerLink}
       onClick={() => setIsDrawerOpen(false)}
     />
   )
@@ -113,11 +98,10 @@ const AccountDrawer = ({ user }: AccountDrawerProps) => {
     <>
       <Drawer
         opened={isDrawerOpen}
-        overlayProps={{ opacity: 0.5, color: "#000000" }}
         padding="sm"
         position="right"
         title={
-          <Group noWrap pt={4} w={252}>
+          <Group pt={4} w={252} wrap="nowrap">
             <Identicon
               avatar
               alt={`${user.portalUserID ?? "user"} profile picture`}
@@ -131,16 +115,16 @@ const AccountDrawer = ({ user }: AccountDrawerProps) => {
         }
         onClose={() => setIsDrawerOpen(false)}
       >
-        <Stack spacing={0}>
+        <Stack gap={0}>
           <DrawerLink
-            icon={<LuUser2 size={18} />}
             label="My Profile"
+            leftSection={<LuUser2 size={18} />}
             setIsDrawerOpen={setIsDrawerOpen}
             to="/user"
           />
           <DrawerLink
-            icon={<LuTowerControl size={18} />}
             label="My Accounts"
+            leftSection={<LuTowerControl size={18} />}
             setIsDrawerOpen={setIsDrawerOpen}
             to={`/user/accounts`}
           />
@@ -149,8 +133,8 @@ const AccountDrawer = ({ user }: AccountDrawerProps) => {
             <React.Fragment key={`${label}-${index}`}>
               <DrawerLink
                 external
-                icon={icon}
                 label={label}
+                leftSection={icon}
                 setIsDrawerOpen={setIsDrawerOpen}
                 to={to}
               />

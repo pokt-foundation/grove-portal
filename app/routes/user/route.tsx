@@ -1,4 +1,4 @@
-import { Container, Stack, Button } from "@mantine/core"
+import { Stack, Button } from "@mantine/core"
 import { json, LoaderFunction } from "@remix-run/node"
 import { NavLink, Outlet, useLoaderData } from "@remix-run/react"
 import { LuArrowLeft } from "react-icons/lu"
@@ -74,24 +74,22 @@ export default function UserAccount() {
 
   return (
     <RootAppShell accounts={accounts as Account[]} user={user}>
-      <Container fluid px={0}>
-        <Button
-          compact
-          color="gray"
-          component={NavLink}
-          leftIcon={<LuArrowLeft size={18} />}
-          mb="xl"
-          ml={-15}
-          to="/account"
-          variant="subtle"
-        >
-          Back
-        </Button>
-        <Stack spacing="xl">
-          <LinkTabs routes={routes} />
-        </Stack>
-        <Outlet context={{ data, error, message }} />
-      </Container>
+      <Button
+        color="gray"
+        component={NavLink}
+        leftSection={<LuArrowLeft size={18} />}
+        mb="xl"
+        ml={-15}
+        size="compact-sm"
+        to="/account"
+        variant="subtle"
+      >
+        Back
+      </Button>
+      <Stack gap="xl">
+        <LinkTabs routes={routes} />
+      </Stack>
+      <Outlet context={{ data, error, message }} />
     </RootAppShell>
   )
 }

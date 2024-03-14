@@ -1,12 +1,12 @@
-import { Text } from "@mantine/core"
+import { Table, Text } from "@mantine/core"
 import { Link } from "@remix-run/react"
 import { TableBodyProps, TableDataArray } from "~/types/table"
 
 const renderTableCell = ([key, value]: TableDataArray) =>
   key !== "rowSelectData" ? (
-    <td key={key} {...value.cellProps}>
+    <Table.Td key={key} {...value.cellProps}>
       {typeof value === "object" ? value.element : <Text>{value}</Text>}
-    </td>
+    </Table.Td>
   ) : null
 
 export const DataTableBody = ({
@@ -16,14 +16,14 @@ export const DataTableBody = ({
   onRowClick,
 }: TableBodyProps) => {
   return (
-    <tbody>
+    <Table.Tbody>
       {paginatedData.length > 0 ? (
         paginatedData.map((item, index) => {
           const { id, ...itemData } = item
           const tableData = Object.entries(itemData)
 
           return (
-            <tr
+            <Table.Tr
               key={`${id}-${index}`}
               style={{ ...(!!onRowClick && { cursor: "pointer" }) }}
               onClick={() => onRowClick && onRowClick(item.rowSelectData)}
@@ -40,16 +40,18 @@ export const DataTableBody = ({
               ) : (
                 tableData.map(renderTableCell)
               )}
-            </tr>
+            </Table.Tr>
           )
         })
       ) : (
-        <tr>
-          <td colSpan={data?.length && data[0].length ? Object.keys(data[0]).length : 0}>
-            <Text align="center">Nothing found.</Text>
-          </td>
-        </tr>
+        <Table.Tr>
+          <Table.Td
+            colSpan={data?.length && data[0].length ? Object.keys(data[0]).length : 0}
+          >
+            <Text ta="center">Nothing found.</Text>
+          </Table.Td>
+        </Table.Tr>
       )}
-    </tbody>
+    </Table.Tbody>
   )
 }

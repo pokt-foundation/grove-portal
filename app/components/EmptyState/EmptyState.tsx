@@ -23,11 +23,10 @@ export const EmptyState = ({
   return (
     <Stack align="center" justify="center" mt={120}>
       <Image
-        withPlaceholder
         alt={alt ? alt : "Empty state placeholder"}
-        height={imgHeight}
+        h={imgHeight}
         src={imgSrc}
-        width={imgWidth}
+        w={imgWidth}
       />
       <Text fw={600} fz="xl" ta="center">
         {title}

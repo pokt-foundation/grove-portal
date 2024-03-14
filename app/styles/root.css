@@ -1,26 +1,20 @@
 :root {
-  /* --color-primary-main: #c5ec4b;
-  --color-primary-light: #dcfc77;
-  --color-primary-dark: #89a534;
-  --color-secondary-main: #1d8aed;
-  --mantine-color-blue-4: #41a1fc;
-  --mantine-color-blue-8: #156dc0;
-  --mantine-color-navy-4: #192430;
-  --mantine-color-navy-3: #262a34;
-  --mantine-color-navy-6: #0f141a;
-  --mantine-color-gray-2: #edeff0;
-  --mantine-color-gray-0: #ffffff;
-  --mantine-color-gray-4: #d9d9d9;
-  --mantine-color-yellow-6: #03e200;
-  --color-error: #e61c0e;
-  --mantine-color-gray-6: #898d92;
-  --mantine-color-gray-8: #32404f;
-  --mantine-color-orange-6: #ffb82e; */
-  --zindex-none: -1;
-  --zindex-base: 1;
-  --zindex-nav: 100;
-  --zindex-overlay: 200;
-  --radii-md: 12px;
+  @mixin light-root {
+    --mantine-color-body: var(--mantine-color-white);
+  }
+
+  @mixin dark-root {
+    --mantine-color-body: var(--mantine-color-dark-9);
+    [data-variant="outline"]:not([data-outline-exclude="true"]) {
+      border-color: var(--mantine-color-gray-8);
+      color: inherit;
+    }
+  }
+
+  .mantine-TextInput-input[readonly]:not(.sandbox-input),
+  .mantine-PasswordInput-innerInput[readonly]:not(.sandbox-input) {
+    background-color: var(--mantine-color-gray-9) !important;
+  }
 }
 
 a {
@@ -38,91 +32,10 @@ html {
   box-sizing: inherit;
 }
 
-body {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  overflow-x: hidden;
-  overflow-y: auto;
-  width: 100%;
-}
-
-main {
-  flex-grow: 1;
-  padding: 16px;
-}
-
-h3 {
-  font-size: 18px;
-  line-height: 1.5;
-  font-weight: bold;
-  margin-top: 0;
-  margin-bottom: 24px;
-}
-
-.pokt-group {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-button.pokt-button-with__icon,
-button.pokt-button-with__icon:hover {
-  border: none;
-  background-color: transparent;
-  padding: 0;
-}
-
-.link {
-  color: var(--mantine-color-blue-6);
-  outline: none;
-  background-color: transparent;
-  border: none;
-  display: inline-block;
-}
-
-.link:hover {
-  text-decoration: underline;
-}
-
-/* Fixing some styles not loading on initial load on staging */
-
-/* Input Icon */
-.mantine-Input-icon {
-  pointer-events: none;
-  position: absolute;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  color: var(--mantine-color-dark-2);
-}
-
-/* Modal header */
-.mantine-Modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-  background-color: transparent !important;
-}
-
-/* Drawer header */
-.mantine-Drawer-header {
-  display: flex;
-  align-items: center;
-  margin-bottom: 16px;
-  justify-content: space-between;
-}
-
 .clickable-table tbody tr:hover {
-  background-color: rgba(37, 38, 43, 0.5) !important;
+  background-color: alpha(var(--mantine-color-dark-7), 0.5);
 }
 
-.prism-code {
-  background-color: rgba(39, 41, 47, 0.5) !important;
+body {
+  font-size: 14px;
 }

@@ -36,7 +36,6 @@ const ChainSandboxSideDrawer = ({
   return (
     <Drawer
       opened={!!blockchain}
-      overlayProps={{ opacity: 0.5, color: "#000000" }}
       padding="lg"
       position="right"
       size={800}

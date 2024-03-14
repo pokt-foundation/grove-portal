@@ -21,14 +21,14 @@ const StarterAccountPlan = ({ account, userRole }: StarterAccountPlanProps) => {
     </Stack>
   ) : (
     <Stack align="center" mt={"xl"}>
-      <Stack spacing="xs" ta="center">
+      <Stack gap="xs" ta="center">
         <Title order={3}>Upgrade your plan</Title>
         <Text>
           Your current plan is {getPlanName(account.planType)}. <br /> Upgrade now to
           Auto-Scale and pay as you go.
         </Text>
       </Stack>
-      <SimpleGrid breakpoints={[{ maxWidth: "lg", cols: 1 }]} cols={3}>
+      <SimpleGrid cols={{ base: 1, lg: 3 }}>
         <AccountPlan disableFree type={PayPlanType.FreetierV0} />
         <AccountPlan
           type={PayPlanType.PayAsYouGoV0}

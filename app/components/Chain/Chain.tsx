@@ -14,7 +14,7 @@ const Chain = ({ chain, variant = "default" }: ChainProps) => {
         size={variant === "compact" ? 18 : 40}
         src={`/chain-logos/${chain.blockchain}.svg`}
       />
-      <Stack spacing={0} w={200}>
+      <Stack gap={0} w={200}>
         <Text
           truncate
           fw={variant === "compact" ? 400 : 600}

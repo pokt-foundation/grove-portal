@@ -15,9 +15,9 @@ type ApplicationHeaderProps = {
 
 const ApplicationHeader = ({ app, userRole }: ApplicationHeaderProps) => {
   return (
-    <Group mb="lg" position="apart">
-      <Group spacing="sm">
-        <Avatar size="lg">
+    <Group justify="space-between" mb="lg">
+      <Group gap="sm">
+        <Avatar color="dark" radius="sm" size="lg">
           <Emoji
             size={32}
             unified={app.appEmoji !== "" ? app.appEmoji : DEFAULT_APPMOJI}
@@ -27,17 +27,19 @@ const ApplicationHeader = ({ app, userRole }: ApplicationHeaderProps) => {
           <Text fw={600} fz={24}>
             {app.name}
           </Text>
-          <Group spacing={4}>
+          <Group gap={4}>
             <Text>App ID</Text>
             <CopyButton value={app.id}>
               {({ copied, copy }) => (
                 <Tooltip withArrow label={copied ? "Copied" : "Copy"}>
                   <Badge
                     color={copied ? "green" : "gray"}
+                    data-outline-exclude={copied ? "true" : "false"}
                     px={6}
                     radius="sm"
-                    style={{ cursor: "pointer", textTransform: "lowercase" }}
-                    variant={copied ? "outline" : "light"}
+                    style={{ cursor: "pointer" }}
+                    tt="lowercase"
+                    variant={"outline"}
                     onClick={() => {
                       copy()
                       trackEvent({
@@ -60,7 +62,11 @@ const ApplicationHeader = ({ app, userRole }: ApplicationHeaderProps) => {
         <Menu>
           <ContextMenuTarget />
           <Menu.Dropdown>
-            <Menu.Item component={Link} icon={<LuPencil size={18} />} to={`update`}>
+            <Menu.Item
+              component={Link}
+              leftSection={<LuPencil size={18} />}
+              to={`update`}
+            >
               Edit information
             </Menu.Item>
             <DeleteApplication app={app} />

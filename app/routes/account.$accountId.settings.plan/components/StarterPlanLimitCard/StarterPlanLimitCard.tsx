@@ -21,11 +21,11 @@ export const StarterPlanLimitCard = ({ account }: StarterPlanLimitCardProps) => 
   ]
 
   return (
-    <TitledCard header={() => <Text weight={600}>Current plan</Text>}>
+    <TitledCard header={() => <Text fw={600}>Current plan</Text>}>
       <Stack px={20} py={10}>
         {cardItems.map(({ label, value }, index) => (
           <React.Fragment key={`${label}-${index}`}>
-            <Group p={12} position="apart">
+            <Group justify="space-between" p={12}>
               <Text>{label}</Text> <Text>{value}</Text>
             </Group>
             {index !== cardItems.length - 1 && <Divider />}

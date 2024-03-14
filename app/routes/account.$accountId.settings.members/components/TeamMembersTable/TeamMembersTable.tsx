@@ -1,4 +1,4 @@
-import { Avatar, Flex, Group, MantineTheme, Select, Text } from "@mantine/core"
+import { Avatar, Flex, Group, Select, Text } from "@mantine/core"
 import { DataTable } from "~/components/DataTable"
 import Identicon from "~/components/Identicon"
 import { Account, RoleName, User } from "~/models/portal/sdk"
@@ -72,11 +72,13 @@ const TeamMembersTable = ({ account, userRole, user }: TeamMembersTableProps) =>
           status: {
             element: (
               <Text
-                sx={(theme: MantineTheme) => ({
-                  ...(roleName !== RoleName.Owner && {
-                    color: accepted ? theme.colors.green[6] : theme.colors.yellow[7],
-                  }),
-                })}
+                c={
+                  roleName === RoleName.Owner
+                    ? "var(--text-color)"
+                    : accepted
+                    ? "var(--mantine-color-green-6)"
+                    : "var(--mantine-color-yellow-7)"
+                }
               >
                 {roleName === RoleName.Owner ? "-" : accepted ? "Accepted" : "Pending"}
               </Text>

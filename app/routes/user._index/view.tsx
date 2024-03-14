@@ -2,7 +2,6 @@ import { Box, Button, Divider, Stack, Text } from "@mantine/core"
 import { Form } from "@remix-run/react"
 import { Identicon } from "~/components/Identicon"
 import { User } from "~/models/portal/sdk"
-import useCommonStyles from "~/styles/commonStyles"
 import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
 
 type ProfileViewProps = {
@@ -10,10 +9,8 @@ type ProfileViewProps = {
 }
 
 export const ProfileView = ({ user }: ProfileViewProps) => {
-  const { classes: commonClasses } = useCommonStyles()
-
   return (
-    <Stack spacing="xs">
+    <Stack gap="xs">
       <Box py={20}>
         <Identicon
           avatar
@@ -39,7 +36,6 @@ export const ProfileView = ({ user }: ProfileViewProps) => {
         </Box>
         <Form method="post">
           <Button
-            className={commonClasses.grayOutline}
             color="gray"
             name="email"
             type="submit"

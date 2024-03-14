@@ -1,25 +1,11 @@
-import { Group, Select, Text } from "@mantine/core"
-import { forwardRef, useMemo, useRef } from "react"
+import { Select } from "@mantine/core"
+import { useMemo, useRef } from "react"
 import { LuSearch } from "react-icons/lu"
 import { BlockchainsQuery } from "~/models/portal/sdk"
 
-const SelectItem = forwardRef<HTMLDivElement, { label: string; value: string }>(
-  ({ label, ...others }, ref) => (
-    <div ref={ref} {...others}>
-      <Group noWrap>
-        <Text m={0} size="xs">
-          {label}
-        </Text>
-      </Group>
-    </div>
-  ),
-)
-
-SelectItem.displayName = "SelectItem"
-
 type ChainsDropdownProps = {
   chains: BlockchainsQuery["blockchains"]
-  onChange: (chain: string) => void
+  onChange: (chain: string | null) => void
   width?: string | number
 }
 
@@ -49,8 +35,7 @@ const ChainsDropdown = ({ chains, onChange, width }: ChainsDropdownProps) => {
       searchable
       aria-label="Add new"
       data={selectChainData}
-      icon={<LuSearch size={18} />}
-      itemComponent={SelectItem}
+      leftSection={<LuSearch size={18} />}
       placeholder="Search Network"
       rightSection={<></>}
       rightSectionWidth={0}

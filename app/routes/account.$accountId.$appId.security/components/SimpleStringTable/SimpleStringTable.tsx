@@ -1,8 +1,7 @@
-import { ActionIcon, Flex, TextInput, useMantineTheme } from "@mantine/core"
+import { ActionIcon, Flex, TextInput } from "@mantine/core"
 import { LuTrash2 } from "react-icons/lu"
 import CopyTextButton from "~/components/CopyTextButton"
 import { DataTable } from "~/components/DataTable"
-import useCommonStyles from "~/styles/commonStyles"
 
 type SimpleStringTableProps = {
   data: string[]
@@ -11,18 +10,13 @@ type SimpleStringTableProps = {
 }
 
 const SimpleStringTable = ({ data, readOnly, onDelete }: SimpleStringTableProps) => {
-  const theme = useMantineTheme()
-  const { classes: commonClasses } = useCommonStyles()
-
   return (
     data && (
       <DataTable
         data={data?.map((value) => {
           return {
             userAgent: {
-              element: (
-                <TextInput readOnly bg={theme.colors.gray[9]} miw={300} value={value} />
-              ),
+              element: <TextInput readOnly miw={300} value={value} />,
               cellProps: {
                 style: { paddingLeft: 0, paddingRight: 0 },
               },
@@ -33,7 +27,7 @@ const SimpleStringTable = ({ data, readOnly, onDelete }: SimpleStringTableProps)
                   <CopyTextButton value={value} />
                   {!readOnly && (
                     <ActionIcon
-                      className={commonClasses.grayOutline}
+                      aria-label="Delete value"
                       radius="xl"
                       size={40}
                       variant="outline"

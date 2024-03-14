@@ -3,7 +3,6 @@ import React, { useMemo } from "react"
 import { LuMinusCircle, LuMoreHorizontal, LuSend } from "react-icons/lu"
 import { Account, RoleName, User, AccountUser } from "~/models/portal/sdk"
 import useTeamModals from "~/routes/account.$accountId.settings.members/hooks/useTeamModals"
-import useCommonStyles from "~/styles/commonStyles"
 
 type TeamMemberActionProps = {
   account: Account
@@ -20,7 +19,6 @@ const TeamMemberAction = ({
   teamMember,
   status,
 }: TeamMemberActionProps) => {
-  const { classes: commonClasses } = useCommonStyles()
   const { openRemoveUserModal, openLeaveTeamModal, openResendEmailModal } = useTeamModals(
     { account },
   )
@@ -107,7 +105,7 @@ const TeamMemberAction = ({
         <Menu>
           <Menu.Target>
             <ActionIcon
-              className={commonClasses.grayOutline}
+              aria-label="Open team member actions menu"
               radius="xl"
               size={40}
               variant="outline"
@@ -117,7 +115,7 @@ const TeamMemberAction = ({
           </Menu.Target>
           <Menu.Dropdown>
             {menuItems.map((item, index) => (
-              <Menu.Item key={index} icon={item.icon} onClick={item.onClick}>
+              <Menu.Item key={index} leftSection={item.icon} onClick={item.onClick}>
                 <Text>{item.label}</Text>
               </Menu.Item>
             ))}

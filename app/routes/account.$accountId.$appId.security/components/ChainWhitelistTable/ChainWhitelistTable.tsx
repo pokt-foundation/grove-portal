@@ -1,4 +1,4 @@
-import { ActionIcon, Flex, TextInput, useMantineTheme } from "@mantine/core"
+import { ActionIcon, Flex, TextInput } from "@mantine/core"
 import { useMemo } from "react"
 import { LuTrash2 } from "react-icons/lu"
 import Chain from "~/components/Chain"
@@ -6,7 +6,6 @@ import CopyTextButton from "~/components/CopyTextButton"
 import { DataTable } from "~/components/DataTable"
 import { Blockchain } from "~/models/portal/sdk"
 import { BlockchainWhitelist } from "~/routes/account.$accountId.$appId.security/utils/utils"
-import useCommonStyles from "~/styles/commonStyles"
 
 type ChainsTableProps = {
   blockchains: Blockchain[]
@@ -21,9 +20,6 @@ const ChainWhitelistTable = ({
   readOnly,
   onDelete,
 }: ChainsTableProps) => {
-  const theme = useMantineTheme()
-  const { classes: commonClasses } = useCommonStyles()
-
   const data = useMemo(
     () =>
       blockchainWhitelist.map(({ blockchainID, whitelistValue }) => {
@@ -50,14 +46,7 @@ const ChainWhitelistTable = ({
             },
           },
           endpointUrl: {
-            element: (
-              <TextInput
-                readOnly
-                bg={theme.colors.gray[9]}
-                miw={300}
-                value={chain.whitelistValue}
-              />
-            ),
+            element: <TextInput readOnly miw={300} value={chain.whitelistValue} />,
           },
           action: {
             element: (
@@ -65,7 +54,7 @@ const ChainWhitelistTable = ({
                 <CopyTextButton value={chain.whitelistValue} />
                 {!readOnly && (
                   <ActionIcon
-                    className={commonClasses.grayOutline}
+                    aria-label="Copy chain whitelist value"
                     radius="xl"
                     size={40}
                     variant="outline"

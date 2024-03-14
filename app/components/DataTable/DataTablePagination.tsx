@@ -7,11 +7,10 @@ export const DataTablePagination = ({
   onPageChange,
 }: TablePaginationProps) => {
   return (
-    <Group align="center" position="center">
+    <Group align="center" justify="center">
       <Pagination
         defaultValue={page}
         mt={30}
-        position="right"
         radius="md"
         size="sm"
         total={totalPages}

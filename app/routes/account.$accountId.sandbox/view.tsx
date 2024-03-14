@@ -41,7 +41,7 @@ const SandboxView = ({ portalApps, blockchains, userRole }: SandboxViewProps) =>
       title="Grove Sandbox"
     />
   ) : (
-    <Stack spacing={40}>
+    <Stack gap={40}>
       <Title order={2}>Sandbox</Title>
       <ChainSandboxProvider
         initialStateValue={{ selectedApp: apps[0], selectedChain: blockchains[0] }}

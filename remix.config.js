@@ -13,4 +13,5 @@ export default {
   // assetsBuildDirectory: "public/build",
   serverBuildPath: "api/index.js",
   // publicPath: "/build/",
+  serverDependenciesToBundle: [/^remix-utils.*/],
 }

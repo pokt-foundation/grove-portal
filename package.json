@@ -23,6 +23,10 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@codemirror/lang-json": "^6.0.1",
+    "@codemirror/language": "^6.10.1",
+    "@codemirror/legacy-modes": "^6.3.3",
+    "@codemirror/lint": "^6.5.0",
     "@emotion/react": "^11.10.5",
     "@emotion/server": "^11.10.0",
     "@mantine/core": "^7.6.1",
@@ -37,6 +41,7 @@
     "@remix-run/react": "^2.3.0",
     "@remix-run/serve": "^2.0.1",
     "@remix-run/vercel": "^1.19.3",
+    "@uiw/react-codemirror": "4.21.18",
     "@vercel/node": "^2.8.4",
     "clsx": "^1.1.1",
     "d3-format": "^3.1.0",
@@ -59,6 +64,7 @@
     "recharts": "^2.7.2",
     "remix-auth": "^3.6.0",
     "remix-auth-auth0": "^1.9.0",
+    "remix-utils": "^7.5.0",
     "stripe": "^9.9.0",
     "tiny-invariant": "^1.2.0"
   },

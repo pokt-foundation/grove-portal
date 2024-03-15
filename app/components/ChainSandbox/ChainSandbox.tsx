@@ -48,11 +48,11 @@ const ChainSandbox = ({ apps, chains }: ChainSandboxProps) => {
       category: AnalyticCategories.app,
       action: AnalyticActions.app_chain_sandbox_edit_body,
       label: `App ID: ${appId}, Blockchain: ${selectedChain?.blockchain}`,
-      value: JSON.stringify(requestPayload),
+      value: requestPayload,
     })
     chainFetcher.submit(
       {
-        payload: JSON.stringify(requestPayload),
+        payload: requestPayload,
         chainUrl: chainUrl,
         ...(includeSecretKey && { secretKey }),
       },

@@ -1,12 +1,12 @@
-import { Box, Group, Select, Stack, Title } from "@mantine/core"
+import { Group, Select, Stack, Title } from "@mantine/core"
 import { useParams } from "@remix-run/react"
-import React, { useEffect, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
+import JsonEditor from "app/components/JsonEditor"
 import useChainSandboxContext from "~/components/ChainSandbox/state"
-import CodeSnippet from "~/components/CodeSnippet"
-import CopyTextButton from "~/components/CopyTextButton"
-import JsonViewer from "~/components/JsonViewer"
+import CodeEditor, { AutocompleteOption } from "~/components/CodeEditor"
 import { KeyValuePair } from "~/types/global"
 import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
+import { evmMethods, isEvmChain } from "~/utils/chainUtils"
 
 type ChainSandboxBodyProps = {
   chainUrl: string
@@ -32,14 +32,24 @@ const getInitialRequestPayload = ({
   isRpc: boolean
 }) => {
   return isRpc
-    ? {
-        method: method ?? "",
-        params: [],
-        id: 1,
-        jsonrpc: "2.0",
-      }
-    : {}
+    ? JSON.stringify(
+        {
+          method: method ?? "",
+          params: [],
+          id: 1,
+          jsonrpc: "2.0",
+        },
+        null,
+        " ",
+      )
+    : "{}"
 }
+
+const methodsAutocompleteOptions: AutocompleteOption[] = evmMethods.map((method) => ({
+  label: `@${method}`,
+  displayLabel: method,
+  apply: method,
+}))
 
 const ChainSandboxBody = ({ chainUrl, requestHeaders }: ChainSandboxBodyProps) => {
   const { appId } = useParams()
@@ -54,6 +64,33 @@ const ChainSandboxBody = ({ chainUrl, requestHeaders }: ChainSandboxBodyProps) =
       payload: getInitialRequestPayload({ method: selectedMethod, isRpc }),
     })
   }, [selectedMethod, isRpc, dispatch])
+
+  const handleCodeEditorChange = useCallback(
+    (value: string) => {
+      trackEvent({
+        category: AnalyticCategories.app,
+        action: AnalyticActions.app_chain_sandbox_send_request,
+        label: `App ID: ${appId}, Blockchain: ${selectedChain?.blockchain}`,
+        value: JSON.stringify(value),
+      })
+      dispatch({ type: "SET_REQUEST_PAYLOAD", payload: value })
+
+      try {
+        const requestPayload = JSON.parse(value)
+
+        const { method } = requestPayload
+        if (
+          isEvmChain(selectedChain) &&
+          method &&
+          evmMethods.includes(method) &&
+          selectedMethod !== method
+        ) {
+          dispatch({ type: "SET_SELECTED_METHOD", payload: requestPayload.method })
+        }
+      } catch (e) {}
+    },
+    [appId, selectedChain, selectedMethod, dispatch],
+  )
 
   return (
     <Stack gap={12} pos="relative">
@@ -71,42 +108,19 @@ const ChainSandboxBody = ({ chainUrl, requestHeaders }: ChainSandboxBodyProps) =
         />
       </Group>
       {requestFormat === "json" ? (
-        <JsonViewer
-          editable
+        <JsonEditor
+          autocompleteOptions={
+            isEvmChain(selectedChain) ? methodsAutocompleteOptions : undefined
+          }
           value={requestPayload}
-          onEditSave={(payload) => {
-            trackEvent({
-              category: AnalyticCategories.app,
-              action: AnalyticActions.app_chain_sandbox_send_request,
-              label: `App ID: ${appId}, Blockchain: ${selectedChain?.blockchain}`,
-              value: JSON.stringify(payload),
-            })
-
-            dispatch({ type: "SET_REQUEST_PAYLOAD", payload: payload })
-          }}
+          onChange={handleCodeEditorChange}
         />
       ) : (
-        <Box pos="relative">
-          <CopyTextButton
-            size={16}
-            style={{ zIndex: 100, top: 8, right: 8, position: "absolute" }}
-            value={getCurlCommand(
-              chainUrl,
-              requestHeaders,
-              JSON.stringify(requestPayload),
-            )}
-            variant="transparent"
-            width={28}
-          />
-          <CodeSnippet
-            code={getCurlCommand(
-              chainUrl,
-              requestHeaders,
-              JSON.stringify(requestPayload),
-            )}
-            language="bash"
-          />
-        </Box>
+        <CodeEditor
+          readOnly
+          lang="shell"
+          value={getCurlCommand(chainUrl, requestHeaders, requestPayload)}
+        />
       )}
     </Stack>
   )

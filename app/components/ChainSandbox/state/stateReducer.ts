@@ -9,7 +9,7 @@ export type ChainSandboxStateType = {
   responseData: any
   chainRestPath: string
   chainUrl: string
-  requestPayload: KeyValuePair<any>
+  requestPayload: string
   requestHeaders: KeyValuePair<string>
 }
 
@@ -22,7 +22,7 @@ export type ChainSandboxActionType =
   | { type: "SET_CHAIN_REST_PATH"; payload: string }
   | { type: "SET_CHAIN_URL"; payload: string }
   | { type: "SET_REQUEST_HEADERS"; payload: KeyValuePair<string> }
-  | { type: "SET_REQUEST_PAYLOAD"; payload: KeyValuePair<any> }
+  | { type: "SET_REQUEST_PAYLOAD"; payload: string }
   | { type: "RESET_STATE" }
 
 const reducer = (

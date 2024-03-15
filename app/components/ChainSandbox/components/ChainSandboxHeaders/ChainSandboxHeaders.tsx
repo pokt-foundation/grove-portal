@@ -1,7 +1,7 @@
 import { Checkbox, Group, PasswordInput, Stack, Title } from "@mantine/core"
 import React, { useEffect } from "react"
+import JsonEditor from "app/components/JsonEditor"
 import useChainSandboxContext from "~/components/ChainSandbox/state"
-import JsonViewer from "~/components/JsonViewer"
 
 const ChainSandboxHeaders = () => {
   const { state, dispatch } = useChainSandboxContext()
@@ -46,7 +46,7 @@ const ChainSandboxHeaders = () => {
         />
       </Group>
 
-      <JsonViewer value={requestHeaders} />
+      <JsonEditor readOnly value={JSON.stringify(requestHeaders, null, " ")} />
     </Stack>
   )
 }

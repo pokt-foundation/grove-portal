@@ -58,7 +58,6 @@
     "mersenne-twister": "^1.1.0",
     "node-mailjet": "^6.0.4",
     "react": "18.2.0",
-    "react-code-blocks": "^0.1.6",
     "react-dom": "^18.2.0",
     "react-icons": "^5.0.1",
     "recharts": "^2.7.2",

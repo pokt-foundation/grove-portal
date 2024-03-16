@@ -3,6 +3,7 @@ import { StreamLanguage } from "@codemirror/language"
 import { shell } from "@codemirror/legacy-modes/mode/shell"
 import { linter, lintGutter } from "@codemirror/lint"
 import { Box } from "@mantine/core"
+import { xcodeDarkInit } from "@uiw/codemirror-theme-xcode"
 import CodeMirror from "@uiw/react-codemirror"
 import { ClientOnly } from "remix-utils/client-only"
 import CopyTextButton from "~/components/CopyTextButton"
@@ -37,6 +38,13 @@ const jsonAutoComplete = (options: AutocompleteOption[]) =>
       }
     },
   })
+
+const myTheme = xcodeDarkInit({
+  settings: {
+    background: "var(--mantine-color-gray-9)",
+    gutterBackground: "var(--mantine-color-gray-9)",
+  },
+})
 
 const CodeEditor = ({
   value,
@@ -76,7 +84,7 @@ const CodeEditor = ({
             }}
             extensions={extensions}
             readOnly={readOnly}
-            theme="dark"
+            theme={myTheme}
             value={value}
             onChange={(value, viewUpdate) => {
               onCodeChange && onCodeChange(value)

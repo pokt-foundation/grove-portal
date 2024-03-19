@@ -1,5 +1,5 @@
 import { json } from "@remix-run/node"
-import { DataStruct } from "~/types/global"
+import { ActionDataStruct } from "~/types/global"
 import { getErrorMessage } from "~/utils/catchError"
 import { getRequiredServerEnvVar } from "~/utils/environment"
 
@@ -20,7 +20,7 @@ export const actionPassword = async (email: string) => {
       },
     )
 
-    return json<DataStruct<ActionPassword>>({
+    return json<ActionDataStruct<ActionPassword>>({
       data: {
         auth0: res.status,
       },
@@ -28,7 +28,7 @@ export const actionPassword = async (email: string) => {
       message: "We've just sent you an email to reset your password.",
     })
   } catch (error) {
-    return json<DataStruct<ActionPassword>>({
+    return json<ActionDataStruct<ActionPassword>>({
       data: null,
       error: true,
       message: getErrorMessage(error),

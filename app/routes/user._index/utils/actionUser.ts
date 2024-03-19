@@ -1,6 +1,6 @@
 import { json } from "@remix-run/node"
 import { getSdk, UpdateUser, User } from "~/models/portal/sdk"
-import { DataStruct } from "~/types/global"
+import { ActionDataStruct } from "~/types/global"
 import { getErrorMessage } from "~/utils/catchError"
 
 export type ActionUser = { user: User }
@@ -17,7 +17,7 @@ export const actionUser = async (
       throw new Error("User not able to be updated")
     }
 
-    return json<DataStruct<ActionUser>>({
+    return json<ActionDataStruct<ActionUser>>({
       data: {
         user: updatePortalUserResponse.updatePortalUser as User,
       },
@@ -25,7 +25,7 @@ export const actionUser = async (
       message: "User profile updated",
     })
   } catch (error) {
-    return json<DataStruct<ActionUser>>({
+    return json<ActionDataStruct<ActionUser>>({
       data: null,
       error: true,
       message: getErrorMessage(error),

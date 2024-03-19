@@ -1,4 +1,4 @@
-import { Badge, Card, Group, SimpleGrid, Stack, Text } from "@mantine/core"
+import { Badge, Card, Group, SimpleGrid, Stack, Text, Title } from "@mantine/core"
 import { useNavigation } from "@remix-run/react"
 import React from "react"
 import TitledCard from "~/components/TitledCard"
@@ -32,6 +32,7 @@ export const AccountInsightsView = ({ total, aggregate }: AccountInsightsViewPro
 
   return (
     <Stack gap="xl" mb="xl" pt={22}>
+      <Title order={2}>Insights</Title>
       <TitledCard
         header={() => (
           <Group justify="space-between">

@@ -32,6 +32,7 @@ export const RootAppShell = ({
         collapsed: { mobile: hideSidebar || !opened, desktop: hideSidebar },
       }}
       padding="xs"
+      pb={50}
     >
       <AppShell.Header withBorder={false}>
         <AppHeader accounts={accounts} opened={opened} toggle={toggle} user={user} />

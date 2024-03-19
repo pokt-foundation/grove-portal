@@ -1,13 +1,13 @@
 import { Stack, Button } from "@mantine/core"
 import { json, LoaderFunction } from "@remix-run/node"
 import { NavLink, Outlet, useLoaderData } from "@remix-run/react"
+import React from "react"
 import { LuArrowLeft } from "react-icons/lu"
-import ErrorView from "~/components/ErrorView"
+import ErrorBoundaryView from "~/components/ErrorBoundaryView"
 import LinkTabs from "~/components/LinkTabs"
 import RootAppShell from "~/components/RootAppShell/RootAppShell"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { Account, SortOrder, User } from "~/models/portal/sdk"
-import { DataStruct } from "~/types/global"
 import { getErrorMessage } from "~/utils/catchError"
 import { requireUser } from "~/utils/user.server"
 
@@ -26,39 +26,26 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       accepted: true,
       sortOrder: SortOrder.Asc,
     })
-    if (!accounts.getUserAccounts) {
-      throw new Error(`Accounts not found for user ${user.user.portalUserID}`)
-    }
 
     const userPendingAccounts = await portal.getUserAccounts({
       accepted: false,
       sortOrder: SortOrder.Asc,
     })
-    return json<DataStruct<UserAccountLoaderData>>({
-      data: {
-        accounts: accounts.getUserAccounts as Account[],
-        pendingAccounts: userPendingAccounts.getUserAccounts as Account[],
-        user: user.user,
-      },
-      error: false,
+
+    return json<UserAccountLoaderData>({
+      accounts: accounts.getUserAccounts as Account[],
+      pendingAccounts: userPendingAccounts.getUserAccounts as Account[],
+      user: user.user,
     })
   } catch (error) {
-    return json<DataStruct<UserAccountLoaderData>>({
-      data: null,
-      error: true,
-      message: getErrorMessage(error),
+    throw new Response(getErrorMessage(error), {
+      status: 500,
     })
   }
 }
 
 export default function UserAccount() {
-  const { data, error, message } = useLoaderData() as DataStruct<UserAccountLoaderData>
-
-  if (error) {
-    return <ErrorView message={message} />
-  }
-
-  const { accounts, user } = data
+  const { accounts, user, pendingAccounts } = useLoaderData() as UserAccountLoaderData
 
   const routes = [
     {
@@ -89,7 +76,11 @@ export default function UserAccount() {
       <Stack gap="xl">
         <LinkTabs routes={routes} />
       </Stack>
-      <Outlet context={{ data, error, message }} />
+      <Outlet context={{ accounts, user, pendingAccounts }} />
     </RootAppShell>
   )
+}
+
+export function ErrorBoundary() {
+  return <ErrorBoundaryView />
 }

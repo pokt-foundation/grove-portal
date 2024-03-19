@@ -83,6 +83,7 @@ const CodeEditor = ({
               closeBrackets: true,
             }}
             extensions={extensions}
+            minHeight="50px"
             readOnly={readOnly}
             theme={myTheme}
             value={value}

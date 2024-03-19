@@ -1,12 +1,11 @@
 import { Box, Stack, Text } from "@mantine/core"
 import AccountsTable from "./components/AccountsTable"
-import { Account, User } from "~/models/portal/sdk"
+import { UserAccountLoaderData } from "~/routes/user/route"
 
-type UserAccountsProps = {
-  accounts: Account[]
-  pendingAccounts: Account[]
-  user: User
-}
+type UserAccountsProps = Pick<
+  UserAccountLoaderData,
+  "accounts" | "pendingAccounts" | "user"
+>
 
 export const UserAccounts = ({ accounts, pendingAccounts, user }: UserAccountsProps) => {
   return (

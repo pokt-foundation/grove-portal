@@ -1,4 +1,4 @@
-import { Container, Stack, Text, Title } from "@mantine/core"
+import { Container, Stack, Title } from "@mantine/core"
 import React, { useMemo } from "react"
 import LinkTabs from "~/components/LinkTabs"
 import { Account, PayPlanType } from "~/models/portal/sdk"
@@ -43,10 +43,7 @@ export default function AccountSettingsLayoutView({
   return (
     <Container fluid px={0}>
       <Stack gap={32}>
-        <Stack gap="xs">
-          <Title order={3}>Settings & members</Title>
-          <Text>Change your organization name and manage your team and plan.</Text>
-        </Stack>
+        <Title order={2}>Settings & members</Title>
         <LinkTabs routes={routes} />
       </Stack>
       {children}

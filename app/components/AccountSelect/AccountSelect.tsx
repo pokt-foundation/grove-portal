@@ -35,7 +35,7 @@ const AccountItem = ({
     {!iconOnly && (
       <>
         <Stack gap={0}>
-          <Text fw={500} fz={15} lh="17px">
+          <Text truncate fw={500} fz={15} lh="17px" maw={145}>
             {account.name ? account.name : account.id}
           </Text>
           <Text fz={11}>{`${getPlanName(account.planType)} · ${

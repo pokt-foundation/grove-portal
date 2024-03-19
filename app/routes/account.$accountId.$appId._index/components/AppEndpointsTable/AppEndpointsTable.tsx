@@ -91,13 +91,24 @@ const AppEndpointsTable = ({
               },
               endpointUrl: {
                 element: (
-                  <TextInput readOnly miw={300} value={getAppEndpointUrl(chain, appId)} />
+                  <TextInput
+                    readOnly
+                    miw={300}
+                    rightSection={
+                      <CopyTextButton
+                        size={16}
+                        value={getAppEndpointUrl(chain, appId)}
+                        variant="transparent"
+                        width={28}
+                      />
+                    }
+                    value={getAppEndpointUrl(chain, appId)}
+                  />
                 ),
               },
               action: {
                 element: (
                   <Flex gap="lg" justify="flex-end">
-                    <CopyTextButton value={getAppEndpointUrl(chain, appId)} />
                     <Tooltip withArrow label="Try in Sandbox">
                       <ActionIcon
                         aria-label={`Open Chain Sandbox for ${chain.description}`}

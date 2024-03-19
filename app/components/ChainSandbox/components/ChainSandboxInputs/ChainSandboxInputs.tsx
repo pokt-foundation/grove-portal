@@ -133,11 +133,9 @@ const ChainSandboxInputs = ({
           <Title order={6}>Endpoint URL</Title>
           <TextInput
             readOnly
-            bg="#27292F80"
-            classNames={{ input: "sandbox-input" }}
+
             miw={300}
-            pl={12}
-            pr={3}
+
             rightSection={
               <CopyTextButton
                 size={16}
@@ -147,7 +145,7 @@ const ChainSandboxInputs = ({
               />
             }
             value={getAppEndpointUrl(selectedChain, appId)}
-            variant="unstyled"
+
           />
         </Stack>
         {!isRpc ? (

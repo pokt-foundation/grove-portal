@@ -106,6 +106,11 @@ const FluidSelect = forwardRef<HTMLDivElement, FluidSelectProps>(
         : items
     }, [withSearch, items, filter, searchTerm])
 
+    // Sync props to state
+    if (value !== selectedItem?.value) {
+      setSelectedItem(items.find((item) => item.value === value))
+    }
+
     return (
       <Box ref={ref}>
         <Menu

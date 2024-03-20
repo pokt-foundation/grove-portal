@@ -129,36 +129,44 @@ const ChainSandboxInputs = ({
         </Button>
       </Group>
       <Stack>
-        <Title order={6}>Endpoint URL</Title>
-        <TextInput
-          readOnly
-          miw={300}
-          rightSection={
-            <CopyTextButton
-              size={16}
-              value={getAppEndpointUrl(selectedChain, appId)}
-              variant="transparent"
-              width={28}
-            />
-          }
-          value={getAppEndpointUrl(selectedChain, appId)}
-        />
-      </Stack>
+        <Stack>
+          <Title order={6}>Endpoint URL</Title>
+          <TextInput
+            readOnly
 
-      {!isRpc ? (
-        <TextInput
-          autoFocus
-          placeholder="Path"
-          style={{ flexGrow: 1 }}
-          value={chainRestPath}
-          onChange={(e) => {
-            dispatch({ type: "SET_CHAIN_REST_PATH", payload: e.currentTarget.value })
-          }}
-          onFocus={() => {
-            if (!chainRestPath) dispatch({ type: "SET_CHAIN_REST_PATH", payload: "/" })
-          }}
-        />
-      ) : null}
+            miw={300}
+
+            rightSection={
+              <CopyTextButton
+                size={16}
+                value={getAppEndpointUrl(selectedChain, appId)}
+                variant="transparent"
+                width={28}
+              />
+            }
+            value={getAppEndpointUrl(selectedChain, appId)}
+
+          />
+        </Stack>
+        {!isRpc ? (
+          <Stack>
+            <Title order={6}>Path</Title>
+            <TextInput
+              autoFocus
+              placeholder="Path"
+              style={{ flexGrow: 1 }}
+              value={chainRestPath}
+              onChange={(e) => {
+                dispatch({ type: "SET_CHAIN_REST_PATH", payload: e.currentTarget.value })
+              }}
+              onFocus={() => {
+                if (!chainRestPath)
+                  dispatch({ type: "SET_CHAIN_REST_PATH", payload: "/" })
+              }}
+            />
+          </Stack>
+        ) : null}
+      </Stack>
     </Stack>
   ) : null
 }

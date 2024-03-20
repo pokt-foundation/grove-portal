@@ -1,12 +1,11 @@
-import { Box, Divider, Stack, Title } from "@mantine/core"
+import { Divider, Stack, Title } from "@mantine/core"
 import { FetcherWithComponents, useFetcher } from "@remix-run/react"
 import React, { useEffect, useMemo } from "react"
 import ChainSandboxBody from "~/components/ChainSandbox/components/ChainSandboxBody"
 import ChainSandboxHeaders from "~/components/ChainSandbox/components/ChainSandboxHeaders"
 import ChainSandboxInputs from "~/components/ChainSandbox/components/ChainSandboxInputs"
 import useChainSandboxContext from "~/components/ChainSandbox/state"
-import CodeSnippet from "~/components/CodeSnippet"
-import CopyTextButton from "~/components/CopyTextButton"
+import CodeEditor from "~/components/CodeEditor"
 import { Blockchain, PortalApp } from "~/models/portal/sdk"
 import { SandboxRequestData } from "~/routes/api.sandbox/route"
 import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
@@ -48,11 +47,11 @@ const ChainSandbox = ({ apps, chains }: ChainSandboxProps) => {
       category: AnalyticCategories.app,
       action: AnalyticActions.app_chain_sandbox_edit_body,
       label: `App ID: ${appId}, Blockchain: ${selectedChain?.blockchain}`,
-      value: JSON.stringify(requestPayload),
+      value: requestPayload,
     })
     chainFetcher.submit(
       {
-        payload: JSON.stringify(requestPayload),
+        payload: requestPayload,
         chainUrl: chainUrl,
         ...(includeSecretKey && { secretKey }),
       },
@@ -80,19 +79,11 @@ const ChainSandbox = ({ apps, chains }: ChainSandboxProps) => {
           <Divider />
           <Stack gap={12}>
             <Title order={6}>Response</Title>
-            <Box pos="relative">
-              <CopyTextButton
-                size={16}
-                style={{ zIndex: 100, top: 8, right: 8, position: "absolute" }}
-                value={JSON.stringify(responseData, null, " ")}
-                variant="transparent"
-                width={28}
-              />
-              <CodeSnippet
-                code={JSON.stringify(responseData, null, " ")}
-                language="json"
-              />
-            </Box>
+            <CodeEditor
+              readOnly
+              lang="json"
+              value={JSON.stringify(responseData, null, " ")}
+            />
           </Stack>
         </>
       ) : null}

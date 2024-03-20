@@ -3,8 +3,10 @@ import { Link, useParams } from "@remix-run/react"
 import React, { useMemo } from "react"
 import ChainSandbox from "app/components/ChainSandbox"
 import { ChainSandboxProvider } from "~/components/ChainSandbox/state"
+import { DEFAULT_EVM_METHOD } from "~/components/ChainSandbox/state/stateReducer"
 import { EmptyState } from "~/components/EmptyState"
 import { Blockchain, PortalApp, RoleName } from "~/models/portal/sdk"
+import { isEvmChain } from "~/utils/chainUtils"
 
 type SandboxViewProps = {
   portalApps: PortalApp[]
@@ -44,7 +46,11 @@ const SandboxView = ({ portalApps, blockchains, userRole }: SandboxViewProps) =>
     <Stack gap={40}>
       <Title order={2}>Sandbox</Title>
       <ChainSandboxProvider
-        initialStateValue={{ selectedApp: apps[0], selectedChain: blockchains[0] }}
+        initialStateValue={{
+          selectedApp: apps[0],
+          selectedChain: blockchains[0],
+          selectedMethod: isEvmChain(blockchains[0]) ? DEFAULT_EVM_METHOD : "",
+        }}
       >
         <ChainSandbox apps={apps} chains={blockchains} />
       </ChainSandboxProvider>

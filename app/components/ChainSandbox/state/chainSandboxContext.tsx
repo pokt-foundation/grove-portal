@@ -12,7 +12,7 @@ const initialState: ChainSandboxStateType = {
   responseData: undefined,
   chainRestPath: "",
   chainUrl: "",
-  requestPayload: {},
+  requestPayload: "{}",
   requestHeaders: {
     "Content-Type": "application/json",
   },

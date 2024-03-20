@@ -48,7 +48,7 @@ export default function AppIdLayoutView({
 
   return (
     <Container fluid px={0}>
-      <Stack spacing="xl">
+      <Stack gap="xl">
         <ApplicationHeader app={app} userRole={userRole} />
         <LinkTabs routes={routes} />
       </Stack>

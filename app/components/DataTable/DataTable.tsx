@@ -1,20 +1,11 @@
-import { createStyles, Table, Box, LoadingOverlay } from "@mantine/core"
+import { Table, Box, LoadingOverlay } from "@mantine/core"
+import cx from "clsx"
 import React from "react"
+import classes from "./DataTable.module.css"
 import { DataTableBody } from "./DataTableBody"
 import { DataTablePagination } from "./DataTablePagination"
 import { usePagination } from "~/hooks/usePagination"
 import { DataTableProps, IdObj } from "~/types/table"
-
-const useTableStyles = createStyles((theme) => ({
-  table: {
-    "& tbody tr td": {
-      borderColor: "rgba(55,58,64, 0.5)",
-    },
-    "& thead tr th": {
-      borderColor: "rgba(55,58,64, 0.5)",
-    },
-  },
-}))
 
 export const DataTable = <T extends IdObj>({
   data,
@@ -31,24 +22,22 @@ export const DataTable = <T extends IdObj>({
     searchTerm,
   })
 
-  const { classes, cx } = useTableStyles()
-
   return (
     <Box pos="relative">
-      <LoadingOverlay overlayBlur={1} visible={isLoading} />
+      <LoadingOverlay overlayProps={{ blur: 1 }} visible={isLoading} />
       <Table
         className={cx(classes.table, { "clickable-table": !!onRowClick })}
         highlightOnHover={!!onRowClick}
-        verticalSpacing="xl"
+        verticalSpacing="lg"
       >
         {columns && (
-          <thead>
-            <tr>
+          <Table.Thead>
+            <Table.Tr>
               {columns.map((key) => (
-                <th key={key as string}>{key as string}</th>
+                <Table.Th key={key as string}>{key as string}</Table.Th>
               ))}
-            </tr>
-          </thead>
+            </Table.Tr>
+          </Table.Thead>
         )}
 
         <DataTableBody

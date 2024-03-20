@@ -1,11 +1,7 @@
-import { MantineThemeOverride } from "@mantine/core"
+import { createTheme, MantineTheme, MantineThemeOverride } from "@mantine/core"
 
-export const portalTheme: MantineThemeOverride = {
+export const portalTheme: MantineThemeOverride = createTheme({
   primaryColor: "green",
-  colorScheme: "dark",
-  headings: {
-    fontWeight: 600,
-  },
   primaryShade: { light: 4, dark: 7 },
   colors: {
     dark: [
@@ -105,31 +101,24 @@ export const portalTheme: MantineThemeOverride = {
       "#681170",
     ],
   },
-  globalStyles: (theme) => ({
-    body: {
-      ...theme.fn.fontStyles(),
-      backgroundColor:
-        theme.colorScheme === "dark" ? theme.colors.dark[9] : theme.colors.gray[2],
-      lineHeight: theme.lineHeight,
-      fontSize: "14px",
-    },
-  }),
   components: {
     Menu: {
       defaultProps: {
         position: "bottom-end",
       },
-      styles: (theme) => ({
+      styles: () => ({
         dropdown: {
           maxHeight: "400px",
           minWidth: "165px",
           overflow: "auto",
-          backgroundColor:
-            theme.colorScheme === "dark" ? theme.colors.dark[9] : theme.colors.gray[2],
+          backgroundColor: "var(--mantine-color-body)",
         },
       }),
     },
     Text: {
+      defaultProps: {
+        fz: "sm",
+      },
       styles: {
         root: {
           margin: 0,
@@ -143,25 +132,15 @@ export const portalTheme: MantineThemeOverride = {
         fw: "400",
         fz: "sm",
       },
-      styles: (theme) => ({
-        root: {
-          "&[data-disabled]": {
-            color: theme.colors.gray[6],
-            backgroundColor: theme.colors.gray[9],
-          },
-        },
-      }),
     },
     Badge: {
       defaultProps: {
         color: "gray",
         fw: 400,
         fz: "xs",
-        h: "xl",
-        tt: "capitalize",
       },
-      styles: (theme) => ({
-        root: { backgroundColor: theme?.colors?.navy[4] },
+      styles: () => ({
+        root: { backgroundColor: "var(--mantine-color-navy-4)" },
       }),
     },
     Divider: {
@@ -182,9 +161,6 @@ export const portalTheme: MantineThemeOverride = {
         input: {
           backgroundColor: "transparent",
         },
-        placeHolder: {
-          color: "red",
-        },
       },
     },
     CloseButton: {
@@ -193,33 +169,9 @@ export const portalTheme: MantineThemeOverride = {
       },
     },
     Card: {
-      styles: (theme) => ({
+      styles: () => ({
         root: {
-          padding: "32px",
-          backgroundColor:
-            theme.colorScheme === "dark" ? theme.colors.dark[9] : theme.colors.gray[1],
-        },
-      }),
-    },
-    Modal: {
-      styles: (theme) => ({
-        content: {
-          backgroundColor:
-            theme.colorScheme === "dark" ? theme.colors.dark[9] : theme.colors.gray[1],
-        },
-      }),
-    },
-    Drawer: {
-      styles: (theme) => ({
-        content: {
-          backgroundColor:
-            theme.colorScheme === "dark" ? theme.colors.dark[9] : theme.colors.gray[1],
-          overflowY: "auto",
-        },
-        header: {
-          zIndex: 100,
-          backgroundColor:
-            theme.colorScheme === "dark" ? theme.colors.dark[9] : theme.colors.gray[1],
+          backgroundColor: "var(--mantine-color-body)",
         },
       }),
     },
@@ -229,41 +181,17 @@ export const portalTheme: MantineThemeOverride = {
         px: 15,
         radius: 8,
       },
-      styles: (theme) => ({
+      styles: (theme: MantineTheme) => ({
         root: {
-          backgroundColor:
-            theme.colorScheme === "dark" ? theme.colors.dark[9] : theme.colors.gray[1],
+          backgroundColor: theme.colors.dark[9],
           border: "1px solid",
-          "&::before": { display: "none" },
         },
       }),
     },
-    Tabs: {
-      styles: (theme) => ({
-        tabsList: {
-          borderBottom: "2px solid transparent",
-          marginBottom: theme.spacing.md,
-        },
-        tab: {
-          paddingRight: theme.spacing.xs,
-          paddingLeft: theme.spacing.xs,
-          transition: "border-color ease-in-out 0.3s, color ease-in-out 0.3s",
-          "&[data-active]": {
-            borderColor: theme.colors[theme.primaryColor][6],
-          },
-          "&:hover": {
-            backgroundColor: "transparent",
-            borderColor: "transparent",
-            color: theme.colors[theme.primaryColor][8],
-          },
-          "&[data-active]:hover": {
-            borderColor: theme.colors[theme.primaryColor][8],
-          },
-          "&:not(:last-child)": {
-            marginRight: theme.spacing.md,
-          },
-        },
-      }),
+    Drawer: {
+      defaultProps: {
+        overlayProps: { opacity: 0.8, color: "var(--mantine-color-navy-9)" },
+      },
     },
   },
-}
+})

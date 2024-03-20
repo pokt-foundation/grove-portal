@@ -1,30 +1,12 @@
-import {
-  Divider,
-  Box,
-  Button,
-  CloseButton,
-  createStyles,
-  Group,
-  Flex,
-  Stack,
-  Text,
-  TextInput,
-  Tooltip,
-} from "@mantine/core"
+import { Box, Button, Divider, Group, Stack, Text, TextInput } from "@mantine/core"
 import { Form, NavLink, useParams } from "@remix-run/react"
 import { useEffect, useMemo, useState } from "react"
+import RouteModal from "~/components/RouteModal"
 import { PortalApp } from "~/models/portal/sdk"
 import AppmojiPicker, {
   DEFAULT_APPMOJI,
 } from "~/routes/account_.$accountId.create/components/AppmojiPicker"
-import useCommonStyles from "~/styles/commonStyles"
-import { trackEvent, AnalyticCategories, AnalyticActions } from "~/utils/analytics"
-
-const useStyles = createStyles((theme) => ({
-  inputLabel: {
-    fontWeight: 600,
-  },
-}))
+import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
 
 type AppFormProps = {
   app?: PortalApp
@@ -32,8 +14,6 @@ type AppFormProps = {
 }
 
 const AppForm = ({ app, onSubmit }: AppFormProps) => {
-  const { classes } = useStyles()
-  const { classes: commonClasses } = useCommonStyles()
   const { accountId, appId } = useParams()
 
   const [name, setName] = useState(app?.name ?? "")
@@ -60,34 +40,22 @@ const AppForm = ({ app, onSubmit }: AppFormProps) => {
 
   return (
     <Stack>
-      <Box>
-        <Flex align="center" justify="space-between">
-          <Text fw={600} fz="21px">
-            {label} your application
-          </Text>
-          <Tooltip withArrow label="Discard">
-            <CloseButton
-              aria-label="Discard"
-              component={NavLink}
-              to={`/account/${accountId}`}
-            />
-          </Tooltip>
-        </Flex>
-        <Text>
-          An 'application' is a unique bridge connecting your project to the decentralized
+      <RouteModal.Header
+        closeButtonLink={`/account/${accountId}`}
+        description="An 'application' is a unique bridge connecting your project to the decentralized
           world. It represents the configuration set for accessing various blockchains,
-          tailoring to the specific needs of your project.
-        </Text>
-      </Box>
+          tailoring to the specific needs of your project."
+        title={`${label} your application`}
+      />
       <Divider mb="md" mt="xl" />
       <Form method="post" onSubmit={handleSubmit}>
-        <Stack spacing="md">
+        <Stack gap="md">
           <input hidden name="referral-id" type="text" value={referral} />
           <TextInput
             required
-            classNames={{ label: classes.inputLabel }}
             defaultValue={app?.name}
             description="Required"
+            fw={600}
             label="Name"
             maxLength={40}
             name="app-name"
@@ -95,9 +63,9 @@ const AppForm = ({ app, onSubmit }: AppFormProps) => {
             onChange={(e) => setName(e.target.value)}
           />
           <TextInput
-            classNames={{ label: classes.inputLabel }}
             defaultValue={app?.description}
             description="Optional, but it can be helpful to offer additional context about your application."
+            fw={600}
             label="Description"
             name="app-description"
           />
@@ -115,9 +83,8 @@ const AppForm = ({ app, onSubmit }: AppFormProps) => {
           </Box>
         </Stack>
         <Divider my={32} />
-        <Group position="right">
+        <Group justify="right">
           <Button
-            classNames={{ root: commonClasses.grayOutline }}
             color="gray"
             component={NavLink}
             fw={400}

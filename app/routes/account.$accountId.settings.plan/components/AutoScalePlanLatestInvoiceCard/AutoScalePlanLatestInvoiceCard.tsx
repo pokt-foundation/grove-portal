@@ -3,11 +3,11 @@ import { useParams } from "@remix-run/react"
 import { Emoji } from "emoji-picker-react"
 import React from "react"
 import { LuArrowUpRight, LuDownload } from "react-icons/lu"
+import classes from "./AutoScalePlanLatestInvoiceCard.module.css"
 import { TitledCard } from "~/components/TitledCard"
 import { RoleName } from "~/models/portal/sdk"
 import { Stripe } from "~/models/stripe/stripe.server"
 import { AccountPlanViewProps } from "~/routes/account.$accountId.settings.plan/view"
-import useCommonStyles from "~/styles/commonStyles"
 import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
 import { formatTimestampShort } from "~/utils/dayjs"
 
@@ -24,8 +24,6 @@ export default function AutoScalePlanLatestInvoiceCard({
   userRole,
 }: AutoScalePlanLatestInvoiceCardProps) {
   const { accountId } = useParams()
-  const { classes: commonClasses } = useCommonStyles()
-
   const totalAccountRelays = accountAppsRelays.reduce(
     (acc, item) => acc + (item.countTotal ? item.countTotal : 0),
     0,
@@ -36,38 +34,32 @@ export default function AutoScalePlanLatestInvoiceCard({
   )
 
   return (
-    <TitledCard header={() => <Text weight={600}>Latest Invoice</Text>}>
-      <Stack pt={22} px={20} spacing={12}>
-        <Group position="apart">
+    <TitledCard header={() => <Text fw={600}>Latest Invoice</Text>}>
+      <Stack gap={12} pt={22} px={20}>
+        <Group justify="space-between">
           <Text>Invoice ID</Text> <Text>{invoice.id}</Text>
         </Group>
         <Divider />
-        <Group position="apart">
+        <Group justify="space-between">
           <Text>Status</Text>
-          <Text color={invoice.paid ? "green" : "gray"}>
+          <Text c={invoice.paid ? "green" : "gray"}>
             {invoice.paid ? "Paid" : "Open"}
           </Text>
         </Group>
         <Divider />
 
         <Accordion
+          classNames={{ control: classes.accordionControl }}
           defaultValue="item-1"
           styles={{
             item: { borderBottom: "none" },
             content: { padding: 0 },
             label: { padding: 0 },
-            control: {
-              padding: 0,
-              paddingBottom: 12,
-              "&:hover": {
-                backgroundColor: "transparent",
-              },
-            },
           }}
         >
           <Accordion.Item value="item-1">
             <Accordion.Control>
-              <Group position="apart">
+              <Group justify="space-between">
                 <Text fz="sm">Total Relays Used</Text>
                 <Text fz="sm">{totalAccountRelays}</Text>
               </Group>
@@ -76,8 +68,8 @@ export default function AutoScalePlanLatestInvoiceCard({
             <Accordion.Panel>
               {accountAppsRelays.map(({ name, appEmoji, countTotal }, index) => (
                 <React.Fragment key={`${name}-${index}`}>
-                  <Group pl={20} position="apart" py={12}>
-                    <Group spacing={6}>
+                  <Group justify="space-between" pl={20} py={12}>
+                    <Group gap={6}>
                       <Emoji size={14} unified={appEmoji} />
                       <Text>{name}</Text>
                     </Group>
@@ -89,17 +81,17 @@ export default function AutoScalePlanLatestInvoiceCard({
             </Accordion.Panel>
           </Accordion.Item>
         </Accordion>
-        <Group position="apart">
+        <Group justify="space-between">
           <Text>Relays Billed</Text>
           <Text>{invoiceUsageRecords ? invoiceUsageRecords?.total_usage : "-"}</Text>
         </Group>
         <Divider />
-        <Group position="apart">
+        <Group justify="space-between">
           <Text>Start period</Text>
           <Text>{formatTimestampShort(invoice.period_start)}</Text>
         </Group>
         <Divider />
-        <Group position="apart">
+        <Group justify="space-between">
           <Text>End period</Text>
           <Text>{formatTimestampShort(invoice.period_end)}</Text>
         </Group>
@@ -107,15 +99,14 @@ export default function AutoScalePlanLatestInvoiceCard({
 
         {userRole !== RoleName.Member && (
           <Grid gutter="sm" justify="flex-end">
-            <Grid.Col lg={4} md={4} sm={6}>
+            <Grid.Col span={{ base: 6, md: 4 }}>
               <Button
                 fullWidth
-                className={commonClasses.grayOutline}
                 color="gray"
                 component="a"
                 href={invoice.hosted_invoice_url ?? ""}
                 rel="noreferrer"
-                rightIcon={<LuArrowUpRight size={18} />}
+                rightSection={<LuArrowUpRight size={18} />}
                 target="_blank"
                 variant="outline"
                 onClick={() => {
@@ -129,12 +120,12 @@ export default function AutoScalePlanLatestInvoiceCard({
                 View in Stripe
               </Button>
             </Grid.Col>
-            <Grid.Col lg={4} md={4} sm={6}>
+            <Grid.Col span={{ base: 6, md: 4 }}>
               <Button
                 fullWidth
                 component="a"
                 href={invoice.invoice_pdf ?? ""}
-                rightIcon={<LuDownload size={18} />}
+                rightSection={<LuDownload size={18} />}
                 onClick={() => {
                   trackEvent({
                     category: AnalyticCategories.account,

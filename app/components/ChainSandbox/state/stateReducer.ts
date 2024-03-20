@@ -1,5 +1,7 @@
 import { Blockchain, PortalApp } from "~/models/portal/sdk"
 import { KeyValuePair } from "~/types/global"
+import { isEvmChain } from "~/utils/chainUtils"
+export const DEFAULT_EVM_METHOD = "eth_blockNumber"
 
 export type ChainSandboxStateType = {
   selectedMethod?: string
@@ -9,7 +11,7 @@ export type ChainSandboxStateType = {
   responseData: any
   chainRestPath: string
   chainUrl: string
-  requestPayload: KeyValuePair<any>
+  requestPayload: string
   requestHeaders: KeyValuePair<string>
 }
 
@@ -22,7 +24,7 @@ export type ChainSandboxActionType =
   | { type: "SET_CHAIN_REST_PATH"; payload: string }
   | { type: "SET_CHAIN_URL"; payload: string }
   | { type: "SET_REQUEST_HEADERS"; payload: KeyValuePair<string> }
-  | { type: "SET_REQUEST_PAYLOAD"; payload: KeyValuePair<any> }
+  | { type: "SET_REQUEST_PAYLOAD"; payload: string }
   | { type: "RESET_STATE" }
 
 const reducer = (
@@ -38,7 +40,7 @@ const reducer = (
       return {
         ...state,
         selectedChain: action.payload,
-        selectedMethod: undefined,
+        selectedMethod: isEvmChain(action.payload) ? DEFAULT_EVM_METHOD : undefined,
         chainRestPath: "",
       }
     case "SET_SELECTED_APP":

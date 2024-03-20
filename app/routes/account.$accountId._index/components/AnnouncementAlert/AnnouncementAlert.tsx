@@ -2,14 +2,12 @@ import { Alert } from "@mantine/core"
 import { useSessionStorage } from "@mantine/hooks"
 import React, { useEffect, useState } from "react"
 import { LuAlertCircle } from "react-icons/lu"
-import useCommonStyles from "~/styles/commonStyles"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 
 const ANNOUNCEMENT_ALERT_TITLE = getRequiredClientEnvVar("ANNOUNCEMENT_ALERT_TITLE")
 const ANNOUNCEMENT_ALERT_BODY = getRequiredClientEnvVar("ANNOUNCEMENT_ALERT_BODY")
 
 export const AnnouncementAlert = () => {
-  const { classes: commonClasses, cx } = useCommonStyles()
   const [isInitialRender, setIsInitialRender] = useState<boolean>(true)
 
   const [hideAnnouncementAlert, setHideAnnouncementAlert] = useSessionStorage({
@@ -24,7 +22,6 @@ export const AnnouncementAlert = () => {
   return !isInitialRender && hideAnnouncementAlert === "false" ? (
     <Alert
       withCloseButton
-      className={cx(commonClasses.mainBackgroundColor, commonClasses.grayOutline)}
       color="gray"
       icon={<LuAlertCircle size={16} />}
       title={ANNOUNCEMENT_ALERT_TITLE}

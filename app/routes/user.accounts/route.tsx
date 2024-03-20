@@ -1,12 +1,13 @@
 import { ActionFunction, json, MetaFunction } from "@remix-run/node"
 import { useOutletContext } from "@remix-run/react"
+import React from "react"
 import invariant from "tiny-invariant"
 import UserAccounts from "./view"
-import ErrorView from "~/components/ErrorView"
+import ErrorBoundaryView from "~/components/ErrorBoundaryView"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { RoleName } from "~/models/portal/sdk"
 import { UserAccountLoaderData } from "~/routes/user/route"
-import { DataStruct } from "~/types/global"
+import { ActionDataStruct } from "~/types/global"
 import { getErrorMessage } from "~/utils/catchError"
 import { triggerAcceptInvitationNotification } from "~/utils/notifications.server"
 import { seo_title_append } from "~/utils/seo"
@@ -62,7 +63,7 @@ export const action: ActionFunction = async ({ request }) => {
       })
     }
 
-    return json<DataStruct<UserInvitedAccountsActionData>>({
+    return json<ActionDataStruct<UserInvitedAccountsActionData>>({
       data: {
         success: res,
       },
@@ -70,7 +71,7 @@ export const action: ActionFunction = async ({ request }) => {
       message,
     })
   } catch (error) {
-    return json<DataStruct<UserInvitedAccountsActionData>>({
+    return json<ActionDataStruct<UserInvitedAccountsActionData>>({
       data: null,
       error: true,
       message: getErrorMessage(error),
@@ -79,15 +80,12 @@ export const action: ActionFunction = async ({ request }) => {
 }
 
 export default function Accounts() {
-  const { data, error, message } = useOutletContext<DataStruct<UserAccountLoaderData>>()
-
-  if (error) {
-    return <ErrorView message={message} />
-  }
-
-  const { accounts, pendingAccounts, user } = data
-
+  const { accounts, pendingAccounts, user } = useOutletContext<UserAccountLoaderData>()
   return (
     <UserAccounts accounts={accounts} pendingAccounts={pendingAccounts} user={user} />
   )
+}
+
+export function ErrorBoundary() {
+  return <ErrorBoundaryView />
 }

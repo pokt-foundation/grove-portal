@@ -1,12 +1,4 @@
-import {
-  Flex,
-  Menu,
-  TextInput,
-  useMantineTheme,
-  UnstyledButton,
-  Tooltip,
-  ActionIcon,
-} from "@mantine/core"
+import { Flex, Menu, TextInput, UnstyledButton, Tooltip, ActionIcon } from "@mantine/core"
 import { useFetcher, useNavigation, useParams } from "@remix-run/react"
 import React, { useMemo, useState } from "react"
 import { LuBook, LuPlay } from "react-icons/lu"
@@ -22,7 +14,6 @@ import useActionNotification, {
 } from "~/hooks/useActionNotification"
 import { Blockchain, PortalApp } from "~/models/portal/sdk"
 import ChainSandboxSideDrawer from "~/routes/account.$accountId.$appId._index/components/ChainSandboxSideDrawer"
-import useCommonStyles from "~/styles/commonStyles"
 import { trackEvent, AnalyticCategories, AnalyticActions } from "~/utils/analytics"
 import { CHAIN_DOCS_URL, getAppEndpointUrl } from "~/utils/chainUtils"
 import { DOCS_PATH } from "~/utils/utils"
@@ -40,12 +31,10 @@ const AppEndpointsTable = ({
   searchTerm,
   readOnly,
 }: AppEndpointsProps) => {
-  const theme = useMantineTheme()
   const { appId } = useParams()
   const fetcher = useFetcher()
   const fetcherData = fetcher.data as ActionNotificationData
   const navigation = useNavigation()
-  const { classes: commonClasses } = useCommonStyles()
   const [selectedBlockchain, setSelectedBlockchain] = useState<Blockchain>()
   const favoriteChains = app.settings.favoritedChainIDs
 
@@ -104,8 +93,15 @@ const AppEndpointsTable = ({
                 element: (
                   <TextInput
                     readOnly
-                    bg={theme.colors.gray[9]}
                     miw={300}
+                    rightSection={
+                      <CopyTextButton
+                        size={16}
+                        value={getAppEndpointUrl(chain, appId)}
+                        variant="transparent"
+                        width={28}
+                      />
+                    }
                     value={getAppEndpointUrl(chain, appId)}
                   />
                 ),
@@ -113,10 +109,9 @@ const AppEndpointsTable = ({
               action: {
                 element: (
                   <Flex gap="lg" justify="flex-end">
-                    <CopyTextButton value={getAppEndpointUrl(chain, appId)} />
                     <Tooltip withArrow label="Try in Sandbox">
                       <ActionIcon
-                        className={commonClasses.grayOutline}
+                        aria-label={`Open Chain Sandbox for ${chain.description}`}
                         color="gray"
                         radius="xl"
                         size={40}
@@ -137,7 +132,7 @@ const AppEndpointsTable = ({
                       <ContextMenuTarget />
                       <Menu.Dropdown>
                         {chain.blockchain && CHAIN_DOCS_URL[chain.blockchain] && (
-                          <Menu.Item icon={<LuBook size={18} />}>
+                          <Menu.Item leftSection={<LuBook size={18} />}>
                             <UnstyledButton
                               component="a"
                               fz="sm"
@@ -159,7 +154,7 @@ const AppEndpointsTable = ({
 
                         {!readOnly && (
                           <Menu.Item
-                            icon={
+                            leftSection={
                               chain.favorite ? (
                                 <RiStarFill size={18} />
                               ) : (

@@ -69,7 +69,7 @@ export default function UpgradePlan() {
     <Box maw={860} mt={90} mx="auto">
       <Stack align="center" mt={"xl"}>
         <Box w="100%">
-          <Group position="apart">
+          <Group justify="space-between">
             <Text fw={600} fz="21px">
               Upgrade to Auto-Scale
             </Text>
@@ -84,7 +84,7 @@ export default function UpgradePlan() {
           <Text>Your current plan is {getPlanName(PayPlanType.FreetierV0)}.</Text>
         </Box>
         <Divider mb="md" mt="xl" />
-        <SimpleGrid breakpoints={[{ maxWidth: "lg", cols: 1 }]} cols={2}>
+        <SimpleGrid cols={{ base: 1, md: 2 }}>
           <AccountPlan disableFree type={PayPlanType.FreetierV0} />
           <AccountPlan
             type={PayPlanType.PayAsYouGoV0}

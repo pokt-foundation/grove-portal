@@ -1,4 +1,4 @@
-import { Indicator, Group, MantineTheme, Text, Tooltip } from "@mantine/core"
+import { Indicator, Group, Text, Tooltip } from "@mantine/core"
 import { useMemo } from "react"
 import { LuCrown } from "react-icons/lu"
 import { DataTable } from "~/components/DataTable"
@@ -65,7 +65,7 @@ const AccountsTable = ({ accounts, pendingAccounts, user }: AccountsTableProps) 
                     />
                   </Indicator>
                 </Tooltip>
-                <Text size="sm" weight={500}>
+                <Text fw={500} size="sm">
                   {account.name ? account.name : account.id}
                 </Text>
               </Group>
@@ -96,11 +96,11 @@ const AccountsTable = ({ accounts, pendingAccounts, user }: AccountsTableProps) 
           status: {
             element: (
               <Text
-                sx={(theme: MantineTheme) => ({
-                  color: account.accepted
-                    ? theme.colors.green[6]
-                    : theme.colors.yellow[7],
-                })}
+                c={
+                  account.accepted
+                    ? "var(--mantine-color-green-6)"
+                    : "var(--mantine-color-yellow-7)"
+                }
               >
                 {account.accepted ? "Accepted" : "Pending"}
               </Text>

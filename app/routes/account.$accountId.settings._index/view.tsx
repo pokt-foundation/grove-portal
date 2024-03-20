@@ -11,7 +11,6 @@ import {
 import { Link } from "@remix-run/react"
 import { Identicon } from "~/components/Identicon"
 import { Account, RoleName } from "~/models/portal/sdk"
-import useCommonStyles from "~/styles/commonStyles"
 import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
 
 type AccountSettingsViewProps = {
@@ -20,9 +19,8 @@ type AccountSettingsViewProps = {
 }
 
 export const AccountSettingsView = ({ account, userRole }: AccountSettingsViewProps) => {
-  const { classes: commonClasses } = useCommonStyles()
   return (
-    <Stack spacing="xs">
+    <Stack gap="xs">
       <Box py={20}>
         <Identicon
           alt={`${account?.name ?? "account"} avatar`}
@@ -44,7 +42,6 @@ export const AccountSettingsView = ({ account, userRole }: AccountSettingsViewPr
               <Text pt={5}>Modify your account name here. </Text>
             </Box>
             <Button
-              className={commonClasses.grayOutline}
               color="gray"
               component={Link}
               to={`/account/${account.id}/update`}
@@ -74,6 +71,7 @@ export const AccountSettingsView = ({ account, userRole }: AccountSettingsViewPr
               <Tooltip withArrow label={copied ? "Copied" : "Copy"}>
                 <Badge
                   color={copied ? "green" : "gray"}
+                  data-outline-exclude={copied ? "true" : "false"}
                   px={6}
                   radius="sm"
                   style={{ cursor: "pointer", textTransform: "lowercase" }}

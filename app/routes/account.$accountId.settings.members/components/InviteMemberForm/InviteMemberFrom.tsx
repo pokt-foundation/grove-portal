@@ -15,7 +15,6 @@ import ModalHeader from "~/components/ModalHeader"
 import PortalLoader from "~/components/PortalLoader"
 import useModals from "~/hooks/useModals"
 import { Maybe, RoleName } from "~/models/portal/sdk"
-import useCommonStyles from "~/styles/commonStyles"
 import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
 
 type InviteMemberFromProps = {
@@ -24,7 +23,6 @@ type InviteMemberFromProps = {
 
 const InviteMemberFrom = ({ accountName }: InviteMemberFromProps) => {
   const { state } = useNavigation()
-  const { classes: commonClasses } = useCommonStyles()
   const { accountId } = useParams()
   const [isFormSubmitted, setIsFormSubmitted] = useState(false)
   const { closeAllModals } = useModals()
@@ -49,7 +47,7 @@ const InviteMemberFrom = ({ accountName }: InviteMemberFromProps) => {
             onDiscard={closeAllModals}
           />
           <Form action={`/account/${accountId}/settings/members`} method="post">
-            <Stack spacing="md">
+            <Stack gap="md">
               <TextInput
                 required
                 description="Required"
@@ -80,9 +78,8 @@ const InviteMemberFrom = ({ accountName }: InviteMemberFromProps) => {
               </Flex>
             </Stack>
             <Divider my={32} />
-            <Group position="right">
+            <Group justify="right">
               <Button
-                classNames={{ root: commonClasses.grayOutline }}
                 color="gray"
                 fw={400}
                 fz="sm"
@@ -115,7 +112,10 @@ const InviteMemberFrom = ({ accountName }: InviteMemberFromProps) => {
           </Form>
         </Container>
       ) : (
-        <LoadingOverlay visible loader={<PortalLoader message="Sending invite..." />} />
+        <LoadingOverlay
+          visible
+          loaderProps={{ children: <PortalLoader message="Sending invite..." /> }}
+        />
       )}
     </>
   )

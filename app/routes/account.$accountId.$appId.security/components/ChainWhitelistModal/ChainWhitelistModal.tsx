@@ -22,7 +22,6 @@ import AddSettingsButton from "~/routes/account.$accountId.$appId.security/compo
 import { whitelistInfo } from "~/routes/account.$accountId.$appId.security/components/ChainWhitelist"
 import ChainWhitelistTable from "~/routes/account.$accountId.$appId.security/components/ChainWhitelistTable"
 import { BlockchainWhitelist } from "~/routes/account.$accountId.$appId.security/utils/utils"
-import useCommonStyles from "~/styles/commonStyles"
 
 type ChainWhitelistModalProps = {
   blockchains: Blockchain[]
@@ -36,7 +35,6 @@ const ChainWhitelistModal = ({
   type,
 }: ChainWhitelistModalProps) => {
   const { state } = useNavigation()
-  const { classes: commonClasses } = useCommonStyles()
   const { closeAllModals } = useModals()
 
   const [selectedWhiteLists, setSelectedWhiteLists] = useState<BlockchainWhitelist[]>([])
@@ -94,8 +92,9 @@ const ChainWhitelistModal = ({
                   <ChainsDropdown
                     chains={blockchains}
                     width={250}
-                    onChange={(val: string) => {
-                      setDropdownSelectedChain(blockchains.find(({ id }) => id === val))
+                    onChange={(val) => {
+                      val &&
+                        setDropdownSelectedChain(blockchains.find(({ id }) => id === val))
                     }}
                   />
                 )}
@@ -127,9 +126,8 @@ const ChainWhitelistModal = ({
           )}
 
           <Divider my={32} />
-          <Group position="right">
+          <Group justify="right">
             <Button
-              classNames={{ root: commonClasses.grayOutline }}
               color="gray"
               fw={400}
               fz="sm"
@@ -156,7 +154,7 @@ const ChainWhitelistModal = ({
       ) : (
         <LoadingOverlay
           visible
-          loader={<PortalLoader message="Adding approved chains..." />}
+          loaderProps={{ children: <PortalLoader message="Adding approved chains..." /> }}
         />
       )}
     </>

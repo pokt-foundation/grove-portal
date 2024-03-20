@@ -1,16 +1,7 @@
-import {
-  Divider,
-  Box,
-  Group,
-  MantineTheme,
-  PasswordInput,
-  Stack,
-  Text,
-  TextInput,
-} from "@mantine/core"
+import { Box, Divider, Group, PasswordInput, Stack, Text, TextInput } from "@mantine/core"
 import CopyTextButton from "~/components/CopyTextButton"
 import { PortalApp, RoleName } from "~/models/portal/sdk"
-import { trackEvent, AnalyticCategories, AnalyticActions } from "~/utils/analytics"
+import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
 
 type AppKeysProps = {
   app: PortalApp
@@ -19,12 +10,11 @@ type AppKeysProps = {
 
 const AppKeys = ({ app, userRole }: AppKeysProps) => {
   // We shouldnt be using this value. The statement about it below is not true.
-  //
   // const publicKey = app.aats ? app.aats[0].aat.publicKey : ""
 
   const secretKey = app.settings.secretKey
   return (
-    <Stack spacing={0}>
+    <Stack gap={0}>
       <Box py={20}>
         <Text fw={600}>App ID</Text>
         <Text fw={400} pt={8}>
@@ -44,10 +34,9 @@ const AppKeys = ({ app, userRole }: AppKeysProps) => {
           <TextInput
             readOnly
             aria-label="App ID"
-            sx={(theme: MantineTheme) => ({
+            style={{
               flex: 1,
-              backgroundColor: theme.colors.gray[9],
-            })}
+            }}
             value={app.id}
           />
           <CopyTextButton value={app.id} />
@@ -77,10 +66,9 @@ const AppKeys = ({ app, userRole }: AppKeysProps) => {
               <PasswordInput
                 readOnly
                 aria-label="Secret Key"
-                sx={(theme: MantineTheme) => ({
+                style={{
                   flex: 1,
-                  backgroundColor: theme.colors.gray[9],
-                })}
+                }}
                 value={secretKey}
               />
               <CopyTextButton value={secretKey} />

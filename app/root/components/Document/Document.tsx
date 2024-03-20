@@ -1,4 +1,4 @@
-import { StylesPlaceholder } from "@mantine/remix"
+import { ColorSchemeScript } from "@mantine/core"
 import {
   Links,
   LiveReload,
@@ -21,10 +21,9 @@ const Document = ({ children, title }: { children: React.ReactNode; title?: stri
   }, [params])
 
   return (
-    <html>
+    <html data-mantine-color-scheme="dark">
       <head>
         {title && <title>{title}</title>}
-        <StylesPlaceholder />
         {/* Google tag (gtag.js) */}
         <script
           async
@@ -41,8 +40,11 @@ const Document = ({ children, title }: { children: React.ReactNode; title?: stri
         `,
           }}
         />
+        <meta charSet="utf-8" />
+        <meta content="width=device-width, initial-scale=1" name="viewport" />
         <Meta />
         <Links />
+        <ColorSchemeScript defaultColorScheme="dark" />
       </head>
       <body>
         <RootProviders>{children}</RootProviders>

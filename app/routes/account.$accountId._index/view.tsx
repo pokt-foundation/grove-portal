@@ -1,4 +1,4 @@
-import { Badge, Card, Group, SimpleGrid, Stack, Text } from "@mantine/core"
+import { Badge, Card, Group, SimpleGrid, Stack, Text, Title } from "@mantine/core"
 import { useNavigation } from "@remix-run/react"
 import React from "react"
 import TitledCard from "~/components/TitledCard"
@@ -31,11 +31,12 @@ export const AccountInsightsView = ({ total, aggregate }: AccountInsightsViewPro
   } = useAggregateChartData(aggregate)
 
   return (
-    <Stack mb="xl" pt={22} spacing="xl">
+    <Stack gap="xl" mb="xl" pt={22}>
+      <Title order={2}>Insights</Title>
       <TitledCard
         header={() => (
-          <Group position="apart">
-            <Text weight={600}>Account Overview</Text>
+          <Group justify="space-between">
+            <Text fw={600}>Account Overview</Text>
             <ChartPeriodSelector />
           </Group>
         )}
@@ -45,12 +46,12 @@ export const AccountInsightsView = ({ total, aggregate }: AccountInsightsViewPro
         </Card.Section>
       </TitledCard>
 
-      <Stack spacing="xl">
+      <Stack gap="xl">
         <TitledCard
           header={() => (
-            <Group position="apart">
+            <Group justify="space-between">
               <Group>
-                <Text weight={600}>Total Relays</Text>
+                <Text fw={600}>Total Relays</Text>
                 <Badge px={6} radius="sm">
                   {commify(total?.countTotal ?? 0)}
                 </Badge>
@@ -68,13 +69,13 @@ export const AccountInsightsView = ({ total, aggregate }: AccountInsightsViewPro
           </Card.Section>
         </TitledCard>
 
-        <SimpleGrid breakpoints={[{ maxWidth: "md", cols: 1 }]} cols={2}>
+        <SimpleGrid cols={{ base: 1, lg: 2 }}>
           <TitledCard
             header={() => (
-              <Group position="apart">
+              <Group justify="space-between">
                 <Group>
-                  <Text weight={600}>Average Latency</Text>
-                  <Badge px={6} radius="sm">
+                  <Text fw={600}>Average Latency</Text>
+                  <Badge px={6} radius="sm" tt="lowercase">
                     {commify(total?.avgLatency ?? 0)}ms
                   </Badge>
                 </Group>
@@ -92,9 +93,9 @@ export const AccountInsightsView = ({ total, aggregate }: AccountInsightsViewPro
           </TitledCard>
           <TitledCard
             header={() => (
-              <Group position="apart">
+              <Group justify="space-between">
                 <Group>
-                  <Text weight={600}>Success Rate</Text>
+                  <Text fw={600}>Success Rate</Text>
                   <Badge px={6} radius="sm">
                     {commify(total?.rateSuccess ?? 0)}%
                   </Badge>
@@ -115,9 +116,9 @@ export const AccountInsightsView = ({ total, aggregate }: AccountInsightsViewPro
         </SimpleGrid>
         <TitledCard
           header={() => (
-            <Group position="apart">
+            <Group justify="space-between">
               <Group>
-                <Text weight={600}>Total Errors</Text>
+                <Text fw={600}>Total Errors</Text>
                 <Badge px={6} radius="sm">
                   {totalErrors ? commify(totalErrors) : 0}
                 </Badge>

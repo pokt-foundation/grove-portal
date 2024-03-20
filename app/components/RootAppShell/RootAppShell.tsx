@@ -1,5 +1,6 @@
 import { AppShell, Container } from "@mantine/core"
-import React, { ReactNode, useMemo, useState } from "react"
+import { useDisclosure } from "@mantine/hooks"
+import React, { ReactNode } from "react"
 import { AppHeader } from "~/components/AppHeader"
 import { Sidebar } from "~/components/Sidebar"
 import { Account, RoleName, User } from "~/models/portal/sdk"
@@ -19,42 +20,34 @@ export const RootAppShell = ({
   accounts,
   userRole,
 }: RootAppShellProps) => {
-  const [opened, setOpened] = useState(false)
+  const [opened, { toggle }] = useDisclosure()
   const { hideSidebar } = useRoot({ user })
-  const navProp = useMemo(
-    () => ({
-      ...(account &&
-        userRole &&
-        !hideSidebar && {
-          navbar: (
-            <Sidebar
-              account={account}
-              accounts={accounts}
-              hidden={!opened}
-              userRole={userRole}
-            />
-          ),
-        }),
-    }),
-    [hideSidebar, userRole, account, accounts, opened],
-  )
-
   return (
     <AppShell
-      header={
-        <AppHeader
-          accounts={accounts}
-          opened={opened}
-          user={user}
-          onOpen={(o) => setOpened(o)}
-        />
-      }
+      header={{ height: 60 }}
       layout="alt"
-      {...navProp}
-      navbarOffsetBreakpoint="sm"
+      navbar={{
+        width: 260,
+        breakpoint: "sm",
+        collapsed: { mobile: hideSidebar || !opened, desktop: hideSidebar },
+      }}
       padding="xs"
+      pb={50}
     >
-      <Container size="lg">{children}</Container>
+      <AppShell.Header withBorder={false}>
+        <AppHeader accounts={accounts} opened={opened} toggle={toggle} user={user} />
+      </AppShell.Header>
+      {account && userRole && (
+        <Sidebar
+          account={account}
+          accounts={accounts}
+          toggle={toggle}
+          userRole={userRole}
+        />
+      )}
+      <AppShell.Main>
+        <Container size="lg">{children}</Container>
+      </AppShell.Main>
     </AppShell>
   )
 }

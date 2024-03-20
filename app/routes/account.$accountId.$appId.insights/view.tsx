@@ -21,11 +21,11 @@ export default function ApplicationInsightsView({ total, aggregate }: AppInsight
     aggregatedErrorData,
   } = useAggregateChartData(aggregate)
   return (
-    <Stack mb="xl" pt={22} spacing="xl">
+    <Stack gap="xl" mb="xl" pt={22}>
       <TitledCard
         header={() => (
-          <Group position="apart">
-            <Text weight={600}>Application Overview</Text>
+          <Group justify="space-between">
+            <Text fw={600}>Application Overview</Text>
             <ChartPeriodSelector />
           </Group>
         )}
@@ -35,12 +35,12 @@ export default function ApplicationInsightsView({ total, aggregate }: AppInsight
         </Card.Section>
       </TitledCard>
 
-      <Stack spacing="xl">
+      <Stack gap="xl">
         <TitledCard
           header={() => (
-            <Group position="apart">
+            <Group justify="space-between">
               <Group>
-                <Text weight={600}>Total Relays</Text>
+                <Text fw={600}>Total Relays</Text>
                 <Badge px={6} radius="sm">
                   {commify(total?.countTotal ?? 0)}
                 </Badge>
@@ -58,13 +58,13 @@ export default function ApplicationInsightsView({ total, aggregate }: AppInsight
           </Card.Section>
         </TitledCard>
 
-        <SimpleGrid breakpoints={[{ maxWidth: "md", cols: 1 }]} cols={2}>
+        <SimpleGrid cols={{ base: 1, lg: 2 }}>
           <TitledCard
             header={() => (
-              <Group position="apart">
+              <Group justify="space-between">
                 <Group>
-                  <Text weight={600}>Average Latency </Text>
-                  <Badge px={6} radius="sm">
+                  <Text fw={600}>Average Latency </Text>
+                  <Badge px={6} radius="sm" tt="lowercase">
                     {commify(total?.avgLatency ?? 0)}ms
                   </Badge>
                 </Group>
@@ -82,9 +82,9 @@ export default function ApplicationInsightsView({ total, aggregate }: AppInsight
           </TitledCard>
           <TitledCard
             header={() => (
-              <Group position="apart">
+              <Group justify="space-between">
                 <Group>
-                  <Text weight={600}>Success Rate </Text>
+                  <Text fw={600}>Success Rate </Text>
                   <Badge px={6} radius="sm">
                     {commify(total?.rateSuccess ?? 0)}%
                   </Badge>
@@ -104,9 +104,9 @@ export default function ApplicationInsightsView({ total, aggregate }: AppInsight
         </SimpleGrid>
         <TitledCard
           header={() => (
-            <Group position="apart">
+            <Group justify="space-between">
               <Group>
-                <Text weight={600}>Total Errors </Text>
+                <Text fw={600}>Total Errors </Text>
                 <Badge px={6} radius="sm">
                   {totalErrors ? commify(totalErrors) : 0}
                 </Badge>

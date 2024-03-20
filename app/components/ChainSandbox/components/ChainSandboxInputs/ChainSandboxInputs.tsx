@@ -2,11 +2,11 @@ import {
   Button,
   Divider,
   Group,
+  MantineTheme,
   Stack,
   TextInput,
   Title,
   Tooltip,
-  useMantineTheme,
 } from "@mantine/core"
 import React, { useMemo } from "react"
 import useChainSandboxContext from "~/components/ChainSandbox/state"
@@ -29,7 +29,6 @@ const ChainSandboxInputs = ({
   isLoading,
   onSendRequest,
 }: ChainSandboxInputsProps) => {
-  const theme = useMantineTheme()
   const { state, dispatch } = useChainSandboxContext()
   const { selectedChain, selectedApp, selectedMethod, chainRestPath } = state
   const appId = selectedApp?.id
@@ -75,15 +74,15 @@ const ChainSandboxInputs = ({
   )
 
   return selectedChain ? (
-    <Stack spacing="xl">
+    <Stack gap="xl">
       <Group>
         <Group
+          gap={0}
           pos="relative"
-          spacing={0}
-          style={{
+          style={(theme: MantineTheme) => ({
             border: `1px solid ${theme.colors.gray[8]}`,
             borderRadius: 4,
-          }}
+          })}
         >
           {appsSelectItems.length > 0 ? (
             <>
@@ -130,40 +129,44 @@ const ChainSandboxInputs = ({
         </Button>
       </Group>
       <Stack>
-        <Title order={6}>Endpoint URL</Title>
-        <TextInput
-          readOnly
-          bg="#27292F80"
-          miw={300}
-          pl={12}
-          pr={3}
-          rightSection={
-            <CopyTextButton
-              size={16}
-              value={getAppEndpointUrl(selectedChain, appId)}
-              variant="transparent"
-              width={28}
-            />
-          }
-          value={getAppEndpointUrl(selectedChain, appId)}
-          variant="unstyled"
-        />
-      </Stack>
+        <Stack>
+          <Title order={6}>Endpoint URL</Title>
+          <TextInput
+            readOnly
 
-      {!isRpc ? (
-        <TextInput
-          autoFocus
-          placeholder="Path"
-          style={{ flexGrow: 1 }}
-          value={chainRestPath}
-          onChange={(e) => {
-            dispatch({ type: "SET_CHAIN_REST_PATH", payload: e.currentTarget.value })
-          }}
-          onFocus={() => {
-            if (!chainRestPath) dispatch({ type: "SET_CHAIN_REST_PATH", payload: "/" })
-          }}
-        />
-      ) : null}
+            miw={300}
+
+            rightSection={
+              <CopyTextButton
+                size={16}
+                value={getAppEndpointUrl(selectedChain, appId)}
+                variant="transparent"
+                width={28}
+              />
+            }
+            value={getAppEndpointUrl(selectedChain, appId)}
+
+          />
+        </Stack>
+        {!isRpc ? (
+          <Stack>
+            <Title order={6}>Path</Title>
+            <TextInput
+              autoFocus
+              placeholder="Path"
+              style={{ flexGrow: 1 }}
+              value={chainRestPath}
+              onChange={(e) => {
+                dispatch({ type: "SET_CHAIN_REST_PATH", payload: e.currentTarget.value })
+              }}
+              onFocus={() => {
+                if (!chainRestPath)
+                  dispatch({ type: "SET_CHAIN_REST_PATH", payload: "/" })
+              }}
+            />
+          </Stack>
+        ) : null}
+      </Stack>
     </Stack>
   ) : null
 }

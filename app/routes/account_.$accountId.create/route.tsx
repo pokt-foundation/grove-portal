@@ -1,4 +1,3 @@
-import { Box, LoadingOverlay } from "@mantine/core"
 import {
   ActionFunction,
   json,
@@ -13,7 +12,7 @@ import AccountPlansContainer from "./components/AccountPlansContainer"
 import AppForm from "./components/AppForm"
 import { DEFAULT_APPMOJI } from "./components/AppmojiPicker"
 import ErrorBoundaryView from "~/components/ErrorBoundaryView"
-import PortalLoader from "~/components/PortalLoader"
+import RouteModal from "~/components/RouteModal"
 import useActionNotification, {
   ActionNotificationData,
 } from "~/hooks/useActionNotification"
@@ -182,8 +181,8 @@ export default function CreateApp() {
     }
   }
 
-  return fetcher.state === "idle" ? (
-    <Box maw={860} mt={90} mx="auto">
+  return (
+    <RouteModal loaderMessage="Creating your application..." state={fetcher.state}>
       {appFromData ? (
         <AccountPlansContainer
           onPlanSelected={(plan: PayPlanType) => {
@@ -196,12 +195,7 @@ export default function CreateApp() {
       ) : (
         <AppForm onSubmit={handleFormSubmit} />
       )}
-    </Box>
-  ) : (
-    <LoadingOverlay
-      visible
-      loader={<PortalLoader message="Creating your application..." />}
-    />
+    </RouteModal>
   )
 }
 

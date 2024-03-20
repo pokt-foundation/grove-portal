@@ -1,8 +1,6 @@
-import { Tooltip, ActionIcon, CopyButton, Box, ActionIconProps } from "@mantine/core"
-import cx from "clsx"
+import { ActionIcon, ActionIconProps, Box, CopyButton, Tooltip } from "@mantine/core"
 import { forwardRef, HTMLAttributes } from "react"
 import { LuCopy, LuCopyCheck } from "react-icons/lu"
-import useCommonStyles from "~/styles/commonStyles"
 
 type CopyTextButtonProps = {
   value: string
@@ -12,17 +10,16 @@ type CopyTextButtonProps = {
 } & HTMLAttributes<HTMLDivElement>
 
 const CopyTextButton = forwardRef<HTMLDivElement, CopyTextButtonProps>(
-  ({ value, variant = "outline", size = 18, width = 40, ...props }, ref) => {
-    const { classes: commonClasses } = useCommonStyles()
-
+  ({ value, variant = "outline", size = 18, width = 40, color, ...props }, ref) => {
     return (
       <Box ref={ref} {...props}>
         <CopyButton timeout={2000} value={value}>
           {({ copied, copy }) => (
             <Tooltip withArrow label={copied ? "Copied" : "Copy"}>
               <ActionIcon
-                className={cx({ [commonClasses.grayOutline]: variant === "outline" })}
-                color={copied ? "teal" : "gray"}
+                aria-label="Copy value"
+                color={copied ? "teal" : color ?? "gray"}
+                data-outline-exclude={copied ? "true" : "false"}
                 radius="xl"
                 size={width}
                 variant={variant}

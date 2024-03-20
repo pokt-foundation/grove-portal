@@ -46,9 +46,7 @@ const getInitialRequestPayload = ({
 }
 
 const methodsAutocompleteOptions: AutocompleteOption[] = evmMethods.map((method) => ({
-  label: `@${method}`,
-  displayLabel: method,
-  apply: method,
+  label: method,
 }))
 
 const ChainSandboxBody = ({ chainUrl, requestHeaders }: ChainSandboxBodyProps) => {

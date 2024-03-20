@@ -19,9 +19,9 @@ type CodeEditorProps = {
 
 export type AutocompleteOption = {
   label: string
-  apply: string
+  apply?: string
   info?: string
-  displayLabel: string
+  displayLabel?: string
 }
 
 const jsonAutoComplete = (options: AutocompleteOption[]) =>

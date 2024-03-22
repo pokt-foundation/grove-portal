@@ -25,16 +25,14 @@ const getCurlCommand = ({
   url: string
   headers: KeyValuePair<string>
   body: string
-  httpMethod?: HttpMethod
+  httpMethod: HttpMethod
 }) => {
   const headersArray = Object.entries(headers).map(
     ([key, value]) => `-H '${key}: ${value}'`,
   )
   const headersString = headersArray.join(" \\\n  ")
   const dataString = httpMethod === "GET" ? "" : ` \\\n  -d '${body}'`
-  return `curl ${url} \\\n  -X ${
-    httpMethod ?? "POST"
-  } \\\n  ${headersString}${dataString}`
+  return `curl ${url} \\\n  -X ${httpMethod} \\\n  ${headersString}${dataString}`
 }
 
 const getInitialRequestPayload = ({

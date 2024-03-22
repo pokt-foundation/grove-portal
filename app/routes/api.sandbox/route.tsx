@@ -11,9 +11,11 @@ export const action: ActionFunction = async ({ request }) => {
   const payload = formData.get("payload")
   const chainUrl = formData.get("chainUrl")
   const secretKey = formData.get("secretKey")
+  const httpMethod = formData.get("httpMethod")
 
   invariant(typeof payload === "string", "payload must be set")
   invariant(typeof chainUrl === "string", "chainUrl must be set")
+  invariant(typeof httpMethod === "string", "httpMethod must be set")
 
   try {
     const headers = new Headers()
@@ -24,9 +26,9 @@ export const action: ActionFunction = async ({ request }) => {
     }
 
     const requestOptions = {
-      method: "POST",
+      method: httpMethod ?? "POST",
       headers: headers,
-      body: payload,
+      ...(httpMethod === "GET" ? {} : { body: payload }),
     }
 
     const data = await fetch(chainUrl, requestOptions).then((response) => response.json())

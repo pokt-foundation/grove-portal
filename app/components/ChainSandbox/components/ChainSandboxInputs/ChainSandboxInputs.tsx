@@ -10,6 +10,7 @@ import {
 } from "@mantine/core"
 import React, { useMemo } from "react"
 import useChainSandboxContext from "~/components/ChainSandbox/state"
+import { HttpMethod } from "~/components/ChainSandbox/state/stateReducer"
 import ChainSelectItem from "~/components/ChainSelectItem"
 import CopyTextButton from "~/components/CopyTextButton"
 import FluidSelect from "~/components/FluidSelect"
@@ -23,6 +24,15 @@ type ChainSandboxInputsProps = {
   isLoading: boolean
   onSendRequest: () => void
 }
+
+type HttpMethodOption = { value: HttpMethod; label: HttpMethod }
+
+const httpMethods: HttpMethodOption[] = [
+  { value: "POST", label: "POST" },
+  { value: "GET", label: "GET" },
+]
+
+const multiHttpMethodsChains = ["eth-beacon", "holesky-beacon"]
 const ChainSandboxInputs = ({
   apps,
   chains,
@@ -30,7 +40,7 @@ const ChainSandboxInputs = ({
   onSendRequest,
 }: ChainSandboxInputsProps) => {
   const { state, dispatch } = useChainSandboxContext()
-  const { selectedChain, selectedApp, selectedMethod, chainRestPath } = state
+  const { selectedChain, selectedApp, selectedMethod, chainRestPath, httpMethod } = state
   const appId = selectedApp?.id
   const isRpc = selectedChain?.enforceResult === "JSON"
 
@@ -122,6 +132,19 @@ const ChainSandboxInputs = ({
               </Tooltip>
             </>
           ) : null}
+          {multiHttpMethodsChains.includes(selectedChain.blockchain) ? (
+            <>
+              <Divider orientation="vertical" />
+              <FluidSelect
+                items={httpMethods}
+                placeholder="Select HTTP Method"
+                value={httpMethod}
+                onSelect={(method) =>
+                  dispatch({ type: "SET_HTTP_METHOD", payload: method as HttpMethod })
+                }
+              />
+            </>
+          ) : null}
         </Group>
 
         <Button loading={isLoading} radius={4} size="sm" onClick={onSendRequest}>
@@ -133,9 +156,7 @@ const ChainSandboxInputs = ({
           <Title order={6}>Endpoint URL</Title>
           <TextInput
             readOnly
-
             miw={300}
-
             rightSection={
               <CopyTextButton
                 size={16}
@@ -145,7 +166,6 @@ const ChainSandboxInputs = ({
               />
             }
             value={getAppEndpointUrl(selectedChain, appId)}
-
           />
         </Stack>
         {!isRpc ? (

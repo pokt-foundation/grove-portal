@@ -16,6 +16,7 @@ const initialState: ChainSandboxStateType = {
   requestHeaders: {
     "Content-Type": "application/json",
   },
+  httpMethod: "POST",
 }
 
 export const ChainSandboxContext = createContext<{

@@ -27,6 +27,7 @@ const ChainSandbox = ({ apps, chains }: ChainSandboxProps) => {
     chainRestPath,
     requestPayload,
     requestHeaders,
+    httpMethod,
   } = state
 
   const appId = selectedApp?.id
@@ -52,7 +53,8 @@ const ChainSandbox = ({ apps, chains }: ChainSandboxProps) => {
     chainFetcher.submit(
       {
         payload: requestPayload,
-        chainUrl: chainUrl,
+        chainUrl,
+        httpMethod,
         ...(includeSecretKey && { secretKey }),
       },
       {

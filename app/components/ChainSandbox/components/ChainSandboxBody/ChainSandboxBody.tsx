@@ -3,6 +3,7 @@ import { useParams } from "@remix-run/react"
 import React, { useCallback, useEffect, useState } from "react"
 import JsonEditor from "app/components/JsonEditor"
 import useChainSandboxContext from "~/components/ChainSandbox/state"
+import { HttpMethod } from "~/components/ChainSandbox/state/stateReducer"
 import CodeEditor, { AutocompleteOption } from "~/components/CodeEditor"
 import { KeyValuePair } from "~/types/global"
 import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
@@ -15,13 +16,25 @@ type ChainSandboxBodyProps = {
 
 type RequestFormat = "json" | "curl"
 
-const getCurlCommand = (url: string, headers: KeyValuePair<string>, body: string) => {
+const getCurlCommand = ({
+  url,
+  headers,
+  body,
+  httpMethod,
+}: {
+  url: string
+  headers: KeyValuePair<string>
+  body: string
+  httpMethod?: HttpMethod
+}) => {
   const headersArray = Object.entries(headers).map(
     ([key, value]) => `-H '${key}: ${value}'`,
   )
   const headersString = headersArray.join(" \\\n  ")
-
-  return `curl ${url} \\\n  -X POST \\\n  ${headersString} \\\n  -d '${body}'`
+  const dataString = httpMethod === "GET" ? "" : ` \\\n  -d '${body}'`
+  return `curl ${url} \\\n  -X ${
+    httpMethod ?? "POST"
+  } \\\n  ${headersString}${dataString}`
 }
 
 const getInitialRequestPayload = ({
@@ -52,7 +65,7 @@ const methodsAutocompleteOptions: AutocompleteOption[] = evmMethods.map((method)
 const ChainSandboxBody = ({ chainUrl, requestHeaders }: ChainSandboxBodyProps) => {
   const { appId } = useParams()
   const { state, dispatch } = useChainSandboxContext()
-  const { selectedChain, selectedMethod, requestPayload } = state
+  const { selectedChain, selectedMethod, requestPayload, httpMethod } = state
   const isRpc = selectedChain?.enforceResult === "JSON"
   const [requestFormat, setRequestFormat] = useState<RequestFormat>("json")
 
@@ -99,25 +112,31 @@ const ChainSandboxBody = ({ chainUrl, requestHeaders }: ChainSandboxBodyProps) =
             { value: "json", label: "JSON" },
             { value: "curl", label: "cURL" },
           ]}
-          value={requestFormat}
+          disabled={httpMethod === "GET"}
+          value={httpMethod === "GET" ? "curl" : requestFormat}
           onChange={(value: string | null) =>
             value && setRequestFormat(value as RequestFormat)
           }
         />
       </Group>
-      {requestFormat === "json" ? (
+      {requestFormat === "curl" || httpMethod === "GET" ? (
+        <CodeEditor
+          readOnly
+          lang="shell"
+          value={getCurlCommand({
+            url: chainUrl,
+            headers: requestHeaders,
+            body: requestPayload,
+            httpMethod,
+          })}
+        />
+      ) : (
         <JsonEditor
           autocompleteOptions={
             isEvmChain(selectedChain) ? methodsAutocompleteOptions : undefined
           }
           value={requestPayload}
           onChange={handleCodeEditorChange}
-        />
-      ) : (
-        <CodeEditor
-          readOnly
-          lang="shell"
-          value={getCurlCommand(chainUrl, requestHeaders, requestPayload)}
         />
       )}
     </Stack>

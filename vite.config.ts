@@ -20,4 +20,9 @@ export default defineConfig({
     }),
     tsconfigPaths(),
   ],
+  build: {
+    rollupOptions: {
+      external: ["~/models/portal/sdk"],
+    },
+  },
 })

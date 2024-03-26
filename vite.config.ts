@@ -16,7 +16,6 @@ export default defineConfig({
       ignoredRouteFiles: ["**/.*"],
       // @ts-ignore
       postcss: true,
-      serverBuildPath: "api/index.js",
       serverDependenciesToBundle: [/^remix-utils.*/],
     }),
     tsconfigPaths(),

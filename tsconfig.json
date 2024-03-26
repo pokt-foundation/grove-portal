@@ -3,7 +3,12 @@
   "exclude": ["./app/models/**/sdk.ts", "./app/models/**/sdk/*"],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
-    "types": ["@remix-run/node", "vite/client", "vitest/globals", "@testing-library/jest-dom"],
+    "types": [
+      "@remix-run/node",
+      "vite/client",
+      "vitest/globals",
+      "@testing-library/jest-dom"
+    ],
     "isolatedModules": true,
     "esModuleInterop": true,
     "jsx": "react-jsx",

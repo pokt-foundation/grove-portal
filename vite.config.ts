@@ -17,11 +17,11 @@ export default defineConfig({
       // @ts-ignore
       postcss: true,
       serverDependenciesToBundle: [/^remix-utils.*/],
+      buildDirectory: "public/build",
     }),
     tsconfigPaths(),
   ],
   build: {
-    outDir: "public/build",
     rollupOptions: {
       external: ["~/models/portal/sdk"],
     },

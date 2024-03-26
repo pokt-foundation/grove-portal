@@ -86,7 +86,6 @@
     "@types/react": "^18.0.25",
     "@types/react-dom": "^18.0.8",
     "@types/styled-components": "^5.1.25",
-    "@types/testing-library__jest-dom": "^5.14.5",
     "@vercel/remix": "2.8.1-patch.2",
     "@vitejs/plugin-react": "^4.2.0",
     "@vitest/coverage-v8": "^1.4.0",
@@ -105,7 +104,7 @@
     "postcss-simple-vars": "^7.0.1",
     "prettier": "^2.6.2",
     "start-server-and-test": "^2.0.3",
-    "typescript": "^5.2.2",
+    "typescript": "^5.3.3",
     "vite": "^5.2.6",
     "vite-tsconfig-paths": "^4.3.2",
     "vitest": "^1.4.0"

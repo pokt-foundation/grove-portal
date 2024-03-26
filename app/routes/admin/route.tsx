@@ -1,15 +1,14 @@
+import "./styles.css"
+
 import { Space, Container } from "@mantine/core"
+import { cssBundleHref } from "@remix-run/css-bundle"
 import { LoaderFunction, json, LinksFunction } from "@remix-run/node"
 import { Outlet } from "@remix-run/react"
-import styles from "./styles.css"
 import { User } from "~/models/portal/sdk"
 import { requireAdmin } from "~/utils/user.server"
 
 export const links: LinksFunction = () => [
-  {
-    rel: "stylesheet",
-    href: styles,
-  },
+  ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
 ]
 
 type LoaderData = {

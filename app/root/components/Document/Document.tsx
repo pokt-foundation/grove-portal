@@ -1,7 +1,6 @@
 import { ColorSchemeScript } from "@mantine/core"
 import {
   Links,
-  LiveReload,
   Meta,
   Scripts,
   ScrollRestoration,
@@ -49,7 +48,6 @@ const Document = ({ children, title }: { children: React.ReactNode; title?: stri
       <body>
         <RootProviders>{children}</RootProviders>
         <ScrollRestoration />
-        <LiveReload />
         <Scripts />
       </body>
     </html>

@@ -17,6 +17,7 @@ export default defineConfig({
       // @ts-ignore
       postcss: true,
       serverDependenciesToBundle: [/^remix-utils.*/],
+      serverBuildPath: "api/index.js",
     }),
     tsconfigPaths(),
   ],

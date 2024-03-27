@@ -10,13 +10,10 @@ export default defineConfig({
   server: {
     port: 3000,
   },
+  base: "",
   plugins: [
     remix({
       presets: [vercelPreset()],
-      ignoredRouteFiles: ["**/.*"],
-      // @ts-ignore
-      postcss: true,
-      serverDependenciesToBundle: [/^remix-utils.*/],
     }),
     tsconfigPaths(),
   ],

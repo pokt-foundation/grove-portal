@@ -9,10 +9,14 @@ const useSubscriptionModals = () => {
   const { openConfirmationModal } = useModals()
 
   const stopSubscription = (account: Account) => {
+    const subscriptionID = account.integrations?.stripeSubscriptionID
     fetcher.submit(
       {
         "account-id": account.id,
         "account-name": account.name ?? account.id,
+        ...(subscriptionID && {
+          "subscription-id": account.integrations?.stripeSubscriptionID,
+        }),
       },
       {
         method: "POST",

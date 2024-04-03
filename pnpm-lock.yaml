@@ -154,7 +154,7 @@ devDependencies:
     version: 2.9.0
   '@remix-run/dev':
     specifier: ^2.3.0
-    version: 2.3.0(@remix-run/serve@2.3.0)(@types/node@18.15.0)(typescript@5.2.2)(vite@5.1.6)
+    version: 2.3.0(@remix-run/serve@2.3.0)(@types/node@18.15.0)(typescript@5.2.2)(vite@5.1.7)
   '@remix-run/eslint-config':
     specifier: ^2.3.0
     version: 2.3.0(eslint@8.36.0)(react@18.2.0)(typescript@5.2.2)
@@ -199,7 +199,7 @@ devDependencies:
     version: 5.14.5
   '@vitejs/plugin-react':
     specifier: ^4.2.0
-    version: 4.2.0(vite@5.1.6)
+    version: 4.2.0(vite@5.1.7)
   '@vitest/coverage-c8':
     specifier: ^0.28.4
     version: 0.28.5(jsdom@20.0.3)
@@ -255,11 +255,11 @@ devDependencies:
     specifier: ^5.2.2
     version: 5.2.2
   vite:
-    specifier: ^5.1.5
-    version: 5.1.6(@types/node@18.15.0)
+    specifier: ^5.1.7
+    version: 5.1.7(@types/node@18.15.0)
   vite-tsconfig-paths:
     specifier: ^4.2.1
-    version: 4.2.1(typescript@5.2.2)(vite@5.1.6)
+    version: 4.2.1(typescript@5.2.2)(vite@5.1.7)
   vitest:
     specifier: ^0.28.4
     version: 0.28.5(jsdom@20.0.3)
@@ -3677,7 +3677,7 @@ packages:
     engines: {node: '>=18.0.0'}
     dev: false
 
-  /@remix-run/dev@2.3.0(@remix-run/serve@2.3.0)(@types/node@18.15.0)(typescript@5.2.2)(vite@5.1.6):
+  /@remix-run/dev@2.3.0(@remix-run/serve@2.3.0)(@types/node@18.15.0)(typescript@5.2.2)(vite@5.1.7):
     resolution: {integrity: sha512-Eno0XHyIKo5GyzN4OAwNkgkyl4H1mLWbqeVUA8T5HmVDj+8qJLIcYeayS2BmA1KYAHJBiy5ufAGi2MpaXMjKww==}
     engines: {node: '>=18.0.0'}
     hasBin: true
@@ -3750,7 +3750,7 @@ packages:
       tsconfig-paths: 4.1.2
       typescript: 5.2.2
       undici: 5.27.2
-      vite: 5.1.6(@types/node@18.15.0)
+      vite: 5.1.7(@types/node@18.15.0)
       ws: 7.5.9
     transitivePeerDependencies:
       - '@types/node'
@@ -4809,7 +4809,7 @@ packages:
       ts-morph: 12.0.0
     dev: false
 
-  /@vitejs/plugin-react@4.2.0(vite@5.1.6):
+  /@vitejs/plugin-react@4.2.0(vite@5.1.7):
     resolution: {integrity: sha512-+MHTH/e6H12kRp5HUkzOGqPMksezRMmW+TNzlh/QXfI8rRf6l2Z2yH/v12no1UvTwhZgEDMuQ7g7rrfMseU6FQ==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
@@ -4820,7 +4820,7 @@ packages:
       '@babel/plugin-transform-react-jsx-source': 7.23.3(@babel/core@7.23.3)
       '@types/babel__core': 7.20.4
       react-refresh: 0.14.0
-      vite: 5.1.6(@types/node@18.15.0)
+      vite: 5.1.7(@types/node@18.15.0)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -13190,7 +13190,7 @@ packages:
       - terser
     dev: true
 
-  /vite-tsconfig-paths@4.2.1(typescript@5.2.2)(vite@5.1.6):
+  /vite-tsconfig-paths@4.2.1(typescript@5.2.2)(vite@5.1.7):
     resolution: {integrity: sha512-GNUI6ZgPqT3oervkvzU+qtys83+75N/OuDaQl7HmOqFTb0pjZsuARrRipsyJhJ3enqV8beI1xhGbToR4o78nSQ==}
     peerDependencies:
       vite: '*'
@@ -13201,7 +13201,7 @@ packages:
       debug: 4.3.4(supports-color@8.1.1)
       globrex: 0.1.2
       tsconfck: 2.1.2(typescript@5.2.2)
-      vite: 5.1.6(@types/node@18.15.0)
+      vite: 5.1.7(@types/node@18.15.0)
     transitivePeerDependencies:
       - supports-color
       - typescript
@@ -13241,8 +13241,8 @@ packages:
       fsevents: 2.3.3
     dev: true
 
-  /vite@5.1.6(@types/node@18.15.0):
-    resolution: {integrity: sha512-yYIAZs9nVfRJ/AiOLCA91zzhjsHUgMjB+EigzFb6W2XTLO8JixBCKCjvhKZaye+NKYHCrkv3Oh50dH9EdLU2RA==}
+  /vite@5.1.7(@types/node@18.15.0):
+    resolution: {integrity: sha512-sgnEEFTZYMui/sTlH1/XEnVNHMujOahPLGMxn1+5sIT45Xjng1Ec1K78jRP15dSmVgg5WBin9yO81j3o9OxofA==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
     peerDependencies:

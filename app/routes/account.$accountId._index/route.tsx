@@ -9,7 +9,7 @@ import { getAggregateRelays, getTotalRelays } from "~/models/dwh/dwh.server"
 import { AnalyticsRelaysAggregated } from "~/models/dwh/sdk/models/AnalyticsRelaysAggregated"
 import { AnalyticsRelaysTotal } from "~/models/dwh/sdk/models/AnalyticsRelaysTotal"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { Account, PortalApp, RoleName } from "~/models/portal/sdk"
+import { Account, Blockchain, PortalApp, RoleName } from "~/models/portal/sdk"
 import { AccountIdLoaderData } from "~/routes/account.$accountId/route"
 import { AnnouncementAlert } from "~/routes/account.$accountId._index/components/AnnouncementAlert"
 import AccountInsightsView from "~/routes/account.$accountId._index/view"
@@ -32,6 +32,7 @@ export type AccountInsightsData = {
   account: Account
   total: AnalyticsRelaysTotal
   aggregate: AnalyticsRelaysAggregated[]
+  blockchains: Blockchain[]
 }
 
 export const loader: LoaderFunction = async ({ request, params }) => {
@@ -50,6 +51,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     invariant(typeof accountId === "string", "AccountId must be a set url parameter")
 
     const account = await portal.getUserAccount({ accountID: accountId, accepted: true })
+    const getBlockchainsResponse = await portal.blockchains()
 
     const aggregate = await getAggregateRelays({
       category: "account_id",
@@ -66,6 +68,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       account: account.getUserAccount as Account,
       total: (total as AnalyticsRelaysTotal) ?? undefined,
       aggregate: (aggregate as AnalyticsRelaysAggregated[]) ?? undefined, //dailyReponse.data as AnalyticsRelaysDaily[],
+      blockchains: getBlockchainsResponse.blockchains as Blockchain[],
     })
   } catch (error) {
     throw new Response(getErrorMessage(error), {
@@ -75,7 +78,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 }
 
 export default function AccountInsights() {
-  const { account, total, aggregate } = useLoaderData<typeof loader>()
+  const { account, total, aggregate, blockchains } = useLoaderData<typeof loader>()
   const { userRole } = useOutletContext<AccountIdLoaderData>()
   const { accountId } = useParams()
 
@@ -111,7 +114,12 @@ export default function AccountInsights() {
           title="Create your first application"
         />
       ) : (
-        <AccountInsightsView aggregate={aggregate} total={total} />
+        <AccountInsightsView
+          account={account}
+          aggregate={aggregate}
+          blockchains={blockchains}
+          total={total}
+        />
       )}
     </>
   )

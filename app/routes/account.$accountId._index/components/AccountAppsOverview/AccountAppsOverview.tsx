@@ -1,4 +1,4 @@
-import { Box, Loader, SimpleGrid, Stack, Text } from "@mantine/core"
+import { Box, SimpleGrid, Stack, Text, Skeleton } from "@mantine/core"
 import classes from "./AccountAppsOverview.module.css"
 import { AnalyticsRelaysAggregated } from "~/models/dwh/sdk/models/AnalyticsRelaysAggregated"
 import { getTotalErrors } from "~/utils/chartUtils"
@@ -57,9 +57,13 @@ export const AccountAppsOverview = ({
       {order.map((key) => (
         <Box key={key} className={classes.stat}>
           <Stack align="center" gap={0}>
-            <Text fw={600} fz="md">
-              {isLoading ? <Loader size="sm" /> : getFormattedValue(aggregate, key)}
-            </Text>
+            {isLoading ? (
+              <Skeleton height={8} mb={16} radius="xl" top={8} width={70} />
+            ) : (
+              <Text fw={600} fz="md">
+                {getFormattedValue(aggregate, key)}
+              </Text>
+            )}
             <Text>{labels[key as keyof AnalyticsRelaysAggregated]}</Text>
           </Stack>
         </Box>

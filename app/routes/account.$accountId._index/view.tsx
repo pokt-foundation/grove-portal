@@ -1,25 +1,53 @@
-import { Badge, Card, Group, SimpleGrid, Stack, Text, Title } from "@mantine/core"
-import { useNavigation } from "@remix-run/react"
+import { Card, SimpleGrid, Skeleton, Stack, Text, Title } from "@mantine/core"
+import { useLocation, useNavigation } from "@remix-run/react"
 import React from "react"
+import InsightsControls from "app/components/InsightsControls"
 import TitledCard from "~/components/TitledCard"
-import { AnalyticsRelaysAggregated } from "~/models/dwh/sdk/models/AnalyticsRelaysAggregated"
-import { AnalyticsRelaysTotal } from "~/models/dwh/sdk/models/AnalyticsRelaysTotal"
+import { Account, Blockchain, PortalApp } from "~/models/portal/sdk"
 import { AccountAppsOverview } from "~/routes/account.$accountId._index/components/AccountAppsOverview"
-import { ChartPeriodSelector } from "~/routes/account.$accountId._index/components/ChartPeriodSelector"
 import { OverviewSparkline } from "~/routes/account.$accountId._index/components/OverviewSparkline"
 import useAggregateChartData from "~/routes/account.$accountId._index/hooks/useAggregateChartData"
+import { AccountInsightsData } from "~/routes/account.$accountId._index/route"
 import { getTotalErrors } from "~/utils/chartUtils"
 import { commify } from "~/utils/formattingUtils"
 
-type AccountInsightsViewProps = {
-  total: AnalyticsRelaysTotal
-  aggregate: AnalyticsRelaysAggregated[]
+type AccountInsightsViewProps = Pick<AccountInsightsData, "total" | "aggregate"> & {
+  account: Account
+  blockchains: Blockchain[]
 }
 
-export const AccountInsightsView = ({ total, aggregate }: AccountInsightsViewProps) => {
-  const navigation = useNavigation()
+const ChartHeader = ({
+  title,
+  value,
+  isLoading,
+}: {
+  title: string
+  value: string
+  isLoading?: boolean
+}) => (
+  <Stack gap={4}>
+    {isLoading ? (
+      <Skeleton height={8} mb={16} radius="xl" top={8} width={70} />
+    ) : (
+      <Title order={5}>{value}</Title>
+    )}
+    <Text fw={400} fz="xs">
+      {title}
+    </Text>
+  </Stack>
+)
 
-  const isLoading = !!(navigation.state === "loading" && navigation.formAction)
+export const AccountInsightsView = ({
+  account,
+  total,
+  aggregate,
+  blockchains,
+}: AccountInsightsViewProps) => {
+  const navigation = useNavigation()
+  const location = useLocation()
+  const portalApps = account.portalApps as PortalApp[]
+  const isLoading =
+    navigation.state === "loading" && navigation.location.pathname === location.pathname
 
   const totalErrors = getTotalErrors(total)
 
@@ -33,33 +61,20 @@ export const AccountInsightsView = ({ total, aggregate }: AccountInsightsViewPro
   return (
     <Stack gap="xl" mb="xl" pt={22}>
       <Title order={2}>Insights</Title>
-      <TitledCard
-        header={() => (
-          <Group justify="space-between">
-            <Text fw={600}>Account Overview</Text>
-            <ChartPeriodSelector />
-          </Group>
-        )}
-      >
+      <InsightsControls apps={portalApps} chains={blockchains} />
+      <TitledCard>
         <Card.Section>
           <AccountAppsOverview aggregate={total} isLoading={isLoading} />
         </Card.Section>
       </TitledCard>
 
       <Stack gap="xl">
-        <TitledCard
-          header={() => (
-            <Group justify="space-between">
-              <Group>
-                <Text fw={600}>Total Relays</Text>
-                <Badge px={6} radius="sm">
-                  {commify(total?.countTotal ?? 0)}
-                </Badge>
-              </Group>
-              <ChartPeriodSelector />
-            </Group>
-          )}
-        >
+        <TitledCard>
+          <ChartHeader
+            isLoading={isLoading}
+            title="Total Relays"
+            value={commify(total?.countTotal ?? 0)}
+          />
           <Card.Section p="md">
             <OverviewSparkline
               commifyLabelValue={true}
@@ -70,19 +85,12 @@ export const AccountInsightsView = ({ total, aggregate }: AccountInsightsViewPro
         </TitledCard>
 
         <SimpleGrid cols={{ base: 1, lg: 2 }}>
-          <TitledCard
-            header={() => (
-              <Group justify="space-between">
-                <Group>
-                  <Text fw={600}>Average Latency</Text>
-                  <Badge px={6} radius="sm" tt="lowercase">
-                    {commify(total?.avgLatency ?? 0)}ms
-                  </Badge>
-                </Group>
-                <ChartPeriodSelector />
-              </Group>
-            )}
-          >
+          <TitledCard>
+            <ChartHeader
+              isLoading={isLoading}
+              title="Average Latency"
+              value={`${commify(total?.avgLatency ?? 0)}ms`}
+            />
             <Card.Section p="md">
               <OverviewSparkline
                 isLoading={isLoading}
@@ -91,19 +99,12 @@ export const AccountInsightsView = ({ total, aggregate }: AccountInsightsViewPro
               />
             </Card.Section>
           </TitledCard>
-          <TitledCard
-            header={() => (
-              <Group justify="space-between">
-                <Group>
-                  <Text fw={600}>Success Rate</Text>
-                  <Badge px={6} radius="sm">
-                    {commify(total?.rateSuccess ?? 0)}%
-                  </Badge>
-                </Group>
-                <ChartPeriodSelector />
-              </Group>
-            )}
-          >
+          <TitledCard>
+            <ChartHeader
+              isLoading={isLoading}
+              title="Success Rate"
+              value={`${commify(total?.rateSuccess ?? 0)}%`}
+            />
             <Card.Section p="md">
               <OverviewSparkline
                 customYAxisDomain={["dataMin - 10", 100]}
@@ -114,19 +115,12 @@ export const AccountInsightsView = ({ total, aggregate }: AccountInsightsViewPro
             </Card.Section>
           </TitledCard>
         </SimpleGrid>
-        <TitledCard
-          header={() => (
-            <Group justify="space-between">
-              <Group>
-                <Text fw={600}>Total Errors</Text>
-                <Badge px={6} radius="sm">
-                  {totalErrors ? commify(totalErrors) : 0}
-                </Badge>
-              </Group>
-              <ChartPeriodSelector />
-            </Group>
-          )}
-        >
+        <TitledCard>
+          <ChartHeader
+            isLoading={isLoading}
+            title="Total Errors"
+            value={totalErrors ? commify(totalErrors) : "0"}
+          />
           <Card.Section p="md">
             <OverviewSparkline
               commifyLabelValue={true}

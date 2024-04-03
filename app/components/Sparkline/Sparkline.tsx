@@ -79,12 +79,7 @@ const Sparkline = ({
             <stop offset="95%" stopColor="#27292F" stopOpacity={0.1} />
           </linearGradient>
         </defs>
-        <CartesianGrid
-          strokeDasharray="3 3"
-          strokeWidth={0.2}
-          style={{ fill: theme.colors.gray[8] }}
-          vertical={false}
-        />
+        <CartesianGrid strokeDasharray="3 3" strokeWidth={0.2} vertical={false} />
         <XAxis
           dataKey={xAxisDataKey}
           height={60}

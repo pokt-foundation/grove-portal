@@ -1,3 +1,3 @@
 {
-  "outputDirectory": "build/client"
+  "outputDirectory": "./build"
 }

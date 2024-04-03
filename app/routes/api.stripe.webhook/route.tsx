@@ -86,7 +86,6 @@ export const action: ActionFunction = async ({ request }) => {
         const formData = new FormData()
         formData.set("id", accountIdDeleted)
         formData.set("type", PayPlanType.FreetierV0)
-        formData.set("subscription_delete", "true")
 
         await fetch(`${url.origin}/api/admin/update-plan`, {
           method: "post",

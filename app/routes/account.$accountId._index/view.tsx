@@ -3,18 +3,13 @@ import { useLocation, useNavigation } from "@remix-run/react"
 import React from "react"
 import InsightsControls from "app/components/InsightsControls"
 import TitledCard from "~/components/TitledCard"
-import { Account, Blockchain, PortalApp } from "~/models/portal/sdk"
+import { PortalApp } from "~/models/portal/sdk"
 import { AccountAppsOverview } from "~/routes/account.$accountId._index/components/AccountAppsOverview"
 import { OverviewSparkline } from "~/routes/account.$accountId._index/components/OverviewSparkline"
 import useAggregateChartData from "~/routes/account.$accountId._index/hooks/useAggregateChartData"
 import { AccountInsightsData } from "~/routes/account.$accountId._index/route"
 import { getTotalErrors } from "~/utils/chartUtils"
 import { commify } from "~/utils/formattingUtils"
-
-type AccountInsightsViewProps = Pick<AccountInsightsData, "total" | "aggregate"> & {
-  account: Account
-  blockchains: Blockchain[]
-}
 
 const ChartHeader = ({
   title,
@@ -42,7 +37,7 @@ export const AccountInsightsView = ({
   total,
   aggregate,
   blockchains,
-}: AccountInsightsViewProps) => {
+}: AccountInsightsData) => {
   const navigation = useNavigation()
   const location = useLocation()
   const portalApps = account.portalApps as PortalApp[]

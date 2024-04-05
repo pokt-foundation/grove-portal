@@ -12,8 +12,6 @@ declare global {
       | "toHaveDescription"
       | "toHaveErrorMessage"
     >
-
-    interface JestAssertion<T = any> extends jest.Matchers<void, T>, OmittedMatchers {}
   }
 }
 

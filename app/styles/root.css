@@ -12,7 +12,7 @@
   }
 
   .mantine-TextInput-input[readonly],
-  .mantine-PasswordInput-input:has(> input[readonly]){
+  .mantine-PasswordInput-input:has(> input[readonly]) {
     background-color: var(--mantine-color-gray-9) !important;
     border-color: transparent;
   }

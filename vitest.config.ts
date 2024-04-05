@@ -2,7 +2,7 @@
 /// <reference types="vite/client" />
 
 import react from "@vitejs/plugin-react"
-import { defineConfig } from "vite"
+import { defineConfig } from "vitest/config"
 import tsconfigPaths from "vite-tsconfig-paths"
 
 export default defineConfig({
@@ -10,7 +10,7 @@ export default defineConfig({
   test: {
     globals: true,
     environment: "jsdom",
-    setupFiles: ["./test/setup-test-env.ts"],
+    setupFiles: ["dotenv/config", "./test/setup.ts"],
     coverage: {
       reporter: ["text", "html", "json-summary"],
       // lines: 50,
@@ -18,10 +18,6 @@ export default defineConfig({
       // functions: 50,
       // statements: 50,
     },
-    watchExclude: [
-      ".*\\/node_modules\\/.*",
-      ".*\\/build\\/.*",
-      ".*\\/postgres-data\\/.*",
-    ],
+    watchExclude: [".*\\/node_modules\\/.*", ".*\\/build\\/.*"],
   },
 })

@@ -14,11 +14,9 @@ describe("getRequiredClientEnvVar", () => {
   })
   test("throws error if environment variable value is not set", () => {
     expect(() => getRequiredClientEnvVar("BUILD_ID")).toThrowError("BUILD_ID")
-    expect(() => getRequiredClientEnvVar("DOCS_STATUS")).toThrowError("DOCS_STATUS")
   })
   test("returns value if it exists", () => {
     ENV.BUILD_ID = "BUILD_ID"
-    ENV.DOCS_STATUS = "DOCS_STATUS"
     ENV.FLAG_ENTERPRISE = "FLAG_ENTERPRISE"
     ENV.FLAG_INFLUX_RELAY_ERROR = "FLAG_INFLUX_RELAY_ERROR"
     ENV.FLAG_LEGACY_MESSAGING = "FLAG_LEGACY_MESSAGING"
@@ -36,7 +34,6 @@ describe("getRequiredClientEnvVar", () => {
     ENV.ANNOUNCEMENT_ALERT_BODY = "ANNOUNCEMENT_ALERT_BODY"
 
     expect(getRequiredClientEnvVar("BUILD_ID")).toBe("BUILD_ID")
-    expect(getRequiredClientEnvVar("DOCS_STATUS")).toBe("DOCS_STATUS")
     expect(getRequiredClientEnvVar("FLAG_ENTERPRISE")).toBe("FLAG_ENTERPRISE")
     expect(getRequiredClientEnvVar("FLAG_INFLUX_RELAY_ERROR")).toBe(
       "FLAG_INFLUX_RELAY_ERROR",

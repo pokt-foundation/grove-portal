@@ -1,6 +1,8 @@
-import { Configuration, UserApi, AnalyticsRelaysAggregated } from "./sdk"
+import { AnalyticsRelaysAggregated, Configuration, UserApi } from "./sdk"
 import { dayjs } from "~/utils/dayjs"
 import { getRequiredServerEnvVar } from "~/utils/environment"
+import { initPortalClient } from "~/models/portal/portal.server"
+import { D2StatsDuration, D2StatsView } from "~/models/portal/sdk"
 
 function initDwhClient(): UserApi {
   const dwh = new UserApi(
@@ -20,7 +22,7 @@ function initDwhClient(): UserApi {
 export { initDwhClient }
 
 // we dont get data for today, so dont show an empty value
-const startOfDay = dayjs()
+const startOfYesterday = dayjs()
   .utc()
   .millisecond(0)
   .second(0)
@@ -45,6 +47,41 @@ type GetTotalRelaysProps =
       to: Date
     })
 
+type GetD2DataBaseProps = {
+  accountId: string
+  method?: string
+  applicationIDs?: string[]
+  portalClient: ReturnType<typeof initPortalClient>
+  days: number
+  chainIDs?: string[]
+  byHour?: boolean
+}
+
+type GetD2DataProps =
+  | (GetD2DataBaseProps & {
+      from?: null
+      to?: null
+    })
+  | (Omit<GetD2DataBaseProps, "days"> & {
+      days?: null
+      from: Date
+      to: Date
+    })
+
+export const getFromToDates = (days: number) => {
+  if (days === 1) {
+    return {
+      from: startOfYesterday.toDate(),
+      to: dayjs().utc().toDate(),
+    }
+  }
+
+  return {
+    from: dayjs().utc().subtract(days, "day").toDate(),
+    to: startOfYesterday.toDate(),
+  }
+}
+
 export const getTotalRelays = async ({
   category,
   categoryValue,
@@ -55,8 +92,8 @@ export const getTotalRelays = async ({
   const dwh = initDwhClient()
 
   let total
-  const dataFrom = from ? from : startOfDay.subtract(days as number, "day").toDate()
-  const dateTo = to ? to : startOfDay.toDate()
+  const dataFrom = from ? from : startOfYesterday.subtract(days as number, "day").toDate()
+  const dateTo = to ? to : startOfYesterday.toDate()
   const totalReponse = await dwh.analyticsRelaysTotalCategoryGet({
     category,
     categoryValue,
@@ -81,6 +118,87 @@ export const getTotalRelays = async ({
   return total
 }
 
+export const getD2TotalRelays = async ({
+  from,
+  to,
+  accountId,
+  portalClient,
+  applicationIDs,
+  days,
+  chainIDs,
+  byHour,
+}: GetD2DataProps) => {
+  const dateFrom = from ? from : getFromToDates(days).from
+  const dateTo = to ? to : getFromToDates(days).to
+
+  const totalRelaysResponse = await portalClient.getD2StatsData({
+    params: {
+      now: byHour,
+      from: dateFrom,
+      to: dateTo,
+      accountID: accountId,
+      fillZeroValues: true,
+      ...(chainIDs && { chainIDs: chainIDs }),
+      ...(applicationIDs && { applicationIDs: applicationIDs }),
+    },
+  })
+
+  return totalRelaysResponse.getD2StatsData.data![0]
+}
+
+export const getRealtimeDataChains = async ({
+  from,
+  to,
+  accountId,
+  portalClient,
+  applicationIDs,
+  days,
+  byHour,
+}: GetD2DataProps) => {
+  const dateFrom = from ? from : getFromToDates(days).from
+  const dateTo = to ? to : getFromToDates(days).to
+
+  const getD2ChainsDataResponse = await portalClient.getD2StatsData({
+    params: {
+      now: byHour,
+      from: dateFrom,
+      to: dateTo,
+      accountID: accountId,
+      ...(applicationIDs && { applicationIDs: applicationIDs }),
+      view: [D2StatsView.ChainId]
+    },
+  })
+
+  return getD2ChainsDataResponse.getD2StatsData.data
+}
+
+export const getD2AggregateRelays = async ({
+  from,
+  to,
+  accountId,
+  portalClient,
+  applicationIDs,
+  days,
+  chainIDs,
+  byHour,
+}: GetD2DataProps) => {
+  const dateFrom = from ? from : getFromToDates(days).from
+  const dateTo = to ? to : getFromToDates(days).to
+
+  return await portalClient.getD2StatsData({
+    params: {
+      now: byHour,
+      from: dateFrom,
+      to: dateTo,
+      accountID: accountId,
+      fillZeroValues: true,
+      ...(chainIDs && { chainIDs: chainIDs }),
+      ...(applicationIDs && { applicationIDs: applicationIDs }),
+      duration: [D2StatsDuration.Date, ...(byHour ? [D2StatsDuration.Hour] : [])],
+    },
+  })
+}
+
 export const getAggregateRelays = async ({
   category,
   categoryValue,
@@ -92,8 +210,8 @@ export const getAggregateRelays = async ({
   const aggregateResponse = await dwh.analyticsRelaysAggregatedCategoryGet({
     category,
     categoryValue,
-    from: startOfDay.subtract(days, "day").toDate(),
-    to: startOfDay.toDate(),
+    from: startOfYesterday.subtract(days, "day").toDate(),
+    to: startOfYesterday.toDate(),
   })
 
   if (!aggregateResponse.data) {
@@ -101,7 +219,7 @@ export const getAggregateRelays = async ({
     // empty state data
     aggregate = Array.from(Array(days).keys())
       .map((num) => ({
-        date: startOfDay.subtract(num, "day").toDate(),
+        date: startOfYesterday.subtract(num, "day").toDate(),
         countTotal: Math.ceil(Math.random() * 1000000),
         avgLatency: Number((Math.random() * 250.32).toFixed(2)),
         rateSuccess: Number((Math.random() * 99.32).toFixed(2)),
@@ -118,7 +236,7 @@ export const getAggregateRelays = async ({
       aggregate = Array.from(Array(days).keys())
         .reverse()
         .map((index) => {
-          let day = startOfDay.subtract(index, "day").toDate()
+          let day = startOfYesterday.subtract(index, "day").toDate()
           const dateExists = (
             aggregateResponse.data as AnalyticsRelaysAggregated[]
           )?.find((data) => dayjs(data.date).utc().isSame(day, "day"))

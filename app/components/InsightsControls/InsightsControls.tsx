@@ -1,17 +1,18 @@
 import { Divider, Box, Group, Text, useMantineTheme } from "@mantine/core"
 import { useSearchParams } from "@remix-run/react"
-import React, { useState } from "react"
+import React from "react"
 import ChainSelectItem from "~/components/ChainSelectItem"
 import FluidSelect from "~/components/FluidSelect"
-import { Blockchain, PortalApp } from "~/models/portal/sdk"
+import { Blockchain, D2Chain, PortalApp } from "~/models/portal/sdk"
 import { DEFAULT_APPMOJI } from "~/routes/account_.$accountId.create/components/AppmojiPicker"
 
 type InsightsControlsProps = {
   apps: PortalApp[]
   chains: Blockchain[]
+  availableChains: D2Chain[]
 }
 
-const InsightsControls = ({ apps, chains }: InsightsControlsProps) => {
+const InsightsControls = ({ apps, chains, availableChains }: InsightsControlsProps) => {
   const theme = useMantineTheme()
 
   const appsSelect = [
@@ -26,24 +27,53 @@ const InsightsControls = ({ apps, chains }: InsightsControlsProps) => {
       : []),
   ]
 
-  const chainsSelect = [
-    { value: "all", label: "All Endpoints" },
-    ...(chains?.map((chain) => ({
-      value: chain.blockchain,
-      label: chain.description ?? chain.blockchain,
-      chain,
-    })) ?? []),
-  ]
+  const chainsSelectItems = React.useMemo(() => {
+    const realtimeDataChainsIds = availableChains.map((d2Chain) => d2Chain.chainID)
+    return realtimeDataChainsIds.length > 0
+      ? [
+          { value: "all", label: "All Endpoints" },
+          ...(chains.length > 0
+            ? chains
+                .filter(({ id }) => realtimeDataChainsIds.includes(id))
+                .map((chain) => ({
+                  value: chain.id,
+                  label: chain.description ?? chain.blockchain,
+                  chain,
+                }))
+            : []),
+        ]
+      : []
+  }, [chains, availableChains])
 
   const [searchParams, setSearchParams] = useSearchParams()
   const daysParam = searchParams.get("days") ?? "7"
+  const appParam = searchParams.get("app") ?? "all"
+  const chainParam = searchParams.get("chain")
+    ? (searchParams.get("chain") as string)
+    : availableChains.length > 0
+    ? "all"
+    : undefined
 
-  const handlePeriodChange = (period: string | null) => {
-    setSearchParams({ days: period ?? "7" })
+  const handleParamChange = ({
+    param,
+    paramKey,
+  }: {
+    param: string
+    paramKey: string
+  }) => {
+    setSearchParams((searchParams) => {
+      searchParams.set(paramKey, param)
+      return searchParams
+    })
   }
 
-  const [selectedChain, setSelectedChain] = useState("all")
-  const [selectedApp, setSelectedApp] = useState("all")
+  const handleAppChange = (app: string) => {
+    setSearchParams((searchParams) => {
+      searchParams.delete("chain")
+      searchParams.set("app", app)
+      return searchParams
+    })
+  }
 
   return (
     <Group justify="space-between">
@@ -57,19 +87,22 @@ const InsightsControls = ({ apps, chains }: InsightsControlsProps) => {
           }}
         >
           <FluidSelect
-            withSearch
             items={appsSelect}
             styles={{ label: { marginLeft: 12, marginRight: 12 } }}
-            value={selectedApp}
-            onSelect={(app) => setSelectedApp(app)}
+            value={appParam}
+            withSearch={chainsSelectItems.length > 7}
+            onSelect={handleAppChange}
           />
           <Divider orientation="vertical" />
           <FluidSelect
-            withSearch
+            disabled={chainsSelectItems.length === 0}
             itemComponent={ChainSelectItem}
-            items={chainsSelect}
-            value={selectedChain}
-            onSelect={(chain) => setSelectedChain(chain)}
+            items={chainsSelectItems}
+            value={chainParam}
+            withSearch={chainsSelectItems.length > 7}
+            onSelect={(chain: string) =>
+              handleParamChange({ param: chain, paramKey: "chain" })
+            }
           />
         </Group>
         <Text>filtered over the past</Text>
@@ -81,12 +114,17 @@ const InsightsControls = ({ apps, chains }: InsightsControlsProps) => {
         >
           <FluidSelect
             items={[
+              { value: "1", label: "Last 24 Hours" },
+              { value: "3", label: "3 Days" },
               { value: "7", label: "7 Days" },
+              { value: "14", label: "2 Weeks" },
               { value: "30", label: "30 Days" },
               { value: "60", label: "60 Days" },
             ]}
             value={daysParam}
-            onSelect={(period) => handlePeriodChange(period)}
+            onSelect={(period: string) =>
+              handleParamChange({ param: period, paramKey: "days" })
+            }
           />
         </Box>
       </Group>

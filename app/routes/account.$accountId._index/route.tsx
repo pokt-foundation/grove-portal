@@ -5,11 +5,20 @@ import React from "react"
 import invariant from "tiny-invariant"
 import { EmptyState } from "~/components/EmptyState"
 import { ErrorBoundaryView } from "~/components/ErrorBoundaryView"
-import { getAggregateRelays, getTotalRelays } from "~/models/dwh/dwh.server"
-import { AnalyticsRelaysAggregated } from "~/models/dwh/sdk/models/AnalyticsRelaysAggregated"
-import { AnalyticsRelaysTotal } from "~/models/dwh/sdk/models/AnalyticsRelaysTotal"
+import {
+  getD2AggregateRelays,
+  getD2TotalRelays,
+  getRealtimeDataChains,
+} from "~/models/dwh/dwh.server"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { Account, Blockchain, PortalApp, RoleName } from "~/models/portal/sdk"
+import {
+  Account,
+  Blockchain,
+  D2Chain,
+  D2Stats,
+  PortalApp,
+  RoleName,
+} from "~/models/portal/sdk"
 import { AccountIdLoaderData } from "~/routes/account.$accountId/route"
 import { AnnouncementAlert } from "~/routes/account.$accountId._index/components/AnnouncementAlert"
 import AccountInsightsView from "~/routes/account.$accountId._index/view"
@@ -30,19 +39,25 @@ export const meta: MetaFunction = () => {
 
 export type AccountInsightsData = {
   account: Account
-  total: AnalyticsRelaysTotal
-  aggregate: AnalyticsRelaysAggregated[]
+  total: D2Stats
+  aggregate: D2Stats[]
+  realtimeDataChains: D2Chain[]
   blockchains: Blockchain[]
 }
+
+export const allowedDayParams = [1, 3, 7, 14, 30, 60]
+export const byHourDayParams = [1, 3]
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   const user = await requireUser(request)
   const portal = initPortalClient({ token: user.accessToken })
   const url = new URL(request.url)
   const daysParam: number = Number(url.searchParams.get("days") ?? "7")
+  const appParam = url.searchParams.get("app")
+  const chainParam = url.searchParams.get("chain")
 
   // Prevent manually entering daysParam
-  if (daysParam !== 7 && daysParam !== 30 && daysParam !== 60) {
+  if (!allowedDayParams.includes(daysParam)) {
     return redirect(url.pathname)
   }
 
@@ -53,22 +68,38 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     const account = await portal.getUserAccount({ accountID: accountId, accepted: true })
     const getBlockchainsResponse = await portal.blockchains()
 
-    const aggregate = await getAggregateRelays({
-      category: "account_id",
-      categoryValue: [accountId],
+    const getD2StatsDataResponse = await getD2AggregateRelays({
       days: daysParam,
+      accountId,
+      portalClient: portal,
+      byHour: byHourDayParams.includes(daysParam),
+      ...(chainParam && chainParam !== "all" && { chainIDs: [chainParam] }),
+      ...(appParam && appParam !== "all" && { applicationIDs: [appParam] }),
     })
-    const total = await getTotalRelays({
-      category: "account_id",
-      categoryValue: [accountId],
+
+    const getD2TotalStatsResponse = await getD2TotalRelays({
       days: daysParam,
+      accountId,
+      portalClient: portal,
+      byHour: byHourDayParams.includes(daysParam),
+      ...(chainParam && chainParam !== "all" && { chainIDs: [chainParam] }),
+      ...(appParam && appParam !== "all" && { applicationIDs: [appParam] }),
+    })
+
+    const getRealtimeDataChainsResponse = await getRealtimeDataChains({
+      days: daysParam,
+      accountId,
+      portalClient: portal,
+      byHour: byHourDayParams.includes(daysParam),
+      ...(appParam && appParam !== "all" && { applicationIDs: [appParam] }),
     })
 
     return json<AccountInsightsData>({
       account: account.getUserAccount as Account,
-      total: (total as AnalyticsRelaysTotal) ?? undefined,
-      aggregate: (aggregate as AnalyticsRelaysAggregated[]) ?? undefined, //dailyReponse.data as AnalyticsRelaysDaily[],
       blockchains: getBlockchainsResponse.blockchains as Blockchain[],
+      realtimeDataChains: getRealtimeDataChainsResponse as D2Chain[],
+      total: getD2TotalStatsResponse as D2Stats,
+      aggregate: getD2StatsDataResponse.getD2StatsData.data as D2Stats[],
     })
   } catch (error) {
     throw new Response(getErrorMessage(error), {
@@ -78,7 +109,8 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 }
 
 export default function AccountInsights() {
-  const { account, total, aggregate, blockchains } = useLoaderData<typeof loader>()
+  const { account, total, aggregate, blockchains, realtimeDataChains } =
+    useLoaderData() as AccountInsightsData
   const { userRole } = useOutletContext<AccountIdLoaderData>()
   const { accountId } = useParams()
 
@@ -118,6 +150,7 @@ export default function AccountInsights() {
           account={account}
           aggregate={aggregate}
           blockchains={blockchains}
+          realtimeDataChains={realtimeDataChains}
           total={total}
         />
       )}

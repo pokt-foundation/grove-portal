@@ -1,14 +1,13 @@
 import { Card, SimpleGrid, Skeleton, Stack, Text, Title } from "@mantine/core"
-import { useLocation, useNavigation } from "@remix-run/react"
+import { useLocation, useNavigation, useSearchParams } from "@remix-run/react"
 import React from "react"
-import InsightsControls from "app/components/InsightsControls"
+import InsightsControls from "~/components/InsightsControls"
 import TitledCard from "~/components/TitledCard"
 import { PortalApp } from "~/models/portal/sdk"
 import { AccountAppsOverview } from "~/routes/account.$accountId._index/components/AccountAppsOverview"
 import { OverviewSparkline } from "~/routes/account.$accountId._index/components/OverviewSparkline"
 import useAggregateChartData from "~/routes/account.$accountId._index/hooks/useAggregateChartData"
 import { AccountInsightsData } from "~/routes/account.$accountId._index/route"
-import { getTotalErrors } from "~/utils/chartUtils"
 import { commify } from "~/utils/formattingUtils"
 
 const ChartHeader = ({
@@ -34,9 +33,10 @@ const ChartHeader = ({
 
 export const AccountInsightsView = ({
   account,
-  total,
-  aggregate,
   blockchains,
+  aggregate,
+  total,
+  realtimeDataChains,
 }: AccountInsightsData) => {
   const navigation = useNavigation()
   const location = useLocation()
@@ -44,22 +44,27 @@ export const AccountInsightsView = ({
   const isLoading =
     navigation.state === "loading" && navigation.location.pathname === location.pathname
 
-  const totalErrors = getTotalErrors(total)
+  const [searchParams] = useSearchParams()
+  const daysParam: number = Number(searchParams.get("days") ?? "7")
 
   const {
     aggregatedSuccessData,
     aggregatedTotalData,
     aggregatedLatencyData,
     aggregatedErrorData,
-  } = useAggregateChartData(aggregate)
+  } = useAggregateChartData({ data: aggregate, days: daysParam })
 
   return (
-    <Stack gap="xl" mb="xl" pt={22}>
+    <Stack gap="xl">
       <Title order={2}>Insights</Title>
-      <InsightsControls apps={portalApps} chains={blockchains} />
+      <InsightsControls
+        apps={portalApps}
+        availableChains={realtimeDataChains}
+        chains={blockchains}
+      />
       <TitledCard>
         <Card.Section>
-          <AccountAppsOverview aggregate={total} isLoading={isLoading} />
+          <AccountAppsOverview isLoading={isLoading} total={total} />
         </Card.Section>
       </TitledCard>
 
@@ -68,7 +73,7 @@ export const AccountInsightsView = ({
           <ChartHeader
             isLoading={isLoading}
             title="Total Relays"
-            value={commify(total?.countTotal ?? 0)}
+            value={commify(total?.totalCount ?? 0)}
           />
           <Card.Section p="md">
             <OverviewSparkline
@@ -98,7 +103,7 @@ export const AccountInsightsView = ({
             <ChartHeader
               isLoading={isLoading}
               title="Success Rate"
-              value={`${commify(total?.rateSuccess ?? 0)}%`}
+              value={`${commify(total?.successRate ?? 0)}%`}
             />
             <Card.Section p="md">
               <OverviewSparkline
@@ -114,7 +119,7 @@ export const AccountInsightsView = ({
           <ChartHeader
             isLoading={isLoading}
             title="Total Errors"
-            value={totalErrors ? commify(totalErrors) : "0"}
+            value={total?.errorCount ? commify(total.errorCount) : "0"}
           />
           <Card.Section p="md">
             <OverviewSparkline

@@ -110,7 +110,7 @@ export default function ApplicationInsightsView({ total, aggregate }: AppInsight
               <Group>
                 <Text fw={600}>Total Errors </Text>
                 <Badge px={6} radius="sm">
-                  {total.errorCount ? commify(total.errorCount) : 0}
+                  {total?.errorCount ? commify(total.errorCount) : 0}
                 </Badge>
               </Group>
               <ChartPeriodSelector />

@@ -78,7 +78,7 @@ export const getFromToDates = (days: number) => {
 
   return {
     from: dayjs().utc().subtract(days, "day").toDate(),
-    to: startOfYesterday.toDate(),
+    to: dayjs().utc().toDate(),
   }
 }
 

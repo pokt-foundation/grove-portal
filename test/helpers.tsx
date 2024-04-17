@@ -23,6 +23,8 @@ export function render(ui: React.ReactElement, options?: RenderOptions) {
         imports: [],
         module: "",
         path: "",
+        hasClientAction: false,
+        hasClientLoader: false,
       },
     },
     entry: { imports: [], module: "" },
@@ -37,8 +39,10 @@ export function render(ui: React.ReactElement, options?: RenderOptions) {
       actionData: null,
       errors: null,
     },
+    isSpaMode: false,
     future: {
       v3_fetcherPersist: false,
+      v3_relativeSplatPath: false,
     },
   }
 
@@ -51,7 +55,9 @@ export function render(ui: React.ReactElement, options?: RenderOptions) {
   return {
     rerender: (ui: React.ReactElement) => {
       const RootComponent = () => ui
-      window.__remixRouteModules.root.default = RootComponent
+      if (window.__remixRouteModules && window.__remixRouteModules.root) {
+        window.__remixRouteModules.root.default = RootComponent
+      }
       rerender(ui)
     },
     ...rest,

@@ -54,7 +54,9 @@ export const CHAIN_DOCS_URL: KeyValuePair<string> = {
 }
 
 export const evmChains = [
+  "amoy-testnet-archival",
   "arbitrum-one",
+  "arbitrum-sepolia-archival",
   "avax-archival",
   "avax-dfk",
   "avax-mainnet",
@@ -69,6 +71,7 @@ export const evmChains = [
   "eth-mainnet",
   "eth-trace",
   "evmos-mainnet",
+  "fraxtal-archival",
   "fantom-mainnet",
   "fuse-mainnet",
   "fuse-archival",
@@ -87,8 +90,10 @@ export const evmChains = [
   "oKc-mainnet",
   "oasys-mainnet",
   "oasys-mainnet-archival",
+  "opbnb-archival",
   "optimism-mainnet",
   "optimism-archival",
+  "optimism-sepolia-archival",
   "poly-mainnet",
   "poly-archival",
   "polygon-mumbai",

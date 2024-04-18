@@ -1,5 +1,5 @@
 import { Button } from "@mantine/core"
-import { json, LoaderFunction, MetaFunction, redirect } from "@remix-run/node"
+import { json, LoaderFunction, MetaFunction } from "@remix-run/node"
 import { Link, useLoaderData, useOutletContext, useParams } from "@remix-run/react"
 import React from "react"
 import invariant from "tiny-invariant"

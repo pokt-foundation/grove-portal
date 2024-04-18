@@ -54,14 +54,14 @@ export const AccountInsightsView = ({
     aggregatedErrorData,
   } = useAggregateChartData({ data: aggregate, days: daysParam })
 
+  const availableChains = blockchains.filter(({ id }) =>
+    realtimeDataChains.some(({ chainID }) => chainID === id),
+  )
+
   return (
     <Stack gap="xl">
       <Title order={2}>Insights</Title>
-      <InsightsControls
-        apps={portalApps}
-        availableChains={realtimeDataChains}
-        chains={blockchains}
-      />
+      <InsightsControls apps={portalApps} chains={availableChains} />
       <TitledCard>
         <Card.Section>
           <AccountAppsOverview isLoading={isLoading} total={total} />

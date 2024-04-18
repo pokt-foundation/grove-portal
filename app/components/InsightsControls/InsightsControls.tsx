@@ -3,19 +3,18 @@ import { useSearchParams } from "@remix-run/react"
 import React from "react"
 import ChainSelectItem from "~/components/ChainSelectItem"
 import FluidSelect from "~/components/FluidSelect"
-import { Blockchain, D2Chain, PortalApp } from "~/models/portal/sdk"
+import { Blockchain, PortalApp } from "~/models/portal/sdk"
 import { DEFAULT_APPMOJI } from "~/routes/account_.$accountId.create/components/AppmojiPicker"
 
 type InsightsControlsProps = {
-  apps: PortalApp[]
+  apps?: PortalApp[]
   chains: Blockchain[]
-  availableChains: D2Chain[]
 }
 
-const InsightsControls = ({ apps, chains, availableChains }: InsightsControlsProps) => {
+const InsightsControls = ({ apps, chains }: InsightsControlsProps) => {
   const theme = useMantineTheme()
 
-  const appsSelect = [
+  const appsSelectItems = [
     { value: "all", label: "All Applications" },
     ...(apps && apps.length > 0
       ? apps.map((app) => ({
@@ -28,29 +27,26 @@ const InsightsControls = ({ apps, chains, availableChains }: InsightsControlsPro
   ]
 
   const chainsSelectItems = React.useMemo(() => {
-    const realtimeDataChainsIds = availableChains.map((d2Chain) => d2Chain.chainID)
-    return realtimeDataChainsIds.length > 0
+    return chains.length > 0
       ? [
           { value: "all", label: "All Endpoints" },
           ...(chains.length > 0
-            ? chains
-                .filter(({ id }) => realtimeDataChainsIds.includes(id))
-                .map((chain) => ({
-                  value: chain.id,
-                  label: chain.description ?? chain.blockchain,
-                  chain,
-                }))
+            ? chains.map((chain) => ({
+                value: chain.id,
+                label: chain.description ?? chain.blockchain,
+                chain,
+              }))
             : []),
         ]
       : []
-  }, [chains, availableChains])
+  }, [chains])
 
   const [searchParams, setSearchParams] = useSearchParams()
   const daysParam = searchParams.get("days") ?? "7"
   const appParam = searchParams.get("app") ?? "all"
   const chainParam = searchParams.get("chain")
     ? (searchParams.get("chain") as string)
-    : availableChains.length > 0
+    : chains.length > 0
     ? "all"
     : undefined
 
@@ -87,7 +83,7 @@ const InsightsControls = ({ apps, chains, availableChains }: InsightsControlsPro
           }}
         >
           <FluidSelect
-            items={appsSelect}
+            items={appsSelectItems}
             styles={{ label: { marginLeft: 12, marginRight: 12 } }}
             value={appParam}
             withSearch={chainsSelectItems.length > 7}
@@ -114,7 +110,7 @@ const InsightsControls = ({ apps, chains, availableChains }: InsightsControlsPro
         >
           <FluidSelect
             items={[
-              { value: "1", label: "Last 24 Hours" },
+              { value: "1", label: "24 Hours" },
               { value: "3", label: "3 Days" },
               { value: "7", label: "7 Days" },
               { value: "14", label: "2 Weeks" },

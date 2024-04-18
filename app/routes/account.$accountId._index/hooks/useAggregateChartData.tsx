@@ -10,17 +10,8 @@ const hoursTimeFormat: { [key: number]: string } = {
 }
 
 const useAggregateChartData = ({ data, days }: { data: D2Stats[]; days: number }) => {
-  let relaysData
-
-  if (days === 1) {
-    // For now, data for each day is sent individually, so we need to slice the last 24 hours from the 2 days data we're fetching
-    relaysData = data.slice(-24)
-  } else {
-    relaysData = data
-  }
-
   return useMemo(() => {
-    return relaysData.reduce(
+    return data.reduce(
       (acc, dayData) => {
         const format = hoursTimeFormat[days]
         const date = dayjs(dayData.dateTime).format(format ?? "MMM DD")
@@ -38,7 +29,7 @@ const useAggregateChartData = ({ data, days }: { data: D2Stats[]; days: number }
         aggregatedErrorData: [] as ChartData[],
       },
     )
-  }, [days, relaysData])
+  }, [days, data])
 }
 
 export default useAggregateChartData

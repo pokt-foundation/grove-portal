@@ -71,7 +71,7 @@ type GetD2DataProps =
 export const getFromToDates = (days: number) => {
   if (days === 1) {
     return {
-      from: startOfYesterday.toDate(),
+      from: dayjs().utc().subtract(24, "hour").toDate(),
       to: dayjs().utc().toDate(),
     }
   }
@@ -126,18 +126,15 @@ export const getD2TotalRelays = async ({
   applicationIDs,
   days,
   chainIDs,
-  byHour,
 }: GetD2DataProps) => {
   const dateFrom = from ? from : getFromToDates(days).from
   const dateTo = to ? to : getFromToDates(days).to
 
   const totalRelaysResponse = await portalClient.getD2StatsData({
     params: {
-      now: byHour,
       from: dateFrom,
       to: dateTo,
       accountID: accountId,
-      fillZeroValues: true,
       ...(chainIDs && { chainIDs: chainIDs }),
       ...(applicationIDs && { applicationIDs: applicationIDs }),
     },
@@ -153,23 +150,20 @@ export const getRealtimeDataChains = async ({
   portalClient,
   applicationIDs,
   days,
-  byHour,
 }: GetD2DataProps) => {
   const dateFrom = from ? from : getFromToDates(days).from
   const dateTo = to ? to : getFromToDates(days).to
 
-  const getD2ChainsDataResponse = await portalClient.getD2StatsData({
+  const getD2ChainsDataResponse = await portalClient.getD2ChainsData({
     params: {
-      now: byHour,
       from: dateFrom,
       to: dateTo,
       accountID: accountId,
       ...(applicationIDs && { applicationIDs: applicationIDs }),
-      view: [D2StatsView.ChainId]
     },
   })
 
-  return getD2ChainsDataResponse.getD2StatsData.data
+  return getD2ChainsDataResponse.getD2ChainsData.data
 }
 
 export const getD2AggregateRelays = async ({
@@ -187,7 +181,6 @@ export const getD2AggregateRelays = async ({
 
   return await portalClient.getD2StatsData({
     params: {
-      now: byHour,
       from: dateFrom,
       to: dateTo,
       accountID: accountId,

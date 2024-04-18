@@ -1,8 +1,8 @@
 import { AnalyticsRelaysAggregated, Configuration, UserApi } from "./sdk"
+import { initPortalClient } from "~/models/portal/portal.server"
+import { D2StatsDuration } from "~/models/portal/sdk"
 import { dayjs } from "~/utils/dayjs"
 import { getRequiredServerEnvVar } from "~/utils/environment"
-import { initPortalClient } from "~/models/portal/portal.server"
-import { D2StatsDuration, D2StatsView } from "~/models/portal/sdk"
 
 function initDwhClient(): UserApi {
   const dwh = new UserApi(

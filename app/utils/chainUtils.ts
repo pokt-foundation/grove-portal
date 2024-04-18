@@ -1,5 +1,6 @@
 import { Blockchain } from "~/models/portal/sdk"
 import { KeyValuePair } from "~/types/global"
+import { getRequiredClientEnvVar } from "./environment"
 
 export const CHAIN_DOCS_URL: KeyValuePair<string> = {
   "arbitrum-one": "arbitrum-one-api/intro",
@@ -145,4 +146,11 @@ export const isEvmChain = (chain: Blockchain | null): boolean =>
 export const getAppEndpointUrl = (
   chain: Blockchain | undefined | null,
   appId: string | undefined,
-) => `https://${chain?.blockchain}.rpc.grove.city/v1/${appId}`
+) => {
+  let env = "city"
+  if (getRequiredClientEnvVar("VERCEL_ENV") != "production") {
+    env = "town"
+  }
+
+  return `https://${chain?.blockchain}.rpc.grove.${env}/v1/${appId}`
+}

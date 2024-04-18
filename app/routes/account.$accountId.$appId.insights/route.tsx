@@ -1,17 +1,14 @@
-import { json, LoaderFunction, MetaFunction, redirect } from "@remix-run/node"
+import { json, LoaderFunction, MetaFunction } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
 import React from "react"
 import invariant from "tiny-invariant"
 import ErrorBoundaryView from "~/components/ErrorBoundaryView"
-import { getD2AggregateRelays, getD2TotalRelays } from "~/models/dwh/dwh.server"
+import { getD2AggregateRelays, getD2TotalRelays } from "~/models/portal/dwh.server"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { D2Stats } from "~/models/portal/sdk"
 import ApplicationInsightsView from "~/routes/account.$accountId.$appId.insights/view"
-import {
-  allowedDayParams,
-  byHourDayParams,
-} from "~/routes/account.$accountId._index/route"
 import { getErrorMessage } from "~/utils/catchError"
+import { byHourPeriods, getDwhParams, validatePeriod } from "~/utils/dwhUtils.server"
 import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
 
@@ -35,10 +32,9 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   const user = await requireUser(request)
   const portal = initPortalClient({ token: user.accessToken })
 
-  // Prevent manually entering daysParam
-  if (!allowedDayParams.includes(daysParam)) {
-    return redirect(url.pathname)
-  }
+  const { period } = getDwhParams(url)
+  // Prevent manually entering an invalid period
+  validatePeriod({ period, url })
 
   try {
     const { appId, accountId } = params
@@ -46,18 +42,17 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     invariant(typeof accountId === "string", "AccountId must be a set url parameter")
 
     const getD2StatsDataResponse = await getD2AggregateRelays({
-      days: daysParam,
+      period: daysParam,
       accountId,
       portalClient: portal,
-      byHour: byHourDayParams.includes(daysParam),
+      byHour: byHourPeriods.includes(period),
       applicationIDs: [appId],
     })
 
     const getD2TotalStatsResponse = await getD2TotalRelays({
-      days: daysParam,
+      period: daysParam,
       accountId,
       portalClient: portal,
-      byHour: byHourDayParams.includes(daysParam),
       applicationIDs: [appId],
     })
 

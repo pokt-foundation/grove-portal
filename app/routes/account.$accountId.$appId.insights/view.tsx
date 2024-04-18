@@ -1,5 +1,6 @@
 import { Badge, Card, Group, SimpleGrid, Stack, Text } from "@mantine/core"
 import { useNavigation, useSearchParams } from "@remix-run/react"
+import { DEFAULT_DWH_PERIOD } from "~/components/InsightsControls"
 import TitledCard from "~/components/TitledCard"
 import { AppInsightsData } from "~/routes/account.$accountId.$appId.insights/route"
 import { AccountAppsOverview } from "~/routes/account.$accountId._index/components/AccountAppsOverview"
@@ -12,14 +13,14 @@ export default function ApplicationInsightsView({ total, aggregate }: AppInsight
   const navigation = useNavigation()
   const isLoading = !!(navigation.state === "loading" && navigation.formAction)
   const [searchParams] = useSearchParams()
-  const daysParam: number = Number(searchParams.get("days") ?? "7")
+  const periodParam = searchParams.get("period") ?? DEFAULT_DWH_PERIOD
 
   const {
     aggregatedSuccessData,
     aggregatedTotalData,
     aggregatedLatencyData,
     aggregatedErrorData,
-  } = useAggregateChartData({ data: aggregate, days: daysParam })
+  } = useAggregateChartData({ data: aggregate, period: periodParam })
 
   // TODO: Update view to match latest insights changes
   return (

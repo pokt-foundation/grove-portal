@@ -11,6 +11,8 @@ type InsightsControlsProps = {
   chains: Blockchain[]
 }
 
+export const DEFAULT_DWH_PERIOD = "24hr"
+
 const InsightsControls = ({ apps, chains }: InsightsControlsProps) => {
   const theme = useMantineTheme()
 
@@ -42,7 +44,7 @@ const InsightsControls = ({ apps, chains }: InsightsControlsProps) => {
   }, [chains])
 
   const [searchParams, setSearchParams] = useSearchParams()
-  const daysParam = searchParams.get("days") ?? "7"
+  const periodParam = searchParams.get("period") ?? DEFAULT_DWH_PERIOD
   const appParam = searchParams.get("app") ?? "all"
   const chainParam = searchParams.get("chain")
     ? (searchParams.get("chain") as string)
@@ -110,16 +112,24 @@ const InsightsControls = ({ apps, chains }: InsightsControlsProps) => {
         >
           <FluidSelect
             items={[
-              { value: "1", label: "24 Hours" },
+              { value: "24hr", label: "24 Hours" },
               { value: "3", label: "3 Days" },
               { value: "7", label: "7 Days" },
               { value: "14", label: "2 Weeks" },
               { value: "30", label: "30 Days" },
               { value: "60", label: "60 Days" },
+              {
+                value: "weekToDate",
+                label: "Week to Date",
+              },
+              {
+                value: "monthToDate",
+                label: "Month to Date",
+              },
             ]}
-            value={daysParam}
+            value={periodParam}
             onSelect={(period: string) =>
-              handleParamChange({ param: period, paramKey: "days" })
+              handleParamChange({ param: period, paramKey: "period" })
             }
           />
         </Box>

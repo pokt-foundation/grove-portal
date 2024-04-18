@@ -9,7 +9,7 @@ import {
   getD2AggregateRelays,
   getD2TotalRelays,
   getRealtimeDataChains,
-} from "~/models/dwh/dwh.server"
+} from "~/models/portal/dwh.server"
 import { initPortalClient } from "~/models/portal/portal.server"
 import {
   Account,
@@ -23,6 +23,7 @@ import { AccountIdLoaderData } from "~/routes/account.$accountId/route"
 import { AnnouncementAlert } from "~/routes/account.$accountId._index/components/AnnouncementAlert"
 import AccountInsightsView from "~/routes/account.$accountId._index/view"
 import { getErrorMessage } from "~/utils/catchError"
+import { byHourPeriods, getDwhParams, validatePeriod } from "~/utils/dwhUtils.server"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
@@ -45,21 +46,13 @@ export type AccountInsightsData = {
   blockchains: Blockchain[]
 }
 
-export const allowedDayParams = [1, 3, 7, 14, 30, 60]
-export const byHourDayParams = [1, 3]
-
 export const loader: LoaderFunction = async ({ request, params }) => {
   const user = await requireUser(request)
   const portal = initPortalClient({ token: user.accessToken })
   const url = new URL(request.url)
-  const daysParam: number = Number(url.searchParams.get("days") ?? "7")
-  const appParam = url.searchParams.get("app")
-  const chainParam = url.searchParams.get("chain")
-
-  // Prevent manually entering daysParam
-  if (!allowedDayParams.includes(daysParam)) {
-    return redirect(url.pathname)
-  }
+  const { period, chainParam, appParam } = getDwhParams(url)
+  // Prevent manually entering an invalid period
+  validatePeriod({ period, url })
 
   try {
     const { accountId } = params
@@ -69,28 +62,26 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     const getBlockchainsResponse = await portal.blockchains()
 
     const getD2StatsDataResponse = await getD2AggregateRelays({
-      days: daysParam,
+      period,
       accountId,
       portalClient: portal,
-      byHour: byHourDayParams.includes(daysParam),
+      byHour: byHourPeriods.includes(period),
       ...(chainParam && chainParam !== "all" && { chainIDs: [chainParam] }),
       ...(appParam && appParam !== "all" && { applicationIDs: [appParam] }),
     })
 
     const getD2TotalStatsResponse = await getD2TotalRelays({
-      days: daysParam,
+      period,
       accountId,
       portalClient: portal,
-      byHour: byHourDayParams.includes(daysParam),
       ...(chainParam && chainParam !== "all" && { chainIDs: [chainParam] }),
       ...(appParam && appParam !== "all" && { applicationIDs: [appParam] }),
     })
 
     const getRealtimeDataChainsResponse = await getRealtimeDataChains({
-      days: daysParam,
+      period,
       accountId,
       portalClient: portal,
-      byHour: byHourDayParams.includes(daysParam),
       ...(appParam && appParam !== "all" && { applicationIDs: [appParam] }),
     })
 

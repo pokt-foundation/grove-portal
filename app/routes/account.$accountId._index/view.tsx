@@ -1,7 +1,7 @@
 import { Card, SimpleGrid, Skeleton, Stack, Text, Title } from "@mantine/core"
 import { useLocation, useNavigation, useSearchParams } from "@remix-run/react"
 import React from "react"
-import InsightsControls from "~/components/InsightsControls"
+import InsightsControls, { DEFAULT_DWH_PERIOD } from "~/components/InsightsControls"
 import TitledCard from "~/components/TitledCard"
 import { PortalApp } from "~/models/portal/sdk"
 import { AccountAppsOverview } from "~/routes/account.$accountId._index/components/AccountAppsOverview"
@@ -45,14 +45,14 @@ export const AccountInsightsView = ({
     navigation.state === "loading" && navigation.location.pathname === location.pathname
 
   const [searchParams] = useSearchParams()
-  const daysParam: number = Number(searchParams.get("days") ?? "7")
+  const periodParam = searchParams.get("period") ?? DEFAULT_DWH_PERIOD
 
   const {
     aggregatedSuccessData,
     aggregatedTotalData,
     aggregatedLatencyData,
     aggregatedErrorData,
-  } = useAggregateChartData({ data: aggregate, days: daysParam })
+  } = useAggregateChartData({ data: aggregate, period: periodParam })
 
   const availableChains = blockchains.filter(({ id }) =>
     realtimeDataChains.some(({ chainID }) => chainID === id),

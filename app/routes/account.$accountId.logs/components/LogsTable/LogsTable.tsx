@@ -3,13 +3,14 @@ import { useNavigation, useSearchParams } from "@remix-run/react"
 import React, { useState } from "react"
 import { DataTable } from "~/components/DataTable"
 import { EmptyState } from "~/components/EmptyState"
-import { Blockchain, D2Log } from "~/models/portal/sdk"
-import LogsSideDrawer from "~/routes/account.$accountId.$appId.logs/components/LogsSideDrawer"
-import { AppLogsData } from "~/routes/account.$accountId.$appId.logs/route"
+import { Blockchain, D2Log, D2Meta } from "~/models/portal/sdk"
+import LogsSideDrawer from "~/routes/account.$accountId.logs/components/LogsSideDrawer"
 import { getChainName } from "~/utils/chainUtils"
 import { dayjs } from "~/utils/dayjs"
 
-type LogsTableProps = AppLogsData & {
+type LogsTableProps = {
+  logs: D2Log[]
+  meta?: D2Meta
   blockchains: Blockchain[]
 }
 
@@ -81,19 +82,21 @@ const LogsTable = ({ logs, meta, blockchains }: LogsTableProps) => {
         paginate={false}
         onRowClick={(logsItem) => setSelectedLogsItem(logsItem as unknown as D2Log)}
       />
-      <Group gap="md" justify="center" mt="lg">
-        <Pagination
-          withEdges
-          total={meta?.totalPages}
-          value={currentPage}
-          onChange={(page) => {
-            setSearchParams((searchParams) => {
-              searchParams.set("page", String(page))
-              return searchParams
-            })
-          }}
-        />
-      </Group>
+      {meta ? (
+        <Group gap="md" justify="center" mt="lg">
+          <Pagination
+            withEdges
+            total={meta?.totalPages}
+            value={currentPage}
+            onChange={(page) => {
+              setSearchParams((searchParams) => {
+                searchParams.set("page", String(page))
+                return searchParams
+              })
+            }}
+          />
+        </Group>
+      ) : null}
     </Box>
   )
 }

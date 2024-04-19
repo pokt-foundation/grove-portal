@@ -9,6 +9,7 @@ import { AppIdOutletContext } from "~/routes/account.$accountId.$appId/route"
 import AppLogs from "~/routes/account.$accountId.$appId.logs/view"
 import { getErrorMessage } from "~/utils/catchError"
 import { dayjs } from "~/utils/dayjs"
+import { getLogsParams, LOGS_PAGE_SIZE } from "~/utils/dwhUtils.server"
 import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
 
@@ -25,44 +26,19 @@ export type AppLogsData = {
   meta: D2Meta
 }
 
-export const LOGS_PAGE_SIZE = 20
-
-const getLogsTypeParam = (type: string | null) => {
-  switch (type) {
-    case "errors":
-      return D2LogType.ErrorLogs
-    case "success":
-      return D2LogType.NoErrorLogs
-    case "all":
-    default:
-      return D2LogType.AllLogs
-  }
-}
-
 export const loader: LoaderFunction = async ({ request, params }) => {
   await requireUser(request)
   const user = await requireUser(request)
   const portal = initPortalClient({ token: user.accessToken })
   const url = new URL(request.url)
-  const pageNumberParam = Number(url.searchParams.get("page") ?? "1")
   const { accountId, appId } = params
 
-  const logType = getLogsTypeParam(url.searchParams.get("type"))
-
-  const tsParam = url.searchParams.get("ts")
-    ? new Date(url.searchParams.get("ts") as string)
-    : new Date()
-
-  // Always fetch logs from selected ts to 1 hour before
-  const from = dayjs(tsParam).subtract(1, "hour").toDate()
+  const { logType, pageNumberParam, tsParam, from } = getLogsParams(url)
 
   invariant(typeof accountId === "string", "AccountId must be a set url parameter")
   invariant(typeof appId === "string", "AppId must be a set url parameter")
 
   try {
-    const { appId } = params
-    invariant(typeof appId === "string", "AppId must be a set url parameter")
-
     const getD2LogsDataResponse = await portal.getD2LogsData({
       params: {
         from,
@@ -87,7 +63,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   }
 }
 
-export default function AccountInsights() {
+export default function AppInsights() {
   const { logs, meta } = useLoaderData<AppLogsData>()
   const { blockchains } = useOutletContext<AppIdOutletContext>()
   return <AppLogs blockchains={blockchains} logs={logs} meta={meta} />

@@ -22,7 +22,6 @@ const LogsControls = ({ apps }: LogsControlsProps) => {
 
   const appsSelect = useMemo(
     () => [
-      { value: "all", label: "All Applications" },
       ...(apps && apps.length > 0
         ? apps.map((app) => ({
             value: app?.id ?? "",
@@ -36,7 +35,12 @@ const LogsControls = ({ apps }: LogsControlsProps) => {
   )
 
   const [searchParams, setSearchParams] = useSearchParams()
-  const appParam = searchParams.get("app") ?? "all"
+  const appParam = searchParams.get("app")
+    ? (searchParams.get("app") as string)
+    : apps && apps?.length > 0
+    ? apps[0].id
+    : ""
+
   const logTypeParam = searchParams.get("type") ?? "all"
   const tsParam = searchParams.get("ts")
 
@@ -51,13 +55,6 @@ const LogsControls = ({ apps }: LogsControlsProps) => {
         return searchParams
       })
     }
-  }
-
-  const handleAppChange = (app: string) => {
-    setSearchParams((searchParams) => {
-      searchParams.set("app", app)
-      return searchParams
-    })
   }
 
   const showLatestLogs = () => {
@@ -85,7 +82,12 @@ const LogsControls = ({ apps }: LogsControlsProps) => {
                 items={appsSelect}
                 styles={{ label: { marginLeft: 12, marginRight: 12 } }}
                 value={appParam}
-                onSelect={handleAppChange}
+                onSelect={(app) =>
+                  setSearchParams((searchParams) => {
+                    searchParams.set("app", app)
+                    return searchParams
+                  })
+                }
               />
               <Divider orientation="vertical" />
             </>

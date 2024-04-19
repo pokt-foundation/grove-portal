@@ -1,9 +1,9 @@
 import { Stack, Text } from "@mantine/core"
 import React from "react"
-import LogsControls from "~/components/LogsControls"
+import LogsControls from "app/routes/account.$accountId.logs/components/LogsControls"
 import { Blockchain } from "~/models/portal/sdk"
-import LogsTable from "~/routes/account.$accountId.$appId.logs/components/LogsTable"
 import { AppLogsData } from "~/routes/account.$accountId.$appId.logs/route"
+import LogsTable from "~/routes/account.$accountId.logs/components/LogsTable"
 
 type AppLogsProps = AppLogsData & {
   blockchains: Blockchain[]

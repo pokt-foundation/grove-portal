@@ -42,6 +42,11 @@ const getStaticRoutes = (
         end: true,
       },
       {
+        to: `/account/${activeAccount?.id}/logs`,
+        label: "Logs",
+        end: true,
+      },
+      {
         to: `/account/${activeAccount?.id}/sandbox`,
         label: "Sandbox",
         end: true,

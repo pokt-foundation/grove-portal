@@ -1,6 +1,7 @@
 import "~/styles/normalize.css"
 import "@mantine/core/styles.css"
 import "@mantine/notifications/styles.css"
+import "@mantine/dates/styles.css"
 import "~/styles/root.css"
 
 import { cssBundleHref } from "@remix-run/css-bundle"

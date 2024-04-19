@@ -1,19 +1,29 @@
 import { Button } from "@mantine/core"
-import { json, LoaderFunction, MetaFunction, redirect } from "@remix-run/node"
+import { json, LoaderFunction, MetaFunction } from "@remix-run/node"
 import { Link, useLoaderData, useOutletContext, useParams } from "@remix-run/react"
 import React from "react"
 import invariant from "tiny-invariant"
 import { EmptyState } from "~/components/EmptyState"
 import { ErrorBoundaryView } from "~/components/ErrorBoundaryView"
-import { getAggregateRelays, getTotalRelays } from "~/models/dwh/dwh.server"
-import { AnalyticsRelaysAggregated } from "~/models/dwh/sdk/models/AnalyticsRelaysAggregated"
-import { AnalyticsRelaysTotal } from "~/models/dwh/sdk/models/AnalyticsRelaysTotal"
+import {
+  getD2AggregateRelays,
+  getD2TotalRelays,
+  getRealtimeDataChains,
+} from "~/models/portal/dwh.server"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { Account, PortalApp, RoleName } from "~/models/portal/sdk"
+import {
+  Account,
+  Blockchain,
+  D2Chain,
+  D2Stats,
+  PortalApp,
+  RoleName,
+} from "~/models/portal/sdk"
 import { AccountIdLoaderData } from "~/routes/account.$accountId/route"
 import { AnnouncementAlert } from "~/routes/account.$accountId._index/components/AnnouncementAlert"
 import AccountInsightsView from "~/routes/account.$accountId._index/view"
 import { getErrorMessage } from "~/utils/catchError"
+import { byHourPeriods, getDwhParams, validatePeriod } from "~/utils/dwhUtils.server"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
@@ -30,42 +40,57 @@ export const meta: MetaFunction = () => {
 
 export type AccountInsightsData = {
   account: Account
-  total: AnalyticsRelaysTotal
-  aggregate: AnalyticsRelaysAggregated[]
+  total: D2Stats
+  aggregate: D2Stats[]
+  realtimeDataChains: D2Chain[]
+  blockchains: Blockchain[]
 }
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   const user = await requireUser(request)
   const portal = initPortalClient({ token: user.accessToken })
   const url = new URL(request.url)
-  const daysParam: number = Number(url.searchParams.get("days") ?? "7")
-
-  // Prevent manually entering daysParam
-  if (daysParam !== 7 && daysParam !== 30 && daysParam !== 60) {
-    return redirect(url.pathname)
-  }
+  const { period, chainParam, appParam } = getDwhParams(url)
+  // Prevent manually entering an invalid period
+  validatePeriod({ period, url })
 
   try {
     const { accountId } = params
     invariant(typeof accountId === "string", "AccountId must be a set url parameter")
 
     const account = await portal.getUserAccount({ accountID: accountId, accepted: true })
+    const getBlockchainsResponse = await portal.blockchains()
 
-    const aggregate = await getAggregateRelays({
-      category: "account_id",
-      categoryValue: [accountId],
-      days: daysParam,
+    const getD2StatsDataResponse = await getD2AggregateRelays({
+      period,
+      accountId,
+      portalClient: portal,
+      byHour: byHourPeriods.includes(period),
+      ...(chainParam && chainParam !== "all" && { chainIDs: [chainParam] }),
+      ...(appParam && appParam !== "all" && { applicationIDs: [appParam] }),
     })
-    const total = await getTotalRelays({
-      category: "account_id",
-      categoryValue: [accountId],
-      days: daysParam,
+
+    const getD2TotalStatsResponse = await getD2TotalRelays({
+      period,
+      accountId,
+      portalClient: portal,
+      ...(chainParam && chainParam !== "all" && { chainIDs: [chainParam] }),
+      ...(appParam && appParam !== "all" && { applicationIDs: [appParam] }),
+    })
+
+    const getRealtimeDataChainsResponse = await getRealtimeDataChains({
+      period,
+      accountId,
+      portalClient: portal,
+      ...(appParam && appParam !== "all" && { applicationIDs: [appParam] }),
     })
 
     return json<AccountInsightsData>({
       account: account.getUserAccount as Account,
-      total: (total as AnalyticsRelaysTotal) ?? undefined,
-      aggregate: (aggregate as AnalyticsRelaysAggregated[]) ?? undefined, //dailyReponse.data as AnalyticsRelaysDaily[],
+      blockchains: getBlockchainsResponse.blockchains as Blockchain[],
+      realtimeDataChains: getRealtimeDataChainsResponse as D2Chain[],
+      total: getD2TotalStatsResponse as D2Stats,
+      aggregate: getD2StatsDataResponse.getD2StatsData.data as D2Stats[],
     })
   } catch (error) {
     throw new Response(getErrorMessage(error), {
@@ -75,7 +100,8 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 }
 
 export default function AccountInsights() {
-  const { account, total, aggregate } = useLoaderData<typeof loader>()
+  const { account, total, aggregate, blockchains, realtimeDataChains } =
+    useLoaderData() as AccountInsightsData
   const { userRole } = useOutletContext<AccountIdLoaderData>()
   const { accountId } = useParams()
 
@@ -111,7 +137,13 @@ export default function AccountInsights() {
           title="Create your first application"
         />
       ) : (
-        <AccountInsightsView aggregate={aggregate} total={total} />
+        <AccountInsightsView
+          account={account}
+          aggregate={aggregate}
+          blockchains={blockchains}
+          realtimeDataChains={realtimeDataChains}
+          total={total}
+        />
       )}
     </>
   )

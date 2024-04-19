@@ -12,8 +12,10 @@ const renderTableCell = ([key, value]: TableDataArray) =>
 export const DataTableBody = ({
   paginatedData,
   rowAsLink,
-  data,
+  columns,
   onRowClick,
+  searchTerm,
+  emptyState,
 }: TableBodyProps) => {
   return (
     <Table.Tbody>
@@ -45,10 +47,8 @@ export const DataTableBody = ({
         })
       ) : (
         <Table.Tr>
-          <Table.Td
-            colSpan={data?.length && data[0].length ? Object.keys(data[0]).length : 0}
-          >
-            <Text ta="center">Nothing found.</Text>
+          <Table.Td colSpan={columns?.length ?? 0}>
+            {searchTerm ? <Text ta="center">Nothing found.</Text> : emptyState}
           </Table.Td>
         </Table.Tr>
       )}

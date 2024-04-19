@@ -1,4 +1,4 @@
-import { Anchor, Box, Group, Text, UnstyledButton } from "@mantine/core"
+import { Anchor, Flex, Group, Text, UnstyledButton } from "@mantine/core"
 import { NavLink } from "@remix-run/react"
 import { Emoji } from "emoji-picker-react"
 import React from "react"
@@ -37,9 +37,9 @@ const LabelIcon = ({ icon: Icon, imgSrc, label }: LabelIconProps) => {
 
   if (isEmoji) {
     return (
-      <Box mx={1}>
+      <Flex justify="center" mx={1}>
         <Emoji size={16} unified={Icon !== "" ? Icon : DEFAULT_APPMOJI} />
-      </Box>
+      </Flex>
     )
   }
 

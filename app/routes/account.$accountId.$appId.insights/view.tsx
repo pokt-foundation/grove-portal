@@ -1,25 +1,28 @@
 import { Badge, Card, Group, SimpleGrid, Stack, Text } from "@mantine/core"
-import { useNavigation } from "@remix-run/react"
+import { useNavigation, useSearchParams } from "@remix-run/react"
+import { DEFAULT_DWH_PERIOD } from "~/components/InsightsControls"
 import TitledCard from "~/components/TitledCard"
 import { AppInsightsData } from "~/routes/account.$accountId.$appId.insights/route"
 import { AccountAppsOverview } from "~/routes/account.$accountId._index/components/AccountAppsOverview"
 import { ChartPeriodSelector } from "~/routes/account.$accountId._index/components/ChartPeriodSelector"
 import { OverviewSparkline } from "~/routes/account.$accountId._index/components/OverviewSparkline"
 import useAggregateChartData from "~/routes/account.$accountId._index/hooks/useAggregateChartData"
-import { getTotalErrors } from "~/utils/chartUtils"
 import { commify } from "~/utils/formattingUtils"
 
 export default function ApplicationInsightsView({ total, aggregate }: AppInsightsData) {
   const navigation = useNavigation()
   const isLoading = !!(navigation.state === "loading" && navigation.formAction)
-  const totalErrors = getTotalErrors(total)
+  const [searchParams] = useSearchParams()
+  const periodParam = searchParams.get("period") ?? DEFAULT_DWH_PERIOD
 
   const {
     aggregatedSuccessData,
     aggregatedTotalData,
     aggregatedLatencyData,
     aggregatedErrorData,
-  } = useAggregateChartData(aggregate)
+  } = useAggregateChartData({ data: aggregate, period: periodParam })
+
+  // TODO: Update view to match latest insights changes
   return (
     <Stack gap="xl" mb="xl" pt={22}>
       <TitledCard
@@ -31,7 +34,7 @@ export default function ApplicationInsightsView({ total, aggregate }: AppInsight
         )}
       >
         <Card.Section>
-          <AccountAppsOverview aggregate={total} isLoading={isLoading} />
+          <AccountAppsOverview isLoading={isLoading} total={total} />
         </Card.Section>
       </TitledCard>
 
@@ -42,7 +45,7 @@ export default function ApplicationInsightsView({ total, aggregate }: AppInsight
               <Group>
                 <Text fw={600}>Total Relays</Text>
                 <Badge px={6} radius="sm">
-                  {commify(total?.countTotal ?? 0)}
+                  {commify(total?.totalCount ?? 0)}
                 </Badge>
               </Group>
               <ChartPeriodSelector />
@@ -86,7 +89,7 @@ export default function ApplicationInsightsView({ total, aggregate }: AppInsight
                 <Group>
                   <Text fw={600}>Success Rate </Text>
                   <Badge px={6} radius="sm">
-                    {commify(total?.rateSuccess ?? 0)}%
+                    {commify(total?.successRate ?? 0)}%
                   </Badge>
                 </Group>
                 <ChartPeriodSelector />
@@ -108,7 +111,7 @@ export default function ApplicationInsightsView({ total, aggregate }: AppInsight
               <Group>
                 <Text fw={600}>Total Errors </Text>
                 <Badge px={6} radius="sm">
-                  {totalErrors ? commify(totalErrors) : 0}
+                  {total?.errorCount ? commify(total.errorCount) : 0}
                 </Badge>
               </Group>
               <ChartPeriodSelector />

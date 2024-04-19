@@ -1,43 +1,34 @@
 import { useMemo } from "react"
-import { AnalyticsRelaysAggregated } from "~/models/dwh/sdk"
-import { getTotalErrors } from "~/utils/chartUtils"
+import { D2Stats } from "~/models/portal/sdk"
 import { dayjs } from "~/utils/dayjs"
+type ChartData = { date: string; val: number | null }
 
-const useAggregateChartData = (data: AnalyticsRelaysAggregated[]) => {
-  const aggregatedTotalData = useMemo(() => {
-    return data.map((day) => ({
-      date: dayjs(day.date).utc().format("MMM DD"),
-      val: day.countTotal ?? null,
-    }))
-  }, [data])
+const hoursTimeFormat: { [key: string]: string } = {
+  "24hr": "h:00 A",
+  "3": "MMM DD h:00 A",
+}
 
-  const aggregatedLatencyData = useMemo(() => {
-    return data.map((day) => ({
-      date: dayjs(day.date).utc().format("MMM DD"),
-      val: day.avgLatency ?? null,
-    }))
-  }, [data])
+const useAggregateChartData = ({ data, period }: { data: D2Stats[]; period: string }) => {
+  return useMemo(() => {
+    return data.reduce(
+      (acc, dayData) => {
+        const format = hoursTimeFormat[period]
+        const date = dayjs(dayData.dateTime).format(format ?? "MMM DD")
+        acc.aggregatedTotalData.push({ date, val: dayData.totalCount ?? null })
+        acc.aggregatedLatencyData.push({ date, val: dayData.avgLatency ?? null })
+        acc.aggregatedSuccessData.push({ date, val: dayData.successRate ?? null })
+        acc.aggregatedErrorData.push({ date, val: dayData.errorCount ?? null })
 
-  const aggregatedSuccessData = useMemo(() => {
-    return data.map((day) => ({
-      date: dayjs(day.date).utc().format("MMM DD"),
-      val: day.rateSuccess ?? null,
-    }))
-  }, [data])
-
-  const aggregatedErrorData = useMemo(() => {
-    return data.map((day) => ({
-      date: dayjs(day.date).utc().format("MMM DD"),
-      val: getTotalErrors(day),
-    }))
-  }, [data])
-
-  return {
-    aggregatedTotalData,
-    aggregatedLatencyData,
-    aggregatedSuccessData,
-    aggregatedErrorData,
-  }
+        return acc
+      },
+      {
+        aggregatedTotalData: [] as ChartData[],
+        aggregatedLatencyData: [] as ChartData[],
+        aggregatedSuccessData: [] as ChartData[],
+        aggregatedErrorData: [] as ChartData[],
+      },
+    )
+  }, [period, data])
 }
 
 export default useAggregateChartData

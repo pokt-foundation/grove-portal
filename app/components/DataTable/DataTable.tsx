@@ -15,6 +15,7 @@ export const DataTable = <T extends IdObj>({
   searchTerm,
   onRowClick,
   isLoading = false,
+  emptyState,
 }: DataTableProps<T>) => {
   const { paginatedData, totalPages, page, handlePageChange } = usePagination({
     data,
@@ -41,9 +42,11 @@ export const DataTable = <T extends IdObj>({
         )}
 
         <DataTableBody
-          data={data}
+          columns={columns}
+          emptyState={emptyState}
           paginatedData={paginatedData}
           rowAsLink={rowAsLink}
+          searchTerm={searchTerm}
           onRowClick={onRowClick}
         />
       </Table>

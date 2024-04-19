@@ -73,7 +73,7 @@ const LogsTable = ({ logs, meta, blockchains }: LogsTableProps) => {
             imgHeight={256}
             imgSrc="/logs-empty-state.svg"
             imgWidth={256}
-            subtitle="Check back later for updates on any errors."
+            subtitle="Check back later for updates on any logs."
             title="No logs available yet."
           />
         }

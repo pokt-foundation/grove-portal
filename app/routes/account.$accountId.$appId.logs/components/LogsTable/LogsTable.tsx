@@ -1,22 +1,23 @@
-import { Box, Group, Button } from "@mantine/core"
+import { Box, Group, Pagination, Text } from "@mantine/core"
 import { useNavigation, useSearchParams } from "@remix-run/react"
 import React, { useState } from "react"
-import { LuChevronLeft, LuChevronRight } from "react-icons/lu"
 import { DataTable } from "~/components/DataTable"
-import { Logs } from "~/models/dwh/sdk"
+import { EmptyState } from "~/components/EmptyState"
+import { Blockchain, D2Log } from "~/models/portal/sdk"
 import LogsSideDrawer from "~/routes/account.$accountId.$appId.logs/components/LogsSideDrawer"
-import { LOGS_PAGE_SIZE } from "~/routes/account.$accountId.$appId.logs/route"
+import { AppLogsData } from "~/routes/account.$accountId.$appId.logs/route"
+import { getChainName } from "~/utils/chainUtils"
 import { dayjs } from "~/utils/dayjs"
 
-type LogsTableProps = {
-  logs: Logs[]
+type LogsTableProps = AppLogsData & {
+  blockchains: Blockchain[]
 }
 
-const LogsTable = ({ logs }: LogsTableProps) => {
-  const [selectedLogsItem, setSelectedLogsItem] = useState<Logs | undefined>()
+const LogsTable = ({ logs, meta, blockchains }: LogsTableProps) => {
+  const [selectedLogsItem, setSelectedLogsItem] = useState<D2Log | undefined>()
   const navigation = useNavigation()
   const [searchParams, setSearchParams] = useSearchParams()
-  const activePage = Number(searchParams.get("page") ?? 1)
+  const currentPage: number = Number(searchParams.get("page") ?? "1")
 
   const isLoadingLogs =
     navigation.state === "loading" && navigation.location.pathname.endsWith("/logs")
@@ -24,69 +25,73 @@ const LogsTable = ({ logs }: LogsTableProps) => {
   return (
     <Box>
       <LogsSideDrawer
+        blockchains={blockchains}
         logsItem={selectedLogsItem}
         onSideDrawerClose={() => setSelectedLogsItem(undefined)}
       />
       <DataTable
-        columns={["Timestamp", "Method", "Chain ID", "Error type", "Error name"]}
-        data={logs.map((log) => {
+        columns={["Timestamp", "Method", "Network", "Status"]}
+        data={logs?.map((log) => {
           return {
             timestamp: {
-              element: dayjs(log.ts).format("D MMMM, YYYY h:mm:ss A"),
-              value: log.ts,
+              element: dayjs(log.TS).format("D MMMM, YYYY h:mm:ss A"),
+              value: log.TS,
             },
             method: {
-              element: log.chainMethod,
-              value: log.chainMethod,
+              element:
+                log?.chainMethods?.length && log?.chainMethods?.length > 0
+                  ? log?.chainMethods![0]?.name
+                  : "-",
+              value:
+                log?.chainMethods?.length && log?.chainMethods?.length > 0
+                  ? log?.chainMethods![0]?.name
+                  : "-",
             },
-            chainId: {
-              element: log.chainId,
-              value: log.chainId,
+            network: {
+              element: getChainName({
+                chainId: log.chainID as string,
+                chains: blockchains,
+              }),
+              value: getChainName({
+                chainId: log.chainID as string,
+                chains: blockchains,
+              }),
             },
-            errorType: {
-              element: log.errorType,
-              value: log.errorType,
-            },
-            errorName: {
-              element: log.errorName,
-              value: log.errorName,
+            status: {
+              element: (
+                <Text c={log.isError ? "red" : "green"}>
+                  {log.isError ? "Error" : "Success"}
+                </Text>
+              ),
+              value: log.isError ? "Error" : "Success",
             },
             rowSelectData: log,
           }
         })}
+        emptyState={
+          <EmptyState
+            imgHeight={256}
+            imgSrc="/logs-empty-state.svg"
+            imgWidth={256}
+            subtitle="Check back later for updates on any errors."
+            title="No logs available yet."
+          />
+        }
         isLoading={isLoadingLogs}
         paginate={false}
-        onRowClick={(logsItem) => setSelectedLogsItem(logsItem as unknown as Logs)}
+        onRowClick={(logsItem) => setSelectedLogsItem(logsItem as unknown as D2Log)}
       />
-      <Group gap="md" justify="right" mt="lg">
-        <Button
-          color="gray"
-          disabled={activePage === 1 || isLoadingLogs}
-          radius="md"
-          size="xs"
-          variant="outline"
-          onClick={() => {
+      <Group gap="md" justify="center" mt="lg">
+        <Pagination
+          withEdges
+          total={meta?.totalPages}
+          value={currentPage}
+          onChange={(page) => {
             const params = new URLSearchParams()
-            params.set("page", String(activePage - 1))
+            params.set("page", String(page))
             setSearchParams(params)
           }}
-        >
-          <LuChevronLeft size={18} />
-        </Button>
-        <Button
-          color="gray"
-          disabled={logs.length < LOGS_PAGE_SIZE || isLoadingLogs}
-          radius="md"
-          size="xs"
-          variant="outline"
-          onClick={() => {
-            const params = new URLSearchParams()
-            params.set("page", String(activePage + 1))
-            setSearchParams(params)
-          }}
-        >
-          <LuChevronRight size={18} />
-        </Button>
+        />
       </Group>
     </Box>
   )

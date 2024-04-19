@@ -1,43 +1,65 @@
 import { Divider, Card, Drawer, Group, Stack, Text } from "@mantine/core"
 import React from "react"
 import { TitledCard } from "~/components/TitledCard"
-import { Logs } from "~/models/dwh/sdk"
+import { Blockchain, D2Log } from "~/models/portal/sdk"
+import { getChainName } from "~/utils/chainUtils"
 import { dayjs } from "~/utils/dayjs"
 
 type LogsSideDrawerProps = {
-  logsItem?: Logs
+  blockchains: Blockchain[]
+  logsItem?: D2Log
   onSideDrawerClose: () => void
 }
 
-const LogsSideDrawer = ({ logsItem, onSideDrawerClose }: LogsSideDrawerProps) => {
+const getLogMethod = (logsItem: D2Log | undefined) => {
+  if (!logsItem || !logsItem?.chainMethods || logsItem.chainMethods?.length === 0) {
+    return "-"
+  }
+
+  return logsItem?.chainMethods[0]?.name
+}
+
+const LogsSideDrawer = ({
+  logsItem,
+  onSideDrawerClose,
+  blockchains,
+}: LogsSideDrawerProps) => {
   const cardItems = [
     {
       label: "Date",
-      value: dayjs(logsItem?.ts).format("D MMMM, YYYY"),
+      value: dayjs(logsItem?.TS).format("D MMMM, YYYY"),
     },
     {
       label: "Time",
-      value: dayjs(logsItem?.ts).format("h:mm:ss A"),
+      value: dayjs(logsItem?.TS).format("h:mm:ss A"),
     },
     {
       label: "Application ID",
-      value: logsItem?.portalApplicationId,
+      value: logsItem?.applicationID,
     },
     {
       label: "Chain ID",
-      value: logsItem?.chainId,
+      value: logsItem?.chainID,
     },
     {
-      label: "Supported method",
-      value: logsItem?.chainMethod,
+      label: "Network",
+      value: getChainName({ chainId: logsItem?.chainID as string, chains: blockchains }),
     },
     {
-      label: "Error type",
-      value: logsItem?.errorType,
+      label: "Method",
+      value: getLogMethod(logsItem),
     },
     {
-      label: "Error name",
-      value: logsItem?.errorName,
+      label: "Start Time",
+      value: logsItem?.relayStartTs,
+    },
+    {
+      label: "Return Time",
+      value: logsItem?.relayReturnTs,
+    },
+    {
+      label: "Round Trip Time:",
+      value: `${logsItem?.relayRoundTripTime} ms`,
     },
   ]
 
@@ -65,11 +87,13 @@ const LogsSideDrawer = ({ logsItem, onSideDrawerClose }: LogsSideDrawerProps) =>
           </Card.Section>
         </TitledCard>
 
-        <TitledCard header={() => <Text fw={600}>Message</Text>}>
-          <Card.Section p="md">
-            <Text>{logsItem?.errorMessage}</Text>
-          </Card.Section>
-        </TitledCard>
+        {logsItem?.errorMessage ? (
+          <TitledCard header={() => <Text fw={600}>Message</Text>}>
+            <Card.Section p="md">
+              <Text>{logsItem?.errorMessage}</Text>
+            </Card.Section>
+          </TitledCard>
+        ) : null}
       </Stack>
     </Drawer>
   )

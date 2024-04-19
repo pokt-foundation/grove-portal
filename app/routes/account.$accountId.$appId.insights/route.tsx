@@ -3,7 +3,7 @@ import { useLoaderData } from "@remix-run/react"
 import React from "react"
 import invariant from "tiny-invariant"
 import ErrorBoundaryView from "~/components/ErrorBoundaryView"
-import { getD2AggregateRelays, getD2TotalRelays } from "~/models/portal/dwh.server"
+import { getAggregateRelays, getTotalRelays } from "~/models/portal/dwh.server"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { D2Stats } from "~/models/portal/sdk"
 import ApplicationInsightsView from "~/routes/account.$accountId.$appId.insights/view"
@@ -41,7 +41,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     invariant(typeof appId === "string", "AppId must be a set url parameter")
     invariant(typeof accountId === "string", "AccountId must be a set url parameter")
 
-    const getD2StatsDataResponse = await getD2AggregateRelays({
+    const getAggregateRelaysResponse = await getAggregateRelays({
       period: daysParam,
       accountId,
       portalClient: portal,
@@ -49,7 +49,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       applicationIDs: [appId],
     })
 
-    const getD2TotalStatsResponse = await getD2TotalRelays({
+    const getTotalRelaysResponse = await getTotalRelays({
       period: daysParam,
       accountId,
       portalClient: portal,
@@ -57,8 +57,8 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     })
 
     return json<AppInsightsData>({
-      total: getD2TotalStatsResponse as D2Stats,
-      aggregate: getD2StatsDataResponse.getD2StatsData.data as D2Stats[],
+      total: getTotalRelaysResponse,
+      aggregate: getAggregateRelaysResponse,
     })
   } catch (error) {
     throw new Response(getErrorMessage(error), {

@@ -6,8 +6,8 @@ import invariant from "tiny-invariant"
 import { EmptyState } from "~/components/EmptyState"
 import { ErrorBoundaryView } from "~/components/ErrorBoundaryView"
 import {
-  getD2AggregateRelays,
-  getD2TotalRelays,
+  getAggregateRelays,
+  getTotalRelays,
   getRealtimeDataChains,
 } from "~/models/portal/dwh.server"
 import { initPortalClient } from "~/models/portal/portal.server"
@@ -61,7 +61,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     const account = await portal.getUserAccount({ accountID: accountId, accepted: true })
     const getBlockchainsResponse = await portal.blockchains()
 
-    const getD2StatsDataResponse = await getD2AggregateRelays({
+    const getAggregateRelaysResponse = await getAggregateRelays({
       period,
       accountId,
       portalClient: portal,
@@ -70,7 +70,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       ...(appParam && appParam !== "all" && { applicationIDs: [appParam] }),
     })
 
-    const getD2TotalStatsResponse = await getD2TotalRelays({
+    const getTotalRelaysResponse = await getTotalRelays({
       period,
       accountId,
       portalClient: portal,
@@ -88,9 +88,9 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     return json<AccountInsightsData>({
       account: account.getUserAccount as Account,
       blockchains: getBlockchainsResponse.blockchains as Blockchain[],
-      realtimeDataChains: getRealtimeDataChainsResponse as D2Chain[],
-      total: getD2TotalStatsResponse as D2Stats,
-      aggregate: getD2StatsDataResponse.getD2StatsData.data as D2Stats[],
+      realtimeDataChains: getRealtimeDataChainsResponse,
+      total: getTotalRelaysResponse,
+      aggregate: getAggregateRelaysResponse,
     })
   } catch (error) {
     throw new Response(getErrorMessage(error), {

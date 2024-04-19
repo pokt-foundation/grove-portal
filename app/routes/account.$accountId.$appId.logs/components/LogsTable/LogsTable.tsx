@@ -87,9 +87,10 @@ const LogsTable = ({ logs, meta, blockchains }: LogsTableProps) => {
           total={meta?.totalPages}
           value={currentPage}
           onChange={(page) => {
-            const params = new URLSearchParams()
-            params.set("page", String(page))
-            setSearchParams(params)
+            setSearchParams((searchParams) => {
+              searchParams.set("page", String(page))
+              return searchParams
+            })
           }}
         />
       </Group>

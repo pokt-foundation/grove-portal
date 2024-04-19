@@ -3,10 +3,9 @@ import { useLoaderData, useOutletContext } from "@remix-run/react"
 import invariant from "tiny-invariant"
 import { AccountPlanView } from "./view"
 import ErrorBoundaryView from "~/components/ErrorBoundaryView/ErrorBoundaryView"
-import { AnalyticsRelaysTotal } from "~/models/dwh/sdk/models/AnalyticsRelaysTotal"
 import { getTotalRelays } from "~/models/portal/dwh.server"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { Account, PortalApp, User } from "~/models/portal/sdk"
+import { Account, D2Stats, PortalApp, User } from "~/models/portal/sdk"
 import { Stripe, stripe } from "~/models/stripe/stripe.server"
 import { AppIdOutletContext } from "~/routes/account.$accountId.$appId/route"
 import { getErrorMessage } from "~/utils/catchError"
@@ -23,7 +22,7 @@ export const meta: MetaFunction = () => {
   ]
 }
 
-export type AccountAppRelays = Pick<AnalyticsRelaysTotal, "countTotal"> &
+export type AccountAppRelays = Pick<D2Stats, "totalCount"> &
   Pick<PortalApp, "name" | "appEmoji">
 
 export type AccountPlanLoaderData = {
@@ -76,18 +75,20 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
         if (sortedAccountApps && sortedAccountApps.length > 0) {
           for (const app of accountApps) {
-            const total = (await getTotalRelays({
-              category: "application_id",
-              categoryValue: [app.id],
+            // TODO: Use getD2StatsData directly in the future since it allows providing multiple applicationIDs
+            const total = await getTotalRelays({
+              accountId,
+              applicationIDs: [app.id],
               from: invoicePeriodStart,
               to: invoicePeriodEnd,
-            })) as AnalyticsRelaysTotal
+              portalClient: portal,
+            })
 
             accountAppsRelays.push({
-              ...total,
+              totalCount: total?.totalCount,
               name: app?.name,
               appEmoji: app?.appEmoji,
-            } as AccountAppRelays)
+            })
           }
         }
       }

@@ -1,47 +1,24 @@
-import { Divider, Box, Flex, Text } from "@mantine/core"
-import { useSearchParams } from "@remix-run/react"
+import { Stack, Text } from "@mantine/core"
 import React from "react"
-import { EmptyState } from "~/components/EmptyState"
-import { Logs } from "~/models/dwh/sdk"
-import LogsTable from "~/routes/account.$accountId.$appId.logs/components/LogsTable"
+import LogsControls from "app/routes/account.$accountId.logs/components/LogsControls"
+import { Blockchain } from "~/models/portal/sdk"
+import { AppLogsData } from "~/routes/account.$accountId.$appId.logs/route"
+import LogsTable from "~/routes/account.$accountId.logs/components/LogsTable"
 
-type AppLogsProps = {
-  logs: Logs[]
+type AppLogsProps = AppLogsData & {
+  blockchains: Blockchain[]
 }
 
-const AppLogs = ({ logs }: AppLogsProps) => {
-  const [searchParams] = useSearchParams()
-  const hasActivePage = Boolean(searchParams.get("page"))
-
-  if (logs.length === 0) {
-    return (
-      <EmptyState
-        imgHeight={256}
-        imgSrc="/logs-empty-state.svg"
-        imgWidth={256}
-        subtitle={
-          <>
-            They refresh hourly and are retained for 3 hours.
-            <br />
-            Check back later for updates on any errors.
-          </>
-        }
-        title={hasActivePage ? "No more logs available." : "No logs available yet."}
-      />
-    )
-  }
-
+const AppLogs = ({ logs, meta, blockchains }: AppLogsProps) => {
   return (
-    <Box mb={70}>
-      <Flex align="center" justify="space-between" my="xl">
-        <Text>
-          Logs update hourly and are retained for a 3-hour window, ensuring you have the
-          most relevant data at your disposal.
-        </Text>
-      </Flex>
-      <Divider />
-      <LogsTable logs={logs} />
-    </Box>
+    <Stack mt={22}>
+      <Text>
+        Logs can be filtered over the last 24 hours with a maximum detail window of one
+        hour.
+      </Text>
+      <LogsControls />
+      <LogsTable blockchains={blockchains} logs={logs} meta={meta} />
+    </Stack>
   )
 }
 

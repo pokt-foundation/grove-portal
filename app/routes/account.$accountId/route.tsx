@@ -5,7 +5,7 @@ import invariant from "tiny-invariant"
 import { ErrorBoundaryView } from "~/components/ErrorBoundaryView"
 import RootAppShell from "~/components/RootAppShell/RootAppShell"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { Account, RoleName, User } from "~/models/portal/sdk"
+import { Account, Blockchain, RoleName, SortOrder, User } from "~/models/portal/sdk"
 import { getUserAccountRole } from "~/utils/accountUtils"
 import { getErrorMessage } from "~/utils/catchError"
 import { redirectToUserAccount, requireUser } from "~/utils/user.server"
@@ -13,6 +13,7 @@ import { redirectToUserAccount, requireUser } from "~/utils/user.server"
 export type AccountIdLoaderData = {
   account: Account
   accounts: Account[]
+  blockchains: Blockchain[]
   user: User
   userRole: RoleName
 }
@@ -34,9 +35,12 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       user.user.portalUserID,
     ) as RoleName
 
+    const getBlockchainsResponse = await portal.blockchains({ sortOrder: SortOrder.Asc })
+
     return json<AccountIdLoaderData>({
       account: account.getUserAccount as Account,
       accounts: userAccounts.getUserAccounts as Account[],
+      blockchains: getBlockchainsResponse.blockchains as Blockchain[],
       user: user.user,
       userRole,
     })
@@ -63,11 +67,12 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 }
 
 export default function AccountId() {
-  const { account, accounts, user, userRole } = useLoaderData<AccountIdLoaderData>()
+  const { account, accounts, blockchains, user, userRole } =
+    useLoaderData<AccountIdLoaderData>()
 
   return (
     <RootAppShell account={account} accounts={accounts} user={user} userRole={userRole}>
-      <Outlet context={{ account, accounts, user, userRole }} />
+      <Outlet context={{ account, accounts, blockchains, user, userRole }} />
     </RootAppShell>
   )
 }

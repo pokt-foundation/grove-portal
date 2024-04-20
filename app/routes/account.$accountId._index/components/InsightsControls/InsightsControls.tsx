@@ -84,14 +84,18 @@ const InsightsControls = ({ apps, chains }: InsightsControlsProps) => {
             borderRadius: 4,
           }}
         >
-          <FluidSelect
-            items={appsSelectItems}
-            styles={{ label: { marginLeft: 12, marginRight: 12 } }}
-            value={appParam}
-            withSearch={chainsSelectItems.length > 7}
-            onSelect={handleAppChange}
-          />
-          <Divider orientation="vertical" />
+          {apps ? (
+            <>
+              <FluidSelect
+                items={appsSelectItems}
+                styles={{ label: { marginLeft: 12, marginRight: 12 } }}
+                value={appParam}
+                withSearch={chainsSelectItems.length > 7}
+                onSelect={handleAppChange}
+              />
+              <Divider orientation="vertical" />
+            </>
+          ) : null}
           <FluidSelect
             disabled={chainsSelectItems.length === 0}
             itemComponent={ChainSelectItem}

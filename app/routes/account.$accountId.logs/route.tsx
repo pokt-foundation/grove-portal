@@ -78,8 +78,16 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
 export default function AccountLogs() {
   const { apps, logs, meta } = useLoaderData<AccountLogsData>()
-  const { blockchains } = useOutletContext<AccountIdLoaderData>()
-  return <AccountLogsView apps={apps} blockchains={blockchains} logs={logs} meta={meta} />
+  const { blockchains, userRole } = useOutletContext<AccountIdLoaderData>()
+  return (
+    <AccountLogsView
+      apps={apps}
+      blockchains={blockchains}
+      logs={logs}
+      meta={meta}
+      userRole={userRole}
+    />
+  )
 }
 
 export function ErrorBoundary() {

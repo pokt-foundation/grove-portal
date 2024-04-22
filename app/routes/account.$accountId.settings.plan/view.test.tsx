@@ -7,7 +7,7 @@ import { invoice, subscription, useageRecord } from "~/models/stripe/stripe.data
 import { AccountAppRelays } from "~/routes/account.$accountId.settings.plan/route"
 
 const accountAppsRelaysData: AccountAppRelays = {
-  countTotal: 10000,
+  totalCount: 10000,
   name: "account",
   appEmoji: "emoji",
 }

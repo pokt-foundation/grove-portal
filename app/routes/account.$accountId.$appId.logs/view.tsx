@@ -13,8 +13,8 @@ const AppLogs = ({ logs, meta, blockchains }: AppLogsProps) => {
   return (
     <Stack mt={22}>
       <Text>
-        Logs can be filtered over the last 24 hours with a maximum detail window of one
-        hour.
+        Logs are updated every minute and can be filtered to any one-hour window from the
+        past 24 hours.
       </Text>
       <LogsControls />
       <LogsTable blockchains={blockchains} logs={logs} meta={meta} />

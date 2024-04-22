@@ -2,6 +2,7 @@ import { Button, Divider, Group, Text, useMantineTheme } from "@mantine/core"
 import { DateTimePicker } from "@mantine/dates"
 import { useSearchParams } from "@remix-run/react"
 import React, { useMemo, useState } from "react"
+import { useHydrated } from "remix-utils/use-hydrated"
 import FluidSelect from "~/components/FluidSelect"
 import { PortalApp } from "~/models/portal/sdk"
 import { DEFAULT_APPMOJI } from "~/routes/account_.$accountId.create/components/AppmojiPicker"
@@ -19,6 +20,7 @@ const logTypeSelectItem = [
 
 const LogsControls = ({ apps }: LogsControlsProps) => {
   const theme = useMantineTheme()
+  const isHydrated = useHydrated()
 
   const appsSelect = useMemo(
     () => [
@@ -61,6 +63,7 @@ const LogsControls = ({ apps }: LogsControlsProps) => {
     setTs(new Date())
     setSearchParams((searchParams) => {
       searchParams.delete("ts")
+      searchParams.delete("page")
       return searchParams
     })
   }
@@ -107,6 +110,8 @@ const LogsControls = ({ apps }: LogsControlsProps) => {
         </Group>
         <Text>starting from</Text>
         <DateTimePicker
+          withSeconds
+          aria-label="Pick date and time"
           maxDate={new Date()}
           minDate={minDate}
           placeholder="Pick date and time"
@@ -118,8 +123,8 @@ const LogsControls = ({ apps }: LogsControlsProps) => {
               padding: "8px 14px",
             },
           }}
-          value={ts}
-          valueFormat="D MMMM, YYYY h:mm A"
+          value={isHydrated ? ts : undefined}
+          valueFormat="D MMMM YYYY, H:mm:ss"
           onChange={(value) => {
             if (value) {
               setTs(value)

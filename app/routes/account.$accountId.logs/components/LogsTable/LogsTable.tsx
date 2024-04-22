@@ -20,6 +20,8 @@ const LogsTable = ({ logs, meta, blockchains }: LogsTableProps) => {
   const navigation = useNavigation()
   const [searchParams, setSearchParams] = useSearchParams()
   const currentPage: number = Number(searchParams.get("page") ?? "1")
+  const tsParam = searchParams.get("ts")
+  const hasFilters = !!tsParam
 
   const isLoadingLogs =
     navigation.state === "loading" && navigation.location.pathname.endsWith("/logs")
@@ -37,7 +39,7 @@ const LogsTable = ({ logs, meta, blockchains }: LogsTableProps) => {
         data={logs?.map((log) => {
           return {
             timestamp: {
-              element: dayjs(log.TS).format("D MMMM, YYYY h:mm:ss A"),
+              element: dayjs(log.TS).format("D MMMM YYYY, H:mm:ss"),
               value: log.TS,
             },
             method: {
@@ -76,8 +78,11 @@ const LogsTable = ({ logs, meta, blockchains }: LogsTableProps) => {
             imgHeight={256}
             imgSrc="/logs-empty-state.svg"
             imgWidth={256}
-            subtitle="Check back later for updates on any logs."
-            title="No logs available yet."
+            subtitle={
+              hasFilters
+                ? "It looks like there are no logs matching your filter criteria. Try adjusting your filter settings."
+                : "There's been no activity in the past hour. Initiate relays to see logs appear here."
+            }
           />
         }
         isLoading={isLoadingLogs}

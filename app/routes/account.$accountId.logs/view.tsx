@@ -15,8 +15,8 @@ const AccountLogsView = ({ logs, meta, apps, blockchains }: AccountLogsViewProps
       <Box>
         <Title order={2}>Logs</Title>
         <Text mt={8}>
-          Logs can be filtered over the last 24 hours with a maximum detail window of one
-          hour.
+          Logs are updated every minute and can be filtered to any one-hour window from
+          the past 24 hours.
         </Text>
       </Box>
       {apps.length > 0 ? <LogsControls apps={apps} /> : null}

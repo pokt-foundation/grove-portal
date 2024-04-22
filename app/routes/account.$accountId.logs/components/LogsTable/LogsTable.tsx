@@ -1,6 +1,7 @@
 import { Box, Group, Pagination, Text } from "@mantine/core"
 import { useNavigation, useSearchParams } from "@remix-run/react"
 import React, { useState } from "react"
+import classes from "./LogsTable.module.css"
 import { DataTable } from "~/components/DataTable"
 import { EmptyState } from "~/components/EmptyState"
 import { Blockchain, D2Log, D2Meta } from "~/models/portal/sdk"
@@ -31,6 +32,7 @@ const LogsTable = ({ logs, meta, blockchains }: LogsTableProps) => {
         onSideDrawerClose={() => setSelectedLogsItem(undefined)}
       />
       <DataTable
+        className={classes.logsTable}
         columns={["Timestamp", "Method", "Network", "Status"]}
         data={logs?.map((log) => {
           return {
@@ -60,7 +62,7 @@ const LogsTable = ({ logs, meta, blockchains }: LogsTableProps) => {
             },
             status: {
               element: (
-                <Text c={log.isError ? "red" : "green"}>
+                <Text c={log.isError ? "red" : "green"} fz={12}>
                   {log.isError ? "Error" : "Success"}
                 </Text>
               ),
@@ -80,6 +82,7 @@ const LogsTable = ({ logs, meta, blockchains }: LogsTableProps) => {
         }
         isLoading={isLoadingLogs}
         paginate={false}
+        verticalSpacing="xs"
         onRowClick={(logsItem) => setSelectedLogsItem(logsItem as unknown as D2Log)}
       />
       {meta ? (

@@ -1,3 +1,4 @@
+import { MantineSpacing } from "@mantine/core/lib/core"
 import { ReactNode } from "react"
 
 export interface IdObj {
@@ -35,4 +36,6 @@ export interface DataTableProps<T extends IdObj> {
   onRowClick?: (item: T) => void
   isLoading?: boolean
   emptyState?: ReactNode
+  className?: string
+  verticalSpacing?: MantineSpacing
 }

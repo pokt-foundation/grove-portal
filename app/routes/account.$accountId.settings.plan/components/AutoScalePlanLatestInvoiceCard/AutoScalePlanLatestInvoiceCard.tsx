@@ -25,7 +25,7 @@ export default function AutoScalePlanLatestInvoiceCard({
 }: AutoScalePlanLatestInvoiceCardProps) {
   const { accountId } = useParams()
   const totalAccountRelays = accountAppsRelays.reduce(
-    (acc, item) => acc + (item.countTotal ? item.countTotal : 0),
+    (acc, item) => acc + (item.totalCount ? item.totalCount : 0),
     0,
   )
 
@@ -66,14 +66,14 @@ export default function AutoScalePlanLatestInvoiceCard({
             </Accordion.Control>
             <Divider />
             <Accordion.Panel>
-              {accountAppsRelays.map(({ name, appEmoji, countTotal }, index) => (
+              {accountAppsRelays.map(({ name, appEmoji, totalCount }, index) => (
                 <React.Fragment key={`${name}-${index}`}>
                   <Group justify="space-between" pl={20} py={12}>
                     <Group gap={6}>
                       <Emoji size={14} unified={appEmoji} />
                       <Text>{name}</Text>
                     </Group>
-                    <Text>{countTotal}</Text>
+                    <Text>{totalCount ?? "-"}</Text>
                   </Group>
                   <Divider />
                 </React.Fragment>

@@ -47,7 +47,7 @@ export const DataTableBody = ({
         })
       ) : (
         <Table.Tr>
-          <Table.Td colSpan={columns?.length ?? 0}>
+          <Table.Td colSpan={columns?.length ?? 0} style={{ pointerEvents: "none" }}>
             {searchTerm ? <Text ta="center">Nothing found.</Text> : emptyState}
           </Table.Td>
         </Table.Tr>

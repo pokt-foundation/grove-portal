@@ -1,3 +1,4 @@
-.table tbody tr {
-  border-color: alpha(var(--mantine-color-dark-4), 0.5);
+.table {
+  --table-border-color: alpha(var(--mantine-color-dark-4), 0.5);
 }
+

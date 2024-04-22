@@ -6,7 +6,7 @@ import { dayjs } from "~/utils/dayjs"
 export const allowedDayParams = [3, 7, 14, 30, 60]
 export const byHourPeriods: DwhPeriod[] = ["24hr", 3]
 export const DEFAULT_PERIOD = "24hr"
-export const LOGS_PAGE_SIZE = 20
+export const LOGS_PAGE_SIZE = 40
 export function getDwhParams(url: URL) {
   const periodParam = url.searchParams.get("period") ?? DEFAULT_PERIOD
   const appParam = url.searchParams.get("app")
@@ -47,10 +47,12 @@ export function getLogsParams(url: URL) {
   const pageNumberParam = Number(url.searchParams.get("page") ?? "1")
 
   const tsParam = url.searchParams.get("ts")
-    ? new Date(url.searchParams.get("ts") as string)
-    : new Date()
+    ? dayjs(new Date(url.searchParams.get("ts") as string))
+        .utc()
+        .toDate()
+    : dayjs().utc().toDate()
   // Always fetch logs from selected ts to 1 hour before
-  const from = dayjs(tsParam).subtract(1, "hour").toDate()
+  const from = dayjs(tsParam).utc().subtract(1, "hour").toDate()
 
   return { logType, pageNumberParam, tsParam, from }
 }

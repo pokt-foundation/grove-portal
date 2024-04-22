@@ -31,7 +31,7 @@ const LogsSideDrawer = ({
     },
     {
       label: "Time",
-      value: dayjs(logsItem?.TS).format("h:mm:ss A"),
+      value: dayjs(logsItem?.TS).format("H:mm:ss"),
     },
     {
       label: "Application ID",
@@ -48,14 +48,6 @@ const LogsSideDrawer = ({
     {
       label: "Method",
       value: getLogMethod(logsItem),
-    },
-    {
-      label: "Start Time",
-      value: logsItem?.relayStartTs,
-    },
-    {
-      label: "Return Time",
-      value: logsItem?.relayReturnTs,
     },
     {
       label: "Round Trip Time:",

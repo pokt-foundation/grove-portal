@@ -1,11 +1,16 @@
 import { json, LoaderFunction, MetaFunction } from "@remix-run/node"
-import { useLoaderData } from "@remix-run/react"
+import { useLoaderData, useOutletContext } from "@remix-run/react"
 import React from "react"
 import invariant from "tiny-invariant"
 import ErrorBoundaryView from "~/components/ErrorBoundaryView"
-import { getD2AggregateRelays, getD2TotalRelays } from "~/models/portal/dwh.server"
+import {
+  getAggregateRelays,
+  getRealtimeDataChains,
+  getTotalRelays,
+} from "~/models/portal/dwh.server"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { D2Stats } from "~/models/portal/sdk"
+import { D2Chain, D2Stats } from "~/models/portal/sdk"
+import { AppIdOutletContext } from "~/routes/account.$accountId.$appId/route"
 import ApplicationInsightsView from "~/routes/account.$accountId.$appId.insights/view"
 import { getErrorMessage } from "~/utils/catchError"
 import { byHourPeriods, getDwhParams, validatePeriod } from "~/utils/dwhUtils.server"
@@ -23,16 +28,16 @@ export const meta: MetaFunction = () => {
 export type AppInsightsData = {
   total: D2Stats
   aggregate: D2Stats[]
+  realtimeDataChains: D2Chain[]
 }
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   await requireUser(request)
   const url = new URL(request.url)
-  const daysParam = Number(url.searchParams.get("days") ?? "7")
   const user = await requireUser(request)
   const portal = initPortalClient({ token: user.accessToken })
 
-  const { period } = getDwhParams(url)
+  const { period, chainParam } = getDwhParams(url)
   // Prevent manually entering an invalid period
   validatePeriod({ period, url })
 
@@ -41,24 +46,34 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     invariant(typeof appId === "string", "AppId must be a set url parameter")
     invariant(typeof accountId === "string", "AccountId must be a set url parameter")
 
-    const getD2StatsDataResponse = await getD2AggregateRelays({
-      period: daysParam,
+    const getAggregateRelaysResponse = await getAggregateRelays({
+      period: period,
       accountId,
       portalClient: portal,
       byHour: byHourPeriods.includes(period),
       applicationIDs: [appId],
+      ...(chainParam && chainParam !== "all" && { chainIDs: [chainParam] }),
     })
 
-    const getD2TotalStatsResponse = await getD2TotalRelays({
-      period: daysParam,
+    const getTotalRelaysResponse = await getTotalRelays({
+      period: period,
+      accountId,
+      portalClient: portal,
+      applicationIDs: [appId],
+      ...(chainParam && chainParam !== "all" && { chainIDs: [chainParam] }),
+    })
+
+    const getRealtimeDataChainsResponse = await getRealtimeDataChains({
+      period,
       accountId,
       portalClient: portal,
       applicationIDs: [appId],
     })
 
     return json<AppInsightsData>({
-      total: getD2TotalStatsResponse as D2Stats,
-      aggregate: getD2StatsDataResponse.getD2StatsData.data as D2Stats[],
+      realtimeDataChains: getRealtimeDataChainsResponse,
+      total: getTotalRelaysResponse,
+      aggregate: getAggregateRelaysResponse,
     })
   } catch (error) {
     throw new Response(getErrorMessage(error), {
@@ -68,8 +83,17 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 }
 
 export default function ApplicationInsights() {
-  const { total, aggregate } = useLoaderData<typeof loader>()
-  return <ApplicationInsightsView aggregate={aggregate} total={total} />
+  const { total, aggregate, realtimeDataChains } = useLoaderData<typeof loader>()
+  const { blockchains } = useOutletContext<AppIdOutletContext>()
+
+  return (
+    <ApplicationInsightsView
+      aggregate={aggregate}
+      blockchains={blockchains}
+      realtimeDataChains={realtimeDataChains}
+      total={total}
+    />
+  )
 }
 
 export function ErrorBoundary() {

@@ -63,6 +63,7 @@ const LogsControls = ({ apps }: LogsControlsProps) => {
     setTs(new Date())
     setSearchParams((searchParams) => {
       searchParams.delete("ts")
+      searchParams.delete("page")
       return searchParams
     })
   }
@@ -109,6 +110,8 @@ const LogsControls = ({ apps }: LogsControlsProps) => {
         </Group>
         <Text>starting from</Text>
         <DateTimePicker
+          withSeconds
+          aria-label="Pick date and time"
           maxDate={new Date()}
           minDate={minDate}
           placeholder="Pick date and time"
@@ -121,7 +124,7 @@ const LogsControls = ({ apps }: LogsControlsProps) => {
             },
           }}
           value={isHydrated ? ts : undefined}
-          valueFormat="D MMMM, YYYY h:mm A"
+          valueFormat="D MMMM YYYY, H:mm:ss"
           onChange={(value) => {
             if (value) {
               setTs(value)

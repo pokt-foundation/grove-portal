@@ -2,7 +2,7 @@ import { Image, Text, Stack } from "@mantine/core"
 import { type ReactNode } from "react"
 
 type EmptyStateProps = {
-  title: string
+  title?: string
   subtitle: ReactNode
   imgSrc: string
   imgHeight: number
@@ -28,9 +28,11 @@ export const EmptyState = ({
         src={imgSrc}
         w={imgWidth}
       />
-      <Text fw={600} fz="xl" ta="center">
-        {title}
-      </Text>
+      {title ? (
+        <Text fw={600} fz="xl" ta="center">
+          {title}
+        </Text>
+      ) : null}
       <Text fw={400} fz="sm" maw={510} ta="center">
         {subtitle}
       </Text>

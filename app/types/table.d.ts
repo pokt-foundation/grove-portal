@@ -1,3 +1,6 @@
+import { MantineSpacing } from "@mantine/core/lib/core"
+import { ReactNode } from "react"
+
 export interface IdObj {
   [key: string]: any
 }
@@ -10,7 +13,10 @@ export type PaginateProps = {
 
 export type TableDataArray = [string, any]
 
-export type TableBodyProps = Pick<DataTableProps, "rowAsLink" | "data" | "onRowClick"> & {
+export type TableBodyProps = Pick<
+  DataTableProps,
+  "rowAsLink" | "onRowClick" | "searchTerm" | "emptyState" | "columns"
+> & {
   paginatedData: IdObj[]
 }
 
@@ -29,4 +35,7 @@ export interface DataTableProps<T extends IdObj> {
   searchTerm?: string
   onRowClick?: (item: T) => void
   isLoading?: boolean
+  emptyState?: ReactNode
+  className?: string
+  verticalSpacing?: MantineSpacing
 }

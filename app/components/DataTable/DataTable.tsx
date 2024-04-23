@@ -15,6 +15,9 @@ export const DataTable = <T extends IdObj>({
   searchTerm,
   onRowClick,
   isLoading = false,
+  emptyState,
+  className,
+  verticalSpacing,
 }: DataTableProps<T>) => {
   const { paginatedData, totalPages, page, handlePageChange } = usePagination({
     data,
@@ -26,9 +29,12 @@ export const DataTable = <T extends IdObj>({
     <Box pos="relative">
       <LoadingOverlay overlayProps={{ blur: 1 }} visible={isLoading} />
       <Table
-        className={cx(classes.table, { "clickable-table": !!onRowClick })}
+        className={cx(classes.table, {
+          "clickable-table": !!onRowClick,
+          [`${className}`]: !!className,
+        })}
         highlightOnHover={!!onRowClick}
-        verticalSpacing="lg"
+        verticalSpacing={verticalSpacing ?? "lg"}
       >
         {columns && (
           <Table.Thead>
@@ -41,9 +47,11 @@ export const DataTable = <T extends IdObj>({
         )}
 
         <DataTableBody
-          data={data}
+          columns={columns}
+          emptyState={emptyState}
           paginatedData={paginatedData}
           rowAsLink={rowAsLink}
+          searchTerm={searchTerm}
           onRowClick={onRowClick}
         />
       </Table>

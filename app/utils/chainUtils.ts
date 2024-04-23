@@ -1,3 +1,4 @@
+import { getRequiredClientEnvVar } from "./environment"
 import { Blockchain } from "~/models/portal/sdk"
 import { KeyValuePair } from "~/types/global"
 
@@ -145,4 +146,25 @@ export const isEvmChain = (chain: Blockchain | null): boolean =>
 export const getAppEndpointUrl = (
   chain: Blockchain | undefined | null,
   appId: string | undefined,
-) => `https://${chain?.blockchain}.rpc.grove.city/v1/${appId}`
+) => {
+  let env = "city"
+  if (getRequiredClientEnvVar("VERCEL_ENV") !== "production") {
+    env = "town"
+  }
+
+  return `https://${chain?.blockchain}.rpc.grove.${env}/v1/${appId}`
+}
+
+export const getChainName = ({
+  chainId,
+  chains,
+}: {
+  chainId: string | undefined
+  chains: Blockchain[]
+}): string => {
+  if (!chainId) {
+    return ""
+  }
+  const chain = chains.find((chain) => chain.id === chainId)
+  return chain?.blockchain ?? chainId
+}

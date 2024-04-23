@@ -1,142 +1,73 @@
-import { Badge, Card, Group, SimpleGrid, Stack, Text, Title } from "@mantine/core"
-import { useNavigation } from "@remix-run/react"
+import { Button, Stack, Title } from "@mantine/core"
+import { Link, useParams } from "@remix-run/react"
 import React from "react"
-import TitledCard from "~/components/TitledCard"
-import { AnalyticsRelaysAggregated } from "~/models/dwh/sdk/models/AnalyticsRelaysAggregated"
-import { AnalyticsRelaysTotal } from "~/models/dwh/sdk/models/AnalyticsRelaysTotal"
-import { AccountAppsOverview } from "~/routes/account.$accountId._index/components/AccountAppsOverview"
-import { ChartPeriodSelector } from "~/routes/account.$accountId._index/components/ChartPeriodSelector"
-import { OverviewSparkline } from "~/routes/account.$accountId._index/components/OverviewSparkline"
-import useAggregateChartData from "~/routes/account.$accountId._index/hooks/useAggregateChartData"
-import { getTotalErrors } from "~/utils/chartUtils"
-import { commify } from "~/utils/formattingUtils"
+import { EmptyState } from "~/components/EmptyState"
+import { Blockchain, PortalApp, RoleName } from "~/models/portal/sdk"
+import { AnnouncementAlert } from "~/routes/account.$accountId._index/components/AnnouncementAlert"
+import Insights from "~/routes/account.$accountId._index/components/Insights"
+import { AccountInsightsData } from "~/routes/account.$accountId._index/route"
+import { getRequiredClientEnvVar } from "~/utils/environment"
 
-type AccountInsightsViewProps = {
-  total: AnalyticsRelaysTotal
-  aggregate: AnalyticsRelaysAggregated[]
+const ANNOUNCEMENT_ALERT = getRequiredClientEnvVar("FLAG_ANNOUNCEMENT_ALERT")
+
+type AccountInsightsViewProps = Omit<AccountInsightsData, "account"> & {
+  apps: PortalApp[]
+  userRole: RoleName
+  blockchains: Blockchain[]
 }
 
-export const AccountInsightsView = ({ total, aggregate }: AccountInsightsViewProps) => {
-  const navigation = useNavigation()
-
-  const isLoading = !!(navigation.state === "loading" && navigation.formAction)
-
-  const totalErrors = getTotalErrors(total)
-
-  const {
-    aggregatedSuccessData,
-    aggregatedTotalData,
-    aggregatedLatencyData,
-    aggregatedErrorData,
-  } = useAggregateChartData(aggregate)
+export const AccountInsightsView = ({
+  apps,
+  total,
+  userRole,
+  aggregate,
+  blockchains,
+  realtimeDataChains,
+}: AccountInsightsViewProps) => {
+  const { accountId } = useParams()
 
   return (
-    <Stack gap="xl" mb="xl" pt={22}>
-      <Title order={2}>Insights</Title>
-      <TitledCard
-        header={() => (
-          <Group justify="space-between">
-            <Text fw={600}>Account Overview</Text>
-            <ChartPeriodSelector />
-          </Group>
-        )}
-      >
-        <Card.Section>
-          <AccountAppsOverview aggregate={total} isLoading={isLoading} />
-        </Card.Section>
-      </TitledCard>
-
-      <Stack gap="xl">
-        <TitledCard
-          header={() => (
-            <Group justify="space-between">
-              <Group>
-                <Text fw={600}>Total Relays</Text>
-                <Badge px={6} radius="sm">
-                  {commify(total?.countTotal ?? 0)}
-                </Badge>
-              </Group>
-              <ChartPeriodSelector />
-            </Group>
-          )}
-        >
-          <Card.Section p="md">
-            <OverviewSparkline
-              commifyLabelValue={true}
-              isLoading={isLoading}
-              sparklineData={aggregatedTotalData}
-            />
-          </Card.Section>
-        </TitledCard>
-
-        <SimpleGrid cols={{ base: 1, lg: 2 }}>
-          <TitledCard
-            header={() => (
-              <Group justify="space-between">
-                <Group>
-                  <Text fw={600}>Average Latency</Text>
-                  <Badge px={6} radius="sm" tt="lowercase">
-                    {commify(total?.avgLatency ?? 0)}ms
-                  </Badge>
-                </Group>
-                <ChartPeriodSelector />
-              </Group>
-            )}
-          >
-            <Card.Section p="md">
-              <OverviewSparkline
-                isLoading={isLoading}
-                label="ms"
-                sparklineData={aggregatedLatencyData}
-              />
-            </Card.Section>
-          </TitledCard>
-          <TitledCard
-            header={() => (
-              <Group justify="space-between">
-                <Group>
-                  <Text fw={600}>Success Rate</Text>
-                  <Badge px={6} radius="sm">
-                    {commify(total?.rateSuccess ?? 0)}%
-                  </Badge>
-                </Group>
-                <ChartPeriodSelector />
-              </Group>
-            )}
-          >
-            <Card.Section p="md">
-              <OverviewSparkline
-                customYAxisDomain={["dataMin - 10", 100]}
-                isLoading={isLoading}
-                label="%"
-                sparklineData={aggregatedSuccessData}
-              />
-            </Card.Section>
-          </TitledCard>
-        </SimpleGrid>
-        <TitledCard
-          header={() => (
-            <Group justify="space-between">
-              <Group>
-                <Text fw={600}>Total Errors</Text>
-                <Badge px={6} radius="sm">
-                  {totalErrors ? commify(totalErrors) : 0}
-                </Badge>
-              </Group>
-              <ChartPeriodSelector />
-            </Group>
-          )}
-        >
-          <Card.Section p="md">
-            <OverviewSparkline
-              commifyLabelValue={true}
-              isLoading={isLoading}
-              sparklineData={aggregatedErrorData}
-            />
-          </Card.Section>
-        </TitledCard>
-      </Stack>
-    </Stack>
+    <>
+      {ANNOUNCEMENT_ALERT === "true" && <AnnouncementAlert />}
+      {apps.length === 0 ? (
+        <EmptyState
+          alt="Empty overview placeholder"
+          callToAction={
+            userRole !== RoleName.Member ? (
+              <Button
+                component={Link}
+                mt="xs"
+                prefetch="intent"
+                to={`/account/${accountId}/create`}
+              >
+                New Application
+              </Button>
+            ) : null
+          }
+          imgHeight={205}
+          imgSrc="/overview-empty-state.svg"
+          imgWidth={122}
+          subtitle={
+            <>
+              Applications connect your project to the blockchain. <br />
+              Set up your first one now.
+            </>
+          }
+          title="Create your first application"
+        />
+      ) : (
+        <Stack gap="xl">
+          <Title order={2}>Insights</Title>
+          <Insights
+            aggregate={aggregate}
+            apps={apps}
+            blockchains={blockchains}
+            realtimeDataChains={realtimeDataChains}
+            total={total}
+          />
+        </Stack>
+      )}
+    </>
   )
 }
 

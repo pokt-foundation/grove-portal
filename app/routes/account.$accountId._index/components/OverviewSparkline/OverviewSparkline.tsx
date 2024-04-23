@@ -1,6 +1,8 @@
 import { Box, LoadingOverlay, Space, Text } from "@mantine/core"
 import React from "react"
 import { type AxisDomain } from "recharts/types/util/types"
+import chartLoaderAnimation from "./chart-loader.json"
+import PortalLoader from "~/components/PortalLoader"
 import Sparkline from "~/components/Sparkline"
 import { ChartData } from "~/types/global"
 
@@ -23,7 +25,7 @@ export const OverviewSparkline = ({
 }: OverviewSparklineProps) => {
   const height = 350
   return (
-    <Box h={`${height}px`}>
+    <Box h={`${height}px`} pos="relative">
       {title ? (
         <Text fw="600" fz="md" mb="lg">
           {title}
@@ -31,16 +33,24 @@ export const OverviewSparkline = ({
       ) : (
         <Space mb="lg" />
       )}
-      <LoadingOverlay overlayProps={{ blur: 1 }} visible={!!isLoading} />
-      <Sparkline
-        commifyLabelValue={commifyLabelValue}
-        customYAxisDomain={customYAxisDomain}
-        data={sparklineData}
-        height={height}
-        label={label}
-        xAxisDataKey="date"
-        yAxisDataKey="val"
+      <LoadingOverlay
+        loaderProps={{
+          children: <PortalLoader loaderAnimation={chartLoaderAnimation} />,
+        }}
+        overlayProps={{ opacity: 0.01 }}
+        visible={!!isLoading}
       />
+      {!isLoading ? (
+        <Sparkline
+          commifyLabelValue={commifyLabelValue}
+          customYAxisDomain={customYAxisDomain}
+          data={sparklineData}
+          height={height}
+          label={label}
+          xAxisDataKey="date"
+          yAxisDataKey="val"
+        />
+      ) : null}
     </Box>
   )
 }

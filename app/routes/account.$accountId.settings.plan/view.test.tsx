@@ -8,7 +8,7 @@ import { AccountAppRelays } from "~/routes/account.$accountId.settings.plan/rout
 import RootProviders from "~/root/components/RootProviders"
 
 const accountAppsRelaysData: AccountAppRelays = {
-  countTotal: 10000,
+  totalCount: 10000,
   name: "account",
   appEmoji: "emoji",
 }

@@ -1,66 +1,63 @@
-import { Box, Loader, SimpleGrid, Stack, Text } from "@mantine/core"
+import { Box, SimpleGrid, Stack, Text, Skeleton } from "@mantine/core"
 import classes from "./AccountAppsOverview.module.css"
-import { AnalyticsRelaysAggregated } from "~/models/dwh/sdk/models/AnalyticsRelaysAggregated"
-import { getTotalErrors } from "~/utils/chartUtils"
+import { D2Stats } from "~/models/portal/sdk"
 import { commify } from "~/utils/formattingUtils"
 
-const labels: Record<keyof AnalyticsRelaysAggregated, string> = {
+type TotalsOverviewKeys = Pick<
+  D2Stats,
+  "errorCount" | "totalCount" | "avgLatency" | "successRate"
+>
+
+const labels: Record<keyof TotalsOverviewKeys, string> = {
   avgLatency: "Average Latency",
-  countTotal: "Total Relays",
-  rateSuccess: "Success Rate",
-  rateError: "Total Errors",
-  categoryValue: "Account",
-  date: "Date",
+  totalCount: "Total Relays",
+  successRate: "Success Rate",
+  errorCount: "Total Errors",
 }
 
-const getFormattedValue = (
-  aggregate: AnalyticsRelaysAggregated,
-  key: keyof AnalyticsRelaysAggregated,
-) => {
+const getFormattedValue = (aggregate: D2Stats, key: keyof TotalsOverviewKeys) => {
   if (!aggregate) return "-"
 
   switch (key) {
     case "avgLatency":
       return aggregate[key] ? `${aggregate[key]}ms` : "-"
-    case "rateSuccess":
+    case "successRate":
       return aggregate[key] ? `${aggregate[key]}%` : "-"
-    case "rateError":
-      const errorsTotal = getTotalErrors(aggregate)
-      return errorsTotal ? commify(errorsTotal) : "-"
+    case "errorCount":
+      return typeof aggregate[key] !== "undefined"
+        ? commify(aggregate[key] as number)
+        : "-"
     default:
-      return commify(String(aggregate[key]))
+      return aggregate[key] ? commify(String(aggregate[key])) : "-"
   }
 }
 
-const order: (keyof AnalyticsRelaysAggregated)[] = [
-  "countTotal",
+const order: (keyof TotalsOverviewKeys)[] = [
+  "totalCount",
   "avgLatency",
-  "rateSuccess",
-  "rateError",
+  "successRate",
+  "errorCount",
 ]
 
 type AccountAppsOverviewProps = {
-  aggregate: AnalyticsRelaysAggregated | undefined
+  total: D2Stats
   isLoading?: boolean
 }
 
-export const AccountAppsOverview = ({
-  aggregate,
-  isLoading,
-}: AccountAppsOverviewProps) => {
-  if (!aggregate) {
-    return <>-</>
-  }
-
+export const AccountAppsOverview = ({ total, isLoading }: AccountAppsOverviewProps) => {
   return (
     <SimpleGrid className={classes.statGrid} cols={{ base: 1, sm: 2, md: 4 }}>
       {order.map((key) => (
         <Box key={key} className={classes.stat}>
           <Stack align="center" gap={0}>
-            <Text fw={600} fz="md">
-              {isLoading ? <Loader size="sm" /> : getFormattedValue(aggregate, key)}
-            </Text>
-            <Text>{labels[key as keyof AnalyticsRelaysAggregated]}</Text>
+            {isLoading ? (
+              <Skeleton height={8} mb={16} radius="xl" top={8} width={70} />
+            ) : (
+              <Text fw={600} fz="md">
+                {getFormattedValue(total, key)}
+              </Text>
+            )}
+            <Text>{labels[key as keyof TotalsOverviewKeys]}</Text>
           </Stack>
         </Box>
       ))}

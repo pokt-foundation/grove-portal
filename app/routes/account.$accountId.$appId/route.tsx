@@ -30,7 +30,6 @@ export const meta: MetaFunction = () => {
 
 export type AppIdLoaderData = {
   app: PortalApp
-  blockchains: Blockchain[]
 }
 
 export const loader: LoaderFunction = async ({ request, params }) => {
@@ -47,11 +46,8 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       accountID: accountId,
     })
 
-    const getBlockchainsResponse = await portal.blockchains({ sortOrder: SortOrder.Asc })
-
     return json<AppIdLoaderData>({
       app: getUserPortalAppResponse.getUserPortalApp as PortalApp,
-      blockchains: getBlockchainsResponse.blockchains as Blockchain[],
     })
   } catch (error) {
     /**
@@ -125,8 +121,8 @@ export type AppIdOutletContext = AppIdLoaderData & {
 }
 
 export default function AppIdLayout() {
-  const { app, blockchains } = useLoaderData<AppIdLoaderData>()
-  const { userRole } = useOutletContext<AccountIdLoaderData>()
+  const { app } = useLoaderData<AppIdLoaderData>()
+  const { userRole, blockchains } = useOutletContext<AccountIdLoaderData>()
   const actionData = useActionData() as ActionDataStruct<AppIdActionData>
 
   // handle all notifications at the layout level

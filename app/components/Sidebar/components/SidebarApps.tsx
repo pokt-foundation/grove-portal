@@ -5,10 +5,9 @@ import { PortalApp } from "~/models/portal/sdk"
 
 type SidebarAppsProps = {
   apps: PortalApp[]
-  iconOnly?: boolean
 }
 
-export const SidebarApps = ({ apps, iconOnly }: SidebarAppsProps) => {
+export const SidebarApps = ({ apps }: SidebarAppsProps) => {
   const appsRoutes = useMemo(() => {
     return apps
       .sort((a, b) => (a.name > b.name ? 1 : -1))

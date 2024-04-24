@@ -13,7 +13,7 @@ import AppIdLayoutView from "./view"
 import ErrorBoundaryView from "app/components/ErrorBoundaryView"
 import useActionNotification from "~/hooks/useActionNotification"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { PortalApp, RoleName } from "~/models/portal/sdk"
+import { Blockchain, PortalApp, RoleName } from "~/models/portal/sdk"
 import { ActionDataStruct } from "~/types/global"
 import { getErrorMessage } from "~/utils/catchError"
 import { triggerAppActionNotification } from "~/utils/notifications.server"
@@ -118,6 +118,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 
 export type AppIdOutletContext = AppIdLoaderData & {
   userRole: RoleName
+  blockchains: Blockchain[]
 }
 
 export default function AppIdLayout() {

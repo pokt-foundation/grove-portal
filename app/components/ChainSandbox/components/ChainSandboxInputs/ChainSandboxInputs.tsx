@@ -32,7 +32,6 @@ const httpMethods: HttpMethodOption[] = [
   { value: "GET", label: "GET" },
 ]
 
-const multiHttpMethodsChains = ["eth-beacon", "holesky-beacon"]
 const ChainSandboxInputs = ({
   apps,
   chains,
@@ -112,39 +111,33 @@ const ChainSandboxInputs = ({
             value={selectedChain?.blockchain}
             onSelect={handleChainSelect}
           />
+          <Divider orientation="vertical" />
           {isRpc ? (
-            <>
-              <Divider orientation="vertical" />
-              <Tooltip
-                disabled={chainMethods.length > 0}
-                label="Currently, methods are only available for EVM chains. Enter a method in the body instead."
-              >
-                <FluidSelect
-                  withSearch
-                  disabled={chainMethods.length === 0}
-                  items={chainMethods}
-                  placeholder="Select Method"
-                  value={selectedMethod}
-                  onSelect={(method) =>
-                    dispatch({ type: "SET_SELECTED_METHOD", payload: method })
-                  }
-                />
-              </Tooltip>
-            </>
-          ) : null}
-          {multiHttpMethodsChains.includes(selectedChain.blockchain) ? (
-            <>
-              <Divider orientation="vertical" />
+            <Tooltip
+              disabled={chainMethods.length > 0}
+              label="Currently, methods are only available for EVM chains. Enter a method in the body instead."
+            >
               <FluidSelect
-                items={httpMethods}
-                placeholder="Select HTTP Method"
-                value={httpMethod}
+                withSearch
+                disabled={chainMethods.length === 0}
+                items={chainMethods}
+                placeholder="Select Method"
+                value={selectedMethod}
                 onSelect={(method) =>
-                  dispatch({ type: "SET_HTTP_METHOD", payload: method as HttpMethod })
+                  dispatch({ type: "SET_SELECTED_METHOD", payload: method })
                 }
               />
-            </>
-          ) : null}
+            </Tooltip>
+          ) : (
+            <FluidSelect
+              items={httpMethods}
+              placeholder="Select HTTP Method"
+              value={httpMethod}
+              onSelect={(method) =>
+                dispatch({ type: "SET_HTTP_METHOD", payload: method as HttpMethod })
+              }
+            />
+          )}
         </Group>
 
         <Button loading={isLoading} radius={4} size="sm" onClick={onSendRequest}>

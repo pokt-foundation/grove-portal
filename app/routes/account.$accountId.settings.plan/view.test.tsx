@@ -4,8 +4,8 @@ import { createRemixStub, render, screen, waitFor } from "test/helpers"
 import { accountMockData, profileMockData } from "~/models/portal/portal.data"
 import { PayPlanType, RoleName } from "~/models/portal/sdk"
 import { invoice, subscription, useageRecord } from "~/models/stripe/stripe.data"
-import { AccountAppRelays } from "~/routes/account.$accountId.settings.plan/route"
 import RootProviders from "~/root/components/RootProviders"
+import { AccountAppRelays } from "~/routes/account.$accountId.settings.plan/route"
 
 const accountAppsRelaysData: AccountAppRelays = {
   totalCount: 10000,

@@ -4,7 +4,7 @@
   }
 
   @mixin dark-root {
-    --mantine-color-body: var(--mantine-color-dark-9);
+    --mantine-color-body: #191919;
     [data-variant="outline"]:not([data-outline-exclude="true"]) {
       border-color: var(--mantine-color-gray-8);
       color: inherit;
@@ -13,7 +13,7 @@
 
   .mantine-TextInput-input[readonly],
   .mantine-PasswordInput-input:has(> input[readonly]) {
-    background-color: var(--mantine-color-gray-9) !important;
+    background-color: rgb(48,47,47) !important;
     border-color: transparent;
   }
 }

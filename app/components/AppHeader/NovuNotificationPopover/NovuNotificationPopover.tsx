@@ -116,9 +116,10 @@ export const NovuNotificationPopover = ({
               } unseen notifications. Click to open notifications popover.`}
               color="dark"
               radius="xl"
-              variant="subtle"
+              size={40}
+              variant="outline"
             >
-              <LuBell color={theme.colors.dark[0]} size={20} />
+              <LuBell color={theme.colors.dark[0]} size={18} />
             </ActionIcon>
           </Indicator>
         )}

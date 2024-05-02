@@ -1,4 +1,4 @@
-import { Divider, Box, Group, Text, useMantineTheme } from "@mantine/core"
+import { Divider, Box, Group, Text } from "@mantine/core"
 import { useSearchParams } from "@remix-run/react"
 import React from "react"
 import ChainSelectItem from "~/components/ChainSelectItem"
@@ -14,7 +14,7 @@ type InsightsControlsProps = {
 export const DEFAULT_DWH_PERIOD = "24hr"
 
 const InsightsControls = ({ apps, chains }: InsightsControlsProps) => {
-  const theme = useMantineTheme()
+  // const theme = useMantineTheme()
 
   const appsSelectItems = [
     { value: "all", label: "All Applications" },

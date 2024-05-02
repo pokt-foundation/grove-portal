@@ -1,4 +1,4 @@
-import { Button, Divider, Group, Text, useMantineTheme } from "@mantine/core"
+import { Button, Divider, Group, Text } from "@mantine/core"
 import { DateTimePicker } from "@mantine/dates"
 import { useSearchParams } from "@remix-run/react"
 import React, { useMemo, useState } from "react"
@@ -19,7 +19,7 @@ const logTypeSelectItem = [
 ]
 
 const LogsControls = ({ apps }: LogsControlsProps) => {
-  const theme = useMantineTheme()
+  // const theme = useMantineTheme()
   const isHydrated = useHydrated()
 
   const appsSelect = useMemo(

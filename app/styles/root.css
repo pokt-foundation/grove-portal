@@ -8,7 +8,7 @@
     --menu-item-hover: #302f2f80;
 
     [data-with-border] {
-      border: 1px solid #302f2f
+      border: 1px solid #302f2f;
     }
 
     [data-variant="outline"]:not([data-outline-exclude="true"]) {

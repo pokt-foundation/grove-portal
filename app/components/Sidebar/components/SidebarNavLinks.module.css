@@ -7,11 +7,11 @@
 }
 
 .sidebarNavLink:global(.active) {
-  background-color: rgb(41, 41, 41);
+  background-color: #302f2f;
   color: #ffffff;
 }
 
 .sidebarNavLink:hover {
-  background-color: rgba(41, 41, 41, 0.5);
+  background-color: #302f2f80;
   text-decoration: none;
 }

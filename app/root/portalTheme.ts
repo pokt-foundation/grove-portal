@@ -140,11 +140,11 @@ export const portalTheme: MantineThemeOverride = createTheme({
         fz: "xs",
       },
       styles: () => ({
-        root: { backgroundColor: "var(--mantine-color-navy-4)" },
+        root: { backgroundColor: "#302f2f" },
       }),
     },
     Divider: {
-      defaultProps: { opacity: "50%" },
+      defaultProps: { opacity: "50%", color: "#302f2f" },
     },
     TextInput: {
       defaultProps: {

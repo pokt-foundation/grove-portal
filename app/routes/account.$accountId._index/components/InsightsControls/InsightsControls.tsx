@@ -80,7 +80,7 @@ const InsightsControls = ({ apps, chains }: InsightsControlsProps) => {
           gap={0}
           pos="relative"
           style={{
-            border: `1px solid ${theme.colors.gray[8]}`,
+            border: `1px solid #302f2f`,
             borderRadius: 4,
           }}
         >
@@ -110,7 +110,7 @@ const InsightsControls = ({ apps, chains }: InsightsControlsProps) => {
         <Text>filtered over the past</Text>
         <Box
           style={{
-            border: `1px solid ${theme.colors.gray[8]}`,
+            border: `1px solid #302f2f`,
             borderRadius: 4,
           }}
         >

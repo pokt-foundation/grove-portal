@@ -121,6 +121,7 @@ export const Application = () => {
         <Transition mounted={scroll.y > 20} transition="slide-up">
           {(transitionStyles) => (
             <Button
+              bg="#302f2f"
               leftSection={<LuArrowUp size={16} />}
               size="sm"
               style={transitionStyles}

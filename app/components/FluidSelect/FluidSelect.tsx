@@ -146,7 +146,7 @@ const FluidSelect = forwardRef<HTMLDivElement, FluidSelectProps>(
                     p={5}
                     style={(theme: MantineTheme) => ({
                       ...(item.value === value && {
-                        backgroundColor: theme.colors.dark[7],
+                        backgroundColor: "#302f2f",
                         color: theme.colors.dark[0],
                         opacity: 1,
                       }),

@@ -41,8 +41,8 @@ const jsonAutoComplete = (options: AutocompleteOption[]) =>
 
 const myTheme = xcodeDarkInit({
   settings: {
-    background: "rgb(41, 41, 41);",
-    gutterBackground: "rgb(41, 41, 41)",
+    background: "#302f2f",
+    gutterBackground: "#302f2f",
   },
 })
 

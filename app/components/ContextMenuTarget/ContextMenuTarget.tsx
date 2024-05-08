@@ -10,7 +10,8 @@ const ContextMenuTarget = () => {
         color="gray"
         radius="xl"
         size={40}
-        variant="outline"
+        variant="subtle"
+        onClick={(e) => e.stopPropagation()}
       >
         <LuMoreHorizontal />
       </ActionIcon>

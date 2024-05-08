@@ -23,7 +23,7 @@ const InsightsControls = ({ apps, chains }: InsightsControlsProps) => {
           value: app?.id ?? "",
           label: `${String.fromCodePoint(
             parseInt(app?.appEmoji ? app.appEmoji : DEFAULT_APPMOJI, 16),
-          )} ${app?.name}`,
+          )} \u00A0 ${app?.name}`,
         }))
       : []),
   ]

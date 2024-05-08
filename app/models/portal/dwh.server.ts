@@ -1,5 +1,5 @@
 import { initPortalClient } from "~/models/portal/portal.server"
-import { D2Chain, D2Stats, D2StatsDuration } from "~/models/portal/sdk"
+import { D2Chain, D2Stats, D2StatsDuration, D2StatsView } from "~/models/portal/sdk"
 import { dayjs } from "~/utils/dayjs"
 
 export type DwhPeriod = number | DwhDefinedPeriod
@@ -65,6 +65,27 @@ export const getTotalRelays = async ({
   })
 
   return totalRelaysResponse.getD2StatsData.data![0] as D2Stats
+}
+
+export const getBillingPeriodRelays = async ({
+  accountId,
+  portalClient,
+}: Pick<GetDwhDataProps, "accountId" | "portalClient">) => {
+  // const dateFrom = from ? from : getFromDate(period)
+  // const dateTo = to ? to : dayjs().utc().toDate()
+
+  const params = {
+    from: "2024-04-16T17:55:00.330Z",
+    to: "2024-04-30T17:55:00.330Z",
+    accountID: accountId,
+    view: [D2StatsView.ChainId, D2StatsView.ApplicationId],
+  }
+
+  const totalRelaysResponse = await portalClient.getD2StatsData({
+    params,
+  })
+
+  return totalRelaysResponse.getD2StatsData.data as D2Stats[]
 }
 
 export const getRealtimeDataChains = async ({

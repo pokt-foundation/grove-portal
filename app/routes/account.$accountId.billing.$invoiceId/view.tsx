@@ -33,7 +33,7 @@ export const InvoiceView = ({
         />
       ) : null}
 
-      {invoiceUsageStats ? (
+      {invoiceUsageStats && invoiceUsageStats.length > 0 ? (
         <Stack>
           <Stack gap={5}>
             <Title order={6}>Total Billing Cycle Usage</Title>

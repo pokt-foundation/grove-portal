@@ -63,6 +63,7 @@ export const evmChains = [
   "avax-mainnet",
   "base-mainnet",
   "base-testnet",
+  "blast-archival",
   "boba-mainnet",
   "bsc-archival",
   "bsc-mainnet",
@@ -103,7 +104,7 @@ export const evmChains = [
   "scroll-testnet",
   "sepolia",
   "sepolia-archival",
-  "zksync-era",
+  "zksync-era-mainnet",
 ]
 
 export const evmMethods = [

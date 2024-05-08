@@ -1,11 +1,14 @@
 import Stripe from "stripe"
 import { getRequiredServerEnvVar } from "~/utils/environment"
 
-export const stripe = new Stripe(getRequiredServerEnvVar("STRIPE_SECRET_KEY"), {
-  apiVersion: "2020-08-27",
-})
+export const stripe = new Stripe(getRequiredServerEnvVar("STRIPE_SECRET_KEY"))
 
 export * from "stripe"
+
+export const MOCK_STRIPE_ID =  "sub_1MUaJsKhNIAUaK2OLFvSwCsu"
+// export  const MOCK_STRIPE_ID =  "sub_1OJcteKhNIAUaK2Os961zgS5" // Failed payment
+// export const MOCK_STRIPE_ID =  "sub_1P2F5mKhNIAUaK2OE0JcYODm" // Unpaid invoice:
+// export const MOCK_STRIPE_ID =  "sub_1P2F7EKhNIAUaK2ORtAhuzhN"
 
 export const getCustomer = async (
   email: string,

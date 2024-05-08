@@ -52,6 +52,9 @@ export const CHAIN_DOCS_URL: KeyValuePair<string> = {
   "sui-mainnet": "sui-api/intro",
   "scroll-mainnet": "scroll-api/intro",
   "scroll-testnet": "scroll-api/intro",
+  "zksync-era-mainnet": "zksync-era-api/intro",
+  "blast-archival": "blastchain-api/intro",
+  "opbnb-archival": "binance-smart-chain-api/endpoints/opBNB-archival",
 }
 
 export const evmChains = [
@@ -63,6 +66,7 @@ export const evmChains = [
   "avax-mainnet",
   "base-mainnet",
   "base-testnet",
+  "blast-archival",
   "boba-mainnet",
   "bsc-archival",
   "bsc-mainnet",
@@ -103,7 +107,7 @@ export const evmChains = [
   "scroll-testnet",
   "sepolia",
   "sepolia-archival",
-  "zksync-era",
+  "zksync-era-mainnet",
 ]
 
 export const evmMethods = [

@@ -136,13 +136,8 @@ query getUserAccount(
     }
   }
 }
-query getUserAccountStripeId(
-  $accountID: ID!
-) {
-  getUserAccount(
-    accountID: $accountID
-    accepted: true
-  ) {
+query getUserAccountStripeId($accountID: ID!) {
+  getUserAccount(accountID: $accountID, accepted: true) {
     id
     integrations {
       stripeSubscriptionID

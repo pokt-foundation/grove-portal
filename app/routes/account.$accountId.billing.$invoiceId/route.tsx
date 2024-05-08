@@ -8,6 +8,7 @@ import { stripe, Stripe } from "~/models/stripe/stripe.server"
 import { AccountBillingOutletContext } from "~/routes/account.$accountId.billing/route"
 import InvoiceView from "~/routes/account.$accountId.billing.$invoiceId/view"
 import { getErrorMessage } from "~/utils/catchError"
+import { dayjs } from "~/utils/dayjs"
 import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
 
@@ -40,13 +41,12 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       expand: ["discounts", "charge"],
     })
 
-    // const invoicePeriodStart = dayjs.unix(Number(invoice.period_start)).toDate()
-    // const invoicePeriodEnd = dayjs.unix(Number(invoice.period_end)).toDate()
-    // //
-    // console.log(invoicePeriodStart)
-    // console.log(invoicePeriodEnd)
+    const invoicePeriodStart = dayjs.unix(Number(invoice.period_start)).toDate()
+    const invoicePeriodEnd = dayjs.unix(Number(invoice.period_end)).toDate()
 
     const invoiceUsageStats = await getBillingPeriodRelays({
+      from: invoicePeriodStart,
+      to: invoicePeriodEnd,
       accountId,
       portalClient: portal,
     })

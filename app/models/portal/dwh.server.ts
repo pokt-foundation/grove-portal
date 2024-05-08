@@ -68,15 +68,14 @@ export const getTotalRelays = async ({
 }
 
 export const getBillingPeriodRelays = async ({
+  from,
+  to,
   accountId,
   portalClient,
-}: Pick<GetDwhDataProps, "accountId" | "portalClient">) => {
-  // const dateFrom = from ? from : getFromDate(period)
-  // const dateTo = to ? to : dayjs().utc().toDate()
-
+}: Pick<GetDwhDataProps, "accountId" | "portalClient" | "from" | "to">) => {
   const params = {
-    from: "2024-04-16T17:55:00.330Z",
-    to: "2024-04-30T17:55:00.330Z",
+    from,
+    to,
     accountID: accountId,
     view: [D2StatsView.ChainId, D2StatsView.ApplicationId],
   }

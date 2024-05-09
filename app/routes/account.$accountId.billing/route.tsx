@@ -1,4 +1,4 @@
-import { json, LoaderFunction, redirect } from "@remix-run/node"
+import { json, LoaderFunction, MetaFunction, redirect } from "@remix-run/node"
 import { Outlet, useLoaderData, useOutletContext } from "@remix-run/react"
 import React from "react"
 import invariant from "tiny-invariant"
@@ -11,7 +11,16 @@ import AccountBillingLayoutView from "~/routes/account.$accountId.billing/view"
 import { getUserAccountRole } from "~/utils/accountUtils"
 import { getErrorMessage } from "~/utils/catchError"
 import { getRequiredServerEnvVar } from "~/utils/environment"
+import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
+
+export const meta: MetaFunction = () => {
+  return [
+    {
+      title: `Account Billing ${seo_title_append}`,
+    },
+  ]
+}
 
 export type AccountBillingOutletLoaderData = {
   subscription?: Stripe.Subscription

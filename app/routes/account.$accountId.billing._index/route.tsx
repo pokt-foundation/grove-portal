@@ -1,4 +1,4 @@
-import { json, LoaderFunction, MetaFunction, redirect } from "@remix-run/node"
+import { json, LoaderFunction, redirect } from "@remix-run/node"
 import { useLoaderData, useOutletContext } from "@remix-run/react"
 import invariant from "tiny-invariant"
 import { initPortalClient } from "~/models/portal/portal.server"
@@ -7,16 +7,7 @@ import { AccountBillingOutletContext } from "~/routes/account.$accountId.billing
 import AccountBillingView from "~/routes/account.$accountId.billing._index/view"
 import { getErrorMessage } from "~/utils/catchError"
 import { getRequiredServerEnvVar } from "~/utils/environment"
-import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
-
-export const meta: MetaFunction = () => {
-  return [
-    {
-      title: `Account Billing ${seo_title_append}`,
-    },
-  ]
-}
 
 export type AccountBillingLoaderData = {
   upcomingInvoice?: Stripe.UpcomingInvoice

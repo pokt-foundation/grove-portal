@@ -46,7 +46,7 @@ export const AccountBillingView = ({
             )}
           </Text>
           <Text c="dimmed">
-            The amount is subjected to change depending your current usage.
+            The amount is subject to change depending on your current usage.
           </Text>
         </Stack>
       ) : null}

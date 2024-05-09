@@ -2,7 +2,7 @@ import { json, LoaderFunction, MetaFunction, redirect } from "@remix-run/node"
 import { useLoaderData, useOutletContext } from "@remix-run/react"
 import invariant from "tiny-invariant"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { Stripe, stripe } from "~/models/stripe/stripe.server"
+import { Stripe, stripe, STRIPE_RECORDS_LIMIT } from "~/models/stripe/stripe.server"
 import { AccountBillingOutletContext } from "~/routes/account.$accountId.billing/route"
 import AccountBillingView from "~/routes/account.$accountId.billing._index/view"
 import { getErrorMessage } from "~/utils/catchError"
@@ -40,18 +40,24 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     })
     const accountStripeId =
       getUserAccountStripeIdResponse.getUserAccount.integrations?.stripeSubscriptionID
-    const invoices = await stripe.invoices.list({
-      subscription: String(accountStripeId),
-      limit: 21,
-    })
+    let invoices: Stripe.Invoice[] = []
+    let upcomingInvoice: Stripe.UpcomingInvoice | undefined
+    if (accountStripeId) {
+      const invoicesResponse = await stripe.invoices.list({
+        subscription: String(accountStripeId),
+        limit: STRIPE_RECORDS_LIMIT,
+      })
 
-    const upcomingInvoice = await stripe.invoices.retrieveUpcoming({
-      subscription: String(accountStripeId),
-    })
+      invoices = invoicesResponse?.data ?? []
+
+      upcomingInvoice = await stripe.invoices.retrieveUpcoming({
+        subscription: String(accountStripeId),
+      })
+    }
 
     return json<AccountBillingLoaderData>({
       upcomingInvoice,
-      invoices: invoices.data ?? [],
+      invoices,
     })
   } catch (error) {
     throw new Response(getErrorMessage(error), {

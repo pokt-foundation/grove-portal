@@ -4,9 +4,11 @@ import React from "react"
 import invariant from "tiny-invariant"
 import ErrorBoundaryView from "~/components/ErrorBoundaryView/ErrorBoundaryView"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { Stripe, stripe } from "~/models/stripe/stripe.server"
+import { PayPlanType, RoleName } from "~/models/portal/sdk"
+import { Stripe, stripe, STRIPE_RECORDS_LIMIT } from "~/models/stripe/stripe.server"
 import { AccountIdLoaderData } from "~/routes/account.$accountId/route"
 import AccountBillingLayoutView from "~/routes/account.$accountId.billing/view"
+import { getUserAccountRole } from "~/utils/accountUtils"
 import { getErrorMessage } from "~/utils/catchError"
 import { getRequiredServerEnvVar } from "~/utils/environment"
 import { requireUser } from "~/utils/user.server"
@@ -32,17 +34,24 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   try {
     let usageRecords
 
-    const getUserAccountStripeIdResponse = await portal.getUserAccountStripeId({
+    const getBillingRouteAccountInfoResponse = await portal.getBillingRouteAccountInfo({
       accountID: accountId,
     })
-    const accountStripeId =
-      getUserAccountStripeIdResponse.getUserAccount.integrations?.stripeSubscriptionID
+
+    const account = getBillingRouteAccountInfoResponse.getUserAccount
+    const accountStripeId = account.integrations?.stripeSubscriptionID
+    const userRole = getUserAccountRole(account.users, user.user.portalUserID) as RoleName
+
+    // Redirect to account page if user is a member or account is on Starter
+    if (userRole === RoleName.Member || account.plan.type === PayPlanType.FreetierV0) {
+      return redirect(`/account/${accountId}`)
+    }
 
     if (accountStripeId) {
       const subscription = await stripe.subscriptions.retrieve(accountStripeId)
       usageRecords = await stripe.subscriptionItems.listUsageRecordSummaries(
         subscription.items.data[0].id,
-        { limit: 21 },
+        { limit: STRIPE_RECORDS_LIMIT },
       )
     }
 

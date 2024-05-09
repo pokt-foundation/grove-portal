@@ -5,6 +5,7 @@ export const stripe = new Stripe(getRequiredServerEnvVar("STRIPE_SECRET_KEY"))
 
 export * from "stripe"
 
+export const STRIPE_RECORDS_LIMIT= 21
 export const getCustomer = async (
   email: string,
   userId: string,

@@ -3,8 +3,7 @@ import { DataTable } from "mantine-datatable"
 import React, { useMemo } from "react"
 import { Account } from "~/models/portal/sdk"
 import { Stripe } from "~/models/stripe/stripe.server"
-import { INVOICE_STATUS_COLOR } from "~/routes/account.$accountId.billing._index/components/InvoicesDataTable"
-import { getStripeAmount, getUnitPrice } from "~/utils/billingUtils"
+import { getStripeAmount, getUnitPrice, INVOICE_STATUS_COLOR } from "~/utils/billingUtils"
 import { getPlanName } from "~/utils/planUtils"
 
 type InvoicePaymentOverviewProps = {

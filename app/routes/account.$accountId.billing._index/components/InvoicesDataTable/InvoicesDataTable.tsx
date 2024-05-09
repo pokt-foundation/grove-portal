@@ -4,16 +4,11 @@ import { DataTable } from "mantine-datatable"
 import React from "react"
 import ContextMenuTarget from "~/components/ContextMenuTarget"
 import { Stripe } from "~/models/stripe/stripe.server"
-import { KeyValuePair } from "~/types/global"
-import { formatStripeDate, getStripeAmount } from "~/utils/billingUtils"
-
-export const INVOICE_STATUS_COLOR: KeyValuePair<"green" | "red" | "orange"> = {
-  deleted: "red",
-  uncollectible: "red",
-  void: "red",
-  pending: "orange",
-  paid: "green",
-}
+import {
+  formatStripeDate,
+  getStripeAmount,
+  INVOICE_STATUS_COLOR,
+} from "~/utils/billingUtils"
 
 type InvoicesDataTableProps = {
   invoices: Stripe.Invoice[]

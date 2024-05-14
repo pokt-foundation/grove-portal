@@ -41,7 +41,7 @@
     "@remix-run/serve": "^2.8.1",
     "@uiw/codemirror-theme-xcode": "^4.21.24",
     "@uiw/react-codemirror": "4.21.18",
-    "clsx": "^1.1.1",
+    "clsx": "^2.1.1",
     "d3-format": "^3.1.0",
     "dayjs": "^1.11.4",
     "emoji-picker-react": "^4.5.1",
@@ -52,6 +52,7 @@
     "isbot": "^5.1.1",
     "jwt-decode": "^3.1.2",
     "lottie-react": "^2.4.0",
+    "mantine-datatable": "^7.8.2",
     "mersenne-twister": "^1.1.0",
     "node-mailjet": "^6.0.4",
     "react": "18.2.0",
@@ -61,7 +62,7 @@
     "remix-auth": "^3.6.0",
     "remix-auth-auth0": "^1.9.0",
     "remix-utils": "^7.5.0",
-    "stripe": "^9.9.0",
+    "stripe": "^15.5.0",
     "tiny-invariant": "^1.2.0"
   },
   "devDependencies": {

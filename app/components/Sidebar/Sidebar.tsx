@@ -51,6 +51,14 @@ const getStaticRoutes = (
         label: "Sandbox",
         end: true,
       },
+      ...(!isStarterAccount && userRole !== RoleName.Member
+        ? [
+            {
+              to: `/account/${activeAccount?.id}/billing`,
+              label: "Billing",
+            },
+          ]
+        : []),
       {
         to: `/account/${activeAccount?.id}/settings`,
         label: "Settings",

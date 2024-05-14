@@ -9,12 +9,12 @@
       border-color: var(--mantine-color-gray-8);
       color: inherit;
     }
-  }
 
-  .mantine-TextInput-input[readonly],
-  .mantine-PasswordInput-input:has(> input[readonly]) {
-    background-color: var(--mantine-color-gray-9) !important;
-    border-color: transparent;
+    .mantine-TextInput-input[readonly],
+    .mantine-PasswordInput-input:has(> input[readonly]) {
+      background-color: var(--mantine-color-gray-9) !important;
+      border-color: transparent;
+    }
   }
 }
 
@@ -33,10 +33,14 @@ html {
   box-sizing: inherit;
 }
 
+body {
+  font-size: 14px;
+}
+
 .clickable-table tbody tr:hover {
   background-color: alpha(var(--mantine-color-dark-7), 0.5);
 }
 
-body {
-  font-size: 14px;
+.clickable-table .mantine-datatable-row {
+  cursor: pointer;
 }

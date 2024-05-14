@@ -18,7 +18,7 @@ export const action: ActionFunction = async ({ request }) => {
   invariant(typeof subscriptionId === "string", "subscription id must be set")
   try {
     if (subscriptionId) {
-      const updatedSubscription = await stripe.subscriptions.del(subscriptionId)
+      const updatedSubscription = await stripe.subscriptions.cancel(subscriptionId)
 
       if (updatedSubscription) {
         await updatePlan({

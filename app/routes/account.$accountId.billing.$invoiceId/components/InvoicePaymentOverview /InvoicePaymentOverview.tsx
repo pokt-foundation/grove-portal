@@ -22,8 +22,8 @@ type InvoiceDiscountsProps = {
 const InvoiceDiscounts = ({ discounts }: InvoiceDiscountsProps) => {
   return (
     <>
-      {discounts.map((discount) => (
-        <>
+      {discounts.map((discount, index) => (
+        <React.Fragment key={`${discount.amount}-${index}`}>
           <Text c="dimmed">
             {discount.coupon?.name}{" "}
             {discount.coupon?.percent_off
@@ -37,7 +37,7 @@ const InvoiceDiscounts = ({ discounts }: InvoiceDiscountsProps) => {
             style={{ color: "var(--mantine-color-dimmed)", marginLeft: "-10px" }}
             value={getStripeAmount(discount.amount)}
           />
-        </>
+        </React.Fragment>
       ))}
     </>
   )
@@ -163,6 +163,7 @@ const InvoicePaymentOverview = ({
               thousandSeparator
               allowNegative={false}
               prefix="- USD $"
+              style={{ marginLeft: "-10px" }}
               value={getStripeAmount(invoice?.amount_paid)}
             />
             <Text>Amount due</Text>

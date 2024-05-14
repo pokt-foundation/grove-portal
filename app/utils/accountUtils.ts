@@ -9,7 +9,10 @@ export const getAccountAcceptedValue = (
   return user?.accepted ?? false
 }
 
-export const getUserAccountRole = (users: AccountUser[], userId: string) => {
+export const getUserAccountRole = (
+  users: Pick<AccountUser, "id" | "roleName">[],
+  userId: string,
+) => {
   const user = users.find((user) => user.id === userId)
   return user?.roleName ?? null
 }

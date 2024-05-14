@@ -14,6 +14,7 @@
       border-color: transparent;
     }
   }
+}
 
   .mantine-Checkbox-input:not(:checked) {
     background-color: transparent;
@@ -40,12 +41,16 @@ html {
   box-sizing: inherit;
 }
 
-.clickable-table tbody tr:hover {
-  background-color: var(--mantine-hover-color);
-}
-
 body {
   font-size: 14px;
+}
+
+.clickable-table tbody tr:hover {
+    background-color: var(--mantine-hover-color);
+}
+
+.clickable-table .mantine-datatable-row {
+  cursor: pointer;
 }
 
 .bordered-container {

@@ -16,8 +16,8 @@ export const CHARGE_STATUS_COLOR: KeyValuePair<"green" | "red" | "orange"> = {
 }
 
 // https://stackoverflow.com/a/25548654/8149512
-export const getStripeAmount = (amount: number | null | undefined): number =>
-  amount ? amount / 100 : 0
+export const getStripeAmount = (amount: number | null | undefined): string =>
+  (amount ? amount / 100 : 0).toFixed(2)
 
 export const formatStripeDate = (ts: number, template: string = "Do MMM") =>
   dayjs.unix(Number(ts)).format(template)

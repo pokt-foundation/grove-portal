@@ -6,6 +6,7 @@
   @mixin dark-root {
     --mantine-color-body: var(--mantine-color-dark-9);
     --mantine-hover-color: alpha(var(--mantine-color-dark-4), 0.5);
+    --app-shell-border-color: var(--mantine-color-dark-4);
 
     .mantine-TextInput-input[readonly],
     .mantine-PasswordInput-input:has(> input[readonly]) {

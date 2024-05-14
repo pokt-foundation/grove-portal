@@ -6,7 +6,7 @@ import ChainSelectItem from "~/components/ChainSelectItem"
 import CopyTextButton from "~/components/CopyTextButton"
 import FluidSelect from "~/components/FluidSelect"
 import { Blockchain, PortalApp } from "~/models/portal/sdk"
-import { DEFAULT_APPMOJI } from "~/routes/account_.$accountId.create/components/AppmojiPicker"
+import { getAppNameWithEmoji } from "~/utils/accountUtils"
 import { evmMethods, getAppEndpointUrl, isEvmChain } from "~/utils/chainUtils"
 
 type ChainSandboxInputsProps = {
@@ -44,9 +44,7 @@ const ChainSandboxInputs = ({
     ...(apps && apps.length > 0
       ? apps.map((app) => ({
           value: app?.id ?? "",
-          label: `${String.fromCodePoint(
-            parseInt(app?.appEmoji ? app.appEmoji : DEFAULT_APPMOJI, 16),
-          )} \u00A0 ${app?.name}`,
+          label: getAppNameWithEmoji(app),
         }))
       : []),
   ]

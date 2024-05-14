@@ -4,7 +4,7 @@ import React from "react"
 import ChainSelectItem from "~/components/ChainSelectItem"
 import FluidSelect from "~/components/FluidSelect"
 import { Blockchain, PortalApp } from "~/models/portal/sdk"
-import { DEFAULT_APPMOJI } from "~/routes/account_.$accountId.create/components/AppmojiPicker"
+import { getAppNameWithEmoji } from "~/utils/accountUtils"
 
 type InsightsControlsProps = {
   apps?: PortalApp[]
@@ -14,16 +14,12 @@ type InsightsControlsProps = {
 export const DEFAULT_DWH_PERIOD = "24hr"
 
 const InsightsControls = ({ apps, chains }: InsightsControlsProps) => {
-  // const theme = useMantineTheme()
-
   const appsSelectItems = [
     { value: "all", label: "All Applications" },
     ...(apps && apps.length > 0
       ? apps.map((app) => ({
           value: app?.id ?? "",
-          label: `${String.fromCodePoint(
-            parseInt(app?.appEmoji ? app.appEmoji : DEFAULT_APPMOJI, 16),
-          )} \u00A0 ${app?.name}`,
+          label: getAppNameWithEmoji(app),
         }))
       : []),
   ]

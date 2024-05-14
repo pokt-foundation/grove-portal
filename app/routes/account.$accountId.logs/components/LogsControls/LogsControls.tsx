@@ -5,7 +5,7 @@ import React, { useMemo, useState } from "react"
 import { useHydrated } from "remix-utils/use-hydrated"
 import FluidSelect from "~/components/FluidSelect"
 import { PortalApp } from "~/models/portal/sdk"
-import { DEFAULT_APPMOJI } from "~/routes/account_.$accountId.create/components/AppmojiPicker"
+import { getAppNameWithEmoji } from "~/utils/accountUtils"
 import { dayjs } from "~/utils/dayjs"
 
 type LogsControlsProps = {
@@ -27,9 +27,7 @@ const LogsControls = ({ apps }: LogsControlsProps) => {
       ...(apps && apps.length > 0
         ? apps.map((app) => ({
             value: app?.id ?? "",
-            label: `${String.fromCodePoint(
-              parseInt(app?.appEmoji ? app.appEmoji : DEFAULT_APPMOJI, 16),
-            )} ${app?.name}`,
+            label: getAppNameWithEmoji(app),
           }))
         : []),
     ],

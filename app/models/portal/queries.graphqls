@@ -136,6 +136,32 @@ query getUserAccount(
     }
   }
 }
+
+query getUserAccountStripeId($accountID: ID!) {
+  getUserAccount(accountID: $accountID, accepted: true) {
+    id
+    integrations {
+      stripeSubscriptionID
+    }
+  }
+}
+
+query getBillingRouteAccountInfo($accountID: ID!) {
+  getUserAccount(accountID: $accountID, accepted: true) {
+    id
+    integrations {
+      stripeSubscriptionID
+    }
+    plan {
+      type
+    }
+    users {
+      id
+      roleName
+    }
+  }
+}
+
 query getUserAccounts(
   $sortOrder: SortOrder
   $roleNameFilters: [RoleName!]

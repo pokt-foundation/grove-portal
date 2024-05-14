@@ -17,6 +17,7 @@ export const invoice: Stripe.Invoice = {
   automatic_tax: {
     enabled: false,
     status: null,
+    liability: null,
   },
   billing_reason: "subscription_create",
   charge: null,
@@ -127,6 +128,7 @@ export const invoice: Stripe.Invoice = {
         tax_amounts: [],
         tax_rates: [],
         type: "subscription",
+        invoice: null,
       },
     ],
     has_more: false,
@@ -151,7 +153,6 @@ export const invoice: Stripe.Invoice = {
   pre_payment_credit_notes_amount: 0,
   quote: null,
   receipt_number: null,
-  rendering_options: null,
   starting_balance: 0,
   statement_descriptor: null,
   status: "paid",
@@ -172,6 +173,18 @@ export const invoice: Stripe.Invoice = {
   total_tax_amounts: [],
   transfer_data: null,
   webhooks_delivered_at: 1661183720,
+  amount_shipping: 0,
+  effective_at: null,
+  from_invoice: null,
+  issuer: { type: "self" },
+  latest_revision: null,
+  rendering: {
+    amount_tax_display: "exclude_tax",
+    pdf: null,
+  },
+  shipping_cost: null,
+  shipping_details: null,
+  subscription_details: { metadata: { account_id: "account_id" } },
 }
 
 export const subscription: Stripe.Subscription = {
@@ -181,6 +194,7 @@ export const subscription: Stripe.Subscription = {
   application_fee_percent: null,
   automatic_tax: {
     enabled: false,
+    liability: null,
   },
   billing_cycle_anchor: 1661183720,
   billing_thresholds: null,
@@ -258,6 +272,7 @@ export const subscription: Stripe.Subscription = {
         },
         subscription: "sub_1LZcyCKhNIAUaK2Oi91NbB2f",
         tax_rates: [],
+        discounts: [],
       },
     ],
     has_more: false,
@@ -286,6 +301,12 @@ export const subscription: Stripe.Subscription = {
   transfer_data: null,
   trial_end: null,
   trial_start: null,
+  billing_cycle_anchor_config: null,
+  cancellation_details: null,
+  currency: "usd",
+  discounts: [],
+  on_behalf_of: null,
+  trial_settings: null,
 }
 
 export const useageRecord: Stripe.ApiList<Stripe.UsageRecordSummary> = {

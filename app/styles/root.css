@@ -16,14 +16,13 @@
   }
 }
 
-  .mantine-Checkbox-input:not(:checked) {
-    background-color: transparent;
-  }
+.mantine-Checkbox-input:not(:checked) {
+  background-color: transparent;
+}
 
-  [data-variant="outline"]:not([data-outline-exclude="true"]) {
-    border-color: var(--app-shell-border-color);
-    color: inherit;
-  }
+[data-variant="outline"]:not([data-outline-exclude="true"]) {
+  border-color: var(--app-shell-border-color);
+  color: inherit;
 }
 
 a {
@@ -46,7 +45,7 @@ body {
 }
 
 .clickable-table tbody tr:hover {
-    background-color: var(--mantine-hover-color);
+  background-color: var(--mantine-hover-color);
 }
 
 .clickable-table .mantine-datatable-row {

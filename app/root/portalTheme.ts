@@ -14,7 +14,7 @@ export const portalTheme: MantineThemeOverride = createTheme({
       "#242424",
       "#27292F",
       "#292929",
-      "#1f1f1f",
+      "#191919",
     ],
     gray: [
       "#FAFAFA",

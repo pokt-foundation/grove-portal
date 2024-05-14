@@ -1,13 +1,4 @@
-import {
-  Button,
-  Divider,
-  Group,
-  MantineTheme,
-  Stack,
-  TextInput,
-  Title,
-  Tooltip,
-} from "@mantine/core"
+import { Button, Divider, Group, Stack, TextInput, Title, Tooltip } from "@mantine/core"
 import React, { useMemo } from "react"
 import useChainSandboxContext from "~/components/ChainSandbox/state"
 import { HttpMethod } from "~/components/ChainSandbox/state/stateReducer"

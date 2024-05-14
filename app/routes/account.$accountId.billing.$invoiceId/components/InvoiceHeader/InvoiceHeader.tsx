@@ -26,6 +26,7 @@ const InvoiceHeader = ({ invoice, charge }: InvoiceHeaderProps) => {
         color="gray"
         component={NavLink}
         leftSection={<LuArrowLeft size={18} />}
+        ml={-8}
         mr="auto"
         size="compact-sm"
         to=".."

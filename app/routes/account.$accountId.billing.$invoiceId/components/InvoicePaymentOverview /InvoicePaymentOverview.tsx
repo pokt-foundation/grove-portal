@@ -34,7 +34,7 @@ const InvoiceDiscounts = ({ discounts }: InvoiceDiscountsProps) => {
             thousandSeparator
             allowNegative={false}
             prefix="- USD $"
-            style={{ color: "var(--mantine-color-dimmed)" }}
+            style={{ color: "var(--mantine-color-dimmed)", marginLeft: "-10px" }}
             value={getStripeAmount(discount.amount)}
           />
         </>

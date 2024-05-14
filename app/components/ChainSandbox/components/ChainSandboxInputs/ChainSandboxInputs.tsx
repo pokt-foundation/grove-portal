@@ -85,14 +85,7 @@ const ChainSandboxInputs = ({
   return selectedChain ? (
     <Stack gap="xl">
       <Group>
-        <Group
-          gap={0}
-          pos="relative"
-          style={(theme: MantineTheme) => ({
-            border: `1px solid ${theme.colors.gray[8]}`,
-            borderRadius: 4,
-          })}
-        >
+        <Group className="bordered-container" gap={0} pos="relative">
           {appsSelectItems.length > 0 ? (
             <>
               <FluidSelect

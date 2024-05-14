@@ -76,14 +76,7 @@ const InsightsControls = ({ apps, chains }: InsightsControlsProps) => {
   return (
     <Group justify="space-between">
       <Group>
-        <Group
-          gap={0}
-          pos="relative"
-          style={{
-            border: `1px solid #302f2f`,
-            borderRadius: 4,
-          }}
-        >
+        <Group className="bordered-container" gap={0} pos="relative">
           {apps ? (
             <>
               <FluidSelect
@@ -108,12 +101,7 @@ const InsightsControls = ({ apps, chains }: InsightsControlsProps) => {
           />
         </Group>
         <Text>filtered over the past</Text>
-        <Box
-          style={{
-            border: `1px solid #302f2f`,
-            borderRadius: 4,
-          }}
-        >
+        <Box className="bordered-container">
           <FluidSelect
             items={[
               { value: "24hr", label: "24 Hours" },

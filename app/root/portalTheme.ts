@@ -9,12 +9,12 @@ export const portalTheme: MantineThemeOverride = createTheme({
       "#A6A7AB",
       "#909296",
       "#5c5f66",
-      "#373A40",
+      "#302F2F",
       "#2C2E33",
-      "#25262b",
+      "#242424",
       "#27292F",
-      "#242224",
-      "#1A1B1E",
+      "#292929",
+      "#1f1f1f",
     ],
     gray: [
       "#FAFAFA",
@@ -49,8 +49,8 @@ export const portalTheme: MantineThemeOverride = createTheme({
       "#46BD6B",
       "#40c057",
       "#389F58",
-      "#2f9e44",
-      "#2b8a3e",
+      "#154623",
+      "#11381C",
     ],
     yellow: [
       "#fff9db",
@@ -73,7 +73,7 @@ export const portalTheme: MantineThemeOverride = createTheme({
       "#ff922b",
       "#fd7e14",
       "#f76707",
-      "#e8590c",
+      "#FF8170",
       "#D65745",
     ],
     navy: [
@@ -99,6 +99,18 @@ export const portalTheme: MantineThemeOverride = createTheme({
       "#871990",
       "#771581",
       "#681170",
+    ],
+    teal: [
+      "#e6fcf5",
+      "#c3fae8",
+      "#96f2d7",
+      "#63e6be",
+      "#38d9a9",
+      "#20c997",
+      "#12b886",
+      "#6BAA9F",
+      "#099268",
+      "#087f5b",
     ],
   },
   components: {
@@ -140,11 +152,11 @@ export const portalTheme: MantineThemeOverride = createTheme({
         fz: "xs",
       },
       styles: () => ({
-        root: { backgroundColor: "#302f2f" },
+        root: { backgroundColor: "var(--mantine-color-dark-4)" },
       }),
     },
     Divider: {
-      defaultProps: { opacity: "50%", color: "#302f2f" },
+      defaultProps: { opacity: "50%" },
     },
     TextInput: {
       defaultProps: {

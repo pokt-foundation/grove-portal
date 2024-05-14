@@ -4,27 +4,23 @@
   }
 
   @mixin dark-root {
-    --mantine-color-body: #191919;
-    --menu-item-hover: #302f2f80;
+    --mantine-color-body: var(--mantine-color-dark-9);
+    --mantine-hover-color: alpha(var(--mantine-color-dark-4), 0.5);
 
-    [data-with-border] {
-      border: 1px solid #302f2f;
+    .mantine-TextInput-input[readonly],
+    .mantine-PasswordInput-input:has(> input[readonly]) {
+      background-color: var(--mantine-color-dark-4) !important;
+      border-color: transparent;
     }
-
-    [data-variant="outline"]:not([data-outline-exclude="true"]) {
-      border-color: #302f2f;
-      color: inherit;
-    }
-  }
-
-  .mantine-TextInput-input[readonly],
-  .mantine-PasswordInput-input:has(> input[readonly]) {
-    background-color: #302f2f !important;
-    border-color: transparent;
   }
 
   .mantine-Checkbox-input:not(:checked) {
     background-color: transparent;
+  }
+
+  [data-variant="outline"]:not([data-outline-exclude="true"]) {
+    border-color: var(--app-shell-border-color);
+    color: inherit;
   }
 }
 
@@ -44,9 +40,14 @@ html {
 }
 
 .clickable-table tbody tr:hover {
-  background-color: alpha(var(--mantine-color-dark-7), 0.5);
+  background-color: var(--mantine-hover-color);
 }
 
 body {
   font-size: 14px;
+}
+
+.bordered-container {
+  border: 1px solid var(--app-shell-border-color);
+  border-radius: 4px;
 }

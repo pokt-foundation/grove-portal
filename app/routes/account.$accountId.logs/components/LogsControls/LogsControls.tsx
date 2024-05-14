@@ -71,14 +71,7 @@ const LogsControls = ({ apps }: LogsControlsProps) => {
   return (
     <Group justify="space-between">
       <Group>
-        <Group
-          gap={0}
-          pos="relative"
-          style={{
-            border: `1px solid #302f2f`,
-            borderRadius: 4,
-          }}
-        >
+        <Group className="bordered-container" gap={0} pos="relative">
           {apps && apps?.length > 0 ? (
             <>
               <FluidSelect

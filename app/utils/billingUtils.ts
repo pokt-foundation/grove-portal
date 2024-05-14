@@ -27,5 +27,8 @@ export const getUnitPrice = (amount: string | undefined | null) => {
     return "-"
   }
   const [whole, decimal] = amount.split(".")
+  if (!decimal || Number(whole)) {
+    return getStripeAmount(Number(amount))
+  }
   return `${whole}.00${decimal}`
 }

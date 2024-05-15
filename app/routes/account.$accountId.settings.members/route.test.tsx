@@ -86,8 +86,11 @@ describe("/account/$accountId/settings/members", () => {
     // open modal
     fireEvent.click(screen.getByText(/invite new member/i))
 
-    // expect modal to have opened
-    expect(screen.getByRole("dialog")).toBeInTheDocument()
+    await waitFor(() => {
+      // expect modal to have opened
+      expect(screen.getByRole("dialog")).toBeInTheDocument()
+    })
+
     expect(screen.getByText(/invite member/i)).toBeInTheDocument()
     const inviteForm: HTMLFormElement = screen.getByRole("form", {
       name: "inviteMemberForm",
@@ -102,9 +105,14 @@ describe("/account/$accountId/settings/members", () => {
 
     // fill out form in modal
     fireEvent.change(emailField, { target: { value: "testing@test.com" } })
-    expect(emailField).toHaveValue("testing@test.com")
+    await waitFor(() => {
+      expect(emailField).toHaveValue("testing@test.com")
+    })
+
     fireEvent.change(roleField, { target: { value: "MEMBER" } })
-    expect(roleField).toHaveValue("MEMBER")
+    await waitFor(() => {
+      expect(roleField).toHaveValue("MEMBER")
+    })
 
     // // submit form
     // const submitButton = screen.getByRole("button", { name: /invite/i })

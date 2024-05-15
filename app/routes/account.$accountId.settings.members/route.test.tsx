@@ -79,39 +79,39 @@ describe("/account/$accountId/settings/members", () => {
     render(<RemixStub />)
 
     await waitFor(() => {
-      // ensure member page loaded
       const inviteButton = screen.getByText(/invite new member/i)
+      // ensure member page loaded
       expect(inviteButton).toBeInTheDocument()
 
       // open modal
       fireEvent.click(inviteButton)
-
-      // expect modal to have opened
-      expect(screen.getByRole("dialog")).toBeInTheDocument()
-      expect(screen.getByText(/invite member/i)).toBeInTheDocument()
-      const inviteForm: HTMLFormElement = screen.getByRole("form", {
-        name: "inviteMemberForm",
-      })
-      const emailField: HTMLInputElement = screen.getByRole("textbox", {
-        name: /email address/i,
-      })
-      const roleField: HTMLInputElement = screen.getByRole("textbox", { name: /role/i })
-      expect(inviteForm).toBeInTheDocument()
-      expect(emailField).toBeInTheDocument()
-      expect(roleField).toBeInTheDocument()
-
-      // fill out form in modal
-      fireEvent.change(emailField, { target: { value: "testing@test.com" } })
-      expect(emailField).toHaveValue("testing@test.com")
-      fireEvent.change(roleField, { target: { value: "MEMBER" } })
-      expect(roleField).toHaveValue("MEMBER")
-
-      // // submit form
-      // const submitButton = screen.getByRole("button", { name: /invite/i })
-      // fireEvent.click(submitButton)
-
-      // // success
-      // expect(screen.getByText(/mocking error/i)).toBeInTheDocument()
     })
+
+    // expect modal to have opened
+    expect(screen.getByRole("dialog")).toBeInTheDocument()
+    expect(screen.getByText(/invite member/i)).toBeInTheDocument()
+    const inviteForm: HTMLFormElement = screen.getByRole("form", {
+      name: "inviteMemberForm",
+    })
+    const emailField: HTMLInputElement = screen.getByRole("textbox", {
+      name: /email address/i,
+    })
+    const roleField: HTMLInputElement = screen.getByRole("textbox", { name: /role/i })
+    expect(inviteForm).toBeInTheDocument()
+    expect(emailField).toBeInTheDocument()
+    expect(roleField).toBeInTheDocument()
+
+    // fill out form in modal
+    fireEvent.change(emailField, { target: { value: "testing@test.com" } })
+    expect(emailField).toHaveValue("testing@test.com")
+    fireEvent.change(roleField, { target: { value: "MEMBER" } })
+    expect(roleField).toHaveValue("MEMBER")
+
+    // // submit form
+    // const submitButton = screen.getByRole("button", { name: /invite/i })
+    // fireEvent.click(submitButton)
+
+    // // success
+    // expect(screen.getByText(/mocking error/i)).toBeInTheDocument()
   })
 })

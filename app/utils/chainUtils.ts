@@ -1,3 +1,4 @@
+import { getRequiredClientEnvVar } from "./environment"
 import { Blockchain } from "~/models/portal/sdk"
 import { KeyValuePair } from "~/types/global"
 
@@ -54,7 +55,9 @@ export const CHAIN_DOCS_URL: KeyValuePair<string> = {
 }
 
 export const evmChains = [
+  "amoy-testnet-archival",
   "arbitrum-one",
+  "arbitrum-sepolia-archival",
   "avax-archival",
   "avax-dfk",
   "avax-mainnet",
@@ -69,6 +72,7 @@ export const evmChains = [
   "eth-mainnet",
   "eth-trace",
   "evmos-mainnet",
+  "fraxtal-archival",
   "fantom-mainnet",
   "fuse-mainnet",
   "fuse-archival",
@@ -87,8 +91,10 @@ export const evmChains = [
   "oKc-mainnet",
   "oasys-mainnet",
   "oasys-mainnet-archival",
+  "opbnb-archival",
   "optimism-mainnet",
   "optimism-archival",
+  "optimism-sepolia-archival",
   "poly-mainnet",
   "poly-archival",
   "polygon-mumbai",
@@ -140,4 +146,25 @@ export const isEvmChain = (chain: Blockchain | null): boolean =>
 export const getAppEndpointUrl = (
   chain: Blockchain | undefined | null,
   appId: string | undefined,
-) => `https://${chain?.blockchain}.rpc.grove.city/v1/${appId}`
+) => {
+  let env = "city"
+  if (getRequiredClientEnvVar("VERCEL_ENV") !== "production") {
+    env = "town"
+  }
+
+  return `https://${chain?.blockchain}.rpc.grove.${env}/v1/${appId}`
+}
+
+export const getChainName = ({
+  chainId,
+  chains,
+}: {
+  chainId: string | undefined
+  chains: Blockchain[]
+}): string => {
+  if (!chainId) {
+    return ""
+  }
+  const chain = chains.find((chain) => chain.id === chainId)
+  return chain?.blockchain ?? chainId
+}

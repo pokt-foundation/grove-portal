@@ -1,24 +1,21 @@
-import { Button } from "@mantine/core"
-import { json, LoaderFunction, MetaFunction, redirect } from "@remix-run/node"
-import { Link, useLoaderData, useOutletContext, useParams } from "@remix-run/react"
+import { json, LoaderFunction, MetaFunction } from "@remix-run/node"
+import { useLoaderData, useOutletContext } from "@remix-run/react"
 import React from "react"
 import invariant from "tiny-invariant"
-import { EmptyState } from "~/components/EmptyState"
 import { ErrorBoundaryView } from "~/components/ErrorBoundaryView"
-import { getAggregateRelays, getTotalRelays } from "~/models/dwh/dwh.server"
-import { AnalyticsRelaysAggregated } from "~/models/dwh/sdk/models/AnalyticsRelaysAggregated"
-import { AnalyticsRelaysTotal } from "~/models/dwh/sdk/models/AnalyticsRelaysTotal"
+import {
+  getAggregateRelays,
+  getRealtimeDataChains,
+  getTotalRelays,
+} from "~/models/portal/dwh.server"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { Account, PortalApp, RoleName } from "~/models/portal/sdk"
+import { Account, D2Chain, D2Stats, PortalApp } from "~/models/portal/sdk"
 import { AccountIdLoaderData } from "~/routes/account.$accountId/route"
-import { AnnouncementAlert } from "~/routes/account.$accountId._index/components/AnnouncementAlert"
 import AccountInsightsView from "~/routes/account.$accountId._index/view"
 import { getErrorMessage } from "~/utils/catchError"
-import { getRequiredClientEnvVar } from "~/utils/environment"
+import { byHourPeriods, getDwhParams, validatePeriod } from "~/utils/dwhUtils.server"
 import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
-
-const ANNOUNCEMENT_ALERT = getRequiredClientEnvVar("FLAG_ANNOUNCEMENT_ALERT")
 
 export const meta: MetaFunction = () => {
   return [
@@ -30,20 +27,18 @@ export const meta: MetaFunction = () => {
 
 export type AccountInsightsData = {
   account: Account
-  total: AnalyticsRelaysTotal
-  aggregate: AnalyticsRelaysAggregated[]
+  total: D2Stats
+  aggregate: D2Stats[]
+  realtimeDataChains: D2Chain[]
 }
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   const user = await requireUser(request)
   const portal = initPortalClient({ token: user.accessToken })
   const url = new URL(request.url)
-  const daysParam: number = Number(url.searchParams.get("days") ?? "7")
-
-  // Prevent manually entering daysParam
-  if (daysParam !== 7 && daysParam !== 30 && daysParam !== 60) {
-    return redirect(url.pathname)
-  }
+  const { period, chainParam, appParam } = getDwhParams(url)
+  // Prevent manually entering an invalid period
+  validatePeriod({ period, url })
 
   try {
     const { accountId } = params
@@ -51,21 +46,35 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
     const account = await portal.getUserAccount({ accountID: accountId, accepted: true })
 
-    const aggregate = await getAggregateRelays({
-      category: "account_id",
-      categoryValue: [accountId],
-      days: daysParam,
+    const getAggregateRelaysResponse = await getAggregateRelays({
+      period,
+      accountId,
+      portalClient: portal,
+      byHour: byHourPeriods.includes(period),
+      ...(chainParam && chainParam !== "all" && { chainIDs: [chainParam] }),
+      ...(appParam && appParam !== "all" && { applicationIDs: [appParam] }),
     })
-    const total = await getTotalRelays({
-      category: "account_id",
-      categoryValue: [accountId],
-      days: daysParam,
+
+    const getTotalRelaysResponse = await getTotalRelays({
+      period,
+      accountId,
+      portalClient: portal,
+      ...(chainParam && chainParam !== "all" && { chainIDs: [chainParam] }),
+      ...(appParam && appParam !== "all" && { applicationIDs: [appParam] }),
+    })
+
+    const getRealtimeDataChainsResponse = await getRealtimeDataChains({
+      period,
+      accountId,
+      portalClient: portal,
+      ...(appParam && appParam !== "all" && { applicationIDs: [appParam] }),
     })
 
     return json<AccountInsightsData>({
       account: account.getUserAccount as Account,
-      total: (total as AnalyticsRelaysTotal) ?? undefined,
-      aggregate: (aggregate as AnalyticsRelaysAggregated[]) ?? undefined, //dailyReponse.data as AnalyticsRelaysDaily[],
+      realtimeDataChains: getRealtimeDataChainsResponse,
+      total: getTotalRelaysResponse,
+      aggregate: getAggregateRelaysResponse,
     })
   } catch (error) {
     throw new Response(getErrorMessage(error), {
@@ -75,45 +84,19 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 }
 
 export default function AccountInsights() {
-  const { account, total, aggregate } = useLoaderData<typeof loader>()
-  const { userRole } = useOutletContext<AccountIdLoaderData>()
-  const { accountId } = useParams()
-
-  const apps = account?.portalApps as PortalApp[]
+  const { account, total, aggregate, realtimeDataChains } =
+    useLoaderData() as AccountInsightsData
+  const { blockchains, userRole } = useOutletContext<AccountIdLoaderData>()
 
   return (
-    <>
-      {ANNOUNCEMENT_ALERT === "true" && <AnnouncementAlert />}
-      {apps.length === 0 ? (
-        <EmptyState
-          alt="Empty overview placeholder"
-          callToAction={
-            userRole !== RoleName.Member ? (
-              <Button
-                component={Link}
-                mt="xs"
-                prefetch="intent"
-                to={`/account/${accountId}/create`}
-              >
-                New Application
-              </Button>
-            ) : null
-          }
-          imgHeight={205}
-          imgSrc="/overview-empty-state.svg"
-          imgWidth={122}
-          subtitle={
-            <>
-              Applications connect your project to the blockchain. <br />
-              Set up your first one now.
-            </>
-          }
-          title="Create your first application"
-        />
-      ) : (
-        <AccountInsightsView aggregate={aggregate} total={total} />
-      )}
-    </>
+    <AccountInsightsView
+      aggregate={aggregate}
+      apps={account?.portalApps as PortalApp[]}
+      blockchains={blockchains}
+      realtimeDataChains={realtimeDataChains}
+      total={total}
+      userRole={userRole}
+    />
   )
 }
 

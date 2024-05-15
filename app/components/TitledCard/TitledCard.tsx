@@ -3,7 +3,7 @@ import React, { ReactNode } from "react"
 
 export type TitledCardPropsType = {
   children: ReactNode
-  header: () => JSX.Element
+  header?: () => JSX.Element
 }
 
 export const TitledCard: React.FC<TitledCardPropsType> = ({
@@ -14,9 +14,11 @@ export const TitledCard: React.FC<TitledCardPropsType> = ({
 }: TitledCardPropsType & CardProps) => {
   return (
     <Card radius="sm" shadow="sm" withBorder={withBorder} {...rest}>
-      <Card.Section inheritPadding withBorder py="xs">
-        {header && header()}
-      </Card.Section>
+      {header && (
+        <Card.Section inheritPadding withBorder py="xs">
+          {header()}
+        </Card.Section>
+      )}
       {children}
     </Card>
   )

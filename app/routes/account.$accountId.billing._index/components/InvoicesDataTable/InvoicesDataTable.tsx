@@ -108,6 +108,7 @@ const InvoicesDataTable = ({ invoices, usageRecords }: InvoicesDataTableProps) =
           ),
         },
       ]}
+      minHeight={500}
       records={invoicesWithUSage}
       verticalSpacing={5}
       onRowClick={({ record }) => navigate(`${record.id}`)}

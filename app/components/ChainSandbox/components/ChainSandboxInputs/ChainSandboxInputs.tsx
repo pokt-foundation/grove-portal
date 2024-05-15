@@ -1,13 +1,4 @@
-import {
-  Button,
-  Divider,
-  Group,
-  MantineTheme,
-  Stack,
-  TextInput,
-  Title,
-  Tooltip,
-} from "@mantine/core"
+import { Button, Divider, Group, Stack, TextInput, Title, Tooltip } from "@mantine/core"
 import React, { useMemo } from "react"
 import useChainSandboxContext from "~/components/ChainSandbox/state"
 import { HttpMethod } from "~/components/ChainSandbox/state/stateReducer"
@@ -15,7 +6,7 @@ import ChainSelectItem from "~/components/ChainSelectItem"
 import CopyTextButton from "~/components/CopyTextButton"
 import FluidSelect from "~/components/FluidSelect"
 import { Blockchain, PortalApp } from "~/models/portal/sdk"
-import { DEFAULT_APPMOJI } from "~/routes/account_.$accountId.create/components/AppmojiPicker"
+import { getAppNameWithEmoji } from "~/utils/accountUtils"
 import { evmMethods, getAppEndpointUrl, isEvmChain } from "~/utils/chainUtils"
 
 type ChainSandboxInputsProps = {
@@ -53,9 +44,7 @@ const ChainSandboxInputs = ({
     ...(apps && apps.length > 0
       ? apps.map((app) => ({
           value: app?.id ?? "",
-          label: `${String.fromCodePoint(
-            parseInt(app?.appEmoji ? app.appEmoji : DEFAULT_APPMOJI, 16),
-          )} ${app?.name}`,
+          label: getAppNameWithEmoji(app),
         }))
       : []),
   ]
@@ -85,14 +74,7 @@ const ChainSandboxInputs = ({
   return selectedChain ? (
     <Stack gap="xl">
       <Group>
-        <Group
-          gap={0}
-          pos="relative"
-          style={(theme: MantineTheme) => ({
-            border: `1px solid ${theme.colors.gray[8]}`,
-            borderRadius: 4,
-          })}
-        >
+        <Group className="bordered-container" gap={0} pos="relative">
           {appsSelectItems.length > 0 ? (
             <>
               <FluidSelect

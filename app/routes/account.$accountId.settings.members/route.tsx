@@ -1,18 +1,12 @@
-import { ActionFunction, json, LoaderFunction, MetaFunction } from "@remix-run/node"
+import { json, LoaderFunction, MetaFunction } from "@remix-run/node"
 import { useOutletContext } from "@remix-run/react"
-import React from "react"
-import invariant from "tiny-invariant"
+import { action } from "./action"
 import MembersView from "./view"
 import { ErrorBoundaryView } from "~/components/ErrorBoundaryView"
-import { initPortalClient } from "~/models/portal/portal.server"
-import { RoleName, User } from "~/models/portal/sdk"
+import { User } from "~/models/portal/sdk"
 import { AccountIdLoaderData } from "~/routes/account.$accountId/route"
-import { ActionDataStruct } from "~/types/global"
-import { getErrorMessage } from "~/utils/catchError"
-import { triggerTeamActionNotification } from "~/utils/notifications.server"
 import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
-import { action } from "./action"
 
 export const meta: MetaFunction = () => {
   return [

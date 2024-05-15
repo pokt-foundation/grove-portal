@@ -1,15 +1,15 @@
+import { json } from "@remix-run/node"
+import { Outlet } from "@remix-run/react"
 import { expect } from "vitest"
 import { render, screen, createRemixStub, waitFor } from "test/helpers"
 import { accountMockData, profileMockData } from "~/models/portal/portal.data"
 import { PayPlanType, RoleName } from "~/models/portal/sdk"
 import { invoice, subscription, useageRecord } from "~/models/stripe/stripe.data"
+import RootProviders from "~/root/components/RootProviders"
 import AccountPlanDetails, {
   AccountAppRelays,
   AccountPlanLoaderData,
 } from "~/routes/account.$accountId.settings.plan/route"
-import { json } from "@remix-run/node"
-import { Outlet } from "@remix-run/react"
-import RootProviders from "~/root/components/RootProviders"
 
 const accountAppsRelaysData: AccountAppRelays = {
   countTotal: 10000,

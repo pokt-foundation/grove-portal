@@ -2,8 +2,8 @@ import "@testing-library/jest-dom"
 import { installGlobals } from "@remix-run/node"
 import matchers from "@testing-library/jest-dom/matchers"
 import { toHaveNoViolations } from "jest-axe"
-import { getClientEnv } from "~/utils/environment.server"
 import { expect } from "vitest"
+import { getClientEnv } from "~/utils/environment.server"
 import "vitest-canvas-mock"
 
 expect.extend({ ...toHaveNoViolations, ...matchers })

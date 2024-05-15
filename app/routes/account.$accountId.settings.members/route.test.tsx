@@ -1,12 +1,12 @@
+import { json } from "@remix-run/node"
 import { Outlet } from "@remix-run/react"
+import { TeamActionData } from "./action"
+import AccountMembers, { TeamLoaderData } from "./route"
 import { createRemixStub, render, waitFor, screen, fireEvent } from "test/helpers"
+import { accountMockData, profileMockData } from "~/models/portal/portal.data"
 import { RoleName } from "~/models/portal/sdk"
 import RootProviders from "~/root/components/RootProviders"
-import AccountMembers, { TeamLoaderData } from "./route"
-import { json } from "@remix-run/node"
-import { accountMockData, profileMockData } from "~/models/portal/portal.data"
 import { ActionDataStruct } from "~/types/global"
-import { TeamActionData } from "./action"
 
 function SettingsOutLetContext() {
   return (
@@ -102,9 +102,9 @@ describe("/account/$accountId/settings/members", () => {
 
       // fill out form in modal
       fireEvent.change(emailField, { target: { value: "testing@test.com" } })
-      expect(emailField.value).toBe("testing@test.com")
+      expect(emailField).toHaveValue("testing@test.com")
       fireEvent.change(roleField, { target: { value: "MEMBER" } })
-      expect(roleField.value).toBe("MEMBER")
+      expect(roleField).toHaveValue("MEMBER")
 
       // // submit form
       // const submitButton = screen.getByRole("button", { name: /invite/i })

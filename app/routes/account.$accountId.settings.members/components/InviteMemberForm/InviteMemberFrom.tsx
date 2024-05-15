@@ -48,8 +48,8 @@ const InviteMemberFrom = ({ accountName }: InviteMemberFromProps) => {
           />
           <Form
             action={`/account/${accountId}/settings/members`}
-            method="post"
             aria-label="inviteMemberForm"
+            method="post"
             role="form"
           >
             <Stack gap="md">

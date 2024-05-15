@@ -9,7 +9,7 @@ info:
 servers:
   - url: /api/v1
 security:
-  - apiKey: [ ]
+  - apiKey: []
 paths:
   /healthcheck:
     get:

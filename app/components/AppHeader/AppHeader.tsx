@@ -13,7 +13,7 @@ type HeaderProps = {
 
 export const AppHeader = ({ user, opened, toggle }: HeaderProps) => {
   return (
-    <Flex align="center" gap="sm" h="100%" justify="flex-end" p="md">
+    <Flex align="center" gap="sm" h="100%" justify="flex-end" px="md" py={40}>
       <Burger
         hiddenFrom="sm"
         opened={opened}

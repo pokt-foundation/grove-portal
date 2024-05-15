@@ -1,0 +1,14 @@
+.menuItem:hover {
+  background-color: var(--mantine-hover-color);
+}
+
+.activeMenuItem {
+  opacity: 1;
+}
+
+@mixin dark-root {
+  .activeMenuItem {
+    background-color: var(--mantine-color-dark-4);
+    color: var(--mantine-color-white);
+  }
+}

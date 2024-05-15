@@ -115,7 +115,7 @@ const AppEndpointsTable = ({
                         color="gray"
                         radius="xl"
                         size={40}
-                        variant="outline"
+                        variant="subtle"
                         onClick={() => {
                           setSelectedBlockchain(chain)
                           trackEvent({
@@ -129,7 +129,7 @@ const AppEndpointsTable = ({
                       </ActionIcon>
                     </Tooltip>
                     <Menu>
-                      <ContextMenuTarget />
+                      <ContextMenuTarget variant="subtle" />
                       <Menu.Dropdown>
                         {chain.blockchain && CHAIN_DOCS_URL[chain.blockchain] && (
                           <Menu.Item leftSection={<LuBook size={18} />}>

@@ -42,9 +42,8 @@ const AppForm = ({ app, onSubmit }: AppFormProps) => {
     <Stack>
       <RouteModal.Header
         closeButtonLink={`/account/${accountId}`}
-        description="An 'application' is a unique bridge connecting your project to the decentralized
-          world. It represents the configuration set for accessing various blockchains,
-          tailoring to the specific needs of your project."
+        description="An application is a unified environment that simplifies decentralized cloud infrastructure.
+        Within its seamless framework lie preconfigured networks, ready for deployment with optimal visualization and configuration."
         title={`${label} your application`}
       />
       <Divider mb="md" mt="xl" />

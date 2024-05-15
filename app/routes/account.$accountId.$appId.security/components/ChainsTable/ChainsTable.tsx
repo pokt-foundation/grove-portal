@@ -34,47 +34,45 @@ const ChainsTable = ({
   return (
     selectedBlockChains && (
       <DataTable
-        data={selectedBlockChains
-          ?.sort((a, b) => (a.blockchain > b.blockchain ? 1 : -1))
-          .map((chain) => {
-            return {
-              chain: {
-                element: <Chain chain={chain} />,
-                value: `${chain?.description} ${chain?.blockchain}`,
-                cellProps: {
-                  style: { minWidth: "250px" },
-                  width: "30%",
-                },
+        data={selectedBlockChains.map((chain) => {
+          return {
+            chain: {
+              element: <Chain chain={chain} />,
+              value: `${chain?.description} ${chain?.blockchain}`,
+              cellProps: {
+                style: { minWidth: "250px" },
+                width: "30%",
               },
-              endpointUrl: {
-                element: (
-                  <TextInput readOnly miw={300} value={getAppEndpointUrl(chain, appId)} />
-                ),
+            },
+            endpointUrl: {
+              element: (
+                <TextInput readOnly miw={300} value={getAppEndpointUrl(chain, appId)} />
+              ),
+            },
+            action: {
+              element: (
+                <Flex gap="lg" justify="flex-end">
+                  <CopyTextButton value={getAppEndpointUrl(chain, appId)} />
+                  {!readOnly && (
+                    <ActionIcon
+                      aria-label={`Delete ${chain.description}`}
+                      radius="xl"
+                      size={40}
+                      variant="outline"
+                      onClick={() => onDeleteChain(chain.id)}
+                    >
+                      <LuTrash2 size={18} />
+                    </ActionIcon>
+                  )}
+                </Flex>
+              ),
+              cellProps: {
+                style: { minWidth: "130px" },
+                width: "130px",
               },
-              action: {
-                element: (
-                  <Flex gap="lg" justify="flex-end">
-                    <CopyTextButton value={getAppEndpointUrl(chain, appId)} />
-                    {!readOnly && (
-                      <ActionIcon
-                        aria-label={`Delete ${chain.description}`}
-                        radius="xl"
-                        size={40}
-                        variant="outline"
-                        onClick={() => onDeleteChain(chain.id)}
-                      >
-                        <LuTrash2 size={18} />
-                      </ActionIcon>
-                    )}
-                  </Flex>
-                ),
-                cellProps: {
-                  style: { minWidth: "130px" },
-                  width: "130px",
-                },
-              },
-            }
-          })}
+            },
+          }
+        })}
         paginate={false}
       />
     )

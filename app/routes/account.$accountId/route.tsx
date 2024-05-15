@@ -46,8 +46,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     })
   } catch (error) {
     /**
-     * Handle when an invalid account is manually entered & the case when the
-     * user is part of only one app within an org and he leaves the team
+     * Handle when an invalid account is manually entered & when the user leaves the account
      */
 
     let ownerAccount = userAccounts?.getUserAccounts?.find(

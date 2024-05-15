@@ -42,7 +42,7 @@ export default function AccountSettingsLayoutView({
 
   return (
     <Container fluid px={0}>
-      <Stack gap={32}>
+      <Stack gap="xl">
         <Title order={2}>Settings & members</Title>
         <LinkTabs routes={routes} />
       </Stack>

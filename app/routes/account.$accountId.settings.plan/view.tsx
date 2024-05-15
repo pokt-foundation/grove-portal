@@ -1,5 +1,4 @@
-import { Box, Stack } from "@mantine/core"
-import AutoScalePlanLatestInvoiceCard from "./components/AutoScalePlanLatestInvoiceCard"
+import { Box } from "@mantine/core"
 import AutoScalePlanOverviewCard from "./components/AutoScalePlanOverviewCard"
 import EnterpriseAccountOverviewCard from "./components/EnterpriseAccountOverviewCard"
 import StarterAccountPlan from "./components/StarterAccountPlan"
@@ -10,10 +9,7 @@ export type AccountPlanViewProps = AccountPlanLoaderData & { userRole: RoleName 
 
 export const AccountPlanView = ({
   account,
-  latestInvoice,
-  accountAppsRelays,
   subscription,
-  usageRecords,
   userRole,
 }: AccountPlanViewProps) => {
   return (
@@ -23,24 +19,11 @@ export const AccountPlanView = ({
       )}
 
       {account.planType === PayPlanType.PayAsYouGoV0 && (
-        <Stack>
-          {subscription && usageRecords && (
-            <AutoScalePlanOverviewCard
-              account={account}
-              subscription={subscription}
-              usageRecords={usageRecords}
-              userRole={userRole}
-            />
-          )}
-          {latestInvoice && usageRecords && (
-            <AutoScalePlanLatestInvoiceCard
-              accountAppsRelays={accountAppsRelays}
-              invoice={latestInvoice}
-              usageRecords={usageRecords}
-              userRole={userRole}
-            />
-          )}
-        </Stack>
+        <AutoScalePlanOverviewCard
+          account={account}
+          subscription={subscription}
+          userRole={userRole}
+        />
       )}
 
       {account.planType === PayPlanType.Enterprise && (

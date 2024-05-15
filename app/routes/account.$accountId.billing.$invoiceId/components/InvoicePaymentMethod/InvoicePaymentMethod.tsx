@@ -65,7 +65,7 @@ const InvoicePaymentMethod = ({ charge }: { charge: Stripe.Charge }) => {
                   }: {
                     payment_method_details: Stripe.Charge.PaymentMethodDetails | null
                   }) =>
-                    `${payment_method_details?.card?.exp_month}/
+                    `${payment_method_details?.card?.exp_month} /
                     ${payment_method_details?.card?.exp_year}`,
                   title: "Expires",
                 },

@@ -7,10 +7,11 @@ import {
   Title,
   useMantineTheme,
 } from "@mantine/core"
-import { NavLink } from "@remix-run/react"
+import { NavLink, useParams } from "@remix-run/react"
 import React from "react"
 import { LuArrowLeft } from "react-icons/lu"
 import { Stripe } from "~/models/stripe/stripe.server"
+import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
 import { formatStripeDate } from "~/utils/billingUtils"
 
 type InvoiceHeaderProps = {
@@ -19,6 +20,7 @@ type InvoiceHeaderProps = {
 }
 const InvoiceHeader = ({ invoice, charge }: InvoiceHeaderProps) => {
   const theme = useMantineTheme()
+  const { accountId } = useParams()
 
   return (
     <Stack gap="xl" justify="center">
@@ -56,6 +58,13 @@ const InvoiceHeader = ({ invoice, charge }: InvoiceHeaderProps) => {
             rel="noreferrer"
             target="_blank"
             variant="subtle"
+            onClick={() => {
+              trackEvent({
+                category: AnalyticCategories.account,
+                action: AnalyticActions.account_billing_invoice_download,
+                label: `Account: ${accountId} / Invoice: ${invoice.id}`,
+              })
+            }}
           >
             Download
           </Button>
@@ -69,6 +78,13 @@ const InvoiceHeader = ({ invoice, charge }: InvoiceHeaderProps) => {
                 rel="noreferrer"
                 target="_blank"
                 variant="subtle"
+                onClick={() => {
+                  trackEvent({
+                    category: AnalyticCategories.account,
+                    action: AnalyticActions.account_billing_invoice_pay,
+                    label: `Account: ${accountId} / Invoice: ${invoice.id}`,
+                  })
+                }}
               >
                 Pay Invoice
               </Button>
@@ -84,6 +100,13 @@ const InvoiceHeader = ({ invoice, charge }: InvoiceHeaderProps) => {
                 rel="noreferrer"
                 target="_blank"
                 variant="subtle"
+                onClick={() => {
+                  trackEvent({
+                    category: AnalyticCategories.account,
+                    action: AnalyticActions.account_billing_receipt_view,
+                    label: `Account: ${accountId} / Invoice: ${invoice.id}`,
+                  })
+                }}
               >
                 View Receipt
               </Button>

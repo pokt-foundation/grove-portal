@@ -1,9 +1,10 @@
 import { Button, Menu, NumberFormatter, Text } from "@mantine/core"
-import { useNavigate } from "@remix-run/react"
+import { useNavigate, useParams } from "@remix-run/react"
 import { DataTable } from "mantine-datatable"
 import React from "react"
 import ContextMenuTarget from "~/components/ContextMenuTarget"
 import { Stripe } from "~/models/stripe/stripe.server"
+import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
 import {
   formatStripeDate,
   getStripeAmount,
@@ -16,6 +17,7 @@ type InvoicesDataTableProps = {
 }
 const InvoicesDataTable = ({ invoices, usageRecords }: InvoicesDataTableProps) => {
   const navigate = useNavigate()
+  const { accountId } = useParams()
 
   const invoicesWithUSage = invoices.map((invoice) => {
     const invoiceUsageRecord = usageRecords?.find(
@@ -86,7 +88,7 @@ const InvoicesDataTable = ({ invoices, usageRecords }: InvoicesDataTableProps) =
         {
           accessor: "action",
           title: "",
-          render: ({ invoice_pdf }) => (
+          render: ({ invoice_pdf, id }) => (
             <Menu>
               <ContextMenuTarget />
               <Menu.Dropdown>
@@ -99,6 +101,13 @@ const InvoicesDataTable = ({ invoices, usageRecords }: InvoicesDataTableProps) =
                     size="compact-sm"
                     target="_blank"
                     variant="subtle"
+                    onClick={() => {
+                      trackEvent({
+                        category: AnalyticCategories.account,
+                        action: AnalyticActions.account_billing_invoice_download,
+                        label: `Account: ${accountId} / Invoice: ${id}`,
+                      })
+                    }}
                   >
                     Download Invoice PDF
                   </Button>
@@ -111,7 +120,14 @@ const InvoicesDataTable = ({ invoices, usageRecords }: InvoicesDataTableProps) =
       minHeight={500}
       records={invoicesWithUSage}
       verticalSpacing={5}
-      onRowClick={({ record }) => navigate(`${record.id}`)}
+      onRowClick={({ record }) => {
+        trackEvent({
+          category: AnalyticCategories.account,
+          action: AnalyticActions.account_billing_invoice_view,
+          label: `Account: ${accountId} / Invoice: ${record.id}`,
+        })
+        navigate(`${record.id}`)
+      }}
     />
   )
 }

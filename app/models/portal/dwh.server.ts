@@ -5,7 +5,7 @@ import { dayjs } from "~/utils/dayjs"
 export type DwhPeriod = number | DwhDefinedPeriod
 export type DwhDefinedPeriod = "24hr" | "weekToDate" | "monthToDate"
 
-type GetDwhDataBaseProps = {
+type GetDwhDataProps = {
   accountId: string
   method?: string
   applicationIDs?: string[]
@@ -14,22 +14,16 @@ type GetDwhDataBaseProps = {
   chainIDs?: string[]
 }
 
-type GetDwhDataProps =
-  | (GetDwhDataBaseProps & {
-      from?: null
-      to?: null
-    })
-  | (Omit<GetDwhDataBaseProps, "period"> & {
-      period?: null
-      from: Date
-      to: Date
-    })
-
 type GetDwhAggregateDataProps = GetDwhDataProps & {
   byHour?: boolean
 }
 
-export const getFromDate = (period: DwhPeriod) => {
+type GetBillingPeriodRelaysProps = Pick<GetDwhDataProps, "accountId" | "portalClient"> & {
+  from: Date
+  to: Date
+}
+
+export const getDateFrom = (period: DwhPeriod) => {
   switch (period) {
     case "24hr":
       return dayjs().utc().subtract(24, "hour").toDate()
@@ -43,16 +37,14 @@ export const getFromDate = (period: DwhPeriod) => {
 }
 
 export const getTotalRelays = async ({
-  from,
-  to,
   accountId,
   portalClient,
   applicationIDs,
   period,
   chainIDs,
 }: GetDwhDataProps) => {
-  const dateFrom = from ? from : getFromDate(period)
-  const dateTo = to ? to : dayjs().utc().toDate()
+  const dateFrom = getDateFrom(period)
+  const dateTo = dayjs().utc().toDate()
 
   const totalRelaysResponse = await portalClient.getD2StatsData({
     params: {
@@ -72,7 +64,7 @@ export const getBillingPeriodRelays = async ({
   to,
   accountId,
   portalClient,
-}: Pick<GetDwhDataProps, "accountId" | "portalClient" | "from" | "to">) => {
+}: GetBillingPeriodRelaysProps) => {
   const params = {
     from,
     to,
@@ -88,15 +80,13 @@ export const getBillingPeriodRelays = async ({
 }
 
 export const getRealtimeDataChains = async ({
-  from,
-  to,
   accountId,
   portalClient,
   applicationIDs,
   period,
 }: GetDwhDataProps) => {
-  const dateFrom = from ? from : getFromDate(period)
-  const dateTo = to ? to : dayjs().utc().toDate()
+  const dateFrom = getDateFrom(period)
+  const dateTo = dayjs().utc().toDate()
 
   const getD2ChainsDataResponse = await portalClient.getD2ChainsData({
     params: {
@@ -111,8 +101,6 @@ export const getRealtimeDataChains = async ({
 }
 
 export const getAggregateRelays = async ({
-  from,
-  to,
   accountId,
   portalClient,
   applicationIDs,
@@ -120,8 +108,8 @@ export const getAggregateRelays = async ({
   chainIDs,
   byHour,
 }: GetDwhAggregateDataProps) => {
-  const dateFrom = from ? from : getFromDate(period)
-  const dateTo = to ? to : dayjs().utc().toDate()
+  const dateFrom = getDateFrom(period)
+  const dateTo = dayjs().utc().toDate()
 
   const getD2StatsData = await portalClient.getD2StatsData({
     params: {

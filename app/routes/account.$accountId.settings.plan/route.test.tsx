@@ -40,8 +40,6 @@ describe("account/$accountId/settings/plan", () => {
                 account: accountMockData,
                 accountAppsRelays: [accountAppsRelaysData],
                 subscription: subscription,
-                latestInvoice: invoice,
-                usageRecords: useageRecord,
                 user: profileMockData,
               })
             },
@@ -79,8 +77,6 @@ describe("account/$accountId/settings/plan", () => {
                 account: { ...accountMockData, planType: PayPlanType.PayAsYouGoV0 },
                 accountAppsRelays: [accountAppsRelaysData],
                 subscription: subscription,
-                latestInvoice: invoice,
-                usageRecords: useageRecord,
                 user: profileMockData,
               })
             },

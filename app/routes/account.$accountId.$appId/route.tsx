@@ -13,7 +13,7 @@ import AppIdLayoutView from "./view"
 import ErrorBoundaryView from "app/components/ErrorBoundaryView"
 import useActionNotification from "~/hooks/useActionNotification"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { Blockchain, PortalApp, RoleName, SortOrder } from "~/models/portal/sdk"
+import { Blockchain, PortalApp, RoleName } from "~/models/portal/sdk"
 import { ActionDataStruct } from "~/types/global"
 import { getErrorMessage } from "~/utils/catchError"
 import { triggerAppActionNotification } from "~/utils/notifications.server"
@@ -30,7 +30,6 @@ export const meta: MetaFunction = () => {
 
 export type AppIdLoaderData = {
   app: PortalApp
-  blockchains: Blockchain[]
 }
 
 export const loader: LoaderFunction = async ({ request, params }) => {
@@ -47,11 +46,8 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       accountID: accountId,
     })
 
-    const getBlockchainsResponse = await portal.blockchains({ sortOrder: SortOrder.Asc })
-
     return json<AppIdLoaderData>({
       app: getUserPortalAppResponse.getUserPortalApp as PortalApp,
-      blockchains: getBlockchainsResponse.blockchains as Blockchain[],
     })
   } catch (error) {
     /**
@@ -122,11 +118,12 @@ export const action: ActionFunction = async ({ request, params }) => {
 
 export type AppIdOutletContext = AppIdLoaderData & {
   userRole: RoleName
+  blockchains: Blockchain[]
 }
 
 export default function AppIdLayout() {
-  const { app, blockchains } = useLoaderData<AppIdLoaderData>()
-  const { userRole } = useOutletContext<AccountIdLoaderData>()
+  const { app } = useLoaderData<AppIdLoaderData>()
+  const { userRole, blockchains } = useOutletContext<AccountIdLoaderData>()
   const actionData = useActionData() as ActionDataStruct<AppIdActionData>
 
   // handle all notifications at the layout level

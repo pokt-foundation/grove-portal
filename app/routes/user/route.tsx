@@ -60,7 +60,7 @@ export default function UserAccount() {
   ]
 
   return (
-    <RootAppShell accounts={accounts as Account[]} user={user}>
+    <RootAppShell accounts={accounts} user={user}>
       <Button
         color="gray"
         component={NavLink}

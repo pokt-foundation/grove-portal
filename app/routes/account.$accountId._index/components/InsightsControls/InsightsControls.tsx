@@ -1,10 +1,10 @@
-import { Divider, Box, Group, Text, useMantineTheme } from "@mantine/core"
+import { Divider, Box, Group, Text } from "@mantine/core"
 import { useSearchParams } from "@remix-run/react"
 import React from "react"
 import ChainSelectItem from "~/components/ChainSelectItem"
 import FluidSelect from "~/components/FluidSelect"
 import { Blockchain, PortalApp } from "~/models/portal/sdk"
-import { DEFAULT_APPMOJI } from "~/routes/account_.$accountId.create/components/AppmojiPicker"
+import { getAppNameWithEmoji } from "~/utils/accountUtils"
 
 type InsightsControlsProps = {
   apps?: PortalApp[]
@@ -14,16 +14,12 @@ type InsightsControlsProps = {
 export const DEFAULT_DWH_PERIOD = "24hr"
 
 const InsightsControls = ({ apps, chains }: InsightsControlsProps) => {
-  const theme = useMantineTheme()
-
   const appsSelectItems = [
     { value: "all", label: "All Applications" },
     ...(apps && apps.length > 0
       ? apps.map((app) => ({
           value: app?.id ?? "",
-          label: `${String.fromCodePoint(
-            parseInt(app?.appEmoji ? app.appEmoji : DEFAULT_APPMOJI, 16),
-          )} ${app?.name}`,
+          label: getAppNameWithEmoji(app),
         }))
       : []),
   ]
@@ -31,7 +27,7 @@ const InsightsControls = ({ apps, chains }: InsightsControlsProps) => {
   const chainsSelectItems = React.useMemo(() => {
     return chains.length > 0
       ? [
-          { value: "all", label: "All Endpoints" },
+          { value: "all", label: "All Networks" },
           ...(chains.length > 0
             ? chains.map((chain) => ({
                 value: chain.id,
@@ -76,21 +72,13 @@ const InsightsControls = ({ apps, chains }: InsightsControlsProps) => {
   return (
     <Group justify="space-between">
       <Group>
-        <Group
-          gap={0}
-          pos="relative"
-          style={{
-            border: `1px solid ${theme.colors.gray[8]}`,
-            borderRadius: 4,
-          }}
-        >
+        <Group className="bordered-container" gap={0} pos="relative">
           {apps ? (
             <>
               <FluidSelect
                 items={appsSelectItems}
                 styles={{ label: { marginLeft: 12, marginRight: 12 } }}
                 value={appParam}
-                withSearch={chainsSelectItems.length > 7}
                 onSelect={handleAppChange}
               />
               <Divider orientation="vertical" />
@@ -100,6 +88,7 @@ const InsightsControls = ({ apps, chains }: InsightsControlsProps) => {
             disabled={chainsSelectItems.length === 0}
             itemComponent={ChainSelectItem}
             items={chainsSelectItems}
+            placeholder="No Networks"
             value={chainParam}
             withSearch={chainsSelectItems.length > 7}
             onSelect={(chain: string) =>
@@ -108,12 +97,7 @@ const InsightsControls = ({ apps, chains }: InsightsControlsProps) => {
           />
         </Group>
         <Text>filtered over the past</Text>
-        <Box
-          style={{
-            border: `1px solid ${theme.colors.gray[8]}`,
-            borderRadius: 4,
-          }}
-        >
+        <Box className="bordered-container">
           <FluidSelect
             items={[
               { value: "24hr", label: "24 Hours" },

@@ -81,7 +81,7 @@ const LogsTable = ({ logs, meta, blockchains }: LogsTableProps) => {
             subtitle={
               hasFilters
                 ? "It looks like there are no logs matching your filter criteria. Try adjusting your filter settings."
-                : "There's been no activity in the past hour. Initiate relays to see logs appear here."
+                : "There's been no activity in the past hour."
             }
           />
         }

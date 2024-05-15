@@ -5,17 +5,24 @@
 
   @mixin dark-root {
     --mantine-color-body: var(--mantine-color-dark-9);
-    [data-variant="outline"]:not([data-outline-exclude="true"]) {
-      border-color: var(--mantine-color-gray-8);
-      color: inherit;
+    --mantine-hover-color: alpha(var(--mantine-color-dark-4), 0.5);
+    --app-shell-border-color: var(--mantine-color-dark-4);
+
+    .mantine-TextInput-input[readonly],
+    .mantine-PasswordInput-input:has(> input[readonly]) {
+      background-color: var(--mantine-color-dark-4) !important;
+      border-color: transparent;
     }
   }
+}
 
-  .mantine-TextInput-input[readonly],
-  .mantine-PasswordInput-input:has(> input[readonly]) {
-    background-color: var(--mantine-color-gray-9) !important;
-    border-color: transparent;
-  }
+.mantine-Checkbox-input:not(:checked) {
+  background-color: transparent;
+}
+
+[data-variant="outline"]:not([data-outline-exclude="true"]) {
+  border-color: var(--app-shell-border-color);
+  color: inherit;
 }
 
 a {
@@ -33,10 +40,19 @@ html {
   box-sizing: inherit;
 }
 
-.clickable-table tbody tr:hover {
-  background-color: alpha(var(--mantine-color-dark-7), 0.5);
-}
-
 body {
   font-size: 14px;
+}
+
+.clickable-table tbody tr:hover {
+  background-color: var(--mantine-hover-color);
+}
+
+.clickable-table .mantine-datatable-row {
+  cursor: pointer;
+}
+
+.bordered-container {
+  border: 1px solid var(--app-shell-border-color);
+  border-radius: 4px;
 }

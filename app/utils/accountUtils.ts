@@ -1,4 +1,5 @@
-import { Account, AccountUser } from "~/models/portal/sdk"
+import { Account, AccountUser, PortalApp } from "~/models/portal/sdk"
+import { DEFAULT_APPMOJI } from "~/routes/account_.$accountId.create/components/AppmojiPicker"
 
 export const getAccountAcceptedValue = (
   portalAppUsers: AccountUser[],
@@ -8,7 +9,10 @@ export const getAccountAcceptedValue = (
   return user?.accepted ?? false
 }
 
-export const getUserAccountRole = (users: AccountUser[], userId: string) => {
+export const getUserAccountRole = (
+  users: Pick<AccountUser, "id" | "roleName">[],
+  userId: string,
+) => {
   const user = users.find((user) => user.id === userId)
   return user?.roleName ?? null
 }
@@ -22,3 +26,8 @@ export const isAccountWithinAppLimit = (account: Account) => {
 
   return !portalApps || portalApps.length < account.plan.appLimit
 }
+
+export const getAppNameWithEmoji = (app: PortalApp) =>
+  `${String.fromCodePoint(
+    parseInt(app?.appEmoji ? app.appEmoji : DEFAULT_APPMOJI, 16),
+  )} \u00A0 ${app?.name}`

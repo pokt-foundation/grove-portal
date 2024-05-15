@@ -1,11 +1,11 @@
-import { Button, Divider, Group, Text, useMantineTheme } from "@mantine/core"
+import { Button, Divider, Group, Text } from "@mantine/core"
 import { DateTimePicker } from "@mantine/dates"
 import { useSearchParams } from "@remix-run/react"
 import React, { useMemo, useState } from "react"
 import { useHydrated } from "remix-utils/use-hydrated"
 import FluidSelect from "~/components/FluidSelect"
 import { PortalApp } from "~/models/portal/sdk"
-import { DEFAULT_APPMOJI } from "~/routes/account_.$accountId.create/components/AppmojiPicker"
+import { getAppNameWithEmoji } from "~/utils/accountUtils"
 import { dayjs } from "~/utils/dayjs"
 
 type LogsControlsProps = {
@@ -19,7 +19,7 @@ const logTypeSelectItem = [
 ]
 
 const LogsControls = ({ apps }: LogsControlsProps) => {
-  const theme = useMantineTheme()
+  // const theme = useMantineTheme()
   const isHydrated = useHydrated()
 
   const appsSelect = useMemo(
@@ -27,9 +27,7 @@ const LogsControls = ({ apps }: LogsControlsProps) => {
       ...(apps && apps.length > 0
         ? apps.map((app) => ({
             value: app?.id ?? "",
-            label: `${String.fromCodePoint(
-              parseInt(app?.appEmoji ? app.appEmoji : DEFAULT_APPMOJI, 16),
-            )} ${app?.name}`,
+            label: getAppNameWithEmoji(app),
           }))
         : []),
     ],
@@ -71,14 +69,7 @@ const LogsControls = ({ apps }: LogsControlsProps) => {
   return (
     <Group justify="space-between">
       <Group>
-        <Group
-          gap={0}
-          pos="relative"
-          style={{
-            border: `1px solid ${theme.colors.gray[8]}`,
-            borderRadius: 4,
-          }}
-        >
+        <Group className="bordered-container" gap={0} pos="relative">
           {apps && apps?.length > 0 ? (
             <>
               <FluidSelect

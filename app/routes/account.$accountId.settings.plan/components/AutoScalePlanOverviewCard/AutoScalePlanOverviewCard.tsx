@@ -14,21 +14,18 @@ import { capitalizeFirstLetter } from "~/utils/utils"
 interface AutoScalePlanOverviewCardProps {
   account: Account
   userRole: RoleName
-  subscription: Stripe.Subscription
-  usageRecords: Stripe.ApiList<Stripe.UsageRecordSummary>
+  subscription?: Stripe.Subscription
 }
 
 export default function AutoScalePlanOverviewCard({
   account,
   userRole,
   subscription,
-  usageRecords,
 }: AutoScalePlanOverviewCardProps) {
   const location = useLocation()
   const { openStopSubscriptionModal } = useSubscriptionModals()
 
   const accountPlanType = account.planType
-  const currentPeriodUsageRecords = usageRecords.data.find(({ invoice }) => !invoice)
 
   return (
     <TitledCard header={() => <Text fw={600}>Current plan</Text>}>
@@ -39,15 +36,19 @@ export default function AutoScalePlanOverviewCard({
               <Text>Plan Type</Text> <Text>{getPlanName(accountPlanType)}</Text>
             </Group>
             <Divider />
-            <Group justify="space-between">
-              <Text>Subscription</Text> <Text>{subscription.id}</Text>
-            </Group>
-            <Divider />
-            <Group justify="space-between">
-              <Text>Start date</Text>
-              <Text>{formatTimestampShort(subscription.start_date)}</Text>
-            </Group>
-            <Divider />
+            {subscription && (
+              <>
+                <Group justify="space-between">
+                  <Text>Subscription</Text> <Text>{subscription.id}</Text>
+                </Group>
+                <Divider />
+                <Group justify="space-between">
+                  <Text>Start date</Text>
+                  <Text>{formatTimestampShort(subscription.start_date)}</Text>
+                </Group>
+                <Divider />
+              </>
+            )}
           </Stack>
 
           <Stack gap={12}>
@@ -57,13 +58,6 @@ export default function AutoScalePlanOverviewCard({
             <Divider />
             <Group justify="space-between">
               <Text>Free Daily Relays</Text> <Text>100,000</Text>
-            </Group>
-            <Divider />
-            <Group justify="space-between">
-              <Text>Total Relays on this Billing Period</Text>
-              <Text>
-                {currentPeriodUsageRecords ? currentPeriodUsageRecords.total_usage : "-"}
-              </Text>
             </Group>
             <Divider />
           </Stack>

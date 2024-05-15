@@ -39,10 +39,10 @@ const jsonAutoComplete = (options: AutocompleteOption[]) =>
     },
   })
 
-const myTheme = xcodeDarkInit({
+const codeMirrorTheme = xcodeDarkInit({
   settings: {
-    background: "var(--mantine-color-gray-9)",
-    gutterBackground: "var(--mantine-color-gray-9)",
+    background: "var(--mantine-color-dark-4)",
+    gutterBackground: "var(--mantine-color-dark-4)",
   },
 })
 
@@ -85,7 +85,7 @@ const CodeEditor = ({
             extensions={extensions}
             minHeight="50px"
             readOnly={readOnly}
-            theme={myTheme}
+            theme={codeMirrorTheme}
             value={value}
             onChange={(value, viewUpdate) => {
               onCodeChange && onCodeChange(value)

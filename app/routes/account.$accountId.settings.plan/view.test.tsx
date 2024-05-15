@@ -2,9 +2,9 @@ import { expect } from "vitest"
 import PlanView from "./view"
 import { createRemixStub, render, screen, waitFor } from "test/helpers"
 import { accountMockData, profileMockData } from "~/models/portal/portal.data"
-import { PayPlanType, RoleName } from "~/models/portal/sdk"
-import { invoice, subscription, useageRecord } from "~/models/stripe/stripe.data"
 import RootProviders from "~/root/components/RootProviders"
+import { PayPlanType, RoleName } from "~/models/portal/sdk"
+import { subscription } from "~/models/stripe/stripe.data"
 import { AccountAppRelays } from "~/routes/account.$accountId.settings.plan/route"
 
 const accountAppsRelaysData: AccountAppRelays = {
@@ -23,9 +23,7 @@ describe("<PlanView />", () => {
             <PlanView
               account={accountMockData}
               accountAppsRelays={[accountAppsRelaysData]}
-              latestInvoice={invoice}
               subscription={subscription}
-              usageRecords={useageRecord}
               user={profileMockData}
               userRole={RoleName.Admin}
             />
@@ -50,9 +48,7 @@ describe("<PlanView />", () => {
             <PlanView
               account={{ ...accountMockData, planType: PayPlanType.PayAsYouGoV0 }}
               accountAppsRelays={[accountAppsRelaysData]}
-              latestInvoice={invoice}
               subscription={subscription}
-              usageRecords={useageRecord}
               user={profileMockData}
               userRole={RoleName.Admin}
             />

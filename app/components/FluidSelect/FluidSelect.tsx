@@ -3,14 +3,15 @@ import {
   FocusTrap,
   Group,
   Input,
-  MantineTheme,
   Menu,
   MenuProps,
   Text,
   UnstyledButton,
 } from "@mantine/core"
+import cx from "clsx"
 import React, { forwardRef, useMemo, useState } from "react"
 import { LuCheck, LuChevronDown } from "react-icons/lu"
+import classes from "./FluidSelect.module.css"
 
 type SelectItem = { label: string; value: string }
 
@@ -141,16 +142,12 @@ const FluidSelect = forwardRef<HTMLDivElement, FluidSelectProps>(
                 filteredItems.map((item, index) => (
                   <Menu.Item
                     key={item.label}
+                    className={cx(classes.menuItem, {
+                      [classes.activeMenuItem]: item.value === value,
+                    })}
                     disabled={item.value === value}
                     mb={index === items.length - 1 ? 0 : 8}
                     p={5}
-                    style={(theme: MantineTheme) => ({
-                      ...(item.value === value && {
-                        backgroundColor: theme.colors.dark[7],
-                        color: theme.colors.dark[0],
-                        opacity: 1,
-                      }),
-                    })}
                     onClick={() => {
                       setSearchTerm("")
                       setSelectedItem(item)

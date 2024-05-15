@@ -4,7 +4,7 @@ import { expect } from "vitest"
 import { render, screen, createRemixStub, waitFor } from "test/helpers"
 import { accountMockData, profileMockData } from "~/models/portal/portal.data"
 import { PayPlanType, RoleName } from "~/models/portal/sdk"
-import { invoice, subscription, useageRecord } from "~/models/stripe/stripe.data"
+import { subscription } from "~/models/stripe/stripe.data"
 import RootProviders from "~/root/components/RootProviders"
 import AccountPlanDetails, {
   AccountAppRelays,

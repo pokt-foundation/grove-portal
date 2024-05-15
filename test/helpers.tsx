@@ -3,4 +3,5 @@ import { createRemixStub } from "@remix-run/testing"
 
 export { axe } from "jest-axe"
 export * from "@testing-library/react"
+export * from "vitest"
 export { userEvent, createRemixStub }

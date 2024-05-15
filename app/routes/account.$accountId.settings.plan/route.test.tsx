@@ -17,7 +17,7 @@ const accountAppsRelaysData: AccountAppRelays = {
   appEmoji: "emoji",
 }
 
-describe("<PlanView />", () => {
+describe("account/$accountId/settings/plan", () => {
   it("renders upgrade screen for freetier plan", async () => {
     function SettingsOutLetContext() {
       return (

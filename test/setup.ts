@@ -4,6 +4,7 @@ import matchers from "@testing-library/jest-dom/matchers"
 import { toHaveNoViolations } from "jest-axe"
 import { getClientEnv } from "~/utils/environment.server"
 import { expect } from "vitest"
+import "vitest-canvas-mock"
 
 expect.extend({ ...toHaveNoViolations, ...matchers })
 
@@ -22,4 +23,18 @@ Object.defineProperty(window, "matchMedia", {
     removeEventListener: vi.fn(),
     dispatchEvent: vi.fn(),
   })),
+})
+
+Object.defineProperty(window, "ResizeObserver", {
+  writable: true,
+  value: vi.fn().mockImplementation(() => ({
+    disconnect: vi.fn(),
+    observe: vi.fn(),
+    unobserve: vi.fn(),
+  })),
+})
+
+Object.defineProperty(window, "gtag", {
+  writable: true,
+  value: vi.fn().mockImplementation(() => vi.fn()),
 })

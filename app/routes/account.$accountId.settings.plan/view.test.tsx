@@ -3,7 +3,7 @@ import PlanView from "./view"
 import { render, screen } from "test/helpers"
 import { accountMockData, profileMockData } from "~/models/portal/portal.data"
 import { RoleName } from "~/models/portal/sdk"
-import { invoice, subscription, useageRecord } from "~/models/stripe/stripe.data"
+import { subscription } from "~/models/stripe/stripe.data"
 import { AccountAppRelays } from "~/routes/account.$accountId.settings.plan/route"
 
 const accountAppsRelaysData: AccountAppRelays = {
@@ -19,9 +19,7 @@ describe("<PlanView />", () => {
       <PlanView
         account={accountMockData}
         accountAppsRelays={accountAppsRelays}
-        latestInvoice={invoice}
         subscription={subscription}
-        usageRecords={useageRecord}
         user={profileMockData}
         userRole={RoleName.Admin}
       />,

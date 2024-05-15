@@ -90,7 +90,7 @@ const AccountSelect = ({ accounts, collapsed, style }: AccountSelectProps) => {
                 mb={index === accounts.length - 1 ? 0 : 8}
                 p={2}
               >
-                <NavLink to={`/account/${account.id}`}>
+                <NavLink prefetch="intent" to={`/account/${account.id}`}>
                   <AccountItem account={account} selected={account.id === accountId} />
                 </NavLink>
               </Menu.Item>

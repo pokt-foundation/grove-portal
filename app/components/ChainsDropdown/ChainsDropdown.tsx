@@ -13,20 +13,10 @@ const ChainsDropdown = ({ chains, onChange, width }: ChainsDropdownProps) => {
   const addNewChainSelectRef = useRef<HTMLInputElement>(null)
 
   const selectChainData = useMemo(() => {
-    return chains
-      .map((chain) => ({
-        label: chain?.description ?? "",
-        value: chain?.id ?? "",
-      }))
-      .sort((a, b) => {
-        if (a.label < b.label) {
-          return -1
-        }
-        if (a.label > b.label) {
-          return 1
-        }
-        return 0
-      })
+    return chains.map((chain) => ({
+      label: chain?.description ?? "",
+      value: chain?.id ?? "",
+    }))
   }, [chains])
 
   return (

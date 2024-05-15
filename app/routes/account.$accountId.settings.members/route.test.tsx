@@ -79,13 +79,12 @@ describe("/account/$accountId/settings/members", () => {
     render(<RemixStub />)
 
     await waitFor(() => {
-      const inviteButton = screen.getByText(/invite new member/i)
       // ensure member page loaded
-      expect(inviteButton).toBeInTheDocument()
-
-      // open modal
-      fireEvent.click(inviteButton)
+      expect(screen.getByText(/invite new member/i)).toBeInTheDocument()
     })
+
+    // open modal
+    fireEvent.click(screen.getByText(/invite new member/i))
 
     // expect modal to have opened
     expect(screen.getByRole("dialog")).toBeInTheDocument()

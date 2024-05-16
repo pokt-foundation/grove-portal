@@ -25,8 +25,7 @@ export const AccountBillingView = ({
       {upcomingInvoice ? (
         <Stack
           gap={4}
-          px={20}
-          py={10}
+          p={20}
           style={{
             border: `1px solid ${theme.colors.gray[8]}`,
             borderRadius: 4,
@@ -46,7 +45,7 @@ export const AccountBillingView = ({
             )}
           </Text>
           <Text c="dimmed">
-            The amount is subject to change depending on your current usage.
+            The amount is subject to change daily depending on your current usage.
           </Text>
         </Stack>
       ) : null}

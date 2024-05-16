@@ -90,7 +90,7 @@ const InvoicesDataTable = ({ invoices, usageRecords }: InvoicesDataTableProps) =
           title: "",
           render: ({ invoice_pdf, id }) => (
             <Menu>
-              <ContextMenuTarget />
+              <ContextMenuTarget variant="subtle" />
               <Menu.Dropdown>
                 <Menu.Item>
                   <Button

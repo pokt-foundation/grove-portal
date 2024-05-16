@@ -1,6 +1,6 @@
 import { Novu, TriggerRecipientsTypeEnum } from "@novu/node"
 import { PayPlanType, RoleName, User } from "~/models/portal/sdk"
-import { TeamActionType } from "~/routes/account.$accountId.settings.members/route"
+import { TeamActionType } from "~/routes/account.$accountId.settings.members/action"
 import { getRequiredServerEnvVar } from "~/utils/environment"
 import { getPlanName } from "~/utils/planUtils"
 import { capitalizeFirstLetter } from "~/utils/utils"

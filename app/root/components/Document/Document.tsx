@@ -1,4 +1,4 @@
-import { ColorSchemeScript } from "@mantine/core"
+import { ColorSchemeScript, MantineColorScheme } from "@mantine/core"
 import {
   Links,
   Meta,
@@ -9,7 +9,15 @@ import {
 import React, { useEffect } from "react"
 import RootProviders from "~/root/components/RootProviders"
 
-const Document = ({ children, title }: { children: React.ReactNode; title?: string }) => {
+const Document = ({
+  children,
+  title,
+  colorScheme,
+}: {
+  children: React.ReactNode
+  title?: string
+  colorScheme?: MantineColorScheme
+}) => {
   const [params] = useSearchParams()
 
   useEffect(() => {
@@ -20,7 +28,7 @@ const Document = ({ children, title }: { children: React.ReactNode; title?: stri
   }, [params])
 
   return (
-    <html data-mantine-color-scheme="dark">
+    <html data-mantine-color-scheme={colorScheme}>
       <head>
         {title && <title>{title}</title>}
         {/* Google tag (gtag.js) */}
@@ -43,10 +51,10 @@ const Document = ({ children, title }: { children: React.ReactNode; title?: stri
         <meta content="width=device-width, initial-scale=1" name="viewport" />
         <Meta />
         <Links />
-        <ColorSchemeScript defaultColorScheme="dark" />
+        <ColorSchemeScript defaultColorScheme={colorScheme} />
       </head>
       <body>
-        <RootProviders>{children}</RootProviders>
+        <RootProviders colorScheme={colorScheme}>{children}</RootProviders>
         <ScrollRestoration />
         <Scripts />
       </body>

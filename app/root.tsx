@@ -6,6 +6,7 @@ import "mantine-datatable/styles.layer.css"
 import "@mantine/nprogress/styles.layer.css"
 import "~/styles/root.css"
 
+import { MantineColorScheme } from "@mantine/core"
 import { cssBundleHref } from "@remix-run/css-bundle"
 import {
   json,
@@ -17,6 +18,7 @@ import {
 import { Outlet, useLoaderData } from "@remix-run/react"
 import { ErrorBoundaryView } from "~/components/ErrorBoundaryView"
 import Document from "~/root/components/Document"
+import { getColorSchemeSession } from "~/utils/colorScheme.server"
 import { getRequiredServerEnvVar } from "~/utils/environment"
 import { getClientEnv } from "~/utils/environment.server"
 import { seo_title_append } from "~/utils/seo"
@@ -39,6 +41,7 @@ export const meta: MetaFunction = () => [
 
 export interface RootLoaderData {
   ENV: ReturnType<typeof getClientEnv>
+  colorScheme: MantineColorScheme
 }
 
 export const loader: LoaderFunction = async ({ request, params }) => {
@@ -47,17 +50,24 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   if (MAINTENANCE_MODE === "true" && !url.endsWith("/maintenance")) {
     return redirect("/maintenance")
   }
+  const themeSession = await getColorSchemeSession(request)
+  const systemPreferredColorScheme = request.headers.get(
+    "Sec-CH-Prefers-Color-Scheme",
+  ) as MantineColorScheme
 
+  const sessionColorScheme = themeSession.getTheme()
+
+  const colorScheme = sessionColorScheme || systemPreferredColorScheme || "dark"
   return json<RootLoaderData>({
     ENV: getClientEnv(),
+    colorScheme,
   })
 }
 
 export default function App() {
-  const { ENV } = useLoaderData<RootLoaderData>()
-
+  const { ENV, colorScheme } = useLoaderData<RootLoaderData>()
   return (
-    <Document>
+    <Document colorScheme={colorScheme}>
       <Outlet />
       <script
         dangerouslySetInnerHTML={{

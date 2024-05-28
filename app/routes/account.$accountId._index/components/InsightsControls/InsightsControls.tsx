@@ -161,6 +161,9 @@ const InsightsControls = ({ apps, chains }: InsightsControlsProps) => {
           color="gray"
           component="a"
           href={getDownloadCsvUrl({ searchParams, accountId, appId })}
+          px={14}
+          radius={4}
+          variant="outline"
           onClick={() => {
             trackEvent({
               category: AnalyticCategories.account,

@@ -1,11 +1,11 @@
 import { Divider, Box, Group, Text, Button } from "@mantine/core"
 import { useParams, useSearchParams } from "@remix-run/react"
 import React from "react"
-import { LuDownload } from "react-icons/lu"
 import ChainSelectItem from "~/components/ChainSelectItem"
 import FluidSelect from "~/components/FluidSelect"
 import { Blockchain, PortalApp } from "~/models/portal/sdk"
 import { getAppNameWithEmoji } from "~/utils/accountUtils"
+import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
 
 type InsightsControlsProps = {
   apps?: PortalApp[]
@@ -80,6 +80,12 @@ const InsightsControls = ({ apps, chains }: InsightsControlsProps) => {
   }
 
   const handleAppChange = (app: string) => {
+    trackEvent({
+      category: AnalyticCategories.account,
+      action: AnalyticActions.account_insights_select_app,
+      label: `Account: ${accountId} / App: ${app}`,
+    })
+
     setSearchParams((searchParams) => {
       searchParams.delete("chain")
       searchParams.set("app", app)
@@ -109,9 +115,14 @@ const InsightsControls = ({ apps, chains }: InsightsControlsProps) => {
             placeholder="No Networks"
             value={chainParam}
             withSearch={chainsSelectItems.length > 7}
-            onSelect={(chain: string) =>
+            onSelect={(chain: string) => {
+              trackEvent({
+                category: AnalyticCategories.account,
+                action: AnalyticActions.account_insights_select_network,
+                label: `Account: ${accountId} / Network: ${chain}`,
+              })
               handleParamChange({ param: chain, paramKey: "chain" })
-            }
+            }}
           />
         </Group>
         <Text>filtered over the past</Text>
@@ -134,9 +145,14 @@ const InsightsControls = ({ apps, chains }: InsightsControlsProps) => {
               },
             ]}
             value={periodParam}
-            onSelect={(period: string) =>
+            onSelect={(period: string) => {
+              trackEvent({
+                category: AnalyticCategories.account,
+                action: AnalyticActions.account_insights_change_period,
+                label: `Account: ${accountId} / Period: ${period}`,
+              })
               handleParamChange({ param: period, paramKey: "period" })
-            }
+            }}
           />
         </Box>
       </Group>
@@ -145,10 +161,15 @@ const InsightsControls = ({ apps, chains }: InsightsControlsProps) => {
           color="gray"
           component="a"
           href={getDownloadCsvUrl({ searchParams, accountId, appId })}
-          rightSection={<LuDownload size={14} />}
-          variant="subtle"
+          onClick={() => {
+            trackEvent({
+              category: AnalyticCategories.account,
+              action: AnalyticActions.account_insights_download_csv,
+              label: `Account: ${accountId}`,
+            })
+          }}
         >
-          CSV
+          Download CSV
         </Button>
       ) : null}
     </Group>

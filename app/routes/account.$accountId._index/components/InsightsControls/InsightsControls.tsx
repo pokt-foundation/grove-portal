@@ -1,6 +1,7 @@
-import { Divider, Box, Group, Text } from "@mantine/core"
-import { useSearchParams } from "@remix-run/react"
+import { Divider, Box, Group, Text, Button } from "@mantine/core"
+import { useParams, useSearchParams } from "@remix-run/react"
 import React from "react"
+import { LuDownload } from "react-icons/lu"
 import ChainSelectItem from "~/components/ChainSelectItem"
 import FluidSelect from "~/components/FluidSelect"
 import { Blockchain, PortalApp } from "~/models/portal/sdk"
@@ -13,7 +14,24 @@ type InsightsControlsProps = {
 
 export const DEFAULT_DWH_PERIOD = "24hr"
 
+const getDownloadCsvUrl = ({
+  searchParams,
+  accountId,
+  appId,
+}: {
+  searchParams: URLSearchParams
+  accountId: string
+  appId: string | undefined
+}) => {
+  return `/api/${accountId}/insights-csv${
+    searchParams.toString().length > 0 ? `?${searchParams}` : ""
+  }${
+    appId ? `${searchParams.toString().length > 0 ? "&" : "?"}appId=${appId}` : ""
+  }`.trim()
+}
+
 const InsightsControls = ({ apps, chains }: InsightsControlsProps) => {
+  const { accountId, appId } = useParams()
   const appsSelectItems = [
     { value: "all", label: "All Applications" },
     ...(apps && apps.length > 0
@@ -122,6 +140,17 @@ const InsightsControls = ({ apps, chains }: InsightsControlsProps) => {
           />
         </Box>
       </Group>
+      {accountId ? (
+        <Button
+          color="gray"
+          component="a"
+          href={getDownloadCsvUrl({ searchParams, accountId, appId })}
+          rightSection={<LuDownload size={14} />}
+          variant="subtle"
+        >
+          CSV
+        </Button>
+      ) : null}
     </Group>
   )
 }

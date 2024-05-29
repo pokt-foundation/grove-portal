@@ -93,9 +93,6 @@ dependencies:
   graphql-tag:
     specifier: ^2.12.6
     version: 2.12.6(graphql@16.8.1)
-  is-ip:
-    specifier: ^5.0.1
-    version: 5.0.1
   isbot:
     specifier: ^5.1.1
     version: 5.1.1
@@ -134,7 +131,7 @@ dependencies:
     version: 1.9.0(@remix-run/server-runtime@2.8.1)(remix-auth@3.6.0)
   remix-utils:
     specifier: ^7.5.0
-    version: 7.5.0(@remix-run/node@2.8.1)(@remix-run/react@2.8.1)(is-ip@5.0.1)(react@18.2.0)
+    version: 7.5.0(@remix-run/node@2.8.1)(@remix-run/react@2.8.1)(react@18.2.0)
   stripe:
     specifier: ^15.5.0
     version: 15.5.0
@@ -6074,13 +6071,6 @@ packages:
       wrap-ansi: 7.0.0
     dev: true
 
-  /clone-regexp@3.0.0:
-    resolution: {integrity: sha512-ujdnoq2Kxb8s3ItNBtnYeXdm07FcU0u8ARAT1lQ2YdMwQC+cdiXX8KoqMVuglztILivceTtp4ivqGSmEmhBUJw==}
-    engines: {node: '>=12'}
-    dependencies:
-      is-regexp: 3.1.0
-    dev: false
-
   /clone@1.0.4:
     resolution: {integrity: sha512-JQHZ2QMW6l3aH/j6xCqQThY/9OH4D/9ls34cgkUBiEeocRTU04tHfKPBsUK1PqZCUQM7GiA0IIXJSuXHI64Kbg==}
     engines: {node: '>=0.8'}
@@ -6258,11 +6248,6 @@ packages:
     resolution: {integrity: sha512-7V+KqSvMiHp8yWDuwfww06XleMWVVB9b9tURBx+G7UTADuo5hYPuowKloz4OzOqbPezxgo+fdQ1522WzPG4OeA==}
     engines: {node: '>=8'}
     dev: true
-
-  /convert-hrtime@5.0.0:
-    resolution: {integrity: sha512-lOETlkIeYSJWcbbcvjRKGxVMXJR+8+OQb/mTPbA4ObPMytYIsUbuOE0Jzy60hjARYszq1id0j8KgVhC+WGZVTg==}
-    engines: {node: '>=12'}
-    dev: false
 
   /convert-source-map@1.9.0:
     resolution: {integrity: sha512-ASFBup0Mz1uyiIjANan1jzLQami9z1PoYSZCiiYW2FczPbenXc45FZdBZLzOT+r6+iciuEModtmCti+hjaAk0A==}
@@ -8330,11 +8315,6 @@ packages:
   /function-bind@1.1.1:
     resolution: {integrity: sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A==}
 
-  /function-timeout@0.1.1:
-    resolution: {integrity: sha512-0NVVC0TaP7dSTvn1yMiy6d6Q8gifzbvQafO46RtLG/kHJUBNd+pVRGOBoK44wNBvtSPUJRfdVvkFdD3p0xvyZg==}
-    engines: {node: '>=14.16'}
-    dev: false
-
   /function.prototype.name@1.1.5:
     resolution: {integrity: sha512-uN7m/BzVKQnCUF/iW8jYea67v++2u7m5UgENbHRtdDVclOUP+FMPlCNdmk0h/ysGyo2tavMJEDqJAkJdRa1vMA==}
     engines: {node: '>= 0.4'}
@@ -8966,11 +8946,6 @@ packages:
     dependencies:
       loose-envify: 1.4.0
 
-  /ip-regex@5.0.0:
-    resolution: {integrity: sha512-fOCG6lhoKKakwv+C6KdsOnGvgXnmgfmp0myi3bcNwj3qfwPAxRKWEuFhvEFF7ceYIz6+1jRZ+yguLFAmUNPEfw==}
-    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
-    dev: false
-
   /ipaddr.js@1.9.1:
     resolution: {integrity: sha512-0KI/607xoxSToH7GjN1FfSbLoU0+btTicjsQSWQlh/hZykN8KpmMf7uYwPW3R+akZ6R/w18ZlXSHBYXiYUPO3g==}
     engines: {node: '>= 0.10'}
@@ -9131,14 +9106,6 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /is-ip@5.0.1:
-    resolution: {integrity: sha512-FCsGHdlrOnZQcp0+XT5a+pYowf33itBalCl+7ovNXC/7o5BhIpG14M3OrpPPdBSIQJCm+0M5+9mO7S9VVTTCFw==}
-    engines: {node: '>=14.16'}
-    dependencies:
-      ip-regex: 5.0.0
-      super-regex: 0.2.0
-    dev: false
-
   /is-lower-case@2.0.2:
     resolution: {integrity: sha512-bVcMJy4X5Og6VZfdOZstSexlEy20Sr0k/p/b2IlQJlfdKAQuMpiv5w2Ccxb8sKdRUNAG1PnHVHjFSdRDVS6NlQ==}
     dependencies:
@@ -9197,11 +9164,6 @@ packages:
       call-bind: 1.0.2
       has-tostringtag: 1.0.0
     dev: true
-
-  /is-regexp@3.1.0:
-    resolution: {integrity: sha512-rbku49cWloU5bSMI+zaRaXdQHXnthP6DZ/vLnfdSKyL4zUzuWnomtOEiZZOd+ioQ+avFo/qau3KPTc7Fjy1uPA==}
-    engines: {node: '>=12'}
-    dev: false
 
   /is-relative@1.0.0:
     resolution: {integrity: sha512-Kw/ReK0iqwKeu0MITLFuj0jbPAmEiOsIwyIXvvbfa6QfmN9pkD1M+8pdk7Rl/dTKbH34/XBFMbgD4iMJhLQbGA==}
@@ -12023,7 +11985,7 @@ packages:
       uuid: 8.3.2
     dev: false
 
-  /remix-utils@7.5.0(@remix-run/node@2.8.1)(@remix-run/react@2.8.1)(is-ip@5.0.1)(react@18.2.0):
+  /remix-utils@7.5.0(@remix-run/node@2.8.1)(@remix-run/react@2.8.1)(react@18.2.0):
     resolution: {integrity: sha512-vzjDhbdwK+3XxqL2LM7ZPzq0zyjb+77eAWbKhDqhnh0nlA11n3CmTtYzrZYpVf6h24+6m5mD6KnRfcdD3Zrl7w==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
@@ -12061,7 +12023,6 @@ packages:
     dependencies:
       '@remix-run/node': 2.8.1(typescript@5.4.3)
       '@remix-run/react': 2.8.1(react-dom@18.2.0)(react@18.2.0)(typescript@5.4.3)
-      is-ip: 5.0.1
       react: 18.2.0
       type-fest: 4.12.0
     dev: false
@@ -12790,15 +12751,6 @@ packages:
       postcss: 8.4.35
     dev: true
 
-  /super-regex@0.2.0:
-    resolution: {integrity: sha512-WZzIx3rC1CvbMDloLsVw0lkZVKJWbrkJ0k1ghKFmcnPrW1+jWbgTkTEWVtD9lMdmI4jZEz40+naBxl1dCUhXXw==}
-    engines: {node: '>=14.16'}
-    dependencies:
-      clone-regexp: 3.0.0
-      function-timeout: 0.1.1
-      time-span: 5.1.0
-    dev: false
-
   /supports-color@5.5.0:
     resolution: {integrity: sha512-QjVjwdXIt408MIiAqCX4oUKsgU2EqAGzs2Ppkm4aQYbjm+ZEWEcW4SfFNTr4uMNZma0ey4f5lgLrkB0aX0QMow==}
     engines: {node: '>=4'}
@@ -12920,13 +12872,6 @@ packages:
     dependencies:
       convert-hrtime: 3.0.0
     dev: true
-
-  /time-span@5.1.0:
-    resolution: {integrity: sha512-75voc/9G4rDIJleOo4jPvN4/YC4GRZrY8yy1uU4lwrB3XEQbWve8zXoO5No4eFrGcTAMYyoY67p8jRQdtA1HbA==}
-    engines: {node: '>=12'}
-    dependencies:
-      convert-hrtime: 5.0.0
-    dev: false
 
   /tiny-invariant@1.3.1:
     resolution: {integrity: sha512-AD5ih2NlSssTCwsMznbvwMZpJ1cbhkGd2uueNxzv2jDlEeZdU04JQfRnggJQ8DrcVBGjAsCKwFBbDlVNtEMlzw==}

@@ -1,7 +1,6 @@
 import { ActionFunction, json } from "@remix-run/node"
 import { Ratelimit } from "@upstash/ratelimit"
 import { kv } from "@vercel/kv"
-import { getClientIPAddress } from "remix-utils/get-client-ip-address"
 import invariant from "tiny-invariant"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { RoleName } from "~/models/portal/sdk"
@@ -37,7 +36,6 @@ export const action: ActionFunction = async ({ request, params }) => {
     const user_resend = formData.get("user_resend")
     const account_name = formData.get("account_name") as string
     const invitedAccountName = account_name ? account_name : accountId
-    const ipAddress = getClientIPAddress(request)
 
     let message = ""
     let type: TeamActionType = "invite"
@@ -168,9 +166,7 @@ export const action: ActionFunction = async ({ request, params }) => {
           limiter: Ratelimit.slidingWindow(1, "10s"),
         })
 
-        const { success } = await ratelimit.limit(
-          `ratelimit_${ipAddress ?? user.user.email}`,
-        )
+        const { success } = await ratelimit.limit(`ratelimit_${user.user.portalUserID}`)
 
         if (!success) {
           throw new Error(`You have reached your request limit`)

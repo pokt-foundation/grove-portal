@@ -52,7 +52,6 @@
     "graphql": "^16.8.1",
     "graphql-request": "^6.1.0",
     "graphql-tag": "^2.12.6",
-    "is-ip": "^5.0.1",
     "isbot": "^5.1.1",
     "jwt-decode": "^3.1.2",
     "lottie-react": "^2.4.0",

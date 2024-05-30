@@ -1,8 +1,9 @@
 import { toCsvSync } from "@iwsio/json-csv-node"
 import { LoaderFunction } from "@remix-run/node"
 import invariant from "tiny-invariant"
-import { getAggregateRelays } from "~/models/portal/dwh.server"
+import { DwhPeriod, getAggregateRelays } from "~/models/portal/dwh.server"
 import { initPortalClient } from "~/models/portal/portal.server"
+import { dayjs } from "~/utils/dayjs"
 import { byHourPeriods, getDwhParams, validatePeriod } from "~/utils/dwhUtils.server"
 import { requireUser } from "~/utils/user.server"
 
@@ -30,6 +31,25 @@ const csvOptions = {
     },
   ],
 }
+
+const getPeriodHumanReadable = (period: DwhPeriod) => {
+  if (!period) {
+    return "24 Hours"
+  }
+  switch (period) {
+    case "24hr":
+      return "Last 24 Hours"
+    case "weekToDate":
+      return "Week to Date"
+    case "monthToDate":
+      return "Month to Date"
+    case 14:
+      return "Last Two Weeks"
+    default:
+      return `Last ${period} Days`
+  }
+}
+
 export const loader: LoaderFunction = async ({ request, params }) => {
   await requireUser(request)
   const url = new URL(request.url)
@@ -58,7 +78,11 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     return new Response(buffer, {
       headers: {
         "Content-Type": "text/csv",
-        "Content-Disposition": `attachment; filename=${accountId}-insights.csv`,
+        "Content-Disposition": `attachment; filename=Account:${accountId}-${
+          appParam && appParam !== "all" ? `App:${appParam}-` : "".trim()
+        }${dayjs(new Date()).format("DD MMM YYYY")}-${getPeriodHumanReadable(
+          period,
+        )}-Insights.csv`,
       },
     })
   } catch (error) {

@@ -1,9 +1,10 @@
-import { MantineColorScheme, MantineProvider } from "@mantine/core"
+import { MantineProvider } from "@mantine/core"
 import { ModalsProvider } from "@mantine/modals"
 import { Notifications } from "@mantine/notifications"
 import { NavigationProgress, nprogress } from "@mantine/nprogress"
 import { useNavigation } from "@remix-run/react"
 import React, { useEffect } from "react"
+import { ColorScheme } from "~/root"
 import { portalTheme } from "~/root/portalTheme"
 
 const RootProviders = ({
@@ -11,7 +12,7 @@ const RootProviders = ({
   colorScheme,
 }: {
   children: React.ReactNode
-  colorScheme?: MantineColorScheme
+  colorScheme?: ColorScheme
 }) => {
   const { state } = useNavigation()
   useEffect(() => {
@@ -19,7 +20,7 @@ const RootProviders = ({
     if (state === "idle") nprogress.complete()
   }, [state])
   return (
-    <MantineProvider defaultColorScheme={colorScheme} theme={portalTheme}>
+    <MantineProvider forceColorScheme={colorScheme ?? "dark"} theme={portalTheme}>
       <NavigationProgress />
       <Notifications position="bottom-center" />
       <ModalsProvider>{children}</ModalsProvider>

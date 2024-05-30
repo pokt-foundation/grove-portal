@@ -1,4 +1,4 @@
-import { ColorSchemeScript, MantineColorScheme } from "@mantine/core"
+import { ColorSchemeScript } from "@mantine/core"
 import {
   Links,
   Meta,
@@ -7,6 +7,7 @@ import {
   useSearchParams,
 } from "@remix-run/react"
 import React, { useEffect } from "react"
+import { ColorScheme } from "~/root"
 import RootProviders from "~/root/components/RootProviders"
 
 const Document = ({
@@ -16,7 +17,7 @@ const Document = ({
 }: {
   children: React.ReactNode
   title?: string
-  colorScheme?: MantineColorScheme
+  colorScheme?: ColorScheme
 }) => {
   const [params] = useSearchParams()
 
@@ -51,7 +52,7 @@ const Document = ({
         <meta content="width=device-width, initial-scale=1" name="viewport" />
         <Meta />
         <Links />
-        <ColorSchemeScript defaultColorScheme={colorScheme} />
+        <ColorSchemeScript forceColorScheme={colorScheme ?? "dark"} />
       </head>
       <body>
         <RootProviders colorScheme={colorScheme}>{children}</RootProviders>

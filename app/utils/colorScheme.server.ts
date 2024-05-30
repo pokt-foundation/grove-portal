@@ -1,5 +1,5 @@
-import { MantineColorScheme } from "@mantine/core"
 import { createCookieSessionStorage } from "@remix-run/node"
+import { ColorScheme } from "~/root"
 
 // const sessionSecret = ""
 // if (!sessionSecret) {
@@ -21,10 +21,10 @@ const colorSchemeStorage = createCookieSessionStorage({
 async function getColorSchemeSession(request: Request) {
   const session = await colorSchemeStorage.getSession(request.headers.get("Cookie"))
   return {
-    getTheme: (): MantineColorScheme => {
+    getColorScheme: (): ColorScheme => {
       return session.get("mantine-color-scheme")
     },
-    setColorScheme: (colorScheme: MantineColorScheme) =>
+    setColorScheme: (colorScheme: ColorScheme) =>
       session.set("mantine-color-scheme", colorScheme),
     commit: () => colorSchemeStorage.commitSession(session),
   }

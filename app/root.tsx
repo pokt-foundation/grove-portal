@@ -6,7 +6,6 @@ import "mantine-datatable/styles.layer.css"
 import "@mantine/nprogress/styles.layer.css"
 import "~/styles/root.css"
 
-import { MantineColorScheme } from "@mantine/core"
 import { cssBundleHref } from "@remix-run/css-bundle"
 import {
   json,
@@ -15,7 +14,7 @@ import {
   MetaFunction,
   redirect,
 } from "@remix-run/node"
-import { Outlet, useLoaderData } from "@remix-run/react"
+import { Outlet, useFetchers, useLoaderData } from "@remix-run/react"
 import { ErrorBoundaryView } from "~/components/ErrorBoundaryView"
 import Document from "~/root/components/Document"
 import { getColorSchemeSession } from "~/utils/colorScheme.server"
@@ -39,9 +38,11 @@ export const meta: MetaFunction = () => [
   },
 ]
 
+export type ColorScheme = "light" | "dark"
+
 export interface RootLoaderData {
   ENV: ReturnType<typeof getClientEnv>
-  colorScheme: MantineColorScheme
+  colorScheme: ColorScheme
 }
 
 export const loader: LoaderFunction = async ({ request, params }) => {
@@ -53,9 +54,9 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   const themeSession = await getColorSchemeSession(request)
   const systemPreferredColorScheme = request.headers.get(
     "Sec-CH-Prefers-Color-Scheme",
-  ) as MantineColorScheme
+  ) as ColorScheme
 
-  const sessionColorScheme = themeSession.getTheme()
+  const sessionColorScheme = themeSession.getColorScheme()
 
   const colorScheme = sessionColorScheme || systemPreferredColorScheme || "dark"
   return json<RootLoaderData>({
@@ -65,7 +66,8 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 }
 
 export default function App() {
-  const { ENV, colorScheme } = useLoaderData<RootLoaderData>()
+  const { ENV } = useLoaderData<RootLoaderData>()
+  const colorScheme = useColorScheme()
   return (
     <Document colorScheme={colorScheme}>
       <Outlet />
@@ -89,4 +91,22 @@ export function ErrorBoundary() {
       />
     </Document>
   )
+}
+
+const useColorScheme = () => {
+  const { colorScheme } = useLoaderData<RootLoaderData>()
+  const fetchers = useFetchers()
+  const colorSchemeFetcher = fetchers.find(
+    (fetcher) => fetcher.key === "color-scheme-fetcher",
+  )
+
+  const optimisticColorScheme = colorSchemeFetcher?.formData?.get(
+    "color-scheme",
+  ) as ColorScheme
+
+  if (optimisticColorScheme === "light" || optimisticColorScheme === "dark") {
+    return optimisticColorScheme
+  }
+
+  return colorScheme
 }

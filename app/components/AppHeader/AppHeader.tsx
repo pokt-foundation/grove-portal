@@ -15,13 +15,12 @@ type HeaderProps = {
 }
 
 export const AppHeader = ({ user, opened, toggle }: HeaderProps) => {
-  const { toggleColorScheme, colorScheme } = useMantineColorScheme()
+  const { colorScheme } = useMantineColorScheme()
 
-  const themeFetcher = useFetcher()
+  const colorSchemeFetcher = useFetcher({ key: "color-scheme-fetcher" })
 
   const handleColorSchemeToggle = () => {
-    toggleColorScheme()
-    themeFetcher.submit(
+    colorSchemeFetcher.submit(
       {
         "color-scheme": colorScheme === "dark" ? "light" : "dark",
       },

@@ -12,6 +12,7 @@ export const CHAIN_DOCS_URL: KeyValuePair<string> = {
   "bsc-mainnet": "binance-smart-chain-api/intro",
   "bsc-archival": "binance-smart-chain-api/intro",
   "celo-mainnet": "celo-api/intro",
+  "celestia-archival": "celestia-api/endpoints/celestia-archival",
   "avax-dfk": "avalanche-api/intro",
   "dogechain-mainnet": "dogechain-api/intro",
   "eth-mainnet": "ethereum-api/intro",

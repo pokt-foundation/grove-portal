@@ -1,9 +1,12 @@
 import { ActionFunction, json } from "@remix-run/node"
+import { Ratelimit } from "@upstash/ratelimit"
+import { kv } from "@vercel/kv"
 import invariant from "tiny-invariant"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { RoleName } from "~/models/portal/sdk"
 import { ActionDataStruct } from "~/types/global"
 import { getErrorMessage } from "~/utils/catchError"
+import { getRequiredServerEnvVar } from "~/utils/environment"
 import { triggerTeamActionNotification } from "~/utils/notifications.server"
 import { requireUser } from "~/utils/user.server"
 
@@ -13,6 +16,9 @@ export type TeamActionData = {
 }
 
 export type TeamActionType = "delete" | "invite" | "updateRole" | "resend" | "leave"
+
+const kvURL = getRequiredServerEnvVar("KV_REST_API_URL")
+const kvToken = getRequiredServerEnvVar("KV_REST_API_TOKEN")
 
 export const action: ActionFunction = async ({ request, params }) => {
   const user = await requireUser(request)
@@ -152,6 +158,24 @@ export const action: ActionFunction = async ({ request, params }) => {
       invariant(typeof user_email === "string", "user_email must be set")
       invariant(typeof user_id === "string", "user_id must be set")
       invariant(typeof user_role === "string", "user_email must be set")
+
+      if (kvToken && kvURL) {
+        const ratelimit = new Ratelimit({
+          redis: kv,
+          // rate limit to 1 request per 10 seconds
+          limiter: Ratelimit.slidingWindow(1, "10s"),
+        })
+
+        const { success } = await ratelimit.limit(`ratelimit_${user.user.portalUserID}`)
+
+        if (!success) {
+          throw new Error(`You have reached your request limit`)
+        }
+      } else {
+        console.error(
+          "KV_REST_API_URL and KV_REST_API_TOKEN env vars not found, not rate limiting...",
+        )
+      }
 
       await triggerTeamActionNotification({
         accountId,

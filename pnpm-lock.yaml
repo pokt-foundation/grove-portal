@@ -21,6 +21,9 @@ dependencies:
   '@codemirror/lint':
     specifier: ^6.5.0
     version: 6.5.0
+  '@iwsio/json-csv-node':
+    specifier: ^6.1.5
+    version: 6.1.5
   '@mantine/core':
     specifier: ^7.9.2
     version: 7.9.2(@mantine/hooks@7.9.2)(@types/react@18.0.28)(react-dom@18.2.0)(react@18.2.0)
@@ -3066,6 +3069,18 @@ packages:
     resolution: {integrity: sha512-ZXRY4jNvVgSVQ8DL3LTcakaAtXwTVUxE81hslsyD2AtoXW/wVob10HkOJ1X/pAlcI7D+2YoZKg5do8G/w6RYgA==}
     engines: {node: '>=8'}
     dev: true
+
+  /@iwsio/json-csv-core@1.1.5:
+    resolution: {integrity: sha512-9nRePtb1KjDvMcPAuT5AOhoYyyCMayHdhPEY/SkGeE2vxt5QlaFpPoJnQH+2OW/j0Sdm0gYBcpsJ4jlkj2YssQ==}
+    engines: {node: '>=10'}
+    dev: false
+
+  /@iwsio/json-csv-node@6.1.5:
+    resolution: {integrity: sha512-o3Ub2hdvleHnpsVYhti+HC8HE7i5MKhoCdwuq8L5vdcsC3qeHC/0oWZaTuJlLnWYlhsCVkn7YmsE25WdtZHRZA==}
+    engines: {node: '>=10.17'}
+    dependencies:
+      '@iwsio/json-csv-core': 1.1.5
+    dev: false
 
   /@jest/expect-utils@29.5.0:
     resolution: {integrity: sha512-fmKzsidoXQT2KwnrwE0SQq3uj8Z763vzR8LnLBwC2qYWEFpjX8daRsk6rHUM1QvNlEW/UJXNXm59ztmJJWs2Mg==}

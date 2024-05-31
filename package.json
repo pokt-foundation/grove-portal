@@ -28,6 +28,7 @@
     "@codemirror/language": "^6.10.1",
     "@codemirror/legacy-modes": "^6.3.3",
     "@codemirror/lint": "^6.5.0",
+    "@iwsio/json-csv-node": "^6.1.5",
     "@mantine/core": "^7.9.2",
     "@mantine/dates": "^7.9.2",
     "@mantine/hooks": "^7.9.2",

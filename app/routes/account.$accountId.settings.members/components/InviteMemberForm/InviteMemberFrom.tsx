@@ -46,7 +46,12 @@ const InviteMemberFrom = ({ accountName }: InviteMemberFromProps) => {
             title="Invite member"
             onDiscard={closeAllModals}
           />
-          <Form action={`/account/${accountId}/settings/members`} method="post">
+          <Form
+            action={`/account/${accountId}/settings/members`}
+            aria-label="inviteMemberForm"
+            method="post"
+            role="form"
+          >
             <Stack gap="md">
               <TextInput
                 required

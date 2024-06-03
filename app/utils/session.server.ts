@@ -15,13 +15,7 @@ let cookie:
   path: "/", // remember to add this so the cookie will work in all routes
   sameSite: "lax", // this helps with CSRF
   secure: process.env.NODE_ENV === "production", // enable this in prod only
-}
-
-if (getRequiredServerEnvVar("VERCEL_URL").includes("pokt.network")) {
-  cookie = {
-    ...cookie,
-    secrets: [getRequiredServerEnvVar("SESSION_SECRET")], // replace this with an actual secret
-  }
+  secrets: [getRequiredServerEnvVar("SESSION_SECRET")], // replace this with an actual secret
 }
 
 // export the whole sessionStorage object

@@ -1,10 +1,11 @@
-import { Divider, Box, Group, Text } from "@mantine/core"
-import { useSearchParams } from "@remix-run/react"
+import { Divider, Box, Group, Text, Button } from "@mantine/core"
+import { useParams, useSearchParams } from "@remix-run/react"
 import React from "react"
 import ChainSelectItem from "~/components/ChainSelectItem"
 import FluidSelect from "~/components/FluidSelect"
 import { Blockchain, PortalApp } from "~/models/portal/sdk"
 import { getAppNameWithEmoji } from "~/utils/accountUtils"
+import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
 
 type InsightsControlsProps = {
   apps?: PortalApp[]
@@ -13,7 +14,24 @@ type InsightsControlsProps = {
 
 export const DEFAULT_DWH_PERIOD = "24hr"
 
+const getDownloadCsvUrl = ({
+  searchParams,
+  accountId,
+  appId,
+}: {
+  searchParams: URLSearchParams
+  accountId: string
+  appId: string | undefined
+}) => {
+  return `/api/${accountId}/insights-csv${
+    searchParams.toString().length > 0 ? `?${searchParams}` : ""
+  }${
+    appId ? `${searchParams.toString().length > 0 ? "&" : "?"}appId=${appId}` : ""
+  }`.trim()
+}
+
 const InsightsControls = ({ apps, chains }: InsightsControlsProps) => {
+  const { accountId, appId } = useParams()
   const appsSelectItems = [
     { value: "all", label: "All Applications" },
     ...(apps && apps.length > 0
@@ -62,6 +80,12 @@ const InsightsControls = ({ apps, chains }: InsightsControlsProps) => {
   }
 
   const handleAppChange = (app: string) => {
+    trackEvent({
+      category: AnalyticCategories.account,
+      action: AnalyticActions.account_insights_select_app,
+      label: `Account: ${accountId} / App: ${app}`,
+    })
+
     setSearchParams((searchParams) => {
       searchParams.delete("chain")
       searchParams.set("app", app)
@@ -91,9 +115,14 @@ const InsightsControls = ({ apps, chains }: InsightsControlsProps) => {
             placeholder="No Networks"
             value={chainParam}
             withSearch={chainsSelectItems.length > 7}
-            onSelect={(chain: string) =>
+            onSelect={(chain: string) => {
+              trackEvent({
+                category: AnalyticCategories.account,
+                action: AnalyticActions.account_insights_select_network,
+                label: `Account: ${accountId} / Network: ${chain}`,
+              })
               handleParamChange({ param: chain, paramKey: "chain" })
-            }
+            }}
           />
         </Group>
         <Text>filtered over the past</Text>
@@ -116,12 +145,36 @@ const InsightsControls = ({ apps, chains }: InsightsControlsProps) => {
               },
             ]}
             value={periodParam}
-            onSelect={(period: string) =>
+            onSelect={(period: string) => {
+              trackEvent({
+                category: AnalyticCategories.account,
+                action: AnalyticActions.account_insights_change_period,
+                label: `Account: ${accountId} / Period: ${period}`,
+              })
               handleParamChange({ param: period, paramKey: "period" })
-            }
+            }}
           />
         </Box>
       </Group>
+      {accountId ? (
+        <Button
+          color="gray"
+          component="a"
+          href={getDownloadCsvUrl({ searchParams, accountId, appId })}
+          px={14}
+          radius={4}
+          variant="outline"
+          onClick={() => {
+            trackEvent({
+              category: AnalyticCategories.account,
+              action: AnalyticActions.account_insights_download_csv,
+              label: `Account: ${accountId}`,
+            })
+          }}
+        >
+          Download CSV
+        </Button>
+      ) : null}
     </Group>
   )
 }

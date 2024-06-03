@@ -18,7 +18,7 @@ import useActionNotification, {
 } from "~/hooks/useActionNotification"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { Account, PayPlanType, RoleName } from "~/models/portal/sdk"
-import { TeamActionData } from "~/routes/account.$accountId.settings.members/route"
+import { TeamActionData } from "~/routes/account.$accountId.settings.members/action"
 import { ActionDataStruct } from "~/types/global"
 import { getUserAccountRole, isAccountWithinAppLimit } from "~/utils/accountUtils"
 import { getErrorMessage } from "~/utils/catchError"

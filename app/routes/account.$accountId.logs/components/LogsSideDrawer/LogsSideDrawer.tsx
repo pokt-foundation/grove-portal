@@ -11,14 +11,6 @@ type LogsSideDrawerProps = {
   onSideDrawerClose: () => void
 }
 
-const getLogMethod = (logsItem: D2Log | undefined) => {
-  if (!logsItem || !logsItem?.chainMethods || logsItem.chainMethods?.length === 0) {
-    return "-"
-  }
-
-  return logsItem?.chainMethods[0]?.name
-}
-
 const LogsSideDrawer = ({
   logsItem,
   onSideDrawerClose,
@@ -47,7 +39,7 @@ const LogsSideDrawer = ({
     },
     {
       label: "Method",
-      value: getLogMethod(logsItem),
+      value: logsItem?.chainMethod ? logsItem.chainMethod : "-",
     },
     {
       label: "Round Trip Time:",

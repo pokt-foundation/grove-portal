@@ -36,12 +36,15 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     ) as RoleName
 
     const getBlockchainsResponse = await portal.blockchains({ sortOrder: SortOrder.Asc })
+    const blockchains = (getBlockchainsResponse.blockchains as Blockchain[]).filter(
+      (chain) => chain.id !== "BE2A",
+    )
 
     return json<AccountIdLoaderData>({
       account: account.getUserAccount as Account,
       accounts: userAccounts.getUserAccounts as Account[],
-      blockchains: getBlockchainsResponse.blockchains as Blockchain[],
       user: user.user,
+      blockchains,
       userRole,
     })
   } catch (error) {

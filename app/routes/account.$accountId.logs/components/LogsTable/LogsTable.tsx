@@ -43,14 +43,8 @@ const LogsTable = ({ logs, meta, blockchains }: LogsTableProps) => {
               value: log.TS,
             },
             method: {
-              element:
-                log?.chainMethods?.length && log?.chainMethods?.length > 0
-                  ? log?.chainMethods![0]?.name
-                  : "-",
-              value:
-                log?.chainMethods?.length && log?.chainMethods?.length > 0
-                  ? log?.chainMethods![0]?.name
-                  : "-",
+              element: log?.chainMethod ? log?.chainMethod : "-",
+              value: log?.chainMethod ? log?.chainMethod : "-",
             },
             network: {
               element: getChainName({

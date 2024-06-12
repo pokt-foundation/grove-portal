@@ -303,10 +303,7 @@ query getD2LogsData($params: D2GetLogsParams!) {
       relayReturnTs
       relayRoundTripTime
       TS
-      chainMethods {
-        name
-        count
-      }
+      chainMethod
     }
   }
 }

@@ -1,0 +1,9 @@
+.GroveVector {
+  fill: #242224;
+}
+
+@mixin dark-root {
+  .GroveVector {
+    fill: #ffffff;
+  }
+}

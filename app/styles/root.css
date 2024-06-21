@@ -19,7 +19,7 @@
 }
 
 .mantine-ActionIcon-root {
-  color: var(--mantine-color-text)
+  color: var(--mantine-color-text);
 }
 
 .mantine-TextInput-input[readonly],

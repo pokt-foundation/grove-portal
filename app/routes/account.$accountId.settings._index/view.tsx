@@ -74,8 +74,9 @@ export const AccountSettingsView = ({ account, userRole }: AccountSettingsViewPr
                   data-outline-exclude={copied ? "true" : "false"}
                   px={6}
                   radius="sm"
-                  style={{ cursor: "pointer", textTransform: "lowercase" }}
-                  variant={copied ? "outline" : "light"}
+                  style={{ cursor: "pointer" }}
+                  tt="lowercase"
+                  variant="outline"
                   onClick={() => {
                     copy()
                     trackEvent({

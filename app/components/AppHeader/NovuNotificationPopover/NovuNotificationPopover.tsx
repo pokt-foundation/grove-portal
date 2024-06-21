@@ -6,15 +6,18 @@ import {
 } from "@novu/notification-center"
 import { useNavigate } from "@remix-run/react"
 import { LuBell } from "react-icons/lu"
+import { ColorScheme } from "~/root"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 
 const NOVU_APP_IDENTIFIER = getRequiredClientEnvVar("NOVU_APP_IDENTIFIER")
 
 type NovuNotificationPopoverProps = {
   subscriberId: string
+  colorScheme: ColorScheme
 }
 export const NovuNotificationPopover = ({
   subscriberId,
+  colorScheme,
 }: NovuNotificationPopoverProps) => {
   const navigate = useNavigate()
   const theme = useMantineTheme()
@@ -35,19 +38,24 @@ export const NovuNotificationPopover = ({
       styles={{
         layout: {
           root: {
-            background: theme.colors.dark[9],
-            border: `1px solid ${theme.colors.dark[4]}`,
+            background: "var(--mantine-color-body)",
+            border: "1px solid var(--app-shell-border-color)",
             boxShadow: "none",
+          },
+        },
+        popover: {
+          arrow: {
+            display: "none",
           },
         },
         header: {
           title: {
-            color: theme.colors.dark[0],
+            color: "var(--mantine-color-text)",
             fontSize: 18,
             fontWeight: 600,
           },
           markAsRead: {
-            color: theme.colors.dark[0],
+            color: "var(--mantine-color-text)",
           },
         },
         loader: {
@@ -64,12 +72,14 @@ export const NovuNotificationPopover = ({
         notifications: {
           listItem: {
             contentLayout: {
-              color: theme.colors.dark[0],
+              color: "var(--mantine-color-text)",
             },
             timestamp: { color: theme.colors.gray[6] },
-            read: { background: theme.colors.gray[9] },
+            ...(colorScheme === "dark"
+              ? { read: { background: theme.colors.gray[9] } }
+              : {}),
             unread: {
-              background: theme.colors.dark[7],
+              ...(colorScheme === "dark" ? { background: theme.colors.dark[7] } : {}),
               "::before": {
                 background:
                   "linear-gradient(0deg, rgba(56,159,88,1) 20%, rgba(70,189,107,1) 80%)",
@@ -81,15 +91,16 @@ export const NovuNotificationPopover = ({
             },
           },
         },
+
         actionsMenu: {
           dropdown: {
-            background: theme.colors.dark[9],
-            border: `1px solid ${theme.colors.dark[4]}`,
+            background: "var(--mantine-color-body)",
+            border: "1px solid var(--app-shell-border-color)",
           },
           item: {
-            color: theme.colors.dark[0],
+            ...(colorScheme === "dark" ? { color: theme.colors.dark[0] } : {}),
             "&:hover": {
-              backgroundColor: "rgba(37,38,43,0.50)",
+              backgroundColor: "var(--mantine-hover-color)",
             },
           },
         },
@@ -97,7 +108,7 @@ export const NovuNotificationPopover = ({
       subscriberId={subscriberId}
     >
       <PopoverNotificationCenter
-        colorScheme="dark"
+        colorScheme={colorScheme}
         showUserPreferences={false}
         onNotificationClick={onNotificationClick}
       >
@@ -119,7 +130,7 @@ export const NovuNotificationPopover = ({
               size={40}
               variant="outline"
             >
-              <LuBell color={theme.colors.dark[0]} size={18} />
+              <LuBell size={18} />
             </ActionIcon>
           </Indicator>
         )}

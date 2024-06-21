@@ -1,10 +1,11 @@
 import { ActionIcon, Burger, Flex, useMantineColorScheme } from "@mantine/core"
 import { useFetcher } from "@remix-run/react"
 import React from "react"
-import { LuMoonStar, LuSun } from "react-icons/lu"
+import { IoContrast } from "react-icons/io5"
 import AccountDrawer from "~/components/AccountDrawer"
 import { NovuNotificationPopover } from "~/components/AppHeader/NovuNotificationPopover"
 import { Account, User } from "~/models/portal/sdk"
+import { ColorScheme } from "~/root"
 import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
 
 type HeaderProps = {
@@ -54,9 +55,14 @@ export const AppHeader = ({ user, opened, toggle }: HeaderProps) => {
         variant="outline"
         onClick={handleColorSchemeToggle}
       >
-        {colorScheme === "dark" ? <LuSun size={18} /> : <LuMoonStar size={18} />}
+        <IoContrast size={20} />
       </ActionIcon>
-      {user && <NovuNotificationPopover subscriberId={user.portalUserID} />}
+      {user && (
+        <NovuNotificationPopover
+          colorScheme={colorScheme as ColorScheme}
+          subscriberId={user.portalUserID}
+        />
+      )}
       <AccountDrawer user={user} />
     </Flex>
   )

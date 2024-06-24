@@ -69,7 +69,7 @@ const AppForm = ({ app, onSubmit }: AppFormProps) => {
             name="app-description"
           />
           <Box>
-            <Text fw={600}>Appmoji</Text>
+            <Text fw={500}>Appmoji</Text>
             <Text fz="xs" mb="sm">
               Select an emoji icon for your application - a personal touch for quick
               recognition in the dashboard, particularly in a collapsed side panel view.

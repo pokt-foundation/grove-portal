@@ -1,4 +1,4 @@
-import { createTheme, MantineTheme, MantineThemeOverride } from "@mantine/core"
+import { createTheme, MantineThemeOverride } from "@mantine/core"
 
 export const portalTheme: MantineThemeOverride = createTheme({
   primaryColor: "green",
@@ -155,9 +155,6 @@ export const portalTheme: MantineThemeOverride = createTheme({
         root: { backgroundColor: "var(--app-secondary-bg-color)" },
       }),
     },
-    Divider: {
-      defaultProps: { opacity: "50%" },
-    },
     TextInput: {
       defaultProps: {
         radius: "sm",
@@ -181,11 +178,11 @@ export const portalTheme: MantineThemeOverride = createTheme({
       },
     },
     Card: {
-      styles: () => ({
+      styles: {
         root: {
           backgroundColor: "var(--mantine-color-body)",
         },
-      }),
+      },
     },
     Notification: {
       defaultProps: {
@@ -193,12 +190,12 @@ export const portalTheme: MantineThemeOverride = createTheme({
         px: 15,
         radius: 8,
       },
-      styles: (theme: MantineTheme) => ({
+      styles: {
         root: {
           backgroundColor: "var(--mantine-color-body)",
           border: "1px solid",
         },
-      }),
+      },
     },
     Drawer: {
       defaultProps: {

@@ -1,5 +1,9 @@
-.stop {stop-opacity: 0.01}
+.stop {
+  stop-opacity: 0.01;
+}
 
 @mixin dark-root {
-    .stop {stop-opacity: 0.1;}
+  .stop {
+    stop-opacity: 0.1;
+  }
 }

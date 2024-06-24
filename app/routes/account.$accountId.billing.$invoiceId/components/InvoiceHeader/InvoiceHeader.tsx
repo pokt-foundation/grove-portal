@@ -1,11 +1,4 @@
-import {
-  Button,
-  Divider,
-  Group,
-  Stack,
-  Text,
-  Title,
-} from "@mantine/core"
+import { Button, Divider, Group, Stack, Text, Title } from "@mantine/core"
 import { NavLink, useParams } from "@remix-run/react"
 import React from "react"
 import { LuArrowLeft } from "react-icons/lu"

@@ -11,7 +11,7 @@
 }
 
 .favoriteChain.isFavorite {
-  color: var(--mantine-color-yellow-5)
+  color: var(--mantine-color-yellow-5);
 }
 
 @mixin dark-root {
@@ -22,6 +22,6 @@
     }
   }
   .favoriteChain.isFavorite {
-    color: var(--mantine-color-yellow-7)
+    color: var(--mantine-color-yellow-7);
   }
 }

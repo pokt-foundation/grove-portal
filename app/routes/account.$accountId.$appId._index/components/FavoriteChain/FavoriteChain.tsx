@@ -1,5 +1,6 @@
 import { ActionIcon } from "@mantine/core"
 import { Form } from "@remix-run/react"
+import cx from "clsx"
 import { useEffect, useState } from "react"
 import { RiStarFill, RiStarLine } from "react-icons/ri"
 import classes from "./FavoriteChain.module.css"
@@ -41,8 +42,9 @@ export const FavoriteChain = ({
       />
       <ActionIcon
         aria-label={`Set blockchain ${blockchain.blockchain} as favorite`}
-        c={isFavorite ? "yellow.7" : "gray.8"}
-        className={classes.favoriteChain}
+        className={cx(classes.favoriteChain, {
+          [classes.isFavorite]: isFavorite,
+        })}
         disabled={readOnly}
         size="xl"
         title={`Set blockchain ${blockchain.blockchain} as favorite`}

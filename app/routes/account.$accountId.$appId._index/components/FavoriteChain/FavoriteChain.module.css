@@ -1,10 +1,27 @@
 .favoriteChain {
+  color: var(--mantine-color-gray-4);
   &:hover {
-    background-color: alpha(var(--mantine-color-gray-8), 0.2);
+    background-color: alpha(var(--mantine-color-gray-4), 0.2);
   }
   &:disabled,
   &[data-disabled] {
     border-color: transparent;
     background-color: transparent;
+  }
+}
+
+.favoriteChain.isFavorite {
+  color: var(--mantine-color-yellow-5)
+}
+
+@mixin dark-root {
+  .favoriteChain {
+    color: var(--mantine-color-gray-8);
+    &:hover {
+      background-color: alpha(var(--mantine-color-gray-8), 0.2);
+    }
+  }
+  .favoriteChain.isFavorite {
+    color: var(--mantine-color-yellow-7)
   }
 }

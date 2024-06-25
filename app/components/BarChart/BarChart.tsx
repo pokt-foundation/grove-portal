@@ -28,8 +28,8 @@ const BarChart = ({ data, xAxisDataKey, yAxisDataKey }: BarChartProps) => {
         <Box
           p="sm"
           style={{
-            backgroundColor: theme.colors.dark[9],
-            border: `1px solid ${theme.colors.dark[4]}`,
+            backgroundColor: "var(--mantine-color-body)",
+            border: "1px solid var(--app-shell-border-color)",
           }}
         >
           <Text className="label">Date: {label}</Text>

@@ -1,4 +1,4 @@
-import { createTheme, MantineTheme, MantineThemeOverride } from "@mantine/core"
+import { createTheme, MantineThemeOverride } from "@mantine/core"
 
 export const portalTheme: MantineThemeOverride = createTheme({
   primaryColor: "green",
@@ -13,14 +13,14 @@ export const portalTheme: MantineThemeOverride = createTheme({
       "#2C2E33",
       "#242424",
       "#27292F",
-      "#292929",
+      "#282828",
       "#191919",
     ],
     gray: [
       "#FAFAFA",
       "#f1f3f5",
       "#EBECED",
-      "#E3E8ED",
+      "#DDDDDD",
       "#ced4da",
       "#adb5bd",
       "#808B95",
@@ -77,7 +77,7 @@ export const portalTheme: MantineThemeOverride = createTheme({
       "#D65745",
     ],
     navy: [
-      "#EBEAEF",
+      "#E3E3E3",
       "#A4A7AC",
       "#e9ecef",
       "#dee2e6",
@@ -152,11 +152,8 @@ export const portalTheme: MantineThemeOverride = createTheme({
         fz: "xs",
       },
       styles: () => ({
-        root: { backgroundColor: "var(--mantine-color-dark-4)" },
+        root: { backgroundColor: "var(--app-secondary-bg-color)" },
       }),
-    },
-    Divider: {
-      defaultProps: { opacity: "50%" },
     },
     TextInput: {
       defaultProps: {
@@ -181,11 +178,11 @@ export const portalTheme: MantineThemeOverride = createTheme({
       },
     },
     Card: {
-      styles: () => ({
+      styles: {
         root: {
           backgroundColor: "var(--mantine-color-body)",
         },
-      }),
+      },
     },
     Notification: {
       defaultProps: {
@@ -193,12 +190,12 @@ export const portalTheme: MantineThemeOverride = createTheme({
         px: 15,
         radius: 8,
       },
-      styles: (theme: MantineTheme) => ({
+      styles: {
         root: {
-          backgroundColor: theme.colors.dark[9],
+          backgroundColor: "var(--mantine-color-body)",
           border: "1px solid",
         },
-      }),
+      },
     },
     Drawer: {
       defaultProps: {

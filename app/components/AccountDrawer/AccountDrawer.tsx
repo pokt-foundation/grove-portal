@@ -142,7 +142,13 @@ const AccountDrawer = ({ user }: AccountDrawerProps) => {
             </React.Fragment>
           ))}
           {/* eslint-disable-next-line jsx-a11y/anchor-has-content */}
-          <NavLink aria-label="Sign out" label="Sign out" p={8} onClick={logout} />
+          <NavLink
+            aria-label="Sign out"
+            className={classes.drawerLink}
+            label="Sign out"
+            p={8}
+            onClick={logout}
+          />
         </Stack>
       </Drawer>
       <UnstyledButton onClick={() => setIsDrawerOpen(true)}>

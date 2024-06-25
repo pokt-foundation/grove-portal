@@ -1,5 +1,6 @@
-import { ActionIcon, type MantineTheme } from "@mantine/core"
+import { ActionIcon } from "@mantine/core"
 import { Form } from "@remix-run/react"
+import cx from "clsx"
 import { useEffect, useState } from "react"
 import { RiStarFill, RiStarLine } from "react-icons/ri"
 import classes from "./FavoriteChain.module.css"
@@ -41,12 +42,11 @@ export const FavoriteChain = ({
       />
       <ActionIcon
         aria-label={`Set blockchain ${blockchain.blockchain} as favorite`}
-        className={classes.favoriteChain}
+        className={cx(classes.favoriteChain, {
+          [classes.isFavorite]: isFavorite,
+        })}
         disabled={readOnly}
         size="xl"
-        style={(theme: MantineTheme) => ({
-          color: isFavorite ? theme.colors.yellow[7] : theme.colors.gray[8],
-        })}
         title={`Set blockchain ${blockchain.blockchain} as favorite`}
         type="submit"
         variant={readOnly ? "transparent" : "subtle"}

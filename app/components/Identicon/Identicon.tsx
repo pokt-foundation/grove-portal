@@ -1,4 +1,4 @@
-import { Avatar, AvatarProps, MantineTheme } from "@mantine/core"
+import { Avatar, AvatarProps } from "@mantine/core"
 import React, { useMemo } from "react"
 import { minidenticon, picasso } from "~/utils/identicons"
 
@@ -26,13 +26,13 @@ export const Identicon = ({ seed, type, alt, size = "md", avatar }: IdenticonPro
       radius={avatar ? "xl" : 2}
       size={size}
       src={svgURI}
-      style={(theme: MantineTheme) => ({
+      style={{
         cursor: "pointer",
         ...(avatar && {
-          border: `1px solid ${theme.colors.gray[8]}`,
+          border: "1px solid var(--app-shell-border-color)",
           padding: 3,
         }),
-      })}
+      }}
       variant="outline"
     />
   )

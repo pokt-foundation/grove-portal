@@ -1,12 +1,4 @@
-import {
-  Button,
-  Divider,
-  Group,
-  Stack,
-  Text,
-  Title,
-  useMantineTheme,
-} from "@mantine/core"
+import { Button, Divider, Group, Stack, Text, Title } from "@mantine/core"
 import { NavLink, useParams } from "@remix-run/react"
 import React from "react"
 import { LuArrowLeft } from "react-icons/lu"
@@ -19,7 +11,6 @@ type InvoiceHeaderProps = {
   charge?: Stripe.Charge
 }
 const InvoiceHeader = ({ invoice, charge }: InvoiceHeaderProps) => {
-  const theme = useMantineTheme()
   const { accountId } = useParams()
 
   return (
@@ -47,7 +38,7 @@ const InvoiceHeader = ({ invoice, charge }: InvoiceHeaderProps) => {
         <Group
           gap={0}
           style={{
-            border: `1px solid ${theme.colors.gray[8]}`,
+            border: "1px solid var(--app-shell-border-color)",
             borderRadius: 4,
           }}
         >

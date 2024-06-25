@@ -13,7 +13,7 @@ export const TitledCard: React.FC<TitledCardPropsType> = ({
   ...rest
 }: TitledCardPropsType & CardProps) => {
   return (
-    <Card radius="sm" shadow="sm" withBorder={withBorder} {...rest}>
+    <Card radius="sm" withBorder={withBorder} {...rest}>
       {header && (
         <Card.Section inheritPadding withBorder py="xs">
           {header()}

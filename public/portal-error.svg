@@ -1,9 +1,18 @@
 <svg width="240" height="240" viewBox="0 0 240 240" fill="none" xmlns="http://www.w3.org/2000/svg">
-<circle cx="48" cy="188" r="40" stroke="#FCF8F2" stroke-width="0.592159" stroke-linejoin="round" stroke-dasharray="2.96 2.96"/>
-<circle cx="165" cy="79" r="67" stroke="#FCF8F2" stroke-width="0.592159" stroke-linejoin="round" stroke-dasharray="2.96 2.96"/>
-<path d="M67.437 190.916V48.437H146.318L160.631 62.8084L160.632 62.809L173.563 75.7426V190.963L165.344 182.938L165.039 182.64L164.733 182.938L156.077 191.389L147.421 182.938L147.116 182.64L146.811 182.938L138.155 191.389L129.499 182.938L129.193 182.64L128.888 182.938L120.232 191.389L111.576 182.938L111.271 182.64L110.965 182.938L102.309 191.389L93.6532 182.938L93.3479 182.64L93.0426 182.938L84.3865 191.389L75.7305 182.938L75.4156 182.63L75.1104 182.947L67.437 190.916Z" fill="#1A1B1E" stroke="#E3E8ED" stroke-width="0.874016"/>
-<path d="M102 119.214L114 107.214M114 119.214L102 107.214" stroke="#FCF8F2" stroke-linejoin="round"/>
-<path d="M128 119.214L140 107.214M140 119.214L128 107.214" stroke="#FCF8F2" stroke-linejoin="round"/>
-<path d="M134.984 132.786H107.016" stroke="#E3E8ED" stroke-width="0.874016"/>
-<path d="M159.675 61.4197L172.957 75.5315H146.437V49.0087L159.675 61.4197Z" fill="#1A1B1E" stroke="#E3E8ED" stroke-width="0.874016"/>
+    <style>
+        .vector { stroke: #282828; }
+        .page { fill: #E3E3E3; stroke: #282828; }
+
+        @media (prefers-color-scheme: dark) {
+        .vector { stroke: #E3E8ED; }
+        .page { fill: #1A1B1E; stroke: #E3E8ED; }
+        }
+    </style>
+<circle class="vector" cx="48" cy="188" r="40" stroke="#FCF8F2" stroke-width="0.592159" stroke-linejoin="round" stroke-dasharray="2.96 2.96"/>
+<circle class="vector" cx="165" cy="79" r="67" stroke="#FCF8F2" stroke-width="0.592159" stroke-linejoin="round" stroke-dasharray="2.96 2.96"/>
+<path class="page" d="M67.437 190.916V48.437H146.318L160.631 62.8084L160.632 62.809L173.563 75.7426V190.963L165.344 182.938L165.039 182.64L164.733 182.938L156.077 191.389L147.421 182.938L147.116 182.64L146.811 182.938L138.155 191.389L129.499 182.938L129.193 182.64L128.888 182.938L120.232 191.389L111.576 182.938L111.271 182.64L110.965 182.938L102.309 191.389L93.6532 182.938L93.3479 182.64L93.0426 182.938L84.3865 191.389L75.7305 182.938L75.4156 182.63L75.1104 182.947L67.437 190.916Z" fill="#1A1B1E" stroke="#E3E8ED" stroke-width="0.874016"/>
+<path class="vector" d="M102 119.214L114 107.214M114 119.214L102 107.214" stroke="#FCF8F2" stroke-linejoin="round"/>
+<path class="vector" d="M128 119.214L140 107.214M140 119.214L128 107.214" stroke="#FCF8F2" stroke-linejoin="round"/>
+<path class="vector" d="M134.984 132.786H107.016" stroke="#E3E8ED" stroke-width="0.874016"/>
+<path class="page" d="M159.675 61.4197L172.957 75.5315H146.437V49.0087L159.675 61.4197Z" fill="#1A1B1E" stroke="#E3E8ED" stroke-width="0.874016"/>
 </svg>

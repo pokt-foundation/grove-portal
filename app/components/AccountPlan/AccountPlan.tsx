@@ -79,11 +79,11 @@ export const AccountPlan = ({
       radius="md"
       shadow="sm"
       style={(theme: MantineTheme) => ({
-        borderColor: isPAYG ? theme.colors.green[7] : theme.colors.gray[8],
+        borderColor: isPAYG ? theme.colors.green[7] : "var(--app-shell-border-color)",
       })}
     >
       <Stack align="center" gap="xl" mb="xl">
-        <Badge>
+        <Badge color="gray" variant="outline">
           {isFree && "Builder"}
           {isPAYG && "Pay as you go"}
           {isEnterprise && "Custom"}
@@ -109,7 +109,7 @@ export const AccountPlan = ({
           color="gray"
           disabled={!!disableFree}
           radius="xl"
-          variant="outline"
+          variant={disableFree ? "default" : "outline"}
           onClick={onContinue}
         >
           {disableFree ? "Current plan" : "Continue with Starter"}
@@ -121,7 +121,7 @@ export const AccountPlan = ({
         </Button>
       )}
       {isEnterprise && (
-        <Button fullWidth color="gray" radius="xl" onClick={onContinue}>
+        <Button fullWidth color="gray" radius="xl" variant="outline" onClick={onContinue}>
           Talk to Sales
         </Button>
       )}

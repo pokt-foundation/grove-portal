@@ -14,9 +14,10 @@ import {
   MetaFunction,
   redirect,
 } from "@remix-run/node"
-import { Outlet, useLoaderData } from "@remix-run/react"
+import { Outlet, useFetchers, useLoaderData } from "@remix-run/react"
 import { ErrorBoundaryView } from "~/components/ErrorBoundaryView"
 import Document from "~/root/components/Document"
+import { getColorSchemeSession } from "~/utils/colorScheme.server"
 import { getRequiredServerEnvVar } from "~/utils/environment"
 import { getClientEnv } from "~/utils/environment.server"
 import { seo_title_append } from "~/utils/seo"
@@ -37,8 +38,11 @@ export const meta: MetaFunction = () => [
   },
 ]
 
+export type ColorScheme = "light" | "dark"
+
 export interface RootLoaderData {
   ENV: ReturnType<typeof getClientEnv>
+  colorScheme: ColorScheme
 }
 
 export const loader: LoaderFunction = async ({ request, params }) => {
@@ -47,17 +51,25 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   if (MAINTENANCE_MODE === "true" && !url.endsWith("/maintenance")) {
     return redirect("/maintenance")
   }
+  const themeSession = await getColorSchemeSession(request)
+  const systemPreferredColorScheme = request.headers.get(
+    "Sec-CH-Prefers-Color-Scheme",
+  ) as ColorScheme
 
+  const sessionColorScheme = themeSession.getColorScheme()
+
+  const colorScheme = sessionColorScheme || systemPreferredColorScheme || "dark"
   return json<RootLoaderData>({
     ENV: getClientEnv(),
+    colorScheme,
   })
 }
 
 export default function App() {
   const { ENV } = useLoaderData<RootLoaderData>()
-
+  const colorScheme = useColorScheme()
   return (
-    <Document>
+    <Document colorScheme={colorScheme}>
       <Outlet />
       <script
         dangerouslySetInnerHTML={{
@@ -79,4 +91,22 @@ export function ErrorBoundary() {
       />
     </Document>
   )
+}
+
+const useColorScheme = () => {
+  const { colorScheme } = useLoaderData<RootLoaderData>()
+  const fetchers = useFetchers()
+  const colorSchemeFetcher = fetchers.find(
+    (fetcher) => fetcher.key === "color-scheme-fetcher",
+  )
+
+  const optimisticColorScheme = colorSchemeFetcher?.formData?.get(
+    "color-scheme",
+  ) as ColorScheme
+
+  if (optimisticColorScheme === "light" || optimisticColorScheme === "dark") {
+    return optimisticColorScheme
+  }
+
+  return colorScheme
 }

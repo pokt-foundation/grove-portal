@@ -83,14 +83,8 @@ query getUserAccount(
   }
 }
 
-query getUserAccountUsers(
-  $accountID: ID!
-  $accepted: Boolean!
-) {
-  getUserAccount(
-    accountID: $accountID
-    accepted: $accepted
-  ) {
+query getUserAccountUsers($accountID: ID!, $accepted: Boolean!) {
+  getUserAccount(accountID: $accountID, accepted: $accepted) {
     users {
       id
       email

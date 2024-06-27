@@ -6,6 +6,7 @@ import invariant from "tiny-invariant"
 import { EmptyState } from "~/components/EmptyState"
 import { ErrorBoundaryView } from "~/components/ErrorBoundaryView"
 import { initPortalClient } from "~/models/portal/portal.server"
+import { Account } from "~/models/portal/sdk"
 import { isAccountWithinAppLimit } from "~/utils/accountUtils"
 import { getErrorMessage } from "~/utils/catchError"
 import { seo_title_append } from "~/utils/seo"
@@ -34,7 +35,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     if (!getUserAccountResponse) {
       return redirect(`/account/${params.accountId}`)
     }
-    const userAccount = getUserAccountResponse.getUserAccount
+    const userAccount = getUserAccountResponse.getUserAccount as Account
     const canCreateApp = isAccountWithinAppLimit(userAccount)
     if (canCreateApp) {
       return redirect(`/account/${params.accountId}`)

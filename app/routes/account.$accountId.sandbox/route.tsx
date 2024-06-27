@@ -20,7 +20,7 @@ export const meta: MetaFunction = () => {
 }
 
 type SandboxLoaderData = {
-  accountApps?: PortalApp[]
+  accountApps: PortalApp[]
 }
 
 export const loader: LoaderFunction = async ({ request, params }) => {

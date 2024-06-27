@@ -64,7 +64,7 @@ export const app: PortalApp = {
   },
 }
 
-export const blockchains: Blockchain[] = [
+export const blockchains: Omit<Blockchain, "scheme">[] = [
   {
     id: "0002",
     ticker: "BTC",

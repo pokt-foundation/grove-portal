@@ -1,4 +1,4 @@
-import { NumberFormatter, Stack, Text, Title, useMantineTheme } from "@mantine/core"
+import { NumberFormatter, Stack, Text, Title } from "@mantine/core"
 import React from "react"
 import { AccountBillingOutletContext } from "~/routes/account.$accountId.billing/route"
 import InvoicesDataTable from "~/routes/account.$accountId.billing._index/components/InvoicesDataTable"
@@ -16,8 +16,6 @@ export const AccountBillingView = ({
   invoices,
   upcomingInvoice,
 }: AccountBillingViewProps) => {
-  const theme = useMantineTheme()
-
   return (
     <Stack gap={32}>
       <Title order={2}>Billing</Title>
@@ -27,7 +25,7 @@ export const AccountBillingView = ({
           gap={4}
           p={20}
           style={{
-            border: `1px solid ${theme.colors.gray[8]}`,
+            border: "1px solid var(--app-shell-border-color)",
             borderRadius: 4,
           }}
         >

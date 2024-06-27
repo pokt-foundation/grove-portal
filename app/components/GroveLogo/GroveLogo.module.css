@@ -1,0 +1,9 @@
+.groveVector {
+  fill: #242224;
+}
+
+@mixin dark-root {
+  .groveVector {
+    fill: #ffffff;
+  }
+}

@@ -11,6 +11,7 @@ import {
   Line,
 } from "recharts"
 import { type AxisDomain } from "recharts/types/util/types"
+import classes from "./Sparkline.module.css"
 import { ChartData } from "~/types/global"
 import { commify, formatNumberToSICompact } from "~/utils/formattingUtils"
 
@@ -41,8 +42,8 @@ const Sparkline = ({
         <Box
           p="sm"
           style={{
-            backgroundColor: theme.colors.dark[9],
-            border: `1px solid ${theme.colors.dark[4]}`,
+            backgroundColor: "var(--mantine-color-body)",
+            border: "1px solid var(--app-shell-border-color)",
           }}
         >
           <Text className="label">Date: {label}</Text>
@@ -76,7 +77,7 @@ const Sparkline = ({
         <defs>
           <linearGradient id="colorUv" x1="0" x2="0" y1="0" y2="1">
             <stop offset="5%" stopColor="#389F58" stopOpacity={0.1} />
-            <stop offset="95%" stopColor="#27292F" stopOpacity={0.1} />
+            <stop className={classes.stop} offset="95%" stopColor="#27292F" />
           </linearGradient>
         </defs>
         <CartesianGrid strokeDasharray="3 3" strokeWidth={0.2} vertical={false} />

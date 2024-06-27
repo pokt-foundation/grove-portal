@@ -8,11 +8,11 @@
 
 .sidebarNavLink:hover {
   text-decoration: none;
-  background-color: alpha(var(--mantine-color-dark-0), 0.5);
+  background-color: var(--mantine-hover-color);
 }
 
 .sidebarNavLink:global(.active) {
-  background-color: var(--mantine-color-dark-0);
+  background-color: var(--mantine-color-navy-0);
 }
 
 @mixin dark-root {
@@ -23,9 +23,5 @@
   .sidebarNavLink:global(.active) {
     background-color: var(--mantine-color-dark-4);
     color: var(--mantine-color-white);
-  }
-
-  .sidebarNavLink:hover {
-    background-color: var(--mantine-hover-color);
   }
 }

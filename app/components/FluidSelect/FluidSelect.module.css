@@ -4,11 +4,12 @@
 
 .activeMenuItem {
   opacity: 1;
+  background-color: var(--mantine-color-navy-0);
+  color: var(--mantine-color-text);
 }
 
 @mixin dark-root {
   .activeMenuItem {
     background-color: var(--mantine-color-dark-4);
-    color: var(--mantine-color-white);
   }
 }

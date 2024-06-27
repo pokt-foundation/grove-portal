@@ -7,23 +7,22 @@
     content: "";
     display: block;
     width: 100%;
-    border-bottom: 1px solid alpha(var(--mantine-color-dark-4), 0.5);
+    border-bottom: 1px solid var(--app-shell-border-color);
     position: absolute;
     bottom: 11px;
-    opacity: 50%;
   }
 }
 
 .linkTab {
   transition: border-bottom 0.3s ease-in-out;
   border-bottom: 2px solid transparent;
-  color: var(--mantine-color-dark-9);
+  color: var(--mantine-color-text);
   z-index: 1;
   font-size: 14px;
 }
 
 .linkTab:global(.active) {
-  border-bottom: 2px solid var(--mantine-color-dark-4);
+  border-bottom: 2px solid var(--mantine-color-dark-6);
   border-radius: 1px/30%;
   color: var(--mantine-color-dark-9);
 }
@@ -34,12 +33,6 @@
 }
 
 @mixin dark-root {
-  .linkTabsContainer {
-    &::after {
-      border-bottom: 1px solid var(--app-shell-border-color);
-    }
-  }
-
   .linkTab {
     color: var(--mantine-color-dark-0);
   }

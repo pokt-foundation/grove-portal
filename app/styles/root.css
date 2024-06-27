@@ -1,19 +1,31 @@
 :root {
   @mixin light-root {
+    --app-secondary-bg-color: alpha(var(--mantine-color-navy-0), 0.5);
     --mantine-color-body: var(--mantine-color-white);
+    --mantine-hover-color: var(--app-secondary-bg-color);
+    --app-shell-border-color: var(--mantine-color-gray-3);
+
+    .mantine-Input-wrapper .mantine-Input-section button {
+      color: var(--mantine-color-text);
+    }
   }
 
   @mixin dark-root {
+    --app-secondary-bg-color: alpha(var(--mantine-color-dark-4), 0.5);
     --mantine-color-body: var(--mantine-color-dark-9);
-    --mantine-hover-color: alpha(var(--mantine-color-dark-4), 0.5);
+    --mantine-hover-color: var(--app-secondary-bg-color);
     --app-shell-border-color: var(--mantine-color-dark-4);
-
-    .mantine-TextInput-input[readonly],
-    .mantine-PasswordInput-input:has(> input[readonly]) {
-      background-color: var(--mantine-color-dark-4) !important;
-      border-color: transparent;
-    }
   }
+}
+
+.mantine-ActionIcon-root {
+  color: var(--mantine-color-text);
+}
+
+.mantine-TextInput-input[readonly],
+.mantine-PasswordInput-input:has(> input[readonly]) {
+  background-color: var(--app-secondary-bg-color) !important;
+  border-color: transparent;
 }
 
 .mantine-Checkbox-input:not(:checked) {
@@ -25,7 +37,7 @@
   color: inherit;
 }
 
-a {
+a:not(.mantine-Button-root) {
   color: inherit;
   text-decoration: inherit;
 }

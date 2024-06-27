@@ -2,11 +2,12 @@ import { json as jsonLang, jsonLanguage, jsonParseLinter } from "@codemirror/lan
 import { StreamLanguage } from "@codemirror/language"
 import { shell } from "@codemirror/legacy-modes/mode/shell"
 import { linter, lintGutter } from "@codemirror/lint"
-import { Box } from "@mantine/core"
-import { xcodeDarkInit } from "@uiw/codemirror-theme-xcode"
+import { Box, useMantineColorScheme } from "@mantine/core"
+import { xcodeDarkInit, xcodeLightInit } from "@uiw/codemirror-theme-xcode"
 import CodeMirror from "@uiw/react-codemirror"
 import { ClientOnly } from "remix-utils/client-only"
 import CopyTextButton from "~/components/CopyTextButton"
+import { ColorScheme } from "~/root"
 
 type CodeEditorProps = {
   value: string
@@ -39,12 +40,20 @@ const jsonAutoComplete = (options: AutocompleteOption[]) =>
     },
   })
 
-const codeMirrorTheme = xcodeDarkInit({
-  settings: {
-    background: "var(--mantine-color-dark-4)",
-    gutterBackground: "var(--mantine-color-dark-4)",
-  },
-})
+const getCodeMirrorTheme = (colorScheme: ColorScheme) =>
+  colorScheme === "dark"
+    ? xcodeDarkInit({
+        settings: {
+          background: "var(--app-secondary-bg-color)",
+          gutterBackground: "var(--app-secondary-bg-color)",
+        },
+      })
+    : xcodeLightInit({
+        settings: {
+          background: "var(--app-secondary-bg-color)",
+          gutterBackground: "var(--app-secondary-bg-color)",
+        },
+      })
 
 const CodeEditor = ({
   value,
@@ -54,6 +63,8 @@ const CodeEditor = ({
   onCodeChange,
   autocompleteOptions,
 }: CodeEditorProps) => {
+  const { colorScheme } = useMantineColorScheme()
+
   const extensions =
     lang === "json"
       ? [
@@ -85,7 +96,7 @@ const CodeEditor = ({
             extensions={extensions}
             minHeight="50px"
             readOnly={readOnly}
-            theme={codeMirrorTheme}
+            theme={getCodeMirrorTheme(colorScheme as ColorScheme)}
             value={value}
             onChange={(value, viewUpdate) => {
               onCodeChange && onCodeChange(value)

@@ -39,6 +39,7 @@ export const AccountInsightsView = ({
                 mt="xs"
                 prefetch="intent"
                 to={`/account/${accountId}/create`}
+                variant="filled"
               >
                 New Application
               </Button>

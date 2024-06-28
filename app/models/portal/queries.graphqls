@@ -52,11 +52,6 @@ query getUserAccount(
     notifications {
       notificationType
       notificationSettings {
-        accountID
-        type
-        active
-        destination
-        trigger
         events {
           full
           half
@@ -72,67 +67,29 @@ query getUserAccount(
       roleName
       accepted
     }
-    partnerChainIDs
-    partnerThroughputLimit
-    partnerAppLimit
     integrations {
       stripeSubscriptionID
-      covalentAPIKeyFree
-      covalentAPIKeyPaid
     }
-    createdAt
-    updatedAt
-    deleted
     portalApps {
       id
       name
-      accountID
       appEmoji
-      description
-      settings {
-        appID
-        environment
-        secretKey
-        secretKeyRequired
-        favoritedChainIDs
-      }
-      whitelists {
-        origins
-        userAgents
-        blockchains
-        contracts {
-          blockchainID
-          contracts
-        }
-        methods {
-          blockchainID
-          methods
-        }
-      }
-      aats {
-        protocolAppID
-        aat {
-          id
-          appID
-          publicKey
-          address
-          clientPublicKey
-          signature
-          version
-        }
-      }
-      createdAt
-      updatedAt
-      deleted
     }
     plan {
-      id
       type
-      chainIDs
-      monthlyRelayLimit
-      throughputLimit
       appLimit
       dailyLimit
+    }
+  }
+}
+
+query getUserAccountUsers($accountID: ID!, $accepted: Boolean!) {
+  getUserAccount(accountID: $accountID, accepted: $accepted) {
+    users {
+      id
+      email
+      roleName
+      accepted
     }
   }
 }
@@ -233,13 +190,92 @@ query getUserPortalApp($portalAppID: ID!, $accountID: ID!) {
   }
 }
 
-query getUserPortalApps($sortOrder: SortOrder) {
-  getUserPortalApps(sortOrder: $sortOrder) {
+query getMemberUserPortalApp($portalAppID: ID!, $accountID: ID!) {
+  getUserPortalApp(portalAppID: $portalAppID, accountID: $accountID) {
     id
     name
     accountID
     appEmoji
     description
+    settings {
+      appID
+      environment
+      favoritedChainIDs
+    }
+    whitelists {
+      origins
+      userAgents
+      blockchains
+      contracts {
+        blockchainID
+        contracts
+      }
+      methods {
+        blockchainID
+        methods
+      }
+    }
+    aats {
+      protocolAppID
+      aat {
+        id
+        appID
+        publicKey
+        address
+        clientPublicKey
+        signature
+        version
+      }
+    }
+    createdAt
+    updatedAt
+    deleted
+  }
+}
+
+query getUserAccountPortalApps(
+  $accountID: ID!
+  $accepted: Boolean!
+  $sortOrder: SortOrder
+  $roleNameFilters: [RoleName!]
+) {
+  getUserAccount(
+    accountID: $accountID
+    accepted: $accepted
+    sortOrder: $sortOrder
+    roleNameFilters: $roleNameFilters
+  ) {
+    id
+    portalApps {
+      id
+      name
+      appEmoji
+      settings {
+        secretKey
+        secretKeyRequired
+      }
+    }
+  }
+}
+
+query getMemberUserAccountPortalApps(
+  $accountID: ID!
+  $accepted: Boolean!
+  $sortOrder: SortOrder
+  $roleNameFilters: [RoleName!]
+) {
+  getUserAccount(
+    accountID: $accountID
+    accepted: $accepted
+    sortOrder: $sortOrder
+    roleNameFilters: $roleNameFilters
+  ) {
+    id
+    portalApps {
+      id
+      name
+      appEmoji
+    }
   }
 }
 

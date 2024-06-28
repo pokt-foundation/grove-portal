@@ -31,7 +31,7 @@ const ChainSandbox = ({ apps, chains }: ChainSandboxProps) => {
   } = state
 
   const appId = selectedApp?.id
-  const secretKey = selectedApp?.settings.secretKey as string
+  const secretKey = selectedApp?.settings?.secretKey as string
 
   const chainUrl = useMemo(
     () => `${getAppEndpointUrl(selectedChain, appId)}${chainRestPath || ""}`.trim(),

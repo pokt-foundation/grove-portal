@@ -15,6 +15,7 @@ import useActionNotification from "~/hooks/useActionNotification"
 import { initPortalClient } from "~/models/portal/portal.server"
 import { Blockchain, PortalApp, RoleName } from "~/models/portal/sdk"
 import { ActionDataStruct } from "~/types/global"
+import { getUserAccountRole } from "~/utils/accountUtils"
 import { getErrorMessage } from "~/utils/catchError"
 import { triggerAppActionNotification } from "~/utils/notifications.server"
 import { seo_title_append } from "~/utils/seo"
@@ -41,10 +42,26 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   invariant(appId, "app id not found")
 
   try {
-    const getUserPortalAppResponse = await portal.getUserPortalApp({
-      portalAppID: appId,
+    const getUserAccountUsersResponse = await portal.getUserAccountUsers({
       accountID: accountId,
+      accepted: true,
     })
+
+    const userRole = getUserAccountRole(
+      getUserAccountUsersResponse.getUserAccount.users,
+      user.user.portalUserID,
+    )
+
+    const getUserPortalAppResponse =
+      userRole === RoleName.Member
+        ? await portal.getMemberUserPortalApp({
+            portalAppID: appId,
+            accountID: accountId,
+          })
+        : await portal.getUserPortalApp({
+            portalAppID: appId,
+            accountID: accountId,
+          })
 
     return json<AppIdLoaderData>({
       app: getUserPortalAppResponse.getUserPortalApp as PortalApp,

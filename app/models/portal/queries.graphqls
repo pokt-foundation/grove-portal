@@ -10,6 +10,7 @@ query blockchains($active: Boolean, $sortOrder: SortOrder) {
     chainIDCheck
     logLimitBlocks
     path
+    scheme
   }
 }
 

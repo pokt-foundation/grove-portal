@@ -56,6 +56,7 @@ export const CHAIN_DOCS_URL: KeyValuePair<string> = {
   "zksync-era-mainnet": "zksync-era-api/intro",
   "blast-archival": "blastchain-api/intro",
   "opbnb-archival": "binance-smart-chain-api/endpoints/opBNB-archival",
+  "zklink-nova-archival": "zklink-nova-api/endpoints/zklink-nova-archival",
 }
 
 export const evmChains = [

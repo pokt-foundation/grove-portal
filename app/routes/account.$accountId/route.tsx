@@ -37,7 +37,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
     const getBlockchainsResponse = await portal.blockchains({ sortOrder: SortOrder.Asc })
     const blockchains = (getBlockchainsResponse.blockchains as Blockchain[]).filter(
-      (chain) => chain.id !== "BE2A",
+      (chain) => chain.id !== "BE2A" && chain.scheme !== "wss",
     )
 
     return json<AccountIdLoaderData>({

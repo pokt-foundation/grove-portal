@@ -17,7 +17,6 @@ export default defineConfig({
       // branches: 50,
       // functions: 50,
       // statements: 50,
-      exclude: ["**/build/**"],
     },
     watchExclude: [".*\\/node_modules\\/.*", ".*\\/build\\/.*"],
   },

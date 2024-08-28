@@ -375,7 +375,7 @@ export const triggerSubscriptionActionNotification = async ({
           payload: {
             message: `You have cancelled  ${
               accountName ?? accountId
-            } "Auto-Scale" subscription.`,
+            } "Unlimited" subscription.`,
             redirectTo: `/account/${accountId}`,
           },
         },
@@ -386,7 +386,7 @@ export const triggerSubscriptionActionNotification = async ({
           payload: {
             message: `${actor.email} has cancelled ${
               accountName ?? accountId
-            } "Auto-Scale" subscription.`,
+            } "Unlimited" subscription.`,
             redirectTo: `/account/${accountId}/settings/members`,
           },
         },

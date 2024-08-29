@@ -43,10 +43,10 @@ export const getPlanName = (planType: PayPlanType) => {
       return "Enterprise"
     }
     case PayPlanType.PlanUnlimited: {
-      return "Enterprise"
+      return "Unlimited"
     }
     case PayPlanType.PlanFree: {
-      return "Enterprise"
+      return "Free"
     }
     default: {
       return "Legacy"

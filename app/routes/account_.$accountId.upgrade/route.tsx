@@ -53,7 +53,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   if (
     !userRole ||
     userRole === RoleName.Member ||
-    getUserAccountResponse.getUserAccount.planType !== PayPlanType.Free
+    getUserAccountResponse.getUserAccount.planType !== PayPlanType.PlanFree
   ) {
     return redirect(`/account/${params.accountId}`)
   }
@@ -81,13 +81,13 @@ export default function UpgradePlan() {
               />
             </Tooltip>
           </Group>
-          <Text>Your current plan is {getPlanName(PayPlanType.Free)}.</Text>
+          <Text>Your current plan is {getPlanName(PayPlanType.PlanFree)}.</Text>
         </Box>
         <Divider mb="md" mt="xl" />
         <SimpleGrid cols={{ base: 1, md: 2 }}>
-          <AccountPlan disableFree type={PayPlanType.Free} />
+          <AccountPlan disableFree type={PayPlanType.PlanFree} />
           <AccountPlan
-            type={PayPlanType.Unlimited}
+            type={PayPlanType.PlanUnlimited}
             onContinue={() => {
               trackEvent({
                 category: AnalyticCategories.account,

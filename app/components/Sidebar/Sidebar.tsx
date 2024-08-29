@@ -24,13 +24,13 @@ const getStaticRoutes = (
   activeAccount: Account,
   userRole: RoleName,
 ): SidebarNavRoute[] => {
-  const isFreeAccount = activeAccount?.planType === PayPlanType.Free
+  const isFreeAccount = activeAccount?.planType === PayPlanType.PlanFree
   return [
     ...(isFreeAccount && userRole !== RoleName.Member
       ? [
           {
             to: `/account/${activeAccount?.id}/upgrade`,
-            label: "Upgrade to Auto-Scale",
+            label: "Upgrade to Unlimited",
             end: true,
           },
         ]

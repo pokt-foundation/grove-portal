@@ -14,11 +14,11 @@ export function isEnterprisePlan(planType: PayPlanType) {
 }
 
 export function isUnlimitedPlan(planType: PayPlanType) {
-  return planType === PayPlanType.Unlimited
+  return planType === PayPlanType.PlanUnlimited
 }
 
 export function isFree(planType: PayPlanType) {
-  return planType === PayPlanType.Free
+  return planType === PayPlanType.PlanFree
 }
 
 export function isLegacyPlan(planType: PayPlanType) {
@@ -26,8 +26,8 @@ export function isLegacyPlan(planType: PayPlanType) {
     planType === PayPlanType.PayAsYouGoV0 ||
     planType === PayPlanType.FreetierV0 ||
     planType === PayPlanType.Enterprise ||
-    planType === PayPlanType.Unlimited ||
-    planType === PayPlanType.Free 
+    planType === PayPlanType.PlanUnlimited ||
+    planType === PayPlanType.PlanFree
   )
 }
 
@@ -42,10 +42,10 @@ export const getPlanName = (planType: PayPlanType) => {
     case PayPlanType.Enterprise: {
       return "Enterprise"
     }
-    case PayPlanType.Unlimited: {
+    case PayPlanType.PlanUnlimited: {
       return "Enterprise"
     }
-    case PayPlanType.Free: {
+    case PayPlanType.PlanFree: {
       return "Enterprise"
     }
     default: {

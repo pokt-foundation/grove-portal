@@ -11,17 +11,17 @@ import { formatTimestampShort } from "~/utils/dayjs"
 import { getPlanName } from "~/utils/planUtils"
 import { capitalizeFirstLetter } from "~/utils/utils"
 
-interface AutoScalePlanOverviewCardProps {
+interface UnlimitedPlanOverviewCardProps {
   account: Account
   userRole: RoleName
   subscription?: Stripe.Subscription
 }
 
-export default function AutoScalePlanOverviewCard({
+export default function UnlimitedPlanOverviewCard({
   account,
   userRole,
   subscription,
-}: AutoScalePlanOverviewCardProps) {
+}: UnlimitedPlanOverviewCardProps) {
   const location = useLocation()
   const { openStopSubscriptionModal } = useSubscriptionModals()
 

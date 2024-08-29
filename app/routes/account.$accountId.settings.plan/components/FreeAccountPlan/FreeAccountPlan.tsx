@@ -29,9 +29,9 @@ const FreeAccountPlan = ({ account, userRole }: FreeAccountPlanProps) => {
         </Text>
       </Stack>
       <SimpleGrid cols={{ base: 1, lg: 3 }}>
-        <AccountPlan disableFree type={PayPlanType.Free} />
+        <AccountPlan disableFree type={PayPlanType.PlanFree} />
         <AccountPlan
-          type={PayPlanType.Unlimited}
+          type={PayPlanType.PlanUnlimited}
           onContinue={() => {
             trackEvent({
               category: AnalyticCategories.account,

@@ -13,7 +13,12 @@ import { LuCheck } from "react-icons/lu"
 import { PayPlanType } from "~/models/portal/sdk"
 
 type AccountPlanProps = {
-  type: PayPlanType.PayAsYouGoV0 | PayPlanType.FreetierV0 | PayPlanType.Enterprise | PayPlanType.Unlimited | PayPlanType.Free
+  type:
+    | PayPlanType.PayAsYouGoV0
+    | PayPlanType.FreetierV0
+    | PayPlanType.Enterprise
+    | PayPlanType.PlanUnlimited
+    | PayPlanType.PlanFree
   onContinue?: () => void
   disableFree?: boolean
 }
@@ -59,7 +64,7 @@ const UnlimitedList = () => {
 }
 
 const FreeList = () => {
-  return(
+  return (
     <List center icon={<LuCheck size="18px" />} size="sm" spacing="xl">
       <List.Item>100,000 relays free per month</List.Item>
       <List.Item>Cap at 100,000 Relays, zero overages</List.Item>
@@ -75,8 +80,8 @@ export const AccountPlan = ({
   onContinue,
   disableFree = false,
 }: AccountPlanProps) => {
-  const isUnlimited = type === PayPlanType.Unlimited 
-  const isFree = type === PayPlanType.Free
+  const isUnlimited = type === PayPlanType.PlanUnlimited
+  const isFree = type === PayPlanType.PlanFree
 
   return (
     <Card
@@ -84,7 +89,9 @@ export const AccountPlan = ({
       radius="md"
       shadow="sm"
       style={(theme: MantineTheme) => ({
-        borderColor: isUnlimited ? theme.colors.green[7] : "var(--app-shell-border-color)",
+        borderColor: isUnlimited
+          ? theme.colors.green[7]
+          : "var(--app-shell-border-color)",
       })}
     >
       <Stack align="center" gap="xl" mb="xl">
@@ -100,8 +107,7 @@ export const AccountPlan = ({
       <Text py="lg" ta="center">
         {isFree &&
           "Enjoy 100,000 free relays a month with Grove on the Unstoppable Pocket Network."}
-        {isUnlimited &&
-          "Unlimited relays with Grove on the Unstoppable Pocket Network."}
+        {isUnlimited && "Unlimited relays with Grove on the Unstoppable Pocket Network."}
       </Text>
 
       {isFree && (

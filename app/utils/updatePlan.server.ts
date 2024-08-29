@@ -30,7 +30,7 @@ export const updatePlan = async ({
     }
 
     if (limit) {
-      options.input.enterpriseLimit = limit
+      options.input.monthlyUserLimit = limit
     }
     if (subscription) {
       options.input.stripeSubscriptionID = subscription

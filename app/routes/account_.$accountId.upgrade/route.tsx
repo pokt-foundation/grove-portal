@@ -24,7 +24,7 @@ import { requireUser } from "~/utils/user.server"
 export const meta: MetaFunction = () => {
   return [
     {
-      title: `Upgrade to Auto-Scale ${seo_title_append}`,
+      title: `Upgrade to Unlimited ${seo_title_append}`,
     },
   ]
 }
@@ -53,7 +53,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   if (
     !userRole ||
     userRole === RoleName.Member ||
-    getUserAccountResponse.getUserAccount.planType !== PayPlanType.FreetierV0
+    getUserAccountResponse.getUserAccount.planType !== PayPlanType.PlanFree
   ) {
     return redirect(`/account/${params.accountId}`)
   }
@@ -71,7 +71,7 @@ export default function UpgradePlan() {
         <Box w="100%">
           <Group justify="space-between">
             <Text fw={600} fz="21px">
-              Upgrade to Auto-Scale
+              Upgrade to Unlimited
             </Text>
             <Tooltip withArrow label="Discard">
               <CloseButton
@@ -81,13 +81,13 @@ export default function UpgradePlan() {
               />
             </Tooltip>
           </Group>
-          <Text>Your current plan is {getPlanName(PayPlanType.FreetierV0)}.</Text>
+          <Text>Your current plan is {getPlanName(PayPlanType.PlanFree)}.</Text>
         </Box>
         <Divider mb="md" mt="xl" />
         <SimpleGrid cols={{ base: 1, md: 2 }}>
-          <AccountPlan disableFree type={PayPlanType.FreetierV0} />
+          <AccountPlan disableFree type={PayPlanType.PlanFree} />
           <AccountPlan
-            type={PayPlanType.PayAsYouGoV0}
+            type={PayPlanType.PlanUnlimited}
             onContinue={() => {
               trackEvent({
                 category: AnalyticCategories.account,

@@ -536,6 +536,7 @@ export const accountMockData: Account = {
   name: "Staging",
   planType: PayPlanType.FreetierV0,
   enterpriseLimit: 0,
+  monthlyUserLimit: 0,
   notifications: [
     {
       notificationType: NotificationType.Email,

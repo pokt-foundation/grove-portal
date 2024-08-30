@@ -23,7 +23,6 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   try {
     // get pokemon relay price
     const priceID = getRequiredServerEnvVar("STRIPE_PRICE_ID")
-    console.log("priceID:", priceID)
     const price = await stripe.prices.retrieve(priceID, {
       expand: ["tiers"],
     })

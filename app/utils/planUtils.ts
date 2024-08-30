@@ -25,7 +25,7 @@ export function isLegacyPlan(planType: PayPlanType) {
   return (
     planType === PayPlanType.PayAsYouGoV0 ||
     planType === PayPlanType.FreetierV0 ||
-    planType === PayPlanType.Enterprise 
+    planType === PayPlanType.Enterprise
   )
 }
 

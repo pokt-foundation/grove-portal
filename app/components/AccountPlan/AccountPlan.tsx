@@ -12,6 +12,7 @@ import {
 import { LuCheck } from "react-icons/lu"
 import { PayPlanType } from "~/models/portal/sdk"
 
+// TODO_TECHDEBT: Remove all references to PayAsYouGoV0 and FreetierV0` after its live
 type AccountPlanProps = {
   type:
     | PayPlanType.PayAsYouGoV0

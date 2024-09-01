@@ -29,16 +29,13 @@ export const updatePlan = async ({
       input: { accountID: id, payPlanType: planType },
     }
 
-    if (limit) {
-      options.input.enterpriseLimit = limit
-    }
     if (subscription) {
       options.input.stripeSubscriptionID = subscription
     }
 
     await portalAdmin.adminUpdateAccount(options)
 
-    if (planType !== PayPlanType.FreetierV0) {
+    if (planType !== PayPlanType.PlanFree) {
       await triggerSubscriptionActionNotification({
         planType,
         accountId: id,

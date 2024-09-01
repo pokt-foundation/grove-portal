@@ -65,7 +65,7 @@ export const action: ActionFunction = async ({ request }) => {
           if (sessionCompleted.metadata?.account_id) {
             const formData = new FormData()
             formData.set("id", sessionCompleted.metadata.account_id)
-            formData.set("type", PayPlanType.PayAsYouGoV0)
+            formData.set("type", PayPlanType.PlanUnlimited)
             formData.set("subscription", sessionCompleted.subscription)
 
             // update account plan and store subscription id

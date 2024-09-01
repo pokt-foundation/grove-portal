@@ -24,13 +24,13 @@ const getStaticRoutes = (
   activeAccount: Account,
   userRole: RoleName,
 ): SidebarNavRoute[] => {
-  const isStarterAccount = activeAccount?.planType === PayPlanType.FreetierV0
+  const isFreeAccount = activeAccount?.planType === PayPlanType.PlanFree
   return [
-    ...(isStarterAccount && userRole !== RoleName.Member
+    ...(isFreeAccount && userRole !== RoleName.Member
       ? [
           {
             to: `/account/${activeAccount?.id}/upgrade`,
-            label: "Upgrade to Auto-Scale",
+            label: "Upgrade to Unlimited",
             end: true,
           },
         ]
@@ -51,7 +51,7 @@ const getStaticRoutes = (
         label: "Sandbox",
         end: true,
       },
-      ...(!isStarterAccount && userRole !== RoleName.Member
+      ...(!isFreeAccount && userRole !== RoleName.Member
         ? [
             {
               to: `/account/${activeAccount?.id}/billing`,

@@ -213,6 +213,10 @@ export const subscription: Stripe.Subscription = {
   description: null,
   discount: null,
   ended_at: null,
+  invoice_settings: {
+    account_tax_ids: null,
+    issuer: { type: "self" },
+  },
   items: {
     object: "list",
     data: [

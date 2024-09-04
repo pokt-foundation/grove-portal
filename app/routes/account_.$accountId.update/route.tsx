@@ -18,7 +18,11 @@ import { ErrorBoundaryView } from "~/components/ErrorBoundaryView"
 import RouteModal from "~/components/RouteModal"
 import useActionNotification from "~/hooks/useActionNotification"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { Account, RoleName } from "~/models/portal/sdk"
+import {
+  Account,
+  UpdateAccount as UpdateAccountParams,
+  RoleName,
+} from "~/models/portal/sdk"
 import { ActionDataStruct } from "~/types/global"
 import { getUserAccountRole } from "~/utils/accountUtils"
 import { getErrorMessage } from "~/utils/catchError"
@@ -82,20 +86,27 @@ export const action: ActionFunction = async ({ request, params }) => {
   const portal = initPortalClient({ token: user.accessToken })
   const formData = await request.formData()
   const name = formData.get("account_name")
+  const monthlyRelayLimit = formData.get("monthly_relay_limit")
   const { accountId } = params
   const redirectTo = url.searchParams.get("redirectTo")
 
   invariant(name && typeof name === "string", "account name not found")
   invariant(accountId && typeof accountId === "string", "accountId not found")
 
+  const accountInput: UpdateAccountParams = {
+    accountID: accountId,
+  }
+  if (name) {
+    accountInput.name = name
+  }
+  if (monthlyRelayLimit && typeof monthlyRelayLimit === "string") {
+    const sanitizedLimit = monthlyRelayLimit.replace(/,/g, "")
+    accountInput.monthlyUserLimit = Number(sanitizedLimit)
+  }
+
   try {
     const updateUserAccountResponse = await portal
-      .updateUserAccount({
-        input: {
-          accountID: accountId,
-          name,
-        },
-      })
+      .updateUserAccount({ input: accountInput })
       .catch(() => {
         throw new Error("Unable to update account")
       })

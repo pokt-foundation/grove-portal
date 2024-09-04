@@ -52,7 +52,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     const userRole = getUserAccountRole(account.users, user.user.portalUserID) as RoleName
 
     // Redirect to account page if user is a member or account is on Starter
-    if (userRole === RoleName.Member || account.plan.type === PayPlanType.FreetierV0) {
+    if (userRole === RoleName.Member || account.plan.type === PayPlanType.PlanFree) {
       return redirect(`/account/${accountId}`)
     }
 

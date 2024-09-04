@@ -55,7 +55,7 @@ describe("account/$accountId/settings/plan", () => {
       ).toBeInTheDocument()
     })
   })
-  it("renders plan for payg", async () => {
+  it("renders plan for unlimited", async () => {
     function SettingsOutLetContext() {
       return (
         <RootProviders>
@@ -74,7 +74,7 @@ describe("account/$accountId/settings/plan", () => {
             Component: AccountPlanDetails,
             loader: () => {
               return json<AccountPlanLoaderData>({
-                account: { ...accountMockData, planType: PayPlanType.PayAsYouGoV0 },
+                account: { ...accountMockData, planType: PayPlanType.PlanUnlimited },
                 accountAppsRelays: [accountAppsRelaysData],
                 subscription: subscription,
                 user: profileMockData,

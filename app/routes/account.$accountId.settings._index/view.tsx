@@ -43,10 +43,18 @@ export const AccountSettingsView = ({ account, userRole }: AccountSettingsViewPr
               <Text fw={600}>Monthly Relay Limit</Text>
               <Text pt={5}>
                 {account.monthlyUserLimit === 0
-                  ? "You have no monthly relay limit. You may set a monthly relay limit in Account Settings."
-                  : `You have a monthly relay limit of ${commify(
+                  ? `This account has no monthly relay limit. ${
+                      userRole === RoleName.Member
+                        ? "You may set a monthly relay limit in Account Settings."
+                        : "An admin of this account may set a monthly relay limit in Account Settings."
+                    }`
+                  : `This account has a monthly relay limit of ${commify(
                       account.monthlyUserLimit,
-                    )} relays. Once you hit this limit, your account will stop working until the start of the next calendar month. You may increase this limit in Account Settings.`}
+                    )} relays. Once you hit this limit, your account will stop working until the start of the next calendar month. ${
+                      userRole === RoleName.Member
+                        ? "An admin of this account may increase this limit in Account Settings."
+                        : "You may increase this limit in Account Settings."
+                    }`}
               </Text>
             </Box>
           </Stack>

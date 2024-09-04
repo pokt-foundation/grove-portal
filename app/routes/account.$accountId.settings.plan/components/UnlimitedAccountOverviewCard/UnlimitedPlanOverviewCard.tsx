@@ -63,7 +63,7 @@ export default function UnlimitedPlanOverviewCard({
           </Stack>
         </SimpleGrid>
 
-        {userRole !== "MEMBER" && (
+        {userRole !== RoleName.Member && (
           <Box mt="auto">
             <Form action="/api/stripe/portal-session" method="post">
               <input hidden defaultValue={location.pathname} name="return-path" />

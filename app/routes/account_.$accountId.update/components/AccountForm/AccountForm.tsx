@@ -61,9 +61,13 @@ const AccountForm = ({ account, redirectTo, onSubmit }: AccountFormProps) => {
           <>
             <RouteModal.Header
               closeButtonLink={closeButtonRedirect}
-              description={`Set a monthly relay limit to avoid extra charges. Your account will stop working once you hit this limit and will resume at the start of the next calendar month. The limit must be set in multiples of 1,000,000. Your current limit is ${commify(
-                account.monthlyUserLimit,
-              )} relays per month.`}
+              description={`Set a monthly relay limit to avoid extra charges. Your account will stop working once you hit this limit and will resume at the start of the next calendar month. The limit must be set in multiples of 1,000,000. ${
+                account.monthlyUserLimit > 0
+                  ? `Your current limit is ${commify(
+                      account.monthlyUserLimit,
+                    )} relays per month.`
+                  : ""
+              }`}
               title="Monthly Relay Limit"
             />
             <Stack gap="md" mt="sm">

@@ -53,7 +53,7 @@ stripe login
 Then run the following to start forwarding webhooks:
 
 ```sh
-stripe --api-key <STRIPE API KEY> listen --forward-to http://localhost:3000/api/stripe/webhook
+stripe --api-key {STRIPE_API_KEY} listen --forward-to http://localhost:3000/api/stripe/webhook
 ```
 
 It is generally recommended to use the test mode Stripe API key for forwarding webhooks, as this will not create any real subscriptions or charge any real money.
@@ -61,6 +61,10 @@ It is generally recommended to use the test mode Stripe API key for forwarding w
 You will be given a webhook signing secret, set it in your `.env` file as `STRIPE_WEBHOOK_SECRET`.
 
 [The webhook handling code in this repo can be found here.](app/routes/api.stripe.webhook/route.tsx).
+
+### Environment Variables
+
+[You can find the environment variables - including for Stripe- here.](https://start.1password.com/open/i?a=4PU7ZENUCRCRTNSQWQ7PWCV2RM&v=kudw25ob4zcynmzmv2gv4qpkuq&i=picsbxs4vwfewipk5zg3rdou2u&h=buildwithgrove.1password.com)
 
 ### Backend
 

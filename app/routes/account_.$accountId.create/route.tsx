@@ -172,7 +172,7 @@ export default function CreateApp() {
   useActionNotification(fetcherData)
 
   const handleFormSubmit = (formData: FormData) => {
-    if (account.planType === PayPlanType.FreetierV0) {
+    if (account.planType === PayPlanType.PlanFree) {
       setAppFromData(formData)
     } else {
       fetcher.submit(formData, {

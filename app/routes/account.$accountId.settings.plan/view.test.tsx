@@ -14,7 +14,7 @@ const accountAppsRelaysData: AccountAppRelays = {
 }
 
 describe("<PlanView />", () => {
-  it("renders upgrade screen for freetier plan", async () => {
+  it("renders upgrade screen for free plan", async () => {
     const RemixStub = createRemixStub([
       {
         path: "/",
@@ -39,14 +39,14 @@ describe("<PlanView />", () => {
       ).toBeInTheDocument()
     })
   })
-  it("renders plan for payg", async () => {
+  it("renders plan for unlimited", async () => {
     const RemixStub = createRemixStub([
       {
         path: "/",
         Component: () => (
           <RootProviders>
             <PlanView
-              account={{ ...accountMockData, planType: PayPlanType.PayAsYouGoV0 }}
+              account={{ ...accountMockData, planType: PayPlanType.PlanUnlimited }}
               accountAppsRelays={[accountAppsRelaysData]}
               subscription={subscription}
               user={profileMockData}

@@ -23,7 +23,7 @@ export const action: ActionFunction = async ({ request }) => {
       if (updatedSubscription) {
         await updatePlan({
           id: accountId as string,
-          type: PayPlanType.FreetierV0,
+          type: PayPlanType.PlanFree,
         })
 
         await triggerSubscriptionActionNotification({

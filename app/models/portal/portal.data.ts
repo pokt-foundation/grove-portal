@@ -534,7 +534,7 @@ export const profileMockData: User & { auth0ID: string } = {
 export const accountMockData: Account = {
   id: "08cbd8b8",
   name: "Staging",
-  planType: PayPlanType.FreetierV0,
+  planType: PayPlanType.PlanFree,
   enterpriseLimit: 0,
   monthlyUserLimit: 0,
   notifications: [
@@ -671,7 +671,7 @@ export const accountMockData: Account = {
   ],
   plan: {
     id: "",
-    type: PayPlanType.FreetierV0,
+    type: PayPlanType.PlanFree,
     monthlyRelayLimit: 0,
     chainIDs: [],
     throughputLimit: 30,

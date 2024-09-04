@@ -1,9 +1,11 @@
-import { Button, Divider, Group, Stack, TextInput } from "@mantine/core"
+import { Button, Divider, Group, Stack, NumberInput, TextInput } from "@mantine/core"
 import { Form, NavLink, useParams } from "@remix-run/react"
 import { useState } from "react"
 import RouteModal from "~/components/RouteModal"
 import { Account } from "~/models/portal/sdk"
 import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
+import { commify } from "~/utils/formattingUtils"
+import { isUnlimitedPlan } from "~/utils/planUtils"
 
 type AccountFormProps = {
   account: Account
@@ -11,10 +13,20 @@ type AccountFormProps = {
   onSubmit: (formData: FormData) => void
 }
 
+function EnableUpdate(name: string, monthlyRelayLimit: number, account: Account) {
+  return (
+    (name !== "" && name !== account.name) ||
+    monthlyRelayLimit !== account.monthlyUserLimit
+  )
+}
+
 const AccountForm = ({ account, redirectTo, onSubmit }: AccountFormProps) => {
   const { accountId } = useParams()
   const closeButtonRedirect = redirectTo ?? `/account/${accountId}/settings`
   const [name, setName] = useState(account?.name ?? "")
+  const [monthlyRelayLimit, setMonthlyRelayLimit] = useState(
+    account?.monthlyUserLimit ?? 0,
+  )
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault()
@@ -24,15 +36,14 @@ const AccountForm = ({ account, redirectTo, onSubmit }: AccountFormProps) => {
 
   return (
     <Stack>
-      <RouteModal.Header
-        closeButtonLink={closeButtonRedirect}
-        description="An accurate account name helps team members identify their workspace. Ensure
-          it's current and relevant by updating it here."
-        title="Account Name"
-      />
-      <Divider mb="md" mt="xl" />
       <Form method="post" onSubmit={handleSubmit}>
-        <Stack gap="md">
+        <RouteModal.Header
+          closeButtonLink={closeButtonRedirect}
+          description="An accurate account name helps team members identify their workspace. Ensure
+          it's current and relevant by updating it here."
+          title="Account Name"
+        />
+        <Stack gap="md" mt="sm">
           <TextInput
             required
             defaultValue={name}
@@ -45,7 +56,34 @@ const AccountForm = ({ account, redirectTo, onSubmit }: AccountFormProps) => {
             onChange={(e) => setName(e.target.value)}
           />
         </Stack>
-        <Divider my={32} />
+        <Divider mb="md" mt="xl" />
+        {isUnlimitedPlan(account.planType) && (
+          <>
+            <RouteModal.Header
+              closeButtonLink={closeButtonRedirect}
+              description={`Set a monthly relay limit to avoid extra charges. Your account will stop working once you hit this limit and will resume at the start of the next calendar month. The limit must be set in multiples of 1,000,000. Your current limit is ${commify(
+                account.monthlyUserLimit,
+              )} relays per month.`}
+              title="Monthly Relay Limit"
+            />
+            <Stack gap="md" mt="sm">
+              <NumberInput
+                allowDecimal={false}
+                allowNegative={false}
+                defaultValue={monthlyRelayLimit}
+                description="Optional"
+                fw={600}
+                label="Monthly Relay Limit"
+                name="monthly_relay_limit"
+                step={1000000}
+                thousandSeparator=","
+                w="200px"
+                onChange={(value) => setMonthlyRelayLimit(Number(value))}
+              />
+            </Stack>
+            <Divider my={32} />
+          </>
+        )}
         <Group justify="right">
           <Button
             color="gray"
@@ -60,7 +98,7 @@ const AccountForm = ({ account, redirectTo, onSubmit }: AccountFormProps) => {
             Discard
           </Button>
           <Button
-            disabled={name === ""}
+            disabled={!EnableUpdate(name, monthlyRelayLimit, account)}
             fw={400}
             fz="sm"
             px="xs"

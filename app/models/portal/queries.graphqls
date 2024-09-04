@@ -50,6 +50,7 @@ query getUserAccount(
     name
     planType
     enterpriseLimit
+    monthlyUserLimit
     notifications {
       notificationType
       notificationSettings {

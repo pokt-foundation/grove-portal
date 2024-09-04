@@ -1,7 +1,7 @@
 import { Box } from "@mantine/core"
-import AutoScalePlanOverviewCard from "./components/AutoScalePlanOverviewCard"
 import EnterpriseAccountOverviewCard from "./components/EnterpriseAccountOverviewCard"
-import StarterAccountPlan from "./components/StarterAccountPlan"
+import FreeAccountPlan from "./components/FreeAccountPlan"
+import UnlimitedPlanOverviewCard from "./components/UnlimitedAccountOverviewCard"
 import { AccountPlanLoaderData } from "./route"
 import { PayPlanType, RoleName } from "~/models/portal/sdk"
 
@@ -14,12 +14,10 @@ export const AccountPlanView = ({
 }: AccountPlanViewProps) => {
   return (
     <Box py={20}>
-      {account.planType === PayPlanType.FreetierV0 && (
-        <StarterAccountPlan account={account} userRole={userRole} />
-      )}
+      {account.planType === PayPlanType.PlanFree && <FreeAccountPlan account={account} />}
 
-      {account.planType === PayPlanType.PayAsYouGoV0 && (
-        <AutoScalePlanOverviewCard
+      {account.planType === PayPlanType.PlanUnlimited && (
+        <UnlimitedPlanOverviewCard
           account={account}
           subscription={subscription}
           userRole={userRole}

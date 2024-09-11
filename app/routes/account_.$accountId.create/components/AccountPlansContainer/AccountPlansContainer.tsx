@@ -1,11 +1,12 @@
 import { Box, Center, Flex, Text } from "@mantine/core"
-import { useParams } from "@remix-run/react"
+
 import { AccountPlan } from "~/components/AccountPlan"
-import RouteModal from "~/components/RouteModal"
 import { PayPlanType } from "~/models/portal/sdk"
+import RouteModal from "~/components/RouteModal"
+import { useParams } from "@remix-run/react"
 
 type AccountPlansContainerProps = {
-  onPlanSelected: (plan: PayPlanType.FreetierV0 | PayPlanType.PayAsYouGoV0) => void
+  onPlanSelected: (plan: PayPlanType.PlanFree | PayPlanType.PlanUnlimited) => void
 }
 
 const AccountPlansContainer = ({ onPlanSelected }: AccountPlansContainerProps) => {
@@ -19,12 +20,12 @@ const AccountPlansContainer = ({ onPlanSelected }: AccountPlansContainerProps) =
       />
       <Flex gap="xl" justify="space-evenly">
         <AccountPlan
-          type={PayPlanType.FreetierV0}
-          onContinue={() => onPlanSelected(PayPlanType.FreetierV0)}
+          type={PayPlanType.PlanFree}
+          onContinue={() => onPlanSelected(PayPlanType.PlanFree)}
         />
         <AccountPlan
-          type={PayPlanType.PayAsYouGoV0}
-          onContinue={() => onPlanSelected(PayPlanType.PayAsYouGoV0)}
+          type={PayPlanType.PlanUnlimited}
+          onContinue={() => onPlanSelected(PayPlanType.PlanUnlimited)}
         />
       </Flex>
       <Center mt="xl">

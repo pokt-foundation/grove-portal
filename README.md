@@ -22,7 +22,7 @@ Merge PR from "stage" to "main" and vercel will build to prod environment
 
 ### Env
 
-Make sure to get the `.env` from [1password](https://start.1password.com/open/i?a=4PU7ZENUCRCRTNSQWQ7PWCV2RM&v=kudw25ob4zcynmzmv2gv4qpkuq&i=picsbxs4vwfewipk5zg3rdou2u&h=buildwithgrove.1password.com).
+Make sure to get the `.env` from [1password](https://start.1password.com/open/i?a=4PU7ZENUCRCRTNSQWQ7PWCV2RM&v=kudw25ob4zcynmzmv2gv4qpkuq&i=usnpm5yls4p4vvtz5srqzuokz4&h=buildwithgrove.1password.com).
 
 ### Node Version
 

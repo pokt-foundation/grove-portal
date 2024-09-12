@@ -1,9 +1,9 @@
 import { Box, Center, Flex, Text } from "@mantine/core"
 
-import { AccountPlan } from "~/components/AccountPlan"
-import { PayPlanType } from "~/models/portal/sdk"
-import RouteModal from "~/components/RouteModal"
 import { useParams } from "@remix-run/react"
+import { AccountPlan } from "~/components/AccountPlan"
+import RouteModal from "~/components/RouteModal"
+import { PayPlanType } from "~/models/portal/sdk"
 
 type AccountPlansContainerProps = {
   onPlanSelected: (plan: PayPlanType.PlanFree | PayPlanType.PlanUnlimited) => void

@@ -20,12 +20,24 @@ Merge PR from "stage" to "main" and vercel will build to prod environment
 
 ## Development
 
+### Env
+
+Make sure to get the `.env` from [1password](https://start.1password.com/open/i?a=4PU7ZENUCRCRTNSQWQ7PWCV2RM&v=kudw25ob4zcynmzmv2gv4qpkuq&i=usnpm5yls4p4vvtz5srqzuokz4&h=buildwithgrove.1password.com).
+
+### Node Version
+
+Ensure you're using node 18 (not 22).
+
 ### Frontend
 
 To run your Remix app locally, make sure your project's local dependencies are installed:
 
 ```sh
 pnpm install
+```
+
+```sh
+pnpm build
 ```
 
 Afterwards, start the Remix development server like so:

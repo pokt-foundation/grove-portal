@@ -1,22 +1,41 @@
-# Welcome to Pocket Portal!
+<div align="center">
+<h1>Grove Portal UI</h1>
+<img src="https://storage.googleapis.com/grove-brand-assets/Presskit/Logo%20Joined-2.png" alt="Grove logo" width="500"/>
+</div>
+<br/>
 
-### Run with Remix
+# Table of Contents <!-- omit in toc -->
+
+- [Run with **Remix**](#run-with-remix)
+- [Deployment](#deployment)
+- [Development](#development)
+  - [Env](#env)
+  - [Node Version](#node-version)
+  - [Frontend](#frontend)
+  - [Stripe Webhook Forwarding](#stripe-webhook-forwarding)
+  - [Environment Variables](#environment-variables)
+  - [Backend](#backend)
+
+## Run with **Remix**
 
 - [Remix Docs](https://remix.run/docs)
 
 ## Deployment
 
-### PR / DEV
+1. **Test Locally**
 
-Create PR and vercel will create a preview build based on the PR
+   - Test your changes locally before creating a PR.
 
-### STAGE
+2. **PR / STAGE**
 
-Merge PR into "stage" branch and vercel will build to staging environment
+   - Create a PR into the "staging" branch. Continuous Deployment (CD) will automatically deploy to [https://staging.portal.grove.city](https://staging.portal.grove.city).
 
-### PROD
+3. **PROD**
 
-Merge PR from "stage" to "main" and vercel will build to prod environment
+   - Create a PR from "staging" into "main". CD will automatically deploy to [https://portal.grove.city/](https://portal.grove.city).
+
+4. **Test in Main**
+   - Test your changes in the main environment to ensure everything is working as expected.
 
 ## Development
 
@@ -26,7 +45,9 @@ Make sure to get the `.env` from [1password](https://start.1password.com/open/i?
 
 ### Node Version
 
-Ensure you're using node 18 (not 22).
+---
+
+**Ensure you're using Node v18 (not 22).**
 
 ### Frontend
 
@@ -43,7 +64,7 @@ pnpm build
 Afterwards, start the Remix development server like so:
 
 ```sh
-pnpm run dev
+pnpm dev
 ```
 
 Open up [http://localhost:3000](http://localhost:3000) and you should be ready to go!

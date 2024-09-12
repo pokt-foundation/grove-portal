@@ -18,7 +18,7 @@ const accountAppsRelaysData: AccountAppRelays = {
 }
 
 describe("account/$accountId/settings/plan", () => {
-  it("renders upgrade screen for freetier plan", async () => {
+  it("renders upgrade screen for free plan", async () => {
     function SettingsOutLetContext() {
       return (
         <RootProviders>

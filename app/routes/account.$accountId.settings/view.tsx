@@ -29,7 +29,7 @@ export default function AccountSettingsLayoutView({
           label: "Plan",
         },
       ],
-      ...(account.planType === PayPlanType.FreetierV0
+      ...(account.planType === PayPlanType.PlanFree
         ? [
             {
               to: "notifications",

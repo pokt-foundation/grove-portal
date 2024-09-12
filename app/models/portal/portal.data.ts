@@ -57,7 +57,7 @@ export const app: PortalApp = {
   firstDateSurpassed: "0001-01-01T00:00:00Z",
   legacyFields: {
     // @ts-ignore
-    planType: "FREETIER_V0",
+    planType: "PLAN_FREE",
     dailyLimit: 250000,
     customLimit: 0,
     requestTimeout: 2000,

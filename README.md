@@ -26,13 +26,18 @@
 
    - Test your changes locally before creating a PR.
 
-2. **PR / STAGE**
+2. **Test in Staging**
 
-   - Create a PR into the "staging" branch. Continuous Deployment (CD) will automatically deploy to [https://staging.portal.grove.city](https://staging.portal.grove.city).
+   - Create a PR into the `stage` branch.
+   - Continuous Deployment (CD) will automatically deploy it to [staging.portal.grove.city](https://staging.portal.grove.city) after it is merged.
+   - E.g. <INSERT_LINK>
 
-3. **PROD**
+3. **Deploy to PROD**
 
-   - Create a PR from "staging" into "main". CD will automatically deploy to [https://portal.grove.city/](https://portal.grove.city).
+   - Create a PR from the `stage` branch into the `main` branch
+   - CD will automatically deploy to [portal.grove.city](https://portal.grove.city).
+   - E.g. <INSERT_EXAMPLE_LINK>
+   
 
 4. **Test in Main**
    - Test your changes in the main environment to ensure everything is working as expected.

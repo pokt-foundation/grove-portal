@@ -28,12 +28,16 @@
 
 2. **PR / STAGE**
 
-   - Create a PR into the "staging" branch. Continuous Deployment (CD) will automatically deploy to [https://staging.portal.grove.city](https://staging.portal.grove.city).
+   - Create a PR into the "staging" branch. 
+   - Continuous Deployment (CD) will automatically deploy to [https://staging.portal.grove.city](https://staging.portal.grove.city).
+   - eg. https://github.com/pokt-foundation/grove-portal/pull/660
 
 3. **PROD**
 
-   - Create a PR from "staging" into "main". CD will automatically deploy to [https://portal.grove.city/](https://portal.grove.city).
-
+   - Create a PR from "staging" into "main". 
+   - CD will automatically deploy to [https://portal.grove.city/](https://portal.grove.city).
+   - eg. https://github.com/pokt-foundation/grove-portal/pull/662
+  
 4. **Test in Main**
    - Test your changes in the main environment to ensure everything is working as expected.
 

@@ -49,7 +49,6 @@ query getUserAccount(
     id
     name
     planType
-    enterpriseLimit
     monthlyUserLimit
     notifications {
       notificationType

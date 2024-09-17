@@ -12,46 +12,11 @@ import {
 import { LuCheck } from "react-icons/lu"
 import { PayPlanType } from "~/models/portal/sdk"
 
-// TODO_TECHDEBT: Remove all references to PayAsYouGoV0 and FreetierV0` after its live
 type AccountPlanProps = {
-  type:
-    | PayPlanType.PayAsYouGoV0
-    | PayPlanType.FreetierV0
-    | PayPlanType.Enterprise
-    | PayPlanType.PlanUnlimited
-    | PayPlanType.PlanFree
+  type: PayPlanType.Enterprise | PayPlanType.PlanUnlimited | PayPlanType.PlanFree
   onContinue?: () => void
   disableFree?: boolean
 }
-/*
-const AutoScaleList = () => {
-  return (
-    <List center icon={<LuCheck size="18px" />} size="sm" spacing="xl">
-      <List.Item>100,000 relays free per day</List.Item>
-      <List.Item>Auto-Scale at $7.456 / additional million</List.Item>
-      <List.Item>No throughput limit</List.Item>
-      <List.Item>Direct Customer support</List.Item>
-      <List.Item>Access all supported chains</List.Item>
-      <List.Item>Global region support</List.Item>
-      <List.Item>ETH Trace supported</List.Item>
-    </List>
-  )
-}
-
-const EnterpriseList = () => {
-  return (
-    <List center icon={<LuCheck size="18px" />} size="sm" spacing="xl">
-      <List.Item>Custom relays per day</List.Item>
-      <List.Item>Custom volume plans</List.Item>
-      <List.Item>No throughput limit</List.Item>
-      <List.Item>Direct Customer support</List.Item>
-      <List.Item>Access all supported chains</List.Item>
-      <List.Item>Global region support</List.Item>
-      <List.Item>ETH Trace supported</List.Item>
-    </List>
-  )
-}
-*/
 const UnlimitedList = () => {
   return (
     <List center icon={<LuCheck size="18px" />} size="sm" spacing="xl">

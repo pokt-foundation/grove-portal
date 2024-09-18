@@ -146,7 +146,7 @@ export const action: ActionFunction = async ({ request, params }) => {
         subscription && typeof subscription === "string",
         "account subscription not found",
       )
-      if (subscription === PayPlanType.PayAsYouGoV0) {
+      if (subscription === PayPlanType.PlanUnlimited) {
         return redirect(
           `/api/stripe/checkout-session?account-id=${accountId}&app-id=${newApp.id}&referral-id=${referral}`,
         )

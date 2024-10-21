@@ -1,5 +1,5 @@
-mutation adminCreatePortalUser($email: String!, $providerUserID: ID!) {
-  adminCreatePortalUser(email: $email, providerUserID: $providerUserID) {
+mutation adminCreatePortalUser ($email: String!, $providerUserID: ID!, $gcpAccountID: ID) {
+    adminCreatePortalUser (email: $email, providerUserID: $providerUserID, gcpAccountID: $gcpAccountID) {
     portalUserID
     email
     iconURL

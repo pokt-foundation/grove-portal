@@ -60,56 +60,42 @@ export const CHAIN_DOCS_URL: KeyValuePair<string> = {
 }
 
 export const evmChains = [
-  "amoy-testnet-archival",
-  "arbitrum-one",
-  "arbitrum-sepolia-archival",
-  "avax-archival",
-  "avax-dfk",
-  "avax-mainnet",
-  "base-mainnet",
-  "base-testnet",
-  "blast-archival",
-  "boba-mainnet",
-  "bsc-archival",
-  "bsc-mainnet",
-  "celo-mainnet",
-  "eth-archival",
-  "eth-goerli",
-  "eth-mainnet",
-  "eth-trace",
-  "evmos-mainnet",
-  "fraxtal-archival",
-  "fantom-mainnet",
-  "fuse-mainnet",
-  "fuse-archival",
-  "gnosischain-mainnet",
-  "gnosischain-archival",
-  "goerli-archival",
-  "harmony-0",
-  "holesky-fullnode-testnet",
-  "iotex-mainnet",
-  "kava-mainnet",
-  "kava-mainnet-archival",
-  "klaytn-mainnet",
-  "metis-mainnet",
-  "moonbeam-mainnet",
-  "moonriver-mainnet",
-  "oKc-mainnet",
-  "oasys-mainnet",
-  "oasys-mainnet-archival",
-  "opbnb-archival",
-  "optimism-mainnet",
-  "optimism-archival",
-  "optimism-sepolia-archival",
-  "poly-mainnet",
-  "poly-archival",
-  "polygon-mumbai",
-  "polygon-zkevm-mainnet",
-  "scroll-mainnet",
-  "scroll-testnet",
-  "sepolia",
-  "sepolia-archival",
-  "zksync-era-mainnet",
+  "F003", // avax
+  "F02B", // zksync-era
+  "F004", // avax-dfk
+  "F005", // base
+  "F006", // base-testnet
+  "F008", // blast
+  "F009", // bsc
+  "F00A", // boba
+  "F00B", // celo
+  "F00C", // eth
+  "F00D", // eth-holesky-testnet
+  "F00E", // eth-sepolia-testnet
+  "F00F", // evmos
+  "F010", // fantom
+  "F011", // fraxtal
+  "F012", // fuse
+  "F013", // gnosis
+  "F014", // harmony
+  "F015", // iotex
+  "F016", // kaia
+  "F017", // kava
+  "F018", // metis
+  "F019", // moonbeam
+  "F01A", // moonriver
+  "F01C", // oasys
+  "F01D", // optimism
+  "F01E", // optimism-sepolia-testnet
+  "F01F", // opbnb
+  "F021", // polygon
+  "F022", // polygon-amoy-testnet
+  "F024", // scroll
+  "F027", // taiko
+  "F028", // taiko-hekla-testnet
+  "F029", // polygon-zkevm
+  "F002", // arbitrum-sepolia-testnet
+  "F001", // arbitrum-one
 ]
 
 export const evmMethods = [
@@ -147,7 +133,7 @@ export const evmMethods = [
 ]
 
 export const isEvmChain = (chain: Blockchain | null): boolean =>
-  !!chain && evmChains.includes(chain.blockchain)
+  !!chain && evmChains.includes(chain.id)
 
 export const getAppEndpointUrl = (
   chain: Blockchain | undefined | null,

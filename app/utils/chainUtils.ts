@@ -59,6 +59,11 @@ export const CHAIN_DOCS_URL: KeyValuePair<string> = {
   "zklink-nova-archival": "zklink-nova-api/endpoints/zklink-nova-archival",
 }
 
+// evmChains is an array of the relay chain IDs for EVM chains.
+// It must be updated whenever a new EVM chain is added to the relay.
+//
+// The current list of chain IDs on the protocol may be fetched with:
+// pocket query params --remoteCLIURL https://pocket-rpc.liquify.com | tail -n +2 | jq '.pocket_params[] | select(.param_key == "pocketcore/SupportedBlockchains")'
 export const evmChains = [
   "F003", // avax
   "F02B", // zksync-era
@@ -132,6 +137,9 @@ export const evmMethods = [
   "eth_syncing",
 ]
 
+// isEvmChain uses the relay chain IDs defined in the evmChains array in this file
+// Using the chain ID is more reliable than using the blockchain alias as it is strictly
+// one to one.
 export const isEvmChain = (chain: Blockchain | null): boolean =>
   !!chain && evmChains.includes(chain.id)
 

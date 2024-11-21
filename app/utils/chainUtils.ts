@@ -66,6 +66,7 @@ export const CHAIN_DOCS_URL: KeyValuePair<string> = {
 // pocket query params --remoteCLIURL https://pocket-rpc.liquify.com | tail -n +2 | jq '.pocket_params[] | select(.param_key == "pocketcore/SupportedBlockchains")'
 export const evmChains = [
   "F003", // avax
+  "F02A", // zklink
   "F02B", // zksync-era
   "F004", // avax-dfk
   "F005", // base

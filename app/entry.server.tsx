@@ -46,6 +46,7 @@ function handleBotRequest(
           const stream = createReadableStreamFromReadable(body)
 
           responseHeaders.set("Content-Type", "text/html")
+          responseHeaders.set("X-Robots-Tag", "noindex")
 
           resolve(
             new Response(stream, {
@@ -92,6 +93,7 @@ function handleBrowserRequest(
           const stream = createReadableStreamFromReadable(body)
 
           responseHeaders.set("Content-Type", "text/html")
+          responseHeaders.set("X-Robots-Tag", "noindex")
 
           resolve(
             new Response(stream, {

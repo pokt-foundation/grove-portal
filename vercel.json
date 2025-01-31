@@ -1,5 +1,5 @@
 {
-  "outputDirectory": "./build"
+  "outputDirectory": "./build",
   "redirects": [
     {
       "source": "/:path*",

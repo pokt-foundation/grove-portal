@@ -1,7 +1,7 @@
 import { ActionIcon, Flex, TextInput } from "@mantine/core"
 import { useParams } from "@remix-run/react"
 import { useMemo } from "react"
-import { LuTrash2 } from "lucide-react"
+import { Trash2 } from "lucide-react"
 import Chain from "~/components/Chain"
 import CopyTextButton from "~/components/CopyTextButton"
 import { DataTable } from "~/components/DataTable"
@@ -61,7 +61,7 @@ const ChainsTable = ({
                       variant="outline"
                       onClick={() => onDeleteChain(chain.id)}
                     >
-                      <LuTrash2 size={18} />
+                      <Trash2 size={18} />
                     </ActionIcon>
                   )}
                 </Flex>

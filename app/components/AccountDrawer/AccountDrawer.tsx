@@ -11,14 +11,14 @@ import {
 import { Link, LinkProps, useFetcher } from "@remix-run/react"
 import React, { useState } from "react"
 import {
-  LuBookOpen,
-  LuLeaf,
-  LuLifeBuoy,
-  LuSmile,
-  LuTowerControl,
-  LuUser,
+  BookOpen,
+  Leaf,
+  LifeBuoy,
+  Smile,
+  TowerControl,
+  User,
+  MessageCircleMore,
 } from "lucide-react"
-import { RiDiscordLine } from "react-icons/ri"
 import classes from "./AccountDrawer.module.css"
 import Identicon from "~/components/Identicon"
 import { User } from "~/models/portal/sdk"
@@ -55,24 +55,24 @@ const drawerExternalLinks = [
   {
     label: "Documentation",
     to: DOCS_PATH,
-    icon: <LuBookOpen size={18} />,
+    icon: <BookOpen size={18} />,
   },
   {
     label: "Support",
     to: DISCORD_PATH,
-    icon: <LuLifeBuoy size={18} />,
+    icon: <LifeBuoy size={18} />,
   },
   {
     label: "Feedback",
     to: DISCORD_PATH,
-    icon: <LuSmile size={18} />,
+    icon: <Smile size={18} />,
     withDivider: true,
   },
-  { label: "About Grove", to: "https://grove.city/", icon: <LuLeaf size={18} /> },
+  { label: "About Grove", to: "https://grove.city/", icon: <Leaf size={18} /> },
   {
     label: "Join the conversation",
     to: DISCORD_PATH,
-    icon: <RiDiscordLine size={18} />,
+    icon: <MessageCircleMore size={18} />,
     withDivider: true,
   },
 ]
@@ -118,13 +118,13 @@ const AccountDrawer = ({ user }: AccountDrawerProps) => {
         <Stack gap={0}>
           <DrawerLink
             label="My Profile"
-            leftSection={<LuUser size={18} />}
+            leftSection={<User size={18} />}
             setIsDrawerOpen={setIsDrawerOpen}
             to="/user"
           />
           <DrawerLink
             label="My Accounts"
-            leftSection={<LuTowerControl size={18} />}
+            leftSection={<TowerControl size={18} />}
             setIsDrawerOpen={setIsDrawerOpen}
             to={`/user/accounts`}
           />

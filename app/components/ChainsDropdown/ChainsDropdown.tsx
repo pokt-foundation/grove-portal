@@ -1,6 +1,6 @@
 import { Select } from "@mantine/core"
 import { useMemo, useRef } from "react"
-import { LuSearch } from "lucide-react"
+import { Search } from "lucide-react"
 import { BlockchainsQuery } from "~/models/portal/sdk"
 
 type ChainsDropdownProps = {
@@ -25,7 +25,7 @@ const ChainsDropdown = ({ chains, onChange, width }: ChainsDropdownProps) => {
       searchable
       aria-label="Add new"
       data={selectChainData}
-      leftSection={<LuSearch size={18} />}
+      leftSection={<Search size={18} />}
       placeholder="Search Network"
       rightSection={<></>}
       rightSectionWidth={0}

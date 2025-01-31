@@ -1,5 +1,5 @@
 import { ActionIcon, Flex, TextInput } from "@mantine/core"
-import { LuTrash2 } from "lucide-react"
+import { Trash2 } from "lucide-react"
 import CopyTextButton from "~/components/CopyTextButton"
 import { DataTable } from "~/components/DataTable"
 
@@ -33,7 +33,7 @@ const SimpleStringTable = ({ data, readOnly, onDelete }: SimpleStringTableProps)
                       variant="outline"
                       onClick={() => onDelete(value)}
                     >
-                      <LuTrash2 size={18} />
+                      <Trash2 size={18} />
                     </ActionIcon>
                   )}
                 </Flex>

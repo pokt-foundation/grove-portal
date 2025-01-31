@@ -1,7 +1,7 @@
 import { Button, Divider, Group, Stack, Text, Title } from "@mantine/core"
 import { NavLink, useParams } from "@remix-run/react"
 import React from "react"
-import { LuArrowLeft } from "lucide-react"
+import { ArrowLeft } from "lucide-react"
 import { Stripe } from "~/models/stripe/stripe.server"
 import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
 import { formatStripeDate } from "~/utils/billingUtils"
@@ -18,7 +18,7 @@ const InvoiceHeader = ({ invoice, charge }: InvoiceHeaderProps) => {
       <Button
         color="gray"
         component={NavLink}
-        leftSection={<LuArrowLeft size={18} />}
+        leftSection={<ArrowLeft size={18} />}
         ml={-8}
         mr="auto"
         size="compact-sm"

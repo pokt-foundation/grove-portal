@@ -1,7 +1,7 @@
 import { AppShell, Box, Burger, Divider, Group, ScrollArea } from "@mantine/core"
 import { Link, useParams } from "@remix-run/react"
 import React, { useMemo } from "react"
-import { LuPlus } from "lucide-react"
+import { Plus } from "lucide-react"
 import AccountSelect from "~/components/AccountSelect"
 import GroveLogo from "~/components/GroveLogo"
 import {
@@ -119,7 +119,7 @@ export const Sidebar = ({ account, userRole, accounts, toggle }: SidebarProps) =
               route={{
                 to: `/account/${accountId}/create`,
                 label: "New Application",
-                icon: LuPlus,
+                icon: Plus,
                 end: true,
               }}
             />

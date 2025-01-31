@@ -1,7 +1,7 @@
 import { Button, Group, Menu, Text, TextInput } from "@mantine/core"
 import { Form } from "@remix-run/react"
 import { useState } from "react"
-import { LuTrash2 } from "lucide-react"
+import { Trash2 } from "lucide-react"
 import useModals from "~/hooks/useModals"
 import { PortalApp } from "~/models/portal/sdk"
 import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
@@ -69,7 +69,7 @@ const DeleteApplication = ({ app }: DeleteApplicationProps) => {
   }
 
   return (
-    <Menu.Item leftSection={<LuTrash2 size={18} />} onClick={openDeleteModal}>
+    <Menu.Item leftSection={<Trash2 size={18} />} onClick={openDeleteModal}>
       Delete application
     </Menu.Item>
   )

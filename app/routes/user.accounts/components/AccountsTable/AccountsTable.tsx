@@ -1,6 +1,6 @@
 import { Indicator, Group, Text, Tooltip } from "@mantine/core"
 import { useMemo } from "react"
-import { LuCrown } from "lucide-react"
+import { Crown } from "lucide-react"
 import { DataTable } from "~/components/DataTable"
 import Identicon from "~/components/Identicon"
 import { Account, RoleName, User } from "~/models/portal/sdk"
@@ -57,7 +57,7 @@ const AccountsTable = ({ accounts, pendingAccounts, user }: AccountsTableProps) 
             element: (
               <Group>
                 <Tooltip disabled={!isUserAccountOwner} label="You are the account owner">
-                  <Indicator disabled={!isUserAccountOwner} label={<LuCrown />} size={16}>
+                  <Indicator disabled={!isUserAccountOwner} label={<Crown />} size={16}>
                     <Identicon
                       alt={`${account.id} profile picture`}
                       seed={account.id}

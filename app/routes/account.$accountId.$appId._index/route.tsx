@@ -3,7 +3,7 @@ import { useDebouncedValue, useWindowScroll } from "@mantine/hooks"
 import { ActionFunction, json, MetaFunction } from "@remix-run/node"
 import { useActionData, useOutletContext } from "@remix-run/react"
 import { useState } from "react"
-import { LuArrowUp, LuSearch } from "lucide-react"
+import { ArrowUp, Search } from "lucide-react"
 import invariant from "tiny-invariant"
 import { AppIdOutletContext } from "../account.$accountId.$appId/route"
 import useActionNotification from "~/hooks/useActionNotification"
@@ -104,7 +104,7 @@ export const Application = () => {
     <Box mb={70}>
       <Flex align="center" justify="flex-end" my="xl">
         <Input
-          leftSection={<LuSearch />}
+          leftSection={<Search />}
           placeholder="Search network"
           value={searchTerm}
           onChange={(event: any) => setSearchTerm(event.currentTarget.value)}
@@ -122,7 +122,7 @@ export const Application = () => {
           {(transitionStyles) => (
             <Button
               bg="var(--mantine-color-dark-4)"
-              leftSection={<LuArrowUp size={16} />}
+              leftSection={<ArrowUp size={16} />}
               size="sm"
               style={transitionStyles}
               onClick={() => scrollTo({ y: 0 })}

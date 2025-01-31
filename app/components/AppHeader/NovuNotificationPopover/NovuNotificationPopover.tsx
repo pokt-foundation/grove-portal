@@ -5,7 +5,7 @@ import {
   PopoverNotificationCenter,
 } from "@novu/notification-center"
 import { useNavigate } from "@remix-run/react"
-import { LuBell } from "lucide-react"
+import { Bell } from "lucide-react"
 import { ColorScheme } from "~/root"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 
@@ -130,7 +130,7 @@ export const NovuNotificationPopover = ({
               size={40}
               variant="outline"
             >
-              <LuBell size={18} />
+              <Bell size={18} />
             </ActionIcon>
           </Indicator>
         )}

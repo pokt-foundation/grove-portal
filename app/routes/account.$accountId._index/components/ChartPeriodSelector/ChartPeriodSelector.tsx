@@ -1,7 +1,7 @@
 import { Button, Group, Text, Tooltip, useMantineTheme } from "@mantine/core"
 import { Form, useSearchParams } from "@remix-run/react"
 import React from "react"
-import { LuInfo } from "lucide-react"
+import { Info } from "lucide-react"
 
 export const ChartPeriodSelector = () => {
   const theme = useMantineTheme()
@@ -13,7 +13,7 @@ export const ChartPeriodSelector = () => {
       <Group>
         <Tooltip label="Historical data updates every 24hrs">
           <Text c="dimmed" display="flex">
-            <LuInfo size={18} />
+            <Info size={18} />
           </Text>
         </Tooltip>
         <Button.Group>

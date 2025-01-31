@@ -1,6 +1,6 @@
 import { Group, Input, Menu, UnstyledButton, Text } from "@mantine/core"
 import React, { useState } from "react"
-import { LuCheck, LuChevronsUpDown } from "lucide-react"
+import { Check, ChevronsUpDown } from "lucide-react"
 import Chain from "~/components/Chain"
 import { Blockchain } from "~/models/portal/sdk"
 
@@ -25,7 +25,7 @@ const ChainSelect = ({ chains, selectedChain, onChainSelect }: ChainSelectProps)
         <UnstyledButton px={8} py={4} style={{ maxWidth: 305, borderRadius: 4 }}>
           <Group>
             <Chain chain={selectedChain} />
-            <LuChevronsUpDown size={18} style={{ marginLeft: "auto", marginRight: 0 }} />
+            <ChevronsUpDown size={18} style={{ marginLeft: "auto", marginRight: 0 }} />
           </Group>
         </UnstyledButton>
       </Menu.Target>
@@ -47,7 +47,7 @@ const ChainSelect = ({ chains, selectedChain, onChainSelect }: ChainSelectProps)
               <Group>
                 <Chain chain={item} />
                 {item.id === selectedChain.id && (
-                  <LuCheck
+                  <Check
                     size={18}
                     style={{ marginLeft: "auto", marginRight: 0 }}
                   />

@@ -2,7 +2,7 @@ import { ActionIcon } from "@mantine/core"
 import { Form } from "@remix-run/react"
 import cx from "clsx"
 import { useEffect, useState } from "react"
-import { RiStarFill, RiStarLine } from "react-icons/ri"
+import { Star } from "lucide-react"
 import classes from "./FavoriteChain.module.css"
 import { Blockchain, Maybe } from "~/models/portal/sdk"
 import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"
@@ -59,7 +59,11 @@ export const FavoriteChain = ({
           })
         }}
       >
-        {isFavorite ? <RiStarFill size={18} /> : <RiStarLine size={18} />}
+        <Star 
+          size={18}
+          fill={isFavorite ? "currentColor" : "none"}
+          strokeWidth={1.5}
+        />
       </ActionIcon>
     </Form>
   )

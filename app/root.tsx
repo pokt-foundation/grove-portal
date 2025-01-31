@@ -36,6 +36,10 @@ export const meta: MetaFunction = () => [
     description:
       "Grove Portal, your gateway to Web3 done right. The Grove Portal acts as your one-stop-shop to manage, and monitor your application's connection to blockchain data.",
   },
+  {
+    name: "robots",
+    content: "noindex,nofollow",
+  }
 ]
 
 export type ColorScheme = "light" | "dark"

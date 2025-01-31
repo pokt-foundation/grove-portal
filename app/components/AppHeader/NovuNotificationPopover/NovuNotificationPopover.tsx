@@ -5,7 +5,7 @@ import {
   PopoverNotificationCenter,
 } from "@novu/notification-center"
 import { useNavigate } from "@remix-run/react"
-import { LuBell } from "react-icons/lu"
+import { LuBell } from "lucide-react"
 import { ColorScheme } from "~/root"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 

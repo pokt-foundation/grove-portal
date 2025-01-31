@@ -1,6 +1,6 @@
 import { ActionIcon, Menu } from "@mantine/core"
 import React from "react"
-import { LuMoreHorizontal } from "react-icons/lu"
+import { LuEllipsis } from "lucide-react"
 
 const ContextMenuTarget = ({
   variant = "outline",
@@ -17,7 +17,7 @@ const ContextMenuTarget = ({
         variant={variant}
         onClick={(e) => e.stopPropagation()}
       >
-        <LuMoreHorizontal />
+        <LuEllipsis />
       </ActionIcon>
     </Menu.Target>
   )

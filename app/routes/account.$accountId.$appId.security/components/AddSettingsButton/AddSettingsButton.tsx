@@ -1,6 +1,6 @@
 import { Button } from "@mantine/core"
 import React, { ButtonHTMLAttributes, forwardRef } from "react"
-import { LuPlus } from "react-icons/lu"
+import { LuPlus } from "lucide-react"
 
 const AddSettingsButton = forwardRef<
   HTMLButtonElement,

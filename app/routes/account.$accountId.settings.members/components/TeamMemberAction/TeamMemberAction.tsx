@@ -1,6 +1,6 @@
 import { Flex, Menu, Text, ActionIcon } from "@mantine/core"
 import React, { useMemo } from "react"
-import { LuMinus, LuMoreHorizontal, LuSend } from "react-icons/lu"
+import { LuMinus, LuEllipsis, LuSend } from "lucide-react"
 import { Account, RoleName, User, AccountUser } from "~/models/portal/sdk"
 import useTeamModals from "~/routes/account.$accountId.settings.members/hooks/useTeamModals"
 
@@ -110,7 +110,7 @@ const TeamMemberAction = ({
               size={40}
               variant="outline"
             >
-              <LuMoreHorizontal />
+              <LuEllipsis />
             </ActionIcon>
           </Menu.Target>
           <Menu.Dropdown>

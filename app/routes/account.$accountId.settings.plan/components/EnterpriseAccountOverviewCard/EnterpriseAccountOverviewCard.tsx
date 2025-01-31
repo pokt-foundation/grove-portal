@@ -1,7 +1,7 @@
 import { Divider, Button, Group, Text, Stack } from "@mantine/core"
 import { Link } from "@remix-run/react"
 import React from "react"
-import { LuArrowUpRight } from "react-icons/lu"
+import { LuArrowUpRight } from "lucide-react"
 import { TitledCard } from "~/components/TitledCard"
 import { Account } from "~/models/portal/sdk"
 import { commify } from "~/utils/formattingUtils"

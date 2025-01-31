@@ -1,7 +1,7 @@
 import { ActionIcon, Button, Group, Menu, Text } from "@mantine/core"
 import { Form, Link, useNavigation } from "@remix-run/react"
 import React from "react"
-import { LuArrowUpRight, LuMinus, LuMoreHorizontal, LuPencil } from "react-icons/lu"
+import { LuArrowUpRight, LuMinus, LuEllipsis, LuPencil } from "lucide-react"
 import { RoleName, User } from "~/models/portal/sdk"
 import useTeamModals from "~/routes/account.$accountId.settings.members/hooks/useTeamModals"
 import { TableUserAccount } from "~/routes/user.accounts/components/AccountsTable"
@@ -29,7 +29,7 @@ const InvitedAccountAction = ({ account, user }: InvitedAccountActionProps) => {
               size={40}
               variant="outline"
             >
-              <LuMoreHorizontal />
+              <LuEllipsis />
             </ActionIcon>
           </Menu.Target>
           <Menu.Dropdown>

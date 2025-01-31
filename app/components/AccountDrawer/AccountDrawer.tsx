@@ -17,7 +17,7 @@ import {
   LuSmile,
   LuTowerControl,
   LuUser,
-} from "react-icons/lu"
+} from "lucide-react"
 import { RiDiscordLine } from "react-icons/ri"
 import classes from "./AccountDrawer.module.css"
 import Identicon from "~/components/Identicon"

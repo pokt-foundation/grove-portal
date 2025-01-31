@@ -10,7 +10,7 @@ import {
 } from "@mantine/core"
 import cx from "clsx"
 import React, { forwardRef, useMemo, useState } from "react"
-import { LuCheck, LuChevronDown } from "react-icons/lu"
+import { LuCheck, LuChevronDown } from "lucide-react"
 import classes from "./FluidSelect.module.css"
 
 type SelectItem = { label: string; value: string }

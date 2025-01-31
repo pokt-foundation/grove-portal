@@ -1,6 +1,6 @@
 import { Select } from "@mantine/core"
 import { useMemo, useRef } from "react"
-import { LuSearch } from "react-icons/lu"
+import { LuSearch } from "lucide-react"
 import { BlockchainsQuery } from "~/models/portal/sdk"
 
 type ChainsDropdownProps = {

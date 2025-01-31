@@ -1,5 +1,5 @@
 import { ActionIcon, Flex, TextInput } from "@mantine/core"
-import { LuTrash2 } from "react-icons/lu"
+import { LuTrash2 } from "lucide-react"
 import CopyTextButton from "~/components/CopyTextButton"
 import { DataTable } from "~/components/DataTable"
 

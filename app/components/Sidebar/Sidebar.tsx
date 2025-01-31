@@ -1,7 +1,7 @@
 import { AppShell, Box, Burger, Divider, Group, ScrollArea } from "@mantine/core"
 import { Link, useParams } from "@remix-run/react"
 import React, { useMemo } from "react"
-import { LuPlus } from "react-icons/lu"
+import { LuPlus } from "lucide-react"
 import AccountSelect from "~/components/AccountSelect"
 import GroveLogo from "~/components/GroveLogo"
 import {

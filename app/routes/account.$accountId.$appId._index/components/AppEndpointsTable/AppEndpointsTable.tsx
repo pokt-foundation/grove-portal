@@ -1,7 +1,7 @@
 import { ActionIcon, Flex, Menu, TextInput, Tooltip, UnstyledButton } from "@mantine/core"
 import { useFetcher, useNavigation, useParams } from "@remix-run/react"
 import React, { useMemo, useState } from "react"
-import { LuBook, LuPlay } from "react-icons/lu"
+import { LuBook, LuPlay } from "lucide-react"
 import { RiStarFill, RiStarLine } from "react-icons/ri"
 import FavoriteChain from "../FavoriteChain"
 import Chain from "~/components/Chain"

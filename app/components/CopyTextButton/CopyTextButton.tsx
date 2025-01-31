@@ -1,6 +1,6 @@
 import { ActionIcon, ActionIconProps, Box, CopyButton, Tooltip } from "@mantine/core"
 import { forwardRef, HTMLAttributes } from "react"
-import { LuCopy, LuCopyCheck } from "react-icons/lu"
+import { LuCopy, LuCopyCheck } from "lucide-react"
 
 type CopyTextButtonProps = {
   value: string

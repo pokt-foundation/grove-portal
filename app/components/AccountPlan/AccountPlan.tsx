@@ -9,7 +9,7 @@ import {
   Box,
   MantineTheme,
 } from "@mantine/core"
-import { LuCheck } from "react-icons/lu"
+import { LuCheck } from "lucide-react"
 import { PayPlanType } from "~/models/portal/sdk"
 
 type AccountPlanProps = {

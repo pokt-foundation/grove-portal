@@ -21,10 +21,10 @@ import {
 } from "lucide-react"
 import classes from "./AccountDrawer.module.css"
 import Identicon from "~/components/Identicon"
-import { User } from "~/models/portal/sdk"
+import type { UserType } from "~/models/portal/sdk"
 import { DISCORD_PATH, DOCS_PATH } from "~/utils/utils"
 type AccountDrawerProps = {
-  user?: User
+  user?: UserType
 }
 
 type DrawerLinkProps = NavLinkProps &

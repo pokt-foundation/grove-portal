@@ -1,7 +1,7 @@
 import { Divider, Button, Group, Text, Stack, Box, Grid, SimpleGrid } from "@mantine/core"
 import { Form, useLocation } from "@remix-run/react"
 import React from "react"
-import { LuArrowUpRight, LuStopCircle } from "react-icons/lu"
+import { LuArrowUpRight, LuCircle } from "react-icons/lu"
 import { TitledCard } from "~/components/TitledCard"
 import { Account, RoleName } from "~/models/portal/sdk"
 import { Stripe } from "~/models/stripe/stripe.server"
@@ -72,7 +72,7 @@ export default function UnlimitedPlanOverviewCard({
                   <Button
                     fullWidth
                     color="gray"
-                    rightSection={<LuStopCircle size={18} />}
+                    rightSection={<LuCircle size={18} />}
                     type="button"
                     variant="outline"
                     onClick={() => openStopSubscriptionModal(account)}

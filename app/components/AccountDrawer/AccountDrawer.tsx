@@ -16,7 +16,7 @@ import {
   LuLifeBuoy,
   LuSmile,
   LuTowerControl,
-  LuUser2,
+  LuUser,
 } from "react-icons/lu"
 import { RiDiscordLine } from "react-icons/ri"
 import classes from "./AccountDrawer.module.css"
@@ -118,7 +118,7 @@ const AccountDrawer = ({ user }: AccountDrawerProps) => {
         <Stack gap={0}>
           <DrawerLink
             label="My Profile"
-            leftSection={<LuUser2 size={18} />}
+            leftSection={<LuUser size={18} />}
             setIsDrawerOpen={setIsDrawerOpen}
             to="/user"
           />

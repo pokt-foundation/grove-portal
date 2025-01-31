@@ -1,7 +1,7 @@
 import { Alert } from "@mantine/core"
 import { useSessionStorage } from "@mantine/hooks"
 import React, { useEffect, useState } from "react"
-import { LuAlertCircle } from "react-icons/lu"
+import { LuAlertTriangle } from "react-icons/lu"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 
 const ANNOUNCEMENT_ALERT_TITLE = getRequiredClientEnvVar("ANNOUNCEMENT_ALERT_TITLE")
@@ -23,7 +23,7 @@ export const AnnouncementAlert = () => {
     <Alert
       withCloseButton
       color="gray"
-      icon={<LuAlertCircle size={16} />}
+      icon={<LuAlertTriangle size={16} />}
       title={ANNOUNCEMENT_ALERT_TITLE}
       variant="outline"
       onClose={() => {

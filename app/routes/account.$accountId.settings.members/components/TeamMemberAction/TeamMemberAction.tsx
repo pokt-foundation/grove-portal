@@ -1,6 +1,6 @@
 import { Flex, Menu, Text, ActionIcon } from "@mantine/core"
 import React, { useMemo } from "react"
-import { LuMinusCircle, LuMoreHorizontal, LuSend } from "react-icons/lu"
+import { LuMinus, LuEllipsis, LuSend } from "react-icons/lu"
 import { Account, RoleName, User, AccountUser } from "~/models/portal/sdk"
 import useTeamModals from "~/routes/account.$accountId.settings.members/hooks/useTeamModals"
 
@@ -34,7 +34,7 @@ const TeamMemberAction = ({
         } else {
           // OWNER --CAN--REMOVE OTHER USERS
           items.push({
-            icon: <LuMinusCircle size={18} />,
+            icon: <LuMinus size={18} />,
             onClick: () => openRemoveUserModal({ email, id }),
             label: "Remove",
           })
@@ -52,14 +52,14 @@ const TeamMemberAction = ({
         if (teamMember.id === user?.portalUserID) {
           // ADMIN --CAN--REMOVE THEMSELVES
           items.push({
-            icon: <LuMinusCircle size={18} />,
+            icon: <LuMinus size={18} />,
             onClick: () => openLeaveTeamModal({ email, id }),
             label: "Leave",
           })
         } else {
           // ADMIN --CAN--REMOVE OTHER USERS
           items.push({
-            icon: <LuMinusCircle size={18} />,
+            icon: <LuMinus size={18} />,
             onClick: () => openRemoveUserModal({ email, id }),
             label: "Remove",
           })
@@ -78,7 +78,7 @@ const TeamMemberAction = ({
         if (teamMember.id === user?.portalUserID) {
           // MEMEBER --CAN-- LEAVE ACCOUNT THEMSELVES
           items.push({
-            icon: <LuMinusCircle size={18} />,
+            icon: <LuMinus size={18} />,
             onClick: () => openLeaveTeamModal({ email, id }),
             label: "Leave",
           })
@@ -110,7 +110,7 @@ const TeamMemberAction = ({
               size={40}
               variant="outline"
             >
-              <LuMoreHorizontal />
+              <LuEllipsis />
             </ActionIcon>
           </Menu.Target>
           <Menu.Dropdown>

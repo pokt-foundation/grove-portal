@@ -1,7 +1,7 @@
 import { Group, Menu, Stack, Text, UnstyledButton } from "@mantine/core"
 import { NavLink, useParams } from "@remix-run/react"
 import React, { useMemo } from "react"
-import { LuCheckCircle2, LuChevronsUpDown } from "react-icons/lu"
+import { LuCheck, LuChevronsUpDown } from "react-icons/lu"
 import Identicon from "~/components/Identicon"
 import { Account } from "~/models/portal/sdk"
 import { getPlanName } from "~/utils/planUtils"
@@ -46,7 +46,7 @@ const AccountItem = ({
           <LuChevronsUpDown size={18} style={{ marginLeft: "auto", marginRight: 0 }} />
         )}
         {selected && (
-          <LuCheckCircle2 size={18} style={{ marginLeft: "auto", marginRight: 0 }} />
+          <LuCheck size={18} style={{ marginLeft: "auto", marginRight: 0 }} />
         )}
       </>
     )}

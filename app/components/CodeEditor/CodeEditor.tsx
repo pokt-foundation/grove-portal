@@ -3,15 +3,14 @@ import { StreamLanguage } from "@codemirror/language"
 import { shell } from "@codemirror/legacy-modes/mode/shell"
 import { linter, lintGutter } from "@codemirror/lint"
 import { Box, useMantineColorScheme } from "@mantine/core"
+import {
+  xcodeLight as xcodeLightInit,
+  xcodeDark as xcodeDarkInit,
+} from "@uiw/codemirror-theme-xcode"
 import CodeMirror from "@uiw/react-codemirror"
 import { ClientOnly } from "remix-utils/client-only"
 import CopyTextButton from "~/components/CopyTextButton"
 import { ColorScheme } from "~/root"
-import type { Extension } from '@codemirror/state'
-import { 
-  xcodeLight as xcodeLightInit,
-  xcodeDark as xcodeDarkInit 
-} from "@uiw/codemirror-theme-xcode"
 
 type CodeEditorProps = {
   value: string

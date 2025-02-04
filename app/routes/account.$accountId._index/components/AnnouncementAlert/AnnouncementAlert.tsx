@@ -1,7 +1,7 @@
 import { Alert } from "@mantine/core"
 import { useSessionStorage } from "@mantine/hooks"
-import React, { useEffect, useState } from "react"
 import { TriangleAlert } from "lucide-react"
+import React, { useEffect, useState } from "react"
 import { getRequiredClientEnvVar } from "~/utils/environment"
 
 const ANNOUNCEMENT_ALERT_TITLE = getRequiredClientEnvVar("ANNOUNCEMENT_ALERT_TITLE")

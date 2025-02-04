@@ -1,13 +1,16 @@
+import jwt_decode from "jwt-decode"
 import { Authenticator } from "remix-auth"
 import { Auth0Strategy } from "remix-auth-auth0"
 import invariant from "tiny-invariant"
-import jwt_decode from "jwt-decode"
 import { getRequiredServerEnvVar } from "./environment"
 import { sessionStorage } from "./session.server"
 import { initPortalClient } from "~/models/portal/portal.server"
-import { User as PortalUser, AdminCreatePortalUserMutationVariables } from "~/models/portal/sdk"
+import {
+  User as PortalUser,
+  AdminCreatePortalUserMutationVariables,
+  getSdk as portalSDKType,
+} from "~/models/portal/sdk"
 import { initAdminPortal } from "~/utils/adminPortal"
-import { getSdk as portalSDKType } from "~/models/portal/sdk"
 
 // Create an instance of the authenticator, pass a generic with what your
 // strategies will return and will be stored in the session
@@ -39,7 +42,6 @@ let auth0Strategy = new Auth0Strategy(
     scope: getRequiredServerEnvVar("AUTH0_SCOPE"),
   },
   async ({ accessToken, refreshToken, profile, extraParams }): Promise<AuthUser> => {
-
     const email = profile?._json?.email
     const providerUserID = profile?.id
 
@@ -51,38 +53,37 @@ let auth0Strategy = new Auth0Strategy(
     let portalUser: AuthUser["user"]
 
     try {
-
-      // Case 1: Standard login 
+      // Case 1: Standard login
       portalUser = await handlePortalUserFound(portalSDK, providerUserID, profile)
-
     } catch (error) {
-
       const err = error as Error
 
       if (err.message.includes("Response not OK. 404 Not Found")) {
-
         const portalAdmin = await initAdminPortal(portalSDK)
         const idToken = extraParams.id_token
 
         // Decode the ID token to check for GCP account ID
         const gcpAccountIDCustomClaim = "https://custom.claims/gcp_account_id"
-        const decodedIdToken = idToken ? jwt_decode<{ [key: string]: string | undefined }>(idToken) : undefined
+        const decodedIdToken = idToken
+          ? jwt_decode<{ [key: string]: string | undefined }>(idToken)
+          : undefined
         const gcpAccountID = decodedIdToken?.[gcpAccountIDCustomClaim]
 
         if (gcpAccountID) {
-
           // Case 2: ID token contains gcp_account_id (GCP Marketplace signup)
-          portalUser = await handleGCPMarketplaceRedirect(portalAdmin, email, providerUserID, gcpAccountID)
-
+          portalUser = await handleGCPMarketplaceRedirect(
+            portalAdmin,
+            email,
+            providerUserID,
+            gcpAccountID,
+          )
         } else {
-
           // Case 3: ID token does not contain gcp_account_id (Standard signup)
           portalUser = await handleStandardSignup(portalAdmin, email, providerUserID)
         }
       } else {
         throw error
       }
-
     }
 
     return {
@@ -94,8 +95,11 @@ let auth0Strategy = new Auth0Strategy(
 )
 
 // Handles the case where the portal user is found (standard login)
-async function handlePortalUserFound(portalSDK: ReturnType<typeof portalSDKType>, providerUserID: string, profile: any): Promise<AuthUser["user"]> {
-
+async function handlePortalUserFound(
+  portalSDK: ReturnType<typeof portalSDKType>,
+  providerUserID: string,
+  profile: any,
+): Promise<AuthUser["user"]> {
   const getPortalUserResponse = await portalSDK.getPortalUser()
 
   return {
@@ -106,8 +110,12 @@ async function handlePortalUserFound(portalSDK: ReturnType<typeof portalSDKType>
 }
 
 // Handles the case where the portal user is not found and id token contains gcp_account_id (GCP Marketplace signup)
-async function handleGCPMarketplaceRedirect(portalAdmin: ReturnType<typeof portalSDKType>, email: string, providerUserID: string, gcpAccountID: string): Promise<AuthUser["user"]> {
-
+async function handleGCPMarketplaceRedirect(
+  portalAdmin: ReturnType<typeof portalSDKType>,
+  email: string,
+  providerUserID: string,
+  gcpAccountID: string,
+): Promise<AuthUser["user"]> {
   const createGCPPortalUserVars: AdminCreatePortalUserMutationVariables = {
     email,
     providerUserID,
@@ -124,8 +132,11 @@ async function handleGCPMarketplaceRedirect(portalAdmin: ReturnType<typeof porta
 }
 
 // Handles the case where the portal user is not found and no gcp_account_id is found (standard signup)
-async function handleStandardSignup(portalAdmin: ReturnType<typeof portalSDKType>, email: string, providerUserID: string): Promise<AuthUser["user"]> {
-
+async function handleStandardSignup(
+  portalAdmin: ReturnType<typeof portalSDKType>,
+  email: string,
+  providerUserID: string,
+): Promise<AuthUser["user"]> {
   const createPortalUserVars: AdminCreatePortalUserMutationVariables = {
     email,
     providerUserID,

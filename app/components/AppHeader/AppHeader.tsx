@@ -1,7 +1,7 @@
 import { ActionIcon, Burger, Flex, useMantineColorScheme } from "@mantine/core"
 import { useFetcher } from "@remix-run/react"
-import React from "react"
 import { Contrast } from "lucide-react"
+import React from "react"
 import AccountDrawer from "~/components/AccountDrawer"
 import { NovuNotificationPopover } from "~/components/AppHeader/NovuNotificationPopover"
 import { Account, User } from "~/models/portal/sdk"

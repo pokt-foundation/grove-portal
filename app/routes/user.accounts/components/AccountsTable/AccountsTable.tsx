@@ -1,6 +1,6 @@
 import { Indicator, Group, Text, Tooltip } from "@mantine/core"
-import { useMemo } from "react"
 import { Crown } from "lucide-react"
+import { useMemo } from "react"
 import { DataTable } from "~/components/DataTable"
 import Identicon from "~/components/Identicon"
 import { Account, RoleName, User } from "~/models/portal/sdk"

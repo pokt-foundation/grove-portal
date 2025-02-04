@@ -1,7 +1,7 @@
 import { ActionIcon, Flex, Menu, TextInput, Tooltip, UnstyledButton } from "@mantine/core"
 import { useFetcher, useNavigation, useParams } from "@remix-run/react"
-import React, { useMemo, useState } from "react"
 import { Book, Play, Star } from "lucide-react"
+import React, { useMemo, useState } from "react"
 import FavoriteChain from "../FavoriteChain"
 import Chain from "~/components/Chain"
 import { ChainSandboxProvider } from "~/components/ChainSandbox/state"
@@ -154,9 +154,9 @@ const AppEndpointsTable = ({
                         {!readOnly && (
                           <Menu.Item
                             leftSection={
-                              <Star 
-                                size={18}
+                              <Star
                                 fill={chain.favorite ? "currentColor" : "none"}
+                                size={18}
                               />
                             }
                             onClick={() => {

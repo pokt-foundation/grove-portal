@@ -1,6 +1,6 @@
 import { Flex, Menu, Text, ActionIcon } from "@mantine/core"
 import React, { useMemo } from "react"
-import { LuMinusCircle, LuMoreHorizontal, LuSend } from "react-icons/lu"
+import { Minus, Ellipsis, Send } from "lucide-react"
 import { Account, RoleName, User, AccountUser } from "~/models/portal/sdk"
 import useTeamModals from "~/routes/account.$accountId.settings.members/hooks/useTeamModals"
 
@@ -34,14 +34,14 @@ const TeamMemberAction = ({
         } else {
           // OWNER --CAN--REMOVE OTHER USERS
           items.push({
-            icon: <LuMinusCircle size={18} />,
+            icon: <Minus size={18} />,
             onClick: () => openRemoveUserModal({ email, id }),
             label: "Remove",
           })
           if (!status) {
             // OWNER --CAN-- RESEND EMAIL TO OTHER USERS
             items.push({
-              icon: <LuSend size={18} />,
+              icon: <Send size={18} />,
               onClick: () => openResendEmailModal({ email, id, roleName }),
               label: "Resend Invitation",
             })
@@ -52,21 +52,21 @@ const TeamMemberAction = ({
         if (teamMember.id === user?.portalUserID) {
           // ADMIN --CAN--REMOVE THEMSELVES
           items.push({
-            icon: <LuMinusCircle size={18} />,
+            icon: <Minus size={18} />,
             onClick: () => openLeaveTeamModal({ email, id }),
             label: "Leave",
           })
         } else {
           // ADMIN --CAN--REMOVE OTHER USERS
           items.push({
-            icon: <LuMinusCircle size={18} />,
+            icon: <Minus size={18} />,
             onClick: () => openRemoveUserModal({ email, id }),
             label: "Remove",
           })
           if (!status) {
             // ADMIN --CAN-- RESEND EMAIL TO OTHER USERS
             items.push({
-              icon: <LuSend size={18} />,
+              icon: <Send size={18} />,
               onClick: () => openResendEmailModal({ email, id, roleName }),
               label: "Resend Invitation",
             })
@@ -78,7 +78,7 @@ const TeamMemberAction = ({
         if (teamMember.id === user?.portalUserID) {
           // MEMEBER --CAN-- LEAVE ACCOUNT THEMSELVES
           items.push({
-            icon: <LuMinusCircle size={18} />,
+            icon: <Minus size={18} />,
             onClick: () => openLeaveTeamModal({ email, id }),
             label: "Leave",
           })
@@ -110,7 +110,7 @@ const TeamMemberAction = ({
               size={40}
               variant="outline"
             >
-              <LuMoreHorizontal />
+              <Ellipsis />
             </ActionIcon>
           </Menu.Target>
           <Menu.Dropdown>

@@ -1,7 +1,7 @@
 import { Divider, Button, Group, Text, Stack } from "@mantine/core"
 import { Link } from "@remix-run/react"
 import React from "react"
-import { LuArrowUpRight } from "react-icons/lu"
+import { ArrowUpRight } from "lucide-react"
 import { TitledCard } from "~/components/TitledCard"
 import { Account } from "~/models/portal/sdk"
 import { commify } from "~/utils/formattingUtils"
@@ -40,7 +40,7 @@ export default function EnterpriseAccountOverviewCard({
         <Group grow gap="md">
           <Button
             component={Link}
-            rightSection={<LuArrowUpRight size={18} />}
+            rightSection={<ArrowUpRight size={18} />}
             target="_blank"
             to={DISCORD_PATH}
           >

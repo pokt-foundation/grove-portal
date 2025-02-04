@@ -1,6 +1,6 @@
 import { ActionIcon, ActionIconProps, Box, CopyButton, Tooltip } from "@mantine/core"
 import { forwardRef, HTMLAttributes } from "react"
-import { LuCopy, LuCopyCheck } from "react-icons/lu"
+import { Copy, CopyCheck } from "lucide-react"
 
 type CopyTextButtonProps = {
   value: string
@@ -25,7 +25,7 @@ const CopyTextButton = forwardRef<HTMLDivElement, CopyTextButtonProps>(
                 variant={variant}
                 onClick={copy}
               >
-                {copied ? <LuCopyCheck size={size} /> : <LuCopy size={size} />}
+                {copied ? <CopyCheck size={size} /> : <Copy size={size} />}
               </ActionIcon>
             </Tooltip>
           )}

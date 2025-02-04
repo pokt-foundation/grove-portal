@@ -1,6 +1,6 @@
 import { ActionIcon, Flex, TextInput } from "@mantine/core"
 import { useMemo } from "react"
-import { LuTrash2 } from "react-icons/lu"
+import { Trash2 } from "lucide-react"
 import Chain from "~/components/Chain"
 import CopyTextButton from "~/components/CopyTextButton"
 import { DataTable } from "~/components/DataTable"
@@ -65,7 +65,7 @@ const ChainWhitelistTable = ({
                       })
                     }
                   >
-                    <LuTrash2 size={18} />
+                    <Trash2 size={18} />
                   </ActionIcon>
                 )}
               </Flex>

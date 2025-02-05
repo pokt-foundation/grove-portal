@@ -16,4 +16,10 @@ export default defineConfig({
     }),
     tsconfigPaths(),
   ],
+  ssr: {
+    noExternal: ['@uiw/codemirror-theme-xcode', '@uiw/codemirror-themes'],
+  },
+  optimizeDeps: {
+    include: ['@uiw/codemirror-theme-xcode', '@uiw/codemirror-themes']
+  }
 })

@@ -1,7 +1,7 @@
 import { ActionIcon, Flex, TextInput } from "@mantine/core"
 import { useParams } from "@remix-run/react"
-import { useMemo } from "react"
 import { Trash2 } from "lucide-react"
+import { useMemo } from "react"
 import Chain from "~/components/Chain"
 import CopyTextButton from "~/components/CopyTextButton"
 import { DataTable } from "~/components/DataTable"

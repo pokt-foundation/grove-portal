@@ -39,7 +39,7 @@ export const meta: MetaFunction = () => [
   {
     name: "robots",
     content: "noindex,nofollow",
-  }
+  },
 ]
 
 export type ColorScheme = "light" | "dark"

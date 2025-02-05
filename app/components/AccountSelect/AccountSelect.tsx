@@ -1,7 +1,7 @@
 import { Group, Menu, Stack, Text, UnstyledButton } from "@mantine/core"
 import { NavLink, useParams } from "@remix-run/react"
-import React, { useMemo } from "react"
 import { Check, ChevronsUpDown } from "lucide-react"
+import React, { useMemo } from "react"
 import Identicon from "~/components/Identicon"
 import { Account } from "~/models/portal/sdk"
 import { getPlanName } from "~/utils/planUtils"
@@ -45,9 +45,7 @@ const AccountItem = ({
         {hasMultipleAccounts && (
           <ChevronsUpDown size={18} style={{ marginLeft: "auto", marginRight: 0 }} />
         )}
-        {selected && (
-          <Check size={18} style={{ marginLeft: "auto", marginRight: 0 }} />
-        )}
+        {selected && <Check size={18} style={{ marginLeft: "auto", marginRight: 0 }} />}
       </>
     )}
   </Group>

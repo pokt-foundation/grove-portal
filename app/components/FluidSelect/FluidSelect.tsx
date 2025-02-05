@@ -9,8 +9,8 @@ import {
   UnstyledButton,
 } from "@mantine/core"
 import cx from "clsx"
-import React, { forwardRef, useMemo, useState } from "react"
 import { Check, ChevronDown } from "lucide-react"
+import React, { forwardRef, useMemo, useState } from "react"
 import classes from "./FluidSelect.module.css"
 
 type SelectItem = { label: string; value: string }
@@ -161,10 +161,7 @@ const FluidSelect = forwardRef<HTMLDivElement, FluidSelectProps>(
                         <Text>{item.label}</Text>
                       )}
                       {item.value === value && (
-                        <Check
-                          size={18}
-                          style={{ marginLeft: "auto", marginRight: 0 }}
-                        />
+                        <Check size={18} style={{ marginLeft: "auto", marginRight: 0 }} />
                       )}
                     </Group>
                   </Menu.Item>

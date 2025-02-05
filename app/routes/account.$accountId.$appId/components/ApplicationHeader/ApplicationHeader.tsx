@@ -62,11 +62,7 @@ const ApplicationHeader = ({ app, userRole }: ApplicationHeaderProps) => {
         <Menu>
           <ContextMenuTarget />
           <Menu.Dropdown>
-            <Menu.Item
-              component={Link}
-              leftSection={<Pencil size={18} />}
-              to={`update`}
-            >
+            <Menu.Item component={Link} leftSection={<Pencil size={18} />} to={`update`}>
               Edit information
             </Menu.Item>
             <DeleteApplication app={app} />

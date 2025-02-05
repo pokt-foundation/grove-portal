@@ -9,7 +9,6 @@ import {
   UnstyledButton,
 } from "@mantine/core"
 import { Link, LinkProps, useFetcher } from "@remix-run/react"
-import React, { useState } from "react"
 import {
   BookOpen,
   Leaf,
@@ -19,6 +18,7 @@ import {
   User,
   MessageCircleMore,
 } from "lucide-react"
+import React, { useState } from "react"
 import classes from "./AccountDrawer.module.css"
 import Identicon from "~/components/Identicon"
 import type { User as UserType } from "~/models/portal/sdk"

@@ -1,7 +1,7 @@
 import { Button, Group, Menu, Text, TextInput } from "@mantine/core"
 import { Form } from "@remix-run/react"
-import { useState } from "react"
 import { Trash2 } from "lucide-react"
+import { useState } from "react"
 import useModals from "~/hooks/useModals"
 import { PortalApp } from "~/models/portal/sdk"
 import { AnalyticActions, AnalyticCategories, trackEvent } from "~/utils/analytics"

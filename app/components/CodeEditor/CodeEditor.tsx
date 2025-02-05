@@ -3,7 +3,7 @@ import { StreamLanguage } from "@codemirror/language"
 import { shell } from "@codemirror/legacy-modes/mode/shell"
 import { linter, lintGutter } from "@codemirror/lint"
 import { Box, useMantineColorScheme } from "@mantine/core"
-import { xcodeDarkInit, xcodeLightInit } from "@uiw/codemirror-theme-xcode"
+import { xcodeLightInit, xcodeDarkInit } from "@uiw/codemirror-theme-xcode"
 import CodeMirror from "@uiw/react-codemirror"
 import { ClientOnly } from "remix-utils/client-only"
 import CopyTextButton from "~/components/CopyTextButton"
@@ -46,13 +46,13 @@ const getCodeMirrorTheme = (colorScheme: ColorScheme) =>
         settings: {
           background: "var(--app-secondary-bg-color)",
           gutterBackground: "var(--app-secondary-bg-color)",
-        },
+        }
       })
     : xcodeLightInit({
         settings: {
           background: "var(--app-secondary-bg-color)",
           gutterBackground: "var(--app-secondary-bg-color)",
-        },
+        }
       })
 
 const CodeEditor = ({

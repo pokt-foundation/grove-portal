@@ -65,9 +65,9 @@ export const CHAIN_DOCS_URL: KeyValuePair<string> = {
 // The current list of chain IDs on the protocol may be fetched with:
 // pocket query params --remoteCLIURL https://pocket-rpc.liquify.com | tail -n +2 | jq '.pocket_params[] | select(.param_key == "pocketcore/SupportedBlockchains")'
 export const evmChains = [
+  "F001", // arbitrum-one
+  "F002", // arbitrum-sepolia-testnet
   "F003", // avax
-  "F02A", // zklink
-  "F02B", // zksync-era
   "F004", // avax-dfk
   "F005", // base
   "F006", // base-testnet
@@ -100,8 +100,17 @@ export const evmChains = [
   "F027", // taiko
   "F028", // taiko-hekla-testnet
   "F029", // polygon-zkevm
-  "F002", // arbitrum-sepolia-testnet
-  "F001", // arbitrum-one
+  "F02A", // zklink
+  "F02B", // zksync-era
+  "F02C", // xrpl-evm-devnet
+  "F02D", // sonic
+  "F02E", // TRON
+  "F030", // linea
+  "F031", // berachain-bartio-testnet
+  "F032", // ink
+  "F033", // mantle
+  "F034", // sei
+  "F035", // berachain
 ]
 
 export const evmMethods = [

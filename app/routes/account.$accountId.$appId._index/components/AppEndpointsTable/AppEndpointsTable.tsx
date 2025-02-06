@@ -1,8 +1,7 @@
 import { ActionIcon, Flex, Menu, TextInput, Tooltip, UnstyledButton } from "@mantine/core"
 import { useFetcher, useNavigation, useParams } from "@remix-run/react"
+import { Book, Play, Star } from "lucide-react"
 import React, { useMemo, useState } from "react"
-import { LuBook, LuPlay } from "react-icons/lu"
-import { RiStarFill, RiStarLine } from "react-icons/ri"
 import FavoriteChain from "../FavoriteChain"
 import Chain from "~/components/Chain"
 import { ChainSandboxProvider } from "~/components/ChainSandbox/state"
@@ -125,14 +124,14 @@ const AppEndpointsTable = ({
                           })
                         }}
                       >
-                        <LuPlay size={18} style={{ position: "relative", left: 2 }} />
+                        <Play size={18} style={{ position: "relative", left: 2 }} />
                       </ActionIcon>
                     </Tooltip>
                     <Menu>
                       <ContextMenuTarget variant="subtle" />
                       <Menu.Dropdown>
                         {chain.blockchain && CHAIN_DOCS_URL[chain.blockchain] && (
-                          <Menu.Item leftSection={<LuBook size={18} />}>
+                          <Menu.Item leftSection={<Book size={18} />}>
                             <UnstyledButton
                               component="a"
                               fz="sm"
@@ -155,11 +154,10 @@ const AppEndpointsTable = ({
                         {!readOnly && (
                           <Menu.Item
                             leftSection={
-                              chain.favorite ? (
-                                <RiStarFill size={18} />
-                              ) : (
-                                <RiStarLine size={18} />
-                              )
+                              <Star
+                                fill={chain.favorite ? "currentColor" : "none"}
+                                size={18}
+                              />
                             }
                             onClick={() => {
                               trackEvent({

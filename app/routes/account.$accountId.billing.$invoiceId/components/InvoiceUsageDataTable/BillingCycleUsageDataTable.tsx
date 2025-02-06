@@ -1,9 +1,9 @@
 import { Group, Text } from "@mantine/core"
 import clsx from "clsx"
 import { Emoji } from "emoji-picker-react"
+import { ChevronRight } from "lucide-react"
 import { DataTable } from "mantine-datatable"
 import React, { useMemo, useState } from "react"
-import { LuChevronRight } from "react-icons/lu"
 import classes from "./BillingCycleUsageDataTable.module.css"
 import { D2Stats, PortalApp } from "~/models/portal/sdk"
 import { AccountBillingOutletContext } from "~/routes/account.$accountId.billing/route"
@@ -74,7 +74,7 @@ const BillingCycleUsageDataTable = ({
           noWrap: true,
           render: ({ name, appEmoji, id }) => (
             <Group gap={6}>
-              <LuChevronRight
+              <ChevronRight
                 className={clsx(classes.icon, classes.expandIcon, {
                   [classes.expandIconRotated]: expandedAppIds.includes(id),
                 })}

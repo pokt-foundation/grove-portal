@@ -1,7 +1,7 @@
 import { ActionIcon, Button, Group, Menu, Text } from "@mantine/core"
 import { Form, Link, useNavigation } from "@remix-run/react"
+import { ArrowUpRight, Minus, Ellipsis, Pencil } from "lucide-react"
 import React from "react"
-import { LuArrowUpRight, LuMinusCircle, LuMoreHorizontal, LuPencil } from "react-icons/lu"
 import { RoleName, User } from "~/models/portal/sdk"
 import useTeamModals from "~/routes/account.$accountId.settings.members/hooks/useTeamModals"
 import { TableUserAccount } from "~/routes/user.accounts/components/AccountsTable"
@@ -29,24 +29,24 @@ const InvitedAccountAction = ({ account, user }: InvitedAccountActionProps) => {
               size={40}
               variant="outline"
             >
-              <LuMoreHorizontal />
+              <Ellipsis />
             </ActionIcon>
           </Menu.Target>
           <Menu.Dropdown>
-            <Menu.Item leftSection={<LuArrowUpRight size={18} />}>
+            <Menu.Item leftSection={<ArrowUpRight size={18} />}>
               <Link to={`/account/${account.id}`}>
                 <Text tt="capitalize">Go to account</Text>
               </Link>
             </Menu.Item>
             {role === RoleName.Owner ? (
-              <Menu.Item leftSection={<LuPencil size={18} />}>
+              <Menu.Item leftSection={<Pencil size={18} />}>
                 <Link to={`/account/${account.id}/update?redirectTo=/user/accounts`}>
                   <Text tt="capitalize">Change name</Text>
                 </Link>
               </Menu.Item>
             ) : (
               <Menu.Item
-                leftSection={<LuMinusCircle size={18} />}
+                leftSection={<Minus size={18} />}
                 onClick={() =>
                   openLeaveTeamModal({ email: user.email, id: user.portalUserID })
                 }

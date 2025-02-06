@@ -1,15 +1,15 @@
 import { Anchor, Flex, Group, Text, UnstyledButton } from "@mantine/core"
 import { NavLink } from "@remix-run/react"
 import { Emoji } from "emoji-picker-react"
+import type { LucideIcon } from "lucide-react"
 import React from "react"
-import { IconType } from "react-icons"
 import classes from "./SidebarNavLinks.module.css"
 import { DEFAULT_APPMOJI } from "~/routes/account_.$accountId.create/components/AppmojiPicker"
 
 export type SidebarNavRoute = {
   to: string
   label: string
-  icon?: IconType | string
+  icon?: LucideIcon | string
   imgSrc?: string
   end?: boolean
   external?: boolean

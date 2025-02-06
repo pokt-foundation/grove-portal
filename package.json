@@ -4,6 +4,9 @@
   "description": "",
   "license": "",
   "type": "module",
+  "resolutions": {
+    "esbuild": "0.17.19"
+  },
   "scripts": {
     "dev": "run-s generate:types remix:dev",
     "build": "run-s generate:types remix:build",
@@ -56,12 +59,12 @@
     "isbot": "^5.1.1",
     "jwt-decode": "^3.1.2",
     "lottie-react": "^2.4.0",
+    "lucide-react": "^0.469.0",
     "mantine-datatable": "^7.8.2",
     "mersenne-twister": "^1.1.0",
     "node-mailjet": "^6.0.4",
-    "react": "18.2.0",
-    "react-dom": "^18.2.0",
-    "react-icons": "^5.0.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "recharts": "^2.12.5",
     "remix-auth": "^3.6.0",
     "remix-auth-auth0": "^1.9.0",
@@ -122,6 +125,11 @@
     "overrides": {
       "parse5": "7.1.2",
       "hast-util-raw": "8.0.0"
+    },
+    "peerDependencyRules": {
+      "allowedVersions": {
+        "react": "18.3.1"
+      }
     }
   },
   "engines": {

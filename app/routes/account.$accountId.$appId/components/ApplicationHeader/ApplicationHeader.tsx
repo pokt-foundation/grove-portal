@@ -1,7 +1,7 @@
 import { Avatar, Badge, Box, CopyButton, Group, Menu, Text, Tooltip } from "@mantine/core"
 import { Link } from "@remix-run/react"
 import { Emoji } from "emoji-picker-react"
-import { LuPencil } from "react-icons/lu"
+import { Pencil } from "lucide-react"
 import ContextMenuTarget from "~/components/ContextMenuTarget"
 import { PortalApp, RoleName } from "~/models/portal/sdk"
 import DeleteApplication from "~/routes/account.$accountId.$appId/components/DeleteApplication"
@@ -62,11 +62,7 @@ const ApplicationHeader = ({ app, userRole }: ApplicationHeaderProps) => {
         <Menu>
           <ContextMenuTarget />
           <Menu.Dropdown>
-            <Menu.Item
-              component={Link}
-              leftSection={<LuPencil size={18} />}
-              to={`update`}
-            >
+            <Menu.Item component={Link} leftSection={<Pencil size={18} />} to={`update`}>
               Edit information
             </Menu.Item>
             <DeleteApplication app={app} />

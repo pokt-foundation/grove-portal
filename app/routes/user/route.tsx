@@ -1,8 +1,8 @@
 import { Stack, Button } from "@mantine/core"
 import { json, LoaderFunction } from "@remix-run/node"
 import { NavLink, Outlet, useLoaderData } from "@remix-run/react"
+import { ArrowLeft } from "lucide-react"
 import React from "react"
-import { LuArrowLeft } from "react-icons/lu"
 import ErrorBoundaryView from "~/components/ErrorBoundaryView"
 import LinkTabs from "~/components/LinkTabs"
 import RootAppShell from "~/components/RootAppShell/RootAppShell"
@@ -64,7 +64,7 @@ export default function UserAccount() {
       <Button
         color="gray"
         component={NavLink}
-        leftSection={<LuArrowLeft size={18} />}
+        leftSection={<ArrowLeft size={18} />}
         mb="xl"
         ml={-15}
         size="compact-sm"

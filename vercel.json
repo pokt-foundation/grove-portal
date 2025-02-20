@@ -12,5 +12,16 @@
       "destination": "https://portal.grove.city/:path*",
       "permanent": true
     }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, googlebot: noindex, googlebot: nofollow"
+        }
+      ]
+    }
   ]
 }

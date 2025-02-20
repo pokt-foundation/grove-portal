@@ -12,7 +12,7 @@
       "destination": "https://portal.grove.city/:path*",
       "permanent": true
     }
-  ]
+  ],
   "headers": [
     {
       "source": "/(.*)",

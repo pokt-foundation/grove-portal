@@ -46,13 +46,13 @@ const getCodeMirrorTheme = (colorScheme: ColorScheme) =>
         settings: {
           background: "var(--app-secondary-bg-color)",
           gutterBackground: "var(--app-secondary-bg-color)",
-        }
+        },
       })
     : xcodeLightInit({
         settings: {
           background: "var(--app-secondary-bg-color)",
           gutterBackground: "var(--app-secondary-bg-color)",
-        }
+        },
       })
 
 const CodeEditor = ({

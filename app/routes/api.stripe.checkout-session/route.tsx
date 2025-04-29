@@ -72,9 +72,6 @@ export const loader: LoaderFunction = async ({ request, params }) => {
           price: price.id,
         },
       ],
-      subscription_data: {
-        billing_cycle_anchor: getBillingCycleAnchorTimestamp(),
-      },
       mode: "subscription",
       metadata,
       allow_promotion_codes: true,

@@ -6,17 +6,6 @@ import { getErrorMessage } from "~/utils/catchError"
 import { getRequiredServerEnvVar } from "~/utils/environment"
 import { getPoktId, requireUser } from "~/utils/user.server"
 
-// getBillingCycleAnchorTimestamp gets the next billing cycle start date, which is
-// 12:00 (noon) UTC of the first day of the next month. For example: if today is
-// March 10th, the next billing cycle start date will be April 1st, 12:00 UTC.
-function getBillingCycleAnchorTimestamp(): number {
-  const now = new Date()
-  const nextMonth = new Date(
-    Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + 1, 1, 12, 0, 0),
-  )
-  return Math.floor(nextMonth.getTime() / 1000)
-}
-
 export const loader: LoaderFunction = async ({ request, params }) => {
   const user = await requireUser(request)
   invariant(user.user.auth0ID && user.user.email, "user not found")
@@ -72,9 +61,6 @@ export const loader: LoaderFunction = async ({ request, params }) => {
           price: price.id,
         },
       ],
-      subscription_data: {
-        billing_cycle_anchor: getBillingCycleAnchorTimestamp(),
-      },
       mode: "subscription",
       metadata,
       allow_promotion_codes: true,

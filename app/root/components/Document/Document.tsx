@@ -50,8 +50,8 @@ const Document = ({
         />
         <meta charSet="utf-8" />
         <meta content="width=device-width, initial-scale=1" name="viewport" />
-        <meta name="robots" content="noindex,nofollow" />
-        <meta name="googlebot" content="noindex,nofollow" />
+        <meta content="noindex,nofollow" name="robots" />
+        <meta content="noindex,nofollow" name="googlebot" />
         <Meta />
         <Links />
         <ColorSchemeScript forceColorScheme={colorScheme ?? "dark"} />

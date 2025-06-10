@@ -1,9 +1,11 @@
-import { Novu, TriggerRecipientsTypeEnum } from "@novu/node"
+import pkg from "@novu/api"
 import { PayPlanType, RoleName, User } from "~/models/portal/sdk"
 import { TeamActionType } from "~/routes/account.$accountId.settings.members/action"
 import { getRequiredServerEnvVar } from "~/utils/environment"
 import { getPlanName } from "~/utils/planUtils"
 import { capitalizeFirstLetter } from "~/utils/utils"
+
+const { Novu, TriggerRecipientsTypeEnum } = pkg
 
 export const novu = new Novu(getRequiredServerEnvVar("NOVU_API_KEY"))
 export const NOTIFICATIONS = { IN_APP_NOTIFICATION: "in-app-notification" }

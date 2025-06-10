@@ -36,7 +36,7 @@ type DrawerLinkProps = NavLinkProps &
 const DrawerLink = ({ setIsDrawerOpen, external, ...props }: DrawerLinkProps) => {
   const externalProps = external ? { rel: "noreferrer", target: "_blank" } : {}
   return (
-    // eslint-disable-next-line jsx-a11y/anchor-has-content
+     
     <NavLink
       aria-label={String(props.label)}
       component={Link}
@@ -141,7 +141,7 @@ const AccountDrawer = ({ user }: AccountDrawerProps) => {
               {withDivider && <Divider my={8} />}
             </React.Fragment>
           ))}
-          {/* eslint-disable-next-line jsx-a11y/anchor-has-content */}
+          { }
           <NavLink
             aria-label="Sign out"
             className={classes.drawerLink}

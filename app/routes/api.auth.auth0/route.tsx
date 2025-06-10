@@ -4,7 +4,7 @@ import { authenticator } from "~/utils/auth.server"
 
 // The loader handles the case where the page is loaded via a GET request.
 // This is where a standard GET browser request for login or signup is handled.
-export let loader: LoaderFunction = ({ request }) => {
+export const loader: LoaderFunction = ({ request }) => {
   const url = new URL(request.url)
   url.searchParams.append("prompt", "login")
 
@@ -26,7 +26,7 @@ export let loader: LoaderFunction = ({ request }) => {
 
 // The action handles the case where the page is loaded via a POST request.
 // This is where the POST redirect from a GCP Marketplace signup is handled.
-export let action: ActionFunction = async ({ request }) => {
+export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData()
 
   // Possible scenarios:

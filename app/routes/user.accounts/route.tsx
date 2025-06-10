@@ -22,7 +22,7 @@ export const meta: MetaFunction = () => {
 }
 
 export type UserInvitedAccountsActionData = {
-  success: Boolean
+  success: boolean
 }
 
 export const action: ActionFunction = async ({ request }) => {
@@ -34,7 +34,7 @@ export const action: ActionFunction = async ({ request }) => {
   try {
     const invite_response = formData.get("invite_response")
 
-    let res = false
+    const res = false
     if (invite_response) {
       const accountId = formData.get("accountId")
       const invitedAccountName = formData.get("accountName")

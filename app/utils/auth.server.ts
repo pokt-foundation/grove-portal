@@ -32,7 +32,7 @@ export type AuthUser = {
   }
 }
 
-let auth0Strategy = new Auth0Strategy(
+const auth0Strategy = new Auth0Strategy(
   {
     callbackURL: "/api/auth/auth0/callback",
     clientID: getRequiredServerEnvVar("AUTH0_CLIENT_ID"),

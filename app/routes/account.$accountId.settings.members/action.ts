@@ -11,7 +11,7 @@ import { triggerTeamActionNotification } from "~/utils/notifications.server"
 import { requireUser } from "~/utils/user.server"
 
 export type TeamActionData = {
-  success: Boolean
+  success: boolean
   type: TeamActionType
 }
 
@@ -38,7 +38,7 @@ export const action: ActionFunction = async ({ request, params }) => {
     const invitedAccountName = account_name ? account_name : accountId
 
     let message = ""
-    let type: TeamActionType = "invite"
+    const type: TeamActionType = "invite"
     let res = false
 
     if (user_invite) {

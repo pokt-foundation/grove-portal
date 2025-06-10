@@ -9,7 +9,7 @@ type TeamMemberActionProps = {
   userRole: RoleName | null
   user?: User
   teamMember: AccountUser
-  status: Boolean
+  status: boolean
 }
 
 const TeamMemberAction = ({
@@ -24,7 +24,7 @@ const TeamMemberAction = ({
   )
 
   const menuItems = useMemo(() => {
-    let items = []
+    const items = []
     const { id, email, roleName } = teamMember
 
     switch (userRole) {

@@ -93,7 +93,7 @@ export const action: ActionFunction = async ({ request, params }) => {
     invariant(typeof accountId === "string", "accountId not found")
     invariant(typeof appId === "string", "appId not found")
 
-    let input: UpdatePortalApp = {
+    const input: UpdatePortalApp = {
       appID: appId,
       accountID: accountId,
       name,

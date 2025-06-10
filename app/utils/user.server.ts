@@ -51,7 +51,7 @@ export const requireAdmin = async (
   request: Request,
   defaultRedirect = "/",
 ): Promise<User> => {
-  let user = await authenticator.isAuthenticated(request)
+  const user = await authenticator.isAuthenticated(request)
 
   if (!user) {
     throw redirect(defaultRedirect)
@@ -105,7 +105,7 @@ export const redirectToUserAccount = async (user: AuthUser) => {
   const accounts = await portal.getUserAccounts({ accepted: true })
   let account = accounts.getUserAccounts[0] as Partial<Account>
 
-  let owner = accounts.getUserAccounts.find(
+  const owner = accounts.getUserAccounts.find(
     (account) =>
       account?.users.find((u) => u.id === user.user.portalUserID)?.roleName ===
       RoleName.Owner,

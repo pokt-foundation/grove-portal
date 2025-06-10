@@ -56,7 +56,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     }
 
     // handle metadata that gets tied to the subscription
-    let metadata: {} = {
+    const metadata: {} = {
       account_id: id,
       ...(referral ? { referral_id: referral } : {}),
     }

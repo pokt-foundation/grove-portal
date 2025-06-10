@@ -59,19 +59,19 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
     if (accountStripeId) {
       const subscription = await stripe.subscriptions.retrieve(accountStripeId, {
-        expand: ['items.data.price']
+        expand: ["items.data.price"],
       })
-      
+
       // Try to get usage data using the new meters API
       try {
         const subscriptionItem = subscription.items.data[0]
         const price = subscriptionItem.price
-        
+
         // For now, let's simplify and just return empty usage records
         // until we can determine the correct Stripe SDK methods
         usageRecords = []
       } catch (meterError) {
-        console.warn('Could not process subscription data:', meterError)
+        console.warn("Could not process subscription data:", meterError)
         usageRecords = []
       }
     }

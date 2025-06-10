@@ -36,7 +36,6 @@ type DrawerLinkProps = NavLinkProps &
 const DrawerLink = ({ setIsDrawerOpen, external, ...props }: DrawerLinkProps) => {
   const externalProps = external ? { rel: "noreferrer", target: "_blank" } : {}
   return (
-     
     <NavLink
       aria-label={String(props.label)}
       component={Link}
@@ -141,7 +140,7 @@ const AccountDrawer = ({ user }: AccountDrawerProps) => {
               {withDivider && <Divider my={8} />}
             </React.Fragment>
           ))}
-          { }
+          {}
           <NavLink
             aria-label="Sign out"
             className={classes.drawerLink}

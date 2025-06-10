@@ -57,7 +57,6 @@ export const SecurityView = ({ app, blockchains, userRole }: SecurityViewProps) 
         },
       )
     }
-     
   }, [state, app.id])
 
   return (

@@ -41,7 +41,7 @@ export const NovuNotificationPopover = ({
           elements: {
             bellIcon: {
               // Hide the default bell since we're using a custom one
-              display: "none"
+              display: "none",
             },
             popover: {
               background: "var(--mantine-color-body)",
@@ -58,19 +58,20 @@ export const NovuNotificationPopover = ({
                 : {}),
             },
             notificationItemRead: {
-              ...(colorScheme === "dark" 
-                ? { backgroundColor: theme.colors.gray[9] } 
+              ...(colorScheme === "dark"
+                ? { backgroundColor: theme.colors.gray[9] }
                 : {}),
             },
             notificationItemUnread: {
-              ...(colorScheme === "dark" 
-                ? { backgroundColor: theme.colors.dark[7] } 
+              ...(colorScheme === "dark"
+                ? { backgroundColor: theme.colors.dark[7] }
                 : {}),
               borderLeft: "4px solid",
               borderLeftColor: theme.colors.green[6],
             },
             unseenBadge: {
-              background: "linear-gradient(0deg, rgba(56,159,88,1) 20%, rgba(70,189,107,1) 80%)",
+              background:
+                "linear-gradient(0deg, rgba(56,159,88,1) 20%, rgba(70,189,107,1) 80%)",
             },
           },
         }}

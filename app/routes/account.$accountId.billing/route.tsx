@@ -84,7 +84,9 @@ export const loader: LoaderFunction = async ({ request, params }) => {
               usageRecordSummaries.push({
                 invoice: invoice.id ?? null,
                 total_usage: totalRelays,
-                subscription_item: (lineItem as any).parent?.subscription_item_details?.subscription_item ?? "",
+                subscription_item:
+                  (lineItem as any).parent?.subscription_item_details
+                    ?.subscription_item ?? "",
               })
 
               // Break after finding the first metered line item for this invoice

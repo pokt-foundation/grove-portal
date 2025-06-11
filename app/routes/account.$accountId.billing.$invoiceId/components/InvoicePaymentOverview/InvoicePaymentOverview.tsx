@@ -59,7 +59,7 @@ const InvoicePaymentOverview = ({
       number: invoice.number,
       status: invoice.status,
       total_excluding_tax: invoice.total_excluding_tax,
-      unit_price: getUnitPrice((invoice.lines?.data[0] as any)?.plan?.amount_decimal),
+      unit_price: getUnitPrice((invoice.lines?.data[0] as any)?.pricing?.unit_amount_decimal),
       total_usage: invoiceUsageRecord?.total_usage,
     }
   }, [invoice, planType, usageRecords])

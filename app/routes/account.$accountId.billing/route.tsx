@@ -44,6 +44,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   const portal = initPortalClient({ token: user.accessToken })
   try {
     let usageRecords
+    let subscription: Stripe.Subscription | undefined
 
     const getBillingRouteAccountInfoResponse = await portal.getBillingRouteAccountInfo({
       accountID: accountId,
@@ -59,18 +60,42 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     }
 
     if (accountStripeId) {
-      const subscription = await stripe.subscriptions.retrieve(accountStripeId, {
+      subscription = await stripe.subscriptions.retrieve(accountStripeId, {
         expand: ["items.data.price"],
       })
 
       // Try to get usage data using the new meters API
       try {
-        const subscriptionItem = subscription.items.data[0]
-        const price = subscriptionItem.price
+        const invoices = await stripe.invoices.list({
+          subscription: subscription.id,
+          limit: 100, // Adjust as needed
+        })
+        const usageRecordSummaries: UsageRecordSummary[] = []
 
-        // For now, let's simplify and just return empty usage records
-        // until we can determine the correct Stripe SDK methods
-        usageRecords = []
+        
+        // Process each invoice to extract usage from line items
+        for (const invoice of invoices.data) {
+    
+          // Look through the invoice line items for usage-based items
+          for (const lineItem of invoice.lines.data) {
+      
+            // Check if this is a subscription line item with usage
+            if (lineItem.quantity && lineItem.quantity > 0) {
+              const quantity = lineItem.quantity || 0
+              const totalRelays = quantity * 1000000 // convert units to relays
+
+              usageRecordSummaries.push({
+                invoice: invoice.id,
+                total_usage: totalRelays,
+                subscription_item: lineItem.subscription_item || '',
+              })
+        
+              // Break after finding the first metered line item for this invoice
+              break
+            }
+          }
+        }
+        usageRecords = usageRecordSummaries
       } catch (meterError) {
         console.warn("Could not process subscription data:", meterError)
         usageRecords = []
@@ -78,6 +103,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     }
 
     return json<AccountBillingOutletLoaderData>({
+      subscription,
       usageRecords: usageRecords ?? [],
     })
   } catch (error) {

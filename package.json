@@ -4,6 +4,7 @@
   "description": "",
   "license": "",
   "type": "module",
+  "packageManager": "pnpm@10.0.0",
   "resolutions": {
     "esbuild": "0.17.19"
   },

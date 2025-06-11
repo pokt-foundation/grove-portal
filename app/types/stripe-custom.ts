@@ -14,6 +14,12 @@ export interface UsageRecordSummary {
   total_usage: number
 }
 
+export interface InvoiceUsageData {
+  invoice: string | null
+  total_usage: number
+  subscription_item: string
+}
+
 // For Stripe.ApiList compatibility
 export interface UsageRecordSummaryList {
   object: "list"

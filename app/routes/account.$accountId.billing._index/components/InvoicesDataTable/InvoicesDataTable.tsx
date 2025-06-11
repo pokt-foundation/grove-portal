@@ -10,11 +10,11 @@ import {
   getStripeAmount,
   INVOICE_STATUS_COLOR,
 } from "~/utils/billingUtils"
-import { UsageRecordSummary } from "~/types/stripe-custom"
+import { InvoiceUsageData } from "~/types/stripe-custom"
 
 type InvoicesDataTableProps = {
   invoices: Stripe.Invoice[]
-  usageRecords?: UsageRecordSummary[]
+  usageRecords?: InvoiceUsageData[]
 }
 const InvoicesDataTable = ({ invoices, usageRecords }: InvoicesDataTableProps) => {
   const navigate = useNavigate()

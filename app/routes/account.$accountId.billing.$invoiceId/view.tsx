@@ -6,6 +6,7 @@ import InvoicePaymentMethod from "~/routes/account.$accountId.billing.$invoiceId
 import InvoicePaymentOverview from "~/routes/account.$accountId.billing.$invoiceId/components/InvoicePaymentOverview"
 import BillingCycleUsageDataTable from "~/routes/account.$accountId.billing.$invoiceId/components/InvoiceUsageDataTable"
 import { InvoiceLoaderData } from "~/routes/account.$accountId.billing.$invoiceId/route"
+import { InvoiceUsageData } from "~/types/stripe-custom"
 
 export type InvoiceViewProps = Pick<
   AccountBillingOutletContext,

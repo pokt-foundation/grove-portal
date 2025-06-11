@@ -5,11 +5,11 @@ import { Account } from "~/models/portal/sdk"
 import { Stripe } from "~/models/stripe/stripe.server"
 import { getStripeAmount, getUnitPrice, INVOICE_STATUS_COLOR } from "~/utils/billingUtils"
 import { getPlanName } from "~/utils/planUtils"
-import { UsageRecordSummary } from "~/types/stripe-custom"
+import { InvoiceUsageData } from "~/types/stripe-custom"
 
 type InvoicePaymentOverviewProps = {
   invoice: Stripe.Invoice
-  usageRecords?: UsageRecordSummary[]
+  usageRecords?: InvoiceUsageData[]
   planType: Account["planType"]
 }
 
@@ -59,7 +59,9 @@ const InvoicePaymentOverview = ({
       number: invoice.number,
       status: invoice.status,
       total_excluding_tax: invoice.total_excluding_tax,
-      unit_price: getUnitPrice((invoice.lines?.data[0] as any)?.pricing?.unit_amount_decimal),
+      unit_price: getUnitPrice(
+        (invoice.lines?.data[0] as any)?.pricing?.unit_amount_decimal,
+      ),
       total_usage: invoiceUsageRecord?.total_usage,
     }
   }, [invoice, planType, usageRecords])

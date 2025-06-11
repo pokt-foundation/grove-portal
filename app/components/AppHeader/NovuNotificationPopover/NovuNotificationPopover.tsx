@@ -74,20 +74,20 @@ export const NovuNotificationPopover = ({
                 "linear-gradient(0deg, rgba(56,159,88,1) 20%, rgba(70,189,107,1) 80%)",
             },
           },
-        }}
-        renderBell={({ unseenCount }) => (
+        } as any}
+        renderBell={( unreadCount: number ) => (
           <Indicator
             inline
             processing
             color="red"
-            disabled={!unseenCount}
+            disabled={!unreadCount}
             offset={6}
             size={8}
           >
             <ActionIcon
               aria-label={`${
-                unseenCount ? unseenCount : "No"
-              } unseen notifications. Click to open notifications popover.`}
+                unreadCount ? unreadCount : "No"
+              } unread notifications. Click to open notifications popover.`}
               color="dark"
               radius="xl"
               size={40}

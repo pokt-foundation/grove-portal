@@ -13,6 +13,7 @@ import { getErrorMessage } from "~/utils/catchError"
 import { getRequiredServerEnvVar } from "~/utils/environment"
 import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
+import { UsageRecordSummary } from '~/types/stripe-custom';
 
 export const meta: MetaFunction = () => {
   return [
@@ -24,7 +25,7 @@ export const meta: MetaFunction = () => {
 
 export type AccountBillingOutletLoaderData = {
   subscription?: Stripe.Subscription
-  usageRecords?: Stripe.UsageRecordSummary[] | any[] // Updated type to handle new meter data
+  usageRecords?: UsageRecordSummary[] | any[] // Updated type to handle new meter data
 }
 
 export type AccountBillingOutletContext = AccountBillingOutletLoaderData &

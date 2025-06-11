@@ -5,10 +5,11 @@ import { Account } from "~/models/portal/sdk"
 import { Stripe } from "~/models/stripe/stripe.server"
 import { getStripeAmount, getUnitPrice, INVOICE_STATUS_COLOR } from "~/utils/billingUtils"
 import { getPlanName } from "~/utils/planUtils"
+import { UsageRecordSummary } from '~/types/stripe-custom';
 
 type InvoicePaymentOverviewProps = {
   invoice: Stripe.Invoice
-  usageRecords?: Stripe.UsageRecordSummary[]
+  usageRecords?: UsageRecordSummary[]
   planType: Account["planType"]
 }
 
@@ -58,7 +59,7 @@ const InvoicePaymentOverview = ({
       number: invoice.number,
       status: invoice.status,
       total_excluding_tax: invoice.total_excluding_tax,
-      unit_price: getUnitPrice(invoice.lines?.data[0]?.plan?.amount_decimal),
+      unit_price: getUnitPrice((invoice.lines?.data[0] as any)?.plan?.amount_decimal),
       total_usage: invoiceUsageRecord?.total_usage,
     }
   }, [invoice, planType, usageRecords])
@@ -147,13 +148,13 @@ const InvoicePaymentOverview = ({
               prefix="USD $"
               value={getStripeAmount(invoice?.total_excluding_tax)}
             />
-            {invoice?.tax ? (
+            {(invoice as any)?.tax ? (
               <>
                 <Text>Tax</Text>
                 <NumberFormatter
                   thousandSeparator
                   prefix="USD $"
-                  value={invoice?.tax ?? "-"}
+                  value={(invoice as any)?.tax ?? "-"}
                 />
               </>
             ) : null}

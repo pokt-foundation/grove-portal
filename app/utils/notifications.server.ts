@@ -1,14 +1,21 @@
-import pkg from "@novu/api"
+import { Novu } from "@novu/api"
 import { PayPlanType, RoleName, User } from "~/models/portal/sdk"
 import { TeamActionType } from "~/routes/account.$accountId.settings.members/action"
 import { getRequiredServerEnvVar } from "~/utils/environment"
 import { getPlanName } from "~/utils/planUtils"
 import { capitalizeFirstLetter } from "~/utils/utils"
 
-const { Novu, TriggerRecipientsTypeEnum } = pkg
+// New @novu/api initialization
+export const novu = new Novu({
+  secretKey: getRequiredServerEnvVar("NOVU_API_KEY"),
+})
 
-export const novu = new Novu(getRequiredServerEnvVar("NOVU_API_KEY"))
 export const NOTIFICATIONS = { IN_APP_NOTIFICATION: "in-app-notification" }
+
+// Topic recipients enum (may need to be defined manually now)
+const TriggerRecipientsTypeEnum = {
+  TOPIC: "Topic",
+} as const
 
 type NovuNotificationPayload = {
   message: string
@@ -196,87 +203,100 @@ export const triggerTeamActionNotification = async ({
   switch (type) {
     case "invite":
     case "delete":
-      return await novu.bulkTrigger([
-        {
-          name: NOTIFICATIONS.IN_APP_NOTIFICATION,
-          to: {
-            subscriberId: targetedUserId,
-            email: targetedUserEmail,
+      // New API: use triggerBulk with events wrapper
+      return await novu.triggerBulk({
+        events: [
+          {
+            workflowId: NOTIFICATIONS.IN_APP_NOTIFICATION,
+            to: {
+              subscriberId: targetedUserId,
+              email: targetedUserEmail,
+            },
+            payload: getAccountNotificationPayload({
+              target: "user",
+              actor,
+              type,
+              userRole,
+              accountId,
+              accountName,
+              targetedUserEmail,
+            }) as NovuNotificationPayload,
           },
-          payload: getAccountNotificationPayload({
-            target: "user",
-            actor,
-            type,
-            userRole,
-            accountId,
-            accountName,
-            targetedUserEmail,
-          }) as NovuNotificationPayload,
-        },
-        {
-          name: NOTIFICATIONS.IN_APP_NOTIFICATION,
-          to: {
-            subscriberId: actor.portalUserID,
+          {
+            workflowId: NOTIFICATIONS.IN_APP_NOTIFICATION,
+            to: {
+              subscriberId: actor.portalUserID,
+            },
+            payload: getAccountNotificationPayload({
+              target: "actor",
+              actor,
+              type,
+              userRole,
+              accountId,
+              accountName,
+              targetedUserEmail,
+            }) as NovuNotificationPayload,
           },
-          payload: getAccountNotificationPayload({
-            target: "actor",
-            actor,
-            type,
-            userRole,
-            accountId,
-            accountName,
-            targetedUserEmail,
-          }) as NovuNotificationPayload,
-        },
-        {
-          name: NOTIFICATIONS.IN_APP_NOTIFICATION,
-          to: [{ type: TriggerRecipientsTypeEnum.TOPIC, topicKey: accountId }],
-          actor: { subscriberId: actor.portalUserID },
-          payload: getAccountNotificationPayload({
-            target: "teamMembers",
-            actor,
-            type,
-            userRole,
-            accountId,
-            accountName,
-            targetedUserEmail,
-          }) as NovuNotificationPayload,
-        },
-      ])
+          {
+            workflowId: NOTIFICATIONS.IN_APP_NOTIFICATION,
+            to: { 
+              type: TriggerRecipientsTypeEnum.TOPIC, 
+              topicKey: accountId 
+            },
+            actor: { subscriberId: actor.portalUserID },
+            payload: getAccountNotificationPayload({
+              target: "teamMembers",
+              actor,
+              type,
+              userRole,
+              accountId,
+              accountName,
+              targetedUserEmail,
+            }) as NovuNotificationPayload,
+          },
+        ]
+      })
     case "updateRole":
-      return await novu.bulkTrigger([
-        {
-          name: NOTIFICATIONS.IN_APP_NOTIFICATION,
-          to: {
-            subscriberId: targetedUserId,
+      return await novu.triggerBulk({
+        events: [
+          {
+            workflowId: NOTIFICATIONS.IN_APP_NOTIFICATION,
+            to: {
+              subscriberId: targetedUserId,
+            },
+            payload: getAccountNotificationPayload({
+              target: "user",
+              actor,
+              type,
+              userRole,
+              accountId,
+              accountName,
+              targetedUserEmail,
+            }) as NovuNotificationPayload,
           },
-          payload: getAccountNotificationPayload({
-            target: "user",
-            actor,
-            type,
-            userRole,
-            accountId,
-            accountName,
-            targetedUserEmail,
-          }) as NovuNotificationPayload,
-        },
-        {
-          name: NOTIFICATIONS.IN_APP_NOTIFICATION,
-          to: [{ type: TriggerRecipientsTypeEnum.TOPIC, topicKey: accountId }],
-          actor: { subscriberId: targetedUserId },
-          payload: getAccountNotificationPayload({
-            target: "teamMembers",
-            actor,
-            type,
-            userRole,
-            accountId,
-            accountName,
-            targetedUserEmail,
-          }) as NovuNotificationPayload,
-        },
-      ])
+          {
+            workflowId: NOTIFICATIONS.IN_APP_NOTIFICATION,
+            to: { 
+              type: TriggerRecipientsTypeEnum.TOPIC, 
+              topicKey: accountId 
+            },
+            actor: { subscriberId: targetedUserId },
+            payload: getAccountNotificationPayload({
+              target: "teamMembers",
+              actor,
+              type,
+              userRole,
+              accountId,
+              accountName,
+              targetedUserEmail,
+            }) as NovuNotificationPayload,
+          },
+        ]
+      })
     case "resend":
-      return await novu.trigger(NOTIFICATIONS.IN_APP_NOTIFICATION, {
+      // New API: workflowId instead of first parameter
+      return await novu.trigger({
+        workflowId: NOTIFICATIONS.IN_APP_NOTIFICATION,
         to: {
           subscriberId: targetedUserId,
           email: targetedUserEmail,
@@ -292,7 +312,8 @@ export const triggerTeamActionNotification = async ({
         }) as NovuNotificationPayload,
       })
     case "leave":
-      return await novu.trigger(NOTIFICATIONS.IN_APP_NOTIFICATION, {
+      return await novu.trigger({
+        workflowId: NOTIFICATIONS.IN_APP_NOTIFICATION,
         to: {
           subscriberId: targetedUserId,
         },
@@ -320,32 +341,38 @@ export const triggerAcceptInvitationNotification = async ({
   accepted: boolean
 }) => {
   return accepted
-    ? await novu.bulkTrigger([
-        {
-          name: NOTIFICATIONS.IN_APP_NOTIFICATION,
-          to: {
-            subscriberId: actor.portalUserID,
+    ? await novu.triggerBulk({
+        events: [
+          {
+            workflowId: NOTIFICATIONS.IN_APP_NOTIFICATION,
+            to: {
+              subscriberId: actor.portalUserID,
+            },
+            payload: {
+              message: `You have joined ${accountName ?? accountId} as ${
+                userRole === RoleName.Admin ? "an" : "a"
+              } ${capitalizeFirstLetter(userRole)}`,
+              redirectTo: `/account/${accountId}`,
+            },
           },
-          payload: {
-            message: `You have joined ${accountName ?? accountId} as ${
-              userRole === RoleName.Admin ? "an" : "a"
-            } ${capitalizeFirstLetter(userRole)}`,
-            redirectTo: `/account/${accountId}`,
+          {
+            workflowId: NOTIFICATIONS.IN_APP_NOTIFICATION,
+            to: { 
+              type: TriggerRecipientsTypeEnum.TOPIC, 
+              topicKey: accountId 
+            },
+            actor: { subscriberId: actor.portalUserID },
+            payload: {
+              message: `${actor.email} has joined ${accountName ?? accountId} as ${
+                userRole === RoleName.Admin ? "an" : "a"
+              } ${capitalizeFirstLetter(userRole)}`,
+              redirectTo: `/account/${accountId}/settings/members`,
+            },
           },
-        },
-        {
-          name: NOTIFICATIONS.IN_APP_NOTIFICATION,
-          to: [{ type: TriggerRecipientsTypeEnum.TOPIC, topicKey: accountId }],
-          actor: { subscriberId: actor.portalUserID },
-          payload: {
-            message: `${actor.email} has joined ${accountName ?? accountId} as ${
-              userRole === RoleName.Admin ? "an" : "a"
-            } ${capitalizeFirstLetter(userRole)}`,
-            redirectTo: `/account/${accountId}/settings/members`,
-          },
-        },
-      ])
-    : await novu.trigger(NOTIFICATIONS.IN_APP_NOTIFICATION, {
+        ]
+      })
+    : await novu.trigger({
+        workflowId: NOTIFICATIONS.IN_APP_NOTIFICATION,
         to: {
           subscriberId: actor.portalUserID,
         },
@@ -368,34 +395,43 @@ export const triggerSubscriptionActionNotification = async ({
 }: TriggerSubscriptionActionNotificationProps) => {
   switch (type) {
     case "cancel":
-      return await novu.bulkTrigger([
-        {
-          name: NOTIFICATIONS.IN_APP_NOTIFICATION,
-          to: {
-            subscriberId: actor.portalUserID,
+      return await novu.triggerBulk({
+        events: [
+          {
+            workflowId: NOTIFICATIONS.IN_APP_NOTIFICATION,
+            to: {
+              subscriberId: actor.portalUserID,
+            },
+            payload: {
+              message: `You have cancelled  ${
+                accountName ?? accountId
+              } "Unlimited" subscription.`,
+              redirectTo: `/account/${accountId}`,
+            },
           },
-          payload: {
-            message: `You have cancelled  ${
-              accountName ?? accountId
-            } "Unlimited" subscription.`,
-            redirectTo: `/account/${accountId}`,
+          {
+            workflowId: NOTIFICATIONS.IN_APP_NOTIFICATION,
+            to: { 
+              type: TriggerRecipientsTypeEnum.TOPIC, 
+              topicKey: accountId 
+            },
+            actor: { subscriberId: actor.portalUserID },
+            payload: {
+              message: `${actor.email} has cancelled ${
+                accountName ?? accountId
+              } "Unlimited" subscription.`,
+              redirectTo: `/account/${accountId}/settings/members`,
+            },
           },
-        },
-        {
-          name: NOTIFICATIONS.IN_APP_NOTIFICATION,
-          to: [{ type: TriggerRecipientsTypeEnum.TOPIC, topicKey: accountId }],
-          actor: { subscriberId: actor.portalUserID },
-          payload: {
-            message: `${actor.email} has cancelled ${
-              accountName ?? accountId
-            } "Unlimited" subscription.`,
-            redirectTo: `/account/${accountId}/settings/members`,
-          },
-        },
-      ])
+        ]
+      })
     case "upgrade":
-      return await novu.trigger(NOTIFICATIONS.IN_APP_NOTIFICATION, {
-        to: [{ type: TriggerRecipientsTypeEnum.TOPIC, topicKey: accountId }],
+      return await novu.trigger({
+        workflowId: NOTIFICATIONS.IN_APP_NOTIFICATION,
+        to: { 
+          type: TriggerRecipientsTypeEnum.TOPIC, 
+          topicKey: accountId 
+        },
         payload: {
           message: `${accountId} has been upgraded to ${getPlanName(planType)}`,
           redirectTo: `/account/${accountId}`,
@@ -418,29 +454,34 @@ export const triggerAppActionNotification = async ({
   appEmoji: string
   type: "create" | "delete"
 }) => {
-  return await novu.bulkTrigger([
-    {
-      name: NOTIFICATIONS.IN_APP_NOTIFICATION,
-      to: {
-        subscriberId: actor.portalUserID,
+  return await novu.triggerBulk({
+    events: [
+      {
+        workflowId: NOTIFICATIONS.IN_APP_NOTIFICATION,
+        to: {
+          subscriberId: actor.portalUserID,
+        },
+        payload: {
+          message: `${String.fromCodePoint(parseInt(appEmoji, 16))} ${appName} has been ${
+            type === "create" ? "created" : "deleted"
+          }.`,
+          redirectTo: type === "create" ? `/account/${accountId}/${appId}` : "",
+        },
       },
-      payload: {
-        message: `${String.fromCodePoint(parseInt(appEmoji, 16))} ${appName} has been ${
-          type === "create" ? "created" : "deleted"
-        }.`,
-        redirectTo: type === "create" ? `/account/${accountId}/${appId}` : "",
+      {
+        workflowId: NOTIFICATIONS.IN_APP_NOTIFICATION,
+        to: { 
+          type: TriggerRecipientsTypeEnum.TOPIC, 
+          topicKey: accountId 
+        },
+        actor: { subscriberId: actor.portalUserID },
+        payload: {
+          message: `${actor.email} has ${
+            type === "create" ? "created" : "deleted"
+          } ${String.fromCodePoint(parseInt(appEmoji, 16))} ${appName}`,
+          redirectTo: type === "create" ? `/account/${accountId}/${appId}` : "",
+        },
       },
-    },
-    {
-      name: NOTIFICATIONS.IN_APP_NOTIFICATION,
-      to: [{ type: TriggerRecipientsTypeEnum.TOPIC, topicKey: accountId }],
-      actor: { subscriberId: actor.portalUserID },
-      payload: {
-        message: `${actor.email} has ${
-          type === "create" ? "created" : "deleted"
-        } ${String.fromCodePoint(parseInt(appEmoji, 16))} ${appName}`,
-        redirectTo: type === "create" ? `/account/${accountId}/${appId}` : "",
-      },
-    },
-  ])
+    ]
+  })
 }

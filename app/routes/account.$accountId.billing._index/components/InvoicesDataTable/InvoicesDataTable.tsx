@@ -10,7 +10,7 @@ import {
   getStripeAmount,
   INVOICE_STATUS_COLOR,
 } from "~/utils/billingUtils"
-import { UsageRecordSummary } from '~/types/stripe-custom';
+import { UsageRecordSummary } from "~/types/stripe-custom"
 
 type InvoicesDataTableProps = {
   invoices: Stripe.Invoice[]

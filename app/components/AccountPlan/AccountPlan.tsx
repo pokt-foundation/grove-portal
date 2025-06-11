@@ -72,7 +72,7 @@ export const AccountPlan = ({
       </Stack>
       <Text py="lg" ta="center">
         {isFree &&
-          "Enjoy 100,000 free relays a month with Grove on the Unstoppable Pocket Network."}
+          "Enjoy 150,000 free relays a month with Grove on the Unstoppable Pocket Network."}
         {isUnlimited && "Unlimited relays with Grove on the Unstoppable Pocket Network."}
       </Text>
 

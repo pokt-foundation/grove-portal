@@ -239,9 +239,9 @@ export const triggerTeamActionNotification = async ({
           },
           {
             workflowId: NOTIFICATIONS.IN_APP_NOTIFICATION,
-            to: { 
-              type: TriggerRecipientsTypeEnum.TOPIC, 
-              topicKey: accountId 
+            to: {
+              type: TriggerRecipientsTypeEnum.TOPIC,
+              topicKey: accountId,
             },
             actor: { subscriberId: actor.portalUserID },
             payload: getAccountNotificationPayload({
@@ -254,7 +254,7 @@ export const triggerTeamActionNotification = async ({
               targetedUserEmail,
             }) as NovuNotificationPayload,
           },
-        ]
+        ],
       })
     case "updateRole":
       return await novu.triggerBulk({
@@ -276,9 +276,9 @@ export const triggerTeamActionNotification = async ({
           },
           {
             workflowId: NOTIFICATIONS.IN_APP_NOTIFICATION,
-            to: { 
-              type: TriggerRecipientsTypeEnum.TOPIC, 
-              topicKey: accountId 
+            to: {
+              type: TriggerRecipientsTypeEnum.TOPIC,
+              topicKey: accountId,
             },
             actor: { subscriberId: targetedUserId },
             payload: getAccountNotificationPayload({
@@ -291,7 +291,7 @@ export const triggerTeamActionNotification = async ({
               targetedUserEmail,
             }) as NovuNotificationPayload,
           },
-        ]
+        ],
       })
     case "resend":
       // New API: workflowId instead of first parameter
@@ -357,9 +357,9 @@ export const triggerAcceptInvitationNotification = async ({
           },
           {
             workflowId: NOTIFICATIONS.IN_APP_NOTIFICATION,
-            to: { 
-              type: TriggerRecipientsTypeEnum.TOPIC, 
-              topicKey: accountId 
+            to: {
+              type: TriggerRecipientsTypeEnum.TOPIC,
+              topicKey: accountId,
             },
             actor: { subscriberId: actor.portalUserID },
             payload: {
@@ -369,7 +369,7 @@ export const triggerAcceptInvitationNotification = async ({
               redirectTo: `/account/${accountId}/settings/members`,
             },
           },
-        ]
+        ],
       })
     : await novu.trigger({
         workflowId: NOTIFICATIONS.IN_APP_NOTIFICATION,
@@ -411,9 +411,9 @@ export const triggerSubscriptionActionNotification = async ({
           },
           {
             workflowId: NOTIFICATIONS.IN_APP_NOTIFICATION,
-            to: { 
-              type: TriggerRecipientsTypeEnum.TOPIC, 
-              topicKey: accountId 
+            to: {
+              type: TriggerRecipientsTypeEnum.TOPIC,
+              topicKey: accountId,
             },
             actor: { subscriberId: actor.portalUserID },
             payload: {
@@ -423,14 +423,14 @@ export const triggerSubscriptionActionNotification = async ({
               redirectTo: `/account/${accountId}/settings/members`,
             },
           },
-        ]
+        ],
       })
     case "upgrade":
       return await novu.trigger({
         workflowId: NOTIFICATIONS.IN_APP_NOTIFICATION,
-        to: { 
-          type: TriggerRecipientsTypeEnum.TOPIC, 
-          topicKey: accountId 
+        to: {
+          type: TriggerRecipientsTypeEnum.TOPIC,
+          topicKey: accountId,
         },
         payload: {
           message: `${accountId} has been upgraded to ${getPlanName(planType)}`,
@@ -470,9 +470,9 @@ export const triggerAppActionNotification = async ({
       },
       {
         workflowId: NOTIFICATIONS.IN_APP_NOTIFICATION,
-        to: { 
-          type: TriggerRecipientsTypeEnum.TOPIC, 
-          topicKey: accountId 
+        to: {
+          type: TriggerRecipientsTypeEnum.TOPIC,
+          topicKey: accountId,
         },
         actor: { subscriberId: actor.portalUserID },
         payload: {
@@ -482,6 +482,6 @@ export const triggerAppActionNotification = async ({
           redirectTo: type === "create" ? `/account/${accountId}/${appId}` : "",
         },
       },
-    ]
+    ],
   })
 }

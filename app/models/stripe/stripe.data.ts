@@ -1,5 +1,5 @@
 import { Stripe } from "./stripe.server"
-import { UsageRecordSummary, UsageRecordSummaryList } from '~/types/stripe-custom';
+import { UsageRecordSummary, UsageRecordSummaryList } from "~/types/stripe-custom"
 
 export const invoice: Stripe.Invoice = {
   id: "in_1LZcyCKhNIAUaK2Oq3K8YCm1",

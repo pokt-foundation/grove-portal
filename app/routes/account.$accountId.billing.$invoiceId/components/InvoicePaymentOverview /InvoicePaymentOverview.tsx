@@ -5,7 +5,7 @@ import { Account } from "~/models/portal/sdk"
 import { Stripe } from "~/models/stripe/stripe.server"
 import { getStripeAmount, getUnitPrice, INVOICE_STATUS_COLOR } from "~/utils/billingUtils"
 import { getPlanName } from "~/utils/planUtils"
-import { UsageRecordSummary } from '~/types/stripe-custom';
+import { UsageRecordSummary } from "~/types/stripe-custom"
 
 type InvoicePaymentOverviewProps = {
   invoice: Stripe.Invoice

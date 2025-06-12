@@ -20,6 +20,7 @@ export const NovuNotificationPopover = ({
   const navigate = useNavigate()
   const theme = useMantineTheme()
   const [isOpen, setIsOpen] = useState(false)
+  console.log('colorScheme prop value:', colorScheme)
 
   // Handle notification clicks
   const handleNotificationClick = (notification: any) => {
@@ -90,11 +91,37 @@ export const NovuNotificationPopover = ({
               aria-label={`${
                 unreadCount ? unreadCount : "No"
               } unread notifications. Click to open notifications popover.`}
-              color="dark"
+              variant="default"
+              color="gray"
               radius="xl"
               size={40}
-              variant="outline"
               onClick={() => setIsOpen(!isOpen)}
+              styles={(theme) => ({
+                root: {
+                  boxShadow: `inset 0 0 0 1px ${
+                    colorScheme === "dark"
+                      ? theme.colors.dark[4]
+                      : theme.colors.gray[3]
+                  }`,
+                  color:
+                    colorScheme === "dark"
+                      ? theme.colors.gray[2]
+                      : theme.colors.dark[6],
+                  backgroundColor:
+                    colorScheme === "dark"
+                      ? theme.colors.dark[9]
+                      : theme.white,
+                  padding: "15px",
+                  backgroundClip: "content-box",
+
+                  "&:hover": {
+                    backgroundColor:
+                      colorScheme === "dark"
+                        ? theme.colors.dark[6]
+                        : theme.colors.gray[0],
+                  },
+                },
+              })}
             >
               <Bell size={18} />
             </ActionIcon>

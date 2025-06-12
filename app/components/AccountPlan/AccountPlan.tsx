@@ -21,7 +21,7 @@ const UnlimitedList = () => {
   return (
     <List center icon={<Check size="18px" />} size="sm" spacing="xl">
       <List.Item>Unlimited relays per month</List.Item>
-      <List.Item>First 100,000 relays per month free</List.Item>
+      <List.Item>First 150,000 relays per month free</List.Item>
       <List.Item>No throughput limit</List.Item>
       <List.Item>Community Discord support</List.Item>
       <List.Item>Access all supported chains</List.Item>
@@ -32,8 +32,8 @@ const UnlimitedList = () => {
 const FreeList = () => {
   return (
     <List center icon={<Check size="18px" />} size="sm" spacing="xl">
-      <List.Item>100,000 relays free per month</List.Item>
-      <List.Item>Cap at 100,000 Relays, zero overages</List.Item>
+      <List.Item>150,000 relays free per month</List.Item>
+      <List.Item>Cap at 150,000 Relays, zero overages</List.Item>
       <List.Item>30 request/sec throughput limit</List.Item>
       <List.Item>Community Discord support</List.Item>
       <List.Item>Access all supported chains</List.Item>

@@ -16,13 +16,13 @@ const FreeAccountPlan = ({ account }: FreeAccountPlanProps) => {
   return (
     <Stack align="center" mt={"xl"}>
       <Stack gap="xs" ta="center">
-        <Title order={3}>Upgrade your plan</Title>
+        <Title order={2}>Upgrade your plan</Title>
         <Text>
           Your current plan is {getPlanName(account.planType)}. <br /> Upgrade now to
           Unlimited.
         </Text>
       </Stack>
-      <SimpleGrid cols={{ base: 1, lg: 3 }}>
+      <SimpleGrid cols={{ base: 1, lg: 2 }}>
         <AccountPlan disableFree type={PayPlanType.PlanFree} />
         <AccountPlan
           type={PayPlanType.PlanUnlimited}
@@ -33,17 +33,6 @@ const FreeAccountPlan = ({ account }: FreeAccountPlanProps) => {
               label: account.id,
             })
             navigate(`/api/stripe/checkout-session?account-id=${account.id}`)
-          }}
-        />
-        <AccountPlan
-          type={PayPlanType.Enterprise}
-          onContinue={() => {
-            trackEvent({
-              category: AnalyticCategories.account,
-              action: AnalyticActions.account_plan_enterprise,
-              label: account.id,
-            })
-            window.open("https://www.grove.city/enterprise", "_blank", "noreferrer")
           }}
         />
       </SimpleGrid>

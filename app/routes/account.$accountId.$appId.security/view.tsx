@@ -57,7 +57,6 @@ export const SecurityView = ({ app, blockchains, userRole }: SecurityViewProps) 
         },
       )
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state, app.id])
 
   return (

@@ -41,7 +41,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
       invoices = invoicesResponse?.data ?? []
 
-      upcomingInvoice = await stripe.invoices.retrieveUpcoming({
+      upcomingInvoice = await stripe.invoices.createPreview({
         subscription: String(accountStripeId),
       })
     }

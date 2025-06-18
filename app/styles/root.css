@@ -68,3 +68,23 @@ body {
   border: 1px solid var(--app-shell-border-color);
   border-radius: 4px;
 }
+/* Base bell wrapper — no shift, always centered */
+.nv-popoverTrigger {
+  background: transparent !important;
+  padding: 0 !important;
+  border-radius: 9999px !important;
+  transition: none !important;
+  border: 1px solid transparent !important;
+}
+
+/* Light mode hover */
+[data-mantine-color-scheme="light"] .nv-popoverTrigger:hover {
+  background-color: #f1f3f5 !important; /* theme.colors.gray[0] */
+  border-color: #dee2e6 !important;     /* theme.colors.gray[3] */
+}
+
+/* Dark mode hover */
+[data-mantine-color-scheme="dark"] .nv-popoverTrigger:hover {
+  background-color: #1A1B1E !important; /* theme.colors.dark[5] */
+  border-color: #2C2E33 !important;     /* theme.colors.dark[4] */
+}

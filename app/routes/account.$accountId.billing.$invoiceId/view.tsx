@@ -3,9 +3,10 @@ import React from "react"
 import { AccountBillingOutletContext } from "~/routes/account.$accountId.billing/route"
 import InvoiceHeader from "~/routes/account.$accountId.billing.$invoiceId/components/InvoiceHeader"
 import InvoicePaymentMethod from "~/routes/account.$accountId.billing.$invoiceId/components/InvoicePaymentMethod"
-import InvoicePaymentOverview from "~/routes/account.$accountId.billing.$invoiceId/components/InvoicePaymentOverview "
+import InvoicePaymentOverview from "~/routes/account.$accountId.billing.$invoiceId/components/InvoicePaymentOverview"
 import BillingCycleUsageDataTable from "~/routes/account.$accountId.billing.$invoiceId/components/InvoiceUsageDataTable"
 import { InvoiceLoaderData } from "~/routes/account.$accountId.billing.$invoiceId/route"
+import { InvoiceUsageData } from "~/types/stripe-custom"
 
 export type InvoiceViewProps = Pick<
   AccountBillingOutletContext,

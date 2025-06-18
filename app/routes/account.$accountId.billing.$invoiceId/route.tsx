@@ -53,7 +53,9 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
     return json<InvoiceLoaderData>({
       invoiceUsageStats,
-      charge: invoice.charge ? (invoice.charge as Stripe.Charge) : undefined,
+      charge: (invoice as any).charge
+        ? ((invoice as any).charge as Stripe.Charge)
+        : undefined,
       invoice,
     })
   } catch (error) {

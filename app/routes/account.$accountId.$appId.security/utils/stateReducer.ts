@@ -55,13 +55,13 @@ export function securityReducer(state: Whitelists, action: SecurityReducerAction
         userAgents: state.userAgents.filter((str) => str !== action.payload),
       }
     case "contracts-add":
-      let payloadContracts = combineToType(
+      const payloadContracts = combineToType(
         action.payload,
         "whitelistValue",
         "contracts",
       ) as WhitelistContracts[]
 
-      let combinedContracts = combineToType(
+      const combinedContracts = combineToType(
         [...state.contracts, ...payloadContracts],
         "contracts",
         "contracts",
@@ -72,7 +72,7 @@ export function securityReducer(state: Whitelists, action: SecurityReducerAction
         contracts: combinedContracts,
       }
     case "contracts-remove":
-      let changedContract = state.contracts.find(
+      const changedContract = state.contracts.find(
         (contract) => contract?.blockchainID === action.payload.blockchainID,
       )
 
@@ -93,13 +93,13 @@ export function securityReducer(state: Whitelists, action: SecurityReducerAction
         contracts: updatedContracts,
       }
     case "methods-add":
-      let payloadMethods = combineToType(
+      const payloadMethods = combineToType(
         action.payload,
         "whitelistValue",
         "methods",
       ) as WhitelistMethods[]
 
-      let combinedMethods = combineToType(
+      const combinedMethods = combineToType(
         [...state.methods, ...payloadMethods],
         "methods",
         "methods",
@@ -110,7 +110,7 @@ export function securityReducer(state: Whitelists, action: SecurityReducerAction
         methods: combinedMethods,
       }
     case "methods-remove":
-      let changedMethod = state.methods.find(
+      const changedMethod = state.methods.find(
         (contract) => contract?.blockchainID === action.payload.blockchainID,
       )
 
@@ -140,12 +140,12 @@ const combineToType = (
   fromType: string,
   toType: string,
 ) => {
-  let map = new Map<string, string[]>()
+  const map = new Map<string, string[]>()
 
   array.forEach((list) => {
     if (!list) return
     // @ts-ignore
-    let isArray = Array.isArray(list[fromType])
+    const isArray = Array.isArray(list[fromType])
     let values = []
     if (isArray) {
       // @ts-ignore
@@ -156,7 +156,7 @@ const combineToType = (
     }
 
     if (map.has(list.blockchainID)) {
-      let existingValues = map.get(list.blockchainID) as string[]
+      const existingValues = map.get(list.blockchainID) as string[]
       values = [...existingValues, ...values]
     }
     map.set(list.blockchainID, values)

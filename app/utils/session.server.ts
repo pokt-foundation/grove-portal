@@ -7,7 +7,7 @@ import {
 } from "@remix-run/node"
 import { getRequiredServerEnvVar } from "./environment"
 
-let cookie:
+const cookie:
   | Cookie
   | (CookieParseOptions & CookieSerializeOptions & CookieSignatureOptions) = {
   name: "_session", // use any name you want here
@@ -23,4 +23,4 @@ export const sessionStorage = createCookieSessionStorage({
   cookie,
 })
 
-export let { getSession, commitSession, destroySession } = sessionStorage
+export const { getSession, commitSession, destroySession } = sessionStorage

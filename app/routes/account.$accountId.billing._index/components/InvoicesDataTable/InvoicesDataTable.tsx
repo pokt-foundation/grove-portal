@@ -10,10 +10,11 @@ import {
   getStripeAmount,
   INVOICE_STATUS_COLOR,
 } from "~/utils/billingUtils"
+import { InvoiceUsageData } from "~/types/stripe-custom"
 
 type InvoicesDataTableProps = {
   invoices: Stripe.Invoice[]
-  usageRecords?: Stripe.UsageRecordSummary[]
+  usageRecords?: InvoiceUsageData[]
 }
 const InvoicesDataTable = ({ invoices, usageRecords }: InvoicesDataTableProps) => {
   const navigate = useNavigate()
@@ -32,7 +33,7 @@ const InvoicesDataTable = ({ invoices, usageRecords }: InvoicesDataTableProps) =
       period_start: invoice.period_start,
       period_end: invoice.period_end,
       total_usage: invoiceUsageRecord?.total_usage,
-      charge: invoice.charge,
+      charge: (invoice as any).charge,
       invoice_pdf: invoice.invoice_pdf,
     }
   })

@@ -5,9 +5,9 @@ import { getErrorMessage } from "~/utils/catchError"
 import { getRequiredServerEnvVar } from "~/utils/environment"
 
 function arrayBufferToBufferCycle(ab: ArrayBuffer) {
-  var buffer = Buffer.alloc(ab.byteLength)
-  var view = new Uint8Array(ab)
-  for (var i = 0; i < buffer.length; i++) {
+  const buffer = Buffer.alloc(ab.byteLength)
+  const view = new Uint8Array(ab)
+  for (let i = 0; i < buffer.length; i++) {
     buffer[i] = view[i]
   }
   return buffer

@@ -1,4 +1,5 @@
 import { Stripe } from "./stripe.server"
+import { UsageRecordSummary, UsageRecordSummaryList } from "~/types/stripe-custom"
 
 export const invoice: Stripe.Invoice = {
   id: "in_1LZcyCKhNIAUaK2Oq3K8YCm1",
@@ -18,6 +19,8 @@ export const invoice: Stripe.Invoice = {
     enabled: false,
     status: null,
     liability: null,
+    disabled_reason: null,
+    provider: null,
   },
   billing_reason: "subscription_create",
   charge: null,
@@ -54,6 +57,7 @@ export const invoice: Stripe.Invoice = {
         id: "il_1LZcyCKhNIAUaK2OI2BoGWZ5",
         object: "line_item",
         amount: 0,
+        // @ts-ignore
         amount_excluding_tax: 0,
         unit_amount_excluding_tax: "0",
         currency: "usd",
@@ -181,6 +185,8 @@ export const invoice: Stripe.Invoice = {
   rendering: {
     amount_tax_display: "exclude_tax",
     pdf: null,
+    template: null,
+    template_version: null,
   },
   shipping_cost: null,
   shipping_details: null,
@@ -195,6 +201,7 @@ export const subscription: Stripe.Subscription = {
   automatic_tax: {
     enabled: false,
     liability: null,
+    disabled_reason: null,
   },
   billing_cycle_anchor: 1661183720,
   billing_thresholds: null,
@@ -203,15 +210,12 @@ export const subscription: Stripe.Subscription = {
   canceled_at: null,
   collection_method: "charge_automatically",
   created: 1661183720,
-  current_period_end: 1663862120,
-  current_period_start: 1661183720,
   customer: "cus_MGMR6lph7wxZrw",
   days_until_due: null,
   default_payment_method: "pm_1LXqAGKhNIAUaK2OezCKiR62",
   default_source: null,
   default_tax_rates: [],
   description: null,
-  discount: null,
   ended_at: null,
   invoice_settings: {
     account_tax_ids: null,
@@ -226,11 +230,12 @@ export const subscription: Stripe.Subscription = {
         billing_thresholds: null,
         created: 1661183720,
         metadata: {},
+        current_period_end: 1674231906,
+        current_period_start: 1671639906,
         plan: {
           id: "price_1LUzM7KhNIAUaK2O2JOUw5iU",
           object: "plan",
           active: true,
-          aggregate_usage: "sum",
           amount: null,
           amount_decimal: null,
           billing_scheme: "tiered",
@@ -246,6 +251,7 @@ export const subscription: Stripe.Subscription = {
           transform_usage: null,
           trial_period_days: null,
           usage_type: "metered",
+          meter: null,
         },
         price: {
           id: "price_1LUzM7KhNIAUaK2O2JOUw5iU",
@@ -261,11 +267,11 @@ export const subscription: Stripe.Subscription = {
           nickname: null,
           product: "prod_MDQC1oAKQ1geep",
           recurring: {
-            aggregate_usage: "sum",
             interval: "month",
             interval_count: 1,
             trial_period_days: null,
             usage_type: "metered",
+            meter: null,
           },
           tax_behavior: "unspecified",
           tiers_mode: "volume",
@@ -313,7 +319,7 @@ export const subscription: Stripe.Subscription = {
   trial_settings: null,
 }
 
-export const useageRecord: Stripe.ApiList<Stripe.UsageRecordSummary> = {
+export const useageRecord: UsageRecordSummaryList = {
   object: "list",
   data: [
     {

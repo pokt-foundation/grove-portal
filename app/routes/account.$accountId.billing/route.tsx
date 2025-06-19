@@ -13,6 +13,7 @@ import { getErrorMessage } from "~/utils/catchError"
 import { getRequiredServerEnvVar } from "~/utils/environment"
 import { seo_title_append } from "~/utils/seo"
 import { requireUser } from "~/utils/user.server"
+import { UsageRecordSummary, InvoiceUsageData } from "~/types/stripe-custom"
 
 export const meta: MetaFunction = () => {
   return [
@@ -24,11 +25,12 @@ export const meta: MetaFunction = () => {
 
 export type AccountBillingOutletLoaderData = {
   subscription?: Stripe.Subscription
-  usageRecords?: Stripe.UsageRecordSummary[]
+  usageRecords?: InvoiceUsageData[]
 }
 
 export type AccountBillingOutletContext = AccountBillingOutletLoaderData &
   AccountIdLoaderData
+
 export const loader: LoaderFunction = async ({ request, params }) => {
   const { accountId } = params
 
@@ -41,7 +43,8 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   const user = await requireUser(request)
   const portal = initPortalClient({ token: user.accessToken })
   try {
-    let usageRecords
+    let usageRecords: InvoiceUsageData[] = []
+    let subscription: Stripe.Subscription | undefined
 
     const getBillingRouteAccountInfoResponse = await portal.getBillingRouteAccountInfo({
       accountID: accountId,
@@ -57,15 +60,50 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     }
 
     if (accountStripeId) {
-      const subscription = await stripe.subscriptions.retrieve(accountStripeId)
-      usageRecords = await stripe.subscriptionItems.listUsageRecordSummaries(
-        subscription.items.data[0].id,
-        { limit: STRIPE_RECORDS_LIMIT },
-      )
+      subscription = await stripe.subscriptions.retrieve(accountStripeId, {
+        expand: ["items.data.price"],
+      })
+
+      // Try to get usage data using the new meters API
+      try {
+        const invoices = await stripe.invoices.list({
+          subscription: subscription.id,
+          limit: 100, // Adjust as needed
+        })
+        const usageRecordSummaries: InvoiceUsageData[] = []
+
+        // Process each invoice to extract usage from line items
+        for (const invoice of invoices.data) {
+          // Look through the invoice line items for usage-based items
+          for (const lineItem of invoice.lines.data) {
+            // Check if this is a subscription line item with usage
+            if (lineItem.quantity && lineItem.quantity > 0) {
+              const quantity = lineItem.quantity || 0
+              const totalRelays = quantity * 1000000 // convert units to relays
+
+              usageRecordSummaries.push({
+                invoice: invoice.id ?? null,
+                total_usage: totalRelays,
+                subscription_item:
+                  (lineItem as any).parent?.subscription_item_details
+                    ?.subscription_item ?? "",
+              })
+
+              // Break after finding the first metered line item for this invoice
+              break
+            }
+          }
+        }
+        usageRecords = usageRecordSummaries
+      } catch (meterError) {
+        console.warn("Could not process subscription data:", meterError)
+        usageRecords = []
+      }
     }
 
     return json<AccountBillingOutletLoaderData>({
-      usageRecords: usageRecords?.data ?? [],
+      subscription,
+      usageRecords: usageRecords ?? [],
     })
   } catch (error) {
     throw new Response(getErrorMessage(error), {
@@ -73,6 +111,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     })
   }
 }
+
 export default function AccountBilling() {
   const outletData = useOutletContext<AccountIdLoaderData>()
   const { usageRecords } = useLoaderData<AccountBillingOutletLoaderData>()
@@ -90,6 +129,7 @@ export default function AccountBilling() {
     </AccountBillingLayoutView>
   )
 }
+
 export function ErrorBoundary() {
   return <ErrorBoundaryView />
 }

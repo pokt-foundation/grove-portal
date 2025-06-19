@@ -52,7 +52,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
      * Handle when an invalid account is manually entered & when the user leaves the account
      */
 
-    let ownerAccount = userAccounts?.getUserAccounts?.find(
+    const ownerAccount = userAccounts?.getUserAccounts?.find(
       (account) =>
         account?.users?.find((u) => u.id === user.user.portalUserID)?.roleName ===
         RoleName.Owner,

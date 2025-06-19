@@ -1,4 +1,5 @@
 {
+  "buildCommand": "corepack enable && pnpm run build",
   "outputDirectory": "./build",
   "redirects": [
     {

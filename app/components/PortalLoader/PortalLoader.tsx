@@ -1,4 +1,5 @@
 import { Box, Stack, Text } from "@mantine/core"
+import React from "react"
 import { ClientOnly } from "remix-utils/client-only"
 import groveTreeAnimation from "./grove-tree.json"
 
@@ -40,22 +41,41 @@ const PortalLoader = ({
 
 // This component only renders on the client side
 function ClientSideLottie({ message, size = "md", loaderAnimation }: PortalLoaderProps) {
-  // Only import and use Lottie on the client
-  const Lottie = require("lottie-react")
-  const { useLottie } = require("lottie-react")
+  const [lottieModule, setLottieModule] = React.useState<any>(null)
+  const [lottieView, setLottieView] = React.useState<any>(null)
 
-  const { View } = useLottie(
-    {
-      loop: true,
-      autoplay: true,
-      animationData: loaderAnimation,
-    },
-    { height: LOADER_SIZE[size] },
-  )
+  React.useEffect(() => {
+    // Dynamic import for client-side only
+    import("lottie-react").then((module) => {
+      setLottieModule(module)
+    })
+  }, [])
+
+  React.useEffect(() => {
+    if (lottieModule) {
+      const { useLottie } = lottieModule
+      // We can't use useLottie hook here, so we'll create the animation manually
+      try {
+        const lottieInstance = lottieModule.default
+        setLottieView(
+          React.createElement(lottieInstance, {
+            animationData: loaderAnimation,
+            loop: true,
+            autoplay: true,
+            style: { height: LOADER_SIZE[size] }
+          })
+        )
+      } catch (error) {
+        console.error("Error creating Lottie animation:", error)
+      }
+    }
+  }, [lottieModule, loaderAnimation, size])
 
   return (
     <Stack align="center" justify="center">
-      <Box aria-labelledby="Grove loading animation">{View}</Box>
+      <Box aria-labelledby="Grove loading animation">
+        {lottieView || "Loading..."}
+      </Box>
       {message && <Text> {message} </Text>}
     </Stack>
   )

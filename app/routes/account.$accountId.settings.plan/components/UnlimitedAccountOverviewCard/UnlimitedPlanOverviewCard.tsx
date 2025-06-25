@@ -65,8 +65,11 @@ export default function UnlimitedPlanOverviewCard({
 
         {userRole !== RoleName.Member && (
           <Box mt="auto">
-            <Form action="/api/stripe/portal-session" method="post">
+            <Form action={`/api/stripe/portal-session/${account.id}`} method="post">
               <input hidden defaultValue={location.pathname} name="return-path" />
+              {subscription && (
+                <input hidden defaultValue={subscription.id} name="subscription-id" />
+              )}
               <Grid gutter="sm" justify="flex-end">
                 <Grid.Col span={{ base: 6, md: 4 }}>
                   <Button

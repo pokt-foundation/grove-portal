@@ -6,7 +6,7 @@
   "type": "module",
   "packageManager": "pnpm@10.0.0",
   "resolutions": {
-    "esbuild": "0.17.19"
+    "esbuild": "0.25.0"
   },
   "scripts": {
     "dev": "run-s generate:types remix:dev",
@@ -53,7 +53,7 @@
     "d3-format": "^3.1.0",
     "dayjs": "^1.11.13",
     "emoji-picker-react": "^4.12.2",
-    "esbuild": "0.17.19",
+    "esbuild": "0.25.0",
     "graphql": "^16.11.0",
     "graphql-request": "^6.1.0",
     "graphql-tag": "^2.12.6",
